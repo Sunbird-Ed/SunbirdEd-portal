@@ -18,9 +18,9 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus my-8">
-            <sui-select class="selection fields-dropdown" name="board" labelField="board" placeholder="Select Board">
+            <!-- <sui-select class="selection fields-dropdown" name="board" labelField="board" placeholder="Select Board">
               <sui-select-option *ngFor="let board of boards" [value]="board"></sui-select-option>
-            </sui-select>
+            </sui-select> -->
             <label class="font-weight-normal">Board</label>
           </div>
         </div>
@@ -29,10 +29,10 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus my-8 onboard-content">
-            <sui-multi-select class="selection fields-dropdown" name="medium" labelField="medium"
+            <!-- <sui-multi-select class="selection fields-dropdown" name="medium" labelField="medium"
               placeholder="Select Medium">
               <sui-select-option *ngFor="let medium of mediums" [value]="medium"></sui-select-option>
-            </sui-multi-select>
+            </sui-multi-select> -->
             <label class="font-weight-normal">Medium</label>
           </div>
         </div>
@@ -41,10 +41,10 @@
       <div class="twelve wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus mt-8 mb-16">
-            <sui-multi-select class="selection fields-dropdown" [(ngModel)]="classes" name="class" labelField="class"
+            <!-- <sui-multi-select class="selection fields-dropdown" [(ngModel)]="classes" name="class" labelField="class"
               placeholder="Select Class">
               <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
-            </sui-multi-select>
+            </sui-multi-select> -->
             <label class="font-weight-normal">Class</label>
           </div>
         </div>
@@ -53,10 +53,10 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus">
-            <select class="ui dropdown selection fields-dropdown" placeholder="Select State" [(ngModel)]="states" name="states">
+            <!-- <select class="ui dropdown selection fields-dropdown" placeholder="Select State" [(ngModel)]="states" name="states">
               <option [ngValue]="option" *ngFor="let state of states" [value]="option">{{option?.name}}
               </option>
-            </select>
+            </select> -->
             <label class="d-flex font-weight-normal">State</label>
           </div>
         </div>
@@ -64,10 +64,10 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus onboard-content">
-            <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts" name="districts" labelField="district"
+            <!-- <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts" name="districts" labelField="district"
               placeholder="Select district">
               <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
-              </option>
+              </option> -->
             </select>
             <label class="d-flex font-weight-normal">District</label>
           </div>
