@@ -126,10 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
     for (const item in params) {
       if (params.hasOwnProperty(item)) {
         switch (item) {
-          case 'channel':
-            resultJson.push({ 'id': params[item], 'type': 'Source' });
-            break;
-          case 'utm_campaign':
+          case ('channel' || 'utm_campaign'):
             resultJson.push({ 'id': params[item], 'type': 'Source' });
             break;
           case 'utm_medium':
