@@ -66,7 +66,8 @@ module.exports = function (config) {
           '--remote-debugging-port=9222',
           '--proxy-server=direct://',
           '--proxy-bypass-list=*',
-          '--max_old_space_size=4096'
+          '--max_old_space_size=4096',
+          "--js-flags=--max-old-space-size=4096"
         ]
       }
     },
