@@ -1,5 +1,6 @@
 const { decrypt } = require('../helpers/crypto');
 const _ = require('lodash');
+const logger = require('sb_logger_util_v2')
 /**
  * Parses string to object
  * @param string
@@ -100,6 +101,21 @@ const decodeNChkTime = (encryptedData) => {
   }
 };
 
+/**
+ * To log error debug info
+ * Later we can log telemetry error events from here
+ */
+const logError = (req, err, msg) => {
+  logger.error({
+    URL: req.url,
+    body: JSON.stringify(req.body),
+    uuid: _.get(req,'headers.x-msgid'),
+    did:_.get(req,'headers.x-device-id'),
+    msg: '[Portal]: ' + msg,
+    error: JSON.stringify(err)
+  });
+}
+
 module.exports = { parseJson, delay, isDate, 
   isValidAndNotEmptyString, isDateExpired, 
-  decodeNChkTime};
+  decodeNChkTime, logError};
