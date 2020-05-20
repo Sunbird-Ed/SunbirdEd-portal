@@ -12,6 +12,7 @@ import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './compon
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     FormsModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    CommonConsumptionModule
   ],
   declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
 })

@@ -49,6 +49,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   public singleContentRedirect = '';
+  public numberOfSections = new Array(this.configService.appConfig.DIAL_CODE.PAGE_LIMIT);
   showExportLoader = false;
   contentName: string;
   instance: string;
