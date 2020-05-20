@@ -43,12 +43,12 @@
         <i class="chevron up icon"></i>
       </span>
     </div>
-    <div class="fs-1-5 font-w-bold d-flex mb-10 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
+    <div class="fs-1-5 font-w-bold d-flex mb-10 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
       <div class="computer only">
-          <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
       </div>
       <div class="mobile only">
-          <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="info"></i>
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="info"></i>
       </div>
       
     </div>
