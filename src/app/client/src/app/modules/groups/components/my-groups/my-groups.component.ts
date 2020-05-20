@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GroupsService } from '../../services';
+
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
@@ -25,6 +27,13 @@ export class MyGroupsComponent implements OnInit {
   ];
   showGroupCreateForm;
   constructor() {}
+  public groupList: any;
+  constructor(public groupService: GroupsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getMyGroupList();
+  }
+  async getMyGroupList() {
+    this.groupList = await this.groupService.getAllGroups();
+  }
 }
