@@ -17,7 +17,7 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     parallelOptions: {
-      executors: 1, // Defaults to cpu-count - 1
+      executors: 2, // Defaults to cpu-count - 1
       shardStrategy: 'round-robin'
       // shardStrategy: 'description-length'
       // shardStrategy: 'custom'
