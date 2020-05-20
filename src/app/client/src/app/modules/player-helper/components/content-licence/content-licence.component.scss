@@ -4,11 +4,15 @@
 ::ng-deep{
   .sb-toc-credits {
     .sbaccordion__panel {
-      box-shadow: none;
+      box-shadow: none !important;
     }
-    .sbaccordion__panel-header {
-      justify-content: unset;
+    .sb-bg-color-gray-0 {
+      .sbaccordion__panel-header {
+        background:var(--gray-0) !important;
+        height:2.5rem !important;
+      }
     }
+    
     .sbaccordion__panel-header__title {
       width: auto;
       padding-right: calculateRem(16px);
@@ -18,7 +22,7 @@
       overflow: inherit;
       max-height: 100%;
       border-top: 0px;
-      background-color: var(--white);
+      background-color: transparent !important;
     }
   }
 }

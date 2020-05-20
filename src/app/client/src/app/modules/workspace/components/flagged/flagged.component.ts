@@ -5,10 +5,9 @@ import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
   ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage,
-  NavigationHelperService
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 

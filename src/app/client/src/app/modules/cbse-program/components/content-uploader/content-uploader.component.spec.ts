@@ -21,6 +21,7 @@ import {contentUploadComponentInput, contentMetaData, contentMetaData1, playerCo
              licenseDetails, updateContentResponse, getPreSignedUrl, contentUploadComponentInput1} from './content-uploader.component.data';
 import { HelperService } from '../../services/helper.service';
 import { ActivatedRoute } from '@angular/router';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 // Following describe method is for 'PREVIEW' scenario
 describe('ContentUploaderComponent', () => {
@@ -100,7 +101,7 @@ describe('ContentUploaderComponent', () => {
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
                   { provide: HelperService, useValue: helperServiceStub }, { provide: ResourceService, useValue: resourceServiceStub },
                   {provide: UserService, useValue: userServiceStub},
-                  {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
+                  {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}, DeviceDetectorService]
     })
     .compileComponents();
   }));
@@ -215,7 +216,7 @@ describe('ContentUploaderComponent', () => {
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
-                 {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
+                 {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}, DeviceDetectorService]
     })
     .compileComponents();
   }));
@@ -332,7 +333,7 @@ describe('ContentUploaderComponent', () => {
                   { provide: HelperService, useValue: helperServiceStub }, {provide: UserService, useValue: userServiceStub},
                   { provide: CollectionHierarchyService, useValue: collectionServiceStub},
                   // tslint:disable-next-line:max-line-length
-                  { provide: ResourceService, useValue: resourceServiceStub }, {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
+                  { provide: ResourceService, useValue: resourceServiceStub }, {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}, DeviceDetectorService]
     })
     .compileComponents();
   }));

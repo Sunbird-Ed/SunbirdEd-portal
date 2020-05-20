@@ -131,7 +131,7 @@
             <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16 download-report d-flex flex-ai-center"
               href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
               [telemetryInteractObject]="interactObject"
-              [disabled]="!scoreReportUpdatedOn"
+              [ngClass]="{'sb-btn-disabled': !scoreReportUpdatedOn}"
               [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
                 class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
                 <span class="info-outline-img ml-8" suiPopup popupText="{{scoreReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"></span>
@@ -139,7 +139,7 @@
             <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-report d-flex flex-ai-center"
               href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
               [telemetryInteractObject]="interactObject"
-              [disabled]="!progressReportUpdatedOn"
+              [ngClass]="{'sb-btn-disabled': !progressReportUpdatedOn}"
               [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
                 class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}
                 <span class="info-outline-img ml-8" suiPopup popupText="{{progressReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{progressReportUpdatedOn | date:'dd/MM/yyyy'}}" [popupPlacement]="'top right'" [popupInverted]="true"></span>
@@ -272,10 +272,12 @@
           </div>
         </div> -->
         <div class="sb-pagination-container flex-ai-center">
-          <div *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader">showing {{pager.startIndex+1}} -
-            {{pager.endIndex+1}} {{dashboarData.data.count}} users</div>
+          <div *ngIf="dashboarData && dashboarData.data.length > 0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">showing {{pager.startIndex+1}} -
+            {{pager.endIndex+1}} {{dashboarData.data.length ? 'of ' + dashboarData.data.length : '' }} users</div>
+          <div *ngIf="dashboarData && dashboarData.data.length > 0 && config.appConfig.DASHBOARD.PAGE_LIMIT >= totalCount  && !showLoader">showing {{pager.startIndex+1}} -
+            {{dashboarData.data.length }} users</div>
           <div
-            *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">
+            *ngIf="dashboarData && dashboarData.data.length > 0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">
             <div class="sb-pagination ml-auto" *ngIf="pager.pages.length">
               <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item "
                 (click)="navigateToPage(pager.currentPage - 1)">{{resourceService?.frmelmnts?.lbl?.previous}}</a>

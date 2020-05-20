@@ -16,10 +16,5 @@ export const actionButtons: IActionButton[] = [
         name: ActionButtonType.PRINT,
         label: 'Print',
         disabled: true
-    },
-    {
-        name: ActionButtonType.FULL_SCREEN,
-        label: 'Full Screen',
-        disabled: true
     }
   ];
