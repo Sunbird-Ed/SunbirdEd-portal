@@ -76,9 +76,9 @@
 
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
         <div class="sb-bg-color-white p-8 fs-0-92">
-          <p>{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</p>
+          <p class="mb-auto">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</p>
           <p class="sb-color-primary font-weight-bold">20% {{resourceService?.frmelmnts?.lbl?.completed}}</p>
-          <sui-progress value="10" maximum="100" class="green mb-0 mr-0"></sui-progress>
+          <sui-progress value="10" maximum="100" class="green m-0 fs-1-143"></sui-progress>
           <p class="fs-0-785">{{resourceService?.frmelmnts?.lbl?.completeContentToUnlock | interpolate:'{count}': '5'}}</p>
         </div>
       </section>
