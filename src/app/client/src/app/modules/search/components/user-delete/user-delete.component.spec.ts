@@ -11,7 +11,6 @@ import {
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

@@ -58,15 +58,14 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.verifyOTP(request)
     .subscribe(response => {
-        this.resetPassword();
+        this.resetPassword(response);
       }, error => {
         this.form.controls.otp.reset();
         this.handleError(error);
-        this.disableFormSubmit = false;
       }
     );
   }
-  resetPassword() {
+  resetPassword(data?: any) {
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
@@ -74,6 +73,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
+    request.request['reqData'] = _.get(data, 'reqData');
     this.recoverAccountService.resetPassword(request)
     .subscribe(response => {
       if (response.result.link) {
@@ -107,7 +107,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
-      this.disableResendOtp = true;
+      setTimeout(() => {
+        this.disableResendOtp = true;
+      }, 10000);
       this.toasterService.success('OTP sent successfully.');
     }, error => {
       this.toasterService.error('Resend OTP failed. Please try again');

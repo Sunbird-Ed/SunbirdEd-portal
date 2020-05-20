@@ -7,13 +7,11 @@ import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { IPagination } from '@sunbird/announcement';
-import { copyObj } from '@angular/animations/browser/src/util';
 /**
  * This component shows the course progress dashboard
  */
@@ -171,9 +169,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of AnnouncementService class
-	 *
    * @param {UserService} user Reference of UserService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
@@ -319,11 +314,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       takeUntil(this.unsubscribe))
       .subscribe(
         (apiResponse: ServerResponse) => {
+          if (!apiResponse.result.count && _.get(apiResponse, 'result.data.length')) {
+            apiResponse.result.count = _.get(apiResponse, 'result.data.length');
+          } else {
+            apiResponse.result.count = 0;
+          }
           this.showLoader = false;
           this.dashboarData = apiResponse.result;
           this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-          this.dashboarData.count = _.get(batch, 'participantCount');
-          this.totalCount = _.get(batch, 'participantCount');
+          this.dashboarData.count = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
+          this.totalCount = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
           if (this.totalCount >= 10000) {
             this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
           } else {

@@ -21,10 +21,10 @@
             <i class="close icon"></i></button>
         </div>
       </div>
-      <div *ngIf="showSelectChapter && !showLoader && searchResults.length > 0" class="d-flex flex-ai-center mb-24">
+      <div *ngIf="showSelectChapter && !showLoader && searchResults.length > 0" class="mb-24">
         <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata" [telemetryInteractCdata]="selectChapterTelemetryCdata"
         (click)="redirectToDetailsPage(dialContentId)" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}<i class="icon chevron circle right"></i></button>
-          <div class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}<span class="fmedium font-weight-bold">"{{chapterName}}"</span></div>
+          <span class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;<b>"{{chapterName}}"</b></span>
       </div>
     </div>
     <div class="row" [appTelemetryImpression]="dialResultImpression">

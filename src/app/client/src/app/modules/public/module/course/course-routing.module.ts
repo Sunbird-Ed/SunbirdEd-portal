@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PublicCourseComponent, ExploreCourseComponent, PublicCoursePlayerComponent,
   PublicCourseConsumptionPageComponent } from './components';
-import {ViewAllComponent} from '@sunbird/shared-feature';
+import {ViewAllComponent} from '@sunbird/content-search';
 const routes: Routes = [
     {
       path: '', component: PublicCourseComponent, data: {
+        routeReuse: {
+          reuse: true,
+          path: 'explore-course'
+        },
         telemetry: {
           env: 'explore-course', pageid: 'explore-course', type: 'view', subtype: 'paginate'
         }

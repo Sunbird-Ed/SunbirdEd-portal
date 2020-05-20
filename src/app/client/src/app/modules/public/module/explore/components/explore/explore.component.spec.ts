@@ -97,7 +97,7 @@ describe('ExploreComponent', () => {
   it('should get channel id if slug is not available', () => {
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
-    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
+    spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
     spyOn<any>(component, 'setNoResultMessage').and.callThrough();
     component.ngOnInit();
@@ -147,7 +147,7 @@ describe('ExploreComponent', () => {
 
   it('should fetch the filters and set to default values', () => {
     spyOn<any>(component, 'fetchContents');
-    component.getFilters(RESPONSE.selectedFilters);
+    component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
     expect(component.showLoader).toBe(true);
     expect(component.apiContentList).toEqual([]);
     expect(component.pageSections).toEqual([]);
@@ -169,14 +169,14 @@ describe('ExploreComponent', () => {
 
   it('should fetch contents and disable loader', () => {
     sendPageApi = true;
-    component.getFilters(RESPONSE.selectedFilters);
+    component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
     expect(component.showLoader).toBe(false);
   });
 
   it('should fetch contents, disable the loader and set values to default', () => {
     sendPageApi = false;
     spyOn<any>(toasterService, 'error');
-    component.getFilters(RESPONSE.selectedFilters);
+    component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
     expect(component.showLoader).toBe(false);
     expect(component.pageSections).toEqual([]);
     expect(component.apiContentList).toEqual([]);
