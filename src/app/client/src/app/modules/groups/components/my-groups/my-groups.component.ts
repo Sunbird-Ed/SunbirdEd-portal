@@ -1,11 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { GroupsService } from '../../services';
+
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
   styleUrls: ['./my-groups.component.scss']
 })
 export class MyGroupsComponent implements OnInit {
-  constructor() {}
+  public groupList: any;
+  constructor(public groupService: GroupsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getMyGroupList();
+  }
+  async getMyGroupList() {
+    this.groupList = await this.groupService.getAllGroups();
+  }
 }
