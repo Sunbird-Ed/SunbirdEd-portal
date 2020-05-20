@@ -33,7 +33,6 @@ export class CurriculumCourseDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.courseId = params.courseId;
       this.setTelemetryData();
@@ -42,9 +41,8 @@ export class CurriculumCourseDetailsComponent implements OnInit {
       if (this.courseId) {
         this.getCourseHierarchy(this.courseId).subscribe((response: any) => {
           this.course = response.data;
-          console.log('data', response.data);
         }, error => {
-          console.log('Error', error);
+          console.error('Error', error);
         });
       }
     });
@@ -61,13 +59,9 @@ export class CurriculumCourseDetailsComponent implements OnInit {
   private getCourseHierarchy(collectionId: string): Observable<any> {
     const option: any = { params: {} };
     option.params = this.configService.appConfig.PublicPlayer.contentApiQueryParams;
-    // if (this.collectionStatus && this.collectionStatus === 'Unlisted') {
-    //   option.params['mode'] = 'edit';
-    // }
     return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
       map((response: any) => {
         const collectionData = response.result.content;
-        console.log('collection Data', collectionData);
         return { data: response.result.content };
       }));
   }
