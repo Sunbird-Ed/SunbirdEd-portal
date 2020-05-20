@@ -1,5 +1,5 @@
-import {throwError, of, Observable, BehaviorSubject} from 'rxjs';
-import { mergeMap, map, catchError, skipWhile } from 'rxjs/operators';
+import {throwError, of, Observable, BehaviorSubject } from 'rxjs';
+import { mergeMap, map, catchError, skipWhile, shareReplay, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -27,6 +27,8 @@ export class OrgDetailsService {
 
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
+
+  private _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
 
   constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,
@@ -128,16 +130,10 @@ export class OrgDetailsService {
   }
 
   public getCustodianOrgDetails() {
-    if (this.custodianOrgDetails) {
-      return of(this.custodianOrgDetails);
-    }
-    return this.getCustodianOrg().pipe(map(custodianOrgDetails => {
-      this.custodianOrgDetails = custodianOrgDetails;
-      return custodianOrgDetails;
-    }));
+    return this._custodianOrg$;
   }
 
-  getCustodianOrg() {
+  private getCustodianOrg() {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };

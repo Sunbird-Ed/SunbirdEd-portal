@@ -27,13 +27,9 @@
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
        
        <input appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-       *ngIf="!disableResendButton" class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
-       [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" type="button" value="Resend OTP"/>
+        class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
+       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="Resend OTP"/>
        <input  appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
        class="ui button w-50" [ngClass]="{'grey':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
 </form>
-<!-- <div appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" *ngIf="!disableResendButton" [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-center blue text mb-50 cursor-pointer"
-  role="button" tabindex="0">{{resourceService.frmelmnts.lbl.resendOTP}}</div>
-<button appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300" tabindex="0"
-  (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submitOTP}}</button> -->

@@ -100,6 +100,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.showInput = true;
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
       this.key = this.queryParam['key'];
@@ -158,7 +159,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       delete this.queryParam['key'];
     }
-    this.route.navigate([this.search[this.selectedOption], 1], {
+    const url = this.route.url.split('?')[0];
+    let redirectUrl;
+    if (this.selectedOption) {
+      redirectUrl = this.search[this.selectedOption];
+    } else {
+      if (url.indexOf('/explore-course') !== -1) {
+        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
+      } else {
+        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
+      }
+    }
+    this.route.navigate([redirectUrl, 1], {
       queryParams: this.queryParam
     });
   }

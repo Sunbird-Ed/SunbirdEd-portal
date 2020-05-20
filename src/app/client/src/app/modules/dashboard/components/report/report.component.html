@@ -1,0 +1,121 @@
+<div class="ui" [appTelemetryImpression]="telemetryImpression" #reportElement>
+  <div class="twelve wide column px-0">
+    <div class="ui container stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
+      <div class="twelve wide column sb-sideview-tab-container pt-72 pb-48" *ngIf="showComponent">
+        <ng-container *ngIf="(report$ | async) as currentReport else loading">
+          <div *ngIf="noResult">
+            <app-no-result [data]="noResultMessage"></app-no-result>
+          </div>
+          <div *ngIf="!noResult">
+            <div id="report-header">
+              <div class="d-flex flex-ai center mb-16">
+                <h2 class="mr-auto">
+                  {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
+                  <div
+                    [ngClass]="{'sb-label-error-0': report.status === 'retired', 'sb-label-success-0': report.status === 'live', 'sb-label-gray-0': report.status === 'draft'}"
+                    *ngIf="isUserReportAdmin && !hideElements" class="sb-label sb-label-table hawkeye-label ml-16">
+                    {{report?.status}}</div>
+                </h2>
+                <div *ngIf="isUserReportAdmin && !hideElements" class="d-flex flex-ai-center">
+                  <button (click)="openReportSummaryModal()" type="button"
+                    class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
+                    <i class="plus icon"></i>Add {{ resourceService?.frmelmnts?.lbl?.reportSummary}}</button>
+                  <button (click)="toggleConfirmationModal()" *ngIf="report?.status !== 'live'" type="button"
+                    class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
+                </div>
+              </div>
+              <p *ngIf="currentReport?.reportMetaData?.description"
+                [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
+              </p>
+            </div>
+            <div id="report-body" class="my-16">
+              <sui-tabset>
+                <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
+                  <a appTelemetryInteract
+                    [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
+                    suiTabHeader="graph" (activate)="showExportsOption=true"
+                    [ngClass]="{'mr-auto': currentReport.tables.length === 0}"
+                    (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                  <a appTelemetryInteract [ngClass]="{'mr-auto': currentReport.tables.length > 0}"
+                    [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
+                    (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
+                    (click)="setDownloadUrl(table.downloadUrl)" class="item"
+                    [suiTabHeader]="table.id">{{table?.name}}</a>
+                  <button appTelemetryInteract
+                    [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
+                    *ngIf="currentReport?.reportMetaData?.downloadUrl"
+                    class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
+                      class="download icon"></i>
+                    {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
+                  <div class="sb-field mb-0 mr-8">
+                    <sui-select *ngIf="showExportsOption" class="selection mr-8"
+                      [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
+                      (selectedOptionChange)="downloadReport($event)">
+                      <sui-select-option *ngFor="let option of exportOptions" [value]="option">
+                      </sui-select-option>
+                    </sui-select>
+                  </div>
+                </div>
+
+                <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
+                  <div class="sb-graph-section p-24 my-24"
+                    *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
+                    <app-data-chart
+                      [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                      [chartInfo]="chart" [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
+                      (openAddSummaryModal)="openAddSummaryModal($event)">
+                    </app-data-chart>
+                  </div>
+                  <div class="ui warning message" *ngIf="!currentReport.charts.length">
+                    {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
+                  </div>
+                </div>
+                <ng-container *ngFor="let table of currentReport.tables">
+                  <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24" [suiTabContent]="table.id">
+                    <div *ngIf="table.data">
+                      <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
+                      </app-data-table>
+                    </div>
+                    <div class="ui warning message" *ngIf="!table.data">
+                      {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+                    </div>
+                  </div>
+                </ng-container>
+              </sui-tabset>
+            </div>
+            <div id="report-summary" class="my-16" *ngIf="currentReportSummary && currentReportSummary.length">
+              <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #loading>
+          <div class="nine wide column workspacesegment">
+            <app-loader></app-loader>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<sui-modal [mustScroll]="false" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-hawkeye-modal" #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
+  <div class="sb-modal-content o-y-visible">
+    <div class="ui">
+      <div class="twelve wide column px-0 mb-30">
+        <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+      </div>
+    </div>
+  </div>
+</sui-modal>
+
+<app-confirm-popup *ngIf="showConfirmationModal" (confirmation)="onPublish($event)"
+  [input]="{title: 'Confirm', body: resourceService?.messages?.imsg?.confirmReportPublish}">
+</app-confirm-popup>
+
+<app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
+  (submitButtonEvent)="onAddSummary($event)" *ngIf="showSummaryModal">
+</app-add-summary-modal>

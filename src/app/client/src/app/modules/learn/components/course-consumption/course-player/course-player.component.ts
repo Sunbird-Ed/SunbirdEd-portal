@@ -9,7 +9,6 @@ import {
   ToasterService, ResourceService, ExternalUrlPreviewService, ContentUtilsServiceService
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService } from './../../../services';
-import { INoteData } from '@sunbird/notes';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput,
         IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -58,8 +57,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public readMore = false;
 
-  public createNoteData: INoteData;
-
   public curriculum = [];
 
   public istrustedClickXurl = false;
@@ -98,10 +95,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   private objectRollUp: any;
 
-  showContentCreditsModal: boolean;
-
-  telemetryCdata: Array<{}>;
-
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -110,11 +103,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public previewContentRoles = ['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION'];
 
   public collectionTreeOptions: ICollectionTreeOptions;
-
+  
   public unsubscribe = new Subject<void>();
+
   public contentProgressEvents$ = new Subject();
-  playerOption: any;
+
   public showJoinTrainingModal = false;
+  
+  showContentCreditsModal: boolean;
+
+  telemetryCdata: Array<{}>;
+
+  playerOption: any;
+
+  pageId: string;
+
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -131,6 +134,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
+    this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(first(),
     mergeMap(({ courseId, batchId, courseStatus }) => {
       this.courseId = courseId;
@@ -390,7 +394,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
 
     this.courseConsumptionService.updateContentsState(request).pipe(first())
-      .subscribe(updatedRes => this.contentStatus = updatedRes.content,
+      .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
         err => console.log('updating content status failed', err));
   }
 
@@ -445,9 +449,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 100);
     }
-  }
-  public createEventEmitter(data) {
-    this.createNoteData = data;
   }
   showContentCreditsPopup() {
     this.showContentCreditsModal = true;

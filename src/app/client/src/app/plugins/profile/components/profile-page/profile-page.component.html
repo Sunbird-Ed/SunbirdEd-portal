@@ -272,17 +272,54 @@
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              (click)="toggleCourse(true, attendedTraining.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleCourse(false)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+              (click)="toggleCourse(false, attendedTraining.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
         </div>
-      </div>
-      <!-- tarainings attended computer view ends-->
+         <!-- trainings attended computer view ends-->
+
+         <!-- certificates-->
+        <div class="container my-16 sb-certificate-trained" *ngIf="otherCertificates && otherCertificates.length">
+          <div class="d-flex flex-ai-center sb-ct-list list-heading">
+            <label
+              class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
+          </div>
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
+            <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.issuingAuthority">
+              <label class="mr-auto mb-0 text-left">{{data.certName}}</label>
+              <label class="mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
+              <label class="list-date mr-24" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <div class="sb-certificate-trained-flex-space" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadOthersCertificateEData"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
+                <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+              </div>
+              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+            </div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="otherCertificates.length > 3 ">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
+              (click)="toggleCourse(true, otherCertificates.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+                class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleCourse(false, otherCertificates.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+                class="chevron up icon"></i></button>
+          </div>
+        </div>
+        <!-- / certificates-->
+      </div>  
   </div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
