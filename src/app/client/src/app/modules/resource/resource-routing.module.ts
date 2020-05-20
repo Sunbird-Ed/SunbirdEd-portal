@@ -32,7 +32,7 @@ const routes: Routes = [
     path: 'play', loadChildren: './modules/player/player.module#PlayerModule'
   },
   {
-    path: 'curriculum-course', component: CurriculumCoursesComponent
+    path: 'curriculum-courses', component: CurriculumCoursesComponent
   }
 ];
 

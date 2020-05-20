@@ -96,3 +96,35 @@
      float:right;
     }
   }
+
+  .sb-form{
+    .ui.selection.dropdown.fields-dropdown {
+       min-height: 2rem !important;
+        &:focus{
+            border: calculateRem(1px) solid #0076FE;  
+            color:#0076FE !important;
+        }
+      }
+      
+      .ui.selection.dropdown.fields-dropdown:focus~label {
+        border: 0px;
+        color: #0076FE;
+        font-weight: normal;
+      }
+      
+      .ui.selection.dropdown.fields-dropdown option{
+      background: var(--white);
+      color:var(--black);
+      }
+      
+  .onboard-content {
+    margin-left: 0;
+    @include respond-above(sm) {
+      margin-left:1rem ;
+      html[dir="rtl"] & {
+        margin-left:0 ;
+        margin-right:1rem ;
+      }
+    }
+  }
+}
