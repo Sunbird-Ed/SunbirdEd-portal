@@ -147,7 +147,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
 
   ngOnInit() {
-
     this.checkForPreviousRouteForRedirect();
     if (this.router.url.includes('create/training')) {
       this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
@@ -172,6 +171,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       });
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -349,7 +349,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   /**
   * fetchCourseFrameworkId (i.e TPD)
   */
-  getCourseFrameworkId() {
+  getCourseFrameworkId($event ?: any ) {
     const framework = this.frameworkService.getDefaultCourseFramework();
     if (framework) {
       return framework;

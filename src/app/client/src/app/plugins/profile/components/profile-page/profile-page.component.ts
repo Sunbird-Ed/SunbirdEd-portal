@@ -1,6 +1,6 @@
 import { ProfileService } from '../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService } from '@sunbird/core';
+import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService, CertRegService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService,
   NavigationHelperService
@@ -46,11 +46,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   showRecoveryId = false;
+  otherCertificates: Array<object>;
+  downloadOthersCertificateEData: IInteractEventEdata;
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public certRegService: CertRegService) {
   }
 
   ngOnInit() {
@@ -64,6 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getOrgDetails();
       }
     });
+    this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
     this.getContribution();
     this.getTrainingAttended();
     this.setInteractEventData();
@@ -135,6 +138,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+/**
+ * @param userId
+ *It will fetch certificates of user, other than courses
+ */
+  getOtherCertificates(userId, certType) {
+    this.certRegService.fetchCertificates(userId, certType).subscribe((data) => {
+      this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
+        return {
+          pdfUrls: [{
+            url: _.get(val, '_source.pdfUrl')
+          }],
+          issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
+          issuedOn: _.get(val, '_source.data.issuedOn'),
+          certName: _.get(val, '_source.data.badge.name')
+        };
+      });
+    });
+  }
+
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
@@ -167,9 +189,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  toggleCourse(showMoreCourse) {
+  toggleCourse(showMoreCourse, courseLimit) {
     if (showMoreCourse === true) {
-      this.courseLimit = this.attendedTraining.length;
+      this.courseLimit = courseLimit;
       this.showMoreTrainings = false;
     } else {
       this.showMoreTrainings = true;
@@ -208,7 +230,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   private getCustodianOrgUser() {
-    this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         this.isCustodianOrgUser = true;
       } else {
@@ -255,6 +277,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.addRecoveryIdInteractEdata = {
       id: 'profile-add-recoveryId',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.downloadOthersCertificateEData = {
+      id: 'profile-download-others-certificate',
       type: 'click',
       pageid: 'profile-read'
     };

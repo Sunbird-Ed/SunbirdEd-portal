@@ -68,10 +68,10 @@ export const validateCertMockResponse = {
                     '@context': 'http://localhost:8080/_schemas/context.json'
                 },
                 'related' : {
-                'batchId': '1234',
-                'courseId': 'do_123456',
-                'certVideoUrl': 'www.abc.com/abc.mp4'
-                }
+                    'batchId': '1234',
+                    'courseId': 'do_123456',
+                    'certVideoUrl': 'www.abc.com/abc.mp4'
+                    }
             }
         }
     },

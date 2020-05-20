@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService
@@ -16,8 +16,7 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { ShepherdService } from 'angular-shepherd';
-
+import { CsModule} from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -53,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * 1. org hashtag for Anonymous user
    * 2. user profile rootOrg hashtag for logged in
    */
-  private channel: string;
+  public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
   public readonly routeData$ = this._routeData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -69,7 +68,6 @@ export class AppComponent implements OnInit, OnDestroy {
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
-  shepherdData: Array<any>;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
   queryParams: any;
@@ -85,6 +83,10 @@ export class AppComponent implements OnInit, OnDestroy {
   feedCategory = 'OrgMigrationAction';
   labels: {};
   showUserTypePopup = false;
+  deviceId: string;
+  userId: string;
+  appId: string;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -94,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -143,6 +145,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.programsService.initialize();
             this.userService.startSession();
             this.checkForCustodianUser();
+            this.initializeCs();
             return this.setUserDetails();
           } else {
             return this.setOrgDetails();
@@ -150,17 +153,26 @@ export class AppComponent implements OnInit, OnDestroy {
         }))
       .subscribe(data => {
         this.tenantService.getTenantInfo(this.userService.slug);
+        this.tenantService.initialize();
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       });
 
     this.changeLanguageAttribute();
+    if (this.userService.loggedIn) {
+      this.userId = this.userService.userid;
+    } else {
+      this.userId = this.deviceId;
+    }
+    this.appId = this.userService.appId;
   }
 
   isLocationStatusRequired() {
@@ -285,9 +297,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const slug = this.userService.slug;
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -332,6 +346,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceId = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
@@ -359,9 +374,11 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (this.userService.slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -459,6 +476,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.frameWorkPopUp.modal.deny();
       this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
+      this.showFrameWorkPopUp = false;
     });
   }
   viewInBrowser() {
@@ -497,7 +515,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
-    this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (this.userService.loggedIn &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
           this.userService.getFeedData().subscribe(
@@ -509,7 +527,11 @@ export class AppComponent implements OnInit, OnDestroy {
                   formAction: 'onboarding',
                   contentType: 'externalIdVerification'
                 };
-                this.formService.getFormConfig(formReadInputParams).subscribe(
+                let orgId;
+                if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
+                  orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
+                }
+                this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
                   (formResponsedata) => {
                     this.labels = _.get(formResponsedata[0], ('range[0]'));
                   }
@@ -525,4 +547,33 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  async initializeCs() {
+    if (!CsModule.instance.isInitialised) {
+       // Singleton initialised or not
+        await CsModule.instance.init({
+          core: {
+              httpAdapter: 'HttpClientBrowserAdapter',
+              global: {
+                  channelId: this.channel, // required
+                  producerId: this.userService.appId, // required
+                  deviceId: this.fingerprintInfo // required
+              },
+              api: {
+                  host: document.location.origin, // default host
+                  authentication: {
+                      // userToken: string; // optional
+                      // bearerToken: string; // optional
+                  }
+              }
+          },
+          services: {
+              groupServiceConfig: {
+                apiPath: 'learner/v1/group',
+              }
+          }
+      });
+    }
+  }
+
 }

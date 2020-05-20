@@ -1,37 +1,9 @@
-<!-- <div
-    class="ui fluid ui left action input searchbox-inner"
-    id="search-input-container"
-    >
-    <input
-        type="text"
-        id="keyword"
-        name="filter_search"
-        class="searchinput br-0"
-        title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
-        placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
-        [(ngModel)]="key"
-        (keyup.enter)="onEnter(key)"
-        [disabled]="!showInput"
-        [ngClass]="{'disabled': !showInput }"
-    />
-    <button class="ui icon button" [ngClass]="{'disabled': !showInput }" >
-        <i
-            class="search blue icon br-0"
-            (click)="onEnter(key)"
-            title="{{resourceService.frmelmnts?.lbl?.SearchIn}} {{searchPlaceHolderValue}}"
-            tabindex="0"
-            ></i>
-    </button>
-</div> -->
-
 <div class="input-div relative" id="search-input-container">
-  <!-- <i class="search icon"></i> -->
   <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon">
+  <!-- Updated input tag -->
   <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
-    placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
+    placeholder="{{!searchPlaceHolderValue ? resourceService.frmelmnts?.lbl?.search : resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
     (keyup.enter)="onEnter(key)" [disabled]="!showInput"
     [ngClass]="{'disabled': !showInput }" />
-  <!-- <i class="close icon"></i>
-  <div class="sb-loader"></div> -->
 </div>
 <button class="sb-btn sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>

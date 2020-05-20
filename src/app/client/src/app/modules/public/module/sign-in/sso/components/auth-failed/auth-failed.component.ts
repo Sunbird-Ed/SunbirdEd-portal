@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ResourceService} from '@sunbird/shared';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
@@ -9,7 +9,7 @@ import {TenantService} from '@sunbird/core';
   templateUrl: './auth-failed.component.html',
   styleUrls: ['./auth-failed.component.scss']
 })
-export class AuthFailedComponent implements OnInit {
+export class AuthFailedComponent implements OnInit,OnDestroy {
   instance: string;
   logo: string;
   tenantName: string;

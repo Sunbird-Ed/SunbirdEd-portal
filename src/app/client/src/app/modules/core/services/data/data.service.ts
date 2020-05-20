@@ -5,8 +5,8 @@ import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
 import * as _ from 'lodash-es';
+import * as dayjs from 'dayjs';
 
 /**
  * Service to provide base CRUD methods to make api request.
@@ -177,7 +177,7 @@ export class DataService {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
       'X-Source': 'web',
-      'ts': moment().format(),
+      'ts': dayjs().format(),
       'X-msgid': UUID.UUID()
     };
     try {

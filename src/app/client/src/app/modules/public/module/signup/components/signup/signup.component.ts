@@ -7,7 +7,8 @@ import {
   ServerResponse,
   ToasterService,
   NavigationHelperService,
-  UtilService
+  UtilService,
+  RecaptchaService
 } from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
@@ -16,7 +17,6 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-signup',
@@ -52,11 +52,11 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   isMinor: Boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
-    public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
+    public signupService: SignupService, public toasterService: ToasterService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public configService: ConfigService) {
+    public configService: ConfigService,  public recaptchaService: RecaptchaService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -93,7 +93,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     } catch (error) {
       this.googleCaptchaSiteKey = '';
     }
-    this.getCacheLanguage();
     this.initializeFormFields();
     this.setInteractEventData();
 
@@ -120,14 +119,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     for (let year = endYear; year > startYear; year--) {
       this.birthYearOptions.push(year);
     }
-  }
-
-  getCacheLanguage() {
-    this.resourceDataSubscription = this.resourceService.languageSelected$
-      .subscribe(item => {
-        this.resourceService.getResource(item.value);
-      }
-      );
   }
 
   signUpTelemetryStart() {
@@ -310,12 +301,21 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resolved(captchaResponse: string) {
-    const newResponse = captchaResponse
-      ? `${captchaResponse.substr(0, 7)}...${captchaResponse.substr(-7)}`
-      : captchaResponse;
-    this.captchaResponse += `${JSON.stringify(newResponse)}\n`;
-    if (this.captchaResponse) {
-      this.onSubmitSignUpForm();
+    if (captchaResponse) {
+      this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+        if (_.get(data, 'result.success')) {
+          this.telemetryLogEvents('validate-recaptcha', true);
+          this.onSubmitSignUpForm();
+        }
+      }, (error) => {
+        const telemetryErrorData = {
+          env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
+          errorType: 'SYSTEM', pageid: 'signup',
+          stackTrace: JSON.stringify((error && error.error) || '')
+        };
+        this.telemetryService.generateErrorEvent(telemetryErrorData);
+        this.resetGoogleCaptcha();
+      });
     }
   }
 
@@ -376,9 +376,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    if (this.resourceDataSubscription) {
-      this.resourceDataSubscription.unsubscribe();
-    }
   }
 
   setInteractEventData() {

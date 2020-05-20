@@ -70,5 +70,11 @@ describe('GroupsService', () => {
     expect(frameworkService.initialize).toHaveBeenCalled();
   });
 
+  it('should get all group list', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'getAll').and.callThrough();
+    service.getAllGroups();
+  });
+
 });
 

@@ -3,32 +3,39 @@
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
-        <ul class="p-0 m-0">
-          <!-- <li class="mb-16">
-            <a href="/verticals/profile-registry/">
-              {{resourceService.frmelmnts?.lnk?.footerDikshaVerticals}}
-            </a>
-          </li> -->
+        <!-- default links if tenant settings is not available -->
+        <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
           <li class="mb-16">
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-              href="/help/getting-started/explore-diksha/index.html">
+              href="{{defaultFooterConfig.helpCenterLink}}">
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-  <li>
+          <li>
+            <label class="d-block mb-0">
+              {{resourceService.frmelmnts?.lnk?.footerContact}}
+            </label>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
+              class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
+              {{defaultFooterConfig.helpDeskEmail}}
+            </a>
+          </li>
+        </ul>
+
+        <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
+          <li class="mb-16" *ngIf="tenantFooter?.helpCenterLink">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+              href="{{tenantFooter?.helpCenterLink}}">
+              {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
+            </a>
+          </li>
+          <li *ngIf="tenantFooter?.helpDeskEmail">
             <label class="d-block mb-0">
               {{resourceService.frmelmnts?.lnk?.footerContact}}
             </label>
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
-            href="mailto:support@diksha-ncte.freshdesk.com">
-            support@diksha-ncte.freshdesk.com
-          </a>
+              href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
           </li>
-          <!-- <li class="mb-16">
-            <a href="/partners/">
-              {{resourceService.frmelmnts?.lnk?.footerPartners}}
-            </a>
-          </li> -->
         </ul>
         
      
@@ -42,11 +49,9 @@
             <div class="small-box border-round border-r50 ml-16 mr-8"></div>
             <div class="small-box border-round border-r50"></div>
           </div>
-          <!-- <label class="d-block pb-10">{{resourceService.frmelmnts?.lbl?.download}}
-            {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label> -->
           <label
             class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
-          <a class="d-block app-download" (click)="redirectToDikshaApp()">
+          <a class="d-block app-download" (click)="redirectToMobileApp()">
             <img class="playStore-img" src="/assets/images/google_playstore.png"
               alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
           </a>
