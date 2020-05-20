@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { first, mergeMap, map  } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
@@ -15,7 +15,8 @@ import { GroupsService } from '../../services';
   styleUrls: ['./group-form.component.scss']
 })
 export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('modal') modal;
+  @ViewChild('createGroupModal') createGroupModal;
+  @Output() closeEvent = new EventEmitter<any>();
   groupForm: FormGroup;
   private _formFieldProperties: any;
   public formFieldOptions = [];
@@ -185,7 +186,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
       const group = await this.groupService.createGroup(this.groupForm.value);
       if (group) {
         this.toasterService.success('Group created sucessfully');
-        this.modal.close();
+        this.closeEvent.emit();
       }
     } else {
       Object.keys(this.groupForm.controls).forEach(field => {
@@ -197,9 +198,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     if (this.unsubscribe) {
       this.unsubscribe.unsubscribe();
-    }
-    if (this.modal && this.modal.deny) {
-      this.modal.deny();
     }
   }
   get formFieldProperties() {
