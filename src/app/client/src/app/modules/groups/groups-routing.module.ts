@@ -1,4 +1,4 @@
-import { MyGroupsComponent } from './components';
+import { MyGroupsComponent, GroupWorkspaceComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -12,7 +12,8 @@ const routes: Routes = [
       telemetry: { env: telemetryEnv, pageid: 'groups', type: 'view', subtype: 'paginate' },
       baseUrl: 'groups'
     }
-  }
+  },
+  {path: ':groupId', component: GroupWorkspaceComponent}
 ];
 
 

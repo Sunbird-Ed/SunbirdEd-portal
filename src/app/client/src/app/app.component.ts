@@ -146,6 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.initializeCs();
             return this.setUserDetails();
           } else {
+            this.initializeCs();
             return this.setOrgDetails();
           }
         }))

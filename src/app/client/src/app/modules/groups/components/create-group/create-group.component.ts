@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-create-group',
@@ -7,27 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateGroupComponent implements OnInit {
   showGroupCreateForm;
-  sbcards = [
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    },
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    }
-  ];
+  @Input() isGroupsPresent = false;
+  @Output() groups = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
+  }
 
+  getFormData(event) {
+  this.groups.emit(event);
   }
 }

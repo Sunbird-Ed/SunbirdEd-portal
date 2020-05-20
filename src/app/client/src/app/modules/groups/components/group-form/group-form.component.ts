@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { first, mergeMap, map  } from 'rxjs/operators';
 import { of, Subscription } from 'rxjs';
@@ -33,6 +33,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   public mediumList: [];
   public gradesList: [];
   public subjectList: [];
+  @Output() submit = new EventEmitter();
 
   constructor(private userService: UserService, public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private route: Router) { }
@@ -185,6 +186,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
       const group = await this.groupService.createGroup(this.groupForm.value);
       if (group) {
         this.toasterService.success('Group created sucessfully');
+        this.submit.emit(group);
         this.modal.close();
       }
     } else {

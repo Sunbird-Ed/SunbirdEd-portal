@@ -1,3 +1,16 @@
 <!-- add login page in public/module/group/explore-group -->
-<app-create-group></app-create-group>
-<app-group-workspace></app-group-workspace>
+
+<div class="ui container" >
+
+    <div class="section-header mt-24 mb-16" *ngIf="groupsList.length">
+        <div class="section-header__title">
+          <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> My Groups<span class="badge">25</span>
+        </div>
+      </div>
+      <div class="sbgrid">
+        <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupsList">
+            <sb-group-card [group]="group" (cardClick)="getGroupData($event)"></sb-group-card>
+        </div>
+      </div>
+      <app-create-group [isGroupsPresent]="groupsList.length > 0" (groups)="addGroupToList($event)"></app-create-group>
+</div>

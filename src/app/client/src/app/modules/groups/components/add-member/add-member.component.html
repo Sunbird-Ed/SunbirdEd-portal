@@ -1,12 +1,15 @@
 <!-- add add-member screen -->
 
-<div>
+
+
+
+<div *ngIf="!isAddTogroup && !isVerifyMember">
     <!-- Add member with profile images content -->
     <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
       <div class="my-16">Place holder images</div>
       <div class="d-flex flex-as-center"><img src="./assets/images/profileimages.png"></div>
       <div class="mt-8 text-center status-container__para">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
-      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100 flex-ai-jc-center">
+      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100 flex-ai-jc-center" (click)="addMember()">
         <i class="icon-svg icon-svg--sm icon-addMember mr-4">
           <svg class="icon icon-svg--white">
             <use xlink:href="./assets/images/libdemo/sprite.svg#AddMember"></use>
@@ -18,7 +21,7 @@
   </div>
   
   <!-- Add member with verify button content -->
-   <div>
+   <div *ngIf="isVerifyMember">
     <div class="title my-16 font-weight-bold">
       Add Member
     </div>
@@ -27,13 +30,13 @@
       <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter member ID">
       <small class="message sb-color-error font-weight-bold">Invalid member ID</small>
     </div>
-    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
+    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100" (click)="verifyMember()">
       Verify
     </button>
    </div>
   
    <!-- Add to group button content -->
-   <div>
+   <div *ngIf="isAddTogroup">
     <div class="title my-16 font-weight-bold">
       Add Member
     </div>
@@ -50,7 +53,7 @@
    
     </div>
     <div class="fs-1 mt-4">Do you want to add <span class="font-weight-bold">Arvind Gupta</span> as a member?</div>
-    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
+    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100" (click)="addMemberToGroup()">
      Add to group
     </button>
    </div>

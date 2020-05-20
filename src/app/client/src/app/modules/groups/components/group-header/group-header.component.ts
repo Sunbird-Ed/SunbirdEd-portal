@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { NavigationHelperService } from '@sunbird/shared';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-group-header',
@@ -8,9 +9,30 @@ import { Component, OnInit } from '@angular/core';
 export class GroupHeaderComponent implements OnInit {
   showDeleteModal;
   showPastMemberModal;
-  constructor() { }
+  @Input() pastMembersList;
+  @Input() groupData;
+  modalName: string;
+  showModal = false;
+  constructor(private navigationHelperService: NavigationHelperService) { }
 
   ngOnInit() {
   }
 
+  goBack() {
+    this.navigationHelperService.goBack();
+  }
+
+  deleteGroup(event) {
+    this.modalName = 'deleteGroup';
+    this.showModal = true;
+  }
+
+  showPastMembers() {
+    this.showModal = true;
+    this.modalName = 'showPastMembers';
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
 }

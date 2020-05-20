@@ -2,7 +2,7 @@
   <!-- group cards screen with sticky create-group button screen in right side same as desktop -->
   <div class="ui stackable grid m-0">
     <div class="nine wide column p-0 ">
-      <div class="my-groups-container">
+      <div class="my-groups-container" *ngIf="!isGroupsPresent">
 
         <!-- to view the  no result found,  uncomment the below component -->
         <!-- <app-no-group-result></app-no-group-result> -->
@@ -25,24 +25,7 @@
         <!--  grouplist from CC-->
 
         <!-- sb-pageSection, sb-grid section demo purpose  grouplist -->
-        <div class="section-header mt-24 mb-16">
-          <div class="section-header__title">
-            <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> My Groups<span class="badge">25</span>
-          </div>
-        </div>
-        <div class="sbgrid">
-          <div class="sbcard sbcard--resource sbcard--course" *ngFor="let sbcard of sbcards">
-            <div class="sbcard__main_area">
-              <div class="sbcard__img"><img src="./assets/images/noun_School.svg" alt="" title="" /></div>
-              <div class="sbcard__info">
-                <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{sbcard.title}}</h4>
-                <div class="sbcard__meta1"><span>{{sbcard.subject}}</span><span
-                    class="dot-divider"></span><span>{{sbcard.class}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
 
     </div>
@@ -71,4 +54,4 @@
 
 </div>
 
-<app-group-form *ngIf="showGroupCreateForm" ></app-group-form>
+<app-group-form *ngIf="showGroupCreateForm" (submit)="getFormData($event)"></app-group-form>

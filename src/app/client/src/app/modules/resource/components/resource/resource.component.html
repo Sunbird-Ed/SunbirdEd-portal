@@ -3,7 +3,6 @@
   </app-search-filter>
   <div class="ui container mt-24 sb-library-cards">
     <div class="ui grid">
-
       <div class="twelve wide column" *ngIf="cardData.length > 0">
         <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [isLoading]="isLoading" [title]="resourceService?.frmelmnts?.lbl?.courses"  (cardClick)="navigateToCourses($event)"></sb-course-cards-hlist>
       </div>
