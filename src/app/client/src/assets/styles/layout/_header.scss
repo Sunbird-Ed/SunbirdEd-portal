@@ -22,7 +22,7 @@
   }
 
   & > .container {
-    padding: $base-block-space;
+    // padding: $base-block-space;
     @media only screen and (min-width: 768px) {
       padding: $base-block-space 0;
     }
@@ -30,12 +30,18 @@
   @include respond-below(sm) {
     .container {
       margin: 0 !important;
-      padding-left: calculateRem(16px) !important;
-      padding-right: calculateRem(16px) !important;
+      // padding-left: calculateRem(0px) !important;
+      // padding-right: calculateRem(0px) !important;
     }
   }
 }
 
+.ui.container.sb-header-ui-container {
+  padding:calculateRem(16px) 0px;
+  @include respond-below(sm) {
+    padding:calculateRem(16px);
+  }
+}
 .searchbox {
   width: 100%;
 

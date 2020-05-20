@@ -53,7 +53,8 @@
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR", "COURSE_CREATOR"],
        "flagReviewerRole": ["FLAG_REVIEWER"],
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR", "COURSE_CREATOR"],
-       "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER"]
+       "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER"],
+       "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
