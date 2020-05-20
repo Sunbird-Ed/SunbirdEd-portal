@@ -10,7 +10,6 @@ import { SearchService, UserService, LearnerService, ContentService } from '@sun
 import { OrgTypeService } from '@sunbird/org-management';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule } from '@sunbird/core';

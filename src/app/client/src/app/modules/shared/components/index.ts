@@ -1,7 +1,5 @@
-export * from './announcement-inbox-card/announcement-inbox-card.component';
 export * from './app-loader/app-loader.component';
 export * from './no-result/no-result.component';
-export * from './page-section/page-section.component';
 export * from './share-link/share-link.component';
 export * from './card/card.component';
 export * from './card-creation/card-creation.component';
@@ -16,3 +14,4 @@ export * from './offline-banner/offline-banner.component';
 export * from './offline-application-download/offline-application-download.component';
 export * from './full-page-modal/full-page-modal.component';
 export * from './account-merge-modal/account-merge-modal.component';
+export * from './confirm-popup/confirm-popup.component';

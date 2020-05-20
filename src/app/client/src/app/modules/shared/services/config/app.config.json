@@ -490,6 +490,7 @@
       ]
     },
     "dynamicFields": {
+      "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -1023,40 +1024,6 @@
     },
     "ORGANISATION": {
       "DOWNLOAD_BUTTON_VISIBILITY": "TRUE"
-    }
-  },
-  "ANNOUNCEMENT": {
-    "HOME": {
-      "PAGE_LIMIT": 2
-    },
-    "OUTBOX": {
-      "PAGE_LIMIT": 25
-    },
-    "INBOX": {
-      "PAGE_LIMIT": 10
-    },
-    "PAGINATION": {
-      "PAGE_STRIP": 5
-    },
-    "API": {
-      "ANNOUNCEMENT": {
-        "CHANNEL": "web"
-      }
-    },
-    "FILEUPLOAD": {
-      "MAXFILESIZETOUPLOAD": 1024000,
-      "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
-      "ALLOWEDFILEEXTENSION": [
-        "png",
-        "pdf",
-        "jpg"
-      ]
-    },
-    "GEOCONFIG": {
-      "geo": {
-        "adaptor": "SERVICE",
-        "service": "geoService"
-      }
     }
   },
   "ADMIN_UPLOAD": {

@@ -7,7 +7,9 @@ import { ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseConsumptionService {
 
   courseHierarchy: any;
