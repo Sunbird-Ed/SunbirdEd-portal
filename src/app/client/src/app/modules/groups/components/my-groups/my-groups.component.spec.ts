@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA, inject } from '@angular/core';
 import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { GroupsService } from '../../services';
 import { of as observableOf, of } from 'rxjs';
 import { mygroupsMockData } from './my-groups.component.spec.data';
@@ -32,7 +32,7 @@ describe('MyGroupsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
       providers: [ GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute } ],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

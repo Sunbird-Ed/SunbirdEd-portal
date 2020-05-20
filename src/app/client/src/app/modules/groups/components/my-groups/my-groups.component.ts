@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
+import { ResourceService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 export class MyGroupsComponent implements OnInit {
   showGroupCreateForm = false;
   public groupList = [];
-  constructor(public groupService: GroupsService, public router: Router) {}
+  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {}
 
   ngOnInit() {
     this.getMyGroupList();
