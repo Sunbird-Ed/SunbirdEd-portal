@@ -1,3 +1,6 @@
+const { decrypt } = require('../helpers/crypto');
+const _ = require('lodash');
+const logger = require('sb_logger_util_v2')
 /**
  * Parses string to object
  * @param string
@@ -55,4 +58,64 @@ const isDateExpired = function (toDate, fromDate = Date.now()) {
   return isDate(exp) && !(exp > fromDate);
 };
 
-module.exports = {parseJson, delay, isDate, isValidAndNotEmptyString, isDateExpired};
+/**
+ * Parse the nested object & convert to flattern object(key, value)
+ * @param {JSON object} data 
+ */
+const flattenObject = function(data) {
+  var result = {};
+  function recurse (cur, prop) {
+      if (Object(cur) !== cur) {
+          result[prop] = cur;
+      } else if (Array.isArray(cur)) {
+           for(var i=0, l=cur.length; i<l; i++)
+               recurse(cur[i], prop + "[" + i + "]");
+          if (l == 0)
+              result[prop] = [];
+      } else {
+          var isEmpty = true;
+          for (var p in cur) {
+              isEmpty = false;
+              recurse(cur[p], prop ? prop+"."+p : p);
+          }
+          if (isEmpty && prop)
+              result[prop] = {};
+      }
+  }
+  recurse(data, "");
+  return result;
+}
+
+/**
+* Verifies request and check exp time
+* @param encryptedData encrypted data to be decrypted
+* @returns {*}
+*/
+const decodeNChkTime = (encryptedData) => {
+  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const parsedData = parseJson(decryptedData);
+  if (isDateExpired(parsedData.exp)) {
+    throw new Error('DATE_EXPIRED');
+  } else {
+    return _.omit(parsedData, ['exp']);
+  }
+};
+
+/**
+ * To log error debug info
+ * Later we can log telemetry error events from here
+ */
+const logError = (req, err, msg) => {
+  logger.error({
+    URL: req.url,
+    body: JSON.stringify(req.body),
+    uuid: _.get(req,'headers.x-msgid'),
+    did:_.get(req,'headers.x-device-id'),
+    msg: '[Portal]: ' + msg,
+    error: JSON.stringify(err)
+  });
+}
+
+module.exports = { parseJson, delay, isDate, 
+  isValidAndNotEmptyString, isDateExpired, 
+  decodeNChkTime, logError};

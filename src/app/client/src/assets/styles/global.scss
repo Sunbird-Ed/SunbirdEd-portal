@@ -257,10 +257,17 @@ app-workspace {
     }
   }
 }
+
 .sb-graph-section{
   .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
     text-overflow: initial;
     overflow: initial;
     white-space: unset;
+  }
+}
+
+.sb-modal-addsummary {
+  .ck.ck-editor__editable_inline {
+    min-height: calc(100vh - 271px);
   }
 }

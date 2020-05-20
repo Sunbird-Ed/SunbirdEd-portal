@@ -34,8 +34,22 @@ const decrypt = (text) => {
   return decrypted.toString();
 };
 
+/**
+  * To generate session for state user logins
+  * using server's time as iat and exp time as 5 min
+  * Session will not be created if exp is expired
+  * @param data object to encrypt data
+  * @returns {string}
+  */
+ const encriptWithTime = (data, timeInMin) => {
+  data.exp = Date.now() + (timeInMin * 60 * 1000);  // adding 5 minutes
+  return JSON.stringify(encrypt(JSON.stringify(data)));
+};
+
+
 module.exports = {
   decrypt,
-  encrypt
+  encrypt,
+  encriptWithTime,
 };
 

@@ -295,12 +295,11 @@ describe('SignUpComponent', () => {
   it('should init instance with sunbird', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
-    spyOn(component, 'getCacheLanguage');
+    spyOn(component, 'initializeFormFields');
     spyOn(component, 'setInteractEventData');
     spyOn(component, 'signUpTelemetryStart');
     component.ngOnInit();
     expect(component.instance).toEqual('SUNBIRD');
-    expect(component.getCacheLanguage).toHaveBeenCalled();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
     expect(component.setInteractEventData).toHaveBeenCalled();

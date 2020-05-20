@@ -1,4 +1,5 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { IColDefination, IDataTableOptions } from './../../interfaces';
+import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import * as $ from 'jquery';
 import * as datatable from 'datatables.net';
 import * as naturalSortDataTablePlugin from './../../../../../assets/libs/naturalSortDataTablePlugin';
@@ -15,6 +16,9 @@ export class DataTableComponent implements AfterViewInit {
     @Input() tableId: any;
     @Input() rowsData: Array<string[]>;
     @Input() headerData: string[];
+    @Input() columnDefinations: IColDefination[] = [];
+    @Output() rowClickEvent = new EventEmitter<any>();
+    @Input() options: IDataTableOptions = {};
 
     ngAfterViewInit() {
         jQuery['fn']['dataTableExt'] = datatable.ext; // added dataTableExt to jquery
@@ -39,11 +43,28 @@ export class DataTableComponent implements AfterViewInit {
             });
         }
         setTimeout(() => {
-            $(`#${this.tableId}`).removeAttr('width').DataTable({
+            const table = $(`#${this.tableId}`).removeAttr('width').DataTable({
                 retrieve: true,
-                columnDefs,
-                data: this.rowsData,
+                'columnDefs': [
+                    {
+                        'targets': 0,
+                        'render': (data) => {
+                            const date = moment(data, 'DD-MM-YYYY');
+                            if (date.isValid()) {
+                                return `<td><span style="display:none">
+                                ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
+                            }
+                            return data;
+                        },
+                    }, ...this.columnDefinations],
+                'data': this.rowsData,
                 searching: false,
+                ...this.options
+            });
+
+            $(`#${this.tableId} tbody`).on('click', 'tr', (event) => {
+                const data = table.row(event.currentTarget).data();
+                this.rowClickEvent.emit(data);
             });
         }, 100);
     }

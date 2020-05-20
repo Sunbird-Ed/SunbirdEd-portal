@@ -142,7 +142,10 @@ a {
 }
 
 .break-word {
-  word-break: break-word;
+  word-break: break-word !important;
+}
+.break-all {
+  word-break: break-all !important;
 }
 .white-space-nowrap {
   white-space: nowrap !important;

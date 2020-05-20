@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {ResourceService} from '@sunbird/shared';
 import {Subscription} from 'rxjs';
 import {TenantService} from '@sunbird/core';
@@ -9,7 +9,7 @@ import {TenantService} from '@sunbird/core';
   templateUrl: './sso-merge-confirmation.component.html',
   styleUrls: ['./sso-merge-confirmation.component.scss']
 })
-export class SsoMergeConfirmationComponent implements OnInit {
+export class SsoMergeConfirmationComponent implements OnInit, OnDestroy {
   @Input() userDetails: any;
   @Input() identifierType: any;
   @Input() identifierValue: any;

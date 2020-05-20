@@ -2,7 +2,6 @@ export const mockResponse = {
     userMockData: {
         'userRoles': [
             'PUBLIC',
-            'ANNOUNCEMENT_SENDER',
             'BOOK_CREATOR',
             'COURSE_MENTOR',
             'FLAG_REVIEWER',
@@ -212,7 +211,6 @@ export const mockResponse = {
             'rootOrgId': 'ORG_001',
             'roles': [
               'PUBLIC',
-              'ANNOUNCEMENT_SENDER',
               'BOOK_CREATOR',
               'COURSE_MENTOR',
               'FLAG_REVIEWER',

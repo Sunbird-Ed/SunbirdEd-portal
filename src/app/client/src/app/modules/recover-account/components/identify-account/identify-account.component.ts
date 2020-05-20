@@ -1,7 +1,8 @@
 import { RecoverAccountService } from './../../services';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import {RecaptchaService, ResourceService, ToasterService} from '@sunbird/shared';
+import {TelemetryService} from '@sunbird/telemetry';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -29,7 +30,8 @@ export class IdentifyAccountComponent implements OnInit {
     type: 'Task'
   }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
-    public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) {
+    public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
+    public recaptchaService: RecaptchaService, public telemetryService: TelemetryService) {
       try {
         this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
       } catch (error) {
@@ -58,28 +60,51 @@ export class IdentifyAccountComponent implements OnInit {
     this.form.controls.identifier.valueChanges.subscribe(val => this.identiferStatus = '');
   }
   handleNext(captchaResponse?: string) {
-    this.disableFormSubmit = true;
-    this.recoverAccountService.fuzzyUserSearch(this.form.value)
-      .subscribe(response => {
-        if (_.get(response, 'result.response.count') > 0) { // both match
-          this.navigateToNextStep(response);
-        } else { // both dint match
-          this.identiferStatus = 'NOT_MATCHED';
-          this.nameNotExist = true;
+    if (captchaResponse) {
+      this.disableFormSubmit = true;
+      this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+        if (_.get(data, 'result.success')) {
+          this.initiateFuzzyUserSearch();
         }
-      }, error => {
-        if (this.googleCaptchaSiteKey) {
-          this.captchaRef.reset();
-        }
-        if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
-          this.identiferStatus = 'MATCHED';
-          this.handleError(error);
-        } else {
-          this.identiferStatus = 'NOT_MATCHED';
-          this.nameNotExist = true;
-        }
+      }, (error) => {
+        const telemetryErrorData = {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          errorMessage: _.get(error, 'error.params.errmsg') || '',
+          errorType: 'SYSTEM', pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          stackTrace: JSON.stringify((error && error.error) || '')
+        };
+        this.telemetryService.generateErrorEvent(telemetryErrorData);
+        this.resetGoogleCaptcha();
       });
+    }
   }
+
+  initiateFuzzyUserSearch() {
+    this.recoverAccountService.fuzzyUserSearch(this.form.value).subscribe(response => {
+      if (_.get(response, 'result.response.count') > 0) { // both match
+        this.navigateToNextStep(response);
+      } else { // both dint match
+        this.identiferStatus = 'NOT_MATCHED';
+        this.nameNotExist = true;
+      }
+    }, error => {
+      this.resetGoogleCaptcha();
+      if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
+        this.identiferStatus = 'MATCHED';
+        this.handleError(error);
+      } else {
+        this.identiferStatus = 'NOT_MATCHED';
+        this.nameNotExist = true;
+      }
+    });
+  }
+
+  resetGoogleCaptcha() {
+    if (this.googleCaptchaSiteKey) {
+      this.captchaRef.reset();
+    }
+  }
+
   navigateToNextStep(response) {
     this.recoverAccountService.fuzzySearchResults = _.get(response, 'result.response.content');
     this.router.navigate(['/recover/select/account/identifier'], {

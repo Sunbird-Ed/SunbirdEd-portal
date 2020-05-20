@@ -1,7 +1,7 @@
 <div [appTelemetryImpression]="telemetryImpression">
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
-  <div class="ui container mt-24 sb-library-cards">
+  <div class="ui container sb-library-cards">
     <div class="ui grid">
 
       <div class="twelve wide column" *ngIf="cardData.length > 0">

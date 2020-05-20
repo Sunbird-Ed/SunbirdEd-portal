@@ -20,7 +20,7 @@ describe('CollectionPlayerComponent', () => {
   const contentId = 'domain_44689';
 
   const fakeActivatedRoute = {
-    params: observableOf({ id: collectionId }),
+    params: observableOf({ collectionId: collectionId }),
     queryParams: observableOf({ contentId: contentId }),
     snapshot: {
       data: {
@@ -42,6 +42,14 @@ describe('CollectionPlayerComponent', () => {
       'emsg' : {
         'm0008' : 'Could not copy content. Try again later'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
 
@@ -59,6 +67,7 @@ describe('CollectionPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionPlayerComponent);
     component = fixture.componentInstance;
+    component.queryParams = { contentId: 'domain_44689'};
   });
 
   afterEach(() => {
@@ -69,7 +78,6 @@ describe('CollectionPlayerComponent', () => {
     expect(component).toBeTruthy();
     expect(component.showPlayer).toBeFalsy();
     // expect(component.serviceUnavailable).toBeFalsy();
-    expect(component.loader).toBeTruthy();
     expect(component.loaderMessage).toEqual({
       headerMessage: 'Please wait...',
       loaderMessage: 'Fetching content details!'
@@ -110,26 +118,6 @@ describe('CollectionPlayerComponent', () => {
       .returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
-    expect(component.loader).toBeFalsy();
-  });
-   xit('should navigate to error page on invalid collection id', () => {});
-  xit('should navigate to error page on valid collection id but invalid content id', () => {});
-  xit('should show service unavailable message on API server error', () => {});
-
-  it('should redirect to previous URL', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'dialcode', 'navigationId': 3});
-    component.closeCollectionPlayer();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalled();
-  });
-
-  it('should redirect to /resource page', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
-    component.closeCollectionPlayer();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/resources');
   });
 
   it('should set dialcode to the telemetryCdata if any', () => {

@@ -50,6 +50,7 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
+
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -121,11 +122,12 @@ describe('BatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should navigate to update batch route', () => {
-      const courseBatchService = TestBed.get(CourseBatchService);
-      const route = TestBed.get(Router);
-      spyOn(courseBatchService, 'setUpdateBatchDetails');
-      component.batchUpdate({identifier: '123'});
-      expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'], {relativeTo: component.activatedRoute});
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const route = TestBed.get(Router);
+    spyOn(courseBatchService, 'setUpdateBatchDetails');
+    component.batchUpdate({ identifier: '123', enrollmentType: 'open' });
+    expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'],
+      { queryParams: { enrollmentType: 'open' }, relativeTo: component.activatedRoute });
   });
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);

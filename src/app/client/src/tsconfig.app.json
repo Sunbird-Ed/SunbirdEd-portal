@@ -17,12 +17,6 @@
       "@sunbird/dashboard": [
         "app/modules/dashboard"
       ],
-      "@sunbird/announcement": [
-        "app/modules/announcement"
-      ],
-      "@sunbird/notes": [
-        "app/modules/notes"
-      ],
       "@sunbird/admin": [
         "app/modules/admin"
       ],

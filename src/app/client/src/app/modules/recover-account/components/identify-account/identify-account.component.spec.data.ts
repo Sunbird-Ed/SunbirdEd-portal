@@ -244,5 +244,32 @@ export const identifyAcountMockResponse = {
         'result': {
 
         }
+    },
+  recaptchaResponse: {
+    result: {
+      success: true
     }
+  },
+  recaptchaErrorResponse: {
+    result: {
+      success: false
+    }, error: {success: false}
+  },
+  telemetryLogSuccess: {
+    context: {
+      env: 'course'
+    },
+    edata: {
+      type: 'validate-recaptcha',
+      level: 'SUCCESS',
+      message: 'validate-recaptcha success'
+    }
+  },
+  telemetryLogError: {
+    env: 'course',
+    errorMessage: '',
+    errorType: 'SYSTEM',
+    stackTrace: '{"success":false}',
+    pageid: 'course-read'
+  }
 };

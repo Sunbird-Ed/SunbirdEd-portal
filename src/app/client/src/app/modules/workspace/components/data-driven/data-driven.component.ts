@@ -147,10 +147,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
 
   ngOnInit() {
-
     this.checkForPreviousRouteForRedirect();
     if (this.router.url.includes('create/training')) {
-      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
         this.framework = data;
         this.fetchFrameworkMetaData();
       }, err => {
@@ -172,6 +171,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       });
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -345,16 +345,5 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
-  }
-  /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this.frameworkService.getDefaultCourseFramework();
-    if (framework) {
-      return framework;
-    } else {
-      return of(false);
-    }
   }
 }

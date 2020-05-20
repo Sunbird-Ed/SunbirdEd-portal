@@ -235,7 +235,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   private isCustodianOrgUser() {
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
+    return this.orgDetailsService.getCustodianOrgDetails().pipe(map((custodianOrg) => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         return true;
       }

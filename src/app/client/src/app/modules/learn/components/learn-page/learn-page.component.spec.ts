@@ -3,12 +3,12 @@ import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { FrameworkService, PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService} from '@sunbird/core';
+import { FrameworkService, PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Response } from './learn-page.component.spec.data';
+import { Response, custOrgDetails } from './learn-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -17,7 +17,7 @@ import { CacheService } from 'ng2-cache-service';
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
-  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, frameworkService;
+  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, frameworkService, orgDetailsService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendEnrolledCourses = true;
   let sendPageApi = true;
@@ -65,6 +65,7 @@ describe('LearnPageComponent', () => {
     fixture = TestBed.createComponent(LearnPageComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
+    orgDetailsService = TestBed.get(OrgDetailsService);
     formService = TestBed.get(FormService);
     pageApiService = TestBed.get(PageApiService);
     learnerService = TestBed.get(LearnerService);
@@ -74,6 +75,7 @@ describe('LearnPageComponent', () => {
     sendEnrolledCourses = true;
     sendPageApi = true;
     sendFormApi = true;
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(custOrgDetails));
     spyOn(learnerService, 'get').and.callFake((options) => {
       if (sendEnrolledCourses) {
         return of({result: {courses: Response.enrolledCourses}});

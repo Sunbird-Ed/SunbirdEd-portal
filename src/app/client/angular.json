@@ -17,7 +17,11 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets",
+              "src/assets/images",
+              "src/assets/libs",
+              "src/assets/cdnHelper.js",
+              "src/assets/health-check.json",
+              "src/assets/SampleUserCsv.csv",
               "src/thirdparty",
               "src/favicon.png",
               {
@@ -41,9 +45,12 @@
             "scripts": [
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "src/assets/libs/semantic.min.js",
+              "src/assets/libs/semantic-ui/dimmer.min.js",
+              "src/assets/libs/semantic-ui/transition.min.js",
+              "src/assets/libs/semantic-ui/modal.min.js",
+              "src/assets/libs/semantic-ui/dropdown.min.js",
+              "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
             ]
           },
@@ -114,7 +121,6 @@
             "scripts": [
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"

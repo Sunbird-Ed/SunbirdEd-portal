@@ -7,7 +7,7 @@ import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
 @Component({
   selector: 'app-create-batch',
@@ -216,8 +216,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.createBatchForm.value.enrollmentType !== 'open') {
       participants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
     }
-    const startDate = moment(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
-    const endDate = this.createBatchForm.value.endDate && moment(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
+    const startDate = dayjs(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.createBatchForm.value.endDate && dayjs(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       courseId: this.courseId,
       name: this.createBatchForm.value.name,
@@ -230,7 +230,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: _.compact(mentors)
     };
     if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
-      requestBody['enrollmentEndDate'] = moment(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+      requestBody['enrollmentEndDate'] = dayjs(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
     }
     this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
       .subscribe((response) => {

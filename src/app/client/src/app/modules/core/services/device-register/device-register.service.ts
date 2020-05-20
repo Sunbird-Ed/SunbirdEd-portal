@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
 import { ConfigService,  HttpOptions} from '@sunbird/shared';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -82,7 +82,7 @@ export class DeviceRegisterService  {
     const data = {
       id: this.appId,
       ver: this.portalVersion,
-      ts: moment().format(),
+      ts: dayjs().format(),
       params: {
         msgid: UUID.UUID()
       },
@@ -114,7 +114,7 @@ export class DeviceRegisterService  {
     const data = {
       id: this.appId,
       ver: this.portalVersion,
-      ts: moment().format(),
+      ts: dayjs().format(),
       params: {
         msgid: UUID.UUID()
       },

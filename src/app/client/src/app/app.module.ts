@@ -1,10 +1,8 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -18,6 +16,10 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from 'chat-lib';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -27,15 +29,13 @@ import {ChatLibModule, ChatLibService} from 'chat-lib';
     CoreModule,
     CommonModule,
     HttpClientModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
+    SuiModalModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     ChatLibModule,
     SharedFeatureModule,
-    ChatLibModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

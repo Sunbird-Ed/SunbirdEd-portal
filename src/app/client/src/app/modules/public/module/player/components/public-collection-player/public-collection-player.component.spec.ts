@@ -8,9 +8,10 @@ import { CollectionHierarchyAPI, ContentService, CoreModule } from '@sunbird/cor
 import { PublicCollectionPlayerComponent } from './public-collection-player.component';
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule, ResourceService, ToasterService , NavigationHelperService} from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { WindowScrollService, SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { CollectionHierarchyGetMockResponse, collectionTree,
+  telemetryErrorData } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('PublicCollectionPlayerComponent', () => {
@@ -18,6 +19,7 @@ describe('PublicCollectionPlayerComponent', () => {
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
+  let telemetryService;
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
@@ -44,19 +46,31 @@ describe('PublicCollectionPlayerComponent', () => {
       'fmsg': {
         'm0090': 'Could not download. Try again later'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
+  class TelemetryServiceStub {
+    error = jasmine.createSpy('error').and.returnValue(true);
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
         TelemetryModule.forRoot(), SharedModule.forRoot()],
-      providers: [ContentService, PublicPlayerService, ResourceService,
-        ToasterService, NavigationHelperService,
-        { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle }],
-      schemas: [NO_ERRORS_SCHEMA]
+        providers: [ContentService, PublicPlayerService, ResourceService,
+          ToasterService, NavigationHelperService,
+          { provide: Router, useClass: RouterStub },
+          { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+          { provide: ResourceService, useValue: resourceBundle },
+          { provide: TelemetryService, useValue: new TelemetryServiceStub() }],
+        schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();
   }));
@@ -64,7 +78,7 @@ describe('PublicCollectionPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicCollectionPlayerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    telemetryService = TestBed.get(TelemetryService);
   });
   it('should create', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -181,5 +195,26 @@ describe('PublicCollectionPlayerComponent', () => {
     spyOn(window, 'open').and.callThrough();
     component.printPdf('www.samplepdf.com');
     expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
+  it('should call triggerTelemetryErrorEvent', () => {
+    spyOn(component, 'triggerTelemetryErrorEvent').and.callThrough();
+    component.triggerTelemetryErrorEvent(404, 'contentType field not available');
+    expect(component.triggerTelemetryErrorEvent).toHaveBeenCalledWith(404, 'contentType field not available');
+    expect(telemetryService.error).toHaveBeenCalled();
+    expect(telemetryService.error).toHaveBeenCalledTimes(1);
+    expect(telemetryService.error).toHaveBeenCalledWith(telemetryErrorData);
+  });
+  it('should call getTelemetryErrorData', () => {
+    const stacktrace = {
+      message: 'contentType field not available',
+      type: 'view'
+    };
+    const result = component.getTelemetryErrorData(stacktrace);
+    expect(result.context.env).toEqual('get');
+    expect(result.object.ver).toEqual('1.0');
+    expect(result.edata.errtype).toEqual('SYSTEM');
+    expect(JSON.parse(result.edata.stacktrace).message).toEqual(stacktrace.message);
+    expect(JSON.parse(result.edata.stacktrace).type).toEqual('view');
+    expect(result).toBeTruthy();
   });
 });

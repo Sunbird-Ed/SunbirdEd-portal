@@ -1424,7 +1424,6 @@ export const getUserDetails = {
               'roles': [
                 'CONTENT_CREATOR',
                 'COURSE_MENTOR',
-                'ANNOUNCEMENT_SENDER'
               ],
               'approvedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
               'updatedDate': null,

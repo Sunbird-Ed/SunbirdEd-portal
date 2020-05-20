@@ -3,11 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, PageApiService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, ToasterService,
+  ServerResponse, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, ICaraouselData, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService, BatchService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';

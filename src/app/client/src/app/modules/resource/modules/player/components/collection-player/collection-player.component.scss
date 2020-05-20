@@ -1,0 +1,69 @@
+@import 'mixins/mixins';
+
+:host {
+  .cc-player {
+    &__btn-back {
+      z-index: 100;
+    }
+
+    &__content-header {
+      min-height: 80px;
+      background-color: #fafafa;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+      z-index: 99;
+    }
+
+    @include respond-below(sm) {
+      &__list {
+        margin-top: calculateRem(8px);
+      }
+    }
+  }
+
+  .dot-divider {
+    background-color: #333;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 8px;
+  }
+
+  @include respond-below(sm) {
+    .ui.container.sb-toc-view-container {
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+    }
+  }
+
+  .main-side-toc-content {
+    overflow-y: auto;
+    max-height: calc(100vh - 265px);
+    height: auto;
+
+    @include respond-below(sm) {
+      height: auto;
+      max-height: 100%;
+    }
+  }
+}
+
+
+@media screen and (min-width: 240px) and (max-width: 767px) {
+  .toggleInMobile {
+    display: none;
+  }
+}
+
+::ng-deep {
+  .sb-toc-items {
+    sb-accordion {
+      .sbaccordion__panel-content {
+        overflow: inherit;
+        max-height: 100%;
+        border-top: 0px;
+        background-color: var(--white);
+      }
+    }
+  }
+}
