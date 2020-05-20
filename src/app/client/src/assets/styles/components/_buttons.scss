@@ -33,7 +33,7 @@ button.sb-btn:focus {
   min-width: ($base-block-space * 8);
   @include border-radius(0.125rem);
   position: relative;
-  line-height: 1.15;
+  line-height: 1;
   text: {
     transform: capitalize;
     decoration: none;
