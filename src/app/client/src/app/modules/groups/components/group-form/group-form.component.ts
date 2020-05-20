@@ -182,7 +182,11 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   async onSubmitForm() {
     if (this.groupForm.valid) {
-
+      const group = await this.groupService.createGroup(this.groupForm.value);
+      if (group) {
+        this.toasterService.success('Group created sucessfully');
+        this.modal.close();
+      }
     } else {
       Object.keys(this.groupForm.controls).forEach(field => {
         const control = this.groupForm.get(field);

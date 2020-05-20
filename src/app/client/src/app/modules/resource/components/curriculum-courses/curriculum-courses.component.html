@@ -32,7 +32,7 @@
 <div class="ui container mt-24 sb-library-cards">
     <div class="sbgrid">
       <div *ngFor="let course of courseList">
-        <sb-course-card [course]="course"></sb-course-card>
+        <sb-course-card [course]="course" (cardClick)="navigateToCourseDetails(course)"></sb-course-card>
       </div>
       
     </div>
