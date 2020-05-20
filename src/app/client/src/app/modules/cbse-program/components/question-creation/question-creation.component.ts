@@ -276,7 +276,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   initializeDropdown() {
-    (<any>$('.ui.checkbox')).checkbox();
+    // (<any>$('.ui.checkbox')).checkbox();
   }
 
   handleReviewrStatus(event) {
