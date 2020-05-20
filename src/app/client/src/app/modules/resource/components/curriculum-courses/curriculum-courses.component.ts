@@ -89,7 +89,6 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   navigateToCourseDetails(course) {
-    console.log('Course', course);
     this.router.navigate(['resources/course', course.identifier]);
   }
 }
