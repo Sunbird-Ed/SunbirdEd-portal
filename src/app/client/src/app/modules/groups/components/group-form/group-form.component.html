@@ -1,6 +1,15 @@
 <!-- add create group form -->
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll #modal [appTelemetryImpression]="telemetryImpression">
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="true" 
+  [transitionDuration]="0"
+  [size]="'normal'" 
+  class="sb-modal" 
+  appBodyScroll 
+  #createGroupModal 
+  [appTelemetryImpression]="telemetryImpression"
+  (dismissed)="closeEvent.emit()"
+  >
   <div class="sb-modal-header">{{ resourceService.frmelmnts.lbl.createGroup }}</div>
   <div class="sb-modal-content o-y-visible">
     <div class="create-group-title pb-16">{{ resourceService.frmelmnts.lbl.enterFollowingInfo }}</div>
