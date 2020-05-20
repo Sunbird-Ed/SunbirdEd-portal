@@ -9,7 +9,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { GroupsService } from '../../services';
 import { of as observableOf, of } from 'rxjs';
-import { mygroupsMockData } from './my-groups.component.spec.data'
+import { mygroupsMockData } from './my-groups.component.spec.data';
 
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
