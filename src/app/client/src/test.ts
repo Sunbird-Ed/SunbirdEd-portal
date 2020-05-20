@@ -6,6 +6,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+import { CsModule} from '@project-sunbird/client-services';
 
 declare const __karma__: any;
 declare const require: any;
@@ -23,3 +24,29 @@ const filterRegExp = (tags) ? new RegExp(tags, 'g') : /\.spec\.ts$/,
     specFiles = context.keys().filter(path => filterRegExp.test(path));
 // and load the modules.
 specFiles.map(context);
+
+if (!CsModule.instance.isInitialised) {
+  // Singleton initialised or not
+   CsModule.instance.init({
+     core: {
+         httpAdapter: 'HttpClientBrowserAdapter',
+         global: {
+            channelId: 'channelId', // required
+            producerId: 'ntp.sunbird.portal', // required
+            deviceId: 'e6733e8f13baae78077f91d3810fd8285' // required
+         },
+         api: {
+             host: document.location.origin, // default host
+             authentication: {
+                // userToken: string; // optional
+                // bearerToken: string; // optional
+             }
+         }
+     },
+     services: {
+         groupServiceConfig: {
+           apiPath: 'learner/v1/group',
+         }
+     }
+ });
+}

@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ResourceService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
@@ -45,6 +45,7 @@ export class SearchService {
    * Reference of public data service
    */
   public publicDataService: PublicDataService;
+  public resourceService: ResourceService;
   /**
    * Default method of OrganisationService class
    *
@@ -54,12 +55,14 @@ export class SearchService {
    * @param {LearnerService} config learner service reference
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
-    learnerService: LearnerService, publicDataService: PublicDataService) {
+    learnerService: LearnerService, publicDataService: PublicDataService,
+    resourceService: ResourceService) {
     this.user = user;
     this.content = content;
     this.config = config;
     this.learnerService = learnerService;
     this.publicDataService = publicDataService;
+    this.resourceService = resourceService;
   }
   /**
    * Search content by user id.
@@ -321,6 +324,97 @@ export class SearchService {
     });
     return facetObj;
   }
+
+  public fetchCourses(request, isCourse, title?) {
+    const option = this.getSearchRequest(request, isCourse);
+    let cardData = [], selectedCourse = {};
+    return this.contentSearch(option).pipe(map((response) => {
+      const contents = _.get(response, 'result.content');
+      if (_.isEmpty(contents)) {
+        return [];
+      } else if (title) {
+        cardData = _.map(contents, content => {
+          if (_.isEqual(_.get(content, 'subject'), title)) {
+            return content;
+          }
+        });
+        selectedCourse = _.get(this.getSubjectsStyles(), title);
+        return ({contents : _.compact(cardData), selectedCourse});
+      } else {
+        cardData = this.getFilterValues(contents);
+        _.forEach(cardData, card => {
+          const theme = _.get(this.getSubjectsStyles(), card.title);
+          if (card && theme) {
+            card.theme = theme.background;
+            card.cardImg = theme.icon;
+            card.titleColor = theme.titleColor;
+          }
+        });
+        return _.compact(cardData);
+      }
+    }));
+  }
+
+  getSearchRequest(request, isCourse) {
+    let filters = request.filters;
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    if (!request.isCustodianOrg) {
+      filters['channel'] = request.channelId;
+    }
+    if (isCourse) {
+      filters ['courseType'] = 'CurriculumCourse';
+      filters['contentType'] = 'Course';
+    }
+    const option = {
+        limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
+        filters: filters,
+        // mode: 'soft',
+        // facets: facets,
+        params: _.cloneDeep(this.config.appConfig.ExplorePage.contentApiQueryParams),
+    };
+    if (request.frameworkId) {
+      option.params.framework = request.frameworkId;
+    }
+    return option;
+  }
+
+  getFilterValues(contents) {
+    let subjects = _.map(contents, content => {
+      return (_.get(content, 'subject'));
+    });
+    subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      return ({ title: subject[0], count: subject.length === 1 ?
+        `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
+        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}` });
+      });
+    return subjects;
+  }
+
+  getSubjectsStyles() {
+    return {
+        Science: {
+          background: '#FFD6EB',
+          titleColor: '#FD59B3',
+          icon: './../../../../../assets/images/science.svg'
+        },
+        Mathematics: {
+          background: '#FFDFD9',
+          titleColor: '#EA2E52',
+          icon: './../../../../../assets/images/mathematics.svg'
+        },
+        English: {
+          background: '#DAFFD8',
+          titleColor: '#218432'
+        },
+        Social: {
+          background: '#DAD4FF',
+          titleColor: '#635CDC',
+          icon: './../../../../../assets/images/social.svg'
+        }
+    };
+  }
+
 }
 
 

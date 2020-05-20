@@ -5,7 +5,7 @@
     <div class="ui grid">
 
       <div class="twelve wide column" *ngIf="cardData.length > 0">
-        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [isLoading]="isLoading" [title]="resourceService?.frmelmnts?.lbl?.sectionTitle"  (cardClick)="navigateToCourses($event)"></sb-course-cards-hlist>
+        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [isLoading]="isLoading" [title]="resourceService?.frmelmnts?.lbl?.courses"  (cardClick)="navigateToCourses($event)"></sb-course-cards-hlist>
       </div>
 
       <div class="twelve wide column pb-0 pt-0" *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
