@@ -71,4 +71,4 @@
 
 </div>
 
-<app-group-form *ngIf="showGroupCreateForm" ></app-group-form>
+<app-group-form *ngIf="showGroupCreateForm" (closeEvent)="showGroupCreateForm = false"></app-group-form>
