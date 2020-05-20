@@ -26,7 +26,6 @@ export class MyGroupsComponent implements OnInit {
     }
   ];
   showGroupCreateForm;
-  constructor() {}
   public groupList: any;
   constructor(public groupService: GroupsService) {}
 
