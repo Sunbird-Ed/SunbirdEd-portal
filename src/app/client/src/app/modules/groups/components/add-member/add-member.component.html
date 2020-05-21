@@ -1,11 +1,11 @@
 <!-- add add-member screen -->
 
-<div *ngIf="memberCreationStep == 1">
+<div *ngIf="currentStage == Stage.START">
   <div class="flex-dc d-flex flex-ai-center flex-jc-center create-group-container">
     <div class="d-flex flex-dc flex-ai-center flex-jc-center p-24">
      <div class="d-flex flex-as-center"><img src="./assets/images/create-group-img.png" width="220px" height="220px"></div>
      <div class="my-24 fs-1 text-center">{{ resourceService.frmelmnts.lbl.createGroupMsg }}</div>
-       <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" id="addMemberStep1" type="button" (click)="memberCreationStep = 2">
+       <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" id="addMemberStep1" type="button" (click)="currentStage = Stage.VERIFY_MEMBER">
         <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
          {{ resourceService.frmelmnts.lbl.addMember }}
        </button>
@@ -14,7 +14,7 @@
 </div>
 
 <!-- Add member with verify button content -->
-<div *ngIf="memberCreationStep > 1">
+<div *ngIf="currentStage !== Stage.START">
   <div class="title my-16 font-weight-bold">
     {{ resourceService.frmelmnts.lbl.userId }}
   </div>
@@ -23,12 +23,12 @@
     <input type="text" name="userid" id="userid" [value]="userid" (input)="userid = $event.target.value;" class="sb-form-control" placeholder="Enter user ID" [ngClass]="{'is-invalid': invalidUserid}">
     <small class="message sb-color-error font-weight-bold" *ngIf="invalidUserid">{{ resourceService.frmelmnts.lbl.invalidUserid }}</small>
   </div>
-  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100" *ngIf="memberCreationStep == 2" (click)="VerifyMemberUserId()">
+  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100" *ngIf="currentStage == Stage.VERIFY_MEMBER" (click)="VerifyMemberUserId()">
     {{ resourceService.frmelmnts.btn.verify }}
   </button>
 
   <!-- Add to group button content -->  
-  <div *ngIf="memberCreationStep == 3" >
+  <div *ngIf="currentStage == Stage.ADD_MEMBER" >
     <div class="d-flex flex-jc-center flex-ai-center add-member-content py-24">
       <div class="add-member-text text-center">
         <div class="oval">A</div>
