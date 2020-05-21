@@ -13,6 +13,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { ExploreCurriculumCourseDetailsComponent } from './components/explore-curriculum-course-details/explore-curriculum-course-details.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
     CommonConsumptionModule, ContentSearchModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent],
+  declarations: [ ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent, ExploreCurriculumCourseDetailsComponent],
   exports: [ExploreComponent]
 })
 export class ExploreModule { }
