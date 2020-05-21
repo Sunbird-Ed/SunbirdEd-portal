@@ -5,12 +5,8 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './no-group-result.component.html',
   styleUrls: ['./no-group-result.component.scss']
 })
-export class NoGroupResultComponent implements OnInit {
+export class NoGroupResultComponent {
   @Input() noResult = false;
   @Input() noResultMsg;
   constructor() { }
-
-  ngOnInit() {
-  }
-
 }

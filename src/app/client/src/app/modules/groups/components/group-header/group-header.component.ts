@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
@@ -6,15 +6,12 @@ import { NavigationHelperService } from '@sunbird/shared';
   templateUrl: './group-header.component.html',
   styleUrls: ['./group-header.component.scss']
 })
-export class GroupHeaderComponent implements OnInit {
+export class GroupHeaderComponent {
   @Input() pastMembersList;
   @Input() groupData;
   modalName: string;
   showModal = false;
   constructor(private navigationHelperService: NavigationHelperService) { }
-
-  ngOnInit() {
-  }
 
   goBack() {
     this.navigationHelperService.goBack();

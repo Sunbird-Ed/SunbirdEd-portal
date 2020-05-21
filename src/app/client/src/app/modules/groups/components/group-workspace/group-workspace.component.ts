@@ -1,15 +1,17 @@
+import { takeUntil } from 'rxjs/operators';
 import { groupMockData } from './group-workspace.component.spec.data';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { GroupsService } from '../../services';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-group-workspace',
   templateUrl: './group-workspace.component.html',
   styleUrls: ['./group-workspace.component.scss']
 })
-export class GroupWorkspaceComponent implements OnInit {
+export class GroupWorkspaceComponent implements OnInit, OnDestroy {
 
   private groupId: string;
   public membersList: Array<{}> = [];
@@ -22,6 +24,7 @@ export class GroupWorkspaceComponent implements OnInit {
   public showModal: Boolean = false;
   public modalName: string;
   public pastMembersList: Array<{}> = groupMockData.pastMembersList;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService) {
     this.groupService = groupService;
@@ -34,8 +37,10 @@ export class GroupWorkspaceComponent implements OnInit {
     this.getGroupData();
   }
 
-  async getGroupData() {
-    this.groupData = await this.groupService.getGroupById(this.groupId).catch(error => {});
+  getGroupData() {
+    this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupData = groupData;
+     }, err => {});
   }
 
   getPastMembersList() {
@@ -105,6 +110,11 @@ export class GroupWorkspaceComponent implements OnInit {
       }
     });
     return _.compact(data);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

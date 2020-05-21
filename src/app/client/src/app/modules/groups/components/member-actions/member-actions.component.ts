@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
   templateUrl: './member-actions.component.html',
   styleUrls: ['./member-actions.component.scss']
 })
-export class MemberActionsComponent implements OnInit {
+export class MemberActionsComponent {
   @ViewChild('modal') modal;
 
   @Input() modalName: string;
@@ -16,9 +16,6 @@ export class MemberActionsComponent implements OnInit {
 
   constructor() {
    }
-
-  ngOnInit() {
-  }
 
   closeModal() {
     this.modal.close();

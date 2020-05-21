@@ -12,7 +12,7 @@
     <div class="members-list my-24" *ngIf="modalName === 'showPastMembers'" appClickOutside (clickOff)="closeModal()">
     <div *ngFor="let member of pastMembersList">
       <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
-      [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+      [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
      </sb-member-card>
     </div>
     </div>

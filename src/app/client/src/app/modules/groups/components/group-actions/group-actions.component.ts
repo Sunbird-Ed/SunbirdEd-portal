@@ -5,7 +5,7 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter, Renderer2 } 
   templateUrl: './group-actions.component.html',
   styleUrls: ['./group-actions.component.scss']
 })
-export class GroupActionsComponent implements OnInit {
+export class GroupActionsComponent {
 
   @ViewChild('modal') modal;
   @Input() modalName: string;
@@ -21,14 +21,8 @@ export class GroupActionsComponent implements OnInit {
      });
    }
 
-  ngOnInit() {
-  }
-
   closeModal() {
     this.modal.close();
     this.modalClosed.emit();
-  }
-
-  getMenuData(event) {
   }
 }
