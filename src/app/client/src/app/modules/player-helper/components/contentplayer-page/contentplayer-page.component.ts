@@ -25,6 +25,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   contentId: string;
   @Input() isContentPresent = true;
   @Input() objectRollUp;
+  @Input() showProgress = false;
+  @Input() completedPercentage;
   contentType: string;
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
