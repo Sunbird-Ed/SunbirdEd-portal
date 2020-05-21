@@ -28,3 +28,7 @@
 .b-8 {
     @include border(border,8px,$gray-400);
 }
+.border-top-r-left-right {
+    border-top-left-radius:0px;
+    border-top-right-radius:0px;
+}

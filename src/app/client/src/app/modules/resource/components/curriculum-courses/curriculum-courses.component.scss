@@ -1,12 +1,25 @@
+@import 'variables';
+@import 'mixins/mixins';
+
 .content-header {
-background: #FAFAFA;min-height: 0.875rem;
-}
-.content-header__title {
-    color: var(--primary-400);font-size: 1.125rem;
-}
-.content-header__info{
-    color: var(--gray-800);
+    &__img {
+      overflow: hidden;
+      img {
+      width:calculateRem(48px);
     }
+    }
+    &__title{
+      color: var(--primary-color);
+      font-size: calculateRem(18px);
+      font-weight: bold;
+    }
+    &__info {
+      color:var(--gray-800);
+      font-size: calculateRem(14px);
+      
+    }
+  }
+
 .sbgrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
@@ -18,3 +31,9 @@ background: #FAFAFA;min-height: 0.875rem;
     height:48px;
     overflow: hidden;
 }
+.header-shadow {
+    min-height: calculateRem(80px);
+    background-color: #fafafa;
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(0, 0, 0, 0.25);
+    z-index: 99;
+  }
