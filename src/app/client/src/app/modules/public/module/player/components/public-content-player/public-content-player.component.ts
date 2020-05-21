@@ -196,7 +196,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * then 'isSingleContent' will be false and it should load player directly in landscape mode
    */
   deviceDetector() {
-    if (this.isSingleContent === false) {
+    const isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
+    if (isMobileOrTab && this.isSingleContent === false) {
       this.loadLandscapePlayer = true;
     }
   }
