@@ -28,4 +28,7 @@ export class GroupActionsComponent implements OnInit {
     this.modal.close();
     this.modalClosed.emit();
   }
+
+  getMenuData(event) {
+  }
 }
