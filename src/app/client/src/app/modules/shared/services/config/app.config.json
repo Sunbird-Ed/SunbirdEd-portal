@@ -356,6 +356,10 @@
           "framework",
           "contentType"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType",
+        "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
       }
     },
     "enrolledCourses": {
