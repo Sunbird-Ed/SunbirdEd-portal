@@ -32,6 +32,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     if (this.verifyState()) {
       this.initializeForm();
     }
+    setTimeout(() => {
+      this.disableResendOtp = true;
+    }, 10000);
     this.setTelemetryImpression();
   }
   initializeForm() {
