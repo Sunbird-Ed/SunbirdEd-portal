@@ -1,26 +1,85 @@
-# sunbird-portal
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b3a8965fbe9447a9e74967e852c38df)](https://www.codacy.com/app/sunbird-bot/SunbirdEd-portal?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Sunbird-Ed/SunbirdEd-portal&amp;utm_campaign=Badge_Grade)
+# Migration from QUML version 0.5 to QUML version 1.0
 
-[![Build Status](https://travis-ci.org/project-sunbird/sunbird-portal.svg?branch=master)](https://travis-ci.org/project-sunbird/sunbird-portal)
+## Requirement
 
+Old 'PracticeQuestionSet' contents created on platform do not show print option in application. Such 'PracticeQuestionSet' are to be modified to show print option.
 
-## What is Sunbird?
-[Sunbird](http://sunbird.org) is a next-generation scalable open-source learning solution for teachers and tutors. Built for the 21st century with [state-of-the-art technology](http://www.sunbird.org/architecture/views/physical/), Sunbird runs natively in [cloud/mobile environments](http://www.sunbird.org/features/). The [open-source governance](LICENSE) of Sunbird allows a massive community of nation-builders to co-create and extend the solution in novel ways.
+## Solution
 
-## What is the project mission?
-Project Sunbird has a mission to improve learning outcomes for 200 million children across India. This is a multi-dimensional problem unique to the multi-lingual offline population of India (and other developing countries). It's not a problem of any single organization or stakeholder and it cannot be realistically addressed by individual effort. 
+To achieve this, Questions should be updated in QUML version 1.0 format which contains property such as ***editorstate*** and ***responseDeclaration***
+***Itemsets*** has to be created from updated ***questions*** and linked to ***content***
+if content is live it has to ***publish*** again
 
-Project Sunbird is an [open, iterative and collaborative](http://www.sunbird.org/participate/) approach to bring together the best minds in pursuit of this audacious goal.
+## Migration Steps
 
-## What is the Sunbird portal?
-The Sunbird portal is the browser-based interface for the Sunbird application stack. It provides a web-app through which all functionality of Sunbird can be accessed.
+- **Step 1**: Get the content which doesn't have itemset property using composite search
+	   
+	    EndPoint: /composite/v3/search
+	    requestParameters:  
+	    {
+	    		  "request": {
+	    		    "exists": "questions",
+	    		    "filters": {
+	    		      "contentType": "PracticeQuestionSet",
+	    		      "medium": "English",
+	    		      "objectType": "Content"
+	    		    },
+	    		    "not_exists": "itemSets",
+	    		    "sort_by": {
+	    		      "createdOn": "desc"
+	    		    }
+	    		  }
+	    		}
 
-## Getting started
-To get started with the Sunbird portal, please try out our cloud-based demo site at: https://staging.open-sunbird.org/
+- **Step 2**: Get the question from content
+		
+		EndPoint: /assessment/v3/items/read
 
-### Local Installation
-You can also install the Sunbird portal locally on your laptop, please follow the [installation instructions](http://www.sunbird.org/developer-docs/installation/)
+- **Step 3**: update the structure as per QUML version 1.0 which is to add editorState and responseDeclaration and update the quesioon
 
-## Reporting Issues
-We have an open and active [issue tracker](https://github.com/project-sunbird/sunbird-commons/issues). Please report any issues.
+		EndPoint: /assessment/v3/items/update/
+- **Step 4**: Create the itemset using items/Questions
+		
+		EndPoint: /itemset/v3/create
+		requestParameter: 
+		{
+            "request": {
+                "itemset": {
+                    "code": uuidv4(),
+                    "name": value.name,
+                    "description": value.name,
+                    "language": _.split(value.language),
+                    "owner": value.author,
+                    "items": questionIdObjForItemset
+                }
+            }
+        }
+        
+ - **Step 5**: update content with itemset
+ 
+      		Endpoint: /content/v3/update/
+      		requestParameters:
+      		{
+	        "request": {
+	          "content": {
+	            "itemSets": [
+	              {
+	                "identifier": itemSetIdentifier
+	              }
+	            ],
+	            "versionKey": versionKey
+	          }
+	        }
+	      }  
+- Step 6: Publish content if status of content is live
 
+	    	EndPoint: /content/v3/publish/
+	    	requestParameters:
+	    	 {
+		        "request": {
+		          "content": {
+		            "publisher": "EkStep",
+		            "lastPublishedBy": "EkStep"
+		          }
+		        }
+		      }
