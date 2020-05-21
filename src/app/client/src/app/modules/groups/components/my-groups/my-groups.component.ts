@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
+import { ResourceService } from '@sunbird/shared';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-groups',
@@ -7,32 +9,27 @@ import { GroupsService } from '../../services';
   styleUrls: ['./my-groups.component.scss']
 })
 export class MyGroupsComponent implements OnInit {
-  sbcards = [
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    },
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    }
-  ];
-  showGroupCreateForm;
-  public groupList: any;
-  constructor(public groupService: GroupsService) {}
+  showGroupCreateForm = false;
+  public groupList = [];
+  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {}
 
   ngOnInit() {
     this.getMyGroupList();
   }
   async getMyGroupList() {
     this.groupList = await this.groupService.getAllGroups();
+  }
+
+  public updateGroupList($event: any) {
+    this.showGroupCreateForm = false;
+    this.groupList.push($event);
+  }
+
+  public showCreateFormModal() {
+    this.showGroupCreateForm = true;
+  }
+
+  public navigateToDetailPage(groupId) {
+    this.router.navigate(['groups/view', groupId]);
   }
 }

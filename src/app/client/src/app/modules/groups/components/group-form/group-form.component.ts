@@ -17,6 +17,7 @@ import { GroupsService } from '../../services';
 export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('createGroupModal') createGroupModal;
   @Output() closeEvent = new EventEmitter<any>();
+  @Output() submitForm = new EventEmitter<any>();
   groupForm: FormGroup;
   private _formFieldProperties: any;
   public formFieldOptions = [];
@@ -186,7 +187,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
       const group = await this.groupService.createGroup(this.groupForm.value);
       if (group) {
         this.toasterService.success('Group created sucessfully');
-        this.closeEvent.emit();
+        this.submitForm.emit(group);
       }
     } else {
       Object.keys(this.groupForm.controls).forEach(field => {
@@ -198,6 +199,9 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     if (this.unsubscribe) {
       this.unsubscribe.unsubscribe();
+    }
+    if (this.createGroupModal && this.createGroupModal.deny) {
+      this.createGroupModal.deny();
     }
   }
   get formFieldProperties() {
