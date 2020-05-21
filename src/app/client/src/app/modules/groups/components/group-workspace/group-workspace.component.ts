@@ -30,7 +30,19 @@ export class GroupWorkspaceComponent implements OnInit {
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.membersList = this._membersList;
+    this.getPastMembersList();
     this.getGroupData();
+  }
+
+  async getGroupData() {
+    this.groupData = await this.groupService.getGroupById(this.groupId).catch(error => {});
+  }
+
+  getPastMembersList() {
+    _.map(this.membersList, member => {
+      this.pastMembersList = _.reject(this.pastMembersList, {identifier: member.identifier});
+    });
+
   }
 
   searchMembers() {
@@ -93,11 +105,6 @@ export class GroupWorkspaceComponent implements OnInit {
       }
     });
     return _.compact(data);
-  }
-
- async getGroupData() {
-   this.groupData = await this.groupService.getGroupById(this.groupId).catch(error => {});
-   this.groupData = _.isEmpty(this.groupData) ? {name: 'G1'} : this.groupData;
   }
 
 }

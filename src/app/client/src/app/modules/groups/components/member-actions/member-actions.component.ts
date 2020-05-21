@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, ViewChild, Output, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, ViewChild, Output} from '@angular/core';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -7,11 +7,13 @@ import * as _ from 'lodash-es';
   styleUrls: ['./member-actions.component.scss']
 })
 export class MemberActionsComponent implements OnInit {
+  @ViewChild('modal') modal;
+
   @Input() modalName: string;
   @Input() member: {};
-  @ViewChild('modal') modal;
   @Output() modalClosed = new EventEmitter();
   @Output() handleMember = new EventEmitter();
+
   constructor() {
    }
 
