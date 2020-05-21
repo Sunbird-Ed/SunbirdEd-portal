@@ -14,28 +14,25 @@
     </div>
 
     <!--CC-Player Content Header -->
-    <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="collectionData">
-      <div class="ui container">
-        <div class="header-info flex-basis-1">
-          <div class="header-info__title ellipsis">
-            <h5 class="sb-color-primary font-weight-bold">{{collectionData.name}}</h5>
+    <div class="content-header" *ngIf="collectionData">
+        <div class="ui container py-16">
+          <div class="content-header__content">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">{{collectionData.name}}</div>
+              <div class="d-flex flex-ai-center content-header__info mt-4" *ngIf="collectionTreeNodes">
+                <span *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
+                <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
+                <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
+              </div>
+            </div>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+              <button type="button" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+                <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
+              </button>
+            </div>
           </div>
-          <div class="header-info__desc d-flex flex-ai-center" *ngIf="collectionTreeNodes">
-            <span class="fnormal"
-              *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
-            <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
-            <span class="fnormal"
-              *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
-          </div>
-        </div>
-        <div>	
-          <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">	
-            <i class="blue share alternate icon"></i>	
-            {{resourceService?.frmelmnts?.lbl?.share}}	
-          </a>	
         </div>
       </div>
-    </div>
     <!-- CC-Player Video -->
     <div class="ui container sb-toc-view-container">
       <div class="cc-player sb-g">
