@@ -101,6 +101,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     }
   }
   handleResendOtp() {
+    this.disableResendOtp = false;
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
