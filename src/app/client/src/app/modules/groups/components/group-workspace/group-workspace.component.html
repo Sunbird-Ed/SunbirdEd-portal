@@ -29,7 +29,7 @@
             </div>
           </div>
 
-          <div class="ui container mt-24 sb-library-cards" *ngIf="!noMember">
+          <div class="ui container mt-24 sb-library-cards" *ngIf="membersList.length">
             <div class="sbgrid">
               <div *ngFor="let member of membersList">
                 <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"

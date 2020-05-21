@@ -67,6 +67,8 @@ export class GroupWorkspaceComponent implements OnInit {
     switch (event.data.modalName) {
       case 'Remove': {
         this.membersList = this.getHandledMember(false, event.data.identifier, true);
+        this._membersList = this.membersList;
+        this.noResultMsg = _.isEmpty(this.membersList) ? 'No member found' : '';
         break;
       }
       case 'Promote': {
