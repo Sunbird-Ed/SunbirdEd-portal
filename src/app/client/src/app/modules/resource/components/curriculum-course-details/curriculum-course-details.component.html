@@ -14,42 +14,38 @@
 <div class="content-header header-shadow">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+     
       <div class="content-header__img mr-8">
-        <img [src]="course?.appIcon" alt="" style="width: 55px; height: 55px;" (error)="img.src = courseFallbackImg"
-          #img>
+        <img [src]="course?.appIcon" alt="" (error)="img.src = courseFallbackImg" #img>
       </div>
-      <div class="flex-basis-1 mr-32">
-        <div class="content-header__title sb__ellipsis
-          sb__ellipsis--one">
-          <div>{{course?.name | titlecase}}</div>
-        </div>
-        <div class="d-flex flex-ai-center content-header__info fsmall mt-4">
-          <h5 class="sb-color-primary font-weight-bold">{{course?.name | titlecase}}</h5>
-        </div>
+
+      <div class="flex-basis-1 mr-32 text-left">
+        <div class="content-header__info">{{course?.name | titlecase}}</div>
+        <h5 class="content-header__title mt-4 ellipsis">{{course?.name | titlecase}}</h5>
       </div>
-      <div>
+
+      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-secondary sb-btn-normal">
-          <em class="icon-svg icon-svg--xxs icon-back mr-4">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#green-play"></use>
             </svg>
-          </em>{{resourceService?.frmelmnts?.btn?.continueLearning}}
+          </i> {{resourceService?.frmelmnts?.btn?.continueLearning}}
         </button>
       </div>
+      
     </div>
   </div>
 </div>
 
 <!-- content Section-->
 <div class="ui container py-16">
-  <div *ngFor="let item of course?.children; let index = index;">
-    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap py-8">
-      <h5 *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="py-8">
-        <span class="title"><strong>{{resourceService?.frmelmnts?.lbl?.chapter}}
-            {{index+1}}&nbsp;{{item?.name}}</strong></span>
-      </h5>
-      <button
-        class="sb-btn sb-btn-outline-secondary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+  <div class="my-16" *ngFor="let item of course?.children; let index = index;">
+    <div class="d-flex flex-ai-center flex-jc-space-between py-8">
+      <h5 *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'"
+        class="course-list_title py-8 ellipsis mr-16">{{resourceService?.frmelmnts?.lbl?.chapter}}
+        {{index+1}}&nbsp;{{item?.name}}</h5>
+      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
     </div>
     <div class="chapter-box sb-g">
       <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
@@ -75,11 +71,12 @@
       </section>
 
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
-        <div class="sb-bg-color-white p-8 fs-0-92">
-          <p class="mb-auto">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</p>
-          <p class="sb-color-primary font-weight-bold">20% {{resourceService?.frmelmnts?.lbl?.completed}}</p>
-          <sui-progress value="10" maximum="100" class="green m-0 fs-1-143"></sui-progress>
-          <p class="fs-0-785">{{resourceService?.frmelmnts?.lbl?.completeContentToUnlock | interpolate:'{count}': '5'}}</p>
+        <div class="sb-bg-color-white course-list-progress text-left">
+          <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</div>
+          <div class="course-list-progress__status mt-8">20% {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+          <sui-progress value="10" maximum="100" class="green course-list-progress__barholder mt-8"></sui-progress>
+          <div class="course-list-progress__info mt-8">
+            {{resourceService?.frmelmnts?.lbl?.completeContentToUnlock | interpolate:'{count}': '5'}}</div>
         </div>
       </section>
     </div>
