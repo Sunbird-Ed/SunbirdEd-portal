@@ -85,5 +85,12 @@ export class GroupsService {
     return await this.groupCservice.getAll().toPromise();
   }
 
+  async getGroupDetails(groupid) {
+    return await this.groupCservice.getById(groupid).toPromise();
+  }
+
+  async addMemberToGroup(userId: string, groupId: string) {
+    return await this.groupCservice.addMemberById(userId, groupId).toPromise();
+  }
 
 }
