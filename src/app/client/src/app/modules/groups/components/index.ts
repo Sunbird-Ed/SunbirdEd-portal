@@ -1,5 +1,4 @@
 export * from './add-member/add-member.component';
-export * from './create-group/create-group.component';
 export * from './delete-popup/delete-popup.component';
 export * from './group-form/group-form.component';
 export * from './group-header/group-header.component';
