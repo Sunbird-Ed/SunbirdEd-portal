@@ -85,6 +85,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngOnInit() {
     /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
     this.isSingleContent = _.get(history.state, 'isSingleContent') ;
+    this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.showLoader = true; // show loader every time the param changes, used in route reuse strategy
@@ -196,8 +197,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * then 'isSingleContent' will be false and it should load player directly in landscape mode
    */
   deviceDetector() {
-    const isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
-    if (isMobileOrTab && this.isSingleContent === false) {
+    if (this.isMobileOrTab && this.isSingleContent === false) {
       this.loadLandscapePlayer = true;
     }
   }
