@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>0CB48DF7-94CC-40B3-95BF-A0C6456074E9</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Member-list-actions" transform="translate(-152.000000, -348.000000)">
+            <g id="Group-6" transform="translate(136.000000, 332.000000)">
+                <g id="admin-blue" transform="translate(16.000000, 16.000000)">
+                    <path d="M3,5 L3,11 C3,16.55 6.84,21.74 12,23 C17.16,21.74 21,16.55 21,11 L21,5 L12,1 L3,5 Z" id="Shape" fill="#999999"></path>
+                    <polygon id="Star" fill="#F2F2F2" points="12 15.5 7.88550323 17.663119 8.67130219 13.0815595 5.34260439 9.83688104 9.94275162 9.16844052 12 5 14.0572484 9.16844052 18.6573956 9.83688104 15.3286978 13.0815595 16.1144968 17.663119"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

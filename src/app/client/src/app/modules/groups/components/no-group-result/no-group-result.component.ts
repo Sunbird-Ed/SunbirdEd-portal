@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-no-group-result',
@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./no-group-result.component.scss']
 })
 export class NoGroupResultComponent implements OnInit {
-
+  @Input() noResult = false;
+  @Input() noResultMsg;
   constructor() { }
 
   ngOnInit() {

@@ -85,5 +85,8 @@ export class GroupsService {
     return await this.groupCservice.getAll().toPromise();
   }
 
+  async getGroupById(groupId) {
+    return await this.groupCservice.getById(groupId).toPromise();
+  }
 
 }

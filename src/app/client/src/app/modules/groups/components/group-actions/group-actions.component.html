@@ -1,0 +1,26 @@
+<!-- Remove modal -->
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="closeModal()" #modal >
+  <div class="sb-modal-header" *ngIf="modalName === 'deleteGroup'">
+    Delete Group ?
+  </div>
+  <div class="sb-modal-content">
+    <p *ngIf="modalName === 'deleteGroup'"> Are you sure you want to delete
+      {{groupName}} ?</p>
+    <!-- show past members modal -->
+    <div class="font-weight-bold my-16" *ngIf="modalName === 'showPastMembers'">Past Members List</div>
+    <div class="members-list my-24" *ngIf="modalName === 'showPastMembers'" appClickOutside (clickOff)="closeModal()">
+    <div *ngFor="let member of pastMembersList">
+      <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
+      [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+     </sb-member-card>
+    </div>
+    </div>
+  </div>
+  <!-- Delete Group modal -->
+  <div class="sb-modal-actions" *ngIf="modalName === 'deleteGroup'">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="closeModal()">Delete</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">No</button>
+  </div>
+
+</sui-modal>

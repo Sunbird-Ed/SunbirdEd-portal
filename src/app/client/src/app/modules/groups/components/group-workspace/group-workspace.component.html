@@ -1,4 +1,4 @@
-<app-group-header></app-group-header>
+<app-group-header [groupData]="groupData" [pastMembersList]="pastMembersList"></app-group-header>
 
 <!-- all lists shows members, courses -->
 
@@ -18,25 +18,42 @@
           <div class="sb-search-box no-btn my-16">
             <div class="input-div relative">
               <i class="search icon"></i>
-              <input class="sb-search-input" type="text" placeholder="Search..." />
-              <i class="close icon"></i>
+              <input class="sb-search-input" [(ngModel)]="memberQuery" type="text" placeholder="Search..."  (keyup.enter)="searchMembers()" />
+              <i class="close icon" (click)="clearMemberSearch()" ></i>
             </div>
             <button class="sb-btn sb-btn-normal">Search</button>
           </div>
           <div class="section-header mt-24 mb-16">
             <div class="section-header__title">
-              <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> Members<span class="badge">25</span>
+              <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> Members<span class="badge">{{membersList.length}}</span>
             </div>
           </div>
 
-          <div class="no-result-container d-flex flex-dc flex-jc-center p-24 my-16">
-            <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-              <div class="no-result-container__icon">
-                <img src="./assets/images/no-text.svg" width="150px" height="125px">
+          <div class="ui container mt-24 sb-library-cards" *ngIf="!noMember">
+            <div class="sbgrid">
+              <div *ngFor="let member of membersList">
+                <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
+                 [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+                </sb-member-card>
+                <div class="dropdown-menu-content" *ngIf="showMenu">
+                  <div class="list" (click)="openModal('Promote')" *ngIf="!selectedMember?.isAdmin">
+                    <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
+                    <span>Promote to admin</span>
+                  </div>
+                  <div class="list mb-8" (click)="openModal('Dismiss')" *ngIf="selectedMember?.isAdmin">
+                    <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
+                    <span>Dismiss as admin</span>
+                  </div>
+                  <div class="list" (click)="openModal('Remove')">
+                    <img class="" alt="admin" src="./../../../../../assets/images/remove-from-group.svg">
+                    <span>Remove from group</span>
+                  </div>
+                </div>
               </div>
-              <div class="mt-8 text-center no-result-container__para">
-                No member found</div>
             </div>
+        </div>
+          <div class="no-result-container d-flex flex-dc flex-jc-center p-24 my-16" *ngIf="!membersList.length">
+              <app-no-group-result [noResult]="!membersList.length" [noResultMsg]="noResultMsg"></app-no-group-result>
           </div>
           <!-- Members List from cc -->
           
@@ -56,18 +73,30 @@
       <div class="sb-search-box no-btn my-16">
         <div class="input-div relative">
           <i class="search icon"></i>
-          <input class="sb-search-input" type="text" placeholder="Search..." />
+          <input class="sb-search-input"  type="text" placeholder="Search..."/>
           <i class="close icon"></i>
         </div>
         <button class="sb-btn sb-btn-normal">Search</button>
       </div>
-    <div class="section-header">
+      <div class="section-header">
       <div class="section-header__title">
         <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> Courses <span class="badge">25</span>
       </div>
     </div>
-  </div>
-    <!-- Courses List  from CC -->
+
+
+    <div class="ui container mt-24 sb-library-cards">
+      <div class="sbgrid">
+        <div>
+          <sb-course-card></sb-course-card>
+        </div>
+      </div>
   </div>
 
+  <div class="no-result-container d-flex flex-dc flex-jc-center p-24 my-16">
+    <app-no-group-result></app-no-group-result>
+  </div>
+  </div>
+  </div>
 </sui-tabset>
+<app-member-actions *ngIf="showModal" [modalName]="modalName" [member]="selectedMember" (modalClosed)="closeModal()" (handleMember)="handleMember($event)"></app-member-actions>
