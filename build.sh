@@ -19,6 +19,25 @@ cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf app_dist/dist # remove only dist folder rest else will be replaced by copy command
 
+# function to run client build for docker image
+build_client_dockerCopy(){
+    echo "starting client local prod build"
+    npm run build # Angular prod build
+    echo "completed client local prod build"
+    # npm run post-build # gzip files commenting this as this can be achived at proxy
+    cd ..
+    mv dist/index.html dist/index.ejs # rename index file
+    echo "Copying Client dist to app_dist"
+    cp -R dist app_dist
+}
+# function to run client build for cdn
+build_client_cdn(){
+    echo "starting client cdn prod build"
+    # npm run build-cdn -- --deployUrl $cdnUrl # prod command
+    npm run build-cdn # testing command
+    npm run inject-cdn-fallback
+    echo "completed client cdn prod build"
+}
 # function to run client build
 build_client(){
     echo "Building client in background"
@@ -29,14 +48,11 @@ build_client(){
     yarn install --no-progress --production=true
     echo "completed client npm install"
     npm run download-editors # download editors to assests folder
-    echo "starting client prod build"
-    npm run build # Angular prod build
-    echo "completed client prod build"
-    # npm run post-build # gzip files, not required, will be handled in cdn or proxy
-    cd ..
-    mv dist/index.html dist/index.ejs # rename index file
-    echo "Copying Client dist to app_dist"
-    cp -R dist app_dist
+
+    build_client_dockerCopy & # Put client local build in background 
+    build_client_cdn & # Put client local build in background
+
+    wait # wait for both build to complete
     echo "completed client post_build"
 }
 
