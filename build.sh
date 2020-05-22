@@ -25,7 +25,8 @@ build_client(){
     nvm use 12.16.1
     cd client
     echo "starting client npm install"
-    npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    # npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    yarn install --no-progress --production=true
     echo "completed client npm install"
     npm run download-editors # download editors to assests folder
     echo "starting client prod build"
@@ -47,8 +48,9 @@ build_server(){
     cd app_dist
     nvm use 12.16.1
     echo "starting server npm install"
-    npm i -g npm@6.13.4
-    npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    # npm i -g npm@6.13.4
+    # npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    yarn install --no-progress --production=true
     echo "completed server npm install"
     node helpers/resourceBundles/build.js
 }
