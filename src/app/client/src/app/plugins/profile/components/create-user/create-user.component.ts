@@ -4,8 +4,10 @@ import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { OrgDetailsService, ChannelService, FrameworkService, UserService, FormService } from '@sunbird/core';
+import { OrgDetailsService, ChannelService, FrameworkService, UserService, FormService, TncService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, throwError, of, forkJoin, Subject, merge, concat } from 'rxjs';
+import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-user',
@@ -33,7 +35,8 @@ export class CreateUserComponent implements OnInit {
     public profileService: ProfileService, formBuilder: FormBuilder, public router: Router,
     public userService: UserService, public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
     public frameworkService: FrameworkService, public utilService: UtilService, public formService: FormService,
-    private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService) {
+    private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
+    public tncService: TncService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -94,21 +97,16 @@ export class CreateUserComponent implements OnInit {
   }
 
   fetchTncData() {
-    this.profileService.getTncConfig().subscribe((data: ServerResponse) => {
-      const response = _.get(data, 'result.response.value');
-      if (response) {
-        try {
-          const tncConfig = this.utilService.parseJson(response);
-          this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-          this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
-        } catch (e) {
-          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        }
-      }
-    }, (err) => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    }
-    );
+    this.tncService.getTncConfig()
+      .pipe(map((data) => {
+        const response = _.get(data, 'result.response.value');
+        return this.utilService.parseJson(response);
+      })).subscribe((tncConfig) => {
+        this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+        this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      });
   }
 
   showAndHidePopup(mode: boolean) {

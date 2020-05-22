@@ -125,11 +125,4 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
-
-  getTncConfig() {
-    const options = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.TNC_CONFIG
-    };
-    return this.learnerService.get(options);
-  }
 }
