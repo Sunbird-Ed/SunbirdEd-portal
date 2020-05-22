@@ -7,8 +7,7 @@
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "download-editors": "gulp download:editors",
-    "build": "ng build --prod --deployUrl dist/",
-    "post-build": "gulp post:build",
+    "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --deployUrl dist/",    "post-build": "gulp post:build",
     "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
     "test": "ng test --tags $tags",
     "lint": "ng lint",
@@ -23,7 +22,7 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "engines": {
-    "node": "12.16.1",
+    "node": ">=12.16.1",
     "npm": "6.13.4"
   },
   "private": true,
