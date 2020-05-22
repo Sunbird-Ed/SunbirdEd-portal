@@ -9,7 +9,6 @@
       <i class="chevron plus icon"></i> Add User
     </button>
   </div>
-
   <div class="members-list px-16 mb-16">
     <div class="members-list__item members-list__item--active">
       <div class="oval">A</div>
@@ -23,15 +22,12 @@
     </div>
   </div>
   <div class="user-profile-box__actions pb-16 px-16">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled" (click)="showSmallModal = !showSmallModal">Switch
-      User</button>
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled" (click)="showSmallModal = !showSmallModal">Switch User</button>
     <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
   </div>
 </div>
 
-
 <!-- screen 8 code modal -->
-
 <sui-modal *ngIf="showSmallModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
   class="sb-modal " appBodyScroll (dismissed)="showSmallModal = !showSmallModal" #modal>
   <div class="sb-modal-content">
