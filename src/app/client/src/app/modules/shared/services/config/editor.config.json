@@ -114,6 +114,15 @@
                 "iconClass": "fa fa-file-o"
             },
             {
+                "type": "Course",
+                "label": "Course",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
                 "type": "Resource",
                 "label": "Resource",
                 "isRoot": false,
