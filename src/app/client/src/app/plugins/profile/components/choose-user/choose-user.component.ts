@@ -6,10 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./choose-user.component.scss']
 })
 export class ChooseUserComponent implements OnInit {
-
+  showSmallModal;
   constructor() { }
-
   ngOnInit() {
   }
-
 }
