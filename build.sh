@@ -16,8 +16,8 @@ commit_hash=$(git rev-parse --short HEAD)
 nvm install 12.16.1 # same is used in client and server
 
 cd src/app
-rm -rf app_dist/
-mkdir app_dist/ # this folder should be created prior server and client build
+mkdir -p app_dist/ # this folder should be created prior server and client build
+rm -rf app_dist/dist # remove only dist folder rest else will be replaced by copy command
 
 # function to run client build
 build_client(){
