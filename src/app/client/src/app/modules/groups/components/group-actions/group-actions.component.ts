@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, Renderer2 } from '@angular/core';
 
 @Component({
@@ -13,7 +14,7 @@ export class GroupActionsComponent {
   @Input() pastMembersList;
   @Input() groupName: string;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, public resourceService: ResourceService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1) {
         this.closeModal();

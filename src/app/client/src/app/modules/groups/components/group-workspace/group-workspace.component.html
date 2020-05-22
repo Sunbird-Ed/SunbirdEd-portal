@@ -6,8 +6,8 @@
 <sui-tabset class="sb-tabs w-100">
   <div class="ui pointing secondary menu sb-tabs__header p-0">
     <div class="ui container">
-    <a class="item" suiTabHeader="1">Members</a>
-    <a class="item" suiTabHeader="2">Courses</a>
+    <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.members}}</a>
+    <a class="item" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.courses}}</a>
   </div>
   </div>
 
@@ -21,11 +21,11 @@
               <input class="sb-search-input" [(ngModel)]="memberQuery" type="text" placeholder="Search..."  (keyup.enter)="searchMembers()" />
               <i class="close icon" (click)="clearMemberSearch()" ></i>
             </div>
-            <button class="sb-btn sb-btn-normal">Search</button>
+            <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
           </div>
           <div class="section-header mt-24 mb-16">
             <div class="section-header__title">
-              <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> Members<span class="badge">{{membersList.length}}</span>
+              <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i>{{resourceService?.frmelmnts?.lbl?.members}}<span class="badge">{{membersList.length}}</span>
             </div>
           </div>
 
@@ -38,15 +38,15 @@
                 <div class="dropdown-menu-content" *ngIf="showMenu">
                   <div class="list" (click)="openModal('Promote')" *ngIf="!selectedMember?.isAdmin">
                     <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
-                    <span>Promote to admin</span>
+                    <span>{{resourceService?.frmelmnts?.btn?.groupAdmin}}</span>
                   </div>
                   <div class="list mb-8" (click)="openModal('Dismiss')" *ngIf="selectedMember?.isAdmin">
                     <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
-                    <span>Dismiss as admin</span>
+                    <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
                   </div>
                   <div class="list" (click)="openModal('Remove')">
                     <img class="" alt="admin" src="./../../../../../assets/images/remove-from-group.svg">
-                    <span>Remove from group</span>
+                    <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
                   </div>
                 </div>
               </div>
@@ -76,11 +76,11 @@
           <input class="sb-search-input"  type="text" placeholder="Search..."/>
           <i class="close icon"></i>
         </div>
-        <button class="sb-btn sb-btn-normal">Search</button>
+        <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
       </div>
       <div class="section-header">
       <div class="section-header__title">
-        <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> Courses <span class="badge">25</span>
+        <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> {{resourceService?.frmelmnts?.lbl?.courses}} <span class="badge">25</span>
       </div>
     </div>
 

@@ -1,5 +1,4 @@
 import { groupMockData } from './group-workspace.component.spec.data';
-import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';

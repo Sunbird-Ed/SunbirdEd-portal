@@ -54,7 +54,7 @@ export const groupMockData = {
   ],
   modifiedMemberList: [
     {identifier: '1', initial: 'A', title: 'Abc', isAdmin: false,  isMenu: true, indexOfMember: 1},
-    {identifier: '2', initial: 'B', title: 'Bcd', isMenu: true, indexOfMember: 5 },
+    {identifier: '2', initial: 'B', title: 'Bcd', isMenu: true, isAdmin: true, indexOfMember: 5 },
     {identifier: '6', initial: 'C', title: 'Cde', isMenu: true, isAdmin: true, indexOfMember: 7}
   ],
   pastMembersList: [

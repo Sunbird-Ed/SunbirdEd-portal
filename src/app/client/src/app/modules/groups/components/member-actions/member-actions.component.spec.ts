@@ -1,7 +1,9 @@
+import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MemberActionsComponent } from './member-actions.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MemberActionsComponent', () => {
   let component: MemberActionsComponent;
@@ -10,7 +12,7 @@ describe('MemberActionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MemberActionsComponent ],
-      imports: [SuiModule]
+      imports: [SuiModule, SharedModule.forRoot(), HttpClientModule]
     })
     .compileComponents();
   }));

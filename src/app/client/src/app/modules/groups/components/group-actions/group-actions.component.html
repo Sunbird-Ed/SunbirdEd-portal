@@ -2,13 +2,13 @@
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
   appBodyScroll (dismissed)="closeModal()" #modal >
   <div class="sb-modal-header" *ngIf="modalName === 'deleteGroup'">
-    Delete Group ?
+    {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
   </div>
   <div class="sb-modal-content">
-    <p *ngIf="modalName === 'deleteGroup'"> Are you sure you want to delete
+    <p *ngIf="modalName === 'deleteGroup'"> {{resourceService?.messages?.imsg?.m0082}}
       {{groupName}} ?</p>
     <!-- show past members modal -->
-    <div class="font-weight-bold my-16" *ngIf="modalName === 'showPastMembers'">Past Members List</div>
+    <div class="font-weight-bold my-16" *ngIf="modalName === 'showPastMembers'">{{resourceService?.frmelmnts?.lbl?.pastMembersList}}</div>
     <div class="members-list my-24" *ngIf="modalName === 'showPastMembers'" appClickOutside (clickOff)="closeModal()">
     <div *ngFor="let member of pastMembersList">
       <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
@@ -19,8 +19,8 @@
   </div>
   <!-- Delete Group modal -->
   <div class="sb-modal-actions" *ngIf="modalName === 'deleteGroup'">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="closeModal()">Delete</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">No</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 
 </sui-modal>

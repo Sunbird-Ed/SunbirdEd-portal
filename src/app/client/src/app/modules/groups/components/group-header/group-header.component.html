@@ -5,7 +5,7 @@
       <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"  (click)="goBack()">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i> Back</button>
+          </svg></i> {{resourceService?.frmelmnts?.btn?.back}}</button>
     </div>
   </div>
   
@@ -19,10 +19,10 @@
         </div>
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
           <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8" (click)="deleteGroup()">
-            <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> Delete</button>
+            <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> {{resourceService?.frmelmnts?.btn?.delete}}</button>
           <button type="button" class="sb-btn sb-btn-outline-primary sb-left-icon-btn sb-btn-normal mr-8 flex-ai-jc-center"  (click)="showPastMembers()">
-          <img src="./assets/images/icon_members.svg" class="mr-4" width="16" /> Show Past members</button>
-          <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" /> Edit</button>
+          <img src="./assets/images/icon_members.svg" class="mr-4" width="16" /> {{resourceService?.frmelmnts?.btn?.showPastMembers}}</button>
+          <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" />{{resourceService?.frmelmnts?.btn?.edit}}</button>
         </div>
       </div>
     </div>

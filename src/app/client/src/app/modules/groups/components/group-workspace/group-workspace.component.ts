@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { takeUntil } from 'rxjs/operators';
 import { groupMockData } from './group-workspace.component.spec.data';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +27,8 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   public pastMembersList: Array<{}> = groupMockData.pastMembersList;
   public unsubscribe$ = new Subject<void>();
 
-  constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService) {
+  constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService,
+    public resourceService: ResourceService) {
     this.groupService = groupService;
  }
 

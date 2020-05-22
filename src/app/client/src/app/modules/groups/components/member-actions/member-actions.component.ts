@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, Input, EventEmitter, ViewChild, Output} from '@angular/core';
 import * as _ from 'lodash-es';
 
@@ -14,7 +15,7 @@ export class MemberActionsComponent {
   @Output() modalClosed = new EventEmitter();
   @Output() handleMember = new EventEmitter();
 
-  constructor() {
+  constructor(public resourceService: ResourceService) {
    }
 
   closeModal() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { NavigationHelperService } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-group-header',
@@ -11,7 +11,8 @@ export class GroupHeaderComponent {
   @Input() groupData;
   modalName: string;
   showModal = false;
-  constructor(private navigationHelperService: NavigationHelperService) { }
+  constructor(private navigationHelperService: NavigationHelperService,
+    public resourceService: ResourceService) { }
 
   goBack() {
     this.navigationHelperService.goBack();
