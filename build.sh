@@ -14,12 +14,12 @@ export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
 buildDockerImage=$7
 buildCdnAssests=$8
-echo "buildDockerImage: " + $buildDockerImage
-echo "buildCdnAssests: " + $buildCdnAssests
+echo "buildDockerImage: " $buildDockerImage
+echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
 then
     cdnUrl=$9
-    echo "cdnUrl: " + $cdnUrl
+    echo "cdnUrl: " $cdnUrl
 fi
 
 commit_hash=$(git rev-parse --short HEAD)
@@ -31,6 +31,7 @@ rm -rf app_dist/dist # remove only dist folder rest else will be replaced by cop
 
 # function to run client build for docker image
 build_client_docker(){
+    npm run download-editors # download editors to assests folder
     echo "starting client local prod build"
     npm run build # Angular prod build
     echo "completed client local prod build"
@@ -57,7 +58,6 @@ build_client(){
     # npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
     yarn install --no-progress --production=true
     echo "completed client npm install"
-    npm run download-editors # download editors to assests folder
     if [ $buildDockerImage == true ]
     then
     build_client_docker & # Put client local build in background 
