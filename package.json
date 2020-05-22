@@ -1,0 +1,44 @@
+{
+  "name": "content_migration_task",
+  "version": "1.0.2",
+  "description": "Content migration for QUML version 0.5 to 1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "migration": "node index.js",
+    "get": "node index.js -x get",
+    "update": "node index.js -x update",
+    "publish": "node index.js -x publish",
+    "migrate": "npm run get && npm run update && npm run publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahulshukla/migration_task.git"
+  },
+  "keywords": [
+    "QUML"
+  ],
+  "author": "Rahul Shukla <rahul.shukla@ilimi.in>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rahulshukla/migration_task/issues"
+  },
+  "homepage": "https://github.com/rahulshukla/migration_task#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "batch-request-js": "^2.0.2",
+    "chalk": "^3.0.0",
+    "convert-array-to-csv": "^1.0.10",
+    "csv-writer": "^1.6.0",
+    "csvsync": "^1.3.2",
+    "execution-time": "^1.4.1",
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.15",
+    "minimist": "^1.2.5",
+    "npm": "^6.14.3",
+    "querystring": "^0.2.0",
+    "util": "^0.12.2",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {}
+}

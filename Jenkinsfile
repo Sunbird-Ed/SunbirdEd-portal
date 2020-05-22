@@ -1,4 +1,4 @@
-node('build-slave') {
+node() {
     try {
         String ANSI_GREEN = "\u001B[32m"
         String ANSI_NORMAL = "\u001B[0m"
@@ -7,43 +7,52 @@ node('build-slave') {
         String ANSI_YELLOW = "\u001B[33m"
 
         ansiColor('xterm') {
-            timestamps {
-                stage('Checkout') {
-                    if (!env.hub_org) {
-                        println(ANSI_BOLD + ANSI_RED + "Uh Oh! Please set a Jenkins environment variable named hub_org with value as registery/sunbidrded" + ANSI_NORMAL)
-                        error 'Please resolve the errors and rerun..'
-                    } else
-                        println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
-                }
-//                cleanWs()
+            stage('Checkout Project') {
+                cleanWs()
                 if (params.github_release_tag == "") {
                     checkout scm
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
-                    build_tag = branch_name + "_" + commit_hash + "_" + env.BUILD_NUMBER
-                    // Creating artifact version
                     artifact_version = branch_name + "_" + commit_hash
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
+                    sh "git clone https://github.com/rahulshukla/migration_task migration_task"
+                    sh "cd migration_task && git checkout origin/${branch_name} -b ${branch_name}"
                 } else {
                     def scmVars = checkout scm
-                    checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/$params.github_release_tag"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
-                    build_tag = params.github_release_tag + "_" + env.BUILD_NUMBER
-                    // Creating artifact version
+                    checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.github_release_tag}"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
+                    artifact_version = params.github_release_tag
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
-                    artifact_version = branch_name + "_" + commit_hash
+                    branch_name = params.github_release_tag.split('_')[0]
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
+                    sh "git clone git clone https://github.com/rahulshukla/migration_task migration_task"
+                    sh """
+                        cd migration_task
+                        checkout_tag=\$(git ls-remote --tags origin $branch_name* | grep -o "$branch_name.*" | sort -V | tail -n1)
+                        git checkout tags/\${checkout_tag} -b \${checkout_tag}
+                    """
                 }
-                echo "build_tag: " + build_tag
+                echo "artifact_version: " + artifact_version
 
-                stage('Build') {
-                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url}")
-                }
-
-                stage('ArchiveArtifacts') {
-                    archiveArtifacts "metadata.json"
-                    currentBuild.description = "${build_tag}"
-                }
+            }
+            stage('Run Migration Script') {
+                sh """
+                    docker stop --force migration_container || true && docker rm --force migration_container || true
+                    docker run --name migration_container -d -w /migration_task -e kp_search_service_base_path=$params.kp_search_service_base_path -e kp_learning_service_base_path=$params.kp_learning_service_base_path  -e kp_assessment_service_base_path=$params.kp_assessment_service_base_path  -e kp_content_service_base_path=$params.kp_content_service_base_path  node sleep infinity
+                    id=\$(docker ps -aqf "name=migration_container")
+                    docker cp migration_task/  \${id}:.
+                    docker exec \${id} npm install /migration_task
+                    docker exec \${id} npm run migrate /migration_task
+                    mkdir -p migration_task/generatedReports
+                    docker cp \${id}:/migration_task/reports/  migration_task/generatedReports/
+                    docker rm --force \${id}
+                """
+            }
+            stage('Generate Reports') {
+                sh """
+                    zip -j  reports-artifacts_${artifact_version}.zip  migration_task/generatedReports/reports/*
+                """
+                archiveArtifacts "reports-artifacts_${artifact_version}.zip"
+                currentBuild.description = "${branch_name}_${commit_hash}"
             }
         }
     }
@@ -51,4 +60,5 @@ node('build-slave') {
         currentBuild.result = "FAILURE"
         throw err
     }
+
 }
