@@ -28,7 +28,7 @@ nvm install 12.16.1 # same is used in client and server
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf app_dist/dist # remove only dist folder rest else will be replaced by copy command
-
+rm -rf dist-cdn
 # function to run client build for docker image
 build_client_docker(){
     npm run download-editors # download editors to assests folder
