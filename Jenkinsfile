@@ -39,7 +39,7 @@ node('build-slave') {
                 stage('Build') {
                     buildDockerImage=true
                     buildCdnAssests=false
-                    cdnUrl=""
+                    cdnUrl="placeHolder"
                     sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url} ${buildDockerImage} ${buildCdnAssests} ${cdnUrl}")
                 }
 
