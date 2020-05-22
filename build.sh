@@ -12,6 +12,13 @@ org=$3
 export sunbird_content_editor_artifact_url=$4
 export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
+buildDockerImage=$7
+buildCdnAssests=$8
+cdnUrl=$9
+echo "buildDockerImage: " + $buildDockerImage
+echo "buildCdnAssests: " + $buildCdnAssests
+echo "cdnUrl: " + $cdnUrl
+
 commit_hash=$(git rev-parse --short HEAD)
 nvm install 12.16.1 # same is used in client and server
 
@@ -20,7 +27,7 @@ mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf app_dist/dist # remove only dist folder rest else will be replaced by copy command
 
 # function to run client build for docker image
-build_client_dockerCopy(){
+build_client_docker(){
     echo "starting client local prod build"
     npm run build # Angular prod build
     echo "completed client local prod build"
@@ -33,8 +40,8 @@ build_client_dockerCopy(){
 # function to run client build for cdn
 build_client_cdn(){
     echo "starting client cdn prod build"
-    # npm run build-cdn -- --deployUrl $cdnUrl # prod command
-    npm run build-cdn # testing command
+    npm run build-cdn -- --deployUrl $cdnUrl # prod command
+    export sunbird_portal_cdn_url=$cdnUrl # required for inject-cdn-fallback task
     npm run inject-cdn-fallback
     echo "completed client cdn prod build"
 }
@@ -48,10 +55,14 @@ build_client(){
     yarn install --no-progress --production=true
     echo "completed client npm install"
     npm run download-editors # download editors to assests folder
-
-    build_client_dockerCopy & # Put client local build in background 
+    if [ $buildDockerImage == true ]
+    then
+    build_client_docker & # Put client local build in background 
+    fi
+    if [ $buildCdnAssests == true ]
+    then
     build_client_cdn & # Put client local build in background
-
+    fi
     wait # wait for both build to complete
     echo "completed client post_build"
 }
@@ -72,7 +83,10 @@ build_server(){
 }
 
 build_client & # Put client build in background 
-build_server & # Put server build in background 
+if [ $buildDockerImage == true ]
+then
+   build_server & # Put client build in background
+fi
 
 ## wait for both build to complete
 wait 
@@ -80,6 +94,8 @@ wait
 BUILD_ENDTIME=$(date +%s)
 echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] seconds to complete."
 
+if [ $buildDockerImage == true ]
+then
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
@@ -87,6 +103,7 @@ docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${or
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
+fi
 
 ENDTIME=$(date +%s)
 echo "build completed. Took $[$ENDTIME - $STARTTIME] seconds."

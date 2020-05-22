@@ -37,7 +37,10 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Build') {
-                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url}")
+                    buildDockerImage=true
+                    buildCdnAssests=false
+                    cdnUrl=""
+                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url} ${buildDockerImage} ${buildCdnAssests} ${cdnUrl}")
                 }
 
                 stage('ArchiveArtifacts') {
