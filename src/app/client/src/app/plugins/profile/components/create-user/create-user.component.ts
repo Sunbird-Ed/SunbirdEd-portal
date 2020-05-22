@@ -94,21 +94,21 @@ export class CreateUserComponent implements OnInit {
   }
 
   fetchTncData() {
-    // this.profileService.getTncConfig().subscribe((data: ServerResponse) => {
-    //   const response = _.get(data, 'result.response.value');
-    //   if (response) {
-    //     try {
-    //       const tncConfig = this.utilService.parseJson(response);
-    //       this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-    //       this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
-    //     } catch (e) {
-    //       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    //     }
-    //   }
-    // }, (err) => {
-    //   this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    // }
-    // );
+    this.profileService.getTncConfig().subscribe((data: ServerResponse) => {
+      const response = _.get(data, 'result.response.value');
+      if (response) {
+        try {
+          const tncConfig = this.utilService.parseJson(response);
+          this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+          this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+        } catch (e) {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        }
+      }
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    }
+    );
   }
 
   showAndHidePopup(mode: boolean) {
