@@ -10,8 +10,7 @@ declare var jQuery: any;
 
 @Component({
   selector: 'app-header',
-  templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.scss']
+  templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit {
   @Input() routerEvents;
