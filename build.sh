@@ -31,7 +31,7 @@ build_client(){
     echo "starting client prod build"
     npm run build # Angular prod build
     echo "completed client prod build"
-    npm run post-build # gzip files
+    # npm run post-build # gzip files, not required, will be handled in cdn or proxy
     cd ..
     mv dist/index.html dist/index.ejs # rename index file
     echo "Copying Client dist to app_dist"
@@ -59,9 +59,9 @@ build_server & # Put server build in background
 ## wait for both build to complete
 wait 
 
-ENDTIME=$(date +%s)
-echo "Client and Server Build complete Took $[$ENDTIME - $STARTTIME] seconds to complete."
-du -hcs app_dist
+BUILD_ENDTIME=$(date +%s)
+echo "Client and Server Build complete Took $[$BUILD_ENDTIME - $STARTTIME] seconds to complete."
+
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
@@ -69,3 +69,6 @@ docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${or
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
+
+ENDTIME=$(date +%s)
+echo "build completed. Took $[$ENDTIME - $STARTTIME] seconds."
