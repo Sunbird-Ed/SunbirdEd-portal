@@ -1,32 +1,89 @@
-<div class="user-profile-box p-0">
-  <div class="d-flex flex-jc-space-between pt-16 px-16">
+<div class="user-profile-box mt-32">
+  <div class="d-flex flex-jc-space-between mb-16">
     <div class="user-profile-box__title">Create User</div>
   </div>
-  <form class="sb-form mb-16 px-16">
-    <div class="ui stackable grid my-8">
-      <div class="twelve wide column p-0 mx-16 text-center"><img src="./assets/images/profile-icon.svg" width="88px"
-          height="88px"></div>
-      <div class="twelve wide column p-0 mx-16">
+
+  <form class="sb-form my-16">
+    <div class="ui stackable grid m-0">
+
+      <div class="twelve wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus mb-8">
-            <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-              placeholder="Enter user name">
-            <label class="font-weight-normal">Name<span>*</span></label>
+        <input class="sb-form-control selection fields-dropdown ui dropdown" type="text" placeholder="Enter user name">
+        <label class="font-weight-normal">Name<span>*</span></label>
+      </div>
+      </div>
+    </div>
+
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus my-8">
+            <!-- <sui-select class="selection fields-dropdown" name="board" labelField="board" placeholder="Select Board">
+              <sui-select-option *ngFor="let board of boards" [value]="board"></sui-select-option>
+            </sui-select> -->
+            <label class="font-weight-normal">Board</label>
           </div>
         </div>
       </div>
-      <div class="mt-16 mb-8">Preferences can be updated from the profile page of the user</div>
-      <div class="twelve wide column p-0 pt-8 mx-16">
+
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus my-8 onboard-content">
+            <!-- <sui-multi-select class="selection fields-dropdown" name="medium" labelField="medium"
+              placeholder="Select Medium">
+              <sui-select-option *ngFor="let medium of mediums" [value]="medium"></sui-select-option>
+            </sui-multi-select> -->
+            <label class="font-weight-normal">Medium</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="twelve wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus mt-8 mb-16">
+            <!-- <sui-multi-select class="selection fields-dropdown" [(ngModel)]="classes" name="class" labelField="class"
+              placeholder="Select Class">
+              <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
+            </sui-multi-select> -->
+            <label class="font-weight-normal">Class</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus">
+            <!-- <select class="ui dropdown selection fields-dropdown" placeholder="Select State" [(ngModel)]="states" name="states">
+              <option [ngValue]="option" *ngFor="let state of states" [value]="option">{{option?.name}}
+              </option>
+            </select> -->
+            <label class="d-flex font-weight-normal">State</label>
+          </div>
+        </div>
+      </div>
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus onboard-content">
+            <!-- <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts" name="districts" labelField="district"
+              placeholder="Select district">
+              <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
+              </option> 
+            </select>-->
+            <label class="d-flex font-weight-normal">District</label>
+          </div>
+        </div>
+      </div>
+      <div class="twelve wide column p-0 pt-8">
         <div class="sb-checkbox sb-checkbox-primary">
           <input type="checkbox" id="check1" name="example">
-          <label for="check1">I understand and accept the <a class="text-underline fsmall"
-              href="javascript:void(0)">DIKSHA Terms of Use</a></label>
-        </div>
+          <label for="check1">I understand and accept the <a class="text-underline fsmall" href="javascript:void(0)">DIKSHA Terms of Use.</a></label>
+          </div>
       </div>
     </div>
   </form>
-  <div class="user-profile-box__actions pb-16 px-16">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled"> Add User</button>
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
-  </div>
+  
+<div class="user-profile-box__actions">
+  <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Add User</button>
+</div>
+ 
 </div>

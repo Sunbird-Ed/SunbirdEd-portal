@@ -7,11 +7,12 @@
   width: 100%;
   background: var(--white);
   border-radius: 8px;
+  padding: 16px;
 
   &__title {
     font-weight: bold;
     color: var(--primary-color);
-    font-size: calculateRem(16px);
+    font-size: calculateRem(18px);
   }
 
   &__actions {
