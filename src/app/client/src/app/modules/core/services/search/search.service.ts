@@ -4,7 +4,7 @@ import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
