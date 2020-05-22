@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'create-user', component: CreateUserComponent,
     data: {
       telemetry: {
-        env: telemetryEnv
+        env: telemetryEnv, type: 'view'
       }
     }
   },
@@ -24,7 +24,7 @@ const routes: Routes = [
     path: 'choose-user', component: ChooseUserComponent,
     data: {
       telemetry: {
-        env: telemetryEnv
+        env: telemetryEnv, type: 'view'
       }
     }
   }
