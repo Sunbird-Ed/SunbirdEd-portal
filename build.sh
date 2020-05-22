@@ -14,10 +14,13 @@ export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
 buildDockerImage=$7
 buildCdnAssests=$8
-cdnUrl=$9
 echo "buildDockerImage: " + $buildDockerImage
 echo "buildCdnAssests: " + $buildCdnAssests
-echo "cdnUrl: " + $cdnUrl
+if [ $buildCdnAssests == true ]
+then
+    cdnUrl=$9
+    echo "cdnUrl: " + $cdnUrl
+fi
 
 commit_hash=$(git rev-parse --short HEAD)
 nvm install 12.16.1 # same is used in client and server
