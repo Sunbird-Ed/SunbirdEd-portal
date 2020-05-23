@@ -15,7 +15,7 @@ node() {
                     branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
                     artifact_version = branch_name + "_" + commit_hash
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
-                    sh "git clone https://github.com/rahulshukla/migration_task migration_task"
+                    sh "git clone https://github.com/Sunbird-Ed/SunbirdEd-portal.git migration_task"
                     sh "cd migration_task && git checkout origin/${branch_name} -b ${branch_name}"
                 } else {
                     def scmVars = checkout scm
@@ -24,7 +24,7 @@ node() {
                     commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     branch_name = params.github_release_tag.split('_')[0]
                     println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
-                    sh "git clone git clone https://github.com/rahulshukla/migration_task migration_task"
+                    sh "git clone git clone https://github.com/Sunbird-Ed/SunbirdEd-portal.git migration_task"
                     sh """
                         cd migration_task
                         checkout_tag=\$(git ls-remote --tags origin $branch_name* | grep -o "$branch_name.*" | sort -V | tail -n1)
