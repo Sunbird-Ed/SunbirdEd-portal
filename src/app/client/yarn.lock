@@ -2423,10 +2423,10 @@ charenc@~0.0.1:
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
   integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
 
-chart.js@^2.9.3:
-  version "2.9.3"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.3.tgz#ae3884114dafd381bc600f5b35a189138aac1ef7"
-  integrity sha512-+2jlOobSk52c1VU6fzkh3UwqHMdSlgH1xFv9FKMqHiNCpXsGPQa/+81AFa+i3jZ253Mq9aAycPwDjnn1XbRNNw==
+chart.js@2.7.3:
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.3.tgz#cdb61618830bf216dc887e2f7b1b3c228b73c57e"
+  integrity sha512-3+7k/DbR92m6BsMUYP6M0dMsMVZpMnwkUyNSAbqolHKsbIzH2Q4LWVEHHYq7v0fmEV8whXE0DrjANulw9j2K5g==
   dependencies:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
@@ -7108,7 +7108,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-es@^4.17.10, lodash-es@^4.17.11, lodash-es@^4.17.15:
+lodash-es@^4.17.10, lodash-es@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
@@ -7986,13 +7986,13 @@ ng2-cache-service@1.1.1:
   resolved "https://registry.yarnpkg.com/ng2-cache-service/-/ng2-cache-service-1.1.1.tgz#e35e1e8dc60e415023d82df82e2157ad73bee9b6"
   integrity sha1-414ejcYOQVAj2C34LiFXrXO+6bY=
 
-ng2-charts@^2.3.0:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-2.3.2.tgz#206de368e58f9655e167b6791c9d2a804191ef99"
-  integrity sha512-T0rPivwZITKtEtFRVodRCO+kIczWIP6V4YLZvf6Kg1jqc8jYGZ37H5ywT0Q7N0Rt5dJGhC5z1/38nWFBVFx5iw==
+ng2-charts@2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-2.2.5.tgz#6375eabc0cb979a41d905339a65b810019390337"
+  integrity sha512-wKN7fp76BBoPMvrMLCrkMZKONxCbL9A5MRkTs5HLgOiifPG8yHHHt0voqUihxSV+OuGNpygzUl3K8aAD43RVBw==
   dependencies:
     "@types/chart.js" "^2.7.48"
-    lodash-es "^4.17.11"
+    lodash "^4.17.11"
     tslib "^1.9.0"
 
 "ng2-semantic-ui@github:project-sunbird/ng2-semantic-ui":
