@@ -12,6 +12,10 @@ const path = require('path')
 , chalk = require('chalk')
 , log = console.log
 , _ = require('lodash')
+, csvSplitStream = require('csv-split-stream')
+, fsExtra = require('fs-extra');
+
+axios.defaults.timeout = 180000;
 
 perf.start(); // Just to measure the script performance
 
@@ -107,7 +111,33 @@ function createCSVFromQuestionData(questionData) {
         log(chalk.bold.greenBright('File is saved with content ID and ready to process for batch execution'));
         log(chalk.white("Script execution time was " + results.words + " for " + (contentIdArray.length) + " content")); // in milliseconds
     }).catch(error => log(chalk.red('Some error occurred - file either not saved or corrupted file saved.' + error)));;
+    
+    splitCsv()
 }
+
+
+function splitCsv(){
+    fsExtra.emptyDirSync(constants.content_csv_folder_rath)
+    return csvSplitStream.split(
+          fs.createReadStream(constants.content_csv_file_rath),
+          {
+            lineLimit: 4
+          },
+          (index) => fs.createWriteStream(constants.content_csv_folder_rath + '/' + `output-${index}.csv`)
+        )
+        .then(csvSplitResponse => {
+          console.log('csvSplitStream succeeded.', csvSplitResponse);
+          // outputs: {
+          //  "totalChunks": 350,
+          //  "options": {
+          //    "delimiter": "\n",
+          //    "lineLimit": "10000"
+          //  }
+          // }
+        }).catch(csvSplitError => {
+          console.log('csvSplitStream failed!', csvSplitError);
+        });
+        }
 
 // generateContentList()
 exports.generateContentList = generateContentList;

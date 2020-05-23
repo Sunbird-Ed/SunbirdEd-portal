@@ -10,15 +10,15 @@ const batchRequest = require('batch-request-js')
 , csvsync = require('csvsync')
 , _ = require('lodash')
 , upgradeUtil  = require(path.join(__dirname,  'upgradeQumlQuestion'))
-
-function getDataFromCSV() {
-    var csv = fs.readFileSync(constants.content_csv_file_rath);
+axios.defaults.timeout = 180000;
+function getDataFromCSV(fromPath) {
+    var csv = fs.readFileSync(fromPath);
     var data = csvsync.parse(csv,{skipHeader: false,
       returnObject: true,});
     return data
 }
 
-function getQumlQuestions() {
+function getQumlQuestions(fromPath) {
   if(constants.access_token_required){
     log(chalk.bold.yellow("Getting Access Token in updatequmldata"))
     const requestBody = {
@@ -33,21 +33,21 @@ function getQumlQuestions() {
         }
     }
     axios.post(constants.authEndpointUrl, qs.stringify(requestBody), config).then((result) => {
-      getQumlInBatch(result.data.access_token);
+      getQumlInBatch(result.data.access_token,fromPath);
         })
         .catch((err) => {
             log(err)
         })
 
   } else {
-    getQumlInBatch('');
+    getQumlInBatch('',fromPath);
 
   }
   
 }
 
-async function getQumlInBatch (access_token) {
-  var row =getDataFromCSV()
+async function getQumlInBatch (access_token,fromPath) {
+  var row =getDataFromCSV(fromPath)
   let qumlIds = []
   row.forEach(function (value) {
     qumlIds.push(_.split(value.questions,','))
@@ -89,3 +89,4 @@ async function getQumlInBatch (access_token) {
 // getQumlQuestions()
 
 exports.updateQumlQuestion = getQumlQuestions;
+
