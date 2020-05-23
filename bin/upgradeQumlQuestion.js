@@ -8,7 +8,7 @@ const axios = require('axios')
 , constants = require( path.join(__dirname, '..', 'constants'))
 , createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
-
+axios.defaults.timeout = 180000;
 function upgradeQumlQuestion (QumlData) {
 
     if(QumlData.assessment_item.qumlVersion == 0.5){

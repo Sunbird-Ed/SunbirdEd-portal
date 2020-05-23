@@ -42,7 +42,7 @@ node() {
                     docker cp migration_task/  \${id}:.
                     docker exec \${id} npm install /migration_task
                     docker exec \${id} npm run migrate /migration_task
-                    mkdir -p migration_task/generatedReports
+                    mkdir -p migration_task/generatedReports/inputContentList
                     docker cp \${id}:/migration_task/reports/  migration_task/generatedReports/
                     docker rm --force \${id}
                 """
@@ -50,8 +50,10 @@ node() {
             stage('Generate Reports') {
                 sh """
                     zip -j  reports-artifacts_${artifact_version}.zip  migration_task/generatedReports/reports/*
+                    zip -j  reports-artifacts_input_${artifact_version}.zip  migration_task/generatedReports/reports/inputContentList/*
                 """
                 archiveArtifacts "reports-artifacts_${artifact_version}.zip"
+                archiveArtifacts "reports-artifacts_input_${artifact_version}.zip"
                 currentBuild.description = "${branch_name}_${commit_hash}"
             }
         }
