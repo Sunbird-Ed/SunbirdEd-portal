@@ -7,7 +7,7 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, CreateTrainingComponent} from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -46,6 +46,16 @@ const routes: Routes = [
             }
           },
           {
+            path: 'course', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'worksapce-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
             path: 'studymaterial', component: DataDrivenComponent,
             data: {
               telemetry: {
@@ -74,69 +84,12 @@ const routes: Routes = [
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
             }
-          }
-        ]
-      },
-      {
-        path: 'create/training', component: CreateTrainingComponent, canActivate: [AuthGuard],
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'workspace-training-content-create', uri: '/workspace/content/create/training',
-            type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
-          }, roles: 'createRole',
-          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-        },
-        children: [
-          {
-            path: 'uploadcontent', component: DataDrivenComponent,
-            data: {
-              telemetry: {
-                env: telemetryEnv, pageid: 'workspace-training-content-create', subtype: 'paginate',
-                uri: '/workspace/content/create/training',
-                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
-              }, breadcrumbs: [{ label: 'Home', url: '/home' },
-              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-            }
-          },
-          {
-            path: 'course', component: DataDrivenComponent,
-            data: {
-              telemetry: {
-                env: telemetryEnv, pageid: 'worksapce-training-create-course', subtype: 'paginate',
-                uri: '/workspace/content/create/training/course',
-                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
-              }, breadcrumbs: [{ label: 'Home', url: '/home' },
-              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-            }
-          },
-          {
-            path: 'studymaterial', component: DataDrivenComponent,
-            data: {
-              telemetry: {
-                env: telemetryEnv, pageid: 'workspace-training-create-lesson', subtype: 'paginate',
-                uri: '/workspace/content/create/training/studymaterial',
-                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
-              }, breadcrumbs: [{ label: 'Home', url: '/home' },
-              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-            }
-          },
-          {
-            path: 'collection', component: DataDrivenComponent,
-            data: {
-              telemetry: {
-                env: telemetryEnv, pageid: 'workspace-training-create-collection', subtype: 'paginate',
-                uri: '/workspace/content/create/training/collection',
-                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
-              }, breadcrumbs: [{ label: 'Home', url: '/home' },
-              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
-            }
           },
           {
             path: 'assessment', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'workspace-training-create-assessment', subtype: 'paginate',
-                uri: '/workspace/content/create/training/assessment',
+                env: telemetryEnv, pageid: 'workspace-create-assessment', subtype: 'paginate', uri: '/workspace/content/create/assessment',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
