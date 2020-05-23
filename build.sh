@@ -102,7 +102,7 @@ then
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
-docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+docker build --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
