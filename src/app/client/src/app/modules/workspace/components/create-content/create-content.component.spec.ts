@@ -50,12 +50,14 @@ describe('CreateContentComponent', () => {
     component.collectionRole = testData.workSpaceRole.collectionRole;
     component.lessonplanRole = testData.workSpaceRole.lessonplanRole;
     component.contentUploadRole = testData.workSpaceRole.lessonplanRole;
+    component.courseRole = testData.workSpaceRole.courseRole;
     component.ngOnInit();
     expect(component.textBookRole).toBeDefined();
     expect(component.lessonRole).toBeDefined();
     expect(component.collectionRole).toBeDefined();
     expect(component.lessonplanRole).toBeDefined();
     expect(component.contentUploadRole).toBeDefined();
+    expect(component.courseRole).toBeDefined();
     expect(component).toBeTruthy();
   });
 });
