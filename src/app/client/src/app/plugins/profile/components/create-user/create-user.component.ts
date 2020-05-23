@@ -68,7 +68,7 @@ export class CreateUserComponent implements OnInit {
     };
 
     this.submitInteractEdata = {
-      id: 'submit-create-user',
+      id: 'submit-create-managed-user',
       type: 'click',
       pageid: this.pageId
     };
