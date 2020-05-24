@@ -27,19 +27,16 @@ nvm install 12.16.1 # same is used in client and server
 
 cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
-rm -rf app_dist/dist # remove only dist folder rest else will be replaced by copy command
-rm -rf dist-cdn
+rm -rf dist-cdn # remove cdn dist folder
+
 # function to run client build for docker image
 build_client_docker(){
     npm run download-editors # download editors to assests folder
     echo "starting client local prod build"
     npm run build # Angular prod build
     echo "completed client local prod build"
-    # npm run post-build # gzip files commenting this as this can be achived at proxy
     cd ..
-    mv dist/index.html dist/index.ejs # rename index file
-    echo "Copying Client dist to app_dist"
-    cp -R dist app_dist
+    mv app_dist/dist/index.html app_dist/dist/index.ejs # rename index file
 }
 # function to run client build for cdn
 build_client_cdn(){
@@ -54,17 +51,16 @@ build_client(){
     echo "Building client in background"
     nvm use 12.16.1
     cd client
-    echo "starting client npm install"
-    # npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    echo "starting client yarn install"
     yarn install --no-progress --production=true
-    echo "completed client npm install"
+    echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
-    build_client_docker & # Put client local build in background 
+    build_client_docker & # run client local build in background 
     fi
     if [ $buildCdnAssests == true ]
     then
-    build_client_cdn & # Put client local build in background
+    build_client_cdn & # run client local build in background
     fi
     wait # wait for both build to complete
     echo "completed client post_build"
@@ -77,18 +73,16 @@ build_server(){
     cp -R libs helpers proxy resourcebundles package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
     nvm use 12.16.1
-    echo "starting server npm install"
-    # npm i -g npm@6.13.4
-    # npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
+    echo "starting server yarn install"
     yarn install --no-progress --production=true
-    echo "completed server npm install"
+    echo "completed server yarn install"
     node helpers/resourceBundles/build.js
 }
 
-build_client & # Put client build in background 
+build_client & # run client build in background 
 if [ $buildDockerImage == true ]
 then
-   build_server & # Put client build in background
+   build_server & # run client build in background
 fi
 
 ## wait for both build to complete
@@ -102,7 +96,7 @@ then
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo "starting docker build"
-docker build --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
+docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
 cd ../../..
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
