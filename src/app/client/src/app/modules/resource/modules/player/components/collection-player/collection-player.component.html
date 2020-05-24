@@ -42,7 +42,7 @@
 
               <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyAsCourseInteractEdata" 
               href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-              [permission]="['COURSE_CREATOR']" (click)="copyAsCourse(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+              [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary">
               <img src="assets/images/copy-clone.svg" class="mr-4 pt-2"> {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
               </button>
              

@@ -113,7 +113,6 @@ describe('LimitedPublishedComponent', () => {
       'Collection',
       'TextBook',
       'Course',
-      'CurriculumCourse',
       'LessonPlan',
       'Resource',
       'SelfAssess',

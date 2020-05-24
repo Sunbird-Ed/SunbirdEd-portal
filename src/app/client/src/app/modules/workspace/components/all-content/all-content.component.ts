@@ -232,7 +232,6 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
         contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
-        courseType: _.get(bothParams, 'queryParams.courseType'),
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,

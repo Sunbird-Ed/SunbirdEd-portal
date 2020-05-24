@@ -205,10 +205,9 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       'filters': {
         'identifier': _.uniq(courseIds),
         'status': ['Live'],
-        'contentType': ['Course'],
-        'courseType': ['CurriculumCourse', 'TrainingCourse']
+        'contentType': ['Course']
       },
-      'fields': ['name', 'courseType', 'contentType']
+      'fields': ['name']
     };
 
     // Get course details for the batches to show content name on batch card

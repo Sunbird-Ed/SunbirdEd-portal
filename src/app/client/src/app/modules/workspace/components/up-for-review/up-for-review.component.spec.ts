@@ -139,7 +139,7 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
-    const ContentType = ['Collection', 'Course', 'CurriculumCourse', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource',
+    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource',
       'LearningOutcomeDefinition',
       'ExplanationResource',
       'ExperientialResource', 'eTextBook'];
