@@ -6,8 +6,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { OrgDetailsService, ChannelService, FrameworkService, UserService, FormService, TncService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, throwError, of, forkJoin, Subject, merge, concat } from 'rxjs';
-import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-user',
@@ -29,7 +28,7 @@ export class CreateUserComponent implements OnInit {
   telemetryImpression: IImpressionEventInput;
   telemetryInteractObject: IInteractEventObject;
   submitInteractEdata: IInteractEventEdata;
-  pageId = 'user-create';
+  pageId = 'create-managed-user';
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, public router: Router,
@@ -148,27 +147,8 @@ export class CreateUserComponent implements OnInit {
     const createUserRequest = {
       request: {
         firstName: this.userDetailsForm.value.name,
-        managedBy: this.userService.userid/*,
-        framework: this.userProfile.framework,
-        userLocations: this.userProfile.userLocations*/
+        managedBy: this.userService.userid
       }
     };
-    // this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
-    //   const requestBody = {
-    //     request: {
-    //       version: this.userProfile.tncLatestVersion,
-    //       userId: resp.result.userId
-    //     }
-    //   };
-    //   this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
-    //     this.router.navigate(['/profile/choose-user']);
-    //   }, err => {
-    //     this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-    //   });
-    // },
-    //   (err) => {
-    //     this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-    //   }
-    // );
   }
 }

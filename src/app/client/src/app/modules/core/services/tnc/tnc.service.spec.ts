@@ -1,9 +1,9 @@
-import { TestBed, inject, getTestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { TncService } from './tnc.service';
-import { ConfigService, SharedModule } from '@sunbird/shared';
-import { LearnerService, UserService } from '@sunbird/core';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ConfigService } from '@sunbird/shared';
+import { LearnerService } from '@sunbird/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TncService', () => {
   beforeEach(() => {
