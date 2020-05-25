@@ -44,8 +44,8 @@ export class ChooseUserComponent implements OnInit {
   }
 
   selectUser(event) {
-    this.selectedUser = event.data.data;
-    const userId = event.data.data.identifier;
+    this.selectedUser = _.get(event, 'data.data');
+    const userId = _.get(event, 'data.data.identifier');
     _.forEach(this.userList, (userData, index) => {
       this.userList[index].selected = userData.identifier === userId;
     });
@@ -56,9 +56,7 @@ export class ChooseUserComponent implements OnInit {
       request: {
         filters: {
           managedBy: this.userService.userid
-        },
-        offset: 0,
-        limit: 20
+        }
       }
     };
     this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
