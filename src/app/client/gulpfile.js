@@ -24,10 +24,10 @@ const cdnFallBackScript = `\n<script type="text/javascript" src="${process.env.s
     }
 </script>`
 gulp.task('inject:cdnFallBack:script', () => {
-    return gulp.src('./../dist/index.html')
+    return gulp.src('./../dist-cdn/index.html')
         .pipe(inject.after('</app-root>', cdnFallBackScript))
         .pipe(rename('index_cdn.ejs'))
-        .pipe(gulp.dest('./../dist'))
+        .pipe(gulp.dest('./../dist-cdn'))
 })
 
 //////////////////////// editor download and zip ///////////////////////////////////////////////////

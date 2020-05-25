@@ -51,7 +51,6 @@
   },
   "scripts": {
     "server": "gulp update:index:file && node server",
-    "preinstall": "npm install ./libs/sb_logger_util_v2 && npm install ./libs/sb_telemetry_util && npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",

@@ -7,7 +7,7 @@
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "download-editors": "gulp download:editors",
-    "build": "ng build --prod --deployUrl dist/",
+    "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
     "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
     "test": "ng test --tags $tags",
@@ -15,15 +15,15 @@
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "ng test src --code-coverage=true --watch=false --sourceMap=false",
-    "build-cdn": "ng build --prod",
+    "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
-    "with-stats": "node --max_old_space_size=8192 node_modules/.bin/ng build --prod --stats-json"
+    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "engines": {
-    "node": "12.16.1",
+    "node": ">=12.16.1",
     "npm": "6.13.4"
   },
   "private": true,
@@ -59,7 +59,7 @@
     "angular-shepherd": "0.0.5",
     "angular2-multiselect-dropdown": "^3.2.1",
     "angular2-uuid": "1.1.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "2.7.3",
     "chat-lib": "0.0.13",
     "ckeditor-build-font": "1.0.5",
     "common-consumption-styles": "0.0.16",
@@ -91,7 +91,7 @@
     "ng-dynamic-component": "5.0.0",
     "ng-recaptcha": "^5.0.0",
     "ng2-cache-service": "1.1.1",
-    "ng2-charts": "^2.3.0",
+    "ng2-charts": "2.2.5",
     "ng2-semantic-ui": "github:project-sunbird/ng2-semantic-ui",
     "ngx-avatar": "^3.7.0",
     "ngx-daterangepicker-material": "2.1.3",
