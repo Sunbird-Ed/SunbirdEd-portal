@@ -7,6 +7,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CurriculumCourseDetailsComponent } from './curriculum-course-details.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('CurriculumCourseDetailsComponent', () => {
   let component: CurriculumCourseDetailsComponent;
@@ -19,7 +20,7 @@ describe('CurriculumCourseDetailsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumCourseDetailsComponent],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       providers: [ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

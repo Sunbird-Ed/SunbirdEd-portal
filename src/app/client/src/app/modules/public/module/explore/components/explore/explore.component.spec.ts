@@ -120,9 +120,7 @@ describe('ExploreComponent', () => {
   it('should show error if contentSearchService is not initialized and slug is not available', fakeAsync(() => {
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
-    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.callFake(() => throwError({}));
-    spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
-    spyOn<any>(component, 'setNoResultMessage').and.callThrough();
+    spyOn<any>(component, 'getChannelId').and.callFake(() => throwError({}));
     spyOn(component['navigationhelperService'], 'goBack');
     spyOn<any>(toasterService, 'error');
     component.ngOnInit();

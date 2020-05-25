@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule} from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 
 
 describe('ExploreCurriculumCoursesComponent', () => {
@@ -28,7 +30,7 @@ describe('ExploreCurriculumCoursesComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ExploreCurriculumCoursesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })

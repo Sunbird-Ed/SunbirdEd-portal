@@ -293,6 +293,7 @@ describe('SignUpComponent', () => {
   });
 
   it('should init instance with sunbird', () => {
+    component.initializeFormFields();
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(component, 'initializeFormFields');

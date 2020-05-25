@@ -26,28 +26,3 @@
     <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
   </div>
 </div>
-
-<!-- screen 8 code modal -->
-<sui-modal *ngIf="showSmallModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal " appBodyScroll (dismissed)="showSmallModal = !showSmallModal" #modal>
-  <div class="sb-modal-content">
-    <div class="d-flex flex-ai-center text-center flex-dc my-8">
-      <div class="diksha-label font-weight-bold fnormal">Now using DIKSHA as</div>
-      <div class="d-flex flex-jc-center flex-ai-center add-member-content pt-16">
-        <div class="add-member-text">
-          <div class="oval">A</div>
-          <div class="name-label fs-1 my-16 font-weight-bold">Arka Maini</div>
-        </div>
-      </div>
-      <div class="fsmall">Go to Profile to change Board, Medium and Class information</div>
-      <div class="mt-16">
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16" (click)="showSmallModal = !showSmallModal">
-          Go to Library
-        </button>
-        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showSmallModal = !showSmallModal">
-          Go to Profile
-        </button>
-      </div>
-    </div>
-  </div>
-</sui-modal>

@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TenantService } from '@sunbird/core';
 import { PopupControlService } from '../../../../service/popup-control.service';
+import { APP_BASE_HREF } from '@angular/common';
 
 describe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
@@ -22,7 +23,7 @@ describe('UserOnboardingComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule
       ],
-      providers: [TelemetryService, TenantService, PopupControlService],
+      providers: [TelemetryService, TenantService, PopupControlService, {provide: APP_BASE_HREF, useValue: 'test'}],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
