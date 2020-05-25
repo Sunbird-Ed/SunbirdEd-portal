@@ -1,7 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+
 STARTTIME=$(date +%s)
 echo "Starting portal build from build.sh"
-set -euo pipefail	
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -12,15 +13,13 @@ org=$3
 export sunbird_content_editor_artifact_url=$4
 export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
-buildDockerImage=$7
-buildCdnAssests=$8
+
+buildDockerImage=${7-true} # input not provide sets true as default value
+buildCdnAssests=${8-false} # input not provide sets false as default value
+cdnUrl=${9-""} # input not provide sets "" as default value
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
-if [ $buildCdnAssests == true ]
-then
-    cdnUrl=$9
-    echo "cdnUrl: " $cdnUrl
-fi
+echo "cdnUrl: " $cdnUrl
 
 commit_hash=$(git rev-parse --short HEAD)
 nvm install 12.16.1 # same is used in client and server
@@ -29,8 +28,18 @@ cd src/app
 mkdir -p app_dist/ # this folder should be created prior server and client build
 rm -rf dist-cdn # remove cdn dist folder
 
+# function to handle error and shutdown all background task when any one task fails
+handleError() {
+  if [ "$1" != "0" ]; then
+    echo "Build failed with Exit Code:" $1 " at Line Number" $2
+    kill -- -$$ # kill all process in background before exit
+    exit $1
+  fi
+}
+
 # function to run client build for docker image
 build_client_docker(){
+    trap 'handleError $? $LINENO' EXIT # to catch any error in the function
     npm run download-editors # download editors to assests folder
     echo "starting client local prod build"
     npm run build # Angular prod build
@@ -40,6 +49,7 @@ build_client_docker(){
 }
 # function to run client build for cdn
 build_client_cdn(){
+    trap 'handleError $? $LINENO' EXIT # to catch any error in the function
     echo "starting client cdn prod build"
     npm run build-cdn -- --deployUrl $cdnUrl # prod command
     export sunbird_portal_cdn_url=$cdnUrl # required for inject-cdn-fallback task
@@ -48,6 +58,7 @@ build_client_cdn(){
 }
 # function to run client build
 build_client(){
+    trap 'handleError $? $LINENO' EXIT # to catch any error in the function
     echo "Building client in background"
     nvm use 12.16.1
     cd client
@@ -56,11 +67,11 @@ build_client(){
     echo "completed client yarn install"
     if [ $buildDockerImage == true ]
     then
-    build_client_docker & # run client local build in background 
+        build_client_docker & # run client local build in background 
     fi
     if [ $buildCdnAssests == true ]
     then
-    build_client_cdn & # run client local build in background
+        build_client_cdn & # run client local build in background
     fi
     wait # wait for both build to complete
     echo "completed client post_build"
@@ -68,6 +79,7 @@ build_client(){
 
 # function to run server build
 build_server(){
+    trap 'handleError $? $LINENO' EXIT # to catch any error in the function
     echo "Building server in background"
     echo "copying requied files to app_dist"
     cp -R libs helpers proxy resourcebundles package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
@@ -103,4 +115,4 @@ echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_ha
 fi
 
 ENDTIME=$(date +%s)
-echo "build completed. Took $[$ENDTIME - $STARTTIME] seconds."
+echo "build complete. Took $[$ENDTIME - $STARTTIME] seconds."
