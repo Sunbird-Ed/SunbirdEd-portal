@@ -52,11 +52,6 @@ export class CreateUserComponent implements OnInit {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-      object: {
-        id: this.userService.userid,
-        type: 'User',
-        ver: '1.0'
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.pageId,
@@ -70,12 +65,6 @@ export class CreateUserComponent implements OnInit {
       id: 'submit-create-managed-user',
       type: 'click',
       pageid: this.pageId
-    };
-
-    this.telemetryInteractObject = {
-      id: this.userService.userid,
-      type: 'User',
-      ver: '1.0'
     };
   }
 

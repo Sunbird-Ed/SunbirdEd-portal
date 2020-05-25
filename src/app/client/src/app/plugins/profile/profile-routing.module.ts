@@ -13,7 +13,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'create-user', component: CreateUserComponent,
+    path: 'create-managed-user', component: CreateUserComponent,
     data: {
       telemetry: {
         env: telemetryEnv, type: 'view'
