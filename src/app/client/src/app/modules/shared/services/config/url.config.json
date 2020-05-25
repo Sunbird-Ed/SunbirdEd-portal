@@ -66,7 +66,9 @@
       "DOWNLOAD_CERTIFICATE": "certreg/v1/certs/download",
       "GET_USER_FEED": "user/v1/feed",
       "USER_MIGRATE": "user/v1/migrate",
-      "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc"
+      "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
+      "SEARCH_USER": "user/v1/search",
+      "SWITCH_USER": "user/v1/switch"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search"

@@ -142,6 +142,10 @@ export class UserService {
   get userid(): string {
     return this._userid;
   }
+
+  setUserId(userId: string) {
+    this._userid = userId;
+  }
   /**
   * get method to fetch sessionId.
   */
