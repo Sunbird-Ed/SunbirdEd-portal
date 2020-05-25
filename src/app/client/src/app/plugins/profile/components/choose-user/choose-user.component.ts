@@ -6,9 +6,9 @@ import {
   ResourceService,
   ServerResponse,
   ToasterService,
-  InterpolatePipe, IUserData
+  InterpolatePipe, IUserData, NavigationHelperService
 } from '@sunbird/shared';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
@@ -19,12 +19,12 @@ import * as _ from 'lodash-es';
   styleUrls: ['./choose-user.component.scss']
 })
 export class ChooseUserComponent implements OnInit {
-  showSmallModal;
 
   constructor(public profileService: ProfileService, public userService: UserService,
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
-              private configService: ConfigService, private managerUserService: ManagedUserService) {
+              private configService: ConfigService, private managerUserService: ManagedUserService,
+              public activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -41,6 +41,22 @@ export class ChooseUserComponent implements OnInit {
 
   ngOnInit() {
     this.getManagedUserList();
+    this.telemetryImpressionEvent();
+  }
+
+  telemetryImpressionEvent() {
+    this.telemetryService.impression({
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri,
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
+    });
   }
 
   selectUser(event) {
