@@ -4,7 +4,7 @@ import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { SignupService } from './../../services';
-import { CoreModule, TenantService, TncService } from '@sunbird/core';
+import {CoreModule, TenantService, TncService} from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
