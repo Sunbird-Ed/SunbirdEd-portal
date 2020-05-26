@@ -136,8 +136,30 @@ export class CreateUserComponent implements OnInit {
     const createUserRequest = {
       request: {
         firstName: this.userDetailsForm.value.name,
-        managedBy: this.userService.userid
+        managedBy: this.userService.userid,
+        locationIds: _.map(this.userProfile.userLocations, 'id')
       }
     };
+    if (_.get(this.userProfile, 'framework') && !_.isEmpty(_.get(this.userProfile, 'framework'))) {
+      createUserRequest.request['framework'] = _.get(this.userProfile, 'framework');
+    }
+
+    this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
+      const requestBody = {
+        request: {
+          version: this.userProfile.tncLatestVersion,
+          userId: resp.result.userId
+        }
+      };
+      this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
+        this.router.navigate(['/profile/choose-managed-user']);
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      });
+    },
+      (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      }
+    );
   }
 }
