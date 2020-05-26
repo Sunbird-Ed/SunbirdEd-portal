@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CoreModule, PermissionService } from '@sunbird/core';
+import { CoreModule, PermissionService, UserService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -159,5 +159,35 @@ describe('BatchDetailsComponent', () => {
     component.enrolledBatchInfo = {'enrollmentType': 'open'};
     component.isUnenrollDisabled();
     expect(component.isUnenrollbtnDisabled).toBeFalsy();
+  });
+
+  it(`should allow 'Create Batch' button to be shown if the user has created to course and has necessary roles`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeTruthy();
+  });
+
+  it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('123456789');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeFalsy();
+  });
+
+  it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeFalsy();
   });
 });
