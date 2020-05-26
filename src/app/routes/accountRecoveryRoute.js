@@ -84,8 +84,8 @@ module.exports = (app) => {
             URL: req.url,
             body: JSON.stringify(req.body),
             msg: 'portal - otp verification failed',
-            uuid: _get(req,'headers.x-msgid'),
-            did:_get(req,'headers.x-device-id'),
+            uuid: _.get(req,'headers.x-msgid'),
+            did:_.get(req,'headers.x-device-id'),
             error: JSON.stringify(err)
           });
           return proxyResData;

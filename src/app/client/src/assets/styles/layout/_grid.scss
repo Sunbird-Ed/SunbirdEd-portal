@@ -9,15 +9,13 @@ $screen_viewport_xxl: 1600px;
 $screen_viewport_xxxl: 1920px;
 
 // Grid array (used for generating the grid)
-$grid_arr: (
-  (xs, $screen_viewport_xs),
+$grid_arr: ((xs, $screen_viewport_xs),
   (sm, $screen_viewport_sm),
   (md, $screen_viewport_md),
   (lg, $screen_viewport_lg),
   (xl, $screen_viewport_xl),
   (xxl, $screen_viewport_xxl),
-  (xxxl, $screen_viewport_xxxl)
-);
+  (xxxl, $screen_viewport_xxxl));
 
 // Grid template creation
 .sb-g {
@@ -27,10 +25,13 @@ $grid_arr: (
   grid-column-gap: $grid_gutter;
 }
 
-@each $label, $breakpoint, $width in $grid_arr {
+@each $label,
+$breakpoint,
+$width in $grid_arr {
   @media (min-width: #{$breakpoint}) {
     @for $i from 1 through 12 {
       @for $y from 1 through 12 {
+
         // Differs from bootstrap from the point that it specifies the index of a column to start
         // example: col-start-6 col-4 (start at col 6 columns and occupy 4 columns
         .sb-g-col-start-#{$label}-#{$y}.sb-g-col-#{$label}-#{$i} {
@@ -43,6 +44,7 @@ $grid_arr: (
         grid-column-start: span #{$i};
       }
     }
+
     // .container {
     //   // width: calc(#{$breakpoint} - #{$grid_gutter});
     //   width:90%;
@@ -66,16 +68,20 @@ $grid_arr: (
 
 //grid columns
 $columns: 12;
+
 @for $i from 1 through $columns {
   $colsizes: xs sm md lg xl xxl xxxl;
+
   .dsb-g-col-#{$i} {
     grid-column: span $i;
   }
+
   @each $colsize in $colsizes {
     .dsb-g-col-#{nth($colsize, 1)}-#{$i} {
       grid-column: span $i;
     }
   }
+
   .dsb-g-col-offset-#{$i} {
     margin-left: (100% / $columns) * $i;
   }
@@ -83,10 +89,12 @@ $columns: 12;
 
 //flex columns
 $columns: 12;
+
 @for $i from 1 through $columns {
   .dsb-fx-col-#{$i} {
     flex: 0 0 100% / $columns * $i;
   }
+
   .dsb-fx-col-offset-#{$i} {
     margin-left: 100% / $columns * $i;
   }
@@ -127,5 +135,8 @@ $columns: 12;
   grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
   grid-gap: 1rem;
   grid-row-gap: 1.5rem;
-  &__item{}
+
+  &__item {}
 }
+
+

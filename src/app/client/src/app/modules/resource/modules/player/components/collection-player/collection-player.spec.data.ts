@@ -1928,5 +1928,48 @@ export const CollectionHierarchyGetMockResponse = {
           'board': 'NCERT',
           'status': 'Draft'
       }
-  }
+  },
+  copyCourseContentData : {
+        'template code': 'org.ekstep.ordinal.story', 'keywords': ['elephant'], 'methods': [], 'code': 'code', 'framework': 'NCF',
+        'description': 'Elephant and the Monkey', 'language': ['English'], 'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'body': '{}', 'createdOn': '2016-03-28T09:13:19.470+0000', 'appIcon': '', 'gradeLevel': ['Grade 1', 'Grade 2'],
+        'collections': [], 'children': [], 'usesContent': [], 'artifactUrl': '', 'lastUpdatedOn': '',
+        'contentType': 'Story', 'item_sets': [], 'owner': 'EkStep', 'identifier': 'domain_14302',
+        'audience': ['Learner'], 'visibility': 'Default', 'libraries': [], 'mediaType': 'content',
+        'ageGroup': ['6-7', '8-10'], 'osId': 'org.ekstep.quiz.app', 'languageCode': 'en', 'userId': 's', 'userName': 'sourav',
+        'versionKey': '1497009185536', 'tags': ['elephant'], 'concepts': [], 'createdBy': 'EkStep',
+        'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': ''
+    },
+    copyContentSuccess: {
+        'id': 'api.course.create',
+        'ver': 'v1',
+        'ts': '2020-05-15 13:09:33:042+0000',
+        'params': {
+          'resmsgid': null,
+          'msgid': null,
+          'err': null,
+          'status': 'success',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'versionKey': '1589548170308',
+          'identifier': 'do_11302157861002444811',
+          'course_id': 'do_11302157861002444811'
+        }
+      },
+      copyContentFailed: {
+        'id': 'api.course.create',
+        'ver': 'v1',
+        'ts': '2020-05-15 14:52:24:428+0000',
+        'params': {
+          'resmsgid': null,
+          'msgid': null,
+          'err': 'SERVER_ERROR',
+          'status': 'SERVER_ERROR',
+          'errmsg': 'Course creation failed Please provide valid value for List(createdBy, createdFor, organisation, framework)'
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {}
+      }
 };

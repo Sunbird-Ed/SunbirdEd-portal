@@ -214,6 +214,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+    if (this.routeParams.type.toLowerCase() === 'course' ) {
+      window.context['board'] = _.get(this.userProfile, 'framework.board');
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
@@ -237,11 +240,15 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['CourseUnit']
+        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {
         contentType: ['LessonPlanUnit']
+      };
+    } else if (this.routeParams.type.toLowerCase() === 'curriculumcourse') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['CourseUnit']
       };
     }
     if (this.routeParams.state === state.UP_FOR_REVIEW &&
@@ -352,6 +359,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         return this.configService.editorConfig.COLLECTION_EDITOR.COLLECTION_ARRAY;
       case 'LessonPlan':
         return this.configService.editorConfig.COLLECTION_EDITOR.LESSON_PLAN;
+      case 'CurriculumCourse':
+        return this.configService.editorConfig.COLLECTION_EDITOR.CURRICULUM_COURSE_ARRAY;
       default:
         return this.configService.editorConfig.COLLECTION_EDITOR.DEFAULT_CONFIG;
     }

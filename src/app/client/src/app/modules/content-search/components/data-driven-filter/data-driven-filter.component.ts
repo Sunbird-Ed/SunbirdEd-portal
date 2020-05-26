@@ -3,7 +3,7 @@ import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 import {
   ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy, ViewRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -295,19 +295,19 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       this.applyFilterInteractEdata = {
         id: 'apply-filter',
         type: 'click',
-        pageid: this.pageId,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
         extra: {filters: filters}
       };
       this.resetFilterInteractEdata = {
         id: 'reset-filter',
         type: 'click',
-        pageid: this.pageId,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
         extra: {filters: filters}
       };
       this.filterInteractEdata = {
         id: 'filter-accordion',
         type: 'click',
-        pageid: this.pageId
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       };
     }, 5);
     const pageSection = this.cacheService.get('pageSection');
@@ -317,7 +317,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
   private hardRefreshFilter() {
     this.refresh = false;
-    this.cdr.detectChanges();
+    if (!(this.cdr as ViewRef).destroyed ) {
+          this.cdr.detectChanges();
+    }
     this.refresh = true;
   }
   getOrgSearch() {

@@ -1,0 +1,53 @@
+<!-- screen 3 code -->
+<div class="user-profile-box my-32 p-0">
+  <div class="d-flex flex-jc-space-between px-16 pt-16">
+    <div class="user-profile-box__title">Use DIKSHA as</div>
+    <button type="button" class="sb-btn sb-btn-xs sb-btn-error">Delete User</button>
+  </div>
+  <div class="px-16">
+    <button type="submit" class="sb-btn sb-btn-sm sb-right-icon-btn w-100 mt-16 mb-24 sb-add-user-btn">
+      <i class="chevron plus icon"></i> Add User
+    </button>
+  </div>
+  <div class="members-list px-16 mb-16">
+    <div class="members-list__item members-list__item--active">
+      <div class="oval">A</div>
+      <div class="member-name"><span>User Name 01</span></div>
+      <i class="check circle icon icon_active"></i>
+    </div>
+    <div class="members-list__item">
+      <div class="oval">B</div>
+      <div class="member-name"><span>User Name 02</span></div>
+      <i class="check circle icon icon_active"></i>
+    </div>
+  </div>
+  <div class="user-profile-box__actions pb-16 px-16">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled" (click)="showSmallModal = !showSmallModal">Switch User</button>
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
+  </div>
+</div>
+
+<!-- screen 8 code modal -->
+<sui-modal *ngIf="showSmallModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal " appBodyScroll (dismissed)="showSmallModal = !showSmallModal" #modal>
+  <div class="sb-modal-content">
+    <div class="d-flex flex-ai-center text-center flex-dc my-8">
+      <div class="diksha-label font-weight-bold fnormal">Now using DIKSHA as</div>
+      <div class="d-flex flex-jc-center flex-ai-center add-member-content pt-16">
+        <div class="add-member-text">
+          <div class="oval">A</div>
+          <div class="name-label fs-1 my-16 font-weight-bold">Arka Maini</div>
+        </div>
+      </div>
+      <div class="fsmall">Go to Profile to change Board, Medium and Class information</div>
+      <div class="mt-16">
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16" (click)="showSmallModal = !showSmallModal">
+          Go to Library
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showSmallModal = !showSmallModal">
+          Go to Profile
+        </button>
+      </div>
+    </div>
+  </div>
+</sui-modal>

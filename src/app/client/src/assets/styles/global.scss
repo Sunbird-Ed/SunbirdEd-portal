@@ -17,7 +17,7 @@ body {
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
-    background: $body-background-color !important;
+    background: #E5EDF5 !important;
     & > .pusher {
       background: transparent !important;
      // padding-bottom: 400px !important;

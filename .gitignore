@@ -1,4 +1,7 @@
 node_modules
+dist-cdn
+app_dist
+metadata.json
 dist
 coverage
 documentation

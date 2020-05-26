@@ -200,6 +200,26 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       this.showLoader = false;
       return;
     }
+    const courseIds = _.map(this.batchList, 'courseId');
+    const searchOption = {
+      'filters': {
+        'identifier': _.uniq(courseIds),
+        'status': ['Live'],
+        'contentType': ['Course']
+      },
+      'fields': ['name']
+    };
+
+    // Get course details for the batches to show content name on batch card
+    this.searchService.contentSearch(searchOption, false)
+      .subscribe(data => {
+        if (_.get(data, 'result.content')) {
+          _.map(this.batchList, (batchData) => {
+            batchData.courseDetails = _.find(_.get(data, 'result.content'), courseData => courseData.identifier === batchData.courseId);
+          });
+        }
+      });
+
     const userList = _.compact(_.uniq(_.map(this.batchList, 'createdBy')));
     const { slickSize } = this.config.appConfig.CourseBatchPageSection;
     const req = {

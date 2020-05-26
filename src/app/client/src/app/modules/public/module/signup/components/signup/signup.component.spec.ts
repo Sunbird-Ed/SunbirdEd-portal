@@ -12,6 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import {SignUpComponentMockData} from './signup.component.spec.data';
+import {By} from '@angular/platform-browser';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -23,6 +24,7 @@ const fakeActivatedRoute = {
     }
   }
 };
+const currentYear = new Date().getFullYear();
 
 const resourceBundle = {
   'frmelmnts': {
@@ -35,7 +37,9 @@ const resourceBundle = {
       'passwd': 'Password must contain a minimum of 8 characters including numerals, '
       + 'lower and upper case alphabets and special characters.',
       'uniquePhone': 'uniquePhone',
-      'passwderr': 'Password cannot be same as your username.'
+      'passwderr': 'Password cannot be same as your username.',
+      'phoneOrEmail': 'Enter mobile number or email address',
+      'parentOrGuardian': 'of your Parent/ Guardian'
     },
   },
   'messages': {
@@ -93,6 +97,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const name = component.signUpForm.controls['name'];
     name.setValue('');
@@ -108,6 +113,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const phone = component.signUpForm.controls['phone'];
     phone.setValue('');
@@ -123,6 +129,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const phone = component.signUpForm.controls['phone'];
     phone.setValue('8989');
@@ -219,6 +226,7 @@ describe('SignUpComponent', () => {
   });
   it('set all values with enabling the submit button ', () => {
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     const name = component.signUpForm.controls['name'];
     name.setValue('sourav');
     const password = component.signUpForm.controls['password'];
@@ -294,7 +302,6 @@ describe('SignUpComponent', () => {
     expect(component.instance).toEqual('SUNBIRD');
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
-    expect(component.initializeFormFields).toHaveBeenCalled();
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.signUpTelemetryStart).toHaveBeenCalled();
     });
@@ -366,6 +373,77 @@ describe('SignUpComponent', () => {
   it('should not show tnc popup if given mode is false', () => {
     component.showAndHidePopup(false);
     expect(component.showTncPopup).toBe(false);
+  });
+
+  it('should disable the form as no age is selected and init the age dropdown', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    expect(component.signUpForm.disable).toBeTruthy();
+    expect(component.birthYearOptions.length).toBe(100);
+  });
+
+  it('should change birth year and enable form and set user as not minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    fixture.detectChanges();
+    component.showContact = 'email';
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(false);
+    const phoneOrEmailElement = fixture.debugElement.query(By.css('#phoneOrEmail'));
+    expect(phoneOrEmailElement.nativeNode.innerText).toMatch(resourceBundle.frmelmnts.lbl.phoneOrEmail);
+  });
+
+  it('should change birth year and enable form and set user as minor', () => {
+    const signupService = TestBed.get(SignupService);
+    const phoneOrEmailMessage = resourceBundle.frmelmnts.lbl.phoneOrEmail + ' ' + resourceBundle.frmelmnts.lbl.parentOrGuardian;
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 2);
+    fixture.detectChanges();
+    component.showContact = 'email';
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(true);
+    const phoneOrEmailElement = fixture.debugElement.query(By.css('#phoneOrEmail'));
+    expect(phoneOrEmailElement.nativeNode.innerText).toMatch(phoneOrEmailMessage);
+  });
+
+  it('should generate otp as user is minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 2);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtpMinor.request.key);
+    component.generateOTP();
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(true);
+    expect(component.showSignUpForm).toBe(false);
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor);
+  });
+
+  it('should generate otp as user is minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtp.request.key);
+    component.generateOTP();
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(false);
+    expect(component.showSignUpForm).toBe(false);
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp);
   });
 
 });

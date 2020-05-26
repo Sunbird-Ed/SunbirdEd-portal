@@ -17,11 +17,11 @@
                     <i class="calendar outline icon"></i>
                     <div class="content width-100">
                         <button [disabled]="isEnrollmentAllowed(batch.enrollmentEndDate)"
-                            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch.enrollmentEndDate), 'sb-btn-outline-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
+                            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch.enrollmentEndDate), 'sb-btn-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
                             class="ui right floated sb-btn sb-btn-normal enrollBtn" appTelemetryInteract
                             [telemetryInteractEdata]="enrollBatchIntractEdata"
                             [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"
-                            (click)="enrollBatch()">{{resourceService.frmelmnts.btn.enroll}}</button>
+                            (click)="enrollBatch(batch.identifier)">{{resourceService.frmelmnts.btn.enroll}}</button>
                         <span class="header"> {{batch.startDate | dateFormat}} - </span>
                         <span *ngIf="batch.endDate" class="header pb-5"> {{batch.endDate | dateFormat}} </span>
                         <span *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">

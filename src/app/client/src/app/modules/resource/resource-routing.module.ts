@@ -1,3 +1,4 @@
+import { CurriculumCoursesComponent, CurriculumCourseDetailsComponent } from './components';
 import { ResourceComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -29,6 +30,12 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './modules/player/player.module#PlayerModule'
+  },
+  {
+    path: 'course/:courseId', component: CurriculumCourseDetailsComponent
+  },
+  {
+    path: 'curriculum-courses', component: CurriculumCoursesComponent
   }
 ];
 

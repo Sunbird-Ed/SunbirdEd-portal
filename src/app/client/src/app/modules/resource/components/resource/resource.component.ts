@@ -32,7 +32,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
-
+  public cardData: Array<{}> = [];
+  public isLoading = true;
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -43,7 +44,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public telemetryService: TelemetryService, private utilService: UtilService) {
   }
   ngOnInit() {
-    if (this.userService.userProfile.framework) {
+    if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
     }
@@ -59,8 +60,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilter = true;
       }, (error) => {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        setTimeout(() => this.router.navigate(['']), 5000);
-        console.error('init search filter failed', error);
+        this.navigationhelperService.goBack();
     });
   }
 
@@ -89,29 +89,17 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
-  }
-  private getSearchRequest() {
-    let filters = this.selectedFilters;
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (!this.custodianOrg) {
-      filters['channel'] = this.channelId;
-    }
-    const option = {
-        limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-        filters: filters,
-        fields: this.configService.urlConFig.params.LibrarySearchField,
-        // mode: 'soft',
-        // facets: facets,
-        params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
-    };
-    if (this.contentSearchService.frameworkId) {
-      option.params.framework = this.contentSearchService.frameworkId;
-    }
-    return option;
+    this.fetchCourses();
   }
   private fetchContents() {
-    const option = this.getSearchRequest();
+    const request = {
+      filters: this.selectedFilters,
+      fields: this.configService.urlConFig.params.LibrarySearchField,
+      isCustodianOrg: this.custodianOrg,
+      channelId: this.channelId,
+      frameworkId: this.contentSearchService.frameworkId
+    };
+    const option = this.searchService.getSearchRequest(request, false);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -159,6 +147,36 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
+
+  private  fetchCourses() {
+    this.isLoading = true;
+    const request = {
+      filters: this.selectedFilters,
+      isCustodianOrg: this.custodianOrg,
+      channelId: this.channelId,
+      frameworkId: this.contentSearchService.frameworkId
+    };
+    this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+    this.isLoading = false;
+    this.cardData = cardData;
+  }, err => {
+      this.isLoading = false;
+      this.cardData = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  });
+  }
+
+  navigateToCourses(event) {
+    this.router.navigate(['resources/curriculum-courses'], {
+      queryParams: {
+        title: _.get(event, 'data.title'),
+        board: _.get(this.selectedFilters, 'board'),
+        medium: _.get(this.selectedFilters, 'medium'),
+        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
+      },
+    });
+  }
+
   private prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {

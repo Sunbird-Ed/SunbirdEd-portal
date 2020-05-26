@@ -384,10 +384,13 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
       return this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
     }
-    if (this.userService.loggedIn) {
-      this.navigationHelperService.navigateToPreviousUrl('/resources');
-    } else {
-      this.navigationHelperService.navigateToPreviousUrl('/explore');
+    const previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url') || '/get';
+    if (_.includes(previousUrl, 'play')) {
+      if (this.userService.loggedIn) {
+        this.router.navigate(['/resources']);
+      } else {
+        this.router.navigate(['/explore']);
+      }
     }
   }
   public redirectToDetailsPage(contentId) {

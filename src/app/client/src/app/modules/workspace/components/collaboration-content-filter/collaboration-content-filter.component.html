@@ -42,7 +42,7 @@
   
   <ng-template let-popup #popupTemplate>
     <div class="popup-content">
-        <app-data-driven-filter [pageId]="'all-my-content-page'"[ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
+        <app-data-driven-filter [pageId]="'all-my-content-page'"[ignoreQuery]="['key','sortType','sort_by','query']" *ngIf="filterType" [filterEnv]="filterType"
         [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
       </div>
   </ng-template>

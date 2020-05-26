@@ -40,6 +40,9 @@
     font-size: 0.8125rem;
     color: var(--white);
 }
+.sb-sideview-tab-container{
+    background: inherit;
+}
 
 ::ng-deep{
     .sb-hawkeye-modal.sb-modal {

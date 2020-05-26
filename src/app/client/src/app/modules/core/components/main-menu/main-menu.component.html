@@ -10,6 +10,10 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/groups')"
+			appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata" routerLink="/groups">
+			{{resourceService?.frmelmnts?.tab?.mygroups}} <sup class="sb-color-tertiary pt-4">*</sup>
+		</a>
 		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
@@ -46,6 +50,12 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		<a class="item"
+			[class.active]="router.isActive('/explore-groups', true)"
+			*ngIf="!router.isActive('', true)" [routerLink]="['/explore-groups']"
+			appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata">
+			{{resourceService?.frmelmnts?.tab?.mygroups}} <sup class="sb-color-tertiary pt-4">*</sup>
+		</a>
 		<span class="item divider">|</span>
 		<a class="item font-weight-bold sb-color-primary pr-0" href={{hrefPath}} appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
@@ -71,6 +81,11 @@
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
+			<a class="item" [class.active]="router.isActive('/groups')"
+				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+				routerLink="/groups">
+				{{resourceService?.frmelmnts?.tab?.mygroups}} <sup class="sb-color-tertiary pt-4">*</sup>
+			</a>
 			<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
 				routerLink="/resources">
@@ -109,6 +124,12 @@
 			<div class="ui divider mt-0"></div>
 			<a class="item" (click)="showSideBar()" *ngIf="router.isActive('', true)" routerLink="/explore">
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
+			</a>
+			<a class="item"
+				[class.active]="router.isActive('/explore-groups')"
+				[routerLink]="['/explore-groups']" (click)="showSideBar()"
+				*ngIf="!router.isActive('', true)">
+				{{resourceService?.frmelmnts?.tab?.mygroups}} <sup class="sb-color-tertiary pt-4">*</sup>
 			</a>
 			<a class="item"
 				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				

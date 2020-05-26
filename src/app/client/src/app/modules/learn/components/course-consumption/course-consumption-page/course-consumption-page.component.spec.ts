@@ -170,4 +170,18 @@ describe('CourseConsumptionPageComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
+    activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
+    spyOn(learnerService, 'get').and.returnValue(of({}));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    const routedURL = ['learn/course/do_212347136096788480178/enroll/batch/do_112498388508524544160'];
+    const reqParams = {
+      queryParams: { autoEnroll: 'true' }
+    };
+    expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
+  });
 });

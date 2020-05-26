@@ -16,8 +16,8 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -57,11 +57,11 @@ import { ContentSearchModule } from '@sunbird/content-search';
     LimitedPublishedComponent,
     AllContentComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent,
     CollaboratingOnComponent,
     CollaborationContentFilterComponent,
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
+    WorkspaceContentFilterComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

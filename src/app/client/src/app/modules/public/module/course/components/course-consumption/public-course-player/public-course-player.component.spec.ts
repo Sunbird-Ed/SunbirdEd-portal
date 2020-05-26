@@ -1,6 +1,6 @@
 
 import {of,  Observable } from 'rxjs';
-import { CourseHierarchyGetMockResponse } from './public-course-player.component.mock.data';
+import { CourseHierarchyGetMockResponse, telemetryInteractMockData } from './public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicCoursePlayerComponent } from './public-course-player.component';
 import {SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
@@ -9,6 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '@sunbird/learn';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TelemetryService } from '@sunbird/telemetry';
 
 const resourceServiceMockData = {
   messages : {
@@ -30,7 +31,7 @@ class ActivatedRouteStub {
   snapshot = {
     data: {
       telemetry: {
-        env: 'explore', pageid: 'explore-course-toc', type: 'view'
+        env: 'explore-course', pageid: 'explore-course-toc', type: 'view'
       }
     },
     params: {},
@@ -58,7 +59,7 @@ describe('PublicCoursePlayerComponent', () => {
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
         CourseConsumptionService,  { provide: Router, useClass: MockRouter },
-        CourseProgressService, CourseBatchService, ContentUtilsServiceService],
+        CourseProgressService, CourseBatchService, ContentUtilsServiceService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -80,4 +81,24 @@ describe('PublicCoursePlayerComponent', () => {
     expect(component.courseHierarchy).toBeDefined();
     expect(component.loader).toBe(false);
   });
+  it('should show join training popup', () => {
+    courseService.initialize();
+    component.ngOnInit();
+    component.navigateToContent();
+    expect(component.showJoinTrainingModal).toBeTruthy();
+  });
+  it('should log telemetry on click of join training popup close icon', () => {
+    activatedRouteStub.snapshot.params = {courseId: 'do_212347136096788480178'};
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    courseService.initialize();
+    component.ngOnInit();
+    component.navigateToContent();
+    expect(component.showJoinTrainingModal).toBeTruthy();
+    component.closeJoinTrainingModal();
+    expect(component.showJoinTrainingModal).toBeFalsy();
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
+  });
+
 });

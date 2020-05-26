@@ -184,7 +184,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   prepareChart() {
     if (!this.checkForExternalChart()) {
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
-      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
       this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
       this.showLastUpdatedOn = false;

@@ -1,7 +1,15 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService, RecaptchaService} from '@sunbird/shared';
+import {
+  ResourceService,
+  ConfigService,
+  ServerResponse,
+  ToasterService,
+  NavigationHelperService,
+  UtilService,
+  RecaptchaService
+} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -21,6 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   sbFormBuilder: FormBuilder;
   showContact = 'phone';
   disableSubmitBtn = true;
+  disableForm = true;
   showPassword = false;
   captchaResponse = '';
   googleCaptchaSiteKey: string;
@@ -39,13 +48,15 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   termsAndConditionLink: string;
   passwordError: string;
   showTncPopup = false;
+  birthYearOptions: Array<number> = [];
+  isMinor: Boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public recaptchaService: RecaptchaService) {
+    public configService: ConfigService,  public recaptchaService: RecaptchaService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -87,6 +98,27 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
+
+    this.initiateYearSelecter();
+    // disabling the form as age should be selected
+    this.signUpForm.disable();
+  }
+
+
+  changeBirthYear(selectedBirthYear) {
+    this.signUpForm.enable();
+    this.disableForm = false;
+    const currentYear = new Date().getFullYear();
+    const userAge = currentYear - selectedBirthYear;
+    this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
+  }
+
+  initiateYearSelecter() {
+    const endYear = new Date().getFullYear();
+    const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
+    for (let year = endYear; year > startYear; year--) {
+      this.birthYearOptions.push(year);
+    }
   }
 
   signUpTelemetryStart() {
@@ -300,6 +332,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         'type': this.signUpForm.controls.contactType.value.toString()
       }
     };
+    if (this.isMinor) {
+      request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
+    }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.showSignUpForm = false;

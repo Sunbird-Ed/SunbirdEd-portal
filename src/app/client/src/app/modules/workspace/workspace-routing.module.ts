@@ -7,7 +7,7 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent} from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';

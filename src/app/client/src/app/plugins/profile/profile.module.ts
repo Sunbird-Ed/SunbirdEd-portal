@@ -7,7 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-  AccountRecoveryInfoComponent
+  AccountRecoveryInfoComponent, CreateUserComponent, ChooseUserComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
@@ -36,7 +36,9 @@ import { ContentSearchModule } from '@sunbird/content-search';
     ContentSearchModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-   AccountRecoveryInfoComponent],
+   AccountRecoveryInfoComponent,
+   CreateUserComponent,
+   ChooseUserComponent],
   providers: []
 })
 export class ProfileModule { }

@@ -140,26 +140,25 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
-
-
   ngOnInit() {
     this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
+      this.checkForPreviousRouteForRedirect();
       if (_.lowerCase(this.contentType) === 'course') {
-        this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+        this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
           this.framework = data;
           this.fetchFrameworkMetaData();
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
-         });
+        });
       } else {
         /**
        * fetchFrameworkMetaData is called to config the form data and framework data
        */
         this.fetchFrameworkMetaData();
       }
-    });
-    this.checkForPreviousRouteForRedirect();
+    })
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -304,12 +303,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   /**
     * Issue #SB-1448,  If previous url is not from create page, redirect current page to 'workspace/content/create'
   */
-  checkForPreviousRouteForRedirect() {
-    const previousUrlObj = this.navigationHelperService.getPreviousUrl();
+ checkForPreviousRouteForRedirect() {
+  const previousUrlObj = this.navigationHelperService.getPreviousUrl();
     if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }
-  }
+}
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
@@ -330,23 +329,5 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
-  }
-  /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this._cacheService.get('course' + 'framework');
-    if (framework) {
-      return of(framework);
-    } else {
-     return this.frameworkService.getCourseFramework()
-        .pipe(map((data) => {
-          const frameWork = _.get(data.result.response , 'value');
-          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
-    }
   }
 }

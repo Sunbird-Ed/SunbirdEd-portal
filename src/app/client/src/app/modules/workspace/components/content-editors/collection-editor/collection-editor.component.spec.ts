@@ -28,7 +28,13 @@ class RouterStub {
 class NavigationHelperServiceStub {
   public navigateToWorkSpace() {}
 }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = { userProfile: {
+  userId: '68777b59-b28b-4aee-88d6-50d46e4c35090',
+  organisationIds: [],
+  framework: {
+    board: ['CBSE']
+  }
+}};
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
@@ -100,4 +106,20 @@ describe('CollectionEditorComponent', () => {
     component.closeModal();
     expect(component.retireLock).toHaveBeenCalled();
   }));
+
+  it('should set window config nodeDisplayCriteria to CourseUnit if the content type is CurriculumCourse', () => {
+    component['routeParams'] = {type: 'curriculumcourse'};
+    const windowConfigData = { contentType: ['CourseUnit'] };
+    spyOn<any>(component, 'updateModeAndStatus').and.stub();
+    component['setWindowConfig']();
+    expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
+  });
+
+  it('should pass user selected board in the context for courses', () => {
+    const userService = TestBed.get(UserService);
+    component['userProfile'] = userService.userProfile;
+    component['routeParams'] = {type: 'course'};
+    component['setWindowContext']();
+    expect(window.context.board).toEqual(['CBSE']);
+  });
 });

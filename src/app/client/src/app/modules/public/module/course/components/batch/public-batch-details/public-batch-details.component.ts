@@ -85,8 +85,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     return dayjs(enrollmentEndDate).isBefore(this.todayDate);
   }
 
-  enrollBatch() {
-    this.baseUrl = '/learn/course/' + this.courseId;
+  enrollBatch(batchId) {
+    this.baseUrl = `/learn/course/${this.courseId}?batch=${batchId}&autoEnroll=true`;
     if (!this.userService.loggedIn) {
         this.showLoginModal = true;
     } else {

@@ -82,6 +82,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   closeContentIntractEdata: IInteractEventEdata;
 
+  copyAsCourseInteractEdata: IInteractEventEdata;
+
   private subscription: Subscription;
 
   public contentType: string;
@@ -158,29 +160,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();
-  }
-
-  setTelemetryData() {
-    this.closeIntractEdata = {
-      id: 'collection-close',
-      type: 'click',
-      pageid: 'collection-player'
-    };
-    this.printPdfInteractEdata = {
-      id: 'print-pdf-button',
-      type: 'click',
-      pageid: 'collection-player'
-    };
-    this.copyContentInteractEdata = {
-      id: 'copy-content-button',
-      type: 'click',
-      pageid: 'collection-player'
-    };
-    this.collectionInteractObject = {
-      id: this.collectionId,
-      type: this.contentType,
-      ver: this.collectionData.pkgVersion ? this.collectionData.pkgVersion.toString() : '1.0'
-    };
   }
 
   onShareLink() {
@@ -396,6 +375,34 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       });
   }
 
+  setTelemetryData() {
+    this.closeIntractEdata = {
+      id: 'collection-close',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.printPdfInteractEdata = {
+      id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.copyContentInteractEdata = {
+      id: 'copy-content-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.copyAsCourseInteractEdata = {
+      id: 'copy-as-course-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.collectionInteractObject = {
+      id: this.collectionId,
+      type: this.contentType,
+      ver: this.collectionData.pkgVersion ? this.collectionData.pkgVersion.toString() : '1.0'
+    };
+  }
+
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const option: any = { params: {} };
     option.params = this.config.appConfig.PublicPlayer.contentApiQueryParams;
@@ -480,6 +487,22 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
   }
+  
+  /**
+   * @since - #SH-66
+   * @param  {ContentData} contentData
+   * @description - It will copy the textbook as a curriculum course by hitting a content service API.
+   */
+  copyAsCourse(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyAsCourse(contentData).subscribe( (response) => {
+      this.toasterService.success(this.resourceService.messages.smsg.m0042);
+      this.showCopyLoader = false;
+    }, (err) => {
+      this.showCopyLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0008);
+    });
+  }
 
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
@@ -498,6 +521,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           type: this.route.snapshot.data.telemetry.type,
           pageid: this.route.snapshot.data.telemetry.pageid,
           mode: 'play',
+          duration: this.navigationhelperService.getPageLoadTime(),
           uaspec: {
             agent: deviceInfo.browser,
             ver: deviceInfo.browser_version,

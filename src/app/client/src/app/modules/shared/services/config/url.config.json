@@ -128,7 +128,8 @@
       "UPDATE": "content/v3/update",
       "REVIEW": "content/v3/review",
       "HIERARCHY_ADD": "content/v3/hierarchy/add",
-      "HIERARCHY_REMOVE": "content/v3/hierarchy/remove"
+      "HIERARCHY_REMOVE": "content/v3/hierarchy/remove",
+      "COPY_AS_COURSE": "course/v1/create"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",

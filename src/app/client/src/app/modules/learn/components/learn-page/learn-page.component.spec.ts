@@ -3,7 +3,7 @@ import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
+import { FrameworkService, PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -17,7 +17,7 @@ import { CacheService } from 'ng2-cache-service';
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
-  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, orgDetailsService;
+  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, frameworkService, orgDetailsService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendEnrolledCourses = true;
   let sendPageApi = true;
@@ -71,6 +71,7 @@ describe('LearnPageComponent', () => {
     learnerService = TestBed.get(LearnerService);
     cacheService = TestBed.get(CacheService);
     coursesService = TestBed.get(CoursesService);
+    frameworkService = TestBed.get(FrameworkService);
     sendEnrolledCourses = true;
     sendPageApi = true;
     sendFormApi = true;
@@ -87,9 +88,9 @@ describe('LearnPageComponent', () => {
       }
       return throwError({});
     });
-    spyOn(formService, 'getFormConfig').and.callFake((options) => {
+    spyOn(frameworkService, 'getDefaultCourseFramework').and.callFake((options) => {
       if (sendFormApi) {
-        return of([{framework: 'TPD'}]);
+        return of('cbse-tpd');
       }
       return throwError({});
     });
@@ -121,7 +122,7 @@ describe('LearnPageComponent', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.enrolledSection.contents.length).toEqual(1);
-    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.frameWorkName).toEqual('cbse-tpd');
   });
   it('should not throw error if fetching enrolled course fails', () => {
     sendEnrolledCourses = false;
@@ -136,18 +137,16 @@ describe('LearnPageComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
-    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.frameWorkName).toEqual('cbse-tpd');
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
     coursesService.initialize();
-    sendFormApi = false;
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
-    expect(component.frameWorkName).toEqual(undefined);
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselMasterData.length).toEqual(1);
   }));
@@ -158,7 +157,7 @@ describe('LearnPageComponent', () => {
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(component.enrolledSection.contents.length).toEqual(1);
-    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.frameWorkName).toEqual('cbse-tpd');
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselMasterData.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();

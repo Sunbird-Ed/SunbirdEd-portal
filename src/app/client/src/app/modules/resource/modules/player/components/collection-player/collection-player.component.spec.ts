@@ -1,12 +1,12 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 
-import {of as observableOf } from 'rxjs';
+import {of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { PlayerService, CoreModule } from '@sunbird/core';
+import { PlayerService, CoreModule, CopyContentService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
-import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -35,6 +35,12 @@ describe('CollectionPlayerComponent', () => {
     'messages': {
       'stmsg': {
         'm0118': 'No content to play'
+      },
+      'smsg': {
+        'm0042' : 'Content successfully copied'
+      },
+      'emsg' : {
+        'm0008' : 'Could not copy content. Try again later'
       }
     },
     'frmelmnts': {
@@ -52,7 +58,7 @@ describe('CollectionPlayerComponent', () => {
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule , TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ ResourceService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      providers: [ CopyContentService, ResourceService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }]
     })
       .compileComponents();
@@ -125,5 +131,27 @@ describe('CollectionPlayerComponent', () => {
     spyOn(window, 'open').and.callThrough();
     component.printPdf('www.samplepdf.com');
     expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
+
+  it('should copy a textbook as curriculum course if api gives success response', () => {
+    const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
+    const copyContentService = TestBed.get(CopyContentService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success').and.stub();
+    spyOn(copyContentService, 'copyAsCourse').and.returnValue(observableOf(CollectionHierarchyGetMockResponse.copyContentSuccess));
+    component.copyAsCourse(contentData);
+    expect(component.showCopyLoader).toBeFalsy();
+    expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0042);
+  });
+
+  it('should not copy a textbook as curriculum course if api is does not give success response', () => {
+    const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
+    const copyContentService = TestBed.get(CopyContentService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    spyOn(copyContentService, 'copyAsCourse').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed));
+    component.copyAsCourse(contentData);
+    expect(component.showCopyLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
   });
 });

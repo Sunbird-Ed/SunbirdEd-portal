@@ -242,9 +242,34 @@ input[type=number]::-webkit-inner-spin-button {
   }
 }
 .password-showhideimage {
-  position: absolute;
-  right: calculateRem(8px);
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
+    position: absolute;
+    right: calculateRem(8px);
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.year-birth {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  align-items: center;
+  justify-content: center;
+  margin: calculateRem(8px) 0px;
+
+  label {
+    margin-bottom: 0px;
+    margin-right: calculateRem(4px);
+  }
+
+  .ui.selection.dropdown {
+    min-width: calculateRem(80px);
+    line-height: 1.8;
+  }
+}
+form.Off {
+  opacity:0.5;
+}
+form.On {
+  opacity:1;
 }

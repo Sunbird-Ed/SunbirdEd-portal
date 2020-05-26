@@ -199,7 +199,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private downloadReportAsPdf() {
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
-      scrollY: -window.scrollY
+      scrollY: -window.scrollY,
+      scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
       const pdf = new jspdf('p', 'px', 'a4');
@@ -219,7 +220,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private downloadReportAsImage() {
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
-      scrollY: -window.scrollY
+      scrollY: -window.scrollY,
+      scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
       const anchorElement = document.createElement('a');

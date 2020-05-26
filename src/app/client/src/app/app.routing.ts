@@ -10,6 +10,9 @@ const appRoutes: Routes = [
     path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
   },
   {
+    path: 'groups', loadChildren: 'app/modules/groups/groups.module#GroupsModule'
+  },
+  {
     path: 'resources', loadChildren: 'app/modules/resource/resource.module#ResourceModule'
   },
   {

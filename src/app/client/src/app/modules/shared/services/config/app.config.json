@@ -11,7 +11,8 @@
       "SelfAssess",
       "PracticeResource",
       "LearningOutcomeDefinition",
-      "ExplanationResource"
+      "ExplanationResource",
+      "CurriculumCourse"
     ]
   },
   "DialAssembleSearch": {
@@ -1132,6 +1133,16 @@
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
+  },
+  "draft": {
+    "filterType": "draft",
+    "inPageredirectUrl": "workspace/content/draft/1",
+    "searchPageredirectUrl": "workspace/content/draft/1"
+  },
+  "published": {
+    "filterType": "published",
+    "inPageredirectUrl": "workspace/content/published/1",
+    "searchPageredirectUrl": "workspace/content/published/1"
   },
   "collaboration": {
     "filterType": "collaboration",

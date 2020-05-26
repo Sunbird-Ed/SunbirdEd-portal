@@ -5,7 +5,7 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService } from '@sunbird/core';
+import { CoursesService, PermissionService } from '@sunbird/core';
 import * as dayjs from 'dayjs';
 @Component({
   templateUrl: './course-consumption-page.component.html'
@@ -22,7 +22,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, public permissionService: PermissionService) {
   }
   ngOnInit() {
     this.coursesService.enrolledCourseData$.pipe(first(),
@@ -41,9 +41,16 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
           }
         } else {
-          // if query params has batch then open enroll popup for that batch
-          if (queryParams.batch) {
-            this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`]);
+          // if query params has batch and autoEnroll=true then auto enroll to that batch
+          if (queryParams.batch && queryParams.autoEnroll) {
+            if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+              this.router.navigate([`learn/course/${this.courseId}`]); // if user is mentor then redirect to course TOC page
+            } else {
+              const reqParams = {
+                queryParams: { autoEnroll: queryParams.autoEnroll }
+              };
+              this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`], reqParams);
+            }
           }
         }
         return this.getDetails(paramsObj);

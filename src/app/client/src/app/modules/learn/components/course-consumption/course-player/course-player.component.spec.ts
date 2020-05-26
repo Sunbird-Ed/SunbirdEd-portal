@@ -7,8 +7,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService, AssessmentScoreService } from '@sunbird/learn';
-import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged } from './course-player.component.mock.data';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { CourseHierarchyGetMockResponse,
+          CourseHierarchyGetMockResponseFlagged,
+          telemetryInteractMockData } from './course-player.component.mock.data';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CoursesService } from './../../../../core/services/course/course.service';
 import * as _ from 'lodash-es';
@@ -58,7 +60,7 @@ describe('CoursePlayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
       providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService, AssessmentScoreService,
-      ContentUtilsServiceService,
+      ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
@@ -464,5 +466,50 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
+  });
+  it('should show join training popup if course is unenrolled and try to play content', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser2';
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
+    expect(component.showJoinTrainingModal).toBeTruthy();
+  });
+  it('should log telemetry on click of close icon on join training popup ', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    userService._userid = 'testUser2';
+    activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    component.ngOnInit();
+    expect(component.enrolledCourse).toBeFalsy();
+    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
+    expect(component.showJoinTrainingModal).toBeTruthy();
+    component.closeJoinTrainingModal();
+    expect(component.showJoinTrainingModal).toBeFalsy();
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
 });
