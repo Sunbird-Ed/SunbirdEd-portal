@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {SharedModule, ToasterService} from '@sunbird/shared';
-import {CoreModule, SearchService} from '@sunbird/core';
+import {CoreModule, SearchService, TncService } from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ResourceService} from '@sunbird/shared';
@@ -34,7 +34,7 @@ describe('UpdateContactComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: ResourceService, useValue: mockUpdateContactData.resourceBundle},
-        TenantService, ToasterService, UserService, TelemetryService
+        TenantService, ToasterService, UserService, TelemetryService, TncService
       ]
     })
       .compileComponents();
@@ -277,10 +277,10 @@ describe('UpdateContactComponent', () => {
 
 
   it('should fetch tnc configuration', () => {
-    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'log');
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfig));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfig));
     component.fetchTncConfiguration();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
@@ -288,20 +288,20 @@ describe('UpdateContactComponent', () => {
   });
 
   it('should not fetch tnc configuration and throw error', () => {
-    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
     const toasterService = TestBed.get(ToasterService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(mockUpdateContactData.tncConfig));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableThrowError(mockUpdateContactData.tncConfig));
     component.fetchTncConfiguration();
     expect(telemetryService.log).toHaveBeenCalledWith(mockUpdateContactData.telemetryLogError);
     expect(toasterService.error).toHaveBeenCalledWith(mockUpdateContactData.resourceBundle.messages.fmsg.m0004);
   });
 
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfigIncorrectData));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfigIncorrectData));
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.fetchTncConfiguration();
