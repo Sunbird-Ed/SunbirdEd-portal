@@ -131,7 +131,6 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
-
   onSubmitForm() {
     this.enableSubmitBtn = false;
     const createUserRequest = {

@@ -147,5 +147,4 @@ describe('CreateUserComponent', () => {
     component.onSubmitForm();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
   });
-
 });
