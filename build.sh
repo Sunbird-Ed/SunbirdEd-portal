@@ -12,6 +12,11 @@ org=$3
 export sunbird_content_editor_artifact_url=$4
 export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
+export phrase_authToken=$7
+export phrase_project=$8
+export phrase_locale=$9
+export phrase_fileformat=$10
+export phrase_merge=$11
 buildDockerImage=$7
 buildCdnAssests=$8
 echo "buildDockerImage: " $buildDockerImage

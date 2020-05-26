@@ -52,7 +52,7 @@ Installing Sunbird requires two primary software components:
 
     > ***Note***: Stable versions of the sunbird portal are available via tags for each release, and the master branch contains latest stable release. For latest stable release [refer](https://github.com/Sunbird-Ed/SunbirdEd-portal/branches)
 
-2. Add the following environment variables - *Required for downloading editors (Via gulp task)*
+2. Add the following environment variables - *Required for downloading editors and building project for different languages (Via gulp task)*
 
       ```console
       export sunbird_content_editor_artifact_url="https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.6.0.zip"
@@ -60,6 +60,16 @@ Installing Sunbird requires two primary software components:
       export sunbird_collection_editor_artifact_url="https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.6.0.zip"
 
       export sunbird_generic_editor_artifact_url="https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.6.0.zip"
+
+      export phrase_authToken="Basic <TOKEN>"
+
+      export phrase_project="<PROJECT_NAME>"
+
+      export phrase_locale="<SUPPORTED_LOCALE>"
+
+      export phrase_fileformat="<DOWNLOAD_FILE_FORMAT>"
+
+      export phrase_merge="true"
       ```
 
 3. Install required dependencies
