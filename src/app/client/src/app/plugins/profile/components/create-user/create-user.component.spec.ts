@@ -14,6 +14,7 @@ import { mockRes } from './create-user.component.spec.data';
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
   let fixture: ComponentFixture<CreateUserComponent>;
+  let router: Router;
 
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -72,6 +73,7 @@ describe('CreateUserComponent', () => {
   }));
 
   beforeEach(() => {
+    router = TestBed.get(Router);
     fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -127,4 +129,23 @@ describe('CreateUserComponent', () => {
     component.fetchTncData();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
+
+  it('should call onSubmitForm with success', () => {
+    const userService = TestBed.get(UserService);
+    component.userProfile = mockRes.userData;
+    spyOn(userService, 'registerUser').and.returnValue(observableOf(mockRes.createUser));
+    spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf(mockRes.tncAccept));
+    component.onSubmitForm();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile/choose-managed-user']);
+  });
+
+  it('should call onSubmitForm with error', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
+    component.onSubmitForm();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
+  });
+
 });
