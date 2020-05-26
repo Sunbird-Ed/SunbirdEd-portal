@@ -133,11 +133,12 @@ export class CreateUserComponent implements OnInit {
 
 
   onSubmitForm() {
+    this.enableSubmitBtn = false;
     const createUserRequest = {
       request: {
-        firstName: this.userDetailsForm.value.name,
+        firstName: 'this.userDetailsForm.value.name',
         managedBy: this.userService.userid,
-        locationIds: _.map(this.userProfile.userLocations, 'id')
+        locationIds: _.map(_.get(this.userProfile, 'userLocations'), 'id')
       }
     };
     if (_.get(this.userProfile, 'framework') && !_.isEmpty(_.get(this.userProfile, 'framework'))) {
@@ -147,7 +148,7 @@ export class CreateUserComponent implements OnInit {
     this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
       const requestBody = {
         request: {
-          version: this.userProfile.tncLatestVersion,
+          version: _.get(this.userProfile, 'tncLatestVersion'),
           userId: resp.result.userId
         }
       };
@@ -155,10 +156,12 @@ export class CreateUserComponent implements OnInit {
         this.router.navigate(['/profile/choose-managed-user']);
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        this.enableSubmitBtn = true;
       });
     },
       (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        this.enableSubmitBtn = true;
       }
     );
   }

@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { CoreModule, FormService } from '@sunbird/core';
+import { CoreModule, FormService, TncService, UserService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
@@ -40,6 +40,7 @@ describe('CreateUserComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
+        'm0004': 'Something went wrong, try later'
       },
       'stmsg': {
         'm0130': 'We are fetching districts',
@@ -64,7 +65,7 @@ describe('CreateUserComponent', () => {
         HttpClientTestingModule, TelemetryModule],
       declarations: [CreateUserComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService],
+        { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService, TncService, UserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -102,5 +103,28 @@ describe('CreateUserComponent', () => {
     component.getFormDetails();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+  });
+
+  it('should set mode', () => {
+    component.showAndHidePopup(false);
+    expect(component.showTncPopup).toBeFalsy();
+  });
+
+  it('should fetchTncData with success', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfigData));
+    spyOn(component['utilService'], 'parseJson').and.returnValue(mockRes.tncParsedConfigData);
+    component.fetchTncData();
+    expect(component.tncLatestVersion).toEqual('v1');
+    expect(component.termsAndConditionLink).toEqual('https://dev-sunbird-temp.azureedge.net/portal/terms-and-conditions-v1.html');
+  });
+
+  it('should fetchTncData with error', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableThrowError({}));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    component.fetchTncData();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 });
