@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent } from './components';
+import { ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent, ExploreCurriculumCourseDetailsComponent } from './components';
 import {ViewAllComponent} from '@sunbird/content-search';
 const routes: Routes = [
   {
@@ -36,6 +36,8 @@ const routes: Routes = [
     },
     {
       path: 'list/curriculum-courses', component: ExploreCurriculumCoursesComponent
+    }, {
+      path: 'course/:courseId', component: ExploreCurriculumCourseDetailsComponent
     }
   ];
   @NgModule({
