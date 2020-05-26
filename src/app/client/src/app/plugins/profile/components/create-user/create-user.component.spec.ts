@@ -147,4 +147,22 @@ describe('CreateUserComponent', () => {
     component.onSubmitForm();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
   });
+
+  it('should call onSubmitForm with error', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
+    component.onSubmitForm();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
+  });
+
+  it('should call onSubmitForm with error', () => {
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.enableSubmitBtn).toBeFalsy();
+    expect(component.enableSubmitButton).toHaveBeenCalled();
+  });
 });
