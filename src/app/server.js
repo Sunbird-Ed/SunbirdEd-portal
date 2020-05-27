@@ -78,6 +78,7 @@ app.get('/service/health', healthService.createAndValidateRequestBody, healthSer
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
 app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
+app.get('/user/v1/switch/:userId', bodyParser.json({limit: '1mb'}),keycloak.protect(), userService.switchUser);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 

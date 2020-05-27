@@ -9,5 +9,11 @@
   "SIGN_UP": {
     "MAX_YEARS": 100,
     "MINIMUN_AGE": 18
+  },
+  "SIZE": {
+    "MEDIUM": "medium"
+  },
+  "VIEW": {
+    "HORIZONTAL": "horizontal"
   }
 }

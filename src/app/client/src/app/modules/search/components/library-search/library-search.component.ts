@@ -125,7 +125,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.contentList = data.result.content || [];
+                this.contentList = this.getOrderedData(_.get(data, 'result.content'));
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
@@ -135,6 +135,18 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.toasterService.error(this.resourceService.messages.fmsg.m0051);
             });
     }
+
+    getOrderedData(contents) {
+        let orderedData: [] = _.map(contents, content => {
+            if (_.includes(_.get(content, 'board'), _.get(this.frameworkData, 'board[0]'))) {
+                contents = _.reject(contents, { identifier: content.identifier });
+                return content;
+            }
+        });
+        orderedData = _.compact(orderedData).concat(contents);
+        return orderedData || [];
+    }
+
     public navigateToPage(page: number): void {
         if (page < 1 || page > this.paginationDetails.totalPages) {
             return;
