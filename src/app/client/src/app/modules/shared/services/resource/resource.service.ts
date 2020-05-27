@@ -75,8 +75,10 @@ export class ResourceService {
       };
       this.get(option).subscribe(
         (data: ServerResponse) => {
-          this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
-          this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
+          // this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
+          this.messages = data.result.messages;
+          // this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
+          this.frmelmnts = data.result.frmelmnts;
           this.getLanguageChange(range);
         },
         (err: ServerResponse) => {

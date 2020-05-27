@@ -14,6 +14,11 @@ export sunbird_collection_editor_artifact_url=$5
 export sunbird_generic_editor_artifact_url=$6
 buildDockerImage=$7
 buildCdnAssests=$8
+export phrase_authToken=$9
+export phrase_project=$10
+export phrase_locale=$11
+export phrase_fileformat=$12
+export phrase_merge=$13
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
