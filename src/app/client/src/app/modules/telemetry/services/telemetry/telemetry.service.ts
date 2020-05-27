@@ -323,4 +323,5 @@ export class TelemetryService {
       return object;
     }
   }
+
 }
