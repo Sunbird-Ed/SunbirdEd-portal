@@ -165,4 +165,10 @@ describe('CreateUserComponent', () => {
     expect(component.enableSubmitBtn).toBeFalsy();
     expect(component.enableSubmitButton).toHaveBeenCalled();
   });
+
+  it('should redirect to profile page on cancel', () => {
+    component.onCancel();
+    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+  });
+
 });
