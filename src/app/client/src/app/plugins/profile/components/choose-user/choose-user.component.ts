@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ProfileService} from './../../services';
 import {ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
@@ -20,11 +19,11 @@ import * as _ from 'lodash-es';
 })
 export class ChooseUserComponent implements OnInit {
 
-  constructor(public profileService: ProfileService, public userService: UserService,
+  constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managerUserService: ManagedUserService,
-              public activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService) {
+              public activatedRoute: ActivatedRoute) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -52,7 +51,6 @@ export class ChooseUserComponent implements OnInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         uri: this.activatedRoute.snapshot.data.telemetry.uri,
         duration: this.navigationhelperService.getPageLoadTime()
       }
@@ -79,12 +77,12 @@ export class ChooseUserComponent implements OnInit {
         const managedUserList = _.get(data, 'result.response.content') || [];
         _.forEach(managedUserList, (userData) => {
           userData.title = userData.firstName;
-          userData.initial = userData.firstName[0];
+          userData.initial = userData.firstName && userData.firstName[0];
           userData.selected = false;
           this.userList.push(userData);
         });
       }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
   }
@@ -102,20 +100,20 @@ export class ChooseUserComponent implements OnInit {
             this.router.navigate(['/resources']);
             const filterPipe = new InterpolatePipe();
             let errorMessage =
-              filterPipe.transform(this.resourceService.messages.imsg.m0095, '{instance}', this.instance);
+              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
             errorMessage =
               filterPipe.transform(errorMessage, '{userName}', this.selectedUser.firstName);
             this.toasterService.info(errorMessage);
           }
         });
       }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
   }
 
   navigateToCreateUser() {
-    this.router.navigate(['/profile/create-user']);
+    this.router.navigate(['/profile/create-managed-user']);
   }
 
   getTelemetryContext() {

@@ -24,9 +24,9 @@ const routes: Routes = [
     path: 'choose-managed-user', component: ChooseUserComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'choose-managed-user', type: 'view', subtype: 'paginate',
+        env: telemetryEnv, pageid: 'choose-managed-user', type: 'view',
         uri: '/profile/choose-managed-user',
-      },
+      }
     }
   }
 ];
