@@ -1,3 +1,77 @@
-<!-- add login page in public/module/group/explore-group -->
-<app-create-group></app-create-group>
-<app-group-workspace></app-group-workspace>
+<div class="flex-dc d-flex flex-ai-center flex-jc-center create-group-container" *ngIf="!groupList.length">
+  <div class="d-flex flex-dc flex-ai-center flex-jc-center">
+   <div class="my-16">Place holder images</div>
+   <div class="d-flex flex-as-center"><img src="./assets/images/create-group-img.png" width="220px" height="220px"></div>
+   <div class="my-24 fs-1 text-center">
+     Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
+     (Group discription here)</div>
+   <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" type="button"
+     (click)="showCreateFormModal()">
+      <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
+       {{ resourceService.frmelmnts.lbl.createGroup }}
+     </button>
+  </div>
+</div>
+
+
+<div class="ui container my-16" *ngIf="groupList.length">
+    <!-- group cards screen with sticky create-group button screen in right side same as desktop -->
+    <div class="ui stackable grid m-0">
+      <div class="nine wide column p-0 ">
+        <div class="my-groups-container">
+  
+          <!--  grouplist from CC-->
+            
+          <!-- sb-pageSection, sb-grid section demo purpose  grouplist -->
+          <div class="section-header mb-16">
+            <div class="section-header__title">
+              <i class="icon-svg icon-svg--sm mr-4"><svg class="icon"><use xlink:href="assets/common-consumption/images/sprite.svg#book"></use></svg></i> My Groups<span class="badge">25</span>
+            </div>
+          </div>
+          <div class="sbgrid">
+            <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList" (click)="navigateToDetailPage(group.identifier)">
+              <div class="sbcard__main_area">
+                <div class="sbcard__img"><img src="./assets/images/noun_School.svg" alt="" title="" /></div>
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{group.name}}</h4>
+                  <div class="sbcard__meta1"><span>{{group.subject}}</span><span
+                      class="dot-divider"></span><span>{{group.gradeLevel}}</span>
+                  </div>
+                </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+      <div class="three wide column p-0 pl-16">
+
+        <!-- add create-group screen once the group is created the below can be shown on the right side for the feature group creation-->
+        <div class="sb-sticky-right-panel" >
+            <div class="info-container d-flex flex-dc flex-jc-center p-24 sb-bg-color-white bs-3">
+                <div class="flex-dc d-flex flex-ai-center flex-jc-center create-group-container">
+                  <div class="d-flex flex-dc flex-ai-center flex-jc-center">
+                   <div class="my-16">Place holder images</div>
+                   <div class="d-flex flex-as-center"><img src="./assets/images/create-group-img.png" width="220px" height="220px"></div>
+                   <div class="my-24 fs-1 text-center">
+                     Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
+                     (Group discription here)</div>
+                   <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" type="button"
+                     (click)="showCreateFormModal()">
+                      <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
+                      {{ resourceService.frmelmnts.lbl.createGroup }}
+                     </button>
+                  </div>
+               </div>
+           
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+<app-group-form 
+  *ngIf="showGroupCreateForm" 
+  (closeEvent)="showGroupCreateForm = false"
+  (submitForm)="updateGroupList($event)"
+  ></app-group-form>

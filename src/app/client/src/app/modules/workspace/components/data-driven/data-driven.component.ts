@@ -147,10 +147,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
 
   ngOnInit() {
-
     this.checkForPreviousRouteForRedirect();
-    if (this.router.url.includes('create/training')) {
-      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+    if (_.lowerCase(this.contentType) === 'course') {
+      this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
         this.framework = data;
         this.fetchFrameworkMetaData();
       }, err => {
@@ -172,6 +171,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       });
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -185,7 +185,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (!frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-        if (!this.router.url.includes('create/training')) {
+        if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
         /**
@@ -243,8 +243,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 * Redirects to workspace create section
 */
   goToCreate() {
-    const previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
-    this.router.navigate([previousUrl]);
+    this.router.navigate(['/workspace/content/create']);
   }
 
   /**
@@ -319,11 +318,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   */
  checkForPreviousRouteForRedirect() {
   const previousUrlObj = this.navigationHelperService.getPreviousUrl();
-   const url = _.get(previousUrlObj, 'url');
-   const routes = ['/workspace/content/create', '/workspace/content/create/training'];
-   if (url && _.indexOf(routes, url) === -1) {
-     this.redirect();
-   }
+    if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
+      this.redirect();
+    }
 }
 
   redirect() {
@@ -345,16 +342,5 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
-  }
-  /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this.frameworkService.getDefaultCourseFramework();
-    if (framework) {
-      return framework;
-    } else {
-      return of(false);
-    }
   }
 }

@@ -56,7 +56,7 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
         return this.orgDetailsService.getOrgDetails(this.userService.slug)
           .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, isCustodianOrg: false }))));
       } else {
-        return this.orgDetailsService.getCustodianOrg()
+        return this.orgDetailsService.getCustodianOrgDetails()
           .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), isCustodianOrg: true }))));
       }
     }

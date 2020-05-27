@@ -3,41 +3,26 @@ import { LearnRoutingModule } from './learn-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
  import { SharedModule } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
-import { NgInviewModule } from 'angular-inport';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
-  CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-  UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent} from './components';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
+import { FormsModule } from '@angular/forms';
+import { LearnPageComponent } from './components/learn-page/learn-page.component';
 import { CoreModule } from '@sunbird/core';
-import { NotesModule } from '@sunbird/notes';
-import { DashboardModule } from '@sunbird/dashboard';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { PlayerHelperModule } from '@sunbird/player-helper';
+import { ContentSearchModule } from '@sunbird/content-search';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    SuiModule,
-    DashboardModule,
     SlickModule,
     FormsModule,
     LearnRoutingModule,
     CoreModule,
-    ReactiveFormsModule,
-    NotesModule,
     TelemetryModule,
-    NgInviewModule,
     SharedFeatureModule,
-    PlayerHelperModule
+    ContentSearchModule
   ],
-  providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
-  declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
-    CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent]
+  providers: [],
+  declarations: [LearnPageComponent]
 })
 export class LearnModule { }

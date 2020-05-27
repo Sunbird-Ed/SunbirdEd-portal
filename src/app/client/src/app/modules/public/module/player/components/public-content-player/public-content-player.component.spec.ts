@@ -136,4 +136,27 @@ describe('PublicContentPlayerComponent', () => {
     });
 
   }));
+
+  it('should detect the device and rotate to landscape', () => {
+    component.isSingleContent = true;
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(false);
+  });
+
+  it('should detect the device and rotate to landscape if not a single content', () => {
+    component.isSingleContent = false;
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(true);
+  });
+
+  it('should call deviceDetector', fakeAsync(() => {
+    component.dialCode = 'ABC123';
+    spyOn(component, 'deviceDetector');
+    setTimeout(()  => {
+      component.ngAfterViewInit();
+    }, 100);
+    tick(101);
+    expect(component.telemetryCdata).toEqual([{ 'type': 'DialCode', 'id': 'ABC123'}]);
+    expect(component.deviceDetector).toHaveBeenCalled();
+  }));
 });

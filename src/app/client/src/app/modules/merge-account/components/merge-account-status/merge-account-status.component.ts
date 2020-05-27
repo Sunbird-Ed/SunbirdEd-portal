@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ResourceService} from '@sunbird/shared';
 import {Subscription} from 'rxjs';
@@ -9,7 +9,7 @@ import {TenantService} from '@sunbird/core';
   templateUrl: './merge-account-status.component.html',
   styleUrls: ['./merge-account-status.component.scss']
 })
-export class MergeAccountStatusComponent implements OnInit {
+export class MergeAccountStatusComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   isMergeSuccess: any = {};
   error_type: string;

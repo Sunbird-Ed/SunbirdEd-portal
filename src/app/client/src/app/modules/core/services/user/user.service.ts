@@ -121,7 +121,7 @@ export class UserService {
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
-    this._slug = baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
   }
   get slug() {
     return this._slug;
@@ -384,5 +384,13 @@ export class UserService {
 
   setUserFramework(framework) {
     this._userProfile.framework = framework;
+  }
+
+  registerUser(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      data: data
+    };
+    return this.learnerService.post(options);
   }
 }

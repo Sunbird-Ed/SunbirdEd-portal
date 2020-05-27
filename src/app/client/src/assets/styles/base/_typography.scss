@@ -142,7 +142,10 @@ a {
 }
 
 .break-word {
-  word-break: break-word;
+  word-break: break-word !important;
+}
+.break-all {
+  word-break: break-all !important;
 }
 .white-space-nowrap {
   white-space: nowrap !important;
@@ -193,7 +196,11 @@ a {
     color: $gray-400;
   }
 }
-
+.sb-categories-title {
+  color: var(--gray-800);
+  font-size:calculateRem(18px);
+  font-weight: bold;
+}
 .sb__ellipsis {
   /* autoprefixer: off */
   -webkit-box-orient: vertical;

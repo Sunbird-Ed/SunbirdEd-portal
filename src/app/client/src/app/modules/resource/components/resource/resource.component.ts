@@ -80,9 +80,12 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }));
   }
-  public getFilters(filters) {
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+  public getFilters({filters, status}) {
     this.showLoader = true;
+    if (!filters || status === 'FETCHING') {
+      return; // filter yet to be fetched, only show loader
+    }
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();

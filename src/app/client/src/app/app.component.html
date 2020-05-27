@@ -12,7 +12,7 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-<lib-chat-window></lib-chat-window>
+<lib-chat-window [did]="deviceId" [userId]="userId" [channel]="channel" [appId]="appId"></lib-chat-window>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">

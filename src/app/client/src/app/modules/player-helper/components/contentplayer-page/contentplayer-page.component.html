@@ -1,7 +1,23 @@
 
-<div *ngIf="tocPage" class="toc-content" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf="tocPage" class="toc-content text-left" [appTelemetryImpression]="telemetryImpression">
     <!-- <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig"></app-player> -->
     <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="true"  [isContentDeleted]="false"></app-content-player>
+    <div *ngIf="showProgress">
+        <div class="ui container mt-8 p-16 sb-bg-color-white">
+            <div class="sb-g" *ngIf="completedPercentage">
+                <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6">
+                    <p>{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</p>
+                    <sui-progress [value]="completedPercentage" maximum="100" class="green m-0 fs-1-143"></sui-progress>
+                </div>
+                <div class="sb-g-col-xs-6 sb-g-col-md-6 sb-g-col-lg-6">
+                    <p class="sb-color-primary font-weight-bold">{{completedPercentage}}%
+                        {{resourceService?.frmelmnts?.lbl?.completed}}</p>
+                    <p class="fs-0-785">
+                        {{resourceService?.frmelmnts?.lbl?.completeContentToUnlock | interpolate:'{count}': '5'}}
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="mt-8">
         <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>
     </div>

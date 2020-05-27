@@ -4,12 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, CoursesService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, PaginationService,
+  ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
   NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {combineLatest } from 'rxjs';
@@ -227,7 +226,6 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         createdBy: this.userService.userid,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
-        courseType: _.get(bothParams, 'queryParams.courseType'),
         mimeType: this.config.appConfig.WORKSPACE.mimeType,
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,

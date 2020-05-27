@@ -84,10 +84,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 
-@include respond-below(sm) {
-  .ui.container {
-    margin: 0 8px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-}
+// @include respond-below(sm) {
+//   .ui.container {
+//     margin: 0 0px !important;
+//     padding-left: 16px !important;
+//     padding-right: 16px !important;
+//   }
+// }

@@ -1,10 +1,15 @@
-<div class="user-profile-box mt-32">
-  <div class="d-flex flex-jc-space-between mb-16">
-    <div class="user-profile-box__title">Choose Users</div>
-    <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary">Delete</button>
+<!-- screen 3 code -->
+<div class="user-profile-box my-32 p-0">
+  <div class="d-flex flex-jc-space-between px-16 pt-16">
+    <div class="user-profile-box__title">Use DIKSHA as</div>
+    <button type="button" class="sb-btn sb-btn-xs sb-btn-error">Delete User</button>
   </div>
-
-  <div class="members-list">
+  <div class="px-16">
+    <button type="submit" class="sb-btn sb-btn-sm sb-right-icon-btn w-100 mt-16 mb-24 sb-add-user-btn">
+      <i class="chevron plus icon"></i> Add User
+    </button>
+  </div>
+  <div class="members-list px-16 mb-16">
     <div class="members-list__item members-list__item--active">
       <div class="oval">A</div>
       <div class="member-name"><span>User Name 01</span></div>
@@ -16,13 +21,8 @@
       <i class="check circle icon icon_active"></i>
     </div>
   </div>
-  ​
-  <button type="submit" class="sb-btn sb-btn-sm sb-btn-outline-primary sb-right-icon-btn w-100">
-    <i class="chevron plus icon"></i> Add User
-  </button>
-  ​
-  <div class="user-profile-box__actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Switch User
-    </button>
+  <div class="user-profile-box__actions pb-16 px-16">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled" (click)="showSmallModal = !showSmallModal">Switch User</button>
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
   </div>
 </div>

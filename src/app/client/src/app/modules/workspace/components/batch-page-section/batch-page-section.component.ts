@@ -3,11 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, PageApiService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, ToasterService,
+  ServerResponse, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, ICaraouselData, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService, BatchService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService } from 'ng2-semantic-ui';
 import { IImpressionEventInput } from '@sunbird/telemetry';
@@ -206,10 +205,9 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       'filters': {
         'identifier': _.uniq(courseIds),
         'status': ['Live'],
-        'contentType': ['Course'],
-        'courseType': ['CurriculumCourse', 'TrainingCourse']
+        'contentType': ['Course']
       },
-      'fields': ['name', 'courseType', 'contentType']
+      'fields': ['name']
     };
 
     // Get course details for the batches to show content name on batch card

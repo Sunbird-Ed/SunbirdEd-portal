@@ -15,7 +15,7 @@
 <div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-50 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
   <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>
-  <div class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
+<div *ngIf="!infoMessage" class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
 <form class="sb-form borderd mb-20" [formGroup]="otpForm">
   <div class="sb-field-group mb-16 text-left">
       <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
@@ -27,13 +27,9 @@
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
        
        <input appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-       *ngIf="!disableResendButton" class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
-       [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" type="button" value="Resend OTP"/>
+        class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
+       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="Resend OTP"/>
        <input  appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
        class="ui button w-50" [ngClass]="{'grey':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
 </form>
-<!-- <div appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" *ngIf="!disableResendButton" [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-center blue text mb-50 cursor-pointer"
-  role="button" tabindex="0">{{resourceService.frmelmnts.lbl.resendOTP}}</div>
-<button appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300" tabindex="0"
-  (click)="verifyOTP()">{{resourceService.frmelmnts.lbl.submitOTP}}</button> -->

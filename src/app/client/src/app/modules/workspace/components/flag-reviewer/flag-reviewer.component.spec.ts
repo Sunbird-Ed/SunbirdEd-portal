@@ -13,6 +13,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './flag-reviewer.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
+import { DateFilterXtimeAgoPipe } from './../../pipes';
 
 describe('FlagReviewerComponent', () => {
   let component: FlagReviewerComponent;
@@ -66,7 +67,7 @@ describe('FlagReviewerComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FlagReviewerComponent],
+      declarations: [FlagReviewerComponent, DateFilterXtimeAgoPipe],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

@@ -34,7 +34,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
-  public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public isLoading = true;
   public cardData: Array<{}> = [];
   @HostListener('window:scroll', []) onScroll(): void {
@@ -77,14 +77,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.orgDetailsService.getOrgDetails(this.userService.slug)
         .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
-      return this.orgDetailsService.getCustodianOrg()
+      return this.orgDetailsService.getCustodianOrgDetails()
         .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }
 
-  public getFilters(filters) {
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+  public getFilters({filters, status}) {
     this.showLoader = true;
+    if (!filters || status === 'FETCHING') {
+      return; // filter yet to be fetched, only show loader
+    }
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();

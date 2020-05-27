@@ -5,7 +5,9 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseBatchService {
   private _enrollToBatchDetails: any;
   private _updateBatchDetails: any;

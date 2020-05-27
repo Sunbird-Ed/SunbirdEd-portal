@@ -5,12 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort } from '@sunbird/core';
 import {
-  ServerResponse, PaginationService, ConfigService, ToasterService,
+  ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
@@ -233,7 +232,6 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
         contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
-        courseType: _.get(bothParams, 'queryParams.courseType'),
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,

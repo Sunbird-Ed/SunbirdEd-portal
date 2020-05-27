@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CoreModule, PermissionService } from '@sunbird/core';
+import { CoreModule, PermissionService, UserService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,6 +50,7 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
+
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -121,11 +122,12 @@ describe('BatchDetailsComponent', () => {
     expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should navigate to update batch route', () => {
-      const courseBatchService = TestBed.get(CourseBatchService);
-      const route = TestBed.get(Router);
-      spyOn(courseBatchService, 'setUpdateBatchDetails');
-      component.batchUpdate({identifier: '123'});
-      expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'], {relativeTo: component.activatedRoute});
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const route = TestBed.get(Router);
+    spyOn(courseBatchService, 'setUpdateBatchDetails');
+    component.batchUpdate({ identifier: '123', enrollmentType: 'open' });
+    expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'],
+      { queryParams: { enrollmentType: 'open' }, relativeTo: component.activatedRoute });
   });
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -157,5 +159,35 @@ describe('BatchDetailsComponent', () => {
     component.enrolledBatchInfo = {'enrollmentType': 'open'};
     component.isUnenrollDisabled();
     expect(component.isUnenrollbtnDisabled).toBeFalsy();
+  });
+
+  it(`should allow 'Create Batch' button to be shown if the user has created to course and has necessary roles`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeTruthy();
+  });
+
+  it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('123456789');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeFalsy();
+  });
+
+  it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
+    const userService = TestBed.get(UserService);
+    const permissionService = TestBed.get(PermissionService);
+    spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.showCreateBatch();
+    expect(component.showCreateBatch()).toBeFalsy();
   });
 });

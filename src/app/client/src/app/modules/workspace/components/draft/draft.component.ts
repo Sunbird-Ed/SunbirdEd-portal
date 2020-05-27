@@ -5,11 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
-    ServerResponse, PaginationService, ConfigService, ToasterService,
+    ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
     ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
@@ -216,7 +215,6 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
                 contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
-                courseType: _.get(bothParams, 'queryParams.courseType'),
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,

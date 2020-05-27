@@ -102,9 +102,10 @@
 }
 
 .footer-fix{
-   padding-bottom: calculateRem(144px);
+   //padding-bottom: calculateRem(144px);
+   padding-bottom: calculateRem(160px);
    @include respond-above(sm) {
-    padding-bottom: calculateRem(48px);
+    padding-bottom: calculateRem(60px);
   }
 }
 .footer {

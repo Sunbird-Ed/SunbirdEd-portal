@@ -16,7 +16,6 @@ import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
 } from '@sunbird/shared';
-import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';

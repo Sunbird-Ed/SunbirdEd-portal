@@ -2,12 +2,16 @@ import { CurriculumCoursesComponent, CurriculumCourseDetailsComponent } from './
 import { ResourceComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ViewAllComponent} from '@sunbird/shared-feature';
+import {ViewAllComponent} from '@sunbird/content-search';
 const telemetryEnv = 'library';
 const routes: Routes = [
   {
     path: '', component: ResourceComponent,
     data: {
+      routeReuse: {
+        reuse: true,
+        path: 'resources'
+      },
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'library', type: 'view', subtype: 'paginate' },
       softConstraints: {badgeAssertions: 98, board: 99, channel: 100}

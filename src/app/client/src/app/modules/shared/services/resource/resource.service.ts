@@ -8,7 +8,7 @@ import { ConfigService } from './../config/config.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 /**
@@ -48,7 +48,7 @@ export class ResourceService {
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http LearnerService reference
    */
-  constructor(config: ConfigService, http: HttpClient, private _cacheService: CacheService,
+  constructor(config: ConfigService, http: HttpClient,
     private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
@@ -64,18 +64,12 @@ export class ResourceService {
   }
   public initialize() {
     const range  = {value: 'en', label: 'English', dir: 'ltr'};
-    this.getResource(this._cacheService.get('portalLanguage') || 'en', range);
+    this.getResource(this.cacheService.get('portalLanguage') || 'en', range);
   }
   /**
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-    const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
-    if (resourcebundles) {
-      this.messages = resourcebundles.messages;
-      this.frmelmnts = resourcebundles.frmelmnts;
-      this.getLanguageChange(range);
-    } else {
       const option = {
         url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
       };
@@ -83,18 +77,11 @@ export class ResourceService {
         (data: ServerResponse) => {
           this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
           this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
-          this.cacheService.set('resourcebundles' + language, {
-            messages: this.messages,
-            frmelmnts: this.frmelmnts
-          }, {
-              maxAge: this.browserCacheTtlService.browserCacheTtl
-            });
           this.getLanguageChange(range);
         },
         (err: ServerResponse) => {
         }
       );
-    }
   }
   get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {
@@ -117,7 +104,7 @@ export class ResourceService {
       'X-Device-ID': 'X-Device-ID',
       'X-Org-code': '',
       'X-Source': 'web',
-      'ts': moment().format(),
+      'ts': dayjs().format(),
       'X-msgid': UUID.UUID()
     };
   }

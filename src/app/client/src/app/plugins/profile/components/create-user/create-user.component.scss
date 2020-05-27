@@ -7,12 +7,11 @@
   width: 100%;
   background: var(--white);
   border-radius: 8px;
-  padding: 16px;
 
   &__title {
     font-weight: bold;
     color: var(--primary-color);
-    font-size: calculateRem(18px);
+    font-size: calculateRem(16px);
   }
 
   &__actions {
@@ -23,6 +22,14 @@
   }
 }
 
+.field-focus {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+.sb-profile-btn {
+  border-radius: 40px;
+}
 
 :host {
   .fields-selection {
@@ -48,14 +55,4 @@
     }
 
   }
-}
-
-.field-focus {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-start;
-}
-
-.sb-profile-btn {
-  border-radius: 40px;
 }

@@ -1,57 +1,45 @@
 <!-- add add-member screen -->
 
 <div>
-    <!-- Add member with profile images content -->
-    <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
-      <div class="my-16">Place holder images</div>
-      <div class="d-flex flex-as-center"><img src="./assets/images/profileimages.png"></div>
-      <div class="mt-8 text-center status-container__para">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
-      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100 flex-ai-jc-center">
-        <i class="icon-svg icon-svg--sm icon-addMember mr-4">
-          <svg class="icon icon-svg--white">
-            <use xlink:href="./assets/images/libdemo/sprite.svg#AddMember"></use>
-          </svg>
-        </i> Add Member
-       </button>
-    </div>
-   
+  <!-- Add member with profile images content -->
+  <!-- <app-create-group></app-create-group> -->
+</div>
+
+<!-- Add member with verify button content -->
+<div>
+  <div class="title my-16 font-weight-bold">
+    Add Member
   </div>
-  
-  <!-- Add member with verify button content -->
-   <div>
-    <div class="title my-16 font-weight-bold">
-      Add Member
+  <div class="sb-field">
+    <label for="id">User ID</label>
+    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
+    <small class="message sb-color-error font-weight-bold">Invalid user ID</small>
+  </div>
+  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
+    Verify
+  </button>
+</div>
+
+<!-- Add to group button content -->
+<div>
+  <div class="title my-16 font-weight-bold">
+    Add new Member
+  </div>
+  <div class="sb-field">
+    <label for="id">User ID</label>
+    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
+    <small class="message sb-color-error font-weight-bold hide">Invalid user ID</small>
+  </div>
+  <div class="d-flex flex-jc-center flex-ai-center add-member-content py-24">
+    <div class="add-member-text text-center">
+      <div class="oval">A</div>
+      <div class="fs-1 mt-4 font-weight-bold">Gupta</div>
     </div>
-     <div class="sb-field">
-      <label for="id">Member ID</label>
-      <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter member ID">
-      <small class="message sb-color-error font-weight-bold">Invalid member ID</small>
-    </div>
-    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-      Verify
-    </button>
-   </div>
-  
-   <!-- Add to group button content -->
-   <div>
-    <div class="title my-16 font-weight-bold">
-      Add Member
-    </div>
-     <div class="sb-field">
-        <label for="id">Member ID</label>
-        <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter member ID">
-      <small class="message sb-color-error font-weight-bold hide">Invalid member ID</small>
-    </div>
-    <div class="d-flex flex-jc-center flex-ai-center add-member-content py-24">
-      <div class="add-member-text text-center">
-        <div class="oval">A</div>
-        <div class="fs-1 mt-4 font-weight-bold">Gupta</div>
-      </div>
-   
-    </div>
-    <div class="fs-1 mt-4">Do you want to add <span class="font-weight-bold">Arvind Gupta</span> as a member?</div>
-    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-     Add to group
-    </button>
-   </div>
-  
+
+  </div>
+  <!-- <div class="fs-1 mt-4">Do you want to add <span class="font-weight-bold">Arvind Gupta</span> as a member?</div> -->
+  <div class="fs-1 mt-4">See that the user ID matches the user name before you proceed</div>
+  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
+    <img src="./assets/images/ic_person_add.svg" width="24px" height="24px" class="mr-4"> Add to group
+  </button>
+</div>

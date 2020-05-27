@@ -5,6 +5,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { APP_BASE_HREF } from '@angular/common';
 
 
 describe('OnboardingUserSelectionComponent', () => {
@@ -30,7 +31,7 @@ describe('OnboardingUserSelectionComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ResourceService, useValue: resourceMockData }]
+      providers: [{ provide: ResourceService, useValue: resourceMockData }, {provide: APP_BASE_HREF, useValue: 'test'}]
     })
       .compileComponents();
   }));

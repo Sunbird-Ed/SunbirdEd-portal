@@ -96,10 +96,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
-    const framework = this.cacheService.get('framework' + 'search');
-    if (framework) {
-      return of(framework);
-    } else {
       const formServiceInputParams = {
         formType: 'framework',
         formAction: 'search',
@@ -108,12 +104,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
         .pipe(map((data: ServerResponse) => {
             const frameWork = _.find(data, 'framework').framework;
-            this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
             return frameWork;
         }), catchError((error) => {
           return of(false);
         }));
-    }
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
