@@ -105,7 +105,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
     filters.channel = this.hashTagId;
     filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
-    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || { };
     if (this.queryParams.key) {
       delete softConstraints['board'];
     }
