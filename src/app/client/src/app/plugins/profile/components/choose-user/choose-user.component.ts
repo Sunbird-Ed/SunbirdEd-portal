@@ -8,7 +8,7 @@ import {
   InterpolatePipe, IUserData, NavigationHelperService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TelemetryService} from '@sunbird/telemetry';
+import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
 
@@ -37,10 +37,12 @@ export class ChooseUserComponent implements OnInit {
     isBold: false
   };
   selectedUser: any;
+  submitInteractEdata: IInteractEventEdata;
 
   ngOnInit() {
     this.getManagedUserList();
     this.telemetryImpressionEvent();
+    this.setTelemetryData();
   }
 
   telemetryImpressionEvent() {
@@ -63,6 +65,14 @@ export class ChooseUserComponent implements OnInit {
     _.forEach(this.userList, (userData, index) => {
       this.userList[index].selected = userData.identifier === userId;
     });
+  }
+
+  setTelemetryData() {
+    this.submitInteractEdata = {
+      id: 'submit-choose-managed-user',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+    };
   }
 
   getManagedUserList() {
