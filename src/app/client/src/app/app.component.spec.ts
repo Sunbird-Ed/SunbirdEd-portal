@@ -1,4 +1,3 @@
-
 import { Observable, of } from 'rxjs';
 import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
   BrowserCacheTtlService } from '@sunbird/shared';
