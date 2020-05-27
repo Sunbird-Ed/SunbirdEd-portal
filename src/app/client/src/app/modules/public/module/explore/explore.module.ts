@@ -25,7 +25,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, CommonConsumptionModule
+    CommonConsumptionModule, ContentSearchModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent],
   exports: [ExploreComponent]
