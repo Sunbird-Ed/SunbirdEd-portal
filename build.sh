@@ -32,7 +32,7 @@ rm -rf dist-cdn # remove cdn dist folder
 handleError() {
   if [ "$1" != "0" ]; then
     echo "Build failed with Exit Code:" $1 " at Line Number" $2
-    kill -- -$$ # kill all process in background before exit
+    # kill -- -$$ # kill all process in background before exit
     exit $1
   fi
 }
