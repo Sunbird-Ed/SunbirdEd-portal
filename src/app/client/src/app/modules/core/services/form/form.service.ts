@@ -6,6 +6,7 @@ import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/
 import { Observable, of } from 'rxjs';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CacheService } from 'ng2-cache-service';
+import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
@@ -51,7 +52,8 @@ export class FormService {
           subType: this.configService.appConfig.formApiTypes[formInputParams.contentType]
           ? this.configService.appConfig.formApiTypes[formInputParams.contentType]
           : formInputParams.contentType,
-          rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId
+          rootOrgId: hashTagId ? hashTagId : this.userService.hashTagId,
+          component: _.get(formInputParams, 'component')
         }
       }
     };

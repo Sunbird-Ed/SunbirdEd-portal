@@ -56,7 +56,7 @@
     </div> -->
 
     <button class="ui bottom attached sb-btn sb-btn-primary sb-left-icon-btn sb-btn-md no-border"
-        [telemetryInteractObject]="courseInteractObject" (click)="createBatch()" *ngIf="courseMentor"
+        [telemetryInteractObject]="courseInteractObject" (click)="createBatch()" *ngIf="showCreateBatch()"
         appTelemetryInteract [telemetryInteractEdata]="createBatchIntractEdata">
         <i class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}
     </button>

@@ -162,7 +162,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.createBatchForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl(''),
-      enrollmentType: new FormControl('invite-only', [Validators.required]),
+      enrollmentType: new FormControl('open', [Validators.required]),
       startDate: new FormControl(null, [Validators.required]),
       endDate: new FormControl(),
       mentors: new FormControl(),

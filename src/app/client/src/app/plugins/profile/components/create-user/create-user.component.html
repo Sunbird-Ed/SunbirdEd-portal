@@ -1,29 +1,44 @@
-<div class="user-profile-box p-0">
-  <div class="d-flex flex-jc-space-between pt-16 px-16">
-    <div class="user-profile-box__title">Create User</div>
+<div [appTelemetryImpression]="telemetryImpression">
+  <div class="user-profile-box p-0" *ngIf="showLoader">
+    <app-loader></app-loader>
   </div>
-  <form class="sb-form mb-16 px-16">
-    <div class="ui stackable grid my-8">
-      <div class="twelve wide column p-0 mx-16 text-center"><img src="./assets/images/profile-img.svg" width="88px" height="88px"></div>
-      <div class="twelve wide column p-0 mx-16">
-        <div class="fields-selection p-0">
-          <div class="sb-field field-focus mb-8">
-            <input class="sb-form-control selection fields-dropdown ui dropdown" type="text" placeholder="Enter user name">
-            <label class="font-weight-normal">Name<span>*</span></label>
+  <div class="user-profile-box p-0" *ngIf="!showLoader">
+    <div class="d-flex flex-jc-space-between pt-16 px-16">
+      <div class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
+    </div>
+    <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
+      <div class="ui stackable grid m-0" *ngFor="let field of formData">
+        <div class="twelve wide column p-0" *ngIf="field.inputType==='input' && field.visible===true">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control" formControlName="{{field.code}}" type="text" name="{{field.code}}"
+                placeholder="{{field.description}}">
+              <label class="font-weight-normal">{{field.name}}<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 pt-8" *ngIf="field.inputType==='checkbox' && field.visible===true">
+          <div class="sb-checkbox sb-checkbox-primary">
+            <input formControlName="{{field.code}}" type="checkbox" name="{{field.code}}" required>
+            <label class="fsmall mx-8 font-weight-normal">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
+              <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+                {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
+              </a>
+            </label>
           </div>
         </div>
       </div>
-      <div class="mt-16 mb-8">Preferences can be updated from the profile page of the user</div>
-      <div class="twelve wide column p-0 pt-8 mx-16">
-        <div class="sb-checkbox sb-checkbox-primary">
-          <input type="checkbox" id="check1" name="example">
-          <label for="check1">I understand and accept the <a class="text-underline fsmall" href="javascript:void(0)">DIKSHA Terms of Use</a></label>
-        </div>
-      </div>
+    </form>
+
+    <div class="user-profile-box__actions pb-16 px-16">
+      <button appTelemetryInteract
+        [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" (click)="onSubmitForm()"
+        type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary">
+        {{resourceService?.frmelmnts?.lbl?.addUser}}
+      </button>
     </div>
-  </form>
-  <div class="user-profile-box__actions pb-16 px-16">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled">Add User</button>
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-16">Cancel</button>
-  </div>
-</div>
+
+    <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
+      *ngIf="showTncPopup">
+    </app-tnc-popup>
+    
