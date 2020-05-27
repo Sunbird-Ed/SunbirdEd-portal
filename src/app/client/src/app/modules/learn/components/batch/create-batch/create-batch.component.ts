@@ -90,7 +90,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
-
+  public isBatchCreated = false;
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -209,47 +209,51 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public createBatch() {
-    this.disableSubmitBtn = true;
-    let participants = [];
-    let mentors = [];
-    mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
-    if (this.createBatchForm.value.enrollmentType !== 'open') {
-      participants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
-    }
-    const startDate = dayjs(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
-    const endDate = this.createBatchForm.value.endDate && dayjs(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
-    const requestBody = {
-      courseId: this.courseId,
-      name: this.createBatchForm.value.name,
-      description: this.createBatchForm.value.description,
-      enrollmentType: this.createBatchForm.value.enrollmentType,
-      startDate: startDate,
-      endDate: endDate || null,
-      createdBy: this.userService.userid,
-      createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors)
-    };
-    if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
-      requestBody['enrollmentEndDate'] = dayjs(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
-    }
-    this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
-      .subscribe((response) => {
-        if (participants && participants.length > 0) {
-          this.addParticipantToBatch(response.result.batchId, participants);
-        } else {
-          this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0033);
-          this.reload();
-        }
-      },
-        (err) => {
-          this.disableSubmitBtn = false;
-          if (err.error && err.error.params.errmsg) {
-            this.toasterService.error(err.error.params.errmsg);
+    if (!this.isBatchCreated) {
+      this.disableSubmitBtn = true;
+      let participants = [];
+      let mentors = [];
+      mentors = $('#mentors').dropdown('get value') ? $('#mentors').dropdown('get value').split(',') : [];
+      if (this.createBatchForm.value.enrollmentType !== 'open') {
+        participants = $('#participants').dropdown('get value') ? $('#participants').dropdown('get value').split(',') : [];
+      }
+      const startDate = dayjs(this.createBatchForm.value.startDate).format('YYYY-MM-DD');
+      const endDate = this.createBatchForm.value.endDate && dayjs(this.createBatchForm.value.endDate).format('YYYY-MM-DD');
+      const requestBody = {
+        courseId: this.courseId,
+        name: this.createBatchForm.value.name,
+        description: this.createBatchForm.value.description,
+        enrollmentType: this.createBatchForm.value.enrollmentType,
+        startDate: startDate,
+        endDate: endDate || null,
+        createdBy: this.userService.userid,
+        createdFor: this.userService.userProfile.organisationIds,
+        mentors: _.compact(mentors)
+      };
+      if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
+        requestBody['enrollmentEndDate'] = dayjs(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+      }
+      this.courseBatchService.createBatch(requestBody).pipe(takeUntil(this.unsubscribe))
+        .subscribe((response) => {
+          this.isBatchCreated = true;
+          if (participants && participants.length > 0) {
+            this.addParticipantToBatch(response.result.batchId, participants);
           } else {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+            this.disableSubmitBtn = false;
+            this.toasterService.success(this.resourceService.messages.smsg.m0033);
+            this.reload();
           }
-        });
+        },
+          (err) => {
+            this.isBatchCreated = false;
+            this.disableSubmitBtn = false;
+            if (err.error && err.error.params.errmsg) {
+              this.toasterService.error(err.error.params.errmsg);
+            } else {
+              this.toasterService.error(this.resourceService.messages.fmsg.m0052);
+            }
+          });
+    }
   }
   private addParticipantToBatch(batchId, participants) {
     const userRequest = {
