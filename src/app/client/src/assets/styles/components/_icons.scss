@@ -83,36 +83,36 @@
   cursor: pointer;
 }
 */
-// [class*="sb-icon-primary"] {
-//   background-color: $primary-color;
-// }
+[class*="sb-icon-primary"] {
+  background-color: $primary-color;
+}
 
-// [class*="sb-icon-secondary"] {
-//   background-color: $secondary-color;
-// }
+[class*="sb-icon-secondary"] {
+  background-color: $secondary-color;
+}
 
-// [class*="sb-icon-warning"] {
-//   background-color: $tertiary-color;
-// }
+[class*="sb-icon-warning"] {
+  background-color: $tertiary-color;
+}
 
-// [class*="sb-icon-error"] {
-//   background-color: $red;
-// }
+[class*="sb-icon-error"] {
+  background-color: $red;
+}
 
-// [class*="sb-icon-edit-user"] {
-//   -webkit-mask-image: url(../../assets/images/edit-icon.svg);
-//   mask-image: url(../../assets/images/edit-icon.svg);
-// }
+[class*="sb-icon-edit-user"] {
+  -webkit-mask-image: url(../../assets/images/edit-icon.svg);
+  mask-image: url(../../assets/images/edit-icon.svg);
+}
 
-// [class*="sb-icon-delete-user"] {
-//   -webkit-mask-image: url(../../assets/images/delete-icon.svg);
-//   mask-image: url(../../assets/images/delete-icon.svg);
-// }
+[class*="sb-icon-delete-user"] {
+  -webkit-mask-image: url(../../assets/images/delete-icon.svg);
+  mask-image: url(../../assets/images/delete-icon.svg);
+}
 
-// [class*="sb-icon-info"] {
-//   -webkit-mask-image: url(../../assets/images/info-icon.svg);
-//   mask-image: url(../../assets/images/info-icon.svg);
-// }
+[class*="sb-icon-info"] {
+  -webkit-mask-image: url(../../assets/images/info-icon.svg);
+  mask-image: url(../../assets/images/info-icon.svg);
+}
 
 .info-icon {
   background-color: $gray-400;
