@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
+import { TenantService, UserService, OtpService, OrgDetailsService, TncService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
 import {
   ResourceService, ToasterService, NavigationHelperService,
@@ -49,7 +49,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
               public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
               public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
               public utilService: UtilService, public signupService: SignupService,
-              public telemetryService: TelemetryService) {
+              public telemetryService: TelemetryService, public tncService: TncService) {
   }
 
   ngOnInit() {
@@ -112,7 +112,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    * Fetches tnc related configuration
    */
   fetchTncConfiguration() {
-    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {

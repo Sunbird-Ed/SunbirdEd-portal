@@ -66,6 +66,7 @@ const WHITELIST_URLS = [
     'user/v2/accept/tnc',
     'user/v2/bulk/upload',
     'user/v2/upload',
+    'user/v4/create',
     'get/tenant/logo',
     '/v1/tenant',
     '/info',
