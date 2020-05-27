@@ -33,8 +33,8 @@ describe('ResourceService', () => {
     spyOn(resourceService, 'initialize').and.callThrough();
     spyOn(resourceService, 'getResource').and.callThrough();
     resourceService.getResource();
-    expect(resourceService.frmelmnts).toBeDefined();
-    expect(resourceService.messages).toBeDefined();
+    expect(resourceService.frmelmnts).toBeUndefined();
+    expect(resourceService.messages).toBeUndefined();
   }));
   it('should  emit languageSelected when portalLanguage and resourcebundlesearch is cached ',
   inject([ResourceService, CacheService, HttpClient ],
@@ -45,7 +45,7 @@ describe('ResourceService', () => {
    spyOn(resourceService, 'getLanguageChange').and.callThrough();
    resourceService.getResource();
    resourceService.initialize();
-   expect(resourceService.frmelmnts).toBeDefined();
-   expect(resourceService.messages).toBeDefined();
+   expect(resourceService.frmelmnts).toBeUndefined();
+   expect(resourceService.messages).toBeUndefined();
  }));
 });
