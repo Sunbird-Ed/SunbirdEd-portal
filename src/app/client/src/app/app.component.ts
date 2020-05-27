@@ -16,7 +16,7 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { CsModule} from '@project-sunbird/client-services';
+import { CsModule } from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -128,7 +128,10 @@ export class AppComponent implements OnInit, OnDestroy {
     for (const item in params) {
       if (params.hasOwnProperty(item)) {
         switch (item) {
-          case ('channel' || 'utm_campaign'):
+          case ('channel'):
+            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            break;
+          case ('utm_campaign'):
             resultJson.push({ 'id': params[item], 'type': 'Source' });
             break;
           case 'utm_medium':
@@ -378,14 +381,14 @@ export class AppComponent implements OnInit, OnDestroy {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-          this.fingerprintInfo = {deviceId, components, version};
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.deviceId = deviceId;
-        this.deviceRegisterService.setDeviceId();
-          observer.next(deviceId);
-          observer.complete();
-        }));
+    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+      this.fingerprintInfo = { deviceId, components, version };
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.deviceId = deviceId;
+      this.deviceRegisterService.setDeviceId();
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
   /**
    * set user details for loggedIn user.
@@ -553,60 +556,60 @@ export class AppComponent implements OnInit, OnDestroy {
     this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (this.userService.loggedIn &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
-          this.userService.getFeedData().subscribe(
-            (data) => {
-              this.userFeed = _.get(data, 'result.response.userFeed[0]');
-              if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
-                const formReadInputParams = {
-                  formType: 'user',
-                  formAction: 'onboarding',
-                  contentType: 'externalIdVerification'
-                };
-                let orgId;
-                if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
-                  orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
-                }
-                this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
-                  (formResponsedata) => {
-                    this.labels = _.get(formResponsedata[0], ('range[0]'));
-                  }
-                );
-                // if location popup isn't opened on the very first time.
-                if (this.isLocationConfirmed) {
-                  this.showUserVerificationPopup = true;
-                }
+        this.userService.getFeedData().subscribe(
+          (data) => {
+            this.userFeed = _.get(data, 'result.response.userFeed[0]');
+            if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+              const formReadInputParams = {
+                formType: 'user',
+                formAction: 'onboarding',
+                contentType: 'externalIdVerification'
+              };
+              let orgId;
+              if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
+                orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
               }
-            },
-            (error) => {
-            });
+              this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
+                (formResponsedata) => {
+                  this.labels = _.get(formResponsedata[0], ('range[0]'));
+                }
+              );
+              // if location popup isn't opened on the very first time.
+              if (this.isLocationConfirmed) {
+                this.showUserVerificationPopup = true;
+              }
+            }
+          },
+          (error) => {
+          });
       }
     });
   }
 
   async initializeCs() {
     if (!CsModule.instance.isInitialised) {
-       // Singleton initialised or not
-        await CsModule.instance.init({
-          core: {
-              httpAdapter: 'HttpClientBrowserAdapter',
-              global: {
-                  channelId: this.channel, // required
-                  producerId: this.userService.appId, // required
-                  deviceId: this.fingerprintInfo // required
-              },
-              api: {
-                  host: document.location.origin, // default host
-                  authentication: {
-                      // userToken: string; // optional
-                      // bearerToken: string; // optional
-                  }
-              }
+      // Singleton initialised or not
+      await CsModule.instance.init({
+        core: {
+          httpAdapter: 'HttpClientBrowserAdapter',
+          global: {
+            channelId: this.channel, // required
+            producerId: this.userService.appId, // required
+            deviceId: this.fingerprintInfo // required
           },
-          services: {
-              groupServiceConfig: {
-                apiPath: 'learner/v1/group',
-              }
+          api: {
+            host: document.location.origin, // default host
+            authentication: {
+              // userToken: string; // optional
+              // bearerToken: string; // optional
+            }
           }
+        },
+        services: {
+          groupServiceConfig: {
+            apiPath: 'learner/v1/group',
+          }
+        }
       });
     }
   }
