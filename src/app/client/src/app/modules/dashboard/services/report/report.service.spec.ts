@@ -1,3 +1,5 @@
+import { TelemetryModule } from '@sunbird/telemetry';
+import { CourseProgressService } from './../course-progress/course-progress.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserService, CoreModule, PermissionService, BaseReportService } from '@sunbird/core';
 import { TestBed } from '@angular/core/testing';
@@ -15,8 +17,8 @@ describe('ReportService', () => {
   let baseReportService: BaseReportService;
 
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [ReportService, UsageService, UserService, PermissionService, BaseReportService],
-    imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule]
+    providers: [ReportService, UsageService, UserService, PermissionService, BaseReportService, CourseProgressService],
+    imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()]
   }));
 
   beforeEach(() => {
