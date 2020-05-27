@@ -67,7 +67,9 @@
       "GET_USER_FEED": "user/v1/feed",
       "USER_MIGRATE": "user/v1/migrate",
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
-      "SIGN_UP_V4": "user/v4/create"
+      "SIGN_UP_V4": "user/v4/create",
+      "SEARCH_USER": "user/v1/search",
+      "SWITCH_USER": "user/v1/switch"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search"
