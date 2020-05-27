@@ -8,8 +8,7 @@
     <div class="d-flex flex-jc-space-between py-16 px-16">
       <div class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
     </div>
-    <div class="twelve wide column p-0 mx-16 mb-8 text-center"><img src="../../assets/images/profile-icon.svg" width="88px"
-      height="88px"></div>
+    <div class="twelve wide column p-0 mx-16 mb-8 text-center"><img src="../../assets/images/profile-icon.svg" width="88px"></div>
     <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
       <div class="ui stackable grid m-0" *ngFor="let field of formData">
         <div class="twelve wide column p-0" *ngIf="field.inputType==='input' && field.visible===true">
@@ -34,7 +33,6 @@
         </div>
       </div>
     </form>
-
     <div class="user-profile-box__actions pb-16 px-16">
       <button appTelemetryInteract
         [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn" (click)="onSubmitForm()"
@@ -45,7 +43,9 @@
       {{resourceService?.frmelmnts.btn.cancel}}</button>
     </div>
 
+    </div>
+
+
     <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
       *ngIf="showTncPopup">
     </app-tnc-popup>
-    
