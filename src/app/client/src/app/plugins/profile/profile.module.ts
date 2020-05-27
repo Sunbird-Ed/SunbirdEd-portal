@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { AvatarModule } from 'ngx-avatar';
 import { ContentSearchModule } from '@sunbird/content-search';
+import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SlickModule,
     AvatarModule,
     SharedFeatureModule,
-    ContentSearchModule
+    ContentSearchModule,
+    CommonConsumptionModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
    AccountRecoveryInfoComponent,
