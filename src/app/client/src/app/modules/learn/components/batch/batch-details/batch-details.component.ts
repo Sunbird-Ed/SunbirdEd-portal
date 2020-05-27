@@ -225,4 +225,16 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+
+  /**
+   * @since - #SH-58
+   * @description - This method will decide wheather to show the "Create Batch" butto or not
+   * @returns - boolean
+   */
+  showCreateBatch() {
+    const isCourseCreator = (_.get(this.courseHierarchy, 'createdBy') === this.userService.userid) ? true : false;
+    const isPermissionAvailable = (this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) &&
+    this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])) ? true : false;
+    return (isCourseCreator && isPermissionAvailable);
+  }
 }

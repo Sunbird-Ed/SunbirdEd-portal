@@ -147,21 +147,19 @@
   <div class="sb-modal-actions">
     <button 
       class="sb-btn sb-btn-normal sb-btn-primary" 
-      [ngClass]="{ 'disabled': batchDetails.status === 2 }"
+      [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || disableSubmitBtn || showFormInViewMode }"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="updateBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      [disabled]="disableSubmitBtn || showFormInViewMode" 
       (click)="updateBatch()"
       >
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
     <button 
       class="sb-btn sb-btn-normal sb-btn-outline-primary" 
-      [ngClass]="{ 'disabled': batchDetails.status === 2 }"
+      [ngClass]="{ 'sb-btn-disabled': batchDetails.status === 2 || showFormInViewMode}"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
       (click)="clearForm()" 
-      [disabled]="showFormInViewMode"
       >
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
