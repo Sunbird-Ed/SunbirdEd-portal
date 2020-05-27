@@ -118,8 +118,8 @@ let PERMISSIONS_HELPER = {
     }
   },
 
-  getCurrentUserRoles: function (reqObj, callback) {
-    var userId = reqObj.session.userId
+  getCurrentUserRoles: function (reqObj, callback, userIdentifier) {
+    var userId = userIdentifier || reqObj.session.userId;
     var options = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,
