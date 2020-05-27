@@ -37,6 +37,12 @@ $sb-radio-btn-border-color: $primary-300;
     font-size: $sb-checkbox-label-font-size;
     font-weight: normal;
     margin-right: $base-block-space;
+    html[dir='rtl'] & {
+      padding-right: ($base-block-space * 3);
+      padding-left: 0;
+      margin-left: $base-block-space;
+      margin-right: 0;
+    }
   }
 
   label:before {
@@ -44,6 +50,10 @@ $sb-radio-btn-border-color: $primary-300;
     position: absolute;
     top: 0;
     left: 0;
+    html[dir='rtl'] & {
+      right: 0;
+      left:inherit;
+      }
     width: ($base-block-space * 2);
     height: ($base-block-space * 2);
     background: $sb-checkbox-before-checked-background-color;
@@ -57,6 +67,10 @@ $sb-radio-btn-border-color: $primary-300;
     position: absolute;
     top: 0;
     left: 0;
+    html[dir='rtl'] & {
+    right: 0;
+    left:inherit;
+    }
     opacity: 0;
     z-index: 3;
     width: $base-block-space * 2;
@@ -136,6 +150,10 @@ $sb-radio-btn-border-color: $primary-300;
     font-size: $sb-checkbox-label-font-size;
     top: 0;
     left: 0;
+    html[dir='rtl'] & {
+      right: 0;
+      left:inherit;
+      }
     width: ($base-block-space * 2);
     height: ($base-block-space * 2);
     text-align: center;
