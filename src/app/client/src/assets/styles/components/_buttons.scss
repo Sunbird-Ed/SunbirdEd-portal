@@ -171,18 +171,26 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   font-size: 0.75rem;
   padding: 0.5rem;
 }
+.sb-btn-disabled,.sb-btn-outline-disabled {
+  cursor: default;
+  font-weight: normal;
+}
 .sb-btn-disabled {
   background-color: var(--gray-100);
   border: calculateRem(1px) solid var(--gray-100);
-  color: var(--gray-200);
-  cursor: default;
+  &:hover {
+    background-color: var(--gray-100) !important;
+    color: var(--gray-200) !important;
+  }
 }
 .sb-btn-outline-disabled {
   background-color: var(--white);
   border: calculateRem(1px) solid var(--gray-100);
-  color: var(--gray-200);
-  cursor: default;
-  font-weight: normal;
+  &:hover {
+    background-color: var(--white) !important;;
+    border: calculateRem(1px) solid var(--gray-100) !important;
+    color: var(--gray-200) !important;
+  }
 }
 // button link
 .sb-btn-link {
