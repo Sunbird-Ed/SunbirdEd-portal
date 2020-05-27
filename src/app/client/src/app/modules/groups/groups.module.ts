@@ -6,10 +6,13 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MyGroupsListComponent } from './components';
+import { MyGroupsComponent, AddMemberComponent,
+  GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, DeletePopupComponent,
+  NoGroupResultComponent} from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -22,9 +25,11 @@ import { GroupsService } from './services';
     TelemetryModule,
     NgInviewModule,
     SharedFeatureModule,
-    GroupsRoutingModule
+    GroupsRoutingModule,
+    CommonConsumptionModule
   ],
   providers: [GroupsService],
-  declarations: [MyGroupsListComponent]
+  declarations: [ MyGroupsComponent, AddMemberComponent,
+    GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, DeletePopupComponent, NoGroupResultComponent, ]
 })
 export class GroupsModule { }

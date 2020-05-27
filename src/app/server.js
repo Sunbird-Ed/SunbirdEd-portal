@@ -55,9 +55,6 @@ app.use(session({
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
-app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
-
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
@@ -72,6 +69,7 @@ app.all('/sessionExpired', endSession, (req, res) => {
 
 // device routes
 require('./routes/deviceRoutes.js')(app);
+require('./routes/googleRoutes.js')(app);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
@@ -80,6 +78,7 @@ app.get('/service/health', healthService.createAndValidateRequestBody, healthSer
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
 app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
+app.get('/user/v1/switch/:userId', bodyParser.json({limit: '1mb'}),keycloak.protect(), userService.switchUser);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
@@ -99,6 +98,9 @@ app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParse
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
+
+//cert-reg routes
+require('./routes/certRegRoutes.js')(app);
 
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',

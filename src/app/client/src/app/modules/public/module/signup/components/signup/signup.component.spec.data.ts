@@ -81,7 +81,7 @@ export const SignUpComponentMockData = {
     'request': {
       'key': '9999999999',
       'type': 'phone',
-      'templateId': 'verifyPhoneOtpTemplateWard'
+      'templateId': 'wardLoginOTP'
     }
   },
   generateOtp: {

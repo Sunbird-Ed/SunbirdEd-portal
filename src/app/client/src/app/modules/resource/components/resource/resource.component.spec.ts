@@ -1,8 +1,8 @@
-import { BehaviorSubject, throwError, of} from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+import { BehaviorSubject, of} from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ResourceService, SharedModule
 } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService, PlayerService} from '@sunbird/core';
+import { CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -14,10 +14,6 @@ import { ResourceComponent } from './resource.component';
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService;
-  const mockPageSection: any = {};
-  let sendOrgDetails = true;
-  let sendPageApi = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -40,7 +36,7 @@ describe('ResourceComponent', () => {
     frmelmnts: {
       lbl: {
         fetchingContentFailed: 'Fetching content failed. Please try again later.'
-      }
+      },
     },
     languageSelected$: of({})
   };
@@ -70,26 +66,39 @@ describe('ResourceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceComponent);
     component = fixture.componentInstance;
-    toasterService = TestBed.get(ToasterService);
-    userService = TestBed.get(UserService);
-    pageApiService = TestBed.get(SearchService);
-    orgDetailsService = TestBed.get(OrgDetailsService);
-    sendOrgDetails = true;
-    sendPageApi = true;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
-      if (sendOrgDetails) {
-        return of({hashTagId: '123'});
-      }
-      return throwError({});
-    });
-    spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
-      if (sendPageApi) {
-        return of(mockPageSection);
-      }
-      return throwError({});
-    });
+    fixture.detectChanges();
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+
+  it('should return  data from search', () => {
+    component.channelId = '123',
+    component['contentSearchService']._frameworkId = '123456';
+    const option = {filters: {},
+    isCustodianOrg: true,
+    channelId: '123',
+    frameworkId: '123456'
+    };
+    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
+    ));
+    component['fetchCourses']();
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component.cardData.length).toEqual(2);
+
+  });
+
+
+  it('should return empty data from search', () => {
+    component.channelId = '123',
+    component['contentSearchService']._frameworkId = '123456';
+    const option = {filters: {},
+    isCustodianOrg: true,
+    channelId: '123',
+    frameworkId: '123456'
+    };
+    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
+    ));
+    component['fetchCourses']();
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component.cardData.length).toEqual(0);
+
   });
 });

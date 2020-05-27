@@ -1,19 +1,22 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "2.10.0",
+  "version": "3.0.0",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
+    "codacy-coverage": "3.0.0",
     "babel": "6.23.0",
     "chai": "4.2.0",
+    "chai-spies": "1.0.0",
     "chai-http": "4.2.0",
     "gulp": "4.0.2",
+    "gulp-deploy-azure-cdn": "2.1.0",
     "gulp-clean": "0.4.0",
     "gulp-decompress": "2.0.2",
-    "gulp-deploy-azure-cdn": "2.1.0",
     "gulp-download": "0.0.1",
     "gulp-gzip": "1.4.2",
+    "gulp-brotli": "1.2.1",
     "gulp-rename": "2.0.0",
     "gulp-rev": "8.1.1",
     "gulp-rev-collector": "1.3.1",
@@ -32,6 +35,7 @@
     "run-sequence": "2.2.1",
     "save": "2.3.2",
     "sinon": "4.5.0",
+    "webpack-bundle-analyzer": "^3.7.0",
     "yargs": "9.0.1"
   },
   "engines": {
@@ -47,18 +51,16 @@
   },
   "scripts": {
     "server": "gulp update:index:file && node server",
-    "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
-    "preinstall": "npm install ./libs/sb_logger_util_v2 && npm install ./libs/sb_telemetry_util && npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
-    "deploy": "gulp deploy",
     "test-with-coverage": "cd client && npm run test-coverage && cat ./coverage/lcov.info | codacy-coverage",
     "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887",
     "backend-test": "mocha 'tests/server/**/*.spec.js'",
     "latex-test": "mocha 'tests/server/helpers/spec/latexService.spec.js'",
-    "backend-test-with-coverage": "nyc --reporter=html --reporter=lcov npm run backend-test"
+    "backend-test-with-coverage": "nyc --reporter=html --reporter=lcov npm run backend-test",
+    "whitelist-urls": "node -e 'require (\"helpers/whitelistUrls.js\").flatternObject()'"
   },
   "nyc": {
     "all": true,
@@ -71,7 +73,6 @@
       ".js"
     ],
     "exclude": [
-      "helpers/announcement/*.js",
       "helpers/resourceBundles/*.js"
     ]
   },
@@ -82,12 +83,9 @@
     "@project-sunbird/program": "0.0.5",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "2.5.0",
-    "asyncawait": "3.0.0",
     "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",
-    "chai-spies": "1.0.0",
-    "codacy-coverage": "3.0.0",
     "compare-versions": "3.5.1",
     "compression": "1.7.2",
     "connect-redis": "4.0.4",
@@ -99,11 +97,8 @@
     "express-http-proxy": "1.0.6",
     "express-session": "1.15.3",
     "googleapis": "45.0.0",
-    "gulp-brotli": "1.2.1",
     "helmet": "3.21.2",
     "http-status-codes": "1.3.0",
-    "joi": "13.0.1",
-    "js-md5": "0.5.0",
     "jsonwebtoken": "7.4.1",
     "kafka-node": "4.1.1",
     "keycloak-connect": "git+https://github.com/project-sunbird/keycloak-nodejs-connect.git#release-2.5.0",
@@ -111,10 +106,10 @@
     "mathjax-full": "3.0.0",
     "mobile-detect": "1.4.2",
     "multiparty": "^4.2.1",
-    "node-json-transform": "1.0.13",
     "properties": "1.2.1",
     "redis": "3.0.2",
     "request": "2.81.0",
+    "request-promise": "^4.2.5",
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
     "sb_cache_manager": "file:libs/sb_cache_manager",
     "sb_logger_util_v2": "file:libs/sb_logger_util_v2",

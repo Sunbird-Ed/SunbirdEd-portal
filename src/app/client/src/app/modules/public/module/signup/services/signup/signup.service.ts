@@ -51,16 +51,6 @@ export class SignupService {
   }
 
   /**
-   * Fetches terms and condition config data
-   */
-  getTncConfig() {
-    const options = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.TNC_CONFIG
-    };
-    return this.learnerService.get(options);
-  }
-
-  /**
    * Accepts Terms and conditions and generate token of user
    * @param data
    */

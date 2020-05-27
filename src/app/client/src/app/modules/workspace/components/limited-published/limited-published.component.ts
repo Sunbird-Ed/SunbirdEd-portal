@@ -5,11 +5,10 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage,
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IPagination,
   ContentUtilsServiceService, ITelemetryShare, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate

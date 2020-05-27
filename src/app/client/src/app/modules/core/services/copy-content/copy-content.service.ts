@@ -51,7 +51,6 @@ export class CopyContentService {
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
-    this.frameworkService.initialize();
   }
 
   /**
@@ -59,6 +58,7 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
+    this.frameworkService.initialize();
     const param = this.formatData(contentData);
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
@@ -68,6 +68,38 @@ export class CopyContentService {
       _.forEach(response.result.node_id, (value) => {
         this.redirectToEditor(param.request.content, value);
       });
+      return response;
+    }));
+  }
+  /**
+   * @since - #SH-66.
+   * @param  {ContentData} contentData
+   * @description - API to copy a textbook as a curriculum course.
+   */
+  copyAsCourse(contentData: ContentData) {
+    const userData = this.userService.userProfile;
+    const requestData = {
+      request: {
+        source: contentData.identifier,
+        course: {
+          name: 'Copy of ' + contentData.name,
+          description: contentData.description,
+          organisation: _.uniq(userData.organisationNames),
+          createdFor: userData.organisationIds,
+          createdBy: userData.userId,
+          framework: contentData.framework
+        }
+      }
+    };
+
+    const option = {
+      data: requestData,
+      url: this.config.urlConFig.URLS.CONTENT.COPY_AS_COURSE
+    };
+
+    return this.contentService.post(option).pipe(map((response: ServerResponse) => {
+      const courseIdentifier = _.get(response, 'result.identifier');
+      this.openCollectionEditor(contentData.framework, courseIdentifier);
       return response;
     }));
   }
@@ -127,6 +159,17 @@ export class CopyContentService {
     } else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
+    this.router.navigate([url]);
+  }
+
+  /**
+   * @since - #SH-66
+   * @param  {string} framework
+   * @param  {string} copiedIdentifier
+   * @description - It will launch the collection editor
+   */
+  openCollectionEditor(framework: string, copiedIdentifier: string) {
+    const url = `/workspace/content/edit/collection/${copiedIdentifier}/Course/draft/${framework}/Draft`;
     this.router.navigate([url]);
   }
 }

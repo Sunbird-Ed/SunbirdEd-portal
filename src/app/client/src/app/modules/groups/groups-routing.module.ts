@@ -1,4 +1,4 @@
-import { MyGroupsListComponent } from './components';
+import { MyGroupsComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -6,7 +6,7 @@ const telemetryEnv = 'Groups';
 const objectType = 'Groups';
 const routes: Routes = [
   {
-    path: '', component: MyGroupsListComponent,
+    path: '', component: MyGroupsComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Groups', url: '' }],
       telemetry: { env: telemetryEnv, pageid: 'groups', type: 'view', subtype: 'paginate' },

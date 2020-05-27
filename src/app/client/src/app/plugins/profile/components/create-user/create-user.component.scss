@@ -1,0 +1,58 @@
+@import "variables";
+@import 'mixins/mixins';
+
+.user-profile-box {
+  margin: 32px auto;
+  max-width: 480px;
+  width: 100%;
+  background: var(--white);
+  border-radius: 8px;
+
+  &__title {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: calculateRem(16px);
+  }
+
+  &__actions {
+    border-top: 1px solid #ddd;
+    padding: 16px 0px 0px 0px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+
+.field-focus {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+.sb-profile-btn {
+  border-radius: 40px;
+}
+
+:host {
+  .fields-selection {
+    display: flex;
+
+    .sb-field .ui.selection.active.dropdown {
+      border-color: #96c8da;
+    }
+
+    .sb-field .ui.selection.active.dropdown .text {
+      color: #0076FE !important;
+    }
+
+    .sb-field {
+      margin-bottom: calculateRem(16px) 0px;
+      width: 100%;
+
+      @include respond-below(sm) {}
+
+      label {
+        font-size: 14px;
+      }
+    }
+
+  }
+}

@@ -73,8 +73,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges() {
-    if (this.contentComingSoonDetails) {
+  ngOnChanges(changes) {
+    if (this.contentComingSoonDetails || changes.contentStatus) {
       this.initialize();
     }
     if (this.languageSubscription) {

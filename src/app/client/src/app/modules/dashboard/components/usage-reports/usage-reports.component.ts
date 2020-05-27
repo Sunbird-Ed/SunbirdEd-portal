@@ -113,6 +113,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       fileData.id = _.get(file, 'id');
       fileData.name = _.get(file, 'name');
       fileData.desc = _.get(file, 'description');
+      fileData.size = _.get(file, 'fileSize');
+      fileData.createdOn = _.get(file, 'createdOn');
       fileData.downloadUrl = _.get(file, 'downloadUrl');
       this.files.push(fileData);
     });

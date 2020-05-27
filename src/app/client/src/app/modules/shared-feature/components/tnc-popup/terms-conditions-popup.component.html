@@ -15,7 +15,7 @@
     <div class="fs-1 font-weight-bold d-flex flex-jc-center mb-16">
       {{resourceService?.frmelmnts?.lbl?.termsAndCond}}&lrm;</div>
     <app-loader *ngIf="showLoader" [data]='loaderMessage'></app-loader>
-    <form class="ui form d-flex flex-jc-center">
+    <form class="ui form d-flex flex-jc-center terms-and-cond-form">
       <iframe id="serviceFrameSend" [src]="tncLatestVersionUrl" width="100%" height="200px" class="toc-page" frameborder="0"
         (load)="showLoader = false"></iframe>
     </form>

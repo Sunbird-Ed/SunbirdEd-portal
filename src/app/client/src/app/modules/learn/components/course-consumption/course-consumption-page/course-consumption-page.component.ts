@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService } from '@sunbird/core';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 @Component({
   templateUrl: './course-consumption-page.component.html'
 })
@@ -72,7 +72,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {
     const allBatchesOfCourse = _.filter(enrolledCourses, { courseId })
-      .sort((cur: any, prev: any) => moment(cur.enrolledDate).valueOf() > moment(prev.enrolledDate).valueOf() ? -1 : 1);
+      .sort((cur: any, prev: any) => dayjs(cur.enrolledDate).valueOf() > dayjs(prev.enrolledDate).valueOf() ? -1 : 1);
     const curBatch = _.find(allBatchesOfCourse, { batchId }); // find batch matching route batchId
     if (curBatch) { // activateRoute batch found
       return curBatch;

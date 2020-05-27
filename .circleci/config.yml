@@ -29,7 +29,7 @@ jobs:
           paths: ./node_modules
       - run:
           name: ng lint and building
-          command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
+          command: 'mkdir -p /tmp/logs && ng build --prod | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'

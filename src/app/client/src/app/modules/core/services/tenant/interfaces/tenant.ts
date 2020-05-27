@@ -11,3 +11,9 @@ export interface ITenantData {
     poster: string;
     titleName: string;
 }
+
+export interface ITenantSettings {
+    helpCenterLink?: string;
+    helpDeskEmail?: string;
+    playstoreLink?: string;
+}

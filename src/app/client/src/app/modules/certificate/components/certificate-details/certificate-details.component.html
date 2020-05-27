@@ -62,7 +62,7 @@
       </div>
       <div class="player-thumbnail" appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
       <div class="h-100 certificate-area-player" *ngIf="!showVideoThumbnail">
-      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+        <app-player class="content-player" [overlayImagePath]="'assets/images/featured-content.jpg'" [pageId]="pageId" [isSingleContent]="false" [playerConfig]="playerConfig"></app-player>
     </div>
     </div>
   </div>

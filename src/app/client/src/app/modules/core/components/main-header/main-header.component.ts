@@ -10,7 +10,8 @@ declare var jQuery: any;
 
 @Component({
   selector: 'app-header',
-  templateUrl: './main-header.component.html'
+  templateUrl: './main-header.component.html',
+styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit {
   @Input() routerEvents;
@@ -28,7 +29,6 @@ export class MainHeaderComponent implements OnInit {
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;
-  announcementRole: Array<string>;
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
@@ -71,7 +71,7 @@ export class MainHeaderComponent implements OnInit {
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
-    public orgDetailsService: OrgDetailsService, private _cacheService: CacheService, public formService: FormService,
+    public orgDetailsService: OrgDetailsService, public formService: FormService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -79,7 +79,6 @@ export class MainHeaderComponent implements OnInit {
         this.exploreButtonVisibility = 'false';
       }
       this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
-      this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
       this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
       this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
       this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
@@ -123,23 +122,16 @@ export class MainHeaderComponent implements OnInit {
     });
   }
   getLanguage(channelId) {
-    const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
-    if (isCachedDataExists) {
-      this.languages = isCachedDataExists[0].range;
-    } else {
-      const formServiceInputParams = {
-        formType: this.languageFormQuery.formType,
-        formAction: this.languageFormQuery.formAction,
-        contentType: this.languageFormQuery.filterEnv
-      };
-      this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
-        this.languages = data[0].range;
-        this._cacheService.set(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction, data,
-          { maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes * this.config.appConfig.cacheServiceConfig.setTimeInSeconds});
-      }, (err: any) => {
-        this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
-      });
-    }
+    const formServiceInputParams = {
+      formType: this.languageFormQuery.formType,
+      formAction: this.languageFormQuery.formAction,
+      contentType: this.languageFormQuery.filterEnv
+    };
+    this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
+      this.languages = data[0].range;
+    }, (err: any) => {
+      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+    });
   }
   navigateToHome() {
     if (this.userService.loggedIn) {

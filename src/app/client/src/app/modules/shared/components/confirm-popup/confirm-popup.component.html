@@ -1,0 +1,17 @@
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal sb-modal-addsummary" appBodyScroll (dismissed)="modal.deny()" #modal>
+  <div class="sb-modal-header">
+    {{input?.title}}
+  </div>
+  <div class="sb-modal-content">
+    {{input?.body}}
+  </div>
+  <div class="sb-modal-actions">
+    <button (click)="confirm(true)" class="sb-btn sb-btn-normal sb-btn-primary">
+      {{resourceService.frmelmnts?.btn?.yes}}
+    </button>
+    <button (click)="confirm(false)" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      {{resourceService?.frmelmnts?.btn?.no}}
+    </button>
+  </div>
+</sui-modal>

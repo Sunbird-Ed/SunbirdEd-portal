@@ -23,7 +23,7 @@ describe('PermissionService', () => {
         BrowserCacheTtlService]
     });
   });
-  it('should fetch permission', () => {
+  xit('should fetch permission', () => { // removed role read api call
     const permissionService = TestBed.get(PermissionService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockPermissionRes.success));
@@ -52,7 +52,7 @@ describe('PermissionService', () => {
   });
 
 
-  it('should throw toaster error message when permission api fails', () => {
+  xit('should throw toaster error message when permission api fails', () => { // removed role read api
     const permissionService = TestBed.get(PermissionService);
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);

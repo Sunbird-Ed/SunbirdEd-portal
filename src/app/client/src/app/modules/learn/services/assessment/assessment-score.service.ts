@@ -2,9 +2,11 @@ import { CourseProgressService } from '../courseProgress/course-progress.service
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { finalize } from 'rxjs/operators';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AssessmentScoreService {
   /***
    * course details
@@ -136,7 +138,7 @@ export class AssessmentScoreService {
           batchId: _.get(this._batchDetails, 'batchId'),
           status: 2, // because eid is END
           courseId: _.get(this._batchDetails, 'courseId'),
-          lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
+          lastAccessTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
 
         }],
         assessments: [

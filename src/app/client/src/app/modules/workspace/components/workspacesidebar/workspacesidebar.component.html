@@ -8,14 +8,6 @@
   [popupPlacement]="'right'">
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
-    <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('textbook-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole'
-    [routerLink]="['create']" [class.active]="router.isActive('/workspace/content/create', true)">
-    {{resourceService?.frmelmnts?.snav?.textbook}}<span></span>
-  </a>
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('training-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='trainingRole'
-    [routerLink]="['create', 'training']" [class.active]="router.isActive('/workspace/content/create/training')">
-    {{resourceService?.frmelmnts?.snav?.training}}<span></span>
-  </a>
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
   appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]" suiPopup popupText="View all your content in draft, review, published and more"
   [popupPlacement]="'right'">

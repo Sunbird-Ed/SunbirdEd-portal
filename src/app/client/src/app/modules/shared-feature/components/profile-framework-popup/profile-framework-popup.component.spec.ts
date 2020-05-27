@@ -63,7 +63,7 @@ describe('ProfileFrameworkPopupComponent', () => {
       }
       return throwError({});
     });
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake((options) => {
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake((options) => {
       if (makeCustOrgSuc) {
         return of({result: {response: {value: mockCustodianOrg}}});
       }

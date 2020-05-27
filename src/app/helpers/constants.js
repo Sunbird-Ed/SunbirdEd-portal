@@ -17,5 +17,6 @@ module.exports = {
   API_VERSION: {
     V1: 'v1',
     V3: 'v3'
-  }
+  },
+  GOOGLE_VERIFICATION_URL: 'https://www.google.com/recaptcha/api/siteverify'
 };

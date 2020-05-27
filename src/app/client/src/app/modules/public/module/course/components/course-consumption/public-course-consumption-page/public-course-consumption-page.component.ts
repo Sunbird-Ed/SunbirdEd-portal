@@ -5,7 +5,6 @@ import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
 

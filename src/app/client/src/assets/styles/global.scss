@@ -7,7 +7,7 @@ body {
 }
 
 body {
-  background: $body-background-color !important;
+  background: #E5EDF5 !important;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
@@ -17,7 +17,7 @@ body {
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
-    background: $body-background-color !important;
+    background: #E5EDF5 !important;
     & > .pusher {
       background: transparent !important;
      // padding-bottom: 400px !important;
@@ -257,10 +257,17 @@ app-workspace {
     }
   }
 }
+
 .sb-graph-section{
   .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
     text-overflow: initial;
     overflow: initial;
     white-space: unset;
+  }
+}
+
+.sb-modal-addsummary {
+  .ck.ck-editor__editable_inline {
+    min-height: calc(100vh - 271px);
   }
 }

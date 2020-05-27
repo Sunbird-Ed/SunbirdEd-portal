@@ -34,8 +34,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
-  public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
-
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
+  public isLoading = true;
+  public cardData: Array<{}> = [];
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -60,8 +61,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilter = true;
       }, (error) => {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        setTimeout(() => this.router.navigate(['']), 5000);
-        console.error('init search filter failed', error);
+        this.navigationhelperService.goBack();
       });
   }
 
@@ -77,41 +77,31 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.orgDetailsService.getOrgDetails(this.userService.slug)
         .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
-      return this.orgDetailsService.getCustodianOrg()
+      return this.orgDetailsService.getCustodianOrgDetails()
         .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }
 
-  public getFilters(filters) {
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+  public getFilters({filters, status}) {
     this.showLoader = true;
+    if (!filters || status === 'FETCHING') {
+      return; // filter yet to be fetched, only show loader
+    }
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
-  }
-
-  private getSearchRequest() {
-    let filters = this.selectedFilters;
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (!this.custodianOrg) { // if custodianOrg should show result from all channel based on applied filter
-      filters['channel'] = this.channelId; // if not custodian org then fetch contents from same channel
-    }
-    const option = {
-      limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-      filters: filters,
-      // mode: 'soft',
-      // facets: facets,
-      params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
-    };
-    if (this.contentSearchService.frameworkId) {
-      option.params.framework = this.contentSearchService.frameworkId;
-    }
-    return option;
+    this.fetchCourses();
   }
 
   private fetchContents() {
-    const option = this.getSearchRequest();
+    const request = {
+      filters: this.selectedFilters,
+      isCustodianOrg: this.custodianOrg,
+      channelId: this.channelId,
+      frameworkId: this.contentSearchService.frameworkId
+    };
+    const option = this.searchService.getSearchRequest(request, false);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -158,6 +148,24 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
+  }
+
+  private  fetchCourses() {
+    this.isLoading = true;
+    const request = {
+      filters: this.selectedFilters,
+      isCustodianOrg: this.custodianOrg,
+      channelId: this.channelId,
+      frameworkId: this.contentSearchService.frameworkId
+    };
+    this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+    this.isLoading = false;
+    this.cardData = cardData;
+  }, err => {
+      this.isLoading = false;
+      this.cardData = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  });
   }
 
   private prepareVisits(event) {
@@ -229,6 +237,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         ...this.selectedFilters, appliedFilters: false,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
+    });
+  }
+
+  navigateToCourses(event) {
+    this.router.navigate(['explore/list/curriculum-courses'], {
+      queryParams: {
+        title: _.get(event, 'data.title'),
+        board: _.get(this.selectedFilters, 'board'),
+        medium: _.get(this.selectedFilters, 'medium'),
+        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
+      },
     });
   }
 
