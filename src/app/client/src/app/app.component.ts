@@ -122,7 +122,43 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+  public makeUTMSession(params) {
+    const resultJson = [];
+    for (const item in params) {
+      if (params.hasOwnProperty(item)) {
+        switch (item) {
+          case ('channel'):
+            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            break;
+          case ('utm_campaign'):
+            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            break;
+          case 'utm_medium':
+            resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
+            break;
+          case 'utm_source':
+            resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
+            break;
+          case 'utm_term':
+            resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
+            break;
+          case 'utm_content':
+            resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+  }
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
+      if (_.some(_.intersection(utmParams, _.keys(params)))) {
+        this.makeUTMSession(params);
+      }
+    });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),

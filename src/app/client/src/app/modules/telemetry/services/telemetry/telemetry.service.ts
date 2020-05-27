@@ -86,8 +86,9 @@ export class TelemetryService {
    * @param {IStartEventInput} startEventInput
    * @memberof TelemetryService
    */
-  public start(startEventInput: IStartEventInput) {
+  public async start(startEventInput: IStartEventInput) {
     if (this.isInitialized) {
+      startEventInput = await _.cloneDeep(this.addUTM(startEventInput));
       const eventData: ITelemetryEvent = this.getEventData(startEventInput);
       this.telemetryProvider.start(this.context.config, eventData.options.object.id, eventData.options.object.ver,
         eventData.edata, eventData.options);
@@ -100,8 +101,9 @@ export class TelemetryService {
    * @param {IImpressionEventInput} impressionEventInput
    * @memberof TelemetryService
    */
-  public impression(impressionEventInput: IImpressionEventInput) {
+  public async impression(impressionEventInput: IImpressionEventInput) {
     if (this.isInitialized) {
+      impressionEventInput = await _.cloneDeep(this.addUTM(impressionEventInput));
       const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
       this.telemetryProvider.impression(eventData.edata, eventData.options);
     }
@@ -112,8 +114,9 @@ export class TelemetryService {
    * @param {IInteractEventInput} interactEventInput
    * @memberof TelemetryService
    */
-  public interact(interactEventInput: IInteractEventInput) {
+  public async interact(interactEventInput: IInteractEventInput) {
     if (this.isInitialized) {
+      interactEventInput = await _.cloneDeep(this.addUTM(interactEventInput));
       const eventData: ITelemetryEvent = this.getEventData(interactEventInput);
       this.telemetryProvider.interact(eventData.edata, eventData.options);
     }
@@ -125,8 +128,9 @@ export class TelemetryService {
    * @param {IShareEventInput} shareEventInput
    * @memberof TelemetryService
    */
-  public share(shareEventInput: IShareEventInput) {
+  public async share(shareEventInput: IShareEventInput) {
     if (this.isInitialized) {
+      shareEventInput = await _.cloneDeep(this.addUTM(shareEventInput));
       const eventData: ITelemetryEvent = this.getEventData(shareEventInput);
       this.telemetryProvider.share(eventData.edata, eventData.options);
     }
@@ -137,8 +141,9 @@ export class TelemetryService {
    * @param {IErrorEventInput} errorEventInput
    * @memberof TelemetryService
    */
-  public error(errorEventInput: IErrorEventInput) {
+  public async error(errorEventInput: IErrorEventInput) {
     if (this.isInitialized) {
+      errorEventInput = await _.cloneDeep(this.addUTM(errorEventInput));
       const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
       this.telemetryProvider.error(eventData.edata, eventData.options);
     }
@@ -163,8 +168,9 @@ export class TelemetryService {
    * @param {IEndEventInput} endEventInput
    * @memberof TelemetryService
    */
-  public end(endEventInput: IEndEventInput) {
+  public async end(endEventInput: IEndEventInput) {
     if (this.isInitialized) {
+      endEventInput = await _.cloneDeep(this.addUTM(endEventInput));
       const eventData: ITelemetryEvent = this.getEventData(endEventInput);
       this.telemetryProvider.end(eventData.edata, eventData.options);
     }
@@ -176,8 +182,9 @@ export class TelemetryService {
    * @param {ILogEventInput} logEventInput
    * @memberof TelemetryService
    */
-  public log(logEventInput: ILogEventInput) {
+  public async log(logEventInput: ILogEventInput) {
     if (this.isInitialized) {
+      logEventInput = await _.cloneDeep(this.addUTM(logEventInput));
       const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
     }
@@ -189,8 +196,9 @@ export class TelemetryService {
    * @param {IExDataEventInput} exDataEventInput
    * @memberof TelemetryService
    */
-  public exData(exDataEventInput: IExDataEventInput) {
+  public async exData(exDataEventInput: IExDataEventInput) {
     if (this.isInitialized) {
+      exDataEventInput = await _.cloneDeep(this.addUTM(exDataEventInput));
       const eventData: ITelemetryEvent = this.getEventData(exDataEventInput);
       this.telemetryProvider.exdata(eventData.edata, eventData.options);
     }
@@ -202,8 +210,9 @@ export class TelemetryService {
    * @param {IFeedBackEventInput} IFeedBackEventInput
    * @memberof TelemetryService
    */
-  public feedback(feedbackEventInput: IFeedBackEventInput) {
+  public async feedback(feedbackEventInput: IFeedBackEventInput) {
     if (this.isInitialized) {
+      feedbackEventInput = await _.cloneDeep(this.addUTM(feedbackEventInput));
       const eventData: ITelemetryEvent = this.getEventData(feedbackEventInput);
       this.telemetryProvider.feedback(eventData.edata, eventData.options);
     }
@@ -299,5 +308,19 @@ export class TelemetryService {
       platform: window.navigator.platform,
       raw: window.navigator.userAgent
     };
+  }
+
+  public addUTM(object) {
+    if (sessionStorage.getItem('UTM')) {
+      const utmArray = JSON.parse(sessionStorage.getItem('UTM'));
+      object['context']['cdata'] ?
+        _.forEach(utmArray, item => {
+          object['context']['cdata'].push(item);
+        }) :
+        object['context']['cdata'] = utmArray;
+      return object;
+    } else {
+      return object;
+    }
   }
 }
