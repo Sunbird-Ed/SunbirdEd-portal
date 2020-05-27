@@ -36,8 +36,6 @@ const routes: Routes = [
     },
     {
       path: 'list/curriculum-courses', component: ExploreCurriculumCoursesComponent
-    }, {
-      path: 'course/:courseId', component: ExploreCurriculumCourseDetailsComponent
     }
   ];
   @NgModule({
