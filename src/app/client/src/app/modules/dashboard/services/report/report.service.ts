@@ -249,27 +249,14 @@ export class ReportService {
   }
 
   /**
-   * @description calls the API to fetch latest report and chart level summary
-   */
-  public getLatestSummary({ reportId, chartId = null }): Observable<any> {
-    const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
-    const req = {
-      url: chartId ? `${url}/${chartId}` : url
-    };
-    return this.baseReportService.get(req).pipe(
-      map(apiResponse => _.get(apiResponse, 'result.summaries')),
-      catchError(err => of([]))
-    );
-  }
-  /**
-   * @description - fetches the report metadata from the blob
-   * to enable backward compatibilty taking filenames from the last
-   * @example because some reports use /reports/:slug/:filename
-   * @example while some other reports use /reports/fetch/:slug/:filename
-   * @param {IDataSource[]} dataSources
-   * @returns
-   * @memberof ReportService
-   */
+ * @description - fetches the report metadata from the blob
+ * to enable backward compatibilty taking filenames from the last
+ * @example because some reports use /reports/:slug/:filename
+ * @example while some other reports use /reports/fetch/:slug/:filename
+ * @param {IDataSource[]} dataSources
+ * @returns
+ * @memberof ReportService
+ */
   public getFileMetaData(dataSources: IDataSource[]): Observable<any> {
 
     const mappedfileIdWithPath = _.mapValues(_.keyBy(dataSources, 'id'), 'path');
@@ -294,4 +281,17 @@ export class ReportService {
     return moment(dateString).format('DD-MMMM-YYYY');
   }
 
+  /**
+   * @description calls the API to fetch latest report and chart level summary
+   */
+  public getLatestSummary({ reportId, chartId = null }): Observable<any> {
+    const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
+    const req = {
+      url: chartId ? `${url}/${chartId}` : url
+    };
+    return this.baseReportService.get(req).pipe(
+      map(apiResponse => _.get(apiResponse, 'result.summaries')),
+      catchError(err => of([]))
+    );
+  }
 }

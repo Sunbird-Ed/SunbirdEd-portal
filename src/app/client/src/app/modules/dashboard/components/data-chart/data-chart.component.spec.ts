@@ -233,4 +233,15 @@ describe('DataChartComponent', () => {
         });
     });
 
+    it('should set labels from datasets', () => {
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Name']);
+    });
+
+    it('should set labels from if present in the config (hard coded labels)', () => {
+        component.chartConfig.labels = ['test'];
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Test']);
+    });
+
 });
