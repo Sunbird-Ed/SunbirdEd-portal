@@ -222,3 +222,11 @@ display: inline-block;
 .ui.label.dodger-blue > .recovery-img{
   background-color: var(--primary-color);
 }
+
+.school-id-section{
+  color:var(--white);
+}
+
+.sb-btn-border{
+  border-radius: calculateRem(40px);
+}
