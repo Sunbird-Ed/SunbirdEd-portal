@@ -99,7 +99,7 @@ export class ReportService {
   }
 
   /**
-   * @description adds a report and chart level summary to add existing report
+   * @description adds a report and chart level summary to an existing report
    * @param body
    */
   public addSummary(body: object): Observable<any> {
