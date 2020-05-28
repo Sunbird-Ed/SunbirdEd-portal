@@ -66,6 +66,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       return this.contentSearchService.fetchFilter(boardName);
     }))
     .subscribe(filters => {
+      filters['medium'] = _.sortBy(filters['medium'], ["name"]);
+      filters['board'] = _.sortBy(filters['board'], ["name"]);
       this.filters = filters;
       this.updateBoardList();
       this.updateMediumAndGradeLevelList();
