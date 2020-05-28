@@ -223,4 +223,10 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   });
+
+  it('Should return proper object by calling make UTM session', () => {
+    component.makeUTMSession({'channel': 'sunbird', 'utm_medium': 'sunbird', 'utm_source': 'sunbird',
+    'utm_campaign': 'sunbird', 'utm_term': 'sunbird', 'utm_content': 'sunbird'});
+    expect(component.resultJson).toBeDefined();
+  });
 });

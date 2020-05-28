@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   deviceId: string;
   userId: string;
   appId: string;
+  public resultJson = [];
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -123,34 +124,33 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   public makeUTMSession(params) {
-    const resultJson = [];
     for (const item in params) {
       if (params.hasOwnProperty(item)) {
         switch (item) {
           case ('channel'):
-            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            this.resultJson.push({ 'id': params[item], 'type': 'Source' });
             break;
           case ('utm_campaign'):
-            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            this.resultJson.push({ 'id': params[item], 'type': 'Source' });
             break;
           case 'utm_medium':
-            resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
+            this.resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
             break;
           case 'utm_source':
-            resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
+            this.resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
             break;
           case 'utm_term':
-            resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
+            this.resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
             break;
           case 'utm_content':
-            resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
+            this.resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
             break;
           default:
             break;
         }
       }
     }
-    sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+    sessionStorage.setItem('UTM', JSON.stringify(this.resultJson));
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
