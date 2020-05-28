@@ -115,6 +115,7 @@ export class MainHeaderComponent implements OnInit {
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
+      console.log('coming ere##################');
       this.fetchManagedUsers();
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
@@ -141,36 +142,6 @@ export class MainHeaderComponent implements OnInit {
     this.cdr.detectChanges();
     this.setWindowConfig();
 
-  }
-
-  switchUser(event) {
-    const selectedUser = _.get(event, 'data.data');
-    const userId = selectedUser.identifier;
-    this.managerUserService.initiateSwitchUser(userId).subscribe((data) => {
-        // @ts-ignore
-        document.getElementById('userId').value = userId;
-        this.userService.setUserId(userId);
-      this.userService.initialize(true);
-      const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.router.navigate(['/resources']);
-            const filterPipe = new InterpolatePipe();
-            let errorMessage =
-              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
-            errorMessage =
-              filterPipe.transform(errorMessage, '{userName}', selectedUser.firstName);
-            this.toasterService.custom({
-              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
-            });
-            this.toggleSideMenu(false);
-            userSubscription.unsubscribe();
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
   }
 
   getTelemetryContext() {
@@ -210,7 +181,9 @@ export class MainHeaderComponent implements OnInit {
         filters: {managedBy: this.userService.userid}
       }
     };
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
+      console.log('**********************************');
       const userList = [];
       const managedUserList = _.get(data, 'result.response.content') || [];
       this.totalUsersCount = managedUserList && Array.isArray(managedUserList) && managedUserList.length - 1;
@@ -224,7 +197,8 @@ export class MainHeaderComponent implements OnInit {
           });
         }
       }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      console.log(')))))))))))))))))))))))))))))))))))))))');
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
   }
@@ -354,7 +328,7 @@ export class MainHeaderComponent implements OnInit {
     };
   }
 
-  toggleSideMenu(value) {
+  toggleSideMenu(value: boolean) {
     this.showSideMenu = value;
   }
 
@@ -399,4 +373,35 @@ export class MainHeaderComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
+
+  switchUser(event) {
+    const selectedUser = _.get(event, 'data.data');
+    const userId = selectedUser.identifier;
+    this.managerUserService.initiateSwitchUser(userId).subscribe((data) => {
+        // @ts-ignore
+        document.getElementById('userId').value = userId;
+        this.userService.setUserId(userId);
+        this.userService.initialize(true);
+        const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.telemetryService.initialize(this.getTelemetryContext());
+            this.router.navigate(['/resources']);
+            const filterPipe = new InterpolatePipe();
+            let errorMessage =
+              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
+            errorMessage =
+              filterPipe.transform(errorMessage, '{userName}', selectedUser.firstName);
+            this.toasterService.custom({
+              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
+            });
+            this.toggleSideMenu(false);
+            userSubscription.unsubscribe();
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
 }
