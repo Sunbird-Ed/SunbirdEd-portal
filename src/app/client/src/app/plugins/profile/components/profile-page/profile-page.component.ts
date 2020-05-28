@@ -16,7 +16,9 @@ import { CacheService } from 'ng2-cache-service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-
+  showSuccessModal;
+  showEditModal;
+  showSubmitModal;
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
