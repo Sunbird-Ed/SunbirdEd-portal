@@ -115,7 +115,6 @@ export class MainHeaderComponent implements OnInit {
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
-      console.log('coming ere##################');
       this.fetchManagedUsers();
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
@@ -181,9 +180,7 @@ export class MainHeaderComponent implements OnInit {
         filters: {managedBy: this.userService.userid}
       }
     };
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
-      console.log('**********************************');
       const userList = [];
       const managedUserList = _.get(data, 'result.response.content') || [];
       this.totalUsersCount = managedUserList && Array.isArray(managedUserList) && managedUserList.length - 1;
@@ -197,7 +194,6 @@ export class MainHeaderComponent implements OnInit {
           });
         }
       }, (err) => {
-      console.log(')))))))))))))))))))))))))))))))))))))))');
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
