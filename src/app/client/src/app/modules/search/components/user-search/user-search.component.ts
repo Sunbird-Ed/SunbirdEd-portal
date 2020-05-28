@@ -1,11 +1,10 @@
 
 import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-NavigationHelperService} from '@sunbird/shared';
+NavigationHelperService, IPagination} from '@sunbird/shared';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -300,13 +299,11 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
             this.queryParams = { ...bothParams.queryParams };
             this.selectedRoles = [];
             if (this.queryParams.Roles) {
-              this.permissionService.permissionAvailable$.subscribe(params => {
-                if (params === 'success') {
-                  _.forEach(this.permissionService.allRoles, (role) => {
-                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
-                  });
-                  this.populateUserSearch();
-                }
+              this.permissionService.availableRoles$.subscribe(params => {
+                _.forEach(this.permissionService.allRoles, (role) => {
+                  if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                });
+                this.populateUserSearch();
               });
             } else {
               this.populateUserSearch();

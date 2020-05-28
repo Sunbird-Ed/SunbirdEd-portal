@@ -101,12 +101,12 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
@@ -216,6 +216,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+    if (this.routeParams.type.toLowerCase() === 'course' ) {
+      window.context['board'] = _.get(this.userProfile, 'framework.board');
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
@@ -239,7 +242,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['CourseUnit']
+        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {

@@ -55,19 +55,6 @@
             </div>
 
             <div *ngIf="enrolledCourse" class="course-player--metadata">
-              <div appTelemetryInteract [telemetryInteractObject]="contentInteractObject"
-                [telemetryInteractEdata]="{id:'add-note' , type:'click' , pageid:'course-consumption'}"
-                [telemetryInteractCdata]="telemetryCdata" (click)="showNoteEditor=!showNoteEditor"
-                class="cursor-pointer mb-16">
-                <i class="circular icon mr-10 plus"></i>&nbsp;{{resourceService.frmelmnts.lbl.addnote}}
-                <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'"
-                  [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
-                  (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-              </div>
-
-              <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData"
-                class="mt-8">
-              </app-note-card>
 
               <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum">
               </app-curriculum-card>
@@ -118,7 +105,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="enableContentPlayer && !loader" class="width-100">
+    <div  *ngIf="enableContentPlayer && !loader" class="width-100">
       <div class="ui stackable grid">
         <div class="twelve wide column">
           <div class="ui grid">
@@ -162,21 +149,7 @@
                       title="{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
                   </button>
                 </div>
-                <div class="two wide tablet only two wide computer only column"></div>
-                <div class="two wide column center aligned" ng-if="toc.showNoteInLecture">
-                  <h2 class="ui center aligned icon tiny header toc-note">
-                    <a appTelemetryInteract [telemetryInteractObject]="contentInteractObject"
-                      [telemetryInteractEdata]="{id: 'takenote-button',type: 'click',pageid: 'course-consumption'}"
-                      [telemetryInteractCdata]="telemetryCdata" class="ui take-note-card cursor-pointer"
-                      (click)="showNoteEditor=!showNoteEditor">
-                      <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'"
-                        [ids]="{contentId:contentId, courseId:courseId}" (exitModal)="showNoteEditor=false"
-                        (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                      <img src="{{'assets/images/takenote.png' |  cdnprefixurl}}">
-                      <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
-                    </a>
-                  </h2>
-                </div>
+                
                 <div class="two wide tablet only two wide computer only column"></div>
                 <div class="five wide mobile only three wide tablet only three wide computer only column pr-0">
                   <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject"
@@ -195,17 +168,6 @@
         </div>
       </div>
       <div class="ui section divider"></div>
-      <div class="two wide column"></div>
-      <div class="ui grid">
-        <div class="row">
-          <div class="eight wide column">
-          </div>
-          <div class="four wide column toc-note-content">
-            <app-note-card [ids]="{contentId:contentId, courseId:courseId}" [createNoteData]="createNoteData">
-            </app-note-card>
-          </div>
-        </div>
-      </div>
     </div>
     <div *ngIf="loader">
       <app-loader [data]="loaderMessage"></app-loader>

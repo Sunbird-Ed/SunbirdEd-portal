@@ -13,6 +13,8 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { ContentSearchModule } from '@sunbird/content-search';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    ContentSearchModule,
+    CommonConsumptionModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,

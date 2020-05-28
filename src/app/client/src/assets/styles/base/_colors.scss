@@ -27,6 +27,9 @@ $colours: "gray-hs" var(--gray-hs), "gray" var(--gray), "gray-0" var(--gray-0),
 .sb-bg-white {
     background: $white;
 }
+.sb-bg-none {
+  background: none !important;
+}
 //to clean
 .color-3, .sb-text-gray-800 {
     color: $gray-800; 

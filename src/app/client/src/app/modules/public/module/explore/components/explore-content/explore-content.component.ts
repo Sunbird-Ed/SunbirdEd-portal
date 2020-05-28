@@ -1,9 +1,8 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService
+  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
@@ -106,13 +105,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
     filters.channel = this.hashTagId;
     filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
+    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+    if (this.queryParams.key) {
+      delete softConstraints['board'];
+    }
     const option: any = {
       filters: filters,
+      fields: this.configService.urlConFig.params.LibrarySearchField,
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
       mode: 'soft',
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {},
+      softConstraints: softConstraints,
       facets: this.facets,
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };

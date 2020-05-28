@@ -24,7 +24,9 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 class NavigationHelperServiceStub { }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
   let fixture: ComponentFixture<GenericEditorComponent>;

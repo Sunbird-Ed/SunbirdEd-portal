@@ -2,7 +2,8 @@
 import {of as observableOf, throwError as observableThrowError,  Observable } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LearnModule, UpdateCourseBatchComponent, CourseBatchService, CourseConsumptionService} from '@sunbird/learn';
+import { LearnModule, CourseBatchService, CourseConsumptionService} from '@sunbird/learn';
+import {UpdateCourseBatchComponent} from './update-course-batch.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, tick , fakeAsync } from '@angular/core/testing';
@@ -47,6 +48,7 @@ const resourceServiceMockData = {
 const fakeActivatedRoute = {
   'params': observableOf({ 'courseId': 'do_1125083286221291521153' }),
   'parent': { 'params': observableOf({ 'courseId': 'do_1125083286221291521153' }) },
+  'queryParams': observableOf({ enrollmentType: 'invite-only' }),
   'snapshot': {
       params: [
         {
@@ -67,7 +69,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [UpdateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],

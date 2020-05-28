@@ -435,6 +435,7 @@ i.large.icon.limitedPublishingLinkIcon {
 .contentViewerIframeShadow {
   width: 100%;
   border: 0px;
+  height: 100%;
 }
 .contentMetaSection {
   top: -40px;
@@ -498,7 +499,7 @@ i.large.icon.limitedPublishingLinkIcon {
 .field > label {
   color: #333333;
   font-weight: bold;
-  line-height: 14px;
+  line-height: normal;
 }
 .inline.fields > label {
   color: #333333;

@@ -2,8 +2,8 @@
  * Component to render & apply filter on admin chart
  * @author Ravinder Kumar
  */
-
-import { UsageService } from './../../services';
+import { EventEmitter, Output } from '@angular/core';
+import { UsageService, ReportService } from './../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -11,7 +11,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription, Subject, timer } from 'rxjs';
+import { Subscription, Subject, timer, of } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
@@ -25,18 +25,21 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
   @Input() telemetryInteractObject: IInteractEventObject;
+  @Input() hideElements = false;
+  @Input() isUserReportAdmin = false;
+  @Output() openAddSummaryModal = new EventEmitter();
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
-  chartConfig;
-  chartData;
+  chartConfig: any;
+  chartData: any;
   showStats: Boolean = false;
-  chartType;
-  chartColors;
-  legend;
-  chartOptions;
+  chartType: any;
+  chartColors: any;
+  legend: any;
+  chartOptions: any;
   loadash = _;
-  datasets;
-  chartLabels = [];
+  datasets: any;
+  chartLabels: any = [];
   filters: Array<{}>;
   filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
@@ -45,13 +48,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   availableChartTypeOptions = ['Bar', 'Line'];
 
-  pickerMinDate; // min date that can be selected in the datepicker
-  pickerMaxDate; // max date that can be selected in datepicker
+  pickerMinDate: any; // min date that can be selected in the datepicker
+  pickerMaxDate: any; // max date that can be selected in datepicker
 
-  selectedStartDate;
-  selectedEndDate;
+  selectedStartDate: any;
+  selectedEndDate: any;
 
-  datePickerConfig = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
+  datePickerConfig: any = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
   alwaysShowCalendars: boolean;
 
   resultStatistics = {};
@@ -65,8 +68,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   lastUpdatedOn: any;
   showLastUpdatedOn: Boolean = false;
   showChart: Boolean = false;
+  chartSummary$: any;
+  private _chartSummary: string;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
+  @ViewChild('chartRootElement') chartRootElement;
+  @ViewChild('chartCanvas') chartCanvas;
 
   ranges: any = {
     'Today': [moment(), moment()],
@@ -80,7 +87,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
-    private usageService: UsageService) {
+    private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
   }
 
@@ -159,7 +166,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkForExternalChart() {
+  private checkForExternalChart(): boolean {
     const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
     if (iframeConfig) {
       if (_.get(iframeConfig, 'sourceUrl')) {
@@ -177,7 +184,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   prepareChart() {
     if (!this.checkForExternalChart()) {
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
-      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
       this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
       this.showLastUpdatedOn = false;
@@ -199,12 +206,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
     if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
     this.filters = _.get(this.chartConfig, 'filters') || [];
+    this.chartSummary$ = this.getChartSummary();
   }
 
   refreshChartDataAfterInterval(interval) {
     timer(interval, interval).pipe(
       switchMap(val => {
-        return this.usageService.getData(_.get(this.chartInfo, 'downloadUrl'));
+        return this.usageService.getData(_.head(_.get(this.chartInfo, 'downloadUrl')).path);
       }),
       takeUntil(this.unsubscribe)
     ).subscribe(apiResponse => {
@@ -235,11 +243,15 @@ export class DataChartComponent implements OnInit, OnDestroy {
     });
     this.chartLabels = labels;
     this.datasets = [];
+    const isStackingEnabled = this.checkForStacking();
     _.forEach(this.chartConfig.datasets, dataset => {
       this.datasets.push({
         label: dataset.label,
         data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
-        hidden: _.get(dataset, 'hidden') || false
+        hidden: _.get(dataset, 'hidden') || false,
+        ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' },
+        ...(_.get(dataset, 'type')) && { type: _.get(dataset, 'type') },
+        ...(_.get(dataset, 'lineThickness')) && { borderWidth: _.get(dataset, 'lineThickness') }
       });
     });
 
@@ -312,6 +324,52 @@ export class DataChartComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
+  }
+
+  checkForStacking(): boolean {
+    if (_.includes(['bar', 'horizontalbar'], _.toLower(this.chartType))) {
+      // in case of bar chart check both the axes
+      return _.get(this.chartOptions, 'scales.yAxes') && _.get(this.chartOptions, 'scales.xAxes') &&
+        _.every(this.chartOptions.scales.yAxes, 'stacked') && _.every(this.chartOptions.scales.xAxes, 'stacked');
+    } else if (_.toLower(this.chartType) === 'line') {
+      // check for y axis only in case of line area chart
+      return _.get(this.chartOptions, 'scales.yAxes') && _.every(this.chartOptions.scales.yAxes, 'stacked');
+    }
+    return false;
+  }
+
+  public addChartSummary(): void {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (chartId) {
+      this.openAddSummaryModal.emit({
+        title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.chartSummary')}`,
+        type: 'chart',
+        chartId,
+        ...(this._chartSummary && { summary: this._chartSummary })
+      });
+    } else {
+      this.toasterService.error('Chart id is not present');
+    }
+  }
+
+  public getChartSummary() {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (_.get(this.chartConfig, 'id')) {
+      return this.reportService.getLatestSummary({ reportId: this.activatedRoute.snapshot.params.reportId, chartId }).pipe(
+        map(chartSummary => {
+          return _.map(chartSummary, summaryObj => {
+            const summary = _.get(summaryObj, 'summary');
+            this._chartSummary = summary;
+            return {
+              label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
+              text: [summary]
+            };
+          });
+        })
+      );
+    } else {
+      return of([]);
+    }
   }
 
 }

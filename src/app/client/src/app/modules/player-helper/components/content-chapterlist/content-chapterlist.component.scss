@@ -185,9 +185,11 @@
       margin: 0px;
       color: var(--primary-400);
     }
-    &__topic--active,
-    &__topic:hover {
+    &__topic--active {
       background: var(--primary-100);
+    }
+    &__topic:hover {
+      background: var(--gray-0);
     }
   }
   

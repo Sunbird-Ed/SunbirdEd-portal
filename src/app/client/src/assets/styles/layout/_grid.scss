@@ -21,7 +21,6 @@ $grid_arr: ((xs, $screen_viewport_xs),
 .sb-g {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  //grid-template-columns: repeat(auto-fill, minmax(292px, 292px));
   grid-column-gap: $grid_gutter;
 }
 
@@ -44,28 +43,8 @@ $width in $grid_arr {
         grid-column-start: span #{$i};
       }
     }
-
-    // .container {
-    //   // width: calc(#{$breakpoint} - #{$grid_gutter});
-    //   width:90%;
-    //   margin: 0 auto;
-    // }
   }
 }
-
-// from now on, dummy code for fanciness
-// .row {
-//   background: black;
-//   color: red;
-//   margin-bottom: 10px;
-// }
-
-// div[class*="col-"] {
-//   height: 50px;
-//   background: red;
-//   color: black;
-// }
-
 //grid columns
 $columns: 12;
 
@@ -135,8 +114,6 @@ $columns: 12;
   grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
   grid-gap: 1rem;
   grid-row-gap: 1.5rem;
-
-  &__item {}
 }
 
 

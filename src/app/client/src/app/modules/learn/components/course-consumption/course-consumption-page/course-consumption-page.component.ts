@@ -5,8 +5,8 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService } from '@sunbird/core';
-import * as moment from 'moment';
+import { CoursesService, PermissionService } from '@sunbird/core';
+import * as dayjs from 'dayjs';
 @Component({
   templateUrl: './course-consumption-page.component.html'
 })
@@ -22,7 +22,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, public permissionService: PermissionService) {
   }
   ngOnInit() {
     this.coursesService.enrolledCourseData$.pipe(first(),
@@ -43,10 +43,14 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         } else {
           // if query params has batch and autoEnroll=true then auto enroll to that batch
           if (queryParams.batch && queryParams.autoEnroll) {
-            const reqParams = {
-              queryParams: { autoEnroll: queryParams.autoEnroll }
-            };
-            this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`], reqParams);
+            if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+              this.router.navigate([`learn/course/${this.courseId}`]); // if user is mentor then redirect to course TOC page
+            } else {
+              const reqParams = {
+                queryParams: { autoEnroll: queryParams.autoEnroll }
+              };
+              this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`], reqParams);
+            }
           }
         }
         return this.getDetails(paramsObj);
@@ -68,7 +72,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {
     const allBatchesOfCourse = _.filter(enrolledCourses, { courseId })
-      .sort((cur: any, prev: any) => moment(cur.enrolledDate).valueOf() > moment(prev.enrolledDate).valueOf() ? -1 : 1);
+      .sort((cur: any, prev: any) => dayjs(cur.enrolledDate).valueOf() > dayjs(prev.enrolledDate).valueOf() ? -1 : 1);
     const curBatch = _.find(allBatchesOfCourse, { batchId }); // find batch matching route batchId
     if (curBatch) { // activateRoute batch found
       return curBatch;

@@ -6,7 +6,7 @@
 </div>
 <div class="ui fixed relative main menu bs-0 d-block">
     <!--Header White Section-->
-    <div class="ui container py-16">
+    <div class="ui container sb-header-ui-container">
         <div class="ui grid padded width-100">
             <div class="six wide column p-0">
                 <!--Logo-->
@@ -22,53 +22,103 @@
                 <!--Main Menu-->
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
                 <!--/Main Menu-->
-                <!--Avtar Dropdown-->
-                <a class="profile-avtar computer only p-0" *ngIf="userService.loggedIn"
-                    tabindex="0">
-                    <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                        <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
-                            name="{{userProfile?.firstName}}">
-                        </ngx-avatar>
-                        <div class="menu" suiDropdownMenu>
-                            <div class="item headerDropdownProfile" *ngIf='userProfile'>
-                                {{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}
-                            </div>
-                            <div class="ui divider"></div>
-                            <a class="item" routerLink="profile">
-                                {{resourceService.frmelmnts?.lnk?.profile}}
-                            </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                                [permission]='adminDashboard' routerLink="dashBoard/organization">
-                                {{resourceService.frmelmnts?.lnk?.dashboard}}
-                            </a>
-                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                                [permission]='announcementRole' routerLink="announcement/outbox/1">
-                                {{resourceService.frmelmnts?.lnk?.announcement}}
-                            </a> -->
-                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole'
-                  routerLink="dashBoard/myActivity">
-                  {{resourceService.frmelmnts?.lnk?.myactivity}}
-                </a> -->
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                                [permission]='orgSetupRole' routerLink="org/orgType">
-                                {{resourceService.frmelmnts?.lbl?.orgtypes}}
-                            </a>
-                            <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
-                                {{resourceService.frmelmnts?.lbl?.mergeAccount}}
-                            </a>
-                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgAdminRole' routerLink="/org/userUpload">
-                            {{resourceService.frmelmnts?.lbl?.manageuser}}
-                          </a> -->
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                                [permission]='orgAdminRole' routerLink="manage">
-                                {{resourceService.frmelmnts?.lbl?.manage}}
-                            </a>
-                            <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-                                (click)="logout()">
-                                {{resourceService.frmelmnts?.lnk?.logout}}
-                            </a>
+              <!--Avtar Dropdown-->
+              <a class="profile-avtar computer only p-0" *ngIf="userService.loggedIn" tabindex="0">
+                <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                  <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                              [size]="38" initialsSize="1"
+                              name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
+                  <div class="overlay-sidebar" *ngIf="showSideMenu">
+                    <div class="overlay-sidebar__menu">
+                      <div class="profile__info">
+                        <i class="icon-svg icon-svg--xs icon-close" (click)="toggleSideMenu(false)">
+                          <svg class="icon icon-svg--gray">
+                            <use xlink:href="./assets/images/sprite.svg#close"></use>
+                          </svg>
+                        </i>
+
+                        <div class="mb-16 sb-member sb-member--medium sb-member--horizontal sb-member--font-normal">
+                          <div class="sb-member__img"
+                               style="color: purple;">{{userProfile?.firstName | slice:0:1}}</div>
+                          <label class="sb-member__name">{{userProfile?.firstName }}</label>
                         </div>
+                        <div class="fsmall sb-color-gray-400 mb-16 profile__info__desc">
+                          {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
+                        </div>
+
+                        <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')"
+                             class="add-user mb-16"
+                             *ngIf="!((userListToShow && userListToShow.length) >=1)">
+                          <div class="add-user__icon">
+                            <img src="assets/images/user-circle.svg" alt="Add user">
+                          </div>
+                          <div class="add-user__label fnormal sb-color-secondary">
+                            {{resourceService.frmelmnts?.lbl?.addUser}}
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-w-wrap">
+                          <sb-member-list [layoutConfig]=memberCardConfig
+                                          [memberList]="userListToShow"
+                                          [isMenu]="false"
+                                          (cardClick)="switchUser($event)">
+                          </sb-member-list>
+                          <div class="more-user ml-16" *ngIf="((userListToShow && userListToShow.length) >=1)"
+                               (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
+                            <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
+                            <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}} ( {{totalUsersCount}} )</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="profile__actions">
+                        <div class="add-user add-user--horizontal"
+                             *ngIf="((userListToShow && userListToShow.length) >=1)"
+                             (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
+                          <div class="add-user__icon">
+                            <img src="assets/images/user-circle.svg" alt="Add user">
+                          </div>
+                          <div class="add-user__label fnormal sb-color-secondary">
+                            {{resourceService.frmelmnts?.lbl?.addUser}}
+                          </div>
+                        </div>
+                        <ul class="profile__actions__list">
+                          <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
+                            <img src="assets/images/profileuser.svg" alt="">
+                            {{resourceService.frmelmnts?.lnk?.profile}}
+                          </li>
+                          <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
+                              [permission]='adminDashboard' (click)="toggleSideMenu(false)"
+                              routerLink="dashBoard/organization">
+                            {{resourceService.frmelmnts?.lnk?.dashboard}}
+                          </li>
+                          <li class="list-item" (click)="toggleSideMenu(false)"
+                              *ngIf='permissionService.permissionAvailable' appPermission
+                              [permission]='orgSetupRole' routerLink="org/orgType">
+                            {{resourceService.frmelmnts?.lbl?.orgtypes}}
+                          </li>
+                          <li class="list-item" *ngIf='!isValidCustodianOrgUser'
+                              (click)="toggleSideMenu(false);showAccountMergemodal = true;">
+                            <img src="assets/images/membersuser.svg" alt="">
+                            {{resourceService.frmelmnts?.lbl?.mergeAccount}}
+                          </li>
+                          <li class="list-item" (click)="toggleSideMenu(false)"
+                              *ngIf='permissionService.permissionAvailable' appPermission
+                              [permission]='orgAdminRole' routerLink="manage">
+                            {{resourceService.frmelmnts?.lbl?.manage}}
+                          </li>
+                          <li class="list-item" appTelemetryInteract
+                              [telemetryInteractEdata]="getLogoutInteractEdata()"
+                              (click)="toggleSideMenu(false);logout()">
+                            <img src="assets/images/logoutuser.svg" alt="">
+                            {{resourceService.frmelmnts?.lnk?.logout}}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
+                  </div>
+                </div>
                 </a>
                 <!--/Avtar Dropdown-->
             </div>
@@ -80,12 +130,12 @@
     <div class="sb-bg-color-primary p-8"
         *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
-            <div class="ui container d-flex flex-ai-center mx-0">
+            <div class="ui container d-flex flex-ai-center mx-0 px-8">
                 <span class="fs-1 sb-color-white py-8">{{resourceService?.frmelmnts?.lbl?.availableForContribution}}</span>
             </div>
         </ng-container>
         <ng-template #defaultView>
-            <div class="ui container d-flex flex-ai-center mx-0">
+            <div class="ui container d-flex flex-ai-center mx-0 px-8">
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
@@ -133,7 +183,7 @@
     </div>
     <!--/Computer-->
     <!--Mobile-->
-    <div class="p-8 mobile only" *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
+    <div class="py-8 px-16 mobile only" *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract

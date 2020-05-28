@@ -6,7 +6,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { UserService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -31,7 +31,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
   ];
-  todayDate = moment(new Date()).format('YYYY-MM-DD');
+  todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   signInInteractEdata: IInteractEventEdata;
   enrollBatchIntractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -82,7 +82,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   isEnrollmentAllowed(enrollmentEndDate) {
-    return moment(enrollmentEndDate).isBefore(this.todayDate);
+    return dayjs(enrollmentEndDate).isBefore(this.todayDate);
   }
 
   enrollBatch(batchId) {

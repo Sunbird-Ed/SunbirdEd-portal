@@ -49,7 +49,7 @@ appBodyScroll
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button [disabled]="!enableSubmitBtn" (click)="submit()"class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="submit()"class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
       {{resourceService?.frmelmnts.btn.submit}}
     </button>
   </div>

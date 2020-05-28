@@ -15,7 +15,7 @@
        </ngx-avatar>
       </div>
     </div>
-    <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
+    <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
         <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
@@ -24,16 +24,16 @@
         <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
     </div>  
     </div>
-    <div class="mb-10 d-flex mb-5 flex-jc-center">
-      <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
-      <div class="fs-1-16 ml-5">{{userProfile.userName}}</div>
+    <div class="mt-8 mb-16 d-flex flex-jc-center">
+      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
+      <div class="fnormal ml-5">{{userProfile.userName}}</div>
     </div>
     <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5"
         *ngFor="let role of roles | slice:0:showMoreRolesLimit">{{role}}</span>
     </div>
     <div *ngIf="roles.length > configService.appConfig.PROFILE.defaultShowMoreLimit"
-      class="fs-1 color-2 mb-10 font-w-bold cursor-pointer">
+      class="fs-1 color-2 mb-8 font-w-bold cursor-pointer">
       <span tabindex="0" *ngIf="showMoreRoles" (click)="toggle(true)">+ {{roles.length -
         configService.appConfig.PROFILE.defaultShowMoreLimit}} {{resourceService.frmelmnts.lbl.more}}
         <i class="chevron down icon"></i>
@@ -43,7 +43,7 @@
         <i class="chevron up icon"></i>
       </span>
     </div>
-    <div class="fs-1-5 font-w-bold d-flex mb-10 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
+    <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
       <div class="computer only">
           <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
       </div>
@@ -54,51 +54,56 @@
     </div>
 
     <!-- add state and district -->
-    <div class="ui container relative" *ngIf="isCustodianOrgUser">
+    <div class="ui container">
+      <!-- *ngIf="isCustodianOrgUser" -->
       <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fs-1-16 ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !district}">
+        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !district}">
           {{district || resourceService.frmelmnts.lbl.addDistrict}} </div>
       </div>
       <div class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fs-1-16 ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !state}">
+        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !state}">
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="editProfileInteractEdata"
-        class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
-        (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
+      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="editProfileInteractEdata"
+          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
+          (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
+
+        <button class="sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+          I'm a State Teacher<i class="question circle outline icon"></i> </button>
+      </div>
     </div>
 
     <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
-        <div class="fs-1-16">{{resourceService.frmelmnts.lbl.block}} :</div>
-        <div class="fs-1-16 font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'block')}}</div>
+        <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
+        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'block')}}</div>
       </div>
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
-        <div class="fs-1-16">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fs-1-16 font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'district')}}</div>
+        <div class="fmedium">{{resourceService.frmelmnts.lbl.district}} :</div>
+        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'district')}}</div>
       </div>
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
-        <div class="fs-1-16">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fs-1-16 font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'state')}}</div>
+        <div class="fmedium">{{resourceService.frmelmnts.lbl.state}} :</div>
+        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'state')}}</div>
       </div>
     </div>
 
-
     <div class="m-0 pl-0 mobile only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
-        <span class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.block}} :</span>
-        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
+        <span class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</span>
+        <span class="fmedium font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'block')}}</span>
       </div>
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
-        <span class="fs-1-16 text-center">{{resourceService.frmelmnts.lbl.district}} :</span>
-        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'district')}}</span>
+        <span class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</span>
+        <span class="fmedium font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'district')}}</span>
       </div>
       <div class="mb-0 d-flex m-responsive-flex-dc mt-15" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
-        <span class="fs-1-16 text-center text-center">{{resourceService.frmelmnts.lbl.state}} :</span>
-        <span class="fs-1-16 font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
+        <span class="fmedium text-center text-center">{{resourceService.frmelmnts.lbl.state}} :</span>
+        <span class="fmedium font-w-bold text-center">{{getLocationDetails(orgDetails.locations, 'state')}}</span>
       </div>
     </div>
   </section>
@@ -155,30 +160,30 @@
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
     <!-- User info computer view starts-->
     <div class="ui container">
-      <div class="d-flex flex-jc-center relative">
+      <div class="d-flex flex-jc-center flex-ai-center flex-dc">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
-            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
-            <span class="fs-1-16 font-w-bold pl-5"
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
+            <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
-            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
-            <span class="fs-1-16 font-w-bold pl-5"
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
+            <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
-            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
-            <span class="fs-1-16 font-w-bold pl-5"
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
+            <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
           </div>
           <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
-            <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-            <span class="fs-1-16 font-w-bold pl-5"
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+            <span class="fmedium font-w-bold pl-4"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
           </div>
         </div>
-        <button class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button bottom-0 right-0 absolute computer only"
+        <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractEdata]="myFrameworkEditEdata"
           (click)="showEdit = !showEdit">{{resourceService.frmelmnts.lbl.edit}}</button>
@@ -189,23 +194,23 @@
     <!-- User info mobile view starts-->
     <div class="max-w-300 mobile only">
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
-        <span class="fs-1-16 font-w-bold text-center"
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}}:</span>
+        <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
-        <span class="fs-1-16 font-w-bold text-center"
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
+        <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
-        <span class="fs-1-16 font-w-bold text-center"
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
+        <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
       </div>
       <div class="mb-15 d-flex flex-ai-center flex-dc">
-        <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
-        <span class="fs-1-16 font-w-bold text-center"
+        <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
+        <span class="fmedium font-w-bold text-center"
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
@@ -216,6 +221,25 @@
     </div>
     <!-- User info mobile view ends-->
   </section>
+
+  <!-- 4 section start teacher profile-->
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3">
+    <div class="d-flex flex-jc-center flex-dc school-id-section">
+      <div class="d-flex flex-jc-center mb-16">
+        <span class="fnormal white-space-nowrap">School UDISE ID:</span>
+        <span class="fnormal font-w-bold pl-4">ABC123</span>
+      </div>
+      <div class="d-flex flex-jc-center">
+        <span class="fnormal white-space-nowrap">School Teacher ID:</span>
+        <span class="fnormal font-w-bold pl-4">ABC123</span>
+      </div>
+      <div class="d-flex flex-jc-center my-16">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border" (click)="showSubmitModal = !showSubmitModal">Edit</button>
+      </div>
+      <div class="d-flex flex-jc-center fsmall">Information submitted </div>
+    </div>
+  </section>
+  <!-- 4 section end -->
 
   <!-- my badges section starts -->
   <!-- <extension-point *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"
@@ -272,17 +296,54 @@
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              (click)="toggleCourse(true, attendedTraining.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleCourse(false)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+              (click)="toggleCourse(false, attendedTraining.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
         </div>
-      </div>
-      <!-- tarainings attended computer view ends-->
+         <!-- trainings attended computer view ends-->
+
+         <!-- certificates-->
+        <div class="container my-16 sb-certificate-trained" *ngIf="otherCertificates && otherCertificates.length">
+          <div class="d-flex flex-ai-center sb-ct-list list-heading">
+            <label
+              class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
+          </div>
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
+            <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.issuingAuthority">
+              <label class="mr-auto mb-0 text-left">{{data.certName}}</label>
+              <label class="mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
+              <label class="list-date mr-24" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <div class="sb-certificate-trained-flex-space" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
+                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadOthersCertificateEData"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
+                <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+              </div>
+              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+            </div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="otherCertificates.length > 3 ">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
+              (click)="toggleCourse(true, otherCertificates.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+                class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleCourse(false, otherCertificates.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+                class="chevron up icon"></i></button>
+          </div>
+        </div>
+        <!-- / certificates-->
+      </div>  
   </div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
@@ -294,3 +355,151 @@
   [userProfile]="userProfile"></app-update-user-details>
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
+
+
+<!-- submit information modal in TEACHER Profile -->
+<sui-modal *ngIf="showSubmitModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showSubmitModal = !showSubmitModal" #modal>
+  <div class="sb-modal-header font-weight-normal">
+    Submit Information
+  </div>
+  <div class="sb-modal-content">
+    <div class="information-label mb-8 mx-16 font-weight-bold">Please provide the following details</div>
+    <div class="fsmall mx-16">These details may be made available to your declared State to validate and follow progress
+      on courses.</div>
+    <form class="sb-form mb-16 px-16">
+      <div class="ui stackable grid mt-24">
+        <div class="twelve wide column p-0 mx-16">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
+                <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
+                </option>
+              </select>
+              <label class="font-weight-normal">State<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16 my-8">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts">
+                <option [ngValue]="option" *ngFor="let option of districts" [value]="option">{{option?.name}}</option>
+              </select>
+              <label class="d-flex font-weight-normal">District<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter UDISE ID">
+              <label class="font-weight-normal">School UDISE ID<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16 my-8">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter teacher ID">
+              <label class="font-weight-normal">State teacher ID<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter ID by your State or Board">
+              <label class="font-weight-normal">Enter ID as requested by your State or Board<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 pt-16 mx-16">
+          <div class="sb-checkbox sb-checkbox-primary">
+            <input type="checkbox" id="check1" name="example">
+            <label for="check1">I understand and accept the<a class="text-underline fsmall"
+                href="javascript:void(0)">Terms of Use</a></label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showEditModal = !showEditModal">
+      Submit
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Cancel
+    </button>
+  </div>
+</sui-modal>
+
+<!-- edit information modal in TEACHER Profile -->
+ <sui-modal *ngIf="showEditModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showEditModal = !showEditModal" #modal>
+  <div class="sb-modal-header font-weight-normal">
+    Edit Details
+  </div>
+  <div class="sb-modal-content">
+    <form class="sb-form px-16">
+      <div class="ui stackable grid my-8">
+        <div class="twelve wide column p-0 mx-16">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter UDISE ID">
+              <label class="font-weight-normal">School UDISE ID<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16 my-8">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter teacher ID">
+              <label class="font-weight-normal">State teacher ID<span>*</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="twelve wide column p-0 mx-16">
+          <div class="fields-selection p-0">
+            <div class="sb-field field-focus mb-8">
+              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
+                placeholder="Enter ID by your State or Board">
+              <label class="font-weight-normal">Enter ID as requested by your State or Board<span>*</span></label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showSuccessModal = !showSuccessModal">
+      Update
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Cancel
+    </button>
+  </div>
+</sui-modal> 
+
+<!-- information submitted modal in TEACHER Profile-->
+ <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
+  <div class="sb-modal-header font-weight-normal">
+    Information Submitted
+  </div>
+  <div class="sb-modal-content text-center">
+    <div class="fs-1 font-weight-bold my-8">Thank you for submitting your details</div>
+    <div class="my-16">You can edit this information from your profile if you need to</div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="SuccessToasterStandard()">
+      OK
+    </button>
+  </div>
+</sui-modal> 

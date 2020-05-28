@@ -17,9 +17,9 @@ let PERMISSIONS_HELPER = {
     'content/retire': ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'FLAG_REVIEWER'],
     'content/reject': ['CONTENT_REVIEWER', 'CONTENT_REVIEW'],
     'content/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'BOOK_CREATOR'],
-    'content/update': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'BOOK_CREATOR', 'COURSE_CREATOR'],
+    'content/update': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'BOOK_CREATOR'],
     'content/review': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER', 'CONTENT_REVIEW',
-      'BOOK_CREATOR', 'BOOK_REVIEWER', 'FLAG_REVIEWER', 'COURSE_CREATOR'],
+      'BOOK_CREATOR', 'BOOK_REVIEWER', 'FLAG_REVIEWER'],
     'content/publish': ['CONTENT_REVIEWER', 'CONTENT_REVIEW'],
     'content/flag/accept': ['FLAG_REVIEWER'],
     'content/flag/reject': ['FLAG_REVIEWER'],
@@ -118,8 +118,8 @@ let PERMISSIONS_HELPER = {
     }
   },
 
-  getCurrentUserRoles: function (reqObj, callback) {
-    var userId = reqObj.session.userId
+  getCurrentUserRoles: function (reqObj, callback, userIdentifier) {
+    var userId = userIdentifier || reqObj.session.userId;
     var options = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,

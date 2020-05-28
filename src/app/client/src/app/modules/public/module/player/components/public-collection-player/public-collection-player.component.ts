@@ -1,5 +1,5 @@
 
-import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, catchError, first, mergeMap, takeUntil, filter } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
 import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
@@ -12,7 +12,8 @@ import {
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput,
+  TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
@@ -24,19 +25,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   /**
 	 * telemetryImpression
   */
- mimeTypeFilters = ['all', 'video', 'interactive', 'docs'];
- activeMimeTypeFilter = ['all'];
+  mimeTypeFilters;
+  activeMimeTypeFilter;
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
   telemetryShareData: Array<ITelemetryShare>;
   objectInteract: IInteractEventObject;
   printPdfInteractEdata: IInteractEventEdata;
   shareLink: string;
-  selectedContent: {
-    model: {
-      itemSetPreviewUrl: ''
-    }
-  };
   public sharelinkModal: boolean;
   public mimeType: string;
   public queryParams: any;
@@ -93,6 +89,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   isContentPresent: Boolean = false;
   isSelectChapter: Boolean = false;
   showLoader = true;
+  isMobile = false;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -117,6 +114,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     type: 'click',
     pageid: this.route.snapshot.data.telemetry.pageid
   };
+  selectedContent: {};
+  pageId: string;
 
   constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -124,7 +123,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public popupControlService: PopupControlService,
-    public utilService: UtilService, public userService: UserService) {
+    public utilService: UtilService, public userService: UserService,
+    public telemetryService: TelemetryService) {
     this.contentService = contentService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -134,8 +134,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.playerOption = {
       showContentRating: true
     };
+    this.mimeTypeFilters = [
+      this.resourceService.frmelmnts.btn.all,
+      this.resourceService.frmelmnts.btn.video,
+      this.resourceService.frmelmnts.btn.interactive,
+      this.resourceService.frmelmnts.btn.docs
+    ];
+    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
   }
   ngOnInit() {
+    this.pageId = this.route.snapshot.data.telemetry.pageid;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.contentData = this.getContent();
@@ -156,6 +164,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       type: 'click',
       pageid: this.route.snapshot.data.telemetry.pageid
     };
+    this.printPdfInteractEdata = {
+      id: 'public-print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
       type: this.contentType,
@@ -172,7 +185,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   onShareLink() {
     this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId,
-      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+      _.get(this.collectionTreeNodes, 'data.mimeType'));
     this.setTelemetryShareData(this.collectionData);
   }
 
@@ -190,11 +203,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   ngAfterViewInit () {
     this.pageLoadDuration = this.navigationHelperService.getPageLoadTime();
+    let cData = [];
+    if (this.contentType) {
+      cData = [{id: this.activatedRoute.snapshot.params.collectionId, type: this.contentType}];
+    }
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: this.contentType}]
+          cdata: cData
         },
         object: {
           id: this.activatedRoute.snapshot.params.collectionId,
@@ -210,6 +227,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         }
       };
     });
+    if (!this.contentType) {
+      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
+    }
   }
 
   ngOnDestroy() {
@@ -240,7 +260,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.isContentPresent = false;
     }
   }
-  setTelemetryContentImpression (data) {
+  setTelemetryContentImpression(data) {
     this.telemetryContentImpression = {
       context: {
         env: this.route.snapshot.data.telemetry.env
@@ -332,7 +352,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private getContent(): void {
     this.subsrciption = this.route.params.pipe(
+      filter(params => params.collectionId !== this.collectionId),
       mergeMap((params) => {
+        this.showLoader = true; // show loader every time the param changes, used in route reuse strategy
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
         this.setTelemetryData();
@@ -348,7 +370,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
-            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
@@ -382,11 +403,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    if (this.dialCode) {
-      sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-      this.router.navigate(['/get/dial/', this.dialCode]);
+    if (this.isMobile) {
+      this.isMobile = false;
     } else {
-      this.navigationHelperService.navigateToPreviousUrl('/explore');
+      if (this.dialCode) {
+        sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
+        this.router.navigate(['/get/dial/', this.dialCode]);
+      } else {
+        this.navigationHelperService.navigateToPreviousUrl('/explore');
+      }
     }
   }
   closeContentPlayer() {
@@ -415,11 +440,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    let cData = [];
+    if (this.contentType) {
+      cData = this.telemetryCdata;
+    }
     setTimeout(() => {
       this.telemetryCourseStart = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: this.telemetryCdata
+          cdata: cData
         },
         object: {
           id: this.collectionId,
@@ -448,7 +477,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       },
       context: {
         env: this.route.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
+        cdata: cData
       },
       edata: {
         type: this.route.snapshot.data.telemetry.type,
@@ -456,9 +485,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         mode: 'play'
       }
     };
+    if (!this.contentType) {
+      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
+    }
   }
   callinitPlayer (event) {
-    if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
+    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
       this.isContentPresent = true;
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
@@ -466,7 +498,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
   tocCardClickHandler(event) {
-    // console.log(event);
+    if (!this.isMobile && this.activeContent) {
+      this.isMobile = true;
+    }
     this.callinitPlayer(event);
   }
   tocChapterClickHandler(event) {
@@ -474,6 +508,35 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.isSelectChapter =  false;
     }
     this.callinitPlayer(event);
+  }
+
+  triggerTelemetryErrorEvent (status, message) {
+    const stacktrace = {
+      message: message,
+      type: this.route.snapshot.data.telemetry.type,
+      pageid: this.route.snapshot.data.telemetry.pageid,
+      collectionId: this.collectionId,
+      subtype: this.route.snapshot.data.telemetry.subtype,
+      url: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url
+    };
+    const telemetryErrorData = this.getTelemetryErrorData(stacktrace);
+    this.telemetryService.error(telemetryErrorData);
+  }
+
+  getTelemetryErrorData(stacktrace) {
+    return {
+      context: { env: this.route.snapshot.data.telemetry.env },
+      object: {
+        id: this.collectionId,
+        type: this.contentType || '',
+        ver: '1.0',
+      },
+      edata: {
+        err: status.toString(),
+        errtype: 'SYSTEM',
+        stacktrace: JSON.stringify(stacktrace)
+      }
+    };
   }
 
   getContentRollUp(rollup: string[]) {

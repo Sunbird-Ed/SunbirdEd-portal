@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -51,7 +51,6 @@ export class CopyContentService {
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
-    this.frameworkService.initialize();
   }
 
   /**
@@ -59,15 +58,50 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
-    const param = this.formatData(contentData);
-    const option = {
-      url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
-      data: param
+    return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
+      this.frameworkService.initialize();
+      const param = this.formatData(contentData);
+      const option = {
+        url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
+        data: param
+      };
+      return this.contentService.post(option).pipe(map((response: ServerResponse) => {
+        _.forEach(response.result.node_id, (value) => {
+          this.redirectToEditor(param.request.content, value);
+        });
+        return response;
+      }));
+    }));
+  }
+  /**
+   * @since - #SH-66.
+   * @param  {ContentData} contentData
+   * @description - API to copy a textbook as a curriculum course.
+   */
+  copyAsCourse(contentData: ContentData) {
+    const userData = this.userService.userProfile;
+    const requestData = {
+      request: {
+        source: contentData.identifier,
+        course: {
+          name: 'Copy of ' + contentData.name,
+          description: contentData.description,
+          organisation: _.uniq(userData.organisationNames),
+          createdFor: userData.organisationIds,
+          createdBy: userData.userId,
+          framework: contentData.framework
+        }
+      }
     };
+
+    const option = {
+      data: requestData,
+      url: this.config.urlConFig.URLS.CONTENT.COPY_AS_COURSE
+    };
+
     return this.contentService.post(option).pipe(map((response: ServerResponse) => {
-      _.forEach(response.result.node_id, (value) => {
-        this.redirectToEditor(param.request.content, value);
-      });
+      const courseIdentifier = _.get(response, 'result.identifier');
+      this.openCollectionEditor(contentData.framework, courseIdentifier);
       return response;
     }));
   }
@@ -94,7 +128,7 @@ export class CopyContentService {
           creator: creator,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
-          organisation: _.uniq(userData.organisationNames),
+          organisation: _.uniq(this.userService.orgNames),
           framework: '',
           mimeType: contentData.mimeType,
           contentType: contentData.contentType
@@ -127,6 +161,17 @@ export class CopyContentService {
     } else {
       url = `/workspace/content/edit/generic/${copiedIdentifier}/uploaded/${contentData.framework}/Draft`;
     }
+    this.router.navigate([url]);
+  }
+
+  /**
+   * @since - #SH-66
+   * @param  {string} framework
+   * @param  {string} copiedIdentifier
+   * @description - It will launch the collection editor
+   */
+  openCollectionEditor(framework: string, copiedIdentifier: string) {
+    const url = `/workspace/content/edit/collection/${copiedIdentifier}/Course/draft/${framework}/Draft`;
     this.router.navigate([url]);
   }
 }

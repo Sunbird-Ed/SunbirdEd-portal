@@ -52,10 +52,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
  */
   public creationForm: FormGroup;
   /**
- * userProfile is of type userprofile interface
- */
-  public userProfile: IUserProfile;
-  /**
 * Contains config service reference
 */
   public configService: ConfigService;
@@ -144,34 +140,25 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
-
-
   ngOnInit() {
-
-    this.checkForPreviousRouteForRedirect();
-    if (this.router.url.includes('create/training')) {
-      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-        this.framework = data;
+    this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
+      this.checkForPreviousRouteForRedirect();
+      if (_.lowerCase(this.contentType) === 'course') {
+        this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.framework = data;
+          this.fetchFrameworkMetaData();
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+      } else {
+        /**
+       * fetchFrameworkMetaData is called to config the form data and framework data
+       */
         this.fetchFrameworkMetaData();
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-       });
-    } else {
-      /**
-     * fetchFrameworkMetaData is called to config the form data and framework data
-     */
-      this.fetchFrameworkMetaData();
-    }
-    /***
- * Call User service to get user data
- */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
+      }
+    })
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -185,7 +172,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (!frameworkData.err) {
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
-        if (!this.router.url.includes('create/training')) {
+        if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
         /**
@@ -243,8 +230,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 * Redirects to workspace create section
 */
   goToCreate() {
-    const previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
-    this.router.navigate([previousUrl]);
+    this.router.navigate(['/workspace/content/create']);
   }
 
   /**
@@ -255,9 +241,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.createdBy = this.userProfile.id,
-      requestData.organisation = _.uniq(this.userProfile.organisationNames),
-      requestData.createdFor = this.userProfile.organisationIds,
+      requestData.createdBy = this.userService.userProfile.id,
+      requestData.organisation = _.uniq(this.userService.orgNames),
+      requestData.createdFor = this.userService.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
     if (this.contentType === 'studymaterial' && data.contentType) {
@@ -276,10 +262,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-    if (!_.isEmpty(this.userProfile.lastName)) {
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      requestData.creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     } else {
-      requestData.creator = this.userProfile.firstName;
+      requestData.creator = this.userService.userProfile.firstName;
     }
     return requestData;
   }
@@ -319,11 +305,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   */
  checkForPreviousRouteForRedirect() {
   const previousUrlObj = this.navigationHelperService.getPreviousUrl();
-   const url = _.get(previousUrlObj, 'url');
-   const routes = ['/workspace/content/create', '/workspace/content/create/training'];
-   if (url && _.indexOf(routes, url) === -1) {
-     this.redirect();
-   }
+    if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
+      this.redirect();
+    }
 }
 
   redirect() {
@@ -345,23 +329,5 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
-  }
-  /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this._cacheService.get('course' + 'framework');
-    if (framework) {
-      return of(framework);
-    } else {
-     return this.frameworkService.getCourseFramework()
-        .pipe(map((data) => {
-          const frameWork = _.get(data.result.response , 'value');
-          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
-    }
   }
 }

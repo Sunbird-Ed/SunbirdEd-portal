@@ -1,10 +1,10 @@
 import { PublicPlayerService } from '@sunbird/public';
 import {CertificateService, UserService, TenantService} from '@sunbird/core';
 import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {Subscription} from 'rxjs';
 
@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './certificate-details.component.html',
   styleUrls: ['./certificate-details.component.scss']
 })
-export class CertificateDetailsComponent implements OnInit {
+export class CertificateDetailsComponent implements OnInit , OnDestroy {
   loader: boolean;
   viewCertificate: boolean;
   error = false;
@@ -79,12 +79,12 @@ export class CertificateDetailsComponent implements OnInit {
         } else {
           this.getCourseVideoUrl(_.get(data, 'result.response.related.courseId'));
         }
-        const certData  = _.get(data, 'result.response.json');
+        const certData = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
         this.recipient = _.get(certData, 'recipient.name');
         this.courseName = _.get(certData, 'badge.name');
-        this.issuedOn = moment(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
+        this.issuedOn = dayjs(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;

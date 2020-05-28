@@ -4,12 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, CoursesService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, PaginationService,
+  ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
   NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {combineLatest } from 'rxjs';
@@ -176,9 +175,16 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.isPublishedCourse();
   }
   isPublishedCourse() {
-    const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-    const inputParams = { params: '' };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: ['Course'],
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
+      sort_by: { lastUpdatedOn: 'desc' }
+    };
+      this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
        if (data.result.content.length > 0) {
          this.showCourseQRCodeBtn = true;
        }

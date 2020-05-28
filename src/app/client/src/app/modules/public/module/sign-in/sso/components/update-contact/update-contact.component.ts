@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
+import { TenantService, UserService, OtpService, OrgDetailsService, TncService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
 import {
   ResourceService, ToasterService, NavigationHelperService,
@@ -49,7 +49,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
               public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
               public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
               public utilService: UtilService, public signupService: SignupService,
-              public telemetryService: TelemetryService) {
+              public telemetryService: TelemetryService, public tncService: TncService) {
   }
 
   ngOnInit() {
@@ -112,7 +112,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    * Fetches tnc related configuration
    */
   fetchTncConfiguration() {
-    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {
@@ -150,7 +150,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   }
   private checkUserExist() {
     const uri = this.contactForm.type + '/' + this.contactForm.value;
-    combineLatest(this.userService.getUserByKey(uri), this.getCustodianOrgDetails())
+    combineLatest(this.userService.getUserByKey(uri), this.orgDetailsService.getCustodianOrgDetails())
     .pipe(map(data => ({
       userDetails: data[0], custOrgDetails: data[1]
     })))
@@ -179,15 +179,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         this.userExist = false;
         this.userBlocked = false;
     });
-  }
-  private getCustodianOrgDetails() {
-    if (this.custodianOrgDetails) {
-      return of(this.custodianOrgDetails);
-    }
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrgDetails) => {
-      this.custodianOrgDetails = custodianOrgDetails;
-      return custodianOrgDetails;
-    }));
   }
 
   public onFormUpdate() {

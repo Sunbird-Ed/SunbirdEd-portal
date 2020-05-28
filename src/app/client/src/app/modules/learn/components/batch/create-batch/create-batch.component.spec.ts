@@ -16,7 +16,7 @@ import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mockResponse } from './create-batch.component.data';
-import { LearnModule, UpdateCourseBatchComponent, CourseBatchService,
+import { LearnModule, CourseBatchService,
   CourseProgressService, CourseConsumptionService} from '@sunbird/learn';
 
 
@@ -67,7 +67,7 @@ describe('CreateBatchComponent', () => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [CreateBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],

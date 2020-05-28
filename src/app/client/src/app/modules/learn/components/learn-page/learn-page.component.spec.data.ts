@@ -195,3 +195,25 @@ resourceBundle : {
    }
    }
 };
+
+export const custOrgDetails = {
+  'id': 'api.system.settings.get.custodianOrgId',
+  'ver': 'v1',
+  'ts': '2020-04-28 09:31:46:467+0000',
+  'params': {
+    'resmsgid': null,
+    'msgid': null,
+    'err': null,
+    'status': 'success',
+    'errmsg': null
+  },
+  'responseCode': 'OK',
+  'result': {
+    'response': {
+      'id': 'custodianOrgId',
+      'field': 'custodianOrgId',
+      'value': '0126684405014528002'
+    }
+  }
+};
+

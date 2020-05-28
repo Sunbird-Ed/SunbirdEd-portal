@@ -10,7 +10,7 @@ import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html'
@@ -105,6 +105,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   public courseConsumptionService: CourseConsumptionService;
 
   public unsubscribe = new Subject<void>();
+  public enrolmentType: string;
 
   updateBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -140,10 +141,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   */
   ngOnInit() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
-      (params, parentParams) => ({ ...params, ...parentParams })).pipe(
+      this.activatedRoute.queryParams,
+      (params, parentParams, queryParams) => ({ ...params, ...parentParams, ...queryParams })).pipe(
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.courseId = params.courseId;
+          this.enrolmentType = params.enrollmentType;
           this.setTelemetryInteractData();
           return this.fetchBatchDetails();
         }),
@@ -183,21 +186,35 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.redirect();
       });
   }
-  private fetchBatchDetails() {
-    const requestBody = {
-      filters: {'status': '1'},
-    };
-    return combineLatest(
-      this.courseBatchService.getUserList(requestBody),
-      this.courseConsumptionService.getCourseHierarchy(this.courseId),
-      this.courseBatchService.getUpdateBatchDetails(this.batchId),
-      this.courseBatchService.getParticipantList(
-        {'request': {'batch': {'batchId': this.batchId}}}),
-      (userDetails, courseDetails, batchDetails, participantList) => (
-        {userDetails, courseDetails, batchDetails, participantList}
-      ));
-  }
 
+  private fetchBatchDetails() {
+    if (this.enrolmentType === 'open') {
+      const requestBody = {
+        filters: { 'status': '1' },
+      };
+      const participantList = {};
+      return combineLatest(
+        this.courseBatchService.getUserList(requestBody),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId),
+        this.courseBatchService.getUpdateBatchDetails(this.batchId),
+        (userDetails, courseDetails, batchDetails) => (
+          { userDetails, courseDetails, batchDetails, participantList}
+        ));
+    } else {
+      const requestBody = {
+        filters: { 'status': '1' },
+      };
+      return combineLatest(
+        this.courseBatchService.getUserList(requestBody),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId),
+        this.courseBatchService.getUpdateBatchDetails(this.batchId),
+        this.courseBatchService.getParticipantList(
+          { 'request': { 'batch': { 'batchId': this.batchId } } }),
+        (userDetails, courseDetails, batchDetails, participantList) => (
+          { userDetails, courseDetails, batchDetails, participantList }
+        ));
+    }
+  }
   private isSubmitBtnDisable(batchForm): boolean {
     const batchFormControls = ['name', 'description', 'enrollmentType', 'mentors', 'startDate', 'endDate', 'users'];
     for (let i = 0; i < batchFormControls.length; i++) {
@@ -216,7 +233,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
-    if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+    if (!dayjs(this.batchDetails.startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
       this.pickerMinDateForEnrollmentEndDate = new Date(new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0));
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
@@ -234,9 +251,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
-      const startDate: any = moment(value);
+      const startDate: any = dayjs(value);
       if (startDate.isValid()) {
-        if (!moment(startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+        if (!dayjs(startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
           this.pickerMinDateForEnrollmentEndDate = new Date(new Date(startDate).setHours(0, 0, 0, 0));
         } else {
           this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
@@ -458,8 +475,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       });
     }
     mentors = _.concat(mentors, selectedMentors);
-    const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
-    const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
+    const startDate = dayjs(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.batchUpdateForm.value.endDate && dayjs(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       id: this.batchId,
       courseId: this.courseId,
@@ -472,7 +489,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
-      requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+      requestBody['enrollmentEndDate'] = dayjs(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
     }
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {

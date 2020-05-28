@@ -10,3 +10,4 @@ export * from './util/util.service';
 export * from './browser-cache-ttl/browser-cache-ttl.service';
 export * from './exturl-util/exturl-util.service';
 export * from './offline-card-service/offline-card.service';
+export * from './recaptcha/recaptcha.service';

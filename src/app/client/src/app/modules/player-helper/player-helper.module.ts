@@ -7,7 +7,8 @@ import {
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
   ContentRatingComponent, CommingSoonComponent,
   CreditsAndLicenceComponent, ContentActionsComponent, ContentPlayerComponent,
-  ContentPlayerPageComponent, ContentChapterlistComponent, ContentLicenceComponent
+  ContentPlayerPageComponent, ContentChapterlistComponent, ContentLicenceComponent,
+  CurriculumInfoComponent, CourseInfoComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -28,11 +29,13 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
-    ContentLicenceComponent],
+    ContentLicenceComponent,
+    CurriculumInfoComponent,
+    CourseInfoComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
     CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
     ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
-    ContentLicenceComponent]
+    ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent]
 })
 export class PlayerHelperModule { }

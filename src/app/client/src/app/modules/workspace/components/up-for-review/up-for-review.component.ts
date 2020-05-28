@@ -7,10 +7,9 @@ import { SearchService, UserService, PermissionService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
-  NavigationHelperService
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
@@ -204,7 +203,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
+        gradeLevel: bothParams.queryParams.gradeLevel
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

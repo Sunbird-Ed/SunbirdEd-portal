@@ -12,6 +12,7 @@ import { UserOrgManagementComponent } from './user-org-management.component';
 import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
 import { CoreModule } from '@sunbird/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -59,7 +60,9 @@ describe('UserOrgManagementComponent', () => {
         SuiModule, CoreModule
       ],
       declarations: [
+        UserOrgManagementComponent, UserUploadComponent
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         UserService,
         ManageService,

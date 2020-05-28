@@ -92,6 +92,13 @@ describe('FrameworkService', () => {
       expect(data.err).toBeDefined();
     });
   });
+
+  it('should fetch the default course framework from channel read api', () => {
+    cacheService.get('defaultCourseFramework', null);
+    spyOn<any>(frameworkService, 'getChannel').and.callThrough();
+    frameworkService.getDefaultCourseFramework('012451140510203904560');
+    expect(frameworkService['getChannel']).toHaveBeenCalledWith('012451140510203904560');
+  });
 });
 
 

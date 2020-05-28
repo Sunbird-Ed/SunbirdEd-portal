@@ -23,8 +23,6 @@ export class OnboardingLocationSelectionComponent implements OnInit {
   @Input() isCustodianOrgUser: boolean;
   @Input() tenantInfo: ITenantData;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('stateDiv') stateDiv;
-  @ViewChild('districtDiv') districtDiv;
 
   userDetailsForm: FormGroup;
   processedDeviceLocation: any = {};
@@ -136,7 +134,7 @@ export class OnboardingLocationSelectionComponent implements OnInit {
     }
     this.selectedState = locationExist;
     locationExist ? this.userDetailsForm.controls['state'].setValue(locationExist.code) :
-      this.userDetailsForm.controls['state'].setValue('');
+      this.userDetailsForm.controls['state'].setValue(null);
   }
 
   setDistrict(district) {
@@ -149,7 +147,7 @@ export class OnboardingLocationSelectionComponent implements OnInit {
     }
     this.selectedDistrict = locationExist;
     locationExist ? this.userDetailsForm.controls['district'].setValue(locationExist.code) :
-      this.userDetailsForm.controls['district'].setValue('');
+      this.userDetailsForm.controls['district'].setValue(null);
   }
 
   getSelectionStrategy() {
@@ -259,7 +257,7 @@ export class OnboardingLocationSelectionComponent implements OnInit {
         /* istanbul ignore else */
         if (stateControl.status === 'VALID' && stateValue !== stateControl.value) {
           this.allDistricts = null;
-          this.userDetailsForm.get('district').reset();
+          this.userDetailsForm.controls['district'].setValue(null);
           const state = _.find(this.allStates, (states) => {
             return states.code === stateControl.value;
           });

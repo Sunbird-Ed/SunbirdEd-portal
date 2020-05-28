@@ -28,7 +28,15 @@ class RouterStub {
 class NavigationHelperServiceStub {
   public navigateToWorkSpace() {}
 }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: {
+  userId: '68777b59-b28b-4aee-88d6-50d46e4c35090',
+  organisationIds: [],
+  framework: {
+    board: ['CBSE']
+  }
+}};
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
@@ -56,8 +64,8 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should fetch tenant and collection details and set logo and collection details if success',
-  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService],
-    (editorService, toasterService, tenantService, workspaceService, frameworkService) => {
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
+    (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
       frameworkService._frameWorkData$ = mockRes.frameworkData;
       frameworkService._frameworkData$.next({
       err: null, frameworkdata: mockRes.frameworkData
@@ -107,5 +115,13 @@ describe('CollectionEditorComponent', () => {
     spyOn<any>(component, 'updateModeAndStatus').and.stub();
     component['setWindowConfig']();
     expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
+  });
+
+  it('should pass user selected board in the context for courses', () => {
+    const userService = TestBed.get(UserService);
+    component['userProfile'] = userService.userProfile;
+    component['routeParams'] = {type: 'course'};
+    component['setWindowContext']();
+    expect(window.context.board).toEqual(['CBSE']);
   });
 });

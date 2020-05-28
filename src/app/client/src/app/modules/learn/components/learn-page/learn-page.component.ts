@@ -6,7 +6,7 @@ import {
   BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import {
-  UserService, OrgDetailsService
+  UserService, OrgDetailsService, FrameworkService
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -53,7 +53,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
-    public userService: UserService) {
+    public userService: UserService, public frameworkService: FrameworkService) {
     window.scroll({
       top: 0,
       left: 0,
@@ -210,23 +210,11 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
-    const framework = this.cacheService.get('framework' + 'search');
+    const framework = this.frameworkService.getDefaultCourseFramework();
     if (framework) {
-      return of(framework);
+      return framework;
     } else {
-      const formServiceInputParams = {
-        formType: 'framework',
-        formAction: 'search',
-        contentType: 'framework-code',
-      };
-      return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
-        .pipe(map((data: ServerResponse) => {
-          const frameWork = _.find(data, 'framework').framework;
-          this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
+      return of(false);
     }
   }
   private fetchEnrolledCoursesSection() {

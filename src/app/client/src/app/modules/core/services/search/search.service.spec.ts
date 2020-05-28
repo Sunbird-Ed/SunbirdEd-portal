@@ -8,15 +8,24 @@ import { ContentService } from './../content/content.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { SearchService } from './search.service';
 import { UserService } from './../user/user.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, SharedModule, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CoreModule } from '@sunbird/core';
 
 describe('SearchService', () => {
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        oneCourse: 'Course',
+        courses: 'Courses',
+      }
+    }
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, CoreModule],
-      providers: [SearchService, ContentService, UserService, LearnerService, ConfigService, PublicDataService]
+      imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
+      providers: [SearchService, ContentService, UserService, LearnerService, ConfigService, PublicDataService,
+      {provide: ResourceService, useValue: resourceBundle}]
     });
   });
 
@@ -59,4 +68,28 @@ describe('SearchService', () => {
         expect(service).toBeTruthy();
         expect(modifiedFacetData).toEqual(result);
       }));
+
+      it('should return subjects', inject([SearchService],
+        (service: SearchService) => {
+        const data = service.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
+        expect(data[0].title).toEqual('English');
+        expect(data[0].count).toEqual('2 COURSES');
+        expect(data[1].title).toEqual('Social');
+        expect(data[1].count).toEqual('1 COURSE');
+       }));
+
+       it('should return request options with courseType', inject([SearchService],
+        (service: SearchService) => {
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, true);
+        expect(data.filters.contentType).toEqual('Course');
+        expect(data.filters.courseType).toEqual('CurriculumCourse');
+       }));
+
+       it('should return request options without courseType', inject([SearchService],
+        (service: SearchService) => {
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, false);
+        expect(data.filters.contentType).toEqual(['TextBook']);
+       }));
+
+
   });

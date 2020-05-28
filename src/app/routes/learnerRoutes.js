@@ -8,8 +8,10 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
+const whitelistUrls = require('../helpers/whitellistUrls.js')
 const {decrypt} = require('../helpers/crypto');
-const {parseJson, isDateExpired} = require('../helpers/utilityService');
+const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
+
 const _ = require('lodash');
 
 module.exports = function (app) {
@@ -102,6 +104,7 @@ module.exports = function (app) {
     proxyObj()
   )
 
+
   app.all('/learner/user/v1/signup',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     permissionsHelper.checkPermission(),
@@ -110,6 +113,7 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
+    whitelistUrls.isWhitelistUrl(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
@@ -152,10 +156,10 @@ function checkForValidUser (){
       var data = JSON.parse(bodyContent.toString('utf8'));
       var reqEmail = data.request['email'];
       var reqPhone = data.request['phone'];
-      var reqValidator = data.request['validator'];
-      var decodedValidator = isValidRequest(reqValidator);
+      var reqValidator = data.request['reqData'];
+      var decodedValidator = decodeNChkTime(reqValidator);
       if((decodedValidator['key']) && (reqEmail === decodedValidator['key'] || reqPhone === decodedValidator['key'])){
-        data = _.omit(data, 'request.validator');
+        data = _.omit(data, 'request.reqData');
         return data;
       } else{
         throw new Error('USER_CANNOTBE_CREATED');
@@ -184,21 +188,6 @@ function checkForValidUser (){
     }
   });
 }
-
-/**
- * Verifies request and check exp time
- * @param encryptedData encrypted data to be decrypted
- * @returns {*}
- */
-const isValidRequest = (encryptedData) => {
-  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
-  const parsedData = parseJson(decryptedData);
-  if (isDateExpired(parsedData.exp)) {
-    throw new Error('DATE_EXPIRED');
-  } else {
-    return _.omit(parsedData, ['exp']);
-  }
-};
 
 function proxyObj (){
   return proxy(learnerURL, {

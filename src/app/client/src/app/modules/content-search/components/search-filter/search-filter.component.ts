@@ -32,7 +32,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   filterChangeEvent =  new Subject();
   @Input() defaultFilters;
   @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
-  @Output() filterChange: EventEmitter<any> = new EventEmitter();
+  @Output() filterChange: EventEmitter<{status: string, filters?: any}> = new EventEmitter();
+  @Output() fetchingFilters: EventEmitter<any> = new EventEmitter();
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
   }
@@ -59,6 +60,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       return true;
     }),
     mergeMap((queryParams) => {
+      this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
       this.queryFilters = _.cloneDeep(queryParams);
       const boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
       return this.contentSearchService.fetchFilter(boardName);
@@ -131,6 +133,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.selectedBoardLocalCopy = option;
     this.mediums = [];
     this.gradeLevels = [];
+    this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
     this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
       this.filters.medium = filters.medium || [];
       this.filters.gradeLevel = filters.gradeLevel || [];
@@ -149,7 +152,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {
     const filters = this.getSelectedFilter();
-    this.filterChange.emit(filters);
+    this.filterChange.emit({status: 'FETCHED', filters});
     if (!skipUrlUpdate) {
       this.router.navigate([], { queryParams: this.getSelectedFilter(),
         relativeTo: this.activatedRoute.parent
