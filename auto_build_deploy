@@ -28,14 +28,14 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
          //       stage Build
-                    buildDockerImage = true
-                    buildCdnAssests = true
+                    buildDockerImage = "true"
+                    buildCdnAssests = "true"
                     sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${env.content_editor_url} ${env.collection_editor_url} ${env.generic_editor_url} true true ${env.staging_cdnUrl}")
                 
 
           //      stage ArchiveArtifacts
                     archiveArtifacts "metadata.json"
-                    if (buildCdnAssests == 'true') {
+                    if (buildCdnAssests == "true") {
                         sh """
                         rm -rf cdn_assets
                         mkdir cdn_assets

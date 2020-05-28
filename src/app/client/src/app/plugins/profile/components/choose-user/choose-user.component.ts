@@ -113,7 +113,9 @@ export class ChooseUserComponent implements OnInit {
               filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
             errorMessage =
               filterPipe.transform(errorMessage, '{userName}', this.selectedUser.firstName);
-            this.toasterService.info(errorMessage);
+            this.toasterService.custom({
+              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
+            });
           }
         });
       }, (err) => {
