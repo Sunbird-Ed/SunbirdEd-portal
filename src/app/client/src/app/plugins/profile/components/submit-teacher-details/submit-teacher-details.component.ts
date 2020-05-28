@@ -4,7 +4,7 @@ import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { UserService } from '@sunbird/core';
+import { UserService, FormService } from '@sunbird/core';
 
 @Component({
   selector: 'app-submit-teacher-details',
@@ -15,6 +15,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   @Output() close = new EventEmitter<any>();
   @Input() userProfile: any;
+  @Input() formAction: string;
   @ViewChild('userDetailsModal') userDetailsModal;
   allStates: any;
   allDistricts: any;
@@ -33,34 +34,71 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     prevStateValue: '',
     prevDistrictValue: ''
   };
+  formData;
+  showLoader = true;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
-    public userService: UserService) {
+    public userService: UserService, public formService: FormService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
-    this.initializeFormFields();
-    this.getState();
+    this.getFormDetails();
+  }
+
+  getFormDetails() {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: this.formAction,
+      contentType: 'teacherDetails',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId).subscribe((formData) => {
+      this.formData = formData;
+      this.initializeFormFields();
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      this.closeModal();
+    });
   }
 
   initializeFormFields() {
-    this.userDetailsForm = this.sbFormBuilder.group({
-      name: new FormControl(this.userProfile.firstName, [Validators.required]),
-      state: new FormControl(null, [Validators.required]),
-      district: new FormControl(null, [Validators.required])
-    }, {
-        validator: (formControl) => {
-          const nameCtrl = formControl.controls.name;
-          if (_.trim(nameCtrl.value) === '') { nameCtrl.setErrors({ required: true }); }
-          return null;
-        }
-      });
+    const formGroupObj = {};
+    for (const key of this.formData) {
+      const validation = this.setValidations(key);
+      if (key.visible) {
+        formGroupObj[key.code] = new FormControl(null, validation);
+      }
+    }
+    this.userDetailsForm = this.sbFormBuilder.group(formGroupObj);
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
+    this.getState();
+    this.showLoader = false;
     this.onStateChange();
     this.enableSubmitButton();
     this.setInteractEventData();
+  }
+
+  setValidations(data) {
+    const returnValue = [];
+    if (_.get(data, 'required')) {
+      returnValue.push(Validators.required);
+    }
+    _.forEach(_.get(data, 'validation'), (validationData) => {
+      switch (validationData.type) {
+        case 'min':
+          returnValue.push(Validators.minLength(validationData.value));
+          break;
+        case 'max':
+          returnValue.push(Validators.maxLength(validationData.value));
+          break;
+        case 'pattern':
+          returnValue.push(Validators.pattern(validationData.value));
+          break;
+      }
+    });
+    return returnValue;
   }
 
   getState() {
@@ -133,20 +171,36 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
+    console.log('this.userDetailsForm', this.userDetailsForm)
     this.stateControl = this.userDetailsForm.get('state');
     this.districtControl = this.userDetailsForm.get('district');
     this.enableSubmitBtn = false;
-    if ((this.forChanges.prevDistrictValue !== this.districtControl.value)
-        || (this.forChanges.prevStateValue !== this.stateControl.value)) {
-      document.getElementById('stateModifiedButton').click();
-    }
-    if (_.trim(this.userDetailsForm.value.name) !== this.userProfile.firstName) {
-      document.getElementById('nameModifiedButton').click();
-    }
     const locationCodes = [];
     if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state); }
     if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
-    const data = { firstName: _.trim(this.userDetailsForm.value.name), locationCodes: locationCodes };
+
+    const externalIds = [];
+    const provider = 'provider';
+    const operation = this.formAction === 'submit' ? 'add' : 'edit';
+    if (_.get(this.userDetailsForm, 'value.udiseId')) {
+      externalIds.push({
+        id: _.get(this.userDetailsForm, 'value.udiseId'),
+        operation, idType: 'declared-school-udise-code', provider
+      });
+    }
+    if (_.get(this.userDetailsForm, 'value.teacherId')) {
+      externalIds.push({
+        id: _.get(this.userDetailsForm, 'value.teacherId'),
+        operation, idType: 'declared-ext-id', provider
+      });
+    }
+
+    const data = {
+      userId: this.userService.userid,
+      locationCodes: locationCodes,
+      externalIds
+    };
+    console.log('daad', JSON.stringify(data))
     this.updateProfile(data);
   }
 

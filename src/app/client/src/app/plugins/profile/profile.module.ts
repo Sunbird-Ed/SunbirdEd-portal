@@ -7,8 +7,7 @@ import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-  AccountRecoveryInfoComponent, CreateUserComponent, ChooseUserComponent, SubmitTeacherDetailsComponent,
-  UpdateTeacherDetailsComponent
+  AccountRecoveryInfoComponent, CreateUserComponent, ChooseUserComponent, SubmitTeacherDetailsComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
@@ -42,8 +41,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
    AccountRecoveryInfoComponent,
    CreateUserComponent,
    ChooseUserComponent,
-   SubmitTeacherDetailsComponent,
-   UpdateTeacherDetailsComponent],
+   SubmitTeacherDetailsComponent],
   providers: []
 })
 export class ProfileModule { }
