@@ -52,10 +52,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
  */
   public creationForm: FormGroup;
   /**
- * userProfile is of type userprofile interface
- */
-  public userProfile: IUserProfile;
-  /**
 * Contains config service reference
 */
   public configService: ConfigService;
@@ -144,32 +140,23 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
-
-
   ngOnInit() {
-    this.checkForPreviousRouteForRedirect();
-    if (_.lowerCase(this.contentType) === 'course') {
-      this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-        this.framework = data;
+    this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
+      this.checkForPreviousRouteForRedirect();
+      if (_.lowerCase(this.contentType) === 'course') {
+        this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.framework = data;
+          this.fetchFrameworkMetaData();
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+      } else {
+        /**
+       * fetchFrameworkMetaData is called to config the form data and framework data
+       */
         this.fetchFrameworkMetaData();
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-       });
-    } else {
-      /**
-     * fetchFrameworkMetaData is called to config the form data and framework data
-     */
-      this.fetchFrameworkMetaData();
-    }
-    /***
- * Call User service to get user data
- */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
+      }
+    })
   }
 
   ngOnDestroy() {
@@ -254,9 +241,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.createdBy = this.userProfile.id,
-      requestData.organisation = _.uniq(this.userProfile.organisationNames),
-      requestData.createdFor = this.userProfile.organisationIds,
+      requestData.createdBy = this.userService.userProfile.id,
+      requestData.organisation = _.uniq(this.userService.orgNames),
+      requestData.createdFor = this.userService.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
     if (this.contentType === 'studymaterial' && data.contentType) {
@@ -275,10 +262,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-    if (!_.isEmpty(this.userProfile.lastName)) {
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      requestData.creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     } else {
-      requestData.creator = this.userProfile.firstName;
+      requestData.creator = this.userService.userProfile.firstName;
     }
     return requestData;
   }

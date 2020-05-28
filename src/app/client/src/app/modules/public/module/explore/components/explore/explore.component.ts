@@ -97,6 +97,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchContents() {
     const request = {
       filters: this.selectedFilters,
+      fields: this.configService.urlConFig.params.LibrarySearchField,
       isCustodianOrg: this.custodianOrg,
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
