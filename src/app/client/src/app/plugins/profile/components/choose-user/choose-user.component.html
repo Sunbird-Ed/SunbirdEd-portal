@@ -3,14 +3,15 @@
     <div class="user-profile-box__title">
       {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
     </div>
+    <!-- <button type="button" class="sb-btn sb-btn-xs sb-btn-error">Delete User</button> -->
   </div>
   <div class="px-16">
     <button (click)="navigateToCreateUser()" type="submit"
-            class="sb-btn sb-btn-sm sb-right-icon-btn w-100 mt-16 mb-24 sb-add-user-btn">
+            class="sb-btn sb-btn-sm sb-btn-outline-secondary sb-left-icon-btn w-100 mt-16 mb-24">
       <i class="chevron plus icon"></i> {{resourceService.frmelmnts?.lbl?.addUser}}
     </button>
   </div>
-  <div class="px-16 mb-16 members-list">
+  <div class="px-16 mb-16 member-list-container">
     <sb-member-list [layoutConfig]=memberCardConfig
                     [memberList]="userList"
                     [isMenu]="false"
