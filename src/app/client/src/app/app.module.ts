@@ -45,7 +45,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CacheService,
     ChatLibService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
   ]
 })
 export class AppModule {

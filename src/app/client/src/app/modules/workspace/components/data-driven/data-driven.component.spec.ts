@@ -73,6 +73,8 @@ describe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
+    const userService = TestBed.get(UserService);
+    userService['userOrgDetails$'] = observableOf({});
     // navigationHelperService = TestBed.get('NavigationHelperService');
     fixtureParent.detectChanges();
   });

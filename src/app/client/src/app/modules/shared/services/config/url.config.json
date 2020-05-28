@@ -3,6 +3,21 @@
     "userReadParam": {
       "fields": "organisations,roles,locations"
     },
+    "LibrarySearchField": [
+      "name",
+      "appIcon",
+      "mimeType",
+      "gradeLevel",
+      "identifier",
+      "medium",
+      "pkgVersion",
+      "board",
+      "subject",
+      "resourceType",
+      "contentType",
+      "channel",
+      "organisation"
+    ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
     },
