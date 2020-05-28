@@ -91,10 +91,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.fetchContents();
     this.fetchCourses();
   }
-
   private fetchContents() {
     const request = {
       filters: this.selectedFilters,
+      fields: this.configService.urlConFig.params.LibrarySearchField,
       isCustodianOrg: this.custodianOrg,
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
