@@ -11,9 +11,11 @@
     "MINIMUN_AGE": 18
   },
   "SIZE": {
-    "MEDIUM": "medium"
+    "MEDIUM": "medium",
+    "SMALL": "small"
   },
   "VIEW": {
-    "HORIZONTAL": "horizontal"
+    "HORIZONTAL": "horizontal",
+    "VERTICAL": "vertical"
   }
 }
