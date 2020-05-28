@@ -40,7 +40,7 @@
             *ngFor="let content of itemsToDisplay;let i = index;">
 
             <app-card *ngIf="content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
-            
+
             <!-- <app-dial-code-card *ngIf="content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card> -->
 
           </div>
