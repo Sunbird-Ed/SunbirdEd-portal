@@ -1,3 +1,4 @@
+import { DashboardModule } from '@sunbird/dashboard';
 import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -21,10 +22,10 @@ describe('DataChartComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DataChartComponent],
+            declarations: [],
             schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule],
+                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule],
             providers: [ReportService, {
                 provide: ActivatedRoute, useValue: {
                     snapshot: {
@@ -97,7 +98,8 @@ describe('DataChartComponent', () => {
                 750,
                 115
             ],
-            hidden: false
+            hidden: false,
+            fill: true
         }]);
 
         expect(component.resultStatistics).toEqual({
@@ -121,7 +123,7 @@ describe('DataChartComponent', () => {
         expect(component.filtersFormGroup.controls).toBeTruthy();
     });
 
-    it('should should change selected filters value whenever any filter is changed', fakeAsync(() => {
+    it('should change selected filters value whenever any filter is changed', fakeAsync(() => {
         const spy = spyOn(component, 'getDataSetValue').and.callThrough();
         component.ngOnInit();
         component.filtersFormGroup.get('Grade').setValue(['Class 2']);
@@ -156,7 +158,8 @@ describe('DataChartComponent', () => {
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
             data: [135],
-            hidden: false
+            hidden: false,
+            fill: true
         }]);
     }));
 
@@ -228,6 +231,17 @@ describe('DataChartComponent', () => {
             expect(result).toBeDefined();
             expect(result).toBeFalsy();
         });
+    });
+
+    it('should set labels from datasets', () => {
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Name']);
+    });
+
+    it('should set labels from if present in the config (hard coded labels)', () => {
+        component.chartConfig.labels = ['test'];
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Test']);
     });
 
 });
