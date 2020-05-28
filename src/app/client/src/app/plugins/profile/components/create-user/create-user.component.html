@@ -1,5 +1,5 @@
 
-
+   
 <div [appTelemetryImpression]="telemetryImpression">
   <div class="ui container py-16" *ngIf="showLoader">
     <app-loader></app-loader>
@@ -42,10 +42,9 @@
       <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="onCancel()">
       {{resourceService?.frmelmnts.btn.cancel}}</button>
     </div>
-
     </div>
+</div>
 
-
-    <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
       *ngIf="showTncPopup">
     </app-tnc-popup>
