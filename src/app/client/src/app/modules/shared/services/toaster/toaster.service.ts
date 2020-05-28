@@ -66,4 +66,15 @@ export class ToasterService {
       title: message
     });
   }
+
+  /**
+   * Custom toaster message to be configured
+   * @param config
+   */
+  custom(config: any) {
+    this.iziToast.show({
+      class: config.class,
+      message: config.message
+    });
+  }
 }

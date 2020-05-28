@@ -1,11 +1,27 @@
-import {filter, first, map} from 'rxjs/operators';
-import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
+import {first} from 'rxjs/operators';
+import {
+  UserService,
+  PermissionService,
+  TenantService,
+  OrgDetailsService,
+  FormService,
+  ManagedUserService
+} from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
+import {
+  ConfigService,
+  ResourceService,
+  IUserProfile,
+  ServerResponse,
+  ToasterService,
+  IUserData,
+  InterpolatePipe
+} from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import {environment} from '@sunbird/environment';
 declare var jQuery: any;
 
 @Component({
@@ -68,10 +84,22 @@ export class MainHeaderComponent implements OnInit {
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
   showExploreComponent: boolean;
+  showSideMenu = false;
+  instance: string;
+  userListToShow = [];
+  memberCardConfig = {
+    size: this.config.constants.SIZE.SMALL,
+    isSelectable: true,
+    view: this.config.constants.VIEW.VERTICAL,
+    isBold: false
+  };
+  totalUsersCount: number;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
+    private managerUserService: ManagedUserService, public toasterService: ToasterService,
+    private telemetryService: TelemetryService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -82,9 +110,12 @@ export class MainHeaderComponent implements OnInit {
       this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
       this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
       this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
+      this.fetchManagedUsers();
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
@@ -110,6 +141,66 @@ export class MainHeaderComponent implements OnInit {
     this.cdr.detectChanges();
     this.setWindowConfig();
 
+  }
+
+  getTelemetryContext() {
+    const userProfile = this.userService.userProfile;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    return {
+      userOrgDetails: {
+        userId: userProfile.userId,
+        rootOrgId: userProfile.rootOrgId,
+        rootOrg: userProfile.rootOrg,
+        organisationIds: userProfile.hashTagIds
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: version,
+          pid: this.config.appConfig.TELEMETRY.PID
+        },
+        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        uid: userProfile.userId,
+        sid: this.userService.sessionId,
+        channel: _.get(userProfile, 'rootOrg.hashTagId'),
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation,
+        timeDiff: this.userService.getServerTimeDiff
+      }
+    };
+  }
+
+
+  fetchManagedUsers() {
+    const fetchManagedUserRequest = {
+      request: {
+        filters: {managedBy: this.userService.userid}
+      }
+    };
+    this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
+      const userList = [];
+      const managedUserList = _.get(data, 'result.response.content') || [];
+      this.totalUsersCount = managedUserList && Array.isArray(managedUserList) && managedUserList.length - 1;
+      if (_.head(managedUserList)) {
+          this.userListToShow = [_.head(managedUserList)];
+          _.forEach(this.userListToShow, (userData) => {
+            userData.title = userData.firstName;
+            userData.initial = userData.firstName && userData.firstName[0];
+            userData.selected = false;
+            userList.push(userData);
+          });
+        }
+      }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
+  navigate(navigationUrl) {
+    this.router.navigate([navigationUrl]);
   }
 
   private isCustodianOrgUser() {
@@ -233,6 +324,10 @@ export class MainHeaderComponent implements OnInit {
     };
   }
 
+  toggleSideMenu(value: boolean) {
+    this.showSideMenu = value;
+  }
+
   logout() {
     window.location.replace('/logoff');
     this.cacheService.removeAll();
@@ -274,4 +369,35 @@ export class MainHeaderComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
+
+  switchUser(event) {
+    const selectedUser = _.get(event, 'data.data');
+    const userId = selectedUser.identifier;
+    this.managerUserService.initiateSwitchUser(userId).subscribe((data) => {
+        // @ts-ignore
+        document.getElementById('userId').value = userId;
+        this.userService.setUserId(userId);
+        this.userService.initialize(true);
+        const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.telemetryService.initialize(this.getTelemetryContext());
+            this.router.navigate(['/resources']);
+            const filterPipe = new InterpolatePipe();
+            let errorMessage =
+              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
+            errorMessage =
+              filterPipe.transform(errorMessage, '{userName}', selectedUser.firstName);
+            this.toasterService.custom({
+              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
+            });
+            this.toggleSideMenu(false);
+            userSubscription.unsubscribe();
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
 }

@@ -251,6 +251,7 @@ export class SearchService {
           query: requestParam.query,
           sort_by: requestParam.sort_by,
           exists: requestParam.exists,
+          fields: requestParam.fields,
           softConstraints: requestParam.softConstraints,
           mode: requestParam.mode,
           facets: requestParam.facets && requestParam.facets
