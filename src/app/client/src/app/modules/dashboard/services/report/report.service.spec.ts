@@ -7,7 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { ReportService } from './report.service';
 import { UsageService } from '../usage/usage.service';
 import { SharedModule } from '@sunbird/shared';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import * as mockData from './reports.service.spec.data';
 
 describe('ReportService', () => {
@@ -132,4 +132,49 @@ describe('ReportService', () => {
     });
   });
 
+  it('should return formatted date', () => {
+    const result = reportService.getFormattedDate(1588902188000);
+    expect(result).toBeDefined();
+    expect(result).toBe('08-May-2020');
+  });
+
+  it('should get file metadata (last modified date) from the blob', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(of({ result: mockData.reportMetaDataApiResponse }));
+    const input = mockData.getFileMetaDataInput;
+    reportService.getFileMetaData(input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalled();
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalledTimes(1);
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalledWith({
+        'params': {
+          'fileNames': '{"first":"hawk-eye/daily_plays_by_mode.json","second":"hawk-eye/daily_quiz_play_by_lang.json"}'
+        }
+      });
+      expect(res).toEqual(mockData.reportMetaDataApiResponse);
+    });
+  });
+
+  it('should return empty object when getReport metadata api fails', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(throwError({}));
+    const input = mockData.getFileMetaDataInput;
+    reportService.getFileMetaData(input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalled();
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalledTimes(1);
+      expect(courseProgressService.getReportsMetaData).toHaveBeenCalledWith({
+        'params': {
+          'fileNames': '{"first":"hawk-eye/daily_plays_by_mode.json","second":"hawk-eye/daily_quiz_play_by_lang.json"}'
+        }
+      });
+      expect(res).toEqual({});
+    });
+  });
+
+  it('should take the latest last modified date for a chart or report', () => {
+    const result = reportService.getLatestLastModifiedOnDate(mockData.getLatestLastModifiedOnDateFn, { ids: ['first'] });
+    expect(result).toBeDefined();
+    expect(result).toBe(1588902180000);
+  });
 });
