@@ -4,7 +4,9 @@ import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { UserService, FormService } from '@sunbird/core';
+import { UserService, FormService, SearchService } from '@sunbird/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-submit-teacher-details',
@@ -14,9 +16,11 @@ import { UserService, FormService } from '@sunbird/core';
 export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   @Output() close = new EventEmitter<any>();
+  @Output() showSuccessModal = new EventEmitter<any>();
   @Input() userProfile: any;
   @Input() formAction: string;
   @ViewChild('userDetailsModal') userDetailsModal;
+  public unsubscribe = new Subject<void>();
   allStates: any;
   allDistricts: any;
   userDetailsForm: FormGroup;
@@ -39,7 +43,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
-    public userService: UserService, public formService: FormService) {
+    public userService: UserService, public formService: FormService,
+    public searchService: SearchService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -135,12 +140,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     let stateValue = '';
     stateControl.valueChanges.subscribe(
       (data: string) => {
-        if (stateControl.status === 'VALID' && stateValue !== stateControl.value) {
+        if (stateControl.status === 'VALID' && stateValue !== stateControl.value.code) {
           const state = _.find(this.allStates, (states) => {
-            return states.code === stateControl.value;
+            return states.code === stateControl.value.code;
           });
-          this.getDistrict(state.id);
-          stateValue = stateControl.value;
+          if (_.get(state, 'id')) {
+            this.getDistrict(state.id);
+          }
+          stateValue = stateControl.value.code;
         }
       });
   }
@@ -170,44 +177,54 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmitForm() {
-    console.log('this.userDetailsForm', this.userDetailsForm)
-    this.stateControl = this.userDetailsForm.get('state');
-    this.districtControl = this.userDetailsForm.get('district');
-    this.enableSubmitBtn = false;
-    const locationCodes = [];
-    if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state); }
-    if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
+  onSubmitForm(event) {
+    this.searchService.getOrganisationDetails({ locationIds: [this.userDetailsForm.value.state.id] }).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (orgData: any) => {
+          this.stateControl = this.userDetailsForm.get('state');
+          this.districtControl = this.userDetailsForm.get('district');
+          this.enableSubmitBtn = false;
+          const locationCodes = [];
+          if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state.code); }
+          if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
 
-    const externalIds = [];
-    const provider = 'provider';
-    const operation = this.formAction === 'submit' ? 'add' : 'edit';
-    if (_.get(this.userDetailsForm, 'value.udiseId')) {
-      externalIds.push({
-        id: _.get(this.userDetailsForm, 'value.udiseId'),
-        operation, idType: 'declared-school-udise-code', provider
-      });
-    }
-    if (_.get(this.userDetailsForm, 'value.teacherId')) {
-      externalIds.push({
-        id: _.get(this.userDetailsForm, 'value.teacherId'),
-        operation, idType: 'declared-ext-id', provider
-      });
-    }
-
-    const data = {
-      userId: this.userService.userid,
-      locationCodes: locationCodes,
-      externalIds
-    };
-    console.log('daad', JSON.stringify(data))
-    this.updateProfile(data);
+          const externalIds = [];
+          const provider = _.get(orgData, 'result.response.content[0].channel');
+          const operation = this.formAction === 'submit' ? 'add' : 'edit';
+          if (_.get(this.userDetailsForm, 'value.udiseId')) {
+            externalIds.push({
+              id: _.get(this.userDetailsForm, 'value.udiseId'),
+              operation, idType: 'declared-school-udise-code', provider
+            });
+          }
+          if (_.get(this.userDetailsForm, 'value.teacherId')) {
+            externalIds.push({
+              id: _.get(this.userDetailsForm, 'value.teacherId'),
+              operation, idType: 'declared-ext-id', provider
+            });
+          }
+          const data = {
+            userId: this.userService.userid,
+            locationCodes: locationCodes,
+            externalIds
+          };
+          this.updateProfile(data);
+        },
+        (err) => {
+          this.closeModal();
+          this.toasterService.error(this.resourceService.messages.emsg.m0018);
+        }
+      );
   }
 
   updateProfile(data) {
     this.profileService.updateProfile(data).subscribe(res => {
       this.closeModal();
-      this.toasterService.success(this.resourceService.messages.smsg.m0046);
+      this.showSuccessModal.emit();
+      if (this.formAction === 'update') {
+        this.toasterService.success(this.resourceService.messages.smsg.m0037);
+      }
     }, err => {
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0018);
@@ -238,6 +255,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
     this.userDetailsModal.deny();
   }
 }

@@ -115,7 +115,8 @@ export class SearchService {
       data: {
         request: {
           filters: {
-            id: requestParam.orgid,
+            id: _.get(requestParam, 'orgid'),
+            locationIds: _.get(requestParam, 'locationIds')
           }
         }
       }

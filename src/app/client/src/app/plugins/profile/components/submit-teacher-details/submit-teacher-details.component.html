@@ -85,7 +85,7 @@
           <div class="fields-selection p-0">
             <div class="sb-field field-focus mb-8">
               <sui-select [isSearchable]="false" class="selection" formControlName="{{field.code}}"
-                [options]="allStates" labelField="name" valueField="code" name="code"
+                [options]="allStates" labelField="name" name="code"
                 placeholder="{{field.description}}" #stateDiv>
                 <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
                 </sui-select-option>

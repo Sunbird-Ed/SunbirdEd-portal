@@ -16,9 +16,9 @@ import { CacheService } from 'ng2-cache-service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  showSuccessModal;
-  showEditModal;
-  showSubmitModal;
+  showSuccessModal = false;
+  showSubmitTeacherDetails = false;
+  showUpdateTeacherDetails = false;
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -50,8 +50,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
-  showSubmitTeacherDetails = false;
-  showUpdateTeacherDetails = false;
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
