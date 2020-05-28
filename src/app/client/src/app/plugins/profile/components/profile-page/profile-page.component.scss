@@ -230,3 +230,11 @@ display: inline-block;
 .sb-btn-border{
   border-radius: calculateRem(40px);
 }
+
+.information-label{
+  color:var(--primary-color);
+}
+
+.profile-user-label{
+  font-size: calculateRem(32px);
+}

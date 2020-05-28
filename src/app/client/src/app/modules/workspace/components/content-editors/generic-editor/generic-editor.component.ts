@@ -86,12 +86,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     }

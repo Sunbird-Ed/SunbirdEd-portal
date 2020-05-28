@@ -111,6 +111,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     const option: any = {
       filters: filters,
+      fields: this.configService.urlConFig.params.LibrarySearchField,
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,

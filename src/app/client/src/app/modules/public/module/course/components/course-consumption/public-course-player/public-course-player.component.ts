@@ -11,10 +11,12 @@ import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { UserService } from '@sunbird/core';
+import { TocCardType } from '@project-sunbird/common-consumption';
 
 @Component({
   selector: 'app-public-course-player',
-  templateUrl: './public-course-player.component.html'
+  templateUrl: './public-course-player.component.html',
+  styleUrls: ['./public-course-player.component.scss']
 })
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -37,6 +39,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   public treeModel: any;
 
   showContentCreditsModal: boolean;
+
+  cardType: TocCardType = TocCardType.COURSE;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -82,15 +86,25 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
         }
       }
     });
+
+    let videoContentCount = 0;
     _.forEach(mimeTypeCount, (value, key) => {
-      this.curriculum.push({ mimeType: key, count: value });
+      if (key.includes('video')) {
+        videoContentCount = videoContentCount + value;
+      } else {
+        this.curriculum.push({ mimeType: key, count: value });
+      }
     });
+    if (videoContentCount > 0) {
+      this.curriculum.push({ mimeType: 'video', count: videoContentCount });
+    }
   }
   ngAfterViewInit () {
     setTimeout(() => {
       this.setTelemetryCourseImpression();
     });
   }
+
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -117,12 +131,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     };
   }
 
-  showContentCreditsPopup () {
-    this.showContentCreditsModal = true;
-  }
-
-  public navigateToContent() {
-    if (!_.get(this.userService, 'userid')) {
+  public navigateToContent(event: any) {
+    if (!_.get(this.userService, 'userid') && !_.isEmpty(event.event)) {
       this.showJoinTrainingModal = true;
     }
   }
