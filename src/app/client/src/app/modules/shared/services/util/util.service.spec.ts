@@ -184,8 +184,8 @@ describe('UtilService', () => {
     expect(service.getPlayerUpdateStatus).toBeTruthy();
   }));
 
-  it('should return given contentList with the updated hover data', inject([UtilService, ResourceService],
-    (service: UtilService, resourceService: ResourceService) => {
+  it('should return given contentList with the updated hover data', inject([UtilService],
+    (service: UtilService) => {
       const listWithHoverData = service.addHoverData(contentList, true);
       expect(listWithHoverData[0].hoverData.actions[0].type).toEqual('download');
       expect(listWithHoverData[0].hoverData.actions[0].disabled).toEqual(true);
