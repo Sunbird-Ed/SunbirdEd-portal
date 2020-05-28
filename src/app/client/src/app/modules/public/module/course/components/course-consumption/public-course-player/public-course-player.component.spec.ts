@@ -1,21 +1,21 @@
 
-import {of,  Observable } from 'rxjs';
-import { CourseHierarchyGetMockResponse, telemetryInteractMockData } from './public-course-player.component.mock.data';
+import { of, Observable } from 'rxjs';
+import { CourseHierarchyGetMockResponse, telemetryInteractMockData, coursePlayerMockData } from './public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicCoursePlayerComponent } from './public-course-player.component';
-import {SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
 import { CoreModule, CoursesService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '@sunbird/learn';
+import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryService } from '@sunbird/telemetry';
 
 const resourceServiceMockData = {
-  messages : {
-    imsg: { m0027: 'Something went wrong'},
+  messages: {
+    imsg: { m0027: 'Something went wrong' },
     fmsg: { m0001: 'error', m0003: 'error' },
-    emsg: { m0005: 'error'}
+    emsg: { m0005: 'error' }
   },
   frmelmnts: {
     btn: {
@@ -35,7 +35,7 @@ class ActivatedRouteStub {
       }
     },
     params: {},
-    firstChild: { params : {}}
+    firstChild: { params: {} }
   };
 }
 class MockRouter {
@@ -55,10 +55,10 @@ describe('PublicCoursePlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
-      declarations: [ PublicCoursePlayerComponent ],
+      declarations: [PublicCoursePlayerComponent],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        { provide: ResourceService, useValue: resourceServiceMockData },
-        CourseConsumptionService,  { provide: Router, useClass: MockRouter },
+      { provide: ResourceService, useValue: resourceServiceMockData },
+        CourseConsumptionService, { provide: Router, useClass: MockRouter },
         CourseProgressService, CourseBatchService, ContentUtilsServiceService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -74,7 +74,7 @@ describe('PublicCoursePlayerComponent', () => {
     spyOn(toasterService, 'error').and.returnValue('');
   });
   it('should fetch course details on page load', () => {
-    activatedRouteStub.snapshot.params = {courseId: 'do_212347136096788480178'};
+    activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();
     component.ngOnInit();
@@ -84,21 +84,27 @@ describe('PublicCoursePlayerComponent', () => {
   it('should show join training popup', () => {
     courseService.initialize();
     component.ngOnInit();
-    component.navigateToContent();
+    component.navigateToContent({ event: { type: 'click' } });
     expect(component.showJoinTrainingModal).toBeTruthy();
   });
   it('should log telemetry on click of join training popup close icon', () => {
-    activatedRouteStub.snapshot.params = {courseId: 'do_212347136096788480178'};
+    activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact');
     courseService.initialize();
     component.ngOnInit();
-    component.navigateToContent();
+    component.navigateToContent({ event: { type: 'click' } });
     expect(component.showJoinTrainingModal).toBeTruthy();
     component.closeJoinTrainingModal();
     expect(component.showJoinTrainingModal).toBeFalsy();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
+  });
+
+  it('should call parseChildContent', () => {
+    component.courseHierarchy = coursePlayerMockData.courseHierarchy;
+    component['parseChildContent']();
+    expect(component.curriculum).toEqual(coursePlayerMockData.curriculum);
   });
 
 });

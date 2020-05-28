@@ -4,7 +4,7 @@ import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { SignupService } from './../../services';
-import { CoreModule, TenantService } from '@sunbird/core';
+import {CoreModule, TenantService, TncService} from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
@@ -68,7 +68,7 @@ describe('SignUpComponent', () => {
       providers: [FormBuilder, ResourceService, SignupService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle }, TelemetryService,
+        { provide: ResourceService, useValue: resourceBundle }, TelemetryService, TncService,
         {provide : TenantService, useValue: { tenantData$: of('')}}],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -261,8 +261,8 @@ describe('SignUpComponent', () => {
   });
 
   it('should fetch tnc configuration', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'log');
     component.ngOnInit();
@@ -272,20 +272,20 @@ describe('SignUpComponent', () => {
   });
 
   it('should not fetch tnc configuration and throw error', () => {
-    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
     const toasterService = TestBed.get(ToasterService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
     expect(telemetryService.log).toHaveBeenCalledWith(SignUpComponentMockData.telemetryLogError);
   });
 
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfigIncorrectData));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfigIncorrectData));
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
@@ -294,8 +294,8 @@ describe('SignUpComponent', () => {
 
   it('should init instance with sunbird', () => {
     component.initializeFormFields();
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(component, 'initializeFormFields');
     spyOn(component, 'setInteractEventData');
     spyOn(component, 'signUpTelemetryStart');
@@ -377,16 +377,16 @@ describe('SignUpComponent', () => {
   });
 
   it('should disable the form as no age is selected and init the age dropdown', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     expect(component.signUpForm.disable).toBeTruthy();
     expect(component.birthYearOptions.length).toBe(100);
   });
 
   it('should change birth year and enable form and set user as not minor', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     fixture.detectChanges();
@@ -398,9 +398,9 @@ describe('SignUpComponent', () => {
   });
 
   it('should change birth year and enable form and set user as minor', () => {
-    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
     const phoneOrEmailMessage = resourceBundle.frmelmnts.lbl.phoneOrEmail + ' ' + resourceBundle.frmelmnts.lbl.parentOrGuardian;
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
     fixture.detectChanges();
@@ -413,7 +413,8 @@ describe('SignUpComponent', () => {
 
   it('should generate otp as user is minor', () => {
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
@@ -431,7 +432,8 @@ describe('SignUpComponent', () => {
 
   it('should generate otp as user is minor', () => {
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
