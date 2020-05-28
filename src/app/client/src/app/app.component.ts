@@ -16,7 +16,6 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { CsModule} from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -145,7 +144,6 @@ export class AppComponent implements OnInit, OnDestroy {
             this.programsService.initialize();
             this.userService.startSession();
             this.checkForCustodianUser();
-            this.initializeCs();
             return this.setUserDetails();
           } else {
             return this.setOrgDetails();
@@ -546,34 +544,6 @@ export class AppComponent implements OnInit, OnDestroy {
             });
       }
     });
-  }
-
-  async initializeCs() {
-    if (!CsModule.instance.isInitialised) {
-       // Singleton initialised or not
-        await CsModule.instance.init({
-          core: {
-              httpAdapter: 'HttpClientBrowserAdapter',
-              global: {
-                  channelId: this.channel, // required
-                  producerId: this.userService.appId, // required
-                  deviceId: this.fingerprintInfo // required
-              },
-              api: {
-                  host: document.location.origin, // default host
-                  authentication: {
-                      // userToken: string; // optional
-                      // bearerToken: string; // optional
-                  }
-              }
-          },
-          services: {
-              groupServiceConfig: {
-                apiPath: 'learner/v1/group',
-              }
-          }
-      });
-    }
   }
 
 }
