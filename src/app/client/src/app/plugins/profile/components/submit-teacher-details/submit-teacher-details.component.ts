@@ -77,6 +77,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
     }
     this.userDetailsForm = this.sbFormBuilder.group(formGroupObj);
+    const udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
+    const teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
+    if (udiseObj) { this.userDetailsForm.controls['udiseId'].setValue(udiseObj.id); }
+    if (teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(teacherObj.id); }
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     this.getState();
     this.showLoader = false;
@@ -121,7 +125,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         });
       }
       this.selectedState = locationExist;
-      locationExist ? this.userDetailsForm.controls['state'].setValue(locationExist.code) :
+      locationExist ? this.userDetailsForm.controls['state'].setValue(locationExist) :
         this.userDetailsForm.controls['state'].setValue('');
     }, err => {
       this.closeModal();
@@ -144,9 +148,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           const state = _.find(this.allStates, (states) => {
             return states.code === stateControl.value.code;
           });
-          if (_.get(state, 'id')) {
-            this.getDistrict(state.id);
-          }
+          if (_.get(state, 'id')) { this.getDistrict(state.id); }
           stateValue = stateControl.value.code;
         }
       });
