@@ -6,7 +6,7 @@
       <div class="twelve wide column">
         <div class="sb-grid">
           <div in-view-item [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
-            <sb-library-card [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
+            <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]={{resourceService.frmelmnts?.lbl?.play}} [isLoading]="true"></sb-library-card>
           </div>
         </div>
       </div>
@@ -62,7 +62,8 @@
           <div class="sb-grid">
             <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
               *ngFor="let content of itemsToDisplay;let i = index;">
-              <sb-library-card [type]="'portal_qrcode_flatresult'" *ngIf="content.contentType.toLowerCase() !== 'course'" (cardClick)="getEvent($event)"
+              <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]={{resourceService.frmelmnts?.lbl?.play}}
+                *ngIf="content.contentType.toLowerCase() !== 'course'" (cardClick)="getEvent($event)"
                 [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'" appTelemetryInteract
                 appContentDirection [data]="content"
                 [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
