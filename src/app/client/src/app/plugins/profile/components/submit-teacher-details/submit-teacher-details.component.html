@@ -72,13 +72,12 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
   appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.submitInformation}}
+    {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}}
   </div>
   <div class="sb-modal-content" *ngIf="showLoader">
     <app-loader></app-loader>
   </div>
   <div class="sb-modal-content" *ngIf="!showLoader">
-    <div class="user-label mb-8 mx-16">{{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}}</div>
     <div class="fsmall mx-16">{{resourceService?.frmelmnts?.lbl?.stateValidationDetails}}</div>
     <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
       <div class="ui stackable grid mt-24" *ngFor="let field of formData">
