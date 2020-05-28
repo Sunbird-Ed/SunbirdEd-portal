@@ -141,7 +141,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.gradeLevels = [];
     this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
     this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
-      this.filters.medium = filters.medium || [];
+      this.filters.medium = _.sortBy(filters['medium'], ["name"]) || [];
       this.filters.gradeLevel = filters.gradeLevel || [];
       this.updateMediumAndGradeLevelList();
       this.emitFilterChangeEvent();
