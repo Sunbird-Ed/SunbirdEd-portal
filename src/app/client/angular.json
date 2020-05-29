@@ -46,15 +46,36 @@
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "src/assets/libs/semantic-ui/dimmer.min.js",
-              "src/assets/libs/semantic-ui/transition.min.js",
-              "src/assets/libs/semantic-ui/modal.min.js",
-              "src/assets/libs/semantic-ui/dropdown.min.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               {
                 "input": "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
                 "lazy": true,
                 "bundleName": "fancytree-all-deps"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/transition.min.js",
+                "lazy": true,
+                "bundleName": "semanticDropdown"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/dropdown.min.js",
+                "lazy": true,
+                "bundleName": "semanticDropdown"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/transition.min.js",
+                "lazy": true,
+                "bundleName": "semanticModal"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/dimmer.min.js",
+                "lazy": true,
+                "bundleName": "semanticModal"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/modal.min.js",
+                "lazy": true,
+                "bundleName": "semanticModal"
               }
             ]
           },

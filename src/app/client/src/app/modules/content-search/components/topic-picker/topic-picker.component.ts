@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
 import { tap } from 'rxjs/operators';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 $.fn.treePicker = treePicker;
 interface TopicTreeNode {
   id: string;
@@ -32,7 +33,7 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   resourceDataSubscription: Subscription;
 
-  constructor(public resourceService: ResourceService) {
+  constructor(public resourceService: ResourceService, private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
   }
   ngOnInit() {
@@ -77,31 +78,33 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initTopicPicker(this.formatTopics(this.formTopic.range));
   }
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    jQuery('.topic-picker-selector').treePicker({
-      data: data,
-      name: this.resourceService.frmelmnts.lbl.topics,
-      noDataMessage: this.resourceService.messages.fmsg.m0089,
-      submitButtonText: this.resourceService.frmelmnts.lbl.done,
-      cancelButtonText: this.resourceService.frmelmnts.btn.cancelCapitalize,
-      removeAllText: this.resourceService.frmelmnts.lbl.removeAll,
-      chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
-      searchText: this.resourceService.frmelmnts.prmpt.search,
-      selectedText: this.resourceService.frmelmnts.lbl.selected,
-      picked: _.map(this.selectedNodes, 'identifier'),
-      onSubmit: (selectedNodes) => {
-        this.selectedNodes = selectedNodes;
-        this.selectedTopics = _.map(selectedNodes, node => ({
-          identifier: node.id,
-          name: node.name
-        }));
-        this.placeHolder = this.selectedTopics.length + ' topics selected';
-        this.topicChange.emit(this.selectedTopics);
-      },
-      nodeName: 'topicSelector',
-      minSearchQueryLength: 1
+    this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
+      jQuery('.topic-picker-selector').treePicker({
+        data: data,
+        name: this.resourceService.frmelmnts.lbl.topics,
+        noDataMessage: this.resourceService.messages.fmsg.m0089,
+        submitButtonText: this.resourceService.frmelmnts.lbl.done,
+        cancelButtonText: this.resourceService.frmelmnts.btn.cancelCapitalize,
+        removeAllText: this.resourceService.frmelmnts.lbl.removeAll,
+        chooseAllText: this.resourceService.frmelmnts.lbl.chooseAll,
+        searchText: this.resourceService.frmelmnts.prmpt.search,
+        selectedText: this.resourceService.frmelmnts.lbl.selected,
+        picked: _.map(this.selectedNodes, 'identifier'),
+        onSubmit: (selectedNodes) => {
+          this.selectedNodes = selectedNodes;
+          this.selectedTopics = _.map(selectedNodes, node => ({
+            identifier: node.id,
+            name: node.name
+          }));
+          this.placeHolder = this.selectedTopics.length + ' topics selected';
+          this.topicChange.emit(this.selectedTopics);
+        },
+        nodeName: 'topicSelector',
+        minSearchQueryLength: 1
+      });
+      setTimeout(() =>
+        document.getElementById('topicSelector').classList.add(this.topicPickerClass), 100);
     });
-    setTimeout(() =>
-      document.getElementById('topicSelector').classList.add(this.topicPickerClass), 100);
   }
   private formatTopics(topics, subTopic = false): Array<TopicTreeNode> {
     return _.map(topics, (topic) => ({

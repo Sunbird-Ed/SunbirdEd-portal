@@ -9,6 +9,8 @@ import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html'
@@ -105,7 +107,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -292,7 +294,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   private initDropDown() {
-    setTimeout(() => {
+    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participants').dropdown({
         forceSelection: false,
         fullTextSearch: true,
@@ -311,7 +313,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 0);
+    });
   }
   private getUserListWithQuery(query, type) {
     if (this.userSearchTime) {
