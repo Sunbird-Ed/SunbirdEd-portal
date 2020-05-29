@@ -13,18 +13,19 @@ const routes: Routes = [
     }
   },
   {
-    path: 'create-user', component: CreateUserComponent,
+    path: 'create-managed-user', component: CreateUserComponent,
     data: {
       telemetry: {
-        env: telemetryEnv
+        env: telemetryEnv, type: 'view'
       }
     }
   },
   {
-    path: 'choose-user', component: ChooseUserComponent,
+    path: 'choose-managed-user', component: ChooseUserComponent,
     data: {
       telemetry: {
-        env: telemetryEnv
+        env: telemetryEnv, pageid: 'choose-managed-user', type: 'view',
+        uri: '/profile/choose-managed-user',
       }
     }
   }

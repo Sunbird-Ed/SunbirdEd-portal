@@ -11,7 +11,7 @@ import {
   RecaptchaService
 } from '@sunbird/shared';
 import { SignupService } from './../../services';
-import { TenantService } from '@sunbird/core';
+import { TenantService, TncService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
@@ -56,12 +56,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public configService: ConfigService,  public recaptchaService: RecaptchaService) {
+    public configService: ConfigService,  public recaptchaService: RecaptchaService,
+    public tncService: TncService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
-    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {

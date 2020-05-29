@@ -2,13 +2,13 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, 
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, iif, of } from 'rxjs';
+import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 
 /**
@@ -84,11 +84,11 @@ export class UserService {
   /**
    * Reference of orgNames
    */
-  private orgNames: Array<string> = [];
+  public orgNames: Array<string> = [];
 
   public rootOrgName: string;
 
-  public orgnisationsDetails: Array<IOrganization>;
+  public organizationsDetails: Array<IOrganization>;
 
   /**
    * Reference of public data service.
@@ -96,6 +96,10 @@ export class UserService {
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
+  public readonly userOrgDetails$ = this.userData$.pipe(
+    mergeMap(data => iif(() =>
+    !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
+    shareReplay(1));
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -141,6 +145,10 @@ export class UserService {
    */
   get userid(): string {
     return this._userid;
+  }
+
+  setUserId(userId: string) {
+    this._userid = userId;
   }
   /**
   * get method to fetch sessionId.
@@ -241,7 +249,6 @@ export class UserService {
     this._userProfile.userId = this.userid; // this line is added to handle userId not returned from user service
     this._rootOrgId = this._userProfile.rootOrgId;
     this._hashTagId = this._userProfile.rootOrg.hashTagId;
-    this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
@@ -261,7 +268,7 @@ export class UserService {
    *
    * @param {requestParam} requestParam api request data
    */
-  getOrganisationDetails(organisationIds) {
+  private getOrganizationDetails(organisationIds) {
     const option = {
       url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
       data: {
@@ -272,19 +279,11 @@ export class UserService {
         }
       }
     };
-    this.publicDataService.post(option).subscribe
-      ((data: ServerResponse) => {
-        this.orgnisationsDetails = _.get(data, 'result.response.content');
-        _.forEach(this.orgnisationsDetails, (orgData) => {
-          this.orgNames.push(orgData.orgName);
-        });
-        this._userProfile.organisationNames = this.orgNames;
-      },
-      (err: ServerResponse) => {
-        this.orgNames = [];
-        this._userProfile.organisationNames = this.orgNames;
-      }
-      );
+    return this.publicDataService.post(option)
+    .pipe(tap((data: ServerResponse) => {
+        this.organizationsDetails = _.get(data, 'result.response.content');
+        this.orgNames = _.map(this.organizationsDetails, org => org.orgName);
+      }));
   }
 
   /**
@@ -304,7 +303,7 @@ export class UserService {
 
   get orgIdNameMap() {
     const mapOrgIdNameData = {};
-    _.forEach(this.orgnisationsDetails, (orgDetails) => {
+    _.forEach(this.organizationsDetails, (orgDetails) => {
       mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
     });
     return mapOrgIdNameData;
@@ -384,5 +383,13 @@ export class UserService {
 
   setUserFramework(framework) {
     this._userProfile.framework = framework;
+  }
+
+  registerUser(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      data: data
+    };
+    return this.learnerService.post(options);
   }
 }

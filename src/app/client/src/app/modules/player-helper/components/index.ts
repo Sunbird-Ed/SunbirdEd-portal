@@ -13,3 +13,5 @@ export * from './content-player/content-player.component';
 export * from './content-actions/content-actions.component';
 export * from './content-chapterlist/content-chapterlist.component';
 export * from './content-licence/content-licence.component';
+export * from './curriculum-info/curriculum-info.component';
+export * from './course-info/course-info.component';

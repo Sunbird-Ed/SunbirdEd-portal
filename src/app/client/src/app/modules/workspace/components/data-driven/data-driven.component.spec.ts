@@ -73,6 +73,8 @@ describe('DataDrivenComponent', () => {
     componentParent = fixtureParent.componentInstance;
     fixtureChild = TestBed.createComponent(DefaultTemplateComponent);
     componentChild = fixtureChild.componentInstance;
+    const userService = TestBed.get(UserService);
+    userService['userOrgDetails$'] = observableOf({});
     // navigationHelperService = TestBed.get('NavigationHelperService');
     fixtureParent.detectChanges();
   });
@@ -300,8 +302,9 @@ describe('DataDrivenComponent', () => {
   });
   it('should fetch the default framework while creating any content from training sub-tab', () => {
     const frameworkService = TestBed.get(FrameworkService);
+    spyOn(componentParent, 'fetchFrameworkMetaData').and.callThrough();
     spyOn(frameworkService, 'getDefaultCourseFramework').and.returnValue(observableOf('cbse-tpd'));
     componentParent.ngOnInit();
-    expect(componentParent.framework).toEqual('cbse-tpd');
+    expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
   });
 });

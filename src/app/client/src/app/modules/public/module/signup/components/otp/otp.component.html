@@ -15,7 +15,7 @@
 <div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-50 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
   <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>
-  <div class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
+<div *ngIf="!infoMessage" class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
 <form class="sb-form borderd mb-20" [formGroup]="otpForm">
   <div class="sb-field-group mb-16 text-left">
       <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
