@@ -47,6 +47,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  submitTeacherDetailsInteractEdata: IInteractEventObject;
+  updateTeacherDetailsInteractEdata: IInteractEventObject;
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
@@ -289,6 +291,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.downloadOthersCertificateEData = {
       id: 'profile-download-others-certificate',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.submitTeacherDetailsInteractEdata = {
+      id: 'submit-teacher-details',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.updateTeacherDetailsInteractEdata = {
+      id: 'update-teacher-details',
       type: 'click',
       pageid: 'profile-read'
     };

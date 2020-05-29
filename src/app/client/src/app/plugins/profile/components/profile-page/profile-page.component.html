@@ -70,7 +70,8 @@
           [telemetryInteractEdata]="editProfileInteractEdata"
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
-        <button *ngIf="!udiseObj && !teacherObj" (click)="showSubmitTeacherDetails=true" class="sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj" (click)="showSubmitTeacherDetails=true" class="sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="chevron plus icon"></i> </button>
       </div>
     </div>
@@ -232,7 +233,9 @@
         <span class="fnormal font-w-bold pl-4">{{teacherObj?.id}}</span>
       </div>
       <div class="d-flex flex-jc-center my-16">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border" (click)="showUpdateTeacherDetails = !showUpdateTeacherDetails">{{resourceService.frmelmnts?.btn?.update}}</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
+        (click)="showUpdateTeacherDetails = !showUpdateTeacherDetails">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
       <div class="d-flex flex-jc-center fsmall">{{resourceService.frmelmnts?.lbl?.stateTeacherInfo}}</div>
     </div>
