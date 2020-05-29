@@ -13,8 +13,8 @@ h6 $h6-font-size ($h6-font-size * $line-height-value); // 14px
 
 @each $name, $font-size, $line-height in $typography {
   #{$name}, .sb-#{$name} {
-    font-size: $font-size !important;
-    line-height: $line-height !important;
+    font-size: $font-size;
+    line-height: $line-height;
   }
 }
 
