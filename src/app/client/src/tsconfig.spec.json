@@ -63,6 +63,12 @@
       ],
       "@sunbird/content-search": [
         "app/modules/content-search"
+      ],     
+      "CsLibInitializer": [
+        "app/service/CsLibInitializer/cs-lib-initializer.service.ts"
+      ],
+      "LazzyLoadScriptService": [
+        "app/service/LazzyLoadScript/lazzy-load-script.service.ts"
       ]
     },
     "module": "es2015",
