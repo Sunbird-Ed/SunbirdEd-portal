@@ -49,23 +49,27 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getFormDetails();
+    this.setFormDetails();
   }
 
-  getFormDetails() {
-    const formServiceInputParams = {
-      formType: 'user',
-      formAction: this.formAction,
-      contentType: 'teacherDetails',
-      component: 'portal'
-    };
-    this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId).subscribe((formData) => {
+  setFormDetails() {
+    this.getFormDetails().subscribe((formData) => {
       this.formData = formData;
       this.initializeFormFields();
     }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       this.closeModal();
     });
+  }
+
+  getFormDetails(id?) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: this.formAction,
+      contentType: 'teacherDetails',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, id || this.userService.hashTagId);
   }
 
   initializeFormFields() {
@@ -86,7 +90,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.showLoader = false;
     this.onStateChange();
     this.enableSubmitButton();
-    this.setInteractEventData();
   }
 
   setValidations(data) {
@@ -144,6 +147,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     let stateValue = '';
     stateControl.valueChanges.subscribe(
       (data: string) => {
+        if (_.get(stateControl, 'value.id')) {
+          this.getFormDetails(_.get(stateControl, 'value.id')).subscribe((formData) => {
+            this.formData = formData;
+          });
+        }
         if (stateControl.status === 'VALID' && stateValue !== stateControl.value.code) {
           const state = _.find(this.allStates, (states) => {
             return states.code === stateControl.value.code;
@@ -184,16 +192,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe))
       .subscribe(
         (orgData: any) => {
-          this.stateControl = this.userDetailsForm.get('state');
-          this.districtControl = this.userDetailsForm.get('district');
           this.enableSubmitBtn = false;
           const locationCodes = [];
           if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state.code); }
           if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
 
-          const externalIds = [];
           const provider = _.get(orgData, 'result.response.content[0].channel');
           const operation = this.formAction === 'submit' ? 'add' : 'edit';
+          const externalIds = [];
           if (_.get(this.userDetailsForm, 'value.udiseId')) {
             externalIds.push({
               id: _.get(this.userDetailsForm, 'value.udiseId'),
@@ -236,24 +242,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   closeModal() {
     this.userDetailsModal.deny();
     this.close.emit();
-  }
-
-  setInteractEventData() {
-    this.submitNameInteractEdata = {
-      id: 'submit-personal-details',
-      type: 'click',
-      pageid: 'profile-read'
-    };
-    this.submitStateInteractEdata = {
-      id: 'profile-edit-address',
-      type: 'click',
-      pageid: 'profile-read'
-    };
-    this.telemetryInteractObject = {
-      id: this.userService.userid,
-      type: 'User',
-      ver: '1.0'
-    };
   }
 
   ngOnDestroy() {

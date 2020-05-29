@@ -71,9 +71,8 @@
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
   appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}}
-  </div>
+  <div class="sb-modal-header" *ngIf="formAction === 'submit'"> {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
+  <div class="sb-modal-header" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}} </div>
   <div class="sb-modal-content" *ngIf="showLoader">
     <app-loader></app-loader>
   </div>
