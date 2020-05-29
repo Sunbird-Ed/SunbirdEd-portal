@@ -1,4 +1,4 @@
-import { PermissionDirective, BodyScrollDirective, StickyHeaderDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective,
-    ErrorPageComponent, LanguageDropdownComponent, StickyHeaderDirective],
+    ErrorPageComponent, LanguageDropdownComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     TelemetryModule, LanguageDropdownComponent],
   providers: [CacheService, AuthGuard, {
