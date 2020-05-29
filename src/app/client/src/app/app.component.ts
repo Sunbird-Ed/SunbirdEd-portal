@@ -123,7 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
       if (_.some(_.intersection(utmParams, _.keys(params)))) {
         this.telemetryService.makeUTMSession(params);
