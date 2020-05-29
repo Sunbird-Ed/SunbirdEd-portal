@@ -17,19 +17,19 @@
     background: rgba(0,0,0,.4);
 
     &__menu {
-        width: 400px;
+        width: calculateRem(400px);
         right: 0;
         background: var(--white);
         z-index: 100000;
         overflow-y: auto;
         overflow-x: hidden;
-        box-shadow: -6px 0 10px 0 rgba(0,0,0,0.1);
+        box-shadow: calculateRem(-6px) 0 calculateRem(10px) 0 rgba(0,0,0,0.1);
     }
 }
 
 .profile {
     &__info {
-        padding: 56px 24px 24px 24px;
+        padding: calculateRem(56px) calculateRem(24px) calculateRem(8px) calculateRem(24px);
         background-color: var(--primary-100);
         position: relative;
         .icon-close {
@@ -77,7 +77,7 @@
         }
     }
     &__label {
-        margin-top: $base-block-space;
+        margin-top: calculateRem(9px);
     }
 
     &--horizontal {

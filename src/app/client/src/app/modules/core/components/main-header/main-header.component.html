@@ -38,12 +38,12 @@
                           </svg>
                         </i>
 
-                        <div class="mb-16 sb-member sb-member--medium sb-member--horizontal sb-member--font-normal">
+                        <div class="sb-member sb-member--medium sb-member--horizontal sb-member--font-normal mb-16">
                           <div class="sb-member__img"
                                style="color: purple;">{{userProfile?.firstName | slice:0:1}}</div>
                           <label class="sb-member__name">{{userProfile?.firstName }}</label>
                         </div>
-                        <div class="fsmall sb-color-gray-400 mb-16 profile__info__desc">
+                        <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
                           {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
                         </div>
 
@@ -64,10 +64,10 @@
                                           [isMenu]="false"
                                           (cardClick)="switchUser($event)">
                           </sb-member-list>
-                          <div class="more-user ml-16" *ngIf="((userListToShow && userListToShow.length) >=1)"
+                          <div class="more-user ml-16 mt-8" *ngIf="((userListToShow && userListToShow.length) >=1)"
                                (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
                             <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
-                            <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}} ( {{totalUsersCount}} )</div>
+                            <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}} ({{totalUsersCount}})</div>
                           </div>
                         </div>
                       </div>
