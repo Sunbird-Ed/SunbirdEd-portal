@@ -47,8 +47,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  submitTeacherDetailsInteractEdata: IInteractEventObject;
-  updateTeacherDetailsInteractEdata: IInteractEventObject;
+  submitTeacherDetailsInteractEdata: IInteractEventEdata;
+  updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
