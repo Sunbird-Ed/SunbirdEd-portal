@@ -228,5 +228,12 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.makeUTMSession({'channel': 'sunbird', 'utm_medium': 'sunbird', 'utm_source': 'sunbird',
     'utm_campaign': 'sunbird', 'utm_term': 'sunbird', 'utm_content': 'sunbird'});
     expect(component.resultJson).toBeDefined();
+    expect(sessionStorage.getItem('UTM')).toBeDefined();
+    const utm = sessionStorage.getItem('UTM') ? JSON.parse(sessionStorage.getItem('UTM').toString()) : [];
+    expect(utm[0]['type']).toBe('Source');
+    expect(utm[1]['type']).toBe('UtmMedium');
+    expect(utm[2]['type']).toBe('UtmSource');
+    expect(utm[4]['type']).toBe('UtmTerm');
+    expect(utm[5]['type']).toBe('UtmContent');
   });
 });
