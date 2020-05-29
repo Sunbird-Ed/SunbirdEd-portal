@@ -86,7 +86,6 @@ export class AppComponent implements OnInit, OnDestroy {
   deviceId: string;
   userId: string;
   appId: string;
-  public resultJson = [];
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -124,34 +123,18 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   public makeUTMSession(params) {
-    for (const item in params) {
-      if (params.hasOwnProperty(item)) {
-        switch (item) {
-          case ('channel'):
-            this.resultJson.push({ 'id': params[item], 'type': 'Source' });
-            break;
-          case ('utm_campaign'):
-            this.resultJson.push({ 'id': params[item], 'type': 'Source' });
-            break;
-          case 'utm_medium':
-            this.resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
-            break;
-          case 'utm_source':
-            this.resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
-            break;
-          case 'utm_term':
-            this.resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
-            break;
-          case 'utm_content':
-            this.resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
-            break;
-          default:
-            break;
-        }
-      }
-    }
-    sessionStorage.setItem('UTM', JSON.stringify(this.resultJson));
-    this.telemetryService.setUTMparam(this.resultJson);
+    const resultJson = [];
+    enum UTM_PARAMS {
+      channel = 'Source',
+      utm_campaign = 'Source',
+      utm_medium = 'UtmMedium',
+      utm_source = 'UtmSource',
+      utm_term = 'UtmTerm',
+      utm_content = 'UtmContent'
+   };
+   _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => (resultJson.push({id: value, type: UTM_PARAMS[key]})));
+   sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+   this.telemetryService.setUTMparam(resultJson);
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
