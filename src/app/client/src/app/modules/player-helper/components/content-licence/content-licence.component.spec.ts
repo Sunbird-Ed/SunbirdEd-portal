@@ -49,6 +49,6 @@ describe('CreditsAndLicenceComponent', () => {
   it('should check the attributions', () => {
     component.content = contentInformation.contentData;
     component.ngOnInit();
-    expect(component.attributions).toEqual(contentInformation.attributions);
+    expect(component.attributions).toEqual(contentInformation.contentData.attributions);
   });
 });

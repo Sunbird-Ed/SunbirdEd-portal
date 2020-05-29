@@ -30,6 +30,7 @@ node('build-slave') {
          //       stage Build
                     buildDockerImage = "true"
                     buildCdnAssests = "true"
+                    sh """chmod +x build.sh"""
                     sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${env.content_editor_url} ${env.collection_editor_url} ${env.generic_editor_url} true true ${env.staging_cdnUrl}")
                 
 
