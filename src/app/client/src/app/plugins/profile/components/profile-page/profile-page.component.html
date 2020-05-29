@@ -273,12 +273,16 @@
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
           <div class="d-flex flex-ai-center sb-ct-list list-heading">
             <label
-              class="mb-0">{{resourceService.frmelmnts.lbl.trainingAttended}}({{attendedTraining.length}})&#x200E;</label>
+              class="mb-0">{{resourceService?.frmelmnts?.lbl?.courses}}({{attendedTraining.length}})&#x200E;</label>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
             <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.courseName">
-              <label class="mr-auto mb-0 text-left">{{data.courseName}}</label>
+              <a href="javascript:void(0);" (click)="navigateToCourse(data)" class="mr-auto mb-0 text-left">{{data.courseName}}</a>
               <span class="list-date mr-24" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
+              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.completedOn">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+              </div>
               <div class="sb-certificate-trained-flex-space" *ngIf="data.certificates && data.certificates.length > 0">
                 <button appTelemetryInteract
                 [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCertificateEData" 
@@ -289,7 +293,9 @@
               <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
                   <span class="bar"></span>
                   <span class="bar"></span>
-                </div>
+              </div>
+              <div class="sb-certificate-trained-line sb-certificate-trained-no-flex-space status-progress fsmall font-weight-bold" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
+              <div class="sb-certificate-trained-line sb-certificate-trained-no-flex-space status-completed fsmall font-weight-bold" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
             </div>
           </div>
           <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="attendedTraining.length > 3">
