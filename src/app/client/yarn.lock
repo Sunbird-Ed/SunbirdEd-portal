@@ -363,20 +363,20 @@
     "@ckeditor/ckeditor5-utils" "^14.0.0"
     lodash-es "^4.17.10"
 
+"@ckeditor/ckeditor5-engine@12.0.0", "@ckeditor/ckeditor5-engine@^12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-12.0.0.tgz#89f6adeb36ad21841166af542ba2bb940e065307"
+  integrity sha512-tRgI4kyPq4UaS9eIZoeMhzNwOKqNV/HC6dAD5JZxghnPsuqAwGlOjGygGVCje7j8I3byTFgaxS5xWFwwnn3fqQ==
+  dependencies:
+    "@ckeditor/ckeditor5-utils" "^11.1.0"
+    lodash-es "^4.17.10"
+
 "@ckeditor/ckeditor5-engine@>=18.0.0", "@ckeditor/ckeditor5-engine@^19.0.0":
   version "19.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-19.0.0.tgz#3246193c8d5a47496e888064250303085ecaad3c"
   integrity sha512-Ahgr/NKJOIwNZZ2rZZTQUO5iJkgytossmK7CrRUeyGiEol/9GmyTOXtrmqItITebZV5wMe+UVM8bR6HJD/4TJw==
   dependencies:
     "@ckeditor/ckeditor5-utils" "^19.0.0"
-    lodash-es "^4.17.10"
-
-"@ckeditor/ckeditor5-engine@^12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-12.0.0.tgz#89f6adeb36ad21841166af542ba2bb940e065307"
-  integrity sha512-tRgI4kyPq4UaS9eIZoeMhzNwOKqNV/HC6dAD5JZxghnPsuqAwGlOjGygGVCje7j8I3byTFgaxS5xWFwwnn3fqQ==
-  dependencies:
-    "@ckeditor/ckeditor5-utils" "^11.1.0"
     lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-engine@^13.1.1":
@@ -628,10 +628,10 @@
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
 
-"@project-sunbird/common-consumption@^3.0.6":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.0.7.tgz#3f87dbbdd3301335daceb34058469a324688e514"
-  integrity sha512-E76XphZU7R4dekqL0K7jvUbXSH/2j9Nah6o9lHiTo+nWSkrHUeb+HptoxeIkOql4Vg1hJOeZpjRzGyigxIh9NA==
+"@project-sunbird/common-consumption@^3.0.13":
+  version "3.0.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.0.13.tgz#913d3f06e280c2129c1c60dac1c9df030fe1645b"
+  integrity sha512-LuFFwp6L/ejtiE2D2fkjWdN7alldhVxbAncyQrkWt8UbsMo9644MZnhfNIWCeVqOMvoQI9XVgC7v8Vu5PFle5A==
   dependencies:
     tslib "^1.9.0"
 

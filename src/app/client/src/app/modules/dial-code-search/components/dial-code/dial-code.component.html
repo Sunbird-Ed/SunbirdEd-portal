@@ -62,14 +62,28 @@
           <div class="sb-grid">
             <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
               *ngFor="let content of itemsToDisplay;let i = index;">
-              <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
-                *ngIf="content.contentType.toLowerCase() !== 'course'" (cardClick)="getEvent($event)"
-                [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'" appTelemetryInteract
+
+              <!-- START - Results page -->
+              <sb-library-card 
+                *ngIf="content.contentType.toLowerCase() !== 'course' && content.metaData.childTextbookUnit" (cardClick)="getEvent($event)"
+                [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" appTelemetryInteract
                 appContentDirection [data]="content"
                 [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
                 [telemetryInteractEdata]="content.telemetryInteractEdata"
                 [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
               </sb-library-card>
+              <!-- END - Results page -->
+
+              <!-- START - Flattened page -->
+              <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
+                *ngIf="content.contentType.toLowerCase() !== 'course' && !content.metaData.childTextbookUnit" (cardClick)="getEvent($event)"
+                [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" appTelemetryInteract
+                appContentDirection [data]="content"
+                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+                [telemetryInteractEdata]="content.telemetryInteractEdata"
+                [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
+              </sb-library-card>
+              <!-- END - Flattened page -->
             </div>
           </div>
         </div>
