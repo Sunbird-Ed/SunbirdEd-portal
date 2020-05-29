@@ -3,7 +3,7 @@
 .user-profile-box {
   margin: 32px auto;
   max-width: 480px;
-  width: 100%;
+  width: calc(100% - 32px);
   background: var(--white);
   border-radius: 8px;
 
@@ -18,5 +18,8 @@
     padding: 16px 0px 0px 0px;
     display: flex;
     flex-direction: row-reverse;
+  }
+  .ui.stackable.grid>.wide.column {
+    padding:0rem!important;
   }
 }
