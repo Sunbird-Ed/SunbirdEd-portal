@@ -48,12 +48,15 @@ export class TelemetryService {
    */
 
   sessionId;
+  sessionIdentifier;
 
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
     ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
+    this.sessionIdentifier = (<HTMLInputElement>document.getElementById('sessionIdentifier'))
+    ? (<HTMLInputElement>document.getElementById('sessionIdentifier')).value : undefined;
   }
 
   /**
@@ -269,6 +272,12 @@ export class TelemetryService {
       cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
+    if (this.sessionIdentifier) {
+      eventContextData.cdata.push({
+        id: this.sessionIdentifier,
+        type: 'sid'
+      });
+    }
     return eventContextData;
   }
 
@@ -299,5 +308,14 @@ export class TelemetryService {
       platform: window.navigator.platform,
       raw: window.navigator.userAgent
     };
+  }
+
+  public setInitialization(value: boolean) {
+    this.telemetryProvider.initialized = value;
+    this.isInitialized = value;
+  }
+
+  public setSessionIdentifier(value) {
+    this.sessionIdentifier = value;
   }
 }

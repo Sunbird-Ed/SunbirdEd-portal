@@ -22,7 +22,7 @@ export class ChooseUserComponent implements OnInit {
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
-              private configService: ConfigService, private managerUserService: ManagedUserService,
+              private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -83,7 +83,7 @@ export class ChooseUserComponent implements OnInit {
         }
       }
     };
-    this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
+    this.managedUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
         const managedUserList = _.get(data, 'result.response.content') || [];
         _.forEach(managedUserList, (userData) => {
           userData.title = userData.firstName;
@@ -99,29 +99,67 @@ export class ChooseUserComponent implements OnInit {
 
   switchUser() {
     const userId = this.selectedUser.identifier;
-    this.managerUserService.initiateSwitchUser(userId).subscribe((data) => {
-        // @ts-ignore
-        document.getElementById('userId').value = userId;
-        this.userService.setUserId(userId);
-        this.userService.initialize(true);
+    const initiatorUserId = this.userService.userid;
+    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.sessionIdentifier'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
+            this.telemetryService.setInitialization(false);
             this.telemetryService.initialize(this.getTelemetryContext());
             this.router.navigate(['/resources']);
-            const filterPipe = new InterpolatePipe();
-            let errorMessage =
-              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
-            errorMessage =
-              filterPipe.transform(errorMessage, '{userName}', this.selectedUser.firstName);
             this.toasterService.custom({
-              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
+              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                this.selectedUser.firstName),
+              class: 'sb-toaster sb-toast-success sb-toast-normal'
             });
+            this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
           }
         });
       }, (err) => {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
+  }
+
+  getStartEventData(userId, initiatorUserId) {
+    return {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: userId
+        }]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'switch-user'
+      }
+    };
+  }
+
+  getEndEventData(userId, initiatorUserId) {
+    return {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: userId
+        }]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'switch-user'
+      }
+    };
   }
 
   navigateToCreateUser() {
