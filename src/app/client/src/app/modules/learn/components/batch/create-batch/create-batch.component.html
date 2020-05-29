@@ -120,7 +120,8 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button 
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+      class="sb-btn sb-btn-normal sb-btn-primary"
+      [ngClass]="{'sb-btn-disabled': disableSubmitBtn}"
       id="submitbutton" 
       [disabled]="disableSubmitBtn"
       (click)="createBatch()"
