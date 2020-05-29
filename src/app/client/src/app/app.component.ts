@@ -122,25 +122,11 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
-  public makeUTMSession(params) {
-    const resultJson = [];
-    enum UTM_PARAMS {
-      channel = 'Source',
-      utm_campaign = 'Source',
-      utm_medium = 'UtmMedium',
-      utm_source = 'UtmSource',
-      utm_term = 'UtmTerm',
-      utm_content = 'UtmContent'
-   };
-   _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => (resultJson.push({id: value, type: UTM_PARAMS[key]})));
-   sessionStorage.setItem('UTM', JSON.stringify(resultJson));
-   this.telemetryService.setUTMparam(resultJson);
-  }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
       if (_.some(_.intersection(utmParams, _.keys(params)))) {
-        this.makeUTMSession(params);
+        this.telemetryService.makeUTMSession(params);
       }
     });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;

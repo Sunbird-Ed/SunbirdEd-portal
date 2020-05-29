@@ -10,6 +10,14 @@ export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
 */
+enum UTM_PARAMS {
+  channel = 'Source',
+  utm_campaign = 'Source',
+  utm_medium = 'UtmMedium',
+  utm_source = 'UtmSource',
+  utm_term = 'UtmTerm',
+  utm_content = 'UtmContent'
+}
 
 @Injectable()
 export class TelemetryService {
@@ -90,9 +98,9 @@ export class TelemetryService {
    * @param {IStartEventInput} startEventInput
    * @memberof TelemetryService
    */
-  public async start(startEventInput: IStartEventInput) {
+  public start(startEventInput: IStartEventInput) {
     if (this.isInitialized) {
-      startEventInput = await _.cloneDeep(this.addUTM(startEventInput));
+      startEventInput = _.cloneDeep(this.addUTM(startEventInput));
       const eventData: ITelemetryEvent = this.getEventData(startEventInput);
       this.telemetryProvider.start(this.context.config, eventData.options.object.id, eventData.options.object.ver,
         eventData.edata, eventData.options);
@@ -105,9 +113,9 @@ export class TelemetryService {
    * @param {IImpressionEventInput} impressionEventInput
    * @memberof TelemetryService
    */
-  public async impression(impressionEventInput: IImpressionEventInput) {
+  public impression(impressionEventInput: IImpressionEventInput) {
     if (this.isInitialized) {
-      impressionEventInput = await _.cloneDeep(this.addUTM(impressionEventInput));
+      impressionEventInput = _.cloneDeep(this.addUTM(impressionEventInput));
       const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
       this.telemetryProvider.impression(eventData.edata, eventData.options);
     }
@@ -118,9 +126,9 @@ export class TelemetryService {
    * @param {IInteractEventInput} interactEventInput
    * @memberof TelemetryService
    */
-  public async interact(interactEventInput: IInteractEventInput) {
+  public interact(interactEventInput: IInteractEventInput) {
     if (this.isInitialized) {
-      interactEventInput = await _.cloneDeep(this.addUTM(interactEventInput));
+      interactEventInput = _.cloneDeep(this.addUTM(interactEventInput));
       const eventData: ITelemetryEvent = this.getEventData(interactEventInput);
       this.telemetryProvider.interact(eventData.edata, eventData.options);
     }
@@ -132,9 +140,9 @@ export class TelemetryService {
    * @param {IShareEventInput} shareEventInput
    * @memberof TelemetryService
    */
-  public async share(shareEventInput: IShareEventInput) {
+  public share(shareEventInput: IShareEventInput) {
     if (this.isInitialized) {
-      shareEventInput = await _.cloneDeep(this.addUTM(shareEventInput));
+      shareEventInput = _.cloneDeep(this.addUTM(shareEventInput));
       const eventData: ITelemetryEvent = this.getEventData(shareEventInput);
       this.telemetryProvider.share(eventData.edata, eventData.options);
     }
@@ -145,9 +153,9 @@ export class TelemetryService {
    * @param {IErrorEventInput} errorEventInput
    * @memberof TelemetryService
    */
-  public async error(errorEventInput: IErrorEventInput) {
+  public error(errorEventInput: IErrorEventInput) {
     if (this.isInitialized) {
-      errorEventInput = await _.cloneDeep(this.addUTM(errorEventInput));
+      errorEventInput = _.cloneDeep(this.addUTM(errorEventInput));
       const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
       this.telemetryProvider.error(eventData.edata, eventData.options);
     }
@@ -172,9 +180,9 @@ export class TelemetryService {
    * @param {IEndEventInput} endEventInput
    * @memberof TelemetryService
    */
-  public async end(endEventInput: IEndEventInput) {
+  public end(endEventInput: IEndEventInput) {
     if (this.isInitialized) {
-      endEventInput = await _.cloneDeep(this.addUTM(endEventInput));
+      endEventInput = _.cloneDeep(this.addUTM(endEventInput));
       const eventData: ITelemetryEvent = this.getEventData(endEventInput);
       this.telemetryProvider.end(eventData.edata, eventData.options);
     }
@@ -186,9 +194,9 @@ export class TelemetryService {
    * @param {ILogEventInput} logEventInput
    * @memberof TelemetryService
    */
-  public async log(logEventInput: ILogEventInput) {
+  public log(logEventInput: ILogEventInput) {
     if (this.isInitialized) {
-      logEventInput = await _.cloneDeep(this.addUTM(logEventInput));
+      logEventInput = _.cloneDeep(this.addUTM(logEventInput));
       const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
     }
@@ -200,9 +208,9 @@ export class TelemetryService {
    * @param {IExDataEventInput} exDataEventInput
    * @memberof TelemetryService
    */
-  public async exData(exDataEventInput: IExDataEventInput) {
+  public exData(exDataEventInput: IExDataEventInput) {
     if (this.isInitialized) {
-      exDataEventInput = await _.cloneDeep(this.addUTM(exDataEventInput));
+      exDataEventInput = _.cloneDeep(this.addUTM(exDataEventInput));
       const eventData: ITelemetryEvent = this.getEventData(exDataEventInput);
       this.telemetryProvider.exdata(eventData.edata, eventData.options);
     }
@@ -214,9 +222,9 @@ export class TelemetryService {
    * @param {IFeedBackEventInput} IFeedBackEventInput
    * @memberof TelemetryService
    */
-  public async feedback(feedbackEventInput: IFeedBackEventInput) {
+  public feedback(feedbackEventInput: IFeedBackEventInput) {
     if (this.isInitialized) {
-      feedbackEventInput = await _.cloneDeep(this.addUTM(feedbackEventInput));
+      feedbackEventInput = _.cloneDeep(this.addUTM(feedbackEventInput));
       const eventData: ITelemetryEvent = this.getEventData(feedbackEventInput);
       this.telemetryProvider.feedback(eventData.edata, eventData.options);
     }
@@ -314,8 +322,11 @@ export class TelemetryService {
     };
   }
 
-  public setUTMparam(utmParams) {
-    this.UTMparam = utmParams;
+  public makeUTMSession(params) {
+    const resultJson = [];
+   _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => (resultJson.push({id: value, type: UTM_PARAMS[key]})));
+   sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+   this.UTMparam = resultJson;
   }
 
   public addUTM(object) {

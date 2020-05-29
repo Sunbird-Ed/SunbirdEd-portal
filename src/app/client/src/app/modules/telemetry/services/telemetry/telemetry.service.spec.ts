@@ -21,121 +21,121 @@ describe('TelemetryService', () => {
     }));
 
     describe('start event', () => {
-        it('should send "start" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "start" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'start');
-            await service.start(mockData.startInputData);
+            service.start(mockData.startInputData);
             expect(EkTelemetry.start).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "start" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "start" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'start');
-            await service.start(mockData.startInputData);
+            service.start(mockData.startInputData);
             expect(EkTelemetry.start).not.toHaveBeenCalled();
         }));
     });
 
     describe('impression event', () => {
-        it('should send "impression" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "impression" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'impression');
-            await service.impression(mockData.impressionInputData);
+            service.impression(mockData.impressionInputData);
             expect(EkTelemetry.impression).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "impression" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "impression" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'impression');
-            await service.impression(mockData.impressionInputData);
+            service.impression(mockData.impressionInputData);
             expect(EkTelemetry.impression).not.toHaveBeenCalled();
         }));
     });
 
     describe('interact event', () => {
-        it('should send "interact" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "interact" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'interact');
-            await service.interact(mockData.interactEventData);
+            service.interact(mockData.interactEventData);
             expect(EkTelemetry.interact).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "interact" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "interact" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'interact');
-            await service.interact(mockData.interactEventData);
+            service.interact(mockData.interactEventData);
             expect(EkTelemetry.interact).not.toHaveBeenCalled();
         }));
     });
 
     describe('share event', () => {
-        it('should send "share" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "share" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'share');
-            await service.share(mockData.shareEventData);
+            service.share(mockData.shareEventData);
             expect(EkTelemetry.share).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "share" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "share" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'share');
-            await service.share(mockData.shareEventData);
+            service.share(mockData.shareEventData);
             expect(EkTelemetry.share).not.toHaveBeenCalled();
         }));
     });
 
     describe('error event', () => {
-        it('should send "error" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "error" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'error');
-            await service.error(mockData.errorEventData);
+            service.error(mockData.errorEventData);
             expect(EkTelemetry.error).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "error" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "error" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'error');
-            await service.error(mockData.errorEventData);
+            service.error(mockData.errorEventData);
             expect(EkTelemetry.error).not.toHaveBeenCalled();
         }));
     });
 
     describe('end event', () => {
-        it('should send "end" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "end" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'end');
-            await service.end(mockData.endEventData);
+            service.end(mockData.endEventData);
             expect(EkTelemetry.end).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "end" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "end" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'end');
-            await service.end(mockData.endEventData);
+            service.end(mockData.endEventData);
             expect(EkTelemetry.end).not.toHaveBeenCalled();
         }));
     });
 
     describe('log event', () => {
-        it('should send "log" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "log" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'log');
-            await service.log(mockData.logEventData);
+            service.log(mockData.logEventData);
             expect(EkTelemetry.log).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "log" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "log" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'log');
-            await service.log(mockData.logEventData);
+            service.log(mockData.logEventData);
             expect(EkTelemetry.log).not.toHaveBeenCalled();
         }));
     });
 
     describe('exdata event', () => {
-        it('should send "exdata" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should send "exdata" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'exdata');
-            await service.exData(mockData.exdataEventData);
+            service.exData(mockData.exdataEventData);
             expect(EkTelemetry.exdata).toHaveBeenCalledTimes(1);
         }));
 
-        it('should not send "log" event if service is not initialised', inject([TelemetryService], async (service: TelemetryService) => {
+        it('should not send "log" event if service is not initialised', inject([TelemetryService], (service: TelemetryService) => {
             spyOn(EkTelemetry, 'exdata');
-            await service.log(mockData.exdataEventData);
+            service.log(mockData.exdataEventData);
             expect(EkTelemetry.exdata).not.toHaveBeenCalled();
         }));
     });
