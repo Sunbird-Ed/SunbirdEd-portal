@@ -36,7 +36,7 @@
                         [telemetryInteractEdata]="cardInteractEdata"
                         [telemetryInteractCdata]="telemetryInteractCdata"
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
-                        (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
+                        (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content" class="d-block" [class.last-card]="mr-0">
                     </app-card>
                 </ng-template>
                 <!--/Course & Resourse Card-->
