@@ -151,6 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
     sessionStorage.setItem('UTM', JSON.stringify(this.resultJson));
+    this.telemetryService.setUTMparam(this.resultJson);
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {

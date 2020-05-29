@@ -48,12 +48,16 @@ export class TelemetryService {
    */
 
   sessionId;
+  public UTMparam;
 
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
     ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
+    if (sessionStorage.getItem('UTM')) {
+      this.UTMparam = JSON.parse(sessionStorage.getItem('UTM'));
+    }
   }
 
   /**
@@ -310,17 +314,21 @@ export class TelemetryService {
     };
   }
 
+  public setUTMparam(utmParams) {
+    this.UTMparam = utmParams;
+  }
+
   public addUTM(object) {
-    if (sessionStorage.getItem('UTM')) {
-      const utmArray = JSON.parse(sessionStorage.getItem('UTM'));
-      object['context']['cdata'] ?
-        _.forEach(utmArray, item => {
-          object['context']['cdata'].push(item);
+    const cloneObject = _.cloneDeep(object);
+    if (this.UTMparam) {
+      cloneObject['context']['cdata'] ?
+        _.forEach(this.UTMparam, item => {
+          cloneObject['context']['cdata'].push(item);
         }) :
-        object['context']['cdata'] = utmArray;
-      return object;
+        cloneObject['context']['cdata'] = this.UTMparam;
+      return cloneObject;
     } else {
-      return object;
+      return cloneObject;
     }
   }
 }
