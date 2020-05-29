@@ -37,16 +37,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   };
   formData;
   showLoader = true;
-
-
   submitInteractEdata: IInteractEventEdata;
   updateInteractEdata: IInteractEventEdata;
   cancelInteractEdata: IInteractEventEdata;
-
-
   telemetryInteractObject: IInteractEventObject;
-
-
   pageId = 'profile-read';
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
