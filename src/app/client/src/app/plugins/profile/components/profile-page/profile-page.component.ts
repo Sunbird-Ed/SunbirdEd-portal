@@ -295,12 +295,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       pageid: 'profile-read'
     };
     this.submitTeacherDetailsInteractEdata = {
-      id: 'submit-teacher-details',
+      id: 'add-teacher-details',
       type: 'click',
       pageid: 'profile-read'
     };
     this.updateTeacherDetailsInteractEdata = {
-      id: 'update-teacher-details',
+      id: 'edit-teacher-details',
       type: 'click',
       pageid: 'profile-read'
     };

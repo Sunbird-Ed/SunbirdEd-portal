@@ -27,9 +27,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
   showDistrictDivLoader = false;
-  submitNameInteractEdata: IInteractEventEdata;
-  submitStateInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
   selectedState;
   selectedDistrict;
   stateControl: any;
@@ -41,6 +38,17 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   formData;
   showLoader = true;
 
+
+  submitInteractEdata: IInteractEventEdata;
+  updateInteractEdata: IInteractEventEdata;
+  cancelInteractEdata: IInteractEventEdata;
+
+
+  telemetryInteractObject: IInteractEventObject;
+
+
+  pageId = 'profile-read';
+
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
     public userService: UserService, public formService: FormService,
@@ -49,7 +57,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.setTelemetryData();
     this.setFormDetails();
+  }
+
+  setTelemetryData() {
+    this.submitInteractEdata = {
+      id: 'submit-teacher-details',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.updateInteractEdata = {
+      id: 'update-teacher-details',
+      type: 'click',
+      pageid: this.pageId
+    };
+    this.cancelInteractEdata = {
+      id: `cancel-${this.formAction}-teacher-details`,
+      type: 'click',
+      pageid: this.pageId
+    };
   }
 
   setFormDetails() {

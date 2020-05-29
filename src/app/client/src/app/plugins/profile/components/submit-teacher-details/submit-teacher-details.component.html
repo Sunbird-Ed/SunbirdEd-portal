@@ -53,11 +53,15 @@
     </form>
   </div>
   <div class="sb-modal-actions">
-    <button [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
+    <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-    <button (click)="closeModal();" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button  *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="updateInteractEdata" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
+      {{resourceService?.frmelmnts?.btn?.update}}
+    </button>
+    <button (click)="closeModal();" appTelemetryInteract [telemetryInteractEdata]="cancelInteractEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
