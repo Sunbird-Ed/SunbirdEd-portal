@@ -15,7 +15,7 @@
                 <!-- state section ends -->
             </div>
             <!-- medium section -->
-            <div *ngIf="boards?.length && mediums?.length" class="state-medium-container__separator mx-16"></div>
+            <div *ngIf="boards?.length && mediums?.length" class="state-medium-container__separator"></div>
             <div class="state-medium-container__medium">
                 <sb-library-filters [list]="mediums | sortBy:'':'asc'" [layout]="filterLayout.SQUARE" [selectedItems]="[selectedMediumIndex]"
                     (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})" appTelemetryInteract
