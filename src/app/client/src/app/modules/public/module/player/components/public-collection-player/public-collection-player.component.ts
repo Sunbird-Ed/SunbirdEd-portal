@@ -32,6 +32,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   telemetryShareData: Array<ITelemetryShare>;
   objectInteract: IInteractEventObject;
   printPdfInteractEdata: IInteractEventEdata;
+  tocTelemetryInteractEdata: IInteractEventEdata;
   shareLink: string;
   public sharelinkModal: boolean;
   public mimeType: string;
@@ -109,11 +110,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   playerOption: any;
   public playerContent;
   public unsubscribe$ = new Subject<void>();
-  telemetryInteractDataTocClick = {
-    id: 'toc-click',
-    type: 'click',
-    pageid: this.route.snapshot.data.telemetry.pageid
-  };
   selectedContent: {};
   pageId: string;
 
@@ -497,7 +493,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
   }
+  setTelemetryInteractData() {
+    this.tocTelemetryInteractEdata = {
+      id: 'library-toc',
+      type: 'click',
+      pageid: this.pageId
+    };
+  }
   tocCardClickHandler(event) {
+    this.setTelemetryInteractData();
     if (!this.isMobile && this.activeContent) {
       this.isMobile = true;
     }
