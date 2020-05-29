@@ -50,7 +50,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
-  navigateTocourseInteractEdata: IInteractEventEdata;
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
