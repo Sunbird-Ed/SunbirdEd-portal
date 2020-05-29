@@ -18,29 +18,11 @@ export class CreditsAndLicenceComponent implements OnInit {
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
 
-    if (this.contentData) {
-
-      // contributors , it is a combination of content credits names, creators, and owner
-      const contentCredits = _.get(this.contentData, 'contentCredits');
-      const contentCreditNames = contentCredits && contentCredits.length ? _.map(contentCredits, 'name') : [];
-      const contributors = this.contentData['contributors'] ? this.contentData['contributors'].split(',') : [];
-
-      if (this.contentData['owner']) {
-        contributors.push(this.contentData['owner']);
-      }
-
-      // creators is a combination of creators and creator
-      const creators = this.contentData['creators'] ? this.contentData['creators'].split(',') : [];
-
-      if (this.contentData['creator']) {
-        creators.push(this.contentData['creator']);
-      }
-
+    if (this.contentData && _.get(this.contentData, 'attributions')) {
       // attributors
       const attributions = _.isString(_.get(this.contentData, 'attributions')) ?
         _.get(this.contentData, 'attributions').split(',') : _.get(this.contentData, 'attributions');
-      this.attributions = (_.compact(_.uniq(_.union
-        (contentCreditNames, contributors, attributions, creators).sort())).join(', '));
+      this.attributions = (_.compact(_.uniq(attributions).sort()).join(', '));
     }
   }
 

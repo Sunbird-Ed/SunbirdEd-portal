@@ -1,5 +1,6 @@
 export const contentInformation = {
     contentData: {
+        'attributions': 'SaiPaluru',
         'keywords': [
             'LFW',
             'Story'
@@ -424,7 +425,5 @@ export const contentInformation = {
             'updatedOn': 1578635715771,
             'isAvailable': true
         }
-    },
-    attributions:
-        'SaiPaluru'
+    }
 };
