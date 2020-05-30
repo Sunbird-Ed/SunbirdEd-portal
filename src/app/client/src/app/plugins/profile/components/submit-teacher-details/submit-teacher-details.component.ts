@@ -226,15 +226,15 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return updateInteractEdata;
   }
 
-  onSubmitForm(event) {
-    this.searchService.getOrganisationDetails({ locationIds: [this.userDetailsForm.value.state.id] }).pipe(
+  onSubmitForm() {
+    this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(
         (orgData: any) => {
           this.enableSubmitBtn = false;
           const locationCodes = [];
-          if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state.code); }
-          if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
+          if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
+          if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
           const operation = this.formAction === 'submit' ? 'add' : 'edit';
           const externalIds = [];
