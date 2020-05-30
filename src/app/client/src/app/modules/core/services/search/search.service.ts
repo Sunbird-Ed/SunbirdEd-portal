@@ -362,9 +362,9 @@ export class SearchService {
     if (!request.isCustodianOrg) {
       filters['channel'] = request.channelId;
     }
-    // if (isCourse) {
-    //   filters['contentType'] = ['Course'];
-    // }
+    if (isCourse) {
+      filters['contentType'] = ['Course'];
+    }
     const option = {
         limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
         filters: filters,
