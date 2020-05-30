@@ -43,7 +43,8 @@
                                style="color: purple;">{{userProfile?.firstName | slice:0:1}}</div>
                           <label class="sb-member__name">{{userProfile?.firstName }}</label>
                         </div>
-                        <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
+                        <div class="fsmall sb-color-gray-400 my-12 profile__info__desc"
+                             *ngIf="((userListToShow && userListToShow.length) >=1)">
                           {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
                         </div>
 
