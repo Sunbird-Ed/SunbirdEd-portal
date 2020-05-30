@@ -103,14 +103,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.initializeFormFields).toHaveBeenCalled();
   });
 
-  // it('should call getFormDetails', () => {
-  //   spyOn(component, 'getFormDetails').and.returnValue(observableThrowError({}));
-  //   spyOn(component['formService'], 'getFormConfig');
-  //   const data = component.getFormDetails();
-  //   console.log('data===============', data)
-  //   expect(component['formService'].getFormConfig).toHaveBeenCalled();
-  // });
-
   it('should call updateProfile', () => {
     component.formAction = 'update';
     const profileService = TestBed.get(ProfileService);
@@ -118,102 +110,10 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(profileService, 'updateProfile').and.returnValue(observableOf(''));
     spyOn(toasterService, 'success');
     spyOn(component, 'closeModal');
-
-
-    // spyOn(component, 'getFormDetails').and.returnValue(observableOf('test_data'));
-    
     component.updateProfile('');
-
-
-
     expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0037);
     expect(component.closeModal).toHaveBeenCalled();
   });
-
-
-  // it('should call set state and district is state and district when state empty', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict({
-  //     state: userLocationMockData.stateList[0],
-  //     district: userLocationMockData.districtList[0]
-  //   });
-  //   expect(component.setState).toHaveBeenCalled();
-  //   expect(component.setDistrict).toHaveBeenCalled();
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should call onStateChange when state and district null', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict({ state: null, district: null });
-  //   expect(component.setState).toHaveBeenCalledTimes(0);
-  //   expect(component.setDistrict).toHaveBeenCalledTimes(0);
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should call set state when district undefined', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict({ state: undefined, district: undefined });
-  //   expect(component.setState).toHaveBeenCalledTimes(0);
-  //   expect(component.setDistrict).toHaveBeenCalledTimes(0);
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should call set state change when location null', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict(null);
-  //   expect(component.setState).toHaveBeenCalledTimes(0);
-  //   expect(component.setDistrict).toHaveBeenCalledTimes(0);
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should call set state change when location undefined', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict(undefined);
-  //   expect(component.setState).toHaveBeenCalledTimes(0);
-  //   expect(component.setDistrict).toHaveBeenCalledTimes(0);
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should call only set state change when location empty object', () => {
-  //   spyOn(component, 'setState');
-  //   spyOn(component, 'setDistrict');
-  //   spyOn(component, 'onStateChange');
-  //   component.setStateDistrict({});
-  //   expect(component.setState).toHaveBeenCalledTimes(0);
-  //   expect(component.setDistrict).toHaveBeenCalledTimes(0);
-  //   expect(component.onStateChange).toHaveBeenCalled();
-  // });
-
-  // it('should get telemetry data when nothing state and district not changed', () => {
-  //   const data = component.getTelemetryData('');
-  //   expect(data).toEqual(userLocationMockData.telemetryData);
-  // });
-
-  // it('should get telemetry data when state changed', () => {
-  //   const data = component.getTelemetryData('state-changed');
-  //   expect(data).toEqual(userLocationMockData.stateChanged);
-  // });
-
-  // it('should get telemetry data when dist changed', () => {
-  //   const data = component.getTelemetryData('dist-changed');
-  //   expect(data).toEqual(userLocationMockData.districtChanged);
-  // });
-
-  // it('should get telemetry data when both changed', () => {
-  //   const data = component.getTelemetryData('state-dist-changed');
-  //   expect(data).toEqual(userLocationMockData.bothChanged);
-  // });
-
 
 });
 
