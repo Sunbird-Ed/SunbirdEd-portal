@@ -64,6 +64,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       }
     });
 
+    if (this.contentProgressEvents$) {
+      this.contentProgressEvents$.subscribe(data => this.contentProgressEvents$.next(data));
+    }
   }
 
   ngOnChanges() {
