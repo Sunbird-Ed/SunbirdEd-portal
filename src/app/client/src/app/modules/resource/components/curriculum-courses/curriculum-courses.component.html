@@ -11,11 +11,11 @@
   </div>
 </div>
 
-<div class="content-header header-shadow" [ngStyle]="!defaultBg  && {'background': selectedCourse?.background}">
+<div class="content-header header-shadow" [ngStyle]="{'background': selectedCourse?.theme}">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="content-header__img mr-8">
-        <img [src]="icon">
+        <img [src]="selectedCourse?.cardImg">
       </div>
 
       <div class="flex-basis-1 mr-32 text-left">
@@ -31,12 +31,30 @@
 </div>
 
 <div class="ui container mt-24 sb-library-cards">
-    <div class="sbgrid">
-      <div *ngFor="let course of courseList">
-        <sb-course-card [course]="course" (cardClick)="navigateToCourseDetails(course)"></sb-course-card>
-      </div>
-      
+  <div class="sbgrid">
+    <div *ngFor="let course of enrolledCourses">
+      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" (click)="navigateToCourseDetails(course)" ></sb-my-course-card>
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" (click)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>
-
+  </div>
 </div>
+
+<!-- <div class="ui container mt-24 sb-library-cards" *ngIf="mergedCourseList?.enrolledCourses?.length">
+  <h4 class="sb-categories-title mt-16 mb-16">Mathematics Part I Textbooks</h4>
+  <div class="sbgrid">
+    <div *ngFor="let course of mergedCourseList.enrolledCourses">
+      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" [section]="course.name" (click)="navigateToCourseDetails(course)" [cardImg]="course.cardImg"></sb-my-course-card>
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [section]="null" (click)="navigateToCourseDetails(course)" [cardImg]="course?.appIcon"></sb-course-card>
+    </div>
+  </div>
+</div>
+
+<div class="ui container mt-24 sb-library-cards" *ngIf="mergedCourseList?.courseList?.length">
+  <h4 class="sb-categories-title mt-16 mb-16">Mathematics Part II Textbooks</h4>
+  <div class="sbgrid">
+    <div *ngFor="let course of mergedCourseList.courseList">
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [section]="null" (click)="navigateToCourseDetails(course)" [cardImg]="course.appIcon"></sb-course-card>
+    </div>
+  </div>
+</div>  -->
 </div>

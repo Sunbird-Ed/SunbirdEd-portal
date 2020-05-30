@@ -1,11 +1,11 @@
 import { Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, map, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, delay } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 
 @Component({
@@ -26,57 +26,72 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   };
 
   public selectedCourse: {};
-  public courseList: Array<{}> = [];
+  public courseList: any = [];
   public title: string;
-
+  public enrolledCourses: any = [];
+  public mergedCourseList: {} = {enrolledCourses: [], courseList: []};
   constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private navigationhelperService: NavigationHelperService,
-    private contentSearchService: ContentSearchService) { }
+    private contentSearchService: ContentSearchService, private coursesService: CoursesService, private utilService: UtilService) { }
 
-    ngOnInit() {
-      this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
-      this.getChannelId().pipe(
-        mergeMap(({ channelId, isCustodianOrg }) => {
-          this.channelId = channelId;
-          this.isCustodianOrg = isCustodianOrg;
-          return  this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
-        }),
-        takeUntil(this.unsubscribe$))
-        .subscribe(() => {
-          this.fetchCourses();
-        }, (error) => {
-          this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-          this.navigationhelperService.goBack();
-      });
+  ngOnInit() {
+    this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
+    if (!_.isEmpty(_.get(this.searchService, 'subjectThemeAndCourse.contents'))) {
+      this.courseList = _.get(this.searchService, 'subjectThemeAndCourse.contents');
+      this.selectedCourse = _.omit(_.get(this.searchService, 'subjectThemeAndCourse'), 'contents');
+      this.fetchEnrolledCourses();
+    } else {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
     }
+  }
 
-    private getChannelId() {
-      return this.orgDetailsService.getCustodianOrgDetails().pipe(map(isCustodianOrg => {
-        if (this.userService.hashTagId === _.get(isCustodianOrg, 'result.response.value')) {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: true};
-        } else {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: false };
-        }
-      }));
-    }
-
-  private fetchCourses() {
-    const request = {
-      filters: this.defaultFilters,
-      isCustodianOrg: this.isCustodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
-    };
-    this.searchService.fetchCourses(request, true, this.title).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.courseList = !_.isEmpty(_.get(data, 'contents')) ? data.contents : [];
-      this.selectedCourse = _.get(data, 'selectedCourse');
-      this.defaultBg = _.isEmpty(this.selectedCourse);
-    }, err => {
-      this.courseList = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  private fetchEnrolledCourses() {
+    return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+      return enrolledCourses;
+    })).subscribe(enrolledCourses => {
+      this.mergeCourseList(enrolledCourses);
+      // this.getMergedCourseList(enrolledCourses, courseList);
     });
+  }
+
+  private mergeCourseList(enrolledCourses) {
+    // const courseList = this.courseList
+    this.enrolledCourses = this.courseList.map((course) => {
+      const enrolledCourse = _.find(enrolledCourses,  {courseId: course.identifier});
+      if (enrolledCourse) {
+        return {
+          ...enrolledCourse,
+          // cardImg: this.commonUtilService.getContentImg(enrolledCourse),
+          completionPercentage: enrolledCourse.completionPercentage || 0,
+          isEnrolledCourse: true,
+        };
+      } else {
+        return {
+          ...course,
+          // appIcon: this.commonUtilService.getContentImg(course),
+          isEnrolledCourse: false
+        };
+      }
+    });
+  }
+
+  private getMergedCourseList(enrolledCourses, courseList) {
+    this.enrolledCourses = _.map(courseList, course => {
+      const enrolledCourse = _.find(enrolledCourses, {courseId: course.identifier});
+      if (enrolledCourse) {
+        enrolledCourse.isEnrolledCourse = true;
+        this.mergedCourseList['enrolledCourses'].push(enrolledCourse);
+        return enrolledCourse;
+      } else {
+        course.isEnrolledCourse = false;
+        this.mergedCourseList['courseList'].push(course);
+        return course;
+      }
+    });
+    this.mergedCourseList['enrolledCourses'] = _.uniqBy(this.mergedCourseList['enrolledCourses'], 'metaData.courseId');
+    this.mergedCourseList['courseList'] = _.uniqBy(this.mergedCourseList['courseList'], 'identifier');
   }
 
   ngOnDestroy() {
@@ -89,6 +104,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   navigateToCourseDetails(course) {
-    this.router.navigate(['resources/course', course.identifier]);
+    const courseId = _.get(course, 'metaData.courseId') || course.identifier;
+    this.router.navigate(['learn/course', courseId]);
   }
 }

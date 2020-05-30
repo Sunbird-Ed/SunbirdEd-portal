@@ -34,32 +34,69 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
     private contentSearchService: ContentSearchService) { }
 
     ngOnInit() {
+      // this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
+      // this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
+      //   this.getChannelId().pipe(
+      //     mergeMap(({ channelId, isCustodianOrg }) => {
+      //       this.channelId = channelId;
+      //       this.isCustodianOrg = isCustodianOrg;
+      //       return this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
+      //     }),
+      //     takeUntil(this.unsubscribe$))
+      //     .subscribe(() => {
+      //       this.fetchCourses();
+      //     }, (error) => {
+      //       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      //       this.navigationhelperService.goBack();
+      //     });
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
-        this.getChannelId().pipe(
-          mergeMap(({ channelId, isCustodianOrg }) => {
-            this.channelId = channelId;
-            this.isCustodianOrg = isCustodianOrg;
-            return this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
-          }),
-          takeUntil(this.unsubscribe$))
-          .subscribe(() => {
-            this.fetchCourses();
-          }, (error) => {
-            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-            this.navigationhelperService.goBack();
-          });
-    }
-
-    private getChannelId() {
-      if (this.userService.slug) {
-        return this.orgDetailsService.getOrgDetails(this.userService.slug)
-          .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, isCustodianOrg: false }))));
+      if (!_.isEmpty(_.get(this.searchService, 'subjectThemeAndCourse.contents'))) {
+        this.courseList = _.get(this.searchService, 'subjectThemeAndCourse.contents');
+        this.selectedCourse = _.omit(_.get(this.searchService, 'subjectThemeAndCourse'), 'contents');
+        // this.fetchEnrolledCourses();
       } else {
-        return this.orgDetailsService.getCustodianOrgDetails()
-          .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), isCustodianOrg: true }))));
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+        this.navigationhelperService.goBack();
       }
     }
+
+    // private fetchEnrolledCourses() {
+    //   return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+    //     return enrolledCourses;
+    //   })).subscribe(enrolledCourses => {
+    //     this.mergeCourseList(enrolledCourses);
+    //     // this.getMergedCourseList(enrolledCourses, courseList);
+    //   });
+    // }
+    // private mergeCourseList(enrolledCourses) {
+    //   // const courseList = this.courseList
+    //   this.enrolledCourses = this.courseList.map((course) => {
+    //     const enrolledCourse = _.find(enrolledCourses,  {courseId: course.identifier});
+    //     if (enrolledCourse) {
+    //       return {
+    //         ...enrolledCourse,
+    //         // cardImg: this.commonUtilService.getContentImg(enrolledCourse),
+    //         completionPercentage: enrolledCourse.completionPercentage || 0,
+    //         isEnrolledCourse: true,
+    //       };
+    //     } else {
+    //       return {
+    //         ...course,
+    //         // appIcon: this.commonUtilService.getContentImg(course),
+    //         isEnrolledCourse: false
+    //       };
+    //     }
+    //   });
+    // }
+    // private getChannelId() {
+    //   if (this.userService.slug) {
+    //     return this.orgDetailsService.getOrgDetails(this.userService.slug)
+    //       .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, isCustodianOrg: false }))));
+    //   } else {
+    //     return this.orgDetailsService.getCustodianOrgDetails()
+    //       .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), isCustodianOrg: true }))));
+    //   }
+    // }
 
 
 

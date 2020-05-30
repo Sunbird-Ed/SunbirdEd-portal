@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, FrameworkService, PlayerService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, FrameworkService, PlayerService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
@@ -158,7 +158,16 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
-    this.cardData = cardData;
+    //   const cardDat = [ {title: 'ASSAMESE', count: 35},
+    //   {title: 'Sanskrit', count: 35},
+    //   {title: 'Chemistry', count: 35},
+    //   {title: 'Physics', count: 35},
+    //   {title: 'Social', count: 35},
+    //   {title: 'Science', count: 35},
+    //   {title: 'Geography', count: 35}
+    // ];
+    // cardData = cardData.concat(cardDat);
+    this.cardData = _.sortBy(cardData, ['title']);
   }, err => {
       this.isLoading = false;
       this.cardData = [];
@@ -167,12 +176,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
+    this.searchService.subjectThemeAndCourse = event.data;
     this.router.navigate(['resources/curriculum-courses'], {
       queryParams: {
         title: _.get(event, 'data.title'),
-        board: _.get(this.selectedFilters, 'board'),
-        medium: _.get(this.selectedFilters, 'medium'),
-        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
       },
     });
   }
