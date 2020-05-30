@@ -15,22 +15,25 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
   styleUrls: ['./contentplayer-page.component.scss']
 })
 export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges {
-  public unsubscribe$ = new Subject<void>();
   @Input() contentDetails;
   @Input() playerConfig;
-  telemetryImpression: IImpressionEventInput;
   @Input() tocPage = false;
-  public isConnected;
   @Input() dialCode: string;
-  contentId: string;
   @Input() isContentPresent = true;
   @Input() objectRollUp;
-  @Input() showProgress = false;
-  @Input() completedPercentage;
-  contentType: string;
+  @Input() contentProgressEvents$: Subject<any>;
+
+  @Output() assessmentEvents = new EventEmitter<any>();
+  @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
-  public isContentDeleted: Subject<any> = new Subject();
+
+  unsubscribe$ = new Subject<void>();
+  contentId: string;
+  telemetryImpression: IImpressionEventInput;
+  contentType: string;
+  isConnected;
+  isContentDeleted: Subject<any> = new Subject();
   playerOption: any;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -166,6 +169,14 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     }
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  onAssessmentEvents(event) {
+    this.assessmentEvents.emit(event);
+  }
+
+  onQuestionScoreSubmitEvents(event) {
+    this.questionScoreSubmitEvents.emit(event);
   }
 
   ngOnDestroy() {
