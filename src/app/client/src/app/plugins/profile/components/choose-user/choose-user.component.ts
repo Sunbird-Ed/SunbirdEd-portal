@@ -3,9 +3,8 @@ import {ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
-  ServerResponse,
   ToasterService,
-  InterpolatePipe, IUserData, NavigationHelperService
+  IUserData, NavigationHelperService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
