@@ -1,4 +1,4 @@
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FrameworkService, PlayerService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
@@ -8,7 +8,6 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-import { UtilService } from './../../../shared/services/util/util.service';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   templateUrl: './resource.component.html'
@@ -34,6 +33,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public cardData: Array<{}> = [];
   public isLoading = true;
+  slideConfig: object = {};
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -41,9 +41,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService, private utilService: UtilService) {
+    public telemetryService: TelemetryService) {
   }
   ngOnInit() {
+    this.slideConfig = _.cloneDeep(this.configService.appConfig.CoursePageSection.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
@@ -158,15 +159,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
-    //   const cardDat = [ {title: 'ASSAMESE', count: 35},
-    //   {title: 'Sanskrit', count: 35},
-    //   {title: 'Chemistry', count: 35},
-    //   {title: 'Physics', count: 35},
-    //   {title: 'Social', count: 35},
-    //   {title: 'Science', count: 35},
-    //   {title: 'Geography', count: 35}
-    // ];
-    // cardData = cardData.concat(cardDat);
+
     this.cardData = _.sortBy(cardData, ['title']);
   }, err => {
       this.isLoading = false;

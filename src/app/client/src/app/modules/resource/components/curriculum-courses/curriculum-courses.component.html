@@ -33,28 +33,10 @@
 <div class="ui container mt-24 sb-library-cards">
   <div class="sbgrid">
     <div *ngFor="let course of enrolledCourses">
-      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" (click)="navigateToCourseDetails(course)" ></sb-my-course-card>
-      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" (click)="navigateToCourseDetails(course)" ></sb-course-card>
+      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course"  [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>
   </div>
 </div>
 
-<!-- <div class="ui container mt-24 sb-library-cards" *ngIf="mergedCourseList?.enrolledCourses?.length">
-  <h4 class="sb-categories-title mt-16 mb-16">Mathematics Part I Textbooks</h4>
-  <div class="sbgrid">
-    <div *ngFor="let course of mergedCourseList.enrolledCourses">
-      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" [section]="course.name" (click)="navigateToCourseDetails(course)" [cardImg]="course.cardImg"></sb-my-course-card>
-      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [section]="null" (click)="navigateToCourseDetails(course)" [cardImg]="course?.appIcon"></sb-course-card>
-    </div>
-  </div>
-</div>
-
-<div class="ui container mt-24 sb-library-cards" *ngIf="mergedCourseList?.courseList?.length">
-  <h4 class="sb-categories-title mt-16 mb-16">Mathematics Part II Textbooks</h4>
-  <div class="sbgrid">
-    <div *ngFor="let course of mergedCourseList.courseList">
-      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [section]="null" (click)="navigateToCourseDetails(course)" [cardImg]="course.appIcon"></sb-course-card>
-    </div>
-  </div>
-</div>  -->
 </div>

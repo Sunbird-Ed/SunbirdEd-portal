@@ -37,6 +37,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public isLoading = true;
   public cardData: Array<{}> = [];
+  slideConfig: object = {};
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -49,6 +50,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.slideConfig = _.cloneDeep(this.configService.appConfig.CoursePageSection.slideConfig);
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;
@@ -242,12 +244,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
+    this.searchService.subjectThemeAndCourse = event.data;
     this.router.navigate(['explore/list/curriculum-courses'], {
       queryParams: {
-        title: _.get(event, 'data.title'),
-        board: _.get(this.selectedFilters, 'board'),
-        medium: _.get(this.selectedFilters, 'medium'),
-        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
+        title: _.get(event, 'data.title')
       },
     });
   }
