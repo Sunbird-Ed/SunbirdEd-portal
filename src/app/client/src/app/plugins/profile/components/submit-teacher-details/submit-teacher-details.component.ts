@@ -42,6 +42,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   cancelInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   pageId = 'profile-read';
+  lastInteractDetails: { id: string, type: string };
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
@@ -83,7 +84,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getFormDetails(id?) {
+  getFormDetails(id?: string) {
     const formServiceInputParams = {
       formType: 'user',
       formAction: this.formAction,
@@ -104,8 +105,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.userDetailsForm = this.sbFormBuilder.group(formGroupObj);
     const udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
     const teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
+    const schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
     if (udiseObj) { this.userDetailsForm.controls['udiseId'].setValue(udiseObj.id); }
     if (teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(teacherObj.id); }
+    if (schoolObj) { this.userDetailsForm.controls['school'].setValue(schoolObj.id); }
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     this.getState();
     this.showLoader = false;
@@ -221,6 +224,12 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           const provider = _.get(orgData, 'result.response.content[0].channel');
           const operation = this.formAction === 'submit' ? 'add' : 'edit';
           const externalIds = [];
+          if (_.get(this.userDetailsForm, 'value.school')) {
+            externalIds.push({
+              id: _.get(this.userDetailsForm, 'value.school'),
+              operation, idType: 'declared-school-name', provider
+            });
+          }
           if (_.get(this.userDetailsForm, 'value.udiseId')) {
             externalIds.push({
               id: _.get(this.userDetailsForm, 'value.udiseId'),

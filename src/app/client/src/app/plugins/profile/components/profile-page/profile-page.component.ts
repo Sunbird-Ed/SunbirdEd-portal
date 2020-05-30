@@ -54,6 +54,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
   teacherObj: { idType: string, provider: string, id: string };
+  schoolObj: { idType: string, provider: string, id: string };
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
@@ -72,6 +73,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
         this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
+        this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
         this.getOrgDetails();
       }
     });
