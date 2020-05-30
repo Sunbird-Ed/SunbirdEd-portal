@@ -122,6 +122,12 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
+      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
+      if (_.some(_.intersection(utmParams, _.keys(params)))) {
+        this.telemetryService.makeUTMSession(params);
+      }
+    });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),

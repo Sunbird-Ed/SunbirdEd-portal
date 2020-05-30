@@ -1272,5 +1272,8 @@
     "gujarati": "gu",
     "punjabi": "pa",
     "oriya": "or"
+  },
+  "DIAL_CODE": {
+    "PAGE_LIMIT": 10
   }
 }
