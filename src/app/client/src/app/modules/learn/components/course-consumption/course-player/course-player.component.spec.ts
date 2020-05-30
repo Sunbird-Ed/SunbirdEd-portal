@@ -368,6 +368,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -383,6 +384,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
@@ -398,6 +400,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
@@ -414,6 +417,7 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -430,6 +434,7 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -448,6 +453,7 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -465,6 +471,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
+    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
