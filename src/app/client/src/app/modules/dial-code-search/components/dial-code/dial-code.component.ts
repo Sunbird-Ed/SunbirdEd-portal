@@ -49,6 +49,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   public singleContentRedirect = '';
+  public numberOfSections = new Array(this.configService.appConfig.DIAL_CODE.PAGE_LIMIT);
   showExportLoader = false;
   contentName: string;
   instance: string;
@@ -85,6 +86,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
             !sessionStorage.getItem('singleContentRedirect')) {
             this.singleContentRedirect = this.searchResults[0]['name'];
+            this.getEvent({
+              data: this.searchResults[0]
+            });
           }
         }
         this.showLoader = false;

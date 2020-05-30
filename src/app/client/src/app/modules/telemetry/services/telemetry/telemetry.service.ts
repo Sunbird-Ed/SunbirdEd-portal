@@ -10,6 +10,14 @@ export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
 */
+enum UTM_PARAMS {
+  channel = 'Source',
+  utm_campaign = 'Source',
+  utm_medium = 'UtmMedium',
+  utm_source = 'UtmSource',
+  utm_term = 'UtmTerm',
+  utm_content = 'UtmContent'
+}
 
 @Injectable()
 export class TelemetryService {
@@ -48,6 +56,7 @@ export class TelemetryService {
    */
 
   sessionId;
+  public UTMparam;
   userSid;
 
   constructor() {
@@ -55,6 +64,9 @@ export class TelemetryService {
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
     ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
+    if (sessionStorage.getItem('UTM')) {
+      this.UTMparam = JSON.parse(sessionStorage.getItem('UTM'));
+    }
     this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
     ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
   }
@@ -91,6 +103,7 @@ export class TelemetryService {
    */
   public start(startEventInput: IStartEventInput) {
     if (this.isInitialized) {
+      startEventInput = _.cloneDeep(this.addUTM(startEventInput));
       const eventData: ITelemetryEvent = this.getEventData(startEventInput);
       this.telemetryProvider.start(this.context.config, eventData.options.object.id, eventData.options.object.ver,
         eventData.edata, eventData.options);
@@ -105,6 +118,7 @@ export class TelemetryService {
    */
   public impression(impressionEventInput: IImpressionEventInput) {
     if (this.isInitialized) {
+      impressionEventInput = _.cloneDeep(this.addUTM(impressionEventInput));
       const eventData: ITelemetryEvent = this.getEventData(impressionEventInput);
       this.telemetryProvider.impression(eventData.edata, eventData.options);
     }
@@ -117,6 +131,7 @@ export class TelemetryService {
    */
   public interact(interactEventInput: IInteractEventInput) {
     if (this.isInitialized) {
+      interactEventInput = _.cloneDeep(this.addUTM(interactEventInput));
       const eventData: ITelemetryEvent = this.getEventData(interactEventInput);
       this.telemetryProvider.interact(eventData.edata, eventData.options);
     }
@@ -130,6 +145,7 @@ export class TelemetryService {
    */
   public share(shareEventInput: IShareEventInput) {
     if (this.isInitialized) {
+      shareEventInput = _.cloneDeep(this.addUTM(shareEventInput));
       const eventData: ITelemetryEvent = this.getEventData(shareEventInput);
       this.telemetryProvider.share(eventData.edata, eventData.options);
     }
@@ -142,6 +158,7 @@ export class TelemetryService {
    */
   public error(errorEventInput: IErrorEventInput) {
     if (this.isInitialized) {
+      errorEventInput = _.cloneDeep(this.addUTM(errorEventInput));
       const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
       this.telemetryProvider.error(eventData.edata, eventData.options);
     }
@@ -168,6 +185,7 @@ export class TelemetryService {
    */
   public end(endEventInput: IEndEventInput) {
     if (this.isInitialized) {
+      endEventInput = _.cloneDeep(this.addUTM(endEventInput));
       const eventData: ITelemetryEvent = this.getEventData(endEventInput);
       this.telemetryProvider.end(eventData.edata, eventData.options);
     }
@@ -181,6 +199,7 @@ export class TelemetryService {
    */
   public log(logEventInput: ILogEventInput) {
     if (this.isInitialized) {
+      logEventInput = _.cloneDeep(this.addUTM(logEventInput));
       const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
     }
@@ -194,6 +213,7 @@ export class TelemetryService {
    */
   public exData(exDataEventInput: IExDataEventInput) {
     if (this.isInitialized) {
+      exDataEventInput = _.cloneDeep(this.addUTM(exDataEventInput));
       const eventData: ITelemetryEvent = this.getEventData(exDataEventInput);
       this.telemetryProvider.exdata(eventData.edata, eventData.options);
     }
@@ -207,6 +227,7 @@ export class TelemetryService {
    */
   public feedback(feedbackEventInput: IFeedBackEventInput) {
     if (this.isInitialized) {
+      feedbackEventInput = _.cloneDeep(this.addUTM(feedbackEventInput));
       const eventData: ITelemetryEvent = this.getEventData(feedbackEventInput);
       this.telemetryProvider.feedback(eventData.edata, eventData.options);
     }
@@ -308,6 +329,25 @@ export class TelemetryService {
       platform: window.navigator.platform,
       raw: window.navigator.userAgent
     };
+  }
+
+  public makeUTMSession(params) {
+    this.UTMparam = _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
+    sessionStorage.setItem('UTM', JSON.stringify(this.UTMparam));
+  }
+
+  public addUTM(object) {
+    const cloneObject = _.cloneDeep(object);
+    if (this.UTMparam) {
+      cloneObject['context']['cdata'] ?
+        _.forEach(this.UTMparam, item => {
+          cloneObject['context']['cdata'].push(item);
+        }) :
+        cloneObject['context']['cdata'] = this.UTMparam;
+      return cloneObject;
+    } else {
+      return cloneObject;
+    }
   }
 
   public setInitialization(value: boolean) {
