@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
+import {CacheService} from 'ng2-cache-service';
 
 /**
  * Service to fetch user details from server
@@ -105,7 +106,7 @@ export class UserService {
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(config: ConfigService, learner: LearnerService,
+  constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
     @Inject(APP_BASE_HREF) baseHref: string) {
     this.config = config;
@@ -253,6 +254,11 @@ export class UserService {
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
     this.rootOrgName = this._userProfile.rootOrg.orgName;
+
+    // Storing profile details of stroger credentials user in cache
+    if (!this._userProfile.managedBy) {
+      this.cacheService.set('userProfile', this._userProfile);
+    }
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -391,5 +397,13 @@ export class UserService {
       data: data
     };
     return this.learnerService.post(options);
+  }
+
+  getUserData(userId) {
+    const option = {
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
+      param: this.config.urlConFig.params.userReadParam
+    };
+    return this.learnerService.getWithHeaders(option);
   }
 }
