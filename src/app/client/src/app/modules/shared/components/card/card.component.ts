@@ -16,6 +16,7 @@ export class CardComponent {
   @Input() data: ICard;
   @Input() dialCode: string;
   @Input() customClass: string;
+  @Input() hideProgress: boolean;
   @Output() clickEvent = new EventEmitter<any>();
   telemetryCdata: Array<{}> = [];
   hover: Boolean;
