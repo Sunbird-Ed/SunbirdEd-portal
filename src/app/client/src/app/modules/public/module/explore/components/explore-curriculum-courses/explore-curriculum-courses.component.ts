@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 import { SearchService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,17 +11,8 @@ import * as _ from 'lodash-es';
   templateUrl: './explore-curriculum-courses.component.html',
   styleUrls: ['./explore-curriculum-courses.component.scss']
 })
-export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
-  public channelId: string;
-  public isCustodianOrg = true;
-  private unsubscribe$ = new Subject<void>();
+export class ExploreCurriculumCoursesComponent implements OnInit {
   public defaultBg = false;
-  public defaultFilters = {
-    board: [],
-    gradeLevel: [],
-    medium: []
-  };
-
   public selectedCourse;
   public courseList: Array<{}> = [];
   public title: string;
@@ -44,11 +35,6 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
 
     navigateToCourse(event) {
       this.router.navigate(['explore-course/course', event.data.identifier]);
-    }
-
-    ngOnDestroy() {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
     }
 
     goBack() {
