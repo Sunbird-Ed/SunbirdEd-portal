@@ -238,3 +238,13 @@ display: inline-block;
 .profile-user-label{
   font-size: calculateRem(32px);
 }
+.sb-certificate-trained-no-flex-space{
+  flex: 0;
+  max-width: calculateRem(240px);
+}
+.status-progress{
+  color:var(--primary-color);
+}
+.status-completed{
+  color:var(--secondary-color);
+}
