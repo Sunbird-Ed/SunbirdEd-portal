@@ -162,6 +162,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       })), this.subscribeToContentProgressEvents())
       .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
         if (!contentProgressEvent) {
+          this.courseConsumptionService.updateContentConsumedStatus.subscribe((shouldUpdate) => shouldUpdate ? this.getContentState() : '');
           this.courseHierarchy = courseHierarchy;
           this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
           this.courseInteractObject = {
@@ -237,7 +238,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentState(req).pipe(first())
+    this.courseConsumptionService.getContentState(req)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
         this.contentStatus = res.content || [];
         this.calculateProgress();
@@ -274,7 +276,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         contentPosition += 1;
       }
     });
-    return { contentNode, contentPosition};
+    return { contentNode, contentPosition };
   }
   private subscribeToQueryParam() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe))
@@ -579,7 +581,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToPlayerPage(collectionUnit, event?) {
     if (this.enrolledCourse || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId }
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
@@ -602,9 +604,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           unit.consumedContent = consumedContents.length;
           unit.contentCount = flattenDeepContents.length;
+          unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           if (consumedContents.length) {
             unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
           }
+        } else {
+          const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
+          unit.consumedContent = consumedContent.length;
+          unit.contentCount = 1;
+          unit.isUnitConsumed = consumedContent.length === 1;
         }
       });
     }

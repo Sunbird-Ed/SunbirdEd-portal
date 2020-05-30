@@ -31,13 +31,14 @@
             <div *ngFor="let item of courseHierarchy?.children; let index = index">
               <div class="d-flex flex-ai-center flex-jc-space-between py-8">
                 <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse"
+                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse && !item?.isUnitConsumed"
                   class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
                 <button (click)="navigateToPlayerPage(item)" *ngIf="!enrolledCourse && !hasPreviewPermission"
                   class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
               </div>
               <div class="chapter-box sb-g">
-                <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8" [ngClass]="{'sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse}">
+                <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8"
+                  [ngClass]="{'sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse}">
                   <sb-toc-curriculum
                     *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
                     [isAccordion]="true" (tocCardClick)="navigateToContent($event, item)" [tocData]="item"
@@ -47,16 +48,20 @@
                     (tocCardClick)="navigateToContent($event, item)" [type]="cardType" [contentStatus]="contentStatus">
                   </sb-toc-card>
                   <ng-template #noContent>
-                    <div class="heading">{{resourceService?.messages?.stmsg?.m0121}}</div>
+                    <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
+                      {{resourceService?.messages?.stmsg?.m0121}}</div>
                   </ng-template>
                 </section>
                 <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
                   <div class="sb-bg-color-white course-list-progress text-left">
                     <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
                     </div>
-                    <div class="course-list-progress__status mt-8">{{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}} {{resourceService?.frmelmnts?.lbl?.completed}}
+                    <div class="course-list-progress__status mt-8">
+                      {{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}}
+                      {{resourceService?.frmelmnts?.lbl?.completed}}
                     </div>
-                    <sui-progress [value]="item?.progress" maximum="100" class="green course-list-progress__barholder mt-8">
+                    <sui-progress [value]="item?.progress" maximum="100"
+                      class="green course-list-progress__barholder mt-8">
                     </sui-progress>
                   </div>
                 </section>

@@ -35,6 +35,7 @@ export class AssessmentPlayerComponent implements OnInit {
   contentStatus = [];
   playerConfig;
   playerOption;
+  courseName: string;
 
   constructor(
     public resourceService: ResourceService,
@@ -68,15 +69,17 @@ export class AssessmentPlayerComponent implements OnInit {
         this.collectionId = params.collectionId;
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
+        this.courseName = queryParams.courseName;
         const selectedContent = queryParams.selectedContent;
 
+        const isSingleContent = this.collectionId === selectedContent;
         if (this.batchId) {
           this.getCollectionInfo(this.collectionId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.courseHierarchy;
               this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.setActiveContent(selectedContent);
+              this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
             });
@@ -100,7 +103,6 @@ export class AssessmentPlayerComponent implements OnInit {
 
 
   private getCollectionInfo(courseId: string): Observable<any> {
-    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
     return combineLatest([
       this.playerService.getCollectionHierarchy(courseId, {}),
       this.courseBatchService.getEnrolledBatchDetails(this.batchId),
@@ -110,7 +112,7 @@ export class AssessmentPlayerComponent implements OnInit {
     })));
   }
 
-  setActiveContent(selectedContent: string) {
+  setActiveContent(selectedContent: string, isSingleContent?: boolean) {
     if (_.get(this.courseHierarchy, 'children')) {
       const flattenDeepContents = this.flattenDeep(this.courseHierarchy.children);
 
@@ -124,9 +126,12 @@ export class AssessmentPlayerComponent implements OnInit {
       if (this.activeContent) {
         this.isContentPresent = true;
         this.initPlayer(_.get(this.activeContent, 'identifier'));
-        this.getContentState();
       }
+    } else if (isSingleContent) {
+      this.activeContent = this.courseHierarchy;
+      this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
+    this.getContentState();
   }
 
   private firstNonCollectionContent(contents) {

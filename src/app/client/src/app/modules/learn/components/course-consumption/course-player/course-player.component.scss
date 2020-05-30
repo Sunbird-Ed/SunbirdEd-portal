@@ -51,6 +51,7 @@
 :host ::ng-deep {
   .ui.progress .bar {
     height: calculateRem(8px) !important;
+    background-color: var(--secondary-200) !important;
   }
 }
 

@@ -1,11 +1,12 @@
 
 import { of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { PlayerService } from '@sunbird/core';
 import { ServerResponse } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
+import * as TreeModel from 'tree-model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import * as _ from 'lodash-es';
 export class CourseConsumptionService {
 
   courseHierarchy: any;
+  updateContentConsumedStatus = new EventEmitter<boolean>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 
@@ -35,5 +37,23 @@ export class CourseConsumptionService {
   }
   updateContentsState(req) {
     return this.courseProgressService.updateContentsState(req);
+  }
+  parseChildren() {
+    const model = new TreeModel();
+    const mimeTypeCount = {};
+    const treeModel: any = model.parse(this.courseHierarchy);
+    const contentIds = [];
+    treeModel.walk((node) => {
+      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+        if (mimeTypeCount[node.model.mimeType]) {
+          mimeTypeCount[node.model.mimeType] += 1;
+        } else {
+          mimeTypeCount[node.model.mimeType] = 1;
+        }
+        contentIds.push(node.model.identifier);
+      }
+    });
+
+    return contentIds;
   }
 }

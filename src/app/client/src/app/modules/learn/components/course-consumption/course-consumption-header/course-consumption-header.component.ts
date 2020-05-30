@@ -5,7 +5,7 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -54,7 +54,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService) {
 
   }
 
@@ -84,13 +84,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
         }
       });
-      this.interval = setInterval(() => {
-        if (document.getElementById('closebutton')) {
-          this.showResumeCourse = true;
-        } else {
-          this.showResumeCourse = false;
-        }
-      }, 500);
+    this.interval = setInterval(() => {
+      if (document.getElementById('closebutton')) {
+        this.showResumeCourse = true;
+      } else {
+        this.showResumeCourse = false;
+      }
+    }, 500);
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -111,6 +111,20 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.onPageLoadResume = false;
         }
       });
+    this.getContentState();
+  }
+
+  getContentState() {
+    const contentIds = this.courseConsumptionService.parseChildren();
+    if (_.hasIn(this.enrolledBatchInfo, 'status') && contentIds.length) {
+      const req = {
+        userId: this.userService.userid,
+        courseId: this.courseId,
+        contentIds: contentIds,
+        batchId: this.batchId
+      };
+      this.courseConsumptionService.getContentState(req);
+    }
   }
 
   showDashboard() {
