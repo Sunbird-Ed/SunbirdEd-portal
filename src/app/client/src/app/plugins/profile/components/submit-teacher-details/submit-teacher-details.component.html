@@ -63,7 +63,7 @@
       [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-    <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="updateInteractEdata"
+    <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
       [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
       {{resourceService?.frmelmnts?.btn?.update}}

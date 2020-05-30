@@ -38,11 +38,12 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   formData;
   showLoader = true;
   submitInteractEdata: IInteractEventEdata;
-  updateInteractEdata: IInteractEventEdata;
   cancelInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   pageId = 'profile-read';
-  lastInteractDetails: { id: string, type: string };
+  udiseObj;
+  teacherObj;
+  schoolObj;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
@@ -59,11 +60,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     this.submitInteractEdata = {
       id: 'submit-teacher-details',
-      type: 'click',
-      pageid: this.pageId
-    };
-    this.updateInteractEdata = {
-      id: 'update-teacher-details',
       type: 'click',
       pageid: this.pageId
     };
@@ -103,12 +99,12 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
     }
     this.userDetailsForm = this.sbFormBuilder.group(formGroupObj);
-    const udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
-    const teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
-    const schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
-    if (udiseObj) { this.userDetailsForm.controls['udiseId'].setValue(udiseObj.id); }
-    if (teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(teacherObj.id); }
-    if (schoolObj) { this.userDetailsForm.controls['school'].setValue(schoolObj.id); }
+    this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
+    this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
+    this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
+    if (this.udiseObj) { this.userDetailsForm.controls['udiseId'].setValue(this.udiseObj.id); }
+    if (this.teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(this.teacherObj.id); }
+    if (this.schoolObj) { this.userDetailsForm.controls['school'].setValue(this.schoolObj.id); }
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     this.getState();
     this.showLoader = false;
@@ -167,26 +163,27 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onStateChange() {
-    const stateControl = this.userDetailsForm.get('state');
+    this.stateControl = this.userDetailsForm.get('state');
     let stateValue = '';
-    stateControl.valueChanges.subscribe(
+    this.stateControl.valueChanges.subscribe(
       (data: string) => {
-        if (_.get(stateControl, 'value.id')) {
-          this.getFormDetails(_.get(stateControl, 'value.id')).subscribe((formData) => {
+        if (_.get(this.stateControl, 'value.id')) {
+          this.getFormDetails(_.get(this.stateControl, 'value.id')).subscribe((formData) => {
             this.formData = formData;
           });
         }
-        if (stateControl.status === 'VALID' && stateValue !== stateControl.value.code) {
+        if (this.stateControl.status === 'VALID' && stateValue !== this.stateControl.value.code) {
           const state = _.find(this.allStates, (states) => {
-            return states.code === stateControl.value.code;
+            return states.code === this.stateControl.value.code;
           });
           if (_.get(state, 'id')) { this.getDistrict(state.id); }
-          stateValue = stateControl.value.code;
+          stateValue = this.stateControl.value.code;
         }
       });
   }
 
   getDistrict(stateId) {
+    this.districtControl = this.userDetailsForm.get('district');
     this.showDistrictDivLoader = true;
     const requestData = { 'filters': { 'type': 'district', parentId: stateId } };
     this.profileService.getUserLocation(requestData).subscribe(res => {
@@ -209,6 +206,24 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0017);
     });
+  }
+
+  getUpdateTelemetry() {
+    const fieldsChanged = [];
+    if (this.forChanges.prevStateValue !== _.get(this.stateControl, 'value.code')) { fieldsChanged.push('State'); }
+    if (this.forChanges.prevDistrictValue !== _.get(this.districtControl, 'value')) { fieldsChanged.push('District'); }
+    if (_.get(this.schoolObj, 'id') !== _.get(this.userDetailsForm, 'value.school')) { fieldsChanged.push('School/ Org name'); }
+    if (_.get(this.udiseObj, 'id') !== _.get(this.userDetailsForm, 'value.udiseId')) { fieldsChanged.push('School UDISE ID/ Org ID'); }
+    if (_.get(this.teacherObj, 'id') !== _.get(this.userDetailsForm, 'value.teacherId')) { fieldsChanged.push('Teacher ID'); }
+    const updateInteractEdata: IInteractEventEdata = {
+      id: 'update-teacher-details',
+      type: 'click',
+      pageid: this.pageId
+    };
+    if (!_.isEmpty(fieldsChanged)) {
+      updateInteractEdata['extra'] = { fieldsChanged };
+    }
+    return updateInteractEdata;
   }
 
   onSubmitForm(event) {
@@ -244,7 +259,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           }
           const data = {
             userId: this.userService.userid,
-            locationCodes: locationCodes,
+            locationCodes,
             externalIds
           };
           this.updateProfile(data);
