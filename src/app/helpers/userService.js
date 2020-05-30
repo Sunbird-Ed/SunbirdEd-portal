@@ -137,7 +137,7 @@ const switchUser = async (req, res) => {
     if (error) {
       res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
     } else {
-      req.session.sessionIdentifier = uuidv1();
+      req.session.userSid = uuidv1();
       req.session.save(function (error) {
         if (error) {
           res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
@@ -153,7 +153,7 @@ const switchUser = async (req, res) => {
             responseCode: httpSatusCode.OK,
             result: {
               response: "Success",
-              sessionIdentifier: req.session.sessionIdentifier
+              userSid: req.session.userSid
             }
           });
         }

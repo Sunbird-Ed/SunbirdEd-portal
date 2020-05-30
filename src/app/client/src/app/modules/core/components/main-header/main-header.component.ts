@@ -22,6 +22,7 @@ import * as _ from 'lodash-es';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
+import {forkJoin} from 'rxjs';
 declare var jQuery: any;
 
 @Component({
@@ -115,9 +116,9 @@ export class MainHeaderComponent implements OnInit {
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
-      this.fetchManagedUsers();
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
+          this.fetchManagedUsers();
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
@@ -177,22 +178,20 @@ export class MainHeaderComponent implements OnInit {
   fetchManagedUsers() {
     const fetchManagedUserRequest = {
       request: {
-        filters: {managedBy: this.userService.userid}
+        filters: {managedBy: this.managedUserService.getUserId()}
       }
     };
-    this.managedUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
-      const userList = [];
-      const managedUserList = _.get(data, 'result.response.content') || [];
-      this.totalUsersCount = managedUserList && Array.isArray(managedUserList) && managedUserList.length - 1;
-      if (_.head(managedUserList)) {
-          this.userListToShow = [_.head(managedUserList)];
-          _.forEach(this.userListToShow, (userData) => {
-            userData.title = userData.firstName;
-            userData.initial = userData.firstName && userData.firstName[0];
-            userData.selected = false;
-            userList.push(userData);
-          });
-        }
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data && data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
+      }
+      this.userListToShow = this.managedUserService.processUserList(userListToProcess.slice(0, 2), this.userService.userid);
+      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 1;
       }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
@@ -376,7 +375,7 @@ export class MainHeaderComponent implements OnInit {
     this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
     const userId = selectedUser.identifier;
     this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
-      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.sessionIdentifier'));
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.telemetryService.setInitialization(false);

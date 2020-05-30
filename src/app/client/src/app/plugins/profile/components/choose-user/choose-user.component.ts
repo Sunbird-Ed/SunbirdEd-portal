@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
@@ -11,13 +11,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-choose-user',
   templateUrl: './choose-user.component.html',
   styleUrls: ['./choose-user.component.scss']
 })
-export class ChooseUserComponent implements OnInit {
+export class ChooseUserComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router,
@@ -38,11 +39,20 @@ export class ChooseUserComponent implements OnInit {
   };
   selectedUser: any;
   submitInteractEdata: IInteractEventEdata;
+  userDataSubscription: any;
 
   ngOnInit() {
-    this.getManagedUserList();
+    this.userDataSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+      this.getManagedUserList();
+    });
     this.telemetryImpressionEvent();
     this.setTelemetryData();
+  }
+
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 
   telemetryImpressionEvent() {
@@ -79,22 +89,23 @@ export class ChooseUserComponent implements OnInit {
     const fetchManagedUserRequest = {
       request: {
         filters: {
-          managedBy: this.userService.userid
+          managedBy: this.managedUserService.getUserId()
         }
       }
     };
-    this.managedUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
-        const managedUserList = _.get(data, 'result.response.content') || [];
-        _.forEach(managedUserList, (userData) => {
-          userData.title = userData.firstName;
-          userData.initial = userData.firstName && userData.firstName[0];
-          userData.selected = false;
-          this.userList.push(userData);
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
       }
-    );
+      this.userList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
   }
 
   switchUser() {
@@ -102,7 +113,7 @@ export class ChooseUserComponent implements OnInit {
     const initiatorUserId = this.userService.userid;
     this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
     this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
-      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.sessionIdentifier'));
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.telemetryService.setInitialization(false);

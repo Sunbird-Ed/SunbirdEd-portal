@@ -48,15 +48,15 @@ export class TelemetryService {
    */
 
   sessionId;
-  sessionIdentifier;
+  userSid;
 
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
     ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
-    this.sessionIdentifier = (<HTMLInputElement>document.getElementById('sessionIdentifier'))
-    ? (<HTMLInputElement>document.getElementById('sessionIdentifier')).value : undefined;
+    this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
+    ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
   }
 
   /**
@@ -272,9 +272,9 @@ export class TelemetryService {
       cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
-    if (this.sessionIdentifier) {
+    if (this.userSid) {
       eventContextData.cdata.push({
-        id: this.sessionIdentifier,
+        id: this.userSid,
         type: 'sid'
       });
     }
@@ -316,6 +316,6 @@ export class TelemetryService {
   }
 
   public setSessionIdentifier(value) {
-    this.sessionIdentifier = value;
+    this.userSid = value;
   }
 }

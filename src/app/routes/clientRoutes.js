@@ -129,11 +129,11 @@ function getLocals(req) {
   if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
-    locals.sessionIdentifier = _.get(req, 'session.sessionIdentifier') || locals.sessionId || null;
+    locals.userSid = _.get(req, 'session.userSid') || locals.sessionId || null;
   } else {
     locals.userId = null
     locals.sessionId = null
-    locals.sessionIdentifier = null;
+    locals.userSid = null;
   }
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme

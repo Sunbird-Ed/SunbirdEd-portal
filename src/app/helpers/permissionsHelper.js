@@ -93,9 +93,9 @@ let PERMISSIONS_HELPER = {
       if (body.responseCode === 'OK') {
         reqObj.session.userId = body.result.response.identifier;
         if (body.result.response.managedBy) {
-          reqObj.session.sessionIdentifier = uuidv1();
+          reqObj.session.userSid = uuidv1();
         } else {
-          reqObj.session.sessionIdentifier = body.result.response.identifier;
+          reqObj.session.userSid = reqObj.sessionID;
         }
         reqObj.session.roles = body.result.response.roles
         if (body.result.response.organisations) {

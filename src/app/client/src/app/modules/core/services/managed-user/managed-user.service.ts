@@ -4,7 +4,9 @@ import {HttpClient} from '@angular/common/http';
 import {LearnerService} from '../learner/learner.service';
 import {UserService} from '../user/user.service';
 import {TelemetryService} from '@sunbird/telemetry';
-
+import * as _ from 'lodash-es';
+import {CacheService} from 'ng2-cache-service';
+import {of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class ManagedUserService {
 
   constructor(public configService: ConfigService, private http: HttpClient,
               private learnerService: LearnerService, public userService: UserService,
-              private telemetryService: TelemetryService) {
+              private telemetryService: TelemetryService, private cacheService: CacheService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -33,12 +35,12 @@ export class ManagedUserService {
     return this.http.get(url);
   }
 
-  public setSwitchUserData(userId, sessionIdentifier) {
+  public setSwitchUserData(userId, userSid) {
     // @ts-ignore
     document.getElementById('userId').value = userId;
     // @ts-ignore
-    document.getElementById('sessionIdentifier').value = sessionIdentifier;
-    this.telemetryService.setSessionIdentifier(sessionIdentifier);
+    document.getElementById('userSid').value = userSid;
+    this.telemetryService.setSessionIdentifier(userSid);
     this.userService.setUserId(userId);
     this.userService.initialize(true);
   }
@@ -50,5 +52,37 @@ export class ManagedUserService {
     errorMessage =
       filterPipe.transform(errorMessage, '{userName}', name);
     return errorMessage;
+  }
+
+  getUserId() {
+    if (this.userService.userProfile.managedBy) {
+      return this.userService.userProfile.managedBy;
+    } else {
+      return this.userService.userid;
+    }
+  }
+
+  processUserList(userList, currentUserId) {
+    const processedList = [];
+    _.forEach(userList, (userData) => {
+      // skipping the current user from showing into the list
+      if (!(currentUserId === userData.identifier)) {
+        userData.title = userData.firstName;
+        userData.initial = userData.firstName && userData.firstName[0];
+        userData.selected = false;
+        processedList.push(userData);
+      }
+    });
+    return processedList || [];
+  }
+
+  getParentProfile() {
+    // get parent's profile data
+    const userProfile = this.cacheService.get('userProfile');
+    if (userProfile) {
+      return of(userProfile);
+    } else {
+      return this.userService.getUserData(this.userService.userProfile.managedBy);
+    }
   }
 }
