@@ -176,6 +176,5 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.getState();
     expect(component.allStates).toEqual(mockRes.stateData.result.response);
   });
-
 });
 
