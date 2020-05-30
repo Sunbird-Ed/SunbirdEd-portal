@@ -1,7 +1,9 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
   appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
-  <div class="sb-modal-header" *ngIf="formAction === 'submit'"> {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
-  <div class="sb-modal-header" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}} </div>
+  <div class="sb-modal-header" *ngIf="formAction === 'submit'">
+    {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
+  <div class="sb-modal-header" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}}
+  </div>
   <div class="sb-modal-content" *ngIf="showLoader">
     <app-loader></app-loader>
   </div>
@@ -12,8 +14,9 @@
         <div class="twelve wide column p-0 mx-16" *ngIf="field.code==='state' && field.visible===true">
           <div class="fields-selection p-0">
             <div class="sb-field field-focus mb-8">
-              <sui-select [isSearchable]="false" class="selection" formControlName="{{field.code}}"
-                [options]="allStates" labelField="name" name="code"
+              <sui-select [isSearchable]="false" class="selection"
+                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
+                formControlName="{{field.code}}" [options]="allStates" labelField="name" name="code"
                 placeholder="{{field.description}}" #stateDiv>
                 <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
                 </sui-select-option>
@@ -31,6 +34,7 @@
                 </div>
               </div>
               <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="false" class="selection"
+                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
                 formControlName="{{field.code}}" [options]="allDistricts" labelField="name" valueField="code"
                 name="code" placeholder="{{field.description}}" #districtDiv>
                 <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
@@ -43,25 +47,29 @@
         <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='input' && field.visible===true">
           <div class="fields-selection p-0">
             <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control" formControlName="{{field.code}}" type="text" name="code"
-                placeholder="{{field.description}}">
-              <label class="font-weight-normal">{{field.label}}<span *ngIf="field.required">*</span></label>
-            </div>
+              <input class="sb-form-control"
+                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
+                formControlName="{{field.code}}" type="text" name="code" placeholder="{{field.description}}">
+                <label class="font-weight-normal" [ngClass]="{'orange text': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}">{{field.label}}<span *ngIf="field.required">*</span></label>
+              </div>
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="sb-modal-actions">
-    <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
+    <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-    <button  *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="updateInteractEdata" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
+    <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="updateInteractEdata"
+      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
       [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
       {{resourceService?.frmelmnts?.btn?.update}}
     </button>
-    <button (click)="closeModal();" appTelemetryInteract [telemetryInteractEdata]="cancelInteractEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button (click)="closeModal();" appTelemetryInteract [telemetryInteractEdata]="cancelInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-outline-primary">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
