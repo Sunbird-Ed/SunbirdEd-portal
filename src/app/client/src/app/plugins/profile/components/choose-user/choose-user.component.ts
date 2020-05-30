@@ -1,28 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
-  ServerResponse,
   ToasterService,
-  InterpolatePipe, IUserData, NavigationHelperService
+  IUserData, NavigationHelperService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-choose-user',
   templateUrl: './choose-user.component.html',
   styleUrls: ['./choose-user.component.scss']
 })
-export class ChooseUserComponent implements OnInit {
+export class ChooseUserComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
-              private configService: ConfigService, private managerUserService: ManagedUserService,
+              private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
@@ -38,11 +38,20 @@ export class ChooseUserComponent implements OnInit {
   };
   selectedUser: any;
   submitInteractEdata: IInteractEventEdata;
+  userDataSubscription: any;
 
   ngOnInit() {
-    this.getManagedUserList();
+    this.userDataSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+      this.getManagedUserList();
+    });
     this.telemetryImpressionEvent();
     this.setTelemetryData();
+  }
+
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 
   telemetryImpressionEvent() {
@@ -79,17 +88,43 @@ export class ChooseUserComponent implements OnInit {
     const fetchManagedUserRequest = {
       request: {
         filters: {
-          managedBy: this.userService.userid
+          managedBy: this.managedUserService.getUserId()
         }
       }
     };
-    this.managerUserService.fetchManagedUserList(fetchManagedUserRequest).subscribe((data: ServerResponse) => {
-        const managedUserList = _.get(data, 'result.response.content') || [];
-        _.forEach(managedUserList, (userData) => {
-          userData.title = userData.firstName;
-          userData.initial = userData.firstName && userData.firstName[0];
-          userData.selected = false;
-          this.userList.push(userData);
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
+      }
+      this.userList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
+  }
+
+  switchUser() {
+    const userId = this.selectedUser.identifier;
+    const initiatorUserId = this.userService.userid;
+    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+        this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.telemetryService.setInitialization(false);
+            this.telemetryService.initialize(this.getTelemetryContext());
+            this.router.navigate(['/resources']);
+            this.toasterService.custom({
+              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                this.selectedUser.firstName),
+              class: 'sb-toaster sb-toast-success sb-toast-normal'
+            });
+            this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
+          }
         });
       }, (err) => {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
@@ -97,31 +132,44 @@ export class ChooseUserComponent implements OnInit {
     );
   }
 
-  switchUser() {
-    const userId = this.selectedUser.identifier;
-    this.managerUserService.initiateSwitchUser(userId).subscribe((data) => {
-        // @ts-ignore
-        document.getElementById('userId').value = userId;
-        this.userService.setUserId(userId);
-        this.userService.initialize(true);
-        this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.router.navigate(['/resources']);
-            const filterPipe = new InterpolatePipe();
-            let errorMessage =
-              filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0095'), '{instance}', this.instance);
-            errorMessage =
-              filterPipe.transform(errorMessage, '{userName}', this.selectedUser.firstName);
-            this.toasterService.custom({
-              message: errorMessage, class: 'sb-toaster sb-toast-success sb-toast-normal'
-            });
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+  getStartEventData(userId, initiatorUserId) {
+    return {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: userId
+        }]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'switch-user'
       }
-    );
+    };
+  }
+
+  getEndEventData(userId, initiatorUserId) {
+    return {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: userId
+        }]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        mode: 'switch-user'
+      }
+    };
   }
 
   navigateToCreateUser() {

@@ -57,6 +57,7 @@ export class TelemetryService {
 
   sessionId;
   public UTMparam;
+  userSid;
 
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
@@ -66,6 +67,8 @@ export class TelemetryService {
     if (sessionStorage.getItem('UTM')) {
       this.UTMparam = JSON.parse(sessionStorage.getItem('UTM'));
     }
+    this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
+    ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
   }
 
   /**
@@ -290,6 +293,12 @@ export class TelemetryService {
       cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
+    if (this.userSid) {
+      eventContextData.cdata.push({
+        id: this.userSid,
+        type: 'sid'
+      });
+    }
     return eventContextData;
   }
 
@@ -339,5 +348,14 @@ export class TelemetryService {
     } else {
       return cloneObject;
     }
+  }
+
+  public setInitialization(value: boolean) {
+    this.telemetryProvider.initialized = value;
+    this.isInitialized = value;
+  }
+
+  public setSessionIdentifier(value) {
+    this.userSid = value;
   }
 }

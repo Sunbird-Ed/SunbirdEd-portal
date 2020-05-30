@@ -79,13 +79,23 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should fetch managed user list on init', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
+    userService.initialize(true);
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableOf(mockData.managedUserList));
+    spyOn(managedUserService, 'getUserId').and.returnValue('id');
+    spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userList).toEqual(mockData.userList);
   });
 
   it('should not fetch managed user list on init', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
+    userService.initialize(true);
     const managedUserService = TestBed.get(ManagedUserService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
@@ -95,9 +105,7 @@ describe('ChooseUserComponent', () => {
   });
 
   it('should select user', () => {
-    const managedUserService = TestBed.get(ManagedUserService);
-    spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableOf(mockData.managedUserList));
-    component.ngOnInit();
+    component.userList = [mockData.selectUserData.data.data];
     component.selectUser(mockData.selectUserData);
     expect(component.userList).toEqual(mockData.selectedUserList);
   });
