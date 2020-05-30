@@ -3,11 +3,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@sunbird/core';
 import { UnEnrollBatchComponent } from './components/batch/unenroll-batch/unenroll-batch.component';
+import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 
 const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
   {
+    path: 'play/:collectionId', component: AssessmentPlayerComponent
+  }, {
     path: '', component: CourseConsumptionPageComponent,
     data: { telemetry: { env: telemetryEnv } },
     children: [

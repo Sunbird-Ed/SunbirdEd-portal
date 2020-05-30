@@ -15,6 +15,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
 import { PopupControlService } from '../../../../../service/popup-control.service';
+import { TocCardType } from '@project-sunbird/common-consumption';
 
 @Component({
   selector: 'app-course-player',
@@ -75,7 +76,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public courseProgressData: any;
 
-  public contentStatus: any;
+  public contentStatus = [];
 
   public contentDetails: { title: string, id: string, parentId: string }[] = [];
 
@@ -118,6 +119,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   pageId: string;
 
+  cardType: TocCardType = TocCardType.COURSE;
+  isSingleContent = false;
+  hasPreviewPermission = false;
+
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -135,56 +140,57 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
-    merge(this.activatedRoute.params.pipe(first(),
-    mergeMap(({ courseId, batchId, courseStatus }) => {
-      this.courseId = courseId;
-      this.batchId = batchId;
-      this.courseStatus = courseStatus;
-      this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-      if (this.batchId) {
-        this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
-      }
-      this.setTelemetryCourseImpression();
-      const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-      if (this.batchId) {
-        return combineLatest(
-          this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-          this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-        ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-      }
-      return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
-        .pipe(map(courseHierarchy => ({ courseHierarchy })));
-    })), this.subscribeToContentProgressEvents())
-    .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
-       if (!contentProgressEvent) {
-        this.courseHierarchy = courseHierarchy;
-        this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
-        this.courseInteractObject = {
-          id: this.courseHierarchy.identifier,
-          type: 'Course',
-          ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-        };
-        if (this.courseHierarchy.status === 'Flagged') {
-          this.flaggedCourse = true;
-        }
-        this.parseChildContent();
+    merge(this.activatedRoute.params.pipe(
+      mergeMap(({ courseId, batchId, courseStatus }) => {
+        this.courseId = courseId;
+        this.batchId = batchId;
+        this.courseStatus = courseStatus;
+        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.enrolledBatchInfo = enrolledBatchDetails;
-          this.enrolledCourse = true;
-          setTimeout(() => {
-            this.setTelemetryStartEndData();
-          }, 100);
-          if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
-            this.getContentState();
+          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+        }
+        this.setTelemetryCourseImpression();
+        const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+        if (this.batchId) {
+          return combineLatest(
+            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+            this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
+        }
+        return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
+          .pipe(map(courseHierarchy => ({ courseHierarchy })));
+      })), this.subscribeToContentProgressEvents())
+      .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
+        if (!contentProgressEvent) {
+          this.courseHierarchy = courseHierarchy;
+          this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
+          this.courseInteractObject = {
+            id: this.courseHierarchy.identifier,
+            type: 'Course',
+            ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
+          };
+          if (this.courseHierarchy.status === 'Flagged') {
+            this.flaggedCourse = true;
+          }
+          this.parseChildContent();
+          if (this.batchId) {
+            this.enrolledBatchInfo = enrolledBatchDetails;
+            this.enrolledCourse = true;
+            setTimeout(() => {
+              this.setTelemetryStartEndData();
+            }, 100);
+            if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
+              this.getContentState();
+              this.subscribeToQueryParam();
+            }
+          } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
+            || this.courseHierarchy.createdBy === this.userService.userid) {
+            this.hasPreviewPermission = true;
             this.subscribeToQueryParam();
           }
-        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
-          || this.courseHierarchy.createdBy === this.userService.userid) {
-          this.subscribeToQueryParam();
+          this.collectionTreeNodes = { data: this.courseHierarchy };
+          this.loader = false;
         }
-        this.collectionTreeNodes = { data: this.courseHierarchy };
-        this.loader = false;
-       }
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -232,7 +238,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentState(req).pipe(first())
-      .subscribe(res => this.contentStatus = res.content,
+      .subscribe(res => {
+        this.contentStatus = res.content || [];
+        this.calculateProgress();
+      },
         err => console.log(err, 'content read api failed'));
   }
 
@@ -348,25 +357,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
-  public navigateToContent(content: { title: string, id: string, parentId?: string }): void {
-    const contentId = content.id;
-    const parentId = content.parentId || this.courseId; // should all defaults to courseID
-    const navigationExtras: NavigationExtras = {
-      queryParams: { contentId, parentId },
-      relativeTo: this.activatedRoute
-    };
-    const playContentDetail = this.findContentById(content.id);
-    if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.showExtContentMsg = false;
-      this.istrustedClickXurl = true;
-      this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
-    }
-    if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status)
-      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
-      || this.courseHierarchy.createdBy === this.userService.userid) {
-      this.router.navigate([], navigationExtras);
-    } else if (!this.enrolledCourse) {
-      this.showJoinTrainingModal = true;
+  public navigateToContent(event: any, collectionUnit?: any): void {
+    if (!_.isEmpty(event.event)) {
+      this.navigateToPlayerPage(collectionUnit, event);
     }
   }
   public contentProgressEvent(event) {
@@ -449,9 +442,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 100);
     }
-  }
-  showContentCreditsPopup() {
-    this.showContentCreditsModal = true;
   }
   ngOnDestroy() {
     this.unsubscribe.next();
@@ -584,5 +574,52 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.interact(telemetryIntractData);
+  }
+
+  navigateToPlayerPage(collectionUnit, event?) {
+    if (this.enrolledCourse || this.hasPreviewPermission) {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { batchId: this.batchId, courseId: this.courseId }
+      };
+      if (event && !_.isEmpty(event.event)) {
+        navigationExtras.queryParams.selectedContent = event.data.identifier;
+      }
+      this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
+    } else {
+      this.showJoinTrainingModal = true;
+    }
+  }
+
+  calculateProgress() {
+    if (this.courseHierarchy.children) {
+      this.courseHierarchy.children.forEach(unit => {
+        if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
+          const flattenDeepContents = this.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+
+          const consumedContents = flattenDeepContents.filter(o => {
+            return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
+          });
+
+          unit.consumedContent = consumedContents.length;
+          unit.contentCount = flattenDeepContents.length;
+          if (consumedContents.length) {
+            unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+          }
+        }
+      });
+    }
+  }
+
+  private flattenDeep(contents) {
+    if (contents) {
+      return contents.reduce((acc, val) => {
+        if (val.children) {
+          acc.push(val);
+          return acc.concat(this.flattenDeep(val.children));
+        } else {
+          return acc.concat(val);
+        }
+      }, []);
+    }
   }
 }

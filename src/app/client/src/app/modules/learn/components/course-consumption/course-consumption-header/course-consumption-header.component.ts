@@ -33,7 +33,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    * to show loader while copying content
    */
   showCopyLoader = false;
-  onPageLoadResume = true;
+  onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
   resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
@@ -119,10 +119,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   resumeCourse(showExtUrlMsg?: boolean) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.lastPlayedContentId },
-      relativeTo: this.activatedRoute
+      queryParams: {
+        batchId: this.batchId,
+        courseId: this.courseId,
+        selectedContent: this.lastPlayedContentId
+      }
     };
-    this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    this.router.navigate(['/learn/course/play', this.courseId], navigationExtras);
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 

@@ -1,200 +1,98 @@
-<div class="ui container" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui stackable grid">
-    <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
-      <div *ngIf="!enableContentPlayer && !loader">
-        <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
-
-          <div class="row course-player text-left">
-
-            <div class="sb-pageSection course-player--header">
-              <div class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title sb-pageSection-title-light">
-                  {{resourceService.frmelmnts.lbl.aboutthecourse}}</h4>
-              </div>
-              <div class="sb-pageSection-content">
-                <div *ngIf="courseHierarchy.description">
-                  <p *ngIf="!readMore">
-                    {{ courseHierarchy.description | slice:0:200 }}&nbsp;
-                    <span class="ui cardsKnowMore mouse-pointer"
-                      *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false"
-                      (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
-                  </p>
-                  <p *ngIf="readMore">
-                    {{ courseHierarchy.description}}&nbsp;
-                    <span class="ui cardsKnowMore mouse-pointer"
-                      (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="course-player--card">
-              <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
-                [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo"
-                [courseHierarchy]="courseHierarchy" [courseProgressData]="courseProgressData"></app-batch-details>
-            </div>
-
-            <div class="sb-pageSection course-player--content">
-              <div class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title sb-pageSection-title-light">
-                  {{resourceService.frmelmnts.lbl.coursestructure}}</h4>
-              </div>
-              <div class="sb-pageSection-content">
-                <app-collection-tree
-                  *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon"
-                  (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes"
-                  [options]="collectionTreeOptions" [contentStatus]="contentStatus"></app-collection-tree>
-                <ng-template #dataCommingSoon>
-                  <div class="placeholder mt-40">
-                    <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" />
-                    <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-                    <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-                  </div>
-                </ng-template>
-              </div>
-            </div>
-
-            <div *ngIf="enrolledCourse" class="course-player--metadata">
-
-              <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum">
-              </app-curriculum-card>
-
-              <div class="courseupdate mt-16 text-left">
-                <p class="mb-5" *ngIf="courseHierarchy.author">{{resourceService.frmelmnts.lbl.author}}:
-                  {{courseHierarchy.author}}</p>
-                <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}:
-                  {{courseHierarchy.creator}}</p>
-                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">
-                  {{resourceService.frmelmnts.lbl.publishedBy}}: {{courseHierarchy?.organisation?.join(', ')}}</p>
-                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.email">
-                  <a
-                    href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
-                </p>
-                <div class="ui divider"></div>
-                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>:
-                  {{courseHierarchy.createdOn | dateFormat}}</p>
-                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>:
-                  {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
-                <p class="mb-5">
-                  <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}"
-                    class="cursor-pointer">
-                    {{resourceService.frmelmnts.lbl.courseCredits}}
-                  </a>
-                </p>
-                <div class="ui divider"></div>
-                <p class="mb-5"
-                  *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">
-                  {{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
-                <p class="mb-5"
-                  *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">
-                  <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
-                  {{courseHierarchy.licenseDetails['name']}} <br>
-                  <span class="licenseTag"
-                    *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['url']">
-                    {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a
-                      href="{{courseHierarchy.licenseDetails['url']}}"
-                      target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
-                  </span>
-                </p>
-                <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
-              </div>
-            </div>
-
+<div class="ui container mt-24">
+  <div *ngIf="!loader">
+    <div class="sb-g" [appTelemetryImpression]="telemetryCourseImpression">
+      <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
+        <div class="sb-pageSection course-player--header">
+          <div class="sb-pageSection-header">
+            <h4 class="sb-pageSection-title sb-pageSection-title-light">
+              {{resourceService?.frmelmnts?.lbl?.aboutthecourse}}</h4>
           </div>
-
-        </div>
-      </div>
-    </div>
-    <div  *ngIf="enableContentPlayer && !loader" class="width-100">
-      <div class="ui stackable grid">
-        <div class="twelve wide column">
-          <div class="ui grid">
-            <div class="row">
-              <div class="twelve wide column">
-                <div class="sb-pageSection" id="app-player-collection-renderer">
-                  <div class="sb-pageSection-header">
-                    <h4 class="sb-pageSection-title m-0 mr-5"> {{contentTitle}}</h4>
-                    <button id="closebutton" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata"
-                      [telemetryInteractObject]="contentInteractObject" [telemetryInteractCdata]="telemetryCdata"
-                      class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"
-                      (click)="closeContentPlayer()">
-                      {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
-                  </div>
-                </div>
-                <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
-                  <div class="column twelve wide">
-                    <p>{{resourceService.messages.imsg.m0036}}</p>
-                  </div>
-                </div>
-                <div class="ui grid">
-                  <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                    <app-player [contentProgressEvents$]="contentProgressEvents$"
-                      (assessmentEvents)="assessmentEvents($event)"
-                      (questionScoreSubmitEvents)="questionScoreSubmitEvents($event)" class="content-player"
-                      [playerConfig]="playerConfig" [playerOption]="playerOption"></app-player>
-                  </div>
-                </div>
-              </div>
+          <div class="sb-pageSection-content">
+            <div *ngIf="courseHierarchy?.description">
+              <p *ngIf="!readMore">
+                {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
+                <span class="ui cardsKnowMore mouse-pointer"
+                  *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
+                  (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+              </p>
+              <p *ngIf="readMore">
+                {{ courseHierarchy?.description}}&nbsp;
+                <span class="ui cardsKnowMore mouse-pointer"
+                  (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+              </p>
             </div>
-            <div class="ui row pt-0 my-20">
-              <div class="ui twelve column grid pr-0">
-                <div class="five wide mobile only three wide tablet only three wide computer only column">
-                  <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject"
-                    [telemetryInteractEdata]="{id: 'previous-button',type: 'click',pageid: 'course-consumption'}"
-                    class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content"
-                    (click)="navigateToContent(prevPlaylistItem)" [disabled]="prevPlaylistItem === undefined">
-                    <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
-                    <br />
-                    <span class="font-white description text-ellipsis"
-                      title="{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{prevPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
-                  </button>
-                </div>
-                
-                <div class="two wide tablet only two wide computer only column"></div>
-                <div class="five wide mobile only three wide tablet only three wide computer only column pr-0">
-                  <button appTelemetryInteract [telemetryInteractObject]="contentInteractObject"
-                    [telemetryInteractEdata]="{id: 'next-button',type: 'click',pageid: 'course-consumption'}"
-                    class="ui blue button right floated fluid toc-right-nav-btn-content"
-                    (click)="navigateToContent(nextPlaylistItem)" [disabled]="nextPlaylistItem === undefined">
-                    <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
-                    <br />
-                    <span class="font-white description text-ellipsis"
-                      title="{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}">{{nextPlaylistItem?.title || resourceService.frmelmnts.lbl.noContentToPlay}}</span>
-                  </button>
-                </div>
+          </div>
+        </div>
+        <div class="py-16">
+          <h4 class="sb-pageSection-title sb-pageSection-title-light">
+            {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+
+          <div class="sb-pageSection">
+            <div *ngFor="let item of courseHierarchy?.children; let index = index">
+              <div class="d-flex flex-ai-center flex-jc-space-between py-8">
+                <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
+                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse"
+                  class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+                <button (click)="navigateToPlayerPage(item)" *ngIf="!enrolledCourse && !hasPreviewPermission"
+                  class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
+              </div>
+              <div class="chapter-box sb-g">
+                <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8" [ngClass]="{'sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse}">
+                  <sb-toc-curriculum
+                    *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
+                    [isAccordion]="true" (tocCardClick)="navigateToContent($event, item)" [tocData]="item"
+                    [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
+                  </sb-toc-curriculum>
+                  <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
+                    (tocCardClick)="navigateToContent($event, item)" [type]="cardType" [contentStatus]="contentStatus">
+                  </sb-toc-card>
+                  <ng-template #noContent>
+                    <div class="heading">{{resourceService?.messages?.stmsg?.m0121}}</div>
+                  </ng-template>
+                </section>
+                <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
+                  <div class="sb-bg-color-white course-list-progress text-left">
+                    <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
+                    </div>
+                    <div class="course-list-progress__status mt-8">{{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}} {{resourceService?.frmelmnts?.lbl?.completed}}
+                    </div>
+                    <sui-progress [value]="item?.progress" maximum="100" class="green course-list-progress__barholder mt-8">
+                    </sui-progress>
+                  </div>
+                </section>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="ui section divider"></div>
-    </div>
-    <div *ngIf="loader">
-      <app-loader [data]="loaderMessage"></app-loader>
-    </div>
-    <div *ngIf="showError">
+
+      <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
+        <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
+          [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
+          [courseProgressData]="courseProgressData"></app-batch-details>
+
+        <div *ngIf="enrolledCourse" class="course-player--metadata mt-16">
+          <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
+        </div>
+      </div>
     </div>
   </div>
-  <ng-template #loading>
-    <app-loader></app-loader>
-  </ng-template>
+
 </div>
-<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
-  (close)="showContentCreditsModal = false">
-</app-content-credits>
+
 <router-outlet></router-outlet>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
-    <!--Header-->
-    <div class="sb-modal-header">
-        {{resourceService.frmelmnts.btn.enroll}}
+  appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.btn?.enroll}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{resourceService?.frmelmnts?.lbl?.joinTrainingToAcessContent}}</p>
     </div>
-    <!--/Header-->
-    <!--Content-->
-    <div class="sb-modal-content">
-        <div class="ui center aligned segment">
-            <p>{{resourceService.frmelmnts.lbl.joinTrainingToAcessContent}}</p>
-        </div>
-    </div>
-    <!--/Content-->
+  </div>
+  <!--/Content-->
 </sui-modal>
