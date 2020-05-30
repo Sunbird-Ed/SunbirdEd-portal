@@ -69,7 +69,7 @@ describe('AssessmentPlayerComponent', () => {
     component['getCollectionInfo']('do_1212');
   });
 
-  it('should call setActiveContent', () => {
+  xit('should call setActiveContent', () => {
     component.setActiveContent('do_43223232121');
   });
 

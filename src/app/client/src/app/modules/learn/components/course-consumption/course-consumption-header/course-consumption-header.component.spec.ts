@@ -72,6 +72,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -87,6 +88,7 @@ describe('CourseConsumptionHeaderComponent', () => {
 
    it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;

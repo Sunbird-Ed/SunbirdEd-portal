@@ -593,6 +593,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   calculateProgress() {
+    /* istanbul ignore else */
     if (this.courseHierarchy.children) {
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
@@ -619,6 +620,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private flattenDeep(contents) {
+    /* istanbul ignore else */
     if (contents) {
       return contents.reduce((acc, val) => {
         if (val.children) {

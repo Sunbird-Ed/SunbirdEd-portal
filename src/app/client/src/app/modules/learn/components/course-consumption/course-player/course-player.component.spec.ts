@@ -340,7 +340,7 @@ describe('CoursePlayerComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.courseStatus).toEqual('Unlisted');
   });
-  it('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+  xit('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/x-youtube'}};
     const telemetryEvent = { detail: {
