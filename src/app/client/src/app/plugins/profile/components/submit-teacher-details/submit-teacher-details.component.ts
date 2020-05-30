@@ -235,7 +235,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           const locationCodes = [];
           if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state.code); }
           if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
-
           const provider = _.get(orgData, 'result.response.content[0].channel');
           const operation = this.formAction === 'submit' ? 'add' : 'edit';
           const externalIds = [];
@@ -295,4 +294,3 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.userDetailsModal.deny();
   }
 }
-
