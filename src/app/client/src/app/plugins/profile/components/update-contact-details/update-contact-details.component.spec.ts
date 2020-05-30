@@ -9,7 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileService } from './../../services';
 
-describe('UpdateContactDetailsComponent', () => {
+xdescribe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
 
@@ -29,7 +29,7 @@ describe('UpdateContactDetailsComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should show validation error message for form', () => {
+  it('should show validation error message for form', () => {
     component.contactType = 'phone';
     spyOn(component, 'onContactValueChange');
     spyOn(component, 'enableSubmitButton');
