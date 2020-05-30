@@ -69,7 +69,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   ngOnInit() {
-    console.log('contentData', this.contentData);
   }
 
   generateScoreSubmitEvent(event: any) {
