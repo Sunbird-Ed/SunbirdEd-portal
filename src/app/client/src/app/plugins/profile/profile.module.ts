@@ -1,6 +1,6 @@
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { ProfileService } from './services';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
@@ -41,7 +41,6 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
    AccountRecoveryInfoComponent,
    CreateUserComponent,
    ChooseUserComponent],
-  providers: [],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+  providers: []
 })
 export class ProfileModule { }
