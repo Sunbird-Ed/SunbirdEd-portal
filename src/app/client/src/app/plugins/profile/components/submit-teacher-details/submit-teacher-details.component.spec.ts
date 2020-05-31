@@ -8,7 +8,8 @@ import {
   ToasterService,
   ConfigService,
   BrowserCacheTtlService,
-  NavigationHelperService
+  NavigationHelperService,
+  SharedModule
 } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -17,9 +18,9 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule } from '@sunbird/shared';
 import { CoreModule, FormService, SearchService } from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+
 
 
 describe('SubmitTeacherDetailsComponent', () => {
