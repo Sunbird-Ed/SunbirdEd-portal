@@ -40,7 +40,8 @@ describe('ExploreCurriculumCoursesComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle},
-        { provide: Router, useClass: RouterStub }]
+        { provide: Router, useClass: RouterStub }
+      ]
     })
     .compileComponents();
   }));
@@ -55,7 +56,16 @@ describe('ExploreCurriculumCoursesComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should call navigation helper service', () => {
+    spyOn(component['navigationhelperService'], 'goBack');
+    component.goBack();
+    expect(component['navigationhelperService'].goBack).toHaveBeenCalled();
+  });
 
+  it('should call router with parameters', () => {
+    component.navigateToCourse({data: {identifier: 1}});
+    expect(component['router'].navigate).toHaveBeenCalledWith(['explore-course/course', 1]);
+  });
 
 
 });

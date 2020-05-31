@@ -55,4 +55,15 @@ describe('CurriculumCoursesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call navigation helper service', () => {
+    spyOn(component['navigationhelperService'], 'goBack');
+    component.goBack();
+    expect(component['navigationhelperService'].goBack).toHaveBeenCalled();
+  });
+
+  it('should call router with parameters', () => {
+    component.navigateToCourseDetails({identifier: 1});
+    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', 1]);
+  });
 });
