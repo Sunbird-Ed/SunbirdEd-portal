@@ -1,6 +1,6 @@
 import { PermissionDirective, BodyScrollDirective, StickyHeaderDirective } from './directives';
 import { RouterModule } from '@angular/router';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
@@ -43,7 +43,8 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
     deps: [PlatformLocation]
-  }]
+  }],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoreModule {
 }

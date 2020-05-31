@@ -1,5 +1,5 @@
 import { CourseRoutingModule } from './course-routing.module';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
@@ -34,6 +34,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,
-    PublicCoursePlayerComponent, PublicBatchDetailsComponent ]
+    PublicCoursePlayerComponent, PublicBatchDetailsComponent ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CourseModule { }
