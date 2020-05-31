@@ -599,9 +599,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
           const flattenDeepContents = this.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
 
-          const consumedContents = flattenDeepContents.filter(o => {
-            return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
-          });
+          let consumedContents = [];
+          if (consumedContents.length) {
+            consumedContents = flattenDeepContents.filter(o => {
+              return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
+            });
+          }
 
           unit.consumedContent = consumedContents.length;
           unit.contentCount = flattenDeepContents.length;

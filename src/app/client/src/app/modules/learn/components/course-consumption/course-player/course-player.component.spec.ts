@@ -131,8 +131,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentStatus).toBeDefined();
   });
 
-  xit('should not play the content obtained from url if enrolled course and course is flagged', () => {
-    component.contentStatus = [];
+  it('should not play the content obtained from url if enrolled course and course is flagged', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -153,7 +152,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentTitle).toBeUndefined();
     expect(component.enableContentPlayer).toBeFalsy();
   });
-  xit('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
+  it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -176,7 +175,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.enableContentPlayer).toBeTruthy();
   });
 
-  xit('should play content if course status is unlisted', () => {
+  it('should play content if course status is unlisted', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -327,7 +326,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.enableContentPlayer).toBeFalsy();
     enrolledBatch.result.response.status = 1;
   });
-  xit('should not display error message if content id is not available in queryparams', () => {
+  it('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -340,7 +339,7 @@ describe('CoursePlayerComponent', () => {
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.courseStatus).toEqual('Unlisted');
   });
-  xit('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+  it('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = {model: { mimeType: 'video/x-youtube'}};
     const telemetryEvent = { detail: {
@@ -368,7 +367,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -384,7 +382,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
@@ -400,7 +397,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
     component.enrolledBatchInfo = {status: 1};
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
@@ -417,7 +413,6 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -434,7 +429,6 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -453,7 +447,6 @@ describe('CoursePlayerComponent', () => {
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
     component.batchId = '123';
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -471,7 +464,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
     component.enrolledBatchInfo = {status: 1};
-    component.contentStatus = [];
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
