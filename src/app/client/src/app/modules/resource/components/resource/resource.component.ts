@@ -45,7 +45,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public telemetryService: TelemetryService) {
   }
   ngOnInit() {
-    this.slideConfig = _.cloneDeep(this.configService.appConfig.CoursePageSection.slideConfig);
+    this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
