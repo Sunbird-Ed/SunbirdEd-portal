@@ -18,6 +18,9 @@ describe('ExploreCurriculumCoursesComponent', () => {
     snapshot = {
       queryParams: {
         title: 'English',
+      },
+      data: {
+        telemetry: { env: 'explore', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'}
       }
     };
   }

@@ -263,7 +263,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   navigateToCourses(event) {
     const telemetryData = {
       cdata: [{
-        type: 'Library Courses',
+        type: 'library-courses',
         id:  _.get(event, 'data.title'),
       }],
       edata: {
