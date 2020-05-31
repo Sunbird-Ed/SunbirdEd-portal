@@ -77,10 +77,6 @@ describe('AssessmentPlayerComponent', () => {
     component['firstNonCollectionContent']([]);
   });
 
-  it('should call flattenDeep', () => {
-    component['flattenDeep']([]);
-  });
-
   it('should call initPlayer', () => {
     component['initPlayer']('do_3232431');
   });
