@@ -131,13 +131,15 @@ describe('MainHeaderComponent', () => {
   it('should fetch managed user list on init if user logged in', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    const managedUserService = TestBed.get(ManagedUserService);
     userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf({
-      result: {response: mockData.userProfile}
-    }));    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
+    userService.initialize(true);
     spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableOf(mockData.managedUserList));
+    spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userListToShow).toEqual(mockData.userList);
+    expect(component.totalUsersCount).toEqual(0);
   });
 
   it('should not fetch managed user list as user is not logged in', () => {
@@ -156,9 +158,8 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf({
-      result: {response: mockData.userProfile}
-    }));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
+    userService.initialize(true);
     const managedUserService = TestBed.get(ManagedUserService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
@@ -184,7 +185,7 @@ describe('MainHeaderComponent', () => {
       return {value: 'mock Id'};
     });
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userProfile));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
     spyOn(userService, 'initialize');
