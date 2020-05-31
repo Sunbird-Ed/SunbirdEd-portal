@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import { PlayerService } from '@sunbird/core';
+import { courseConsumptionServiceMockData } from './course-consumption.service.data.spec';
 
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
@@ -53,7 +54,7 @@ describe('CourseConsumptionService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should not call api to get course herierachy if data exists', () => {
+  it('should not call api to get course hierarchy if data exists', () => {
     const service = TestBed.get(CourseConsumptionService);
     const playerService = TestBed.get(PlayerService);
     service.courseHierarchy = courseHierarchyGetMockResponse.result.content;
@@ -63,13 +64,25 @@ describe('CourseConsumptionService', () => {
     expect(playerService.getCollectionHierarchy).not.toHaveBeenCalled();
   });
 
-  it('should call api to get course herierachy if data not exists', () => {
+  it('should call api to get course hierarchy if data not exists', () => {
     const service = TestBed.get(CourseConsumptionService);
     const playerService = TestBed.get(PlayerService);
     spyOn(service, 'getCourseHierarchy').and.callThrough();
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(courseHierarchyGetMockResponse));
     service.getCourseHierarchy('do_212347136096788480178');
     expect(playerService.getCollectionHierarchy).toHaveBeenCalled();
+  });
+
+  it('should call flattenDeep', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const response = service.flattenDeep(courseConsumptionServiceMockData.contents);
+    expect(response.length).toBe(2);
+  });
+
+  it('should call parseChildren', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const response = service.parseChildren(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(courseConsumptionServiceMockData.parseChildrenResult);
   });
 
 });
