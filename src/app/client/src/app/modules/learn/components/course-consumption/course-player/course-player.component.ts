@@ -579,7 +579,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   navigateToPlayerPage(collectionUnit, event?) {
-    if (this.enrolledCourse || this.hasPreviewPermission) {
+    if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
@@ -600,7 +600,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
 
           let consumedContents = [];
-          if (consumedContents.length) {
+          if (this.contentStatus.length) {
             consumedContents = flattenDeepContents.filter(o => {
               return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
             });

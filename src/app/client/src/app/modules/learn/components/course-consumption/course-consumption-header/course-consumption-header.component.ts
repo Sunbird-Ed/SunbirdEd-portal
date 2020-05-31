@@ -96,22 +96,26 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        if (!this.flaggedCourse && this.onPageLoadResume &&
-          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-          this.resumeCourse();
-        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-        } else {
-          this.onPageLoadResume = false;
+        if (this.batchId) {
+          this.enrolledCourse = true;
+          this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+          this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+          if (!this.flaggedCourse && this.onPageLoadResume &&
+            !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+            this.resumeCourse();
+          } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+          } else {
+            this.onPageLoadResume = false;
+          }
         }
       });
-    this.getContentState();
+    if (this.batchId) {
+      this.getContentState();
+    }
   }
 
   getContentState() {
@@ -181,7 +185,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
-   if (this.enrolledBatchInfo.endDate) {
+   /* istanbul ignore else */
+   if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
