@@ -16,7 +16,7 @@
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid 
           [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
-          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event); getInteractEdata($event, section.name)">
+          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">

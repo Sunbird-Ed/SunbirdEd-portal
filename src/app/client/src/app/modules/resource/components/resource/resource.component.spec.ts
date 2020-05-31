@@ -81,7 +81,7 @@ describe('ResourceComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(2);
 
   });
@@ -98,7 +98,7 @@ describe('ResourceComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(0);
 
   });

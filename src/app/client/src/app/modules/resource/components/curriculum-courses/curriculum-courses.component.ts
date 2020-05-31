@@ -7,6 +7,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { map } from 'rxjs/operators';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-curriculum-courses',
@@ -28,12 +29,13 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public selectedCourse: {};
   public courseList: any = [];
   public title: string;
-  public enrolledCourses: any = [];
-  public mergedCourseList: {} = {enrolledCourses: [], courseList: []};
+  public mergedCourseList: any = [];
+
+  public telemetryImpression: IImpressionEventInput;
   constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private router: Router, private navigationhelperService: NavigationHelperService,
-    private coursesService: CoursesService,
+    private coursesService: CoursesService, private telemetryService: TelemetryService
    ) { }
 
   ngOnInit() {
@@ -46,13 +48,29 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
       this.navigationhelperService.goBack();
     }
+    this.setTelemetryImpression();
+  }
+
+  setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
+    };
   }
 
   private fetchEnrolledCourses() {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       return enrolledCourses;
     })).subscribe(enrolledCourses => {
-      this.enrolledCourses = this.courseList.map((course) => {
+      this.mergedCourseList = this.courseList.map((course) => {
         const enrolledCourse = _.find(enrolledCourses,  {courseId: course.identifier});
         if (enrolledCourse) {
           return {
@@ -83,7 +101,28 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   navigateToCourseDetails(course) {
+    this.getInteractData(course);
     const courseId = _.get(course, 'metaData.courseId') || course.identifier;
     this.router.navigate(['learn/course', courseId]);
+  }
+
+  getInteractData(course) {
+    const cardClickInteractData = {
+      context: {
+        cdata: [],
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: _.get(course, 'identifier'),
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      },
+      object: {
+          id: course.identifier,
+          type: course.contentType || 'course',
+          ver: course.pkgVersion ? course.pkgVersion.toString() : '1.0'
+      }
+    };
+    this.telemetryService.interact(cardClickInteractData);
   }
 }

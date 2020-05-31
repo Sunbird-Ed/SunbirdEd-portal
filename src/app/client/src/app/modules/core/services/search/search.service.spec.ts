@@ -80,13 +80,13 @@ describe('SearchService', () => {
 
        it('courseType should be equal to Course', inject([SearchService],
         (service: SearchService) => {
-        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, true);
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['Course']);
         expect(data.filters.contentType[0]).toEqual('Course');
        }));
 
        it('courseType should be equal to TextBook', inject([SearchService],
         (service: SearchService) => {
-        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, false);
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['TextBook']);
         expect(data.filters.contentType).toEqual(['TextBook']);
        }));
 

@@ -185,7 +185,7 @@ describe('ExploreComponent', () => {
   it('should play content', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
     spyOn<any>(publicPlayerService, 'playContent');
-    component.playContent(RESPONSE.playContentEvent);
+    component.playContent(RESPONSE.playContentEvent, 'test');
     expect(publicPlayerService.playContent).toHaveBeenCalledWith(RESPONSE.playContentEvent);
   });
 
@@ -200,7 +200,7 @@ describe('ExploreComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(2);
 
   });
@@ -216,7 +216,7 @@ describe('ExploreComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(0);
 
   });

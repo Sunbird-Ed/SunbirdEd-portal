@@ -189,7 +189,22 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  public playContent(event) {
+  public playContent(event, sectionName) {
+    const telemetryData = {
+      cdata: [{
+          type: 'section',
+          id: sectionName
+        }],
+      edata: {
+        id: 'content-card',
+      },
+      object: {
+        id: event.data.identifier,
+        type: event.data.contentType || 'content',
+        ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
+      }
+    };
+    this.getInteractEdata(telemetryData);
     this.publicPlayerService.playContent(event);
   }
 
@@ -246,6 +261,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
+    const telemetryData = {
+      cdata: [{
+        type: 'Library Courses',
+        id:  _.get(event, 'data.title'),
+      }],
+      edata: {
+        id: 'course-card'
+      },
+      object: {}
+    };
+    this.getInteractEdata(telemetryData);
 
     if (event.data.contents.length === 1) {
       this.router.navigate(['explore-course/course', _.get(event.data, 'contents[0].identifier')]);
@@ -259,27 +285,18 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  getInteractEdata(event, sectionName) {
-    const telemetryCdata = [{
-      type: 'section',
-      id: sectionName
-    }];
-
-    const cardClickInteractData = {
+  getInteractEdata(event) {
+      const cardClickInteractData = {
       context: {
-        cdata: telemetryCdata,
+        cdata: event.cdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
-        id: 'content-card',
+        id: _.get(event, 'edata.id'),
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       },
-      object: {
-        id: event.data.identifier,
-        type: event.data.contentType || 'content',
-        ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
-      }
+      object: _.get(event, 'object')
     };
     this.telemetryService.interact(cardClickInteractData);
   }

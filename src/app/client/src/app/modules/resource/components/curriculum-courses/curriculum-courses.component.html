@@ -1,6 +1,6 @@
-<div *ngIf="courseList.length > 0">
+<div *ngIf="courseList.length > 0" [appTelemetryImpression]="telemetryImpression">
 
-<div class="sb-bg-color-white">
+<div class="sb-bg-color-white" >
   <div class="ui container py-8">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-link
       sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()">
@@ -31,7 +31,7 @@
 
 <div class="ui container mt-24 sb-library-cards">
   <div class="sbgrid">
-    <div *ngFor="let course of enrolledCourses">
+    <div *ngFor="let course of mergedCourseList">
       <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course"  [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
       <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>

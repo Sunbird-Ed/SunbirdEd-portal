@@ -1,4 +1,4 @@
-<div *ngIf="courseList.length > 0">
+<div *ngIf="courseList.length > 0" [appTelemetryImpression]="telemetryImpression">
 
   <div class="sb-bg-color-white">
     <div class="ui container py-8">
@@ -31,7 +31,7 @@
   <div class="ui container mt-24 sb-library-cards">
       <div class="sbgrid">
         <div *ngFor="let course of courseList">
-          <sb-course-card [course]="course" [cardImg]="course.appIcon" (cardClick)="navigateToCourse($event)" [section]="null"></sb-course-card>
+          <sb-course-card [course]="course" [cardImg]="course.appIcon" (cardClick)="navigateToCourse($event); getInteractData($event)" [section]="null"></sb-course-card>
         </div>
         
       </div>
