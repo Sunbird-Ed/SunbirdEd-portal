@@ -10,7 +10,8 @@ import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operato
 import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
-  templateUrl: './resource.component.html'
+  templateUrl: './resource.component.html',
+  styles: ['.course-card-width { width: 280px }']
 })
 export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilter = false;

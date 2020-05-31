@@ -14,7 +14,8 @@ import { UtilService } from './../../../../../shared/services/util/util.service'
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   selector: 'app-explore-component',
-  templateUrl: './explore.component.html'
+  templateUrl: './explore.component.html',
+  styles: ['.course-card-width { width: 280px }']
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilter = false;
