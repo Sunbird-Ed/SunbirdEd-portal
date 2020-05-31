@@ -234,6 +234,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
           this.totalCount = data.result.response.count;
           this.pager = this.paginationService.getPager(data.result.response.count, this.pageNumber, this.pageLimit);
           this.updateBatch();
+          this.getCourseName(_.uniq(_.map(this.batchList, 'courseId')));
         } else {
           this.showError = false;
           this.noResult = true;
@@ -256,6 +257,30 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
       this.batchService.setBatchData(batchData);
     }
     this.route.navigate(['update/batch', batchData.identifier], {queryParamsHandling: 'merge', relativeTo: this.activatedRoute});
+  }
+
+  /**
+   * @since - #SH-58
+   * @param  {Array} courseIds - unique courseIDs of the batches.
+   * @description - This method helps to get the name of course to which the batch belongs.
+   * @returns - course name mapped to the batch list.
+   */
+  getCourseName(courseIds) {
+    const searchOption = {
+      'filters': {
+        'identifier': _.uniq(courseIds),
+        'status': ['Live'],
+        'contentType': ['Course']
+      },
+      'fields': ['name']
+    };
+    this.searchService.contentSearch(searchOption, false).subscribe(data => {
+      if (_.get(data, 'result.content')) {
+        _.map(this.batchList, (batchData) => {
+          batchData.courseDetails = _.find(_.get(data, 'result.content'), courseData => courseData.identifier === batchData.courseId);
+        });
+      }
+    });
   }
 
   /**
