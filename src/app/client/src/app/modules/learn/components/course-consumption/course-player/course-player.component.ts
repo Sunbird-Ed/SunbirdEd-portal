@@ -162,7 +162,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       })), this.subscribeToContentProgressEvents())
       .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
         if (!contentProgressEvent) {
-          this.courseConsumptionService.updateContentConsumedStatus.subscribe(({courseId, batchId}) => {
+          this.courseConsumptionService.updateContentConsumedStatus
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe(({courseId, batchId}) => {
             if (this.courseId === courseId && this.batchId === batchId) {
               this.getContentState();
             }
