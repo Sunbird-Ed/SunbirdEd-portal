@@ -14,7 +14,7 @@ import * as TreeModel from 'tree-model';
 export class CourseConsumptionService {
 
   courseHierarchy: any;
-  updateContentConsumedStatus = new EventEmitter<boolean>();
+  updateContentConsumedStatus = new EventEmitter<any>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 

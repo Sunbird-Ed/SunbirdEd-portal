@@ -61,7 +61,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.checkCourseStatus(courseHierarchy);
         this.updateBreadCrumbs();
         this.showLoader = false;
-        this.courseConsumptionService.updateContentConsumedStatus.emit(true);
+        this.courseConsumptionService.updateContentConsumedStatus.emit({ courseId: this.courseId, batchId: this.batchId });
       }, (err) => {
         if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
           this.toasterService.error(this.resourceService.messages.fmsg.m0086);
