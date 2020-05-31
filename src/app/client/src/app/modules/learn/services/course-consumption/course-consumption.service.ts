@@ -38,22 +38,31 @@ export class CourseConsumptionService {
   updateContentsState(req) {
     return this.courseProgressService.updateContentsState(req);
   }
-  parseChildren() {
+  parseChildren(courseHierarchy) {
     const model = new TreeModel();
     const mimeTypeCount = {};
-    const treeModel: any = model.parse(this.courseHierarchy);
+    const treeModel: any = model.parse(courseHierarchy);
     const contentIds = [];
     treeModel.walk((node) => {
       if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
-        if (mimeTypeCount[node.model.mimeType]) {
-          mimeTypeCount[node.model.mimeType] += 1;
-        } else {
-          mimeTypeCount[node.model.mimeType] = 1;
-        }
+        mimeTypeCount[node.model.mimeType] = mimeTypeCount[node.model.mimeType] + 1 || 1;
         contentIds.push(node.model.identifier);
       }
     });
 
     return contentIds;
+  }
+
+  flattenDeep(contents) {
+    if (contents) {
+      return contents.reduce((acc, val) => {
+        if (val.children) {
+          acc.push(val);
+          return acc.concat(this.flattenDeep(val.children));
+        } else {
+          return acc.concat(val);
+        }
+      }, []);
+    }
   }
 }

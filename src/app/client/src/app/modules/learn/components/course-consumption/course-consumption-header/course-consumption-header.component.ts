@@ -115,7 +115,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   getContentState() {
-    const contentIds = this.courseConsumptionService.parseChildren();
+    const contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
     if (_.hasIn(this.enrolledBatchInfo, 'status') && contentIds.length) {
       const req = {
         userId: this.userService.userid,

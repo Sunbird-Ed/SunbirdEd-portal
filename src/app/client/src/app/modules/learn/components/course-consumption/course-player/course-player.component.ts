@@ -597,7 +597,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.courseHierarchy.children) {
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
-          const flattenDeepContents = this.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+          const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
 
           let consumedContents = [];
           if (consumedContents.length) {
@@ -619,20 +619,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.isUnitConsumed = consumedContent.length === 1;
         }
       });
-    }
-  }
-
-  private flattenDeep(contents) {
-    /* istanbul ignore else */
-    if (contents) {
-      return contents.reduce((acc, val) => {
-        if (val.children) {
-          acc.push(val);
-          return acc.concat(this.flattenDeep(val.children));
-        } else {
-          return acc.concat(val);
-        }
-      }, []);
     }
   }
 }

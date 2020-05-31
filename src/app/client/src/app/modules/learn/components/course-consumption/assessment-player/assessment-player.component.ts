@@ -114,7 +114,7 @@ export class AssessmentPlayerComponent implements OnInit {
 
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
     if (_.get(this.courseHierarchy, 'children')) {
-      const flattenDeepContents = this.flattenDeep(this.courseHierarchy.children);
+      const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
 
       if (selectedContent) {
         this.activeContent = flattenDeepContents.find(content => content.identifier === selectedContent);
@@ -136,19 +136,6 @@ export class AssessmentPlayerComponent implements OnInit {
 
   private firstNonCollectionContent(contents) {
     return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection');
-  }
-
-  private flattenDeep(contents) {
-    if (contents) {
-      return contents.reduce((acc, val) => {
-        if (val.children) {
-          acc.push(val);
-          return acc.concat(this.flattenDeep(val.children));
-        } else {
-          return acc.concat(val);
-        }
-      }, []);
-    }
   }
 
   private initPlayer(id: string) {
@@ -179,7 +166,7 @@ export class AssessmentPlayerComponent implements OnInit {
     const req = {
       userId: this.userService.userid,
       courseId: this.courseId,
-      contentIds: this.parseChildContent(),
+      contentIds: this.courseConsumptionService.parseChildren(this.courseHierarchy),
       batchId: this.batchId
     };
     this.courseConsumptionService.getContentState(req)
@@ -188,25 +175,6 @@ export class AssessmentPlayerComponent implements OnInit {
         this.contentStatus = res.content || [];
         this.calculateProgress();
       }, err => console.error(err, 'content read api failed'));
-  }
-
-  private parseChildContent() {
-    const contentIds = [this.activeContent.identifier];
-    const model = new TreeModel();
-    const mimeTypeCount = {};
-    const treeModel: any = model.parse(this.courseHierarchy);
-    treeModel.walk((node) => {
-      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
-        if (mimeTypeCount[node.model.mimeType]) {
-          mimeTypeCount[node.model.mimeType] += 1;
-        } else {
-          mimeTypeCount[node.model.mimeType] = 1;
-        }
-        contentIds.push(node.model.identifier);
-      }
-    });
-
-    return contentIds;
   }
 
   public contentProgressEvent(event) {
@@ -280,7 +248,7 @@ export class AssessmentPlayerComponent implements OnInit {
       let totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
-          const flattenDeepContents = this.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+          const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
           totalContents += flattenDeepContents.length;
           const contents = flattenDeepContents.filter(o => {
             return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
