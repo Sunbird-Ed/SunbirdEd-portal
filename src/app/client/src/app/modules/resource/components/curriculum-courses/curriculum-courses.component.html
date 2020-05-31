@@ -14,15 +14,14 @@
 <div class="content-header header-shadow" [ngStyle]="{'background': selectedCourse?.theme}">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="content-header__img mr-8">
+      <div class="content-header__img mr-8" *ngIf="selectedCourse?.cardImg">
         <img [src]="selectedCourse?.cardImg">
       </div>
 
       <div class="flex-basis-1 mr-32 text-left">
         <h5 class="content-header__title mt-4 ellipsis" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">{{title}}</h5>
         <div class="content-header__info">
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length > 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
-        <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length === 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.oneCourse).toUpperCase()}}</div>
+          <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
         </div>
         
       </div>

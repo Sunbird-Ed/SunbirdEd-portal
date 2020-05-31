@@ -11,7 +11,7 @@ import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   templateUrl: './resource.component.html',
-  styles: ['.course-card-width { width: 280px }']
+  styles: ['.course-card-width { width: 280px !important }']
 })
 export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilter = false;
@@ -101,7 +101,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
-    const option = this.searchService.getSearchRequest(request, false);
+    const option = this.searchService.getSearchRequest(request, ['TextBook']);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -151,6 +151,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private  fetchCourses() {
+    this.cardData = [];
     this.isLoading = true;
     const request = {
       filters: this.selectedFilters,
@@ -158,7 +159,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
-    this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
 
     this.cardData = _.sortBy(cardData, ['title']);
@@ -170,12 +171,16 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
-    this.searchService.subjectThemeAndCourse = event.data;
-    this.router.navigate(['resources/curriculum-courses'], {
-      queryParams: {
-        title: _.get(event, 'data.title'),
-      },
-    });
+    if (event.data.contents.length === 1) {
+      this.router.navigate(['learn/course', _.get(event.data, 'contents[0].identifier')]);
+    } else {
+      this.searchService.subjectThemeAndCourse = event.data;
+      this.router.navigate(['resources/curriculum-courses'], {
+        queryParams: {
+          title: _.get(event, 'data.title'),
+        },
+      });
+    }
   }
 
   private prepareVisits(event) {

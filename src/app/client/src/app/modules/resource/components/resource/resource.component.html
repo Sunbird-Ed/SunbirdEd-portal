@@ -3,6 +3,7 @@
   </app-search-filter>
   <div class="ui container mt-24 sb-library-cards">
       <div *ngIf="cardData.length > 0">
+        <h4 class="sb-categories-title mt-16">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
         <ngx-slick  class="carousel" #slickModal="slick-modal" [config]="slideConfig">
           <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
             <sb-course-curiculum-card [index]="index" [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>

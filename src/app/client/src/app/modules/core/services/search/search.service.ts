@@ -46,7 +46,7 @@ export class SearchService {
    */
   public publicDataService: PublicDataService;
   public resourceService: ResourceService;
-  private _subjectThemeAndCourse: any;
+  private _subjectThemeAndCourse: object;
   /**
    * Default method of OrganisationService class
    *
@@ -324,8 +324,8 @@ export class SearchService {
     return facetObj;
   }
 
-  public fetchCourses(request, isCourse, title?) {
-    const option = this.getSearchRequest(request, isCourse);
+  public fetchCourses(request, contentType) {
+    const option = this.getSearchRequest(request, contentType);
     let cardData = [];
     return this.contentSearch(option).pipe(map((response) => {
       const contents = _.get(response, 'result.content');
@@ -355,15 +355,12 @@ export class SearchService {
     return this._subjectThemeAndCourse;
   }
 
-  getSearchRequest(request, isCourse) {
+  getSearchRequest(request, contentType) {
     let filters = request.filters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters['contentType'] = contentType; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     if (!request.isCustodianOrg) {
       filters['channel'] = request.channelId;
-    }
-    if (isCourse) {
-      filters['contentType'] = ['Course'];
     }
     const option = {
         limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
@@ -389,7 +386,7 @@ export class SearchService {
       });
 
       _.map(contents, content => {
-        const matchedSubject =  _.find(subjects, subject => (content.subject === subject.title));
+        const matchedSubject =  _.find(subjects, subject => (_.trim(_.lowerCase(content.subject)) === _.trim(_.lowerCase(subject.title))));
         if (matchedSubject) {
           matchedSubject.contents.push(content);
         }
