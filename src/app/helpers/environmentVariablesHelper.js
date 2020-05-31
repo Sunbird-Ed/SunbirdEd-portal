@@ -36,8 +36,10 @@ let envVariables = {
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
+  sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
 
 
   // TTL and Intervals
@@ -45,7 +47,7 @@ let envVariables = {
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
-  sunbird_portal_updateLoginTimeEnabled:env.sunbird_portal_updateLoginTimeEnabled || false,
+  sunbird_portal_updateLoginTimeEnabled: env.sunbird_portal_updateLoginTimeEnabled || false,
 
 
   // Telemetry Configuration
@@ -83,6 +85,7 @@ let envVariables = {
     clientSecret: env.sunbird_google_oauth_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  google_captcha_private_key: env.google_captcha_private_key,
 
 
   // Android Configuration
@@ -98,6 +101,7 @@ let envVariables = {
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
+  desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
 
@@ -130,7 +134,7 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
- 
+
 
   // CDN Configuration
   PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
@@ -146,4 +150,17 @@ let envVariables = {
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
-module.exports = envVariables
+// Path to dev config file
+const devConfig = __dirname + '/devConfig.js';
+try {
+  // If environment is `local`; use custom config
+  // Else default config will be used
+  if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
+    const devVariables = require('./devConfig');
+    module.exports = devVariables;
+  } else {
+    module.exports = envVariables;
+  }
+} catch (error) {
+  module.exports = envVariables;
+}
