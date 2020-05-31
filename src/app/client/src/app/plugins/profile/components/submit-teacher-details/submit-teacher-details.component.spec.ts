@@ -171,11 +171,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(returnData).toBeDefined();
   });
 
-  it('should call getState', () => {
-    const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(mockRes.stateData));
-    component.getState();
-    expect(component.allStates).toEqual(mockRes.stateData.result.response);
-  });
+
 });
 
