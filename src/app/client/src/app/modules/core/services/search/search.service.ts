@@ -379,7 +379,7 @@ export class SearchService {
       let subjects = _.map(contents, content => {
         return (_.get(content, 'subject'));
       });
-      subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
       return ({ title: subject[0], count: subject.length === 1 ?
         `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
         : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: [] });
