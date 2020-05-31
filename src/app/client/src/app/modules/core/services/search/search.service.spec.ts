@@ -81,7 +81,7 @@ describe('SearchService', () => {
        it('should return request options with courseType', inject([SearchService],
         (service: SearchService) => {
         const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, true);
-        expect(data.filters.contentType).toEqual('Course');
+        expect(data.filters.contentType[0]).toEqual('Course');
        }));
 
        it('should return request options without courseType', inject([SearchService],
