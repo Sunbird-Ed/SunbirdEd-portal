@@ -4,7 +4,7 @@
   <div class="ui container mt-24 sb-library-cards">
       <div *ngIf="cardData.length > 0">
         <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-          <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16">
+          <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
             <sb-course-curiculum-card class="sb--card--seperator" [index]="index" [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
           </div>
       </ngx-slick>
