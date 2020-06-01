@@ -180,11 +180,12 @@ describe('CreateUserComponent', () => {
     expect(component.enableSubmitButton).toHaveBeenCalled();
   });
 
+  it('should redirect to profile page on cancel', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    component.onCancel();
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+  });
+
 });
 
-it('should redirect to profile page on cancel', () => {
-  const navigationHelperService = TestBed.get(NavigationHelperService);
-  spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-  component.onCancel();
-  expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
-});
