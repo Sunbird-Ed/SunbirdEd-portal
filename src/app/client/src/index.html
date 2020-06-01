@@ -111,6 +111,15 @@
   <% if (slugForProminentFilter) { %>
     <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
   <% } %>
+  <% if (collectionEditorCDN) { %>
+    <input type="hidden" id="collectionEditorCDN" value="<%=collectionEditorCDN%>" />
+  <% } %>
+  <% if (contentEditorCDN) { %>
+    <input type="hidden" id="contentEditorCDN" value="<%=contentEditorCDN%>" />
+  <% } %>
+  <% if (genericEditorCDN) { %>
+    <input type="hidden" id="genericEditorCDN" value="<%=genericEditorCDN%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>

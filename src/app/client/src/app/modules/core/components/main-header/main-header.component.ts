@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService
+  ManagedUserService, ProgramsService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import {
@@ -93,13 +93,23 @@ export class MainHeaderComponent implements OnInit {
     view: this.config.constants.VIEW.VERTICAL,
     isBold: false
   };
+  cardConfig = {
+    size: this.config.constants.SIZE.SMALL,
+    isSelectable: false,
+    view: this.config.constants.VIEW.HORIZONTAL,
+    isBold: true
+  };
   totalUsersCount: number;
+  libraryMenuIntractEdata: IInteractEventEdata;
+  learnMenuIntractEdata: IInteractEventEdata;
+  contributeMenuEdata: IInteractEventEdata;
+  showContributeTab: boolean;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
-    private telemetryService: TelemetryService,
+    private telemetryService: TelemetryService, private programsService: ProgramsService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -123,6 +133,9 @@ export class MainHeaderComponent implements OnInit {
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
         }
+      });
+      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
+        this.showContributeTab = showTab;
       });
     } else {
       this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
@@ -312,6 +325,25 @@ export class MainHeaderComponent implements OnInit {
       type: 'click',
       pageid: 'explore'
     };
+    this.libraryMenuIntractEdata = {
+      id: 'library-tab',
+      type: 'click',
+      pageid: 'library'
+    };
+    this.learnMenuIntractEdata = {
+      id: 'learn-tab',
+      type: 'click',
+      pageid: 'learn'
+    };
+    this.contributeMenuEdata = {
+      id: 'contribute-tab',
+      type: 'click',
+      pageid: 'contribute'
+    };
+  }
+
+  getFeatureId(featureId, taskId) {
+    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }
 
   getLogoutInteractEdata() {
@@ -365,7 +397,11 @@ export class MainHeaderComponent implements OnInit {
     };
   }
   showSideBar() {
-    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+    if (this.userService.loggedIn) {
+      this.toggleSideMenu(true);
+    } else {
+      jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+    }
   }
 
   switchUser(event) {

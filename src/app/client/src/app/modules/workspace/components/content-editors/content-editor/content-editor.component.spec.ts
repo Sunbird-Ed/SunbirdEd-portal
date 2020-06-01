@@ -12,6 +12,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="contentEditorCDN" value="https://dev.sunbirded.org/content-editor/index.html"'
+  + ' type="hidden" />';
+
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
