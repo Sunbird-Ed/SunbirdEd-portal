@@ -119,10 +119,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     }
     _.forEach(_.get(data, 'validation'), (validationData) => {
       switch (validationData.type) {
-        case 'min':
+        case 'minlength':
           returnValue.push(Validators.minLength(validationData.value));
           break;
-        case 'max':
+        case 'maxlength':
           returnValue.push(Validators.maxLength(validationData.value));
           break;
         case 'pattern':

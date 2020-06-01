@@ -40,7 +40,19 @@
                 <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
                   [value]="district"></sui-select-option>
               </sui-select>
-              <label class="d-flex font-weight-normal">{{field.label}}<span *ngIf="field.required">*</span></label>
+              <label
+                *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
+                class="font-weight-normal">{{field.label}}<span *ngIf="field.required">*</span></label>
+              <label class="font-weight-normal orange text"
+                *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
+                {{ resourceService?.frmelmnts?.lbl?.requiredField | interpolate:'{field}': field.label }}
+              </label>
+              <div *ngFor="let validation of field.validation">
+                <label class="font-weight-normal orange text"
+                  *ngIf="validation.message && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
+                  {{ validation.message}}
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -50,8 +62,16 @@
               <input class="sb-form-control"
                 [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
                 formControlName="{{field.code}}" type="text" name="code" placeholder="{{field.description}}">
-                <label class="font-weight-normal" [ngClass]="{'orange text': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}">{{field.label}}<span *ngIf="field.required">*</span></label>
+              <label
+                *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
+                class="font-weight-normal">{{field.label}}<span *ngIf="field.required">*</span></label>
+              <div *ngFor="let validation of field.validation">
+                <label class="font-weight-normal orange text"
+                  *ngIf="validation.message && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
+                  {{ validation.message}}
+                </label>
               </div>
+            </div>
           </div>
         </div>
       </div>
