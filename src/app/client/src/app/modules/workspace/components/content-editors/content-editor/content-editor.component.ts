@@ -33,6 +33,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  contentEditorCDN: string = (<HTMLInputElement>document.getElementById('contentEditorCDN')).value;
 
   /**
   * Default method of class ContentEditorComponent
@@ -156,10 +157,14 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     });
   }
   private initEditor() {
+    if (environment.env !== 'prod') {
+      console.log('Editor loading from => ', this.contentEditorCDN); // TODO: log!
+      console.log('Editor complete URL => ', this.contentEditorCDN + '?' + this.buildNumber); // TODO: log!
+    }
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
+      iframeURL: this.contentEditorCDN + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
