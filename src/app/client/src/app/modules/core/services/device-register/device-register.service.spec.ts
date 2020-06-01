@@ -26,13 +26,4 @@ describe('DeviceRegisterService', () => {
             }
         });
     });
-
-  it('should be created and should fetch basic details', inject([],
-    () => {
-      const deviceService = TestBed.get(DeviceService);
-      const deviceRegisterService = TestBed.get(DeviceRegisterService);
-      spyOn(deviceService, 'post').and.returnValue(observableOf({}));
-      deviceRegisterService.registerDevice();
-      expect(deviceService.post).toHaveBeenCalled();
-    }));
 });
