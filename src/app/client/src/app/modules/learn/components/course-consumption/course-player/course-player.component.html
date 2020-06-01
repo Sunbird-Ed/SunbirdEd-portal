@@ -31,9 +31,9 @@
             <div *ngFor="let item of courseHierarchy?.children; let index = index">
               <div class="d-flex flex-ai-center flex-jc-space-between py-8">
                 <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse && !item?.isUnitConsumed"
+                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
                   class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-                <button (click)="navigateToPlayerPage(item)" *ngIf="!enrolledCourse && !hasPreviewPermission"
+                <button (click)="navigateToPlayerPage(item)" *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart"
                   class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
               </div>
               <div class="chapter-box sb-g">

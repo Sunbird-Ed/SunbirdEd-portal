@@ -615,9 +615,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.consumedContent = consumedContents.length;
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
+          unit.isUnitConsumptionStart = false;
           if (consumedContents.length) {
             unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+            unit.isUnitConsumptionStart = true;
+          } else {
+            unit.isUnitConsumptionStart = false;
           }
+
         } else {
           const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
           unit.consumedContent = consumedContent.length;
