@@ -177,10 +177,11 @@ describe('CreateUserComponent', () => {
     expect(component.enableSubmitButton).toHaveBeenCalled();
   });
 
-  it('should navigate', () => {
+  it('should redirect to profile page on cancel', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    component.cancelUserCreation();
+    component.onCancel();
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
   });
+
 });
