@@ -80,4 +80,5 @@ export interface SearchParam {
  mode?: string;
 
  fields?: string[];
+ locationIds?: string[];
 }
