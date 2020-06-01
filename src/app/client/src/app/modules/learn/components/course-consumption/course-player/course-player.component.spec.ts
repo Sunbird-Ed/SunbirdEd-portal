@@ -485,7 +485,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
-    expect(component.showJoinTrainingModal).toBeTruthy();
+    expect(component.showJoinTrainingModal).toBeFalsy();
   });
   it('should log telemetry on click of close icon on join training popup ', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -507,9 +507,7 @@ describe('CoursePlayerComponent', () => {
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
-    expect(component.showJoinTrainingModal).toBeTruthy();
     component.closeJoinTrainingModal();
-    expect(component.showJoinTrainingModal).toBeFalsy();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
 });
