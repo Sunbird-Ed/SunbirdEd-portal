@@ -29,7 +29,7 @@ jobs:
           paths: ./node_modules
       - run:
           name: ng lint and building
-          command: 'mkdir -p /tmp/logs && node --max_old_space_size=8096  ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/ | tee /tmp/logs/build.log'
+          command: 'mkdir -p /tmp/logs && node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/ | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
