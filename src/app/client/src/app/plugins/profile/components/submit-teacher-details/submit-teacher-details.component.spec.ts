@@ -170,4 +170,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const returnData = component.setValidations(mockRes.checkValidationInput);
     expect(returnData).toBeDefined();
   });
+
+
+
 });
