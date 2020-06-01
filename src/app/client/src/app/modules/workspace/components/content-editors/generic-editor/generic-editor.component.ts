@@ -32,8 +32,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
-  genericEditorCDN: string = (<HTMLInputElement>document.getElementById('genericEditorCDN'))
-  ? (<HTMLInputElement>document.getElementById('genericEditorCDN')).value : '/thirdparty/editors/generic-editor/index.html?';
+  genericEditorCDN: string = (<HTMLInputElement>document.getElementById('genericEditorCDN')).value;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -135,10 +134,14 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
    *Launch Generic Editor in the modal
    */
   private initEditor() {
+    if (environment.env !== 'prod') {
+      console.log('Editor loading from => ', this.genericEditorCDN); // TODO: log!
+      console.log('Editor complete URL => ', this.genericEditorCDN + '?' + this.buildNumber); // TODO: log!
+    }
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: this.genericEditorCDN + this.buildNumber,
+      iframeURL: this.genericEditorCDN + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
