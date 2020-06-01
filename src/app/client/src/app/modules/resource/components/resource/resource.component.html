@@ -2,16 +2,20 @@
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
   <div class="ui container mt-24 sb-library-cards">
-      
       <div *ngIf="cardData.length > 0">
-        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [isLoading]="isLoading" [title]="resourceService?.frmelmnts?.lbl?.courses"  (cardClick)="navigateToCourses($event)"></sb-course-cards-hlist>
+        <h4 class="sb-categories-title mt-16">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
+        <ngx-slick  class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+          <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
+            <sb-course-curiculum-card [index]="index" [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
+          </div>
+      </ngx-slick>
       </div>
-      
-      <h4 class="sb-categories-title mt-16">Text Books</h4>
+
+      <h4 class="sb-categories-title mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
-          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event); getInteractEdata($event, section.name)">
+          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">
