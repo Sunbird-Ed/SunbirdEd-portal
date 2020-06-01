@@ -26,8 +26,8 @@ export class CreateUserComponent implements OnInit {
   formData;
   showLoader = true;
   telemetryImpression: IImpressionEventInput;
-  telemetryInteractObject: IInteractEventObject;
   submitInteractEdata: IInteractEventEdata;
+  submitCancelInteractEdata: IInteractEventEdata;
   pageId = 'create-managed-user';
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
@@ -63,6 +63,12 @@ export class CreateUserComponent implements OnInit {
 
     this.submitInteractEdata = {
       id: 'submit-create-managed-user',
+      type: 'click',
+      pageid: this.pageId
+    };
+
+    this.submitCancelInteractEdata = {
+      id: 'cancel-create-managed-user',
       type: 'click',
       pageid: this.pageId
     };
@@ -129,6 +135,10 @@ export class CreateUserComponent implements OnInit {
     this.userDetailsForm.valueChanges.subscribe(val => {
       this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
     });
+  }
+
+  onCancel() {
+    this.router.navigate(['/profile']);
   }
 
   onSubmitForm() {
