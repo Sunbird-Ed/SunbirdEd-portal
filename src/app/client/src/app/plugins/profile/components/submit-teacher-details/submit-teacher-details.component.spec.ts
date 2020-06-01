@@ -20,7 +20,7 @@ import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, FormService, SearchService } from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 describe('SubmitTeacherDetailsComponent', () => {
@@ -39,7 +39,9 @@ describe('SubmitTeacherDetailsComponent', () => {
       },
       'emsg': {
         'm0005': 'Something went wrong, try later',
-        'm0018': 'error'
+        'm0018': 'error',
+        'm0016': 'error',
+        'm0017': 'error'
       },
       'smsg': {
         'm0046': 'Profile updated successfully',
@@ -80,6 +82,15 @@ describe('SubmitTeacherDetailsComponent', () => {
     configService = TestBed.get(ConfigService);
     component.pageId = 'profile-read';
     component.userProfile = mockRes.userData;
+    component.formData = mockRes.formData;
+    const formGroupObj = {};
+    for (const key of component.formData) {
+      const validation = component.setValidations(key);
+      if (key.visible) {
+        formGroupObj[key.code] = new FormControl(null, validation);
+      }
+    }
+    component.userDetailsForm = component.sbFormBuilder.group(formGroupObj);
   });
 
   it('should call ng on init', () => {
@@ -93,7 +104,7 @@ describe('SubmitTeacherDetailsComponent', () => {
 
   it('should call setTelemetryData', () => {
     component.setTelemetryData();
-    expect(component.submitInteractEdata).toEqual({id: 'submit-teacher-details', type: 'click', pageid: 'profile-read'});
+    expect(component.submitInteractEdata).toEqual({ id: 'submit-teacher-details', type: 'click', pageid: 'profile-read' });
     expect(component.cancelInteractEdata).toBeDefined();
   });
 
@@ -120,11 +131,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.updateProfile('');
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0018);
     expect(component.closeModal).toHaveBeenCalled();
-  });
-
-  it('should call getUpdateTelemetry', () => {
-    const returnData = component.getUpdateTelemetry();
-    expect(returnData).toEqual({ 'id': 'update-teacher-details', 'type': 'click', 'pageid': 'profile-read', 'extra': { 'fieldsChanged': ['State', 'District'] } });
   });
 
   it('should call setFormDetails and get success', () => {
@@ -171,6 +177,47 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(returnData).toBeDefined();
   });
 
+  it('should call getState and get success', () => {
+    const state = component.userDetailsForm.controls['state'];
+    state.setValue('');
+    component.userProfile = mockRes.userData;
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(mockRes.stateData));
+    spyOn(component, 'initializeFormFields');
+    component.getState();
+    expect(component.allStates).toBe(mockRes.stateData.result.response);
+  });
 
+  it('should call getState and get error', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError({}));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(component, 'closeModal');
+    component.getState();
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0016);
+  });
 
+  it('should call getDistrict', () => {
+    spyOn(component, 'initializeFormFields');
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(mockRes.stateData));
+    const district = component.userDetailsForm.controls['district'];
+    district.setValue('12');
+    component.getDistrict('1234');
+    expect(component.allDistricts).toBe(mockRes.stateData.result.response);
+
+  });
+
+  it('should call getDistrict and get error', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError({}));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(component, 'closeModal');
+    component.getDistrict('');
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0017);
+  });
 });
