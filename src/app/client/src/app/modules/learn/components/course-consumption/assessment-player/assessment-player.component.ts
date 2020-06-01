@@ -81,6 +81,9 @@ export class AssessmentPlayerComponent implements OnInit {
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
+              this.showLoader = false;
+              this.toasterService.error(this.resourceService.messages.stmsg.m0005);
+              this.goBack();
               console.error('Error while fetching data', error);
             });
         } else {

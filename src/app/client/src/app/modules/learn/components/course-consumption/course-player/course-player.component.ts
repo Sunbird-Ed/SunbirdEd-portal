@@ -139,6 +139,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
+    this.courseConsumptionService.updateContentConsumedStatus.subscribe((data) => {
+      if (this.courseHierarchy) {
+        this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
+        this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
+        this.getContentState();
+      }
+    });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
@@ -160,15 +167,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
           .pipe(map(courseHierarchy => ({ courseHierarchy })));
       })), this.subscribeToContentProgressEvents())
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
         if (!contentProgressEvent) {
-          this.courseConsumptionService.updateContentConsumedStatus
+          /* this.courseConsumptionService.updateContentConsumedStatus
           .pipe(takeUntil(this.unsubscribe))
           .subscribe(({courseId, batchId}) => {
             if (this.courseId === courseId && this.batchId === batchId) {
               this.getContentState();
             }
-          });
+          }); */
           this.courseHierarchy = courseHierarchy;
           this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
           this.courseInteractObject = {
@@ -188,12 +196,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             }, 100);
             if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
               this.getContentState();
-              this.subscribeToQueryParam();
             }
           } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
             || this.courseHierarchy.createdBy === this.userService.userid) {
             this.hasPreviewPermission = true;
-            this.subscribeToQueryParam();
           }
           this.collectionTreeNodes = { data: this.courseHierarchy };
           this.loader = false;
@@ -343,7 +349,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       options.batchId = this.batchId;
     }
-    this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
+    this.courseConsumptionService.getConfigByContent(data.id, options)
+      .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
         if (config.context) {
           config.context.objectRollup = this.objectRollUp;
@@ -394,7 +401,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.courseConsumptionService.updateContentsState(request).pipe(first())
+    this.courseConsumptionService.updateContentsState(request).pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
         err => console.log('updating content status failed', err));
   }
