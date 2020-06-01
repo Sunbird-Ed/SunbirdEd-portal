@@ -2,18 +2,21 @@ import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, UserService, PermissionService } from '@sunbird/core';
-import { async, ComponentFixture, TestBed, tick, fakeAsync  } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoursePlayerComponent } from './course-player.component';
 import { SharedModule, ResourceService, WindowScrollService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService, AssessmentScoreService } from '@sunbird/learn';
-import { CourseHierarchyGetMockResponse,
-          CourseHierarchyGetMockResponseFlagged,
-          telemetryInteractMockData } from './course-player.component.mock.data';
+import {
+  CourseHierarchyGetMockResponse,
+  CourseHierarchyGetMockResponseFlagged,
+  telemetryInteractMockData
+} from './course-player.component.mock.data';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CoursesService } from './../../../../core/services/course/course.service';
 import * as _ from 'lodash-es';
+import { assessmentPlayerMockData } from '../assessment-player/assessment-player.component.data.spec';
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
@@ -60,7 +63,7 @@ describe('CoursePlayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
       providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService, AssessmentScoreService,
-      ContentUtilsServiceService, TelemetryService,
+        ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
@@ -339,132 +342,164 @@ describe('CoursePlayerComponent', () => {
   });
   it('should make update contentState api call if the content is youTube and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'video/x-youtube'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 20}]}
-      }}};
+    const contentData = { model: { mimeType: 'video/x-youtube' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 20 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
-    component.enrolledBatchInfo = {status: 1};
+    component.enrolledBatchInfo = { status: 1 };
     component.contentProgressEvent(telemetryEvent);
 
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
   it('should make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'video/mp4'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 20}]}
-      }}};
+    const contentData = { model: { mimeType: 'video/mp4' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 20 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
-    component.enrolledBatchInfo = {status: 1};
+    component.enrolledBatchInfo = { status: 1 };
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
   it('should not make update contentState api call if the content is youTube and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'video/x-youtube'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 19}]}
-      }}};
+    const contentData = { model: { mimeType: 'video/x-youtube' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 19 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
-    component.enrolledBatchInfo = {status: 1};
+    component.enrolledBatchInfo = { status: 1 };
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
   it('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'video/mp4'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 19}]}
-      }}};
+    const contentData = { model: { mimeType: 'video/mp4' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 19 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
     component.batchId = '123';
-    component.enrolledBatchInfo = {status: 1};
+    component.enrolledBatchInfo = { status: 1 };
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
   it('should make update contentState api call if the content is html and progress is greater than 0%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'application/vnd.ekstep.html-archive'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 0}]}
-      }}};
+    const contentData = { model: { mimeType: 'application/vnd.ekstep.html-archive' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 0 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
-    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
-    component.enrolledBatchInfo = {status: 1};
+    component.courseProgressData = { content: [{ contentId: '123', status: 1 }] };
+    component.enrolledBatchInfo = { status: 1 };
     component.batchId = '123';
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
   it('should make update contentState api call if the content is h5p and progress is greater than 0%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'application/vnd.ekstep.h5p-archive'}};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 0}]}
-      }}};
+    const contentData = { model: { mimeType: 'application/vnd.ekstep.h5p-archive' } };
+    const telemetryEvent = {
+      detail: {
+        telemetryData: {
+          eid: 'END',
+          edata: { summary: [{ progress: 0 }] }
+        }
+      }
+    };
     spyOn(component, 'findContentById').and.returnValue(contentData);
     spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
-    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
-    component.enrolledBatchInfo = {status: 1};
+    component.courseProgressData = { content: [{ contentId: '123', status: 1 }] };
+    component.enrolledBatchInfo = { status: 1 };
     component.batchId = '123';
     component.contentProgressEvent(telemetryEvent);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
   it('should make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
-  () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
-    const playerDestroyData = { contentId: '123'};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 100}]}
-      }}};
-    spyOn(component, 'findContentById').and.returnValue(contentData);
-    spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
-    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
-    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
-    component.enrolledBatchInfo = {status: 1};
-    component.batchId = '123';
-    component.contentProgressEvent(telemetryEvent);
-    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-  });
+    () => {
+      const courseConsumptionService = TestBed.get(CourseConsumptionService);
+      const contentData = { model: { mimeType: 'application/vnd.ekstep.eclm-archive' } };
+      const playerDestroyData = { contentId: '123' };
+      const telemetryEvent = {
+        detail: {
+          telemetryData: {
+            eid: 'END',
+            edata: { summary: [{ progress: 100 }] }
+          }
+        }
+      };
+      spyOn(component, 'findContentById').and.returnValue(contentData);
+      spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
+      spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+      component.courseProgressData = { content: [{ contentId: '123', status: 1 }] };
+      component.enrolledBatchInfo = { status: 1 };
+      component.batchId = '123';
+      component.contentProgressEvent(telemetryEvent);
+      expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+    });
   it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
-  () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    const contentData = {model: { mimeType: 'application/vnd.ekstep.eclm-archive'}};
-    const playerDestroyData = { contentId: '123'};
-    const telemetryEvent = { detail: {
-      telemetryData: { eid: 'END',
-        edata: {summary: [{progress: 20}]}
-      }}};
-    spyOn(component, 'findContentById').and.returnValue(contentData);
-    spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
-    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
-    component.courseProgressData = { content: [{ contentId: '123', status: 1}]};
-    component.enrolledBatchInfo = {status: 1};
-    component.contentProgressEvent(telemetryEvent);
-    expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
-  });
+    () => {
+      const courseConsumptionService = TestBed.get(CourseConsumptionService);
+      const contentData = { model: { mimeType: 'application/vnd.ekstep.eclm-archive' } };
+      const playerDestroyData = { contentId: '123' };
+      const telemetryEvent = {
+        detail: {
+          telemetryData: {
+            eid: 'END',
+            edata: { summary: [{ progress: 20 }] }
+          }
+        }
+      };
+      spyOn(component, 'findContentById').and.returnValue(contentData);
+      spyOn(component, 'closeContentPlayer').and.returnValue(undefined);
+      spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({}));
+      component.courseProgressData = { content: [{ contentId: '123', status: 1 }] };
+      component.enrolledBatchInfo = { status: 1 };
+      component.contentProgressEvent(telemetryEvent);
+      expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
+    });
   it('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
@@ -482,7 +517,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
+    component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
     expect(component.showJoinTrainingModal).toBeFalsy();
   });
   it('should log telemetry on click of close icon on join training popup ', () => {
@@ -504,8 +539,26 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
+    component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
     component.closeJoinTrainingModal();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
+  });
+
+
+  it('should call calculateProgress', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.calculateProgress();
+  });
+  it('should call calculateProgress, if single content', () => {
+    component.courseHierarchy = {
+      children: [{ name: 'acd' }, { name: 'sd' }]
+    };
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.calculateProgress();
+  });
+
+  it('should call getContentState', () => {
+    component['getContentState']();
   });
 });

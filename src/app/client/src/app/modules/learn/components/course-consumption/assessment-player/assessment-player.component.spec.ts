@@ -14,6 +14,7 @@ import { assessmentPlayerMockData } from './assessment-player.component.data.spe
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { of, throwError } from 'rxjs';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -24,6 +25,11 @@ describe('AssessmentPlayerComponent', () => {
       emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' },
       stmsg: { m0009: 'Cannot un-enrol now. Try again later' }
     }
+  };
+
+  const fakeActivatedRoute = {
+    'params': of({ collectionId: 'Test_Textbook2_8907797' }),
+    queryParams: of({})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -41,6 +47,7 @@ describe('AssessmentPlayerComponent', () => {
       providers: [
         UserService,
         { provide: ResourceService, useValue: resourceMockData },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -68,6 +75,12 @@ describe('AssessmentPlayerComponent', () => {
   it('should call subscribeToQueryParam', () => {
     component.batchId = '0130272832104038409';
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
+    component['subscribeToQueryParam']();
+  });
+
+  it('should call subscribeToQueryParam', () => {
+    component.batchId = '0130272832104038409';
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
     component['subscribeToQueryParam']();
   });
 
