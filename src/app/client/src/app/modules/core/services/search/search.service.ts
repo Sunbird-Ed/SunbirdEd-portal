@@ -46,6 +46,7 @@ export class SearchService {
    */
   public publicDataService: PublicDataService;
   public resourceService: ResourceService;
+  private _subjectThemeAndCourse: object;
   /**
    * Default method of OrganisationService class
    *
@@ -323,21 +324,13 @@ export class SearchService {
     return facetObj;
   }
 
-  public fetchCourses(request, isCourse, title?) {
-    const option = this.getSearchRequest(request, isCourse);
-    let cardData = [], selectedCourse = {};
+  public fetchCourses(request, contentType) {
+    const option = this.getSearchRequest(request, contentType);
+    let cardData = [];
     return this.contentSearch(option).pipe(map((response) => {
       const contents = _.get(response, 'result.content');
       if (_.isEmpty(contents)) {
         return [];
-      } else if (title) {
-        cardData = _.map(contents, content => {
-          if (_.isEqual(_.get(content, 'subject'), title)) {
-            return content;
-          }
-        });
-        selectedCourse = _.get(this.getSubjectsStyles(), title);
-        return ({contents : _.compact(cardData), selectedCourse});
       } else {
         cardData = this.getFilterValues(contents);
         _.forEach(cardData, card => {
@@ -353,16 +346,21 @@ export class SearchService {
     }));
   }
 
-  getSearchRequest(request, isCourse) {
+
+  set subjectThemeAndCourse (subjectData) {
+    this._subjectThemeAndCourse = subjectData;
+  }
+
+  get subjectThemeAndCourse () {
+    return this._subjectThemeAndCourse;
+  }
+
+  getSearchRequest(request, contentType) {
     let filters = request.filters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters['contentType'] = contentType; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     if (!request.isCustodianOrg) {
       filters['channel'] = request.channelId;
-    }
-    if (isCourse) {
-      filters ['courseType'] = 'CurriculumCourse';
-      filters['contentType'] = 'Course';
     }
     const option = {
         limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
@@ -378,37 +376,61 @@ export class SearchService {
   }
 
   getFilterValues(contents) {
-    let subjects = _.map(contents, content => {
-      return (_.get(content, 'subject'));
-    });
-    subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      let subjects = _.map(contents, content => {
+        return (_.get(content, 'subject'));
+      });
+      subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
       return ({ title: subject[0], count: subject.length === 1 ?
         `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
-        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}` });
+        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: [] });
       });
+
+      _.map(contents, content => {
+        const matchedSubject =  _.find(subjects, subject => (_.trim(_.lowerCase(content.subject)) === _.trim(_.lowerCase(subject.title))));
+        if (matchedSubject) {
+          matchedSubject.contents.push(content);
+        }
+      });
+
     return subjects;
   }
 
   getSubjectsStyles() {
     return {
-        Science: {
-          background: '#FFD6EB',
-          titleColor: '#FD59B3',
-          icon: './../../../../../assets/images/science.svg'
-        },
         Mathematics: {
           background: '#FFDFD9',
           titleColor: '#EA2E52',
-          icon: './../../../../../assets/images/mathematics.svg'
+          icon: './../../../../../assets/images/sub_math.svg'
         },
-        English: {
-          background: '#DAFFD8',
-          titleColor: '#218432'
+        Science: {
+          background: '#FFD6EB',
+          titleColor: '#FD59B3',
+          icon: './../../../../../assets/images/sub_science.svg'
         },
         Social: {
           background: '#DAD4FF',
           titleColor: '#635CDC',
-          icon: './../../../../../assets/images/social.svg'
+          icon: './../../../../../assets/images/sub_social.svg'
+        },
+        English: {
+          background: '#DAFFD8',
+          titleColor: '#218432',
+          icon: './../../../../../assets/images/sub_english.svg'
+        },
+        Hindi: {
+          background: '#C2E2E9',
+          titleColor: '#07718A',
+          icon: './../../../../../assets/images/sub_hindi.svg'
+        },
+        Chemistry: {
+          background: '#FFE59B',
+          titleColor: '#8D6A00',
+          icon: './../../../../../assets/images/sub_chemistry.svg'
+        },
+        Geography: {
+          background: '#C2ECE6',
+          titleColor: '#149D88',
+          icon: './../../../../../assets/images/sub_geography.svg'
         }
     };
   }
