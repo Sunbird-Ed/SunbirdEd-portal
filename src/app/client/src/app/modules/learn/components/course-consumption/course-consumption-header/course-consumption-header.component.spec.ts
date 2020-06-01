@@ -140,9 +140,4 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(returnValue).toBe(false);
   });
 
-  it('should call getContentState', () => {
-    component.courseHierarchy = CourseHierarchyGetMockResponse;
-    component.enrolledBatchInfo = { status: 2 };
-    component.getContentState();
-  });
 });

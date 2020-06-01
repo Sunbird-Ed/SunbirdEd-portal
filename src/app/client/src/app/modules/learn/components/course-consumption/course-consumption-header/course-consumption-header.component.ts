@@ -120,19 +120,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
          });
   }
 
-  getContentState() {
-    const contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
-    /* istanbul ignore else */
-    if (_.hasIn(this.enrolledBatchInfo, 'status') && contentIds.length) {
-      const req = {
-        userId: this.userService.userid,
-        courseId: this.courseId,
-        contentIds: contentIds,
-        batchId: this.batchId
-      };
-      this.courseConsumptionService.getContentState(req);
-    }
-  }
 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);

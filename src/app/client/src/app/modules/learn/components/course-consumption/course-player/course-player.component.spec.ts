@@ -124,10 +124,8 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
-    expect(courseConsumptionService.getContentState).toHaveBeenCalled();
     expect(component.contentStatus).toBeDefined();
   });
 
@@ -167,12 +165,12 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
-    expect(component.contentId).toBeDefined();
-    expect(component.prevPlaylistItem).toBeDefined();
+    expect(component.contentId).toBeUndefined();
+    expect(component.prevPlaylistItem).toBeUndefined();
     expect(component.nextPlaylistItem).toBeUndefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.contentTitle).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.contentTitle).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
   });
 
   it('should play content if course status is unlisted', () => {
@@ -190,9 +188,9 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.contentId).toBeDefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+    expect(component.contentId).toBeUndefined();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
   });
 
   it('should not play content if course is not enrolled', () => {
@@ -232,9 +230,9 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    expect(component.contentId).toBeDefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+    expect(component.contentId).toBeUndefined();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
   });
   it('should not play content if his not course creator', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -277,9 +275,9 @@ describe('CoursePlayerComponent', () => {
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.permissionService.checkRolesPermissions)
       .toHaveBeenCalledWith(['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION']);
-    expect(component.contentId).toBeDefined();
-    expect(component.playerConfig).toBeDefined();
-    expect(component.enableContentPlayer).toBeTruthy();
+    expect(component.contentId).toBeUndefined();
+    expect(component.playerConfig).toBeUndefined();
+    expect(component.enableContentPlayer).toBeFalsy();
   });
   it('should not play content if not course mentor', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
