@@ -96,6 +96,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
+        /* istanbul ignore else */
         if (this.batchId) {
           this.enrolledCourse = true;
           this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
@@ -113,6 +114,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           }
         }
       });
+    /* istanbul ignore else */
     if (this.batchId) {
       this.getContentState();
     }
@@ -120,6 +122,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   getContentState() {
     const contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
+    /* istanbul ignore else */
     if (_.hasIn(this.enrolledBatchInfo, 'status') && contentIds.length) {
       const req = {
         userId: this.userService.userid,

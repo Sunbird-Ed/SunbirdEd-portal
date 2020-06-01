@@ -95,6 +95,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     component.ngOnInit();
+    component.batchId = '01232121843';
     component.ngAfterViewInit();
     courseProgressService.courseProgressData.emit({});
     expect(component.courseHierarchy).toBeDefined();
@@ -137,5 +138,11 @@ describe('CourseConsumptionHeaderComponent', () => {
     const returnValue = component.getBatchStatus();
     expect(component.getBatchStatus).toHaveBeenCalled();
     expect(returnValue).toBe(false);
+  });
+
+  it('should call getContentState', () => {
+    component.courseHierarchy = CourseHierarchyGetMockResponse;
+    component.enrolledBatchInfo = { status: 2 };
+    component.getContentState();
   });
 });
