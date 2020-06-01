@@ -57,7 +57,7 @@ describe('ExploreComponent', () => {
     snapshot = {
       params: {slug: 'ap'},
       data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'}
       }
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
@@ -185,8 +185,10 @@ describe('ExploreComponent', () => {
   it('should play content', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
     spyOn<any>(publicPlayerService, 'playContent');
+    spyOn(component, 'getInteractEdata');
     component.playContent(RESPONSE.playContentEvent, 'test');
     expect(publicPlayerService.playContent).toHaveBeenCalledWith(RESPONSE.playContentEvent);
+    expect(component.getInteractEdata).toHaveBeenCalled();
   });
 
   it('should return  data from search', () => {
@@ -221,4 +223,49 @@ describe('ExploreComponent', () => {
 
   });
 
+
+  it('should call telemetry.interact()', () => {
+    spyOn(component.telemetryService, 'interact');
+    const data = {
+      cdata: [ {type: 'card', id: 'course'}],
+      edata: {id: 'test'},
+      object: {},
+    };
+    const cardClickInteractData = {
+      context: {
+        cdata: data.cdata,
+        env: 'explore',
+      },
+      edata: {
+        id: data.edata.id,
+        type: 'click',
+        pageid: 'explore'
+      },
+      object: data.object
+    };
+    component.getInteractEdata(data);
+    expect(component.telemetryService.interact).toHaveBeenCalledWith(cardClickInteractData);
+  });
+
+  it ('should call getInteractEdata() from navigateToCourses', () => {
+    const event  = {data: {title: 'test', contents: [{identifier: '1234'}]}};
+    const data = {
+      cdata: [ {type: 'library-courses', id: 'test'}],
+      edata: {id: 'course-card'},
+      object: {},
+    };
+    spyOn(component, 'getInteractEdata');
+    component.navigateToCourses(event);
+    expect(component.getInteractEdata).toHaveBeenCalledWith(data);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['explore-course/course', '1234']);
+  });
+
+  it ('should call list/curriculum-courses() from navigateToCourses', () => {
+    const event  = {data: {title: 'test', contents: [{identifier: '1234'}, {identifier: '23456'}]}};
+    component.navigateToCourses(event);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['explore/list/curriculum-courses'], {
+      queryParams: {title: 'test'}
+    });
+    expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
+  });
 });

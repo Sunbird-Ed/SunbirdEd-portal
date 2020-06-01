@@ -37,7 +37,7 @@ const routes: Routes = [
   {
     path: 'curriculum-courses', component: CurriculumCoursesComponent, data: {
       telemetry: {
-        env: 'library', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'
+        env: 'curriculum-courses', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'
       },
     }
   }

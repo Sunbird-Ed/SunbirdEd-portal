@@ -20,7 +20,7 @@ describe('ExploreCurriculumCoursesComponent', () => {
         title: 'English',
       },
       data: {
-        telemetry: { env: 'explore', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'curriculum-courses', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'}
       }
     };
   }
@@ -59,6 +59,12 @@ describe('ExploreCurriculumCoursesComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should call setTelemetryImpression()', () => {
+    spyOn(component, 'setTelemetryImpression');
+    component.ngOnInit();
+    expect(component.setTelemetryImpression).toHaveBeenCalled();
+  });
+
   it('should call navigation helper service', () => {
     spyOn(component['navigationhelperService'], 'goBack');
     component.goBack();
@@ -70,5 +76,27 @@ describe('ExploreCurriculumCoursesComponent', () => {
     expect(component['router'].navigate).toHaveBeenCalledWith(['explore-course/course', 1]);
   });
 
+  it('should call telemetry.interact()', () => {
+    spyOn(component['telemetryService'], 'interact');
+    const event = {
+      data: {identifier: '1234', contentType: 'Course', pkgVersion: 2},
+    };
+    const cardClickInteractData = {
+      context: {
+        cdata: [],
+        env: 'curriculum-courses',
+      },
+      edata: {
+        id: '1234',
+        type: 'click',
+        pageid: 'curriculum-courses'
+      },
+      object: {
+        id: '1234', type: 'Course', ver: '2'
+      }
+    };
+    component.getInteractData(event);
+    expect(component['telemetryService'].interact).toHaveBeenCalledWith(cardClickInteractData);
+  });
 
 });
