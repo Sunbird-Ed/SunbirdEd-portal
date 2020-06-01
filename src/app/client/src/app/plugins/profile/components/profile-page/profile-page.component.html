@@ -25,7 +25,7 @@
     </div>  
     </div>
     <div class="mt-8 mb-16 d-flex flex-jc-center">
-      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
+      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5">{{userProfile.userName}}</div>
     </div>
     <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">

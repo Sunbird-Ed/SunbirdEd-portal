@@ -55,6 +55,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   udiseObj: { idType: string, provider: string, id: string };
   teacherObj: { idType: string, provider: string, id: string };
   schoolObj: { idType: string, provider: string, id: string };
+  instance: string;
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
@@ -65,6 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
