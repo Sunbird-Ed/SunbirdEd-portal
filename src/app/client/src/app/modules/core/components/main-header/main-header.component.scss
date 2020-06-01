@@ -120,7 +120,7 @@
 
 @include respond-below(sm) {
 .overlay-sidebar__menu {
-        width: calculateRem(340px);
+        width: calculateRem(280px);
         left: 0;
         right: unset;
     }

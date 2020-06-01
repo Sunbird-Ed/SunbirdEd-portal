@@ -1,3 +1,4 @@
+import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, of} from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, SharedModule
@@ -47,14 +48,14 @@ describe('ResourceComponent', () => {
     snapshot = {
       params: {slug: 'ap'},
       data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'library', pageid: 'library', type: 'view', subtype: 'paginate'}
       }
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
@@ -80,7 +81,7 @@ describe('ResourceComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(2);
 
   });
@@ -97,8 +98,54 @@ describe('ResourceComponent', () => {
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
     ));
     component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(0);
 
   });
+
+  it('should call telemetry.interact()', () => {
+    spyOn(component.telemetryService, 'interact');
+    const data = {
+      cdata: [ {type: 'card', id: 'course'}],
+      edata: {id: 'test'},
+      object: {},
+    };
+    const cardClickInteractData = {
+      context: {
+        cdata: data.cdata,
+        env: 'library',
+      },
+      edata: {
+        id: data.edata.id,
+        type: 'click',
+        pageid: 'library'
+      },
+      object: data.object
+    };
+    component.getInteractEdata(data);
+    expect(component.telemetryService.interact).toHaveBeenCalledWith(cardClickInteractData);
+  });
+
+  it ('should call getInteractEdata() from navigateToCourses', () => {
+    const event  = {data: {title: 'test', contents: [{identifier: '1234'}]}};
+    const data = {
+      cdata: [ {type: 'library-courses', id: 'test'}],
+      edata: {id: 'course-card'},
+      object: {},
+    };
+    spyOn(component, 'getInteractEdata');
+    component.navigateToCourses(event);
+    expect(component.getInteractEdata).toHaveBeenCalledWith(data);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', '1234']);
+  });
+
+  it ('should call list/curriculum-courses() from navigateToCourses', () => {
+    const event  = {data: {title: 'test', contents: [{identifier: '1234'}, {identifier: '23456'}]}};
+    component.navigateToCourses(event);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['resources/curriculum-courses'], {
+      queryParams: {title: 'test'}
+    });
+    expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
+  });
+
 });

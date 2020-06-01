@@ -16,6 +16,8 @@ import {
 } from 'ng2-semantic-ui';
 import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-details.component';
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,9 +29,10 @@ import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenrol
     CoreModule,
     TelemetryModule,
     PlayerHelperModule,
+    CommonConsumptionModule
   ],
   // providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
-  declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent,
-    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent]
+  declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
+    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent, AssessmentPlayerComponent]
 })
 export class CourseConsumptionModule { }

@@ -195,6 +195,6 @@ export class MainMenuComponent implements OnInit {
   }
 
   getFeatureId(featureId, taskId) {
-    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
+    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }
 }
