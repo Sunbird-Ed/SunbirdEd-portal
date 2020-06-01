@@ -45,7 +45,7 @@ describe('CopyContentService', () => {
         course: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
-          organisation: userData.organisationNames,
+          organisation: userService.orgNames,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           framework: contentData.framework
