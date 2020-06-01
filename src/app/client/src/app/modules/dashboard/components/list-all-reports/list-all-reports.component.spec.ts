@@ -1,3 +1,4 @@
+import { DashboardModule } from '@sunbird/dashboard';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,8 +23,8 @@ describe('ListAllReportsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ListAllReportsComponent],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
+      declarations: [],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), DashboardModule],
       providers: [ReportService, { provide: Router, useValue: routerStub }, {
         provide: ActivatedRoute, useValue: {
           snapshot: {
