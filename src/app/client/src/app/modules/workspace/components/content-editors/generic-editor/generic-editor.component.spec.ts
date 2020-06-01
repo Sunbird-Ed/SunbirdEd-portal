@@ -12,6 +12,10 @@ import { WorkSpaceService, EditorService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { of as observableOf } from 'rxjs';
 
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="genericEditorCDN" value="https://dev.sunbirded.org/generic-editor/index.html"'
+  + ' type="hidden" />';
+
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {

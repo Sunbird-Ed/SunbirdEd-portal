@@ -4,8 +4,10 @@
 .content-header {
     &__img {
       overflow: hidden;
+      width: 48px;
+      height:48px;
       img {
-      width:calculateRem(48px);
+      height: 100%;
     }
     }
     &__title{
@@ -25,11 +27,6 @@
     grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
     grid-gap: 1rem;
     grid-row-gap: 1.5rem;
-}
-.content-header__img {
-    width: 48px;
-    height:48px;
-    overflow: hidden;
 }
 .header-shadow {
     min-height: calculateRem(80px);

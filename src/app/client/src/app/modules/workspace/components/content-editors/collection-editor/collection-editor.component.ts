@@ -40,6 +40,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
+  collectionEditorCDN: string = (<HTMLInputElement>document.getElementById('collectionEditorCDN')).value;
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -164,10 +165,14 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     return false;
   }
   private initEditor() {
+    if (environment.env !== 'prod') {
+      console.log('Editor loading from => ', this.collectionEditorCDN); // TODO: log!
+      console.log('Editor complete URL => ', this.collectionEditorCDN + '?' + this.buildNumber); // TODO: log!
+    }
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/collection-editor/index.html?' + this.buildNumber,
+      iframeURL: this.collectionEditorCDN + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,

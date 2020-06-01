@@ -12,6 +12,10 @@ import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="collectionEditorCDN" value="https://dev.sunbirded.org/collection-editor/index.html"'
+  + ' type="hidden" />';
+
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
