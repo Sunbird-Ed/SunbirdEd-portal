@@ -103,13 +103,16 @@ export class AssessmentPlayerComponent implements OnInit {
 
 
   private getCollectionInfo(courseId: string): Observable<any> {
+    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
     return combineLatest([
-      this.playerService.getCollectionHierarchy(courseId, {}),
+      this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
       this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-    ]).pipe(map((results: any) => ({
-      courseHierarchy: results[0].result.content,
-      enrolledBatchDetails: results[1],
-    })));
+    ]).pipe(map((results: any) => {
+      return {
+        courseHierarchy: results[0],
+        enrolledBatchDetails: results[1],
+      };
+    }));
   }
 
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
