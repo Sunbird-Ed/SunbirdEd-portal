@@ -150,6 +150,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
     component.onSubmitForm();
