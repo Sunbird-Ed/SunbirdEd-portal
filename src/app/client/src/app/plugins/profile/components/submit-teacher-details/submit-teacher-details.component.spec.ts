@@ -20,7 +20,7 @@ import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, FormService, SearchService } from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 
 describe('SubmitTeacherDetailsComponent', () => {
