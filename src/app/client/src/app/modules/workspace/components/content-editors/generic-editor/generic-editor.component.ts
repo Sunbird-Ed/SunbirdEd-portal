@@ -32,7 +32,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
-  genericEditorCDN: string = (<HTMLInputElement>document.getElementById('genericEditorCDN')).value ?
+  genericEditorCDN: string = (<HTMLInputElement>document.getElementById('genericEditorCDN')) ?
   (<HTMLInputElement>document.getElementById('genericEditorCDN')).value : '';
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,

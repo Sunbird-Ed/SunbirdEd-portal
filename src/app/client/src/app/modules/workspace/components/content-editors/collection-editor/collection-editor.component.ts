@@ -40,7 +40,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
-  collectionEditorCDN: string = (<HTMLInputElement>document.getElementById('collectionEditorCDN')).value ?
+  collectionEditorCDN: string = (<HTMLInputElement>document.getElementById('collectionEditorCDN')) ?
   (<HTMLInputElement>document.getElementById('collectionEditorCDN')).value : '';
   /**
   * Default method of classs CollectionEditorComponent

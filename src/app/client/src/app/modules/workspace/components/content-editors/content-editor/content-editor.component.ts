@@ -33,7 +33,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
-  contentEditorCDN: string = (<HTMLInputElement>document.getElementById('contentEditorCDN')).value ?
+  contentEditorCDN: string = (<HTMLInputElement>document.getElementById('contentEditorCDN')) ?
   (<HTMLInputElement>document.getElementById('contentEditorCDN')).value : '';
 
   /**
