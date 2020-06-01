@@ -139,12 +139,14 @@ describe('PublicContentPlayerComponent', () => {
 
   it('should detect the device and rotate to landscape', () => {
     component.isSingleContent = true;
+    component.isMobileOrTab = true;
     component.deviceDetector();
     expect(component.loadLandscapePlayer).toBe(false);
   });
 
   it('should detect the device and rotate to landscape if not a single content', () => {
     component.isSingleContent = false;
+    component.isMobileOrTab = true;
     component.deviceDetector();
     expect(component.loadLandscapePlayer).toBe(true);
   });

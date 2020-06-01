@@ -27,6 +27,11 @@
               <p *ngIf="currentReport?.reportMetaData?.description"
                 [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
               </p>
+              <div class="ml-auto d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status fnormal sb-color-gray-400"
+                *ngIf="currentReport?.lastUpdatedOn">
+                <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
+                {{currentReport?.lastUpdatedOn}}
+              </div>
             </div>
             <div id="report-body" class="my-16">
               <sui-tabset>

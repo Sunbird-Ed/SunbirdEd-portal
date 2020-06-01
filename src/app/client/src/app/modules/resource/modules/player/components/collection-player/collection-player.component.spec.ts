@@ -4,7 +4,7 @@ import {of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { PlayerService, CoreModule, CopyContentService } from '@sunbird/core';
+import { PlayerService, CoreModule, CopyContentService, UserService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -59,7 +59,7 @@ describe('CollectionPlayerComponent', () => {
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule , TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ CopyContentService, ResourceService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle }]
+        { provide: ResourceService, useValue: resourceBundle }, UserService]
     })
       .compileComponents();
   }));
@@ -134,6 +134,8 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should copy a textbook as curriculum course if api gives success response', () => {
+    const userService = TestBed.get(UserService);
+    userService['userOrgDetails$'] = observableOf({});
     const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
     const copyContentService = TestBed.get(CopyContentService);
     const toasterService = TestBed.get(ToasterService);
@@ -145,6 +147,8 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it('should not copy a textbook as curriculum course if api is does not give success response', () => {
+    const userService = TestBed.get(UserService);
+    userService['userOrgDetails$'] = observableOf({});
     const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
     const copyContentService = TestBed.get(CopyContentService);
     const toasterService = TestBed.get(ToasterService);
