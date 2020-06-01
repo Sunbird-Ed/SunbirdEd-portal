@@ -1,12 +1,13 @@
+// import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService } from '@sunbird/core';
+import { SearchService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, map, mergeMap } from 'rxjs/operators';
-import { ContentSearchService } from '@sunbird/content-search';
+import { map } from 'rxjs/operators';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-curriculum-courses',
@@ -26,58 +27,69 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   };
 
   public selectedCourse: {};
-  public courseList: Array<{}> = [];
+  public courseList: any = [];
   public title: string;
+  public mergedCourseList: any = [];
 
-  constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
-    public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
-    private router: Router, private orgDetailsService: OrgDetailsService, private navigationhelperService: NavigationHelperService,
-    private contentSearchService: ContentSearchService) { }
+  public telemetryImpression: IImpressionEventInput;
+  constructor(private searchService: SearchService, private toasterService: ToasterService,
+    public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
+    private router: Router, private navigationhelperService: NavigationHelperService,
+    private coursesService: CoursesService, private telemetryService: TelemetryService
+   ) { }
 
-    ngOnInit() {
-      this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
-      this.getChannelId().pipe(
-        mergeMap(({ channelId, isCustodianOrg }) => {
-          this.channelId = channelId;
-          this.isCustodianOrg = isCustodianOrg;
-          return  this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
-        }),
-        takeUntil(this.unsubscribe$))
-        .subscribe(() => {
-          this.fetchCourses();
-        }, (error) => {
-          this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-          this.navigationhelperService.goBack();
-      });
+  ngOnInit() {
+    this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
+    if (!_.isEmpty(_.get(this.searchService, 'subjectThemeAndCourse.contents'))) {
+      this.courseList = _.get(this.searchService, 'subjectThemeAndCourse.contents');
+      this.selectedCourse = _.omit(_.get(this.searchService, 'subjectThemeAndCourse'), 'contents');
+      this.fetchEnrolledCourses();
+    } else {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
     }
+    this.setTelemetryImpression();
+  }
 
-    private getChannelId() {
-      return this.orgDetailsService.getCustodianOrgDetails().pipe(map(isCustodianOrg => {
-        if (this.userService.hashTagId === _.get(isCustodianOrg, 'result.response.value')) {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: true};
-        } else {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: false };
-        }
-      }));
-    }
-
-  private fetchCourses() {
-    const request = {
-      filters: this.defaultFilters,
-      isCustodianOrg: this.isCustodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
+  setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
     };
-    this.searchService.fetchCourses(request, true, this.title).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.courseList = !_.isEmpty(_.get(data, 'contents')) ? data.contents : [];
-      this.selectedCourse = _.get(data, 'selectedCourse');
-      this.defaultBg = _.isEmpty(this.selectedCourse);
-    }, err => {
-      this.courseList = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  }
+
+  private fetchEnrolledCourses() {
+    return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+      return enrolledCourses;
+    })).subscribe(enrolledCourses => {
+      this.mergedCourseList = this.courseList.map((course) => {
+        const enrolledCourse = _.find(enrolledCourses,  {courseId: course.identifier});
+        if (enrolledCourse) {
+          return {
+            ...enrolledCourse,
+            completionPercentage: enrolledCourse.completionPercentage || 0,
+            isEnrolledCourse: true,
+          };
+        } else {
+          return {
+            ...course,
+            isEnrolledCourse: false
+          };
+        }
+      });
     });
   }
+
+
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -89,6 +101,28 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   navigateToCourseDetails(course) {
-    this.router.navigate(['resources/course', course.identifier]);
+    this.getInteractData(course);
+    const courseId = _.get(course, 'metaData.courseId') || course.identifier;
+    this.router.navigate(['learn/course', courseId]);
+  }
+
+  getInteractData(course) {
+    const cardClickInteractData = {
+      context: {
+        cdata: [],
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: _.get(course, 'identifier'),
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      },
+      object: {
+          id: course.identifier,
+          type: course.contentType || 'course',
+          ver: course.pkgVersion ? course.pkgVersion.toString() : '1.0'
+      }
+    };
+    this.telemetryService.interact(cardClickInteractData);
   }
 }

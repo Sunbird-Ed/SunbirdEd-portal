@@ -1,7 +1,7 @@
 import { combineLatest, Subject } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
-import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService
 } from '@sunbird/shared';
@@ -14,7 +14,8 @@ import { UtilService } from './../../../../../shared/services/util/util.service'
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   selector: 'app-explore-component',
-  templateUrl: './explore.component.html'
+  templateUrl: './explore.component.html',
+  styles: ['.course-card-width { width: 280px !important }']
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilter = false;
@@ -37,6 +38,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public isLoading = true;
   public cardData: Array<{}> = [];
+  slideConfig: object = {};
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -45,10 +47,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService, private utilService: UtilService) {
+    public telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
+    this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;
@@ -102,7 +105,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
-    const option = this.searchService.getSearchRequest(request, false);
+    const option = this.searchService.getSearchRequest(request, ['TextBook']);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -152,6 +155,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private  fetchCourses() {
+    this.cardData = [];
     this.isLoading = true;
     const request = {
       filters: this.selectedFilters,
@@ -159,7 +163,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
-    this.searchService.fetchCourses(request, true).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
     this.cardData = cardData;
   }, err => {
@@ -185,7 +189,22 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  public playContent(event) {
+  public playContent(event, sectionName) {
+    const telemetryData = {
+      cdata: [{
+          type: 'section',
+          id: sectionName
+        }],
+      edata: {
+        id: 'content-card',
+      },
+      object: {
+        id: event.data.identifier,
+        type: event.data.contentType || 'content',
+        ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
+      }
+    };
+    this.getInteractEdata(telemetryData);
     this.publicPlayerService.playContent(event);
   }
 
@@ -242,37 +261,42 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
-    this.router.navigate(['explore/list/curriculum-courses'], {
-      queryParams: {
-        title: _.get(event, 'data.title'),
-        board: _.get(this.selectedFilters, 'board'),
-        medium: _.get(this.selectedFilters, 'medium'),
-        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
+    const telemetryData = {
+      cdata: [{
+        type: 'library-courses',
+        id:  _.get(event, 'data.title'),
+      }],
+      edata: {
+        id: 'course-card'
       },
-    });
+      object: {}
+    };
+    this.getInteractEdata(telemetryData);
+
+    if (event.data.contents.length === 1) {
+      this.router.navigate(['explore-course/course', _.get(event.data, 'contents[0].identifier')]);
+    } else {
+      this.searchService.subjectThemeAndCourse = event.data;
+      this.router.navigate(['explore/list/curriculum-courses'], {
+        queryParams: {
+          title: _.get(event, 'data.title')
+        },
+      });
+    }
   }
 
-  getInteractEdata(event, sectionName) {
-    const telemetryCdata = [{
-      type: 'section',
-      id: sectionName
-    }];
-
-    const cardClickInteractData = {
+  getInteractEdata(event) {
+      const cardClickInteractData = {
       context: {
-        cdata: telemetryCdata,
+        cdata: event.cdata,
         env: this.activatedRoute.snapshot.data.telemetry.env,
       },
       edata: {
-        id: 'content-card',
+        id: _.get(event, 'edata.id'),
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       },
-      object: {
-        id: event.data.identifier,
-        type: event.data.contentType || 'content',
-        ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
-      }
+      object: _.get(event, 'object')
     };
     this.telemetryService.interact(cardClickInteractData);
   }

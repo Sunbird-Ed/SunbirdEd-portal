@@ -1,3 +1,4 @@
+import { SlickModule } from 'ngx-slick';
 import { ExploreRoutingModule } from './explore-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,7 +26,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule
+    CommonConsumptionModule, ContentSearchModule, SlickModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent],
   exports: [ExploreComponent]

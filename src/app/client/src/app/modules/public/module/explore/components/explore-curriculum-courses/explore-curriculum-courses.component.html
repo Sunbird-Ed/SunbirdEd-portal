@@ -1,4 +1,4 @@
-<div *ngIf="courseList.length > 0">
+<div *ngIf="courseList.length > 0" [appTelemetryImpression]="telemetryImpression">
 
   <div class="sb-bg-color-white">
     <div class="ui container py-8">
@@ -11,19 +11,18 @@
     </div>
   </div>
   
-  <div class="content-header" [ngStyle]="!defaultBg  && {'background': selectedCourse?.background}">
+  <div class="content-header" [ngStyle]="!defaultBg  && {'background': selectedCourse?.theme}">
     <div class="ui container py-16">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-        <div class="content-header__img mr-8">
-          <img [src]="selectedCourse?.icon" style="width: 48px;">
+        <div class="content-header__img mr-8" *ngIf="selectedCourse?.cardImg">
+          <img [src]="selectedCourse?.cardImg" style="width: 48px;">
         </div>
         <div class="flex-basis-1 mr-32">
           <div class="content-header__title font-weight-bold sb__ellipsis
             sb__ellipsis--one" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">
             <div>{{title}}</div>
           </div>
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length > 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length === 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.oneCourse).toUpperCase()}}</div>
+          <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
         </div>
       </div>
     </div>
@@ -32,7 +31,7 @@
   <div class="ui container mt-24 sb-library-cards">
       <div class="sbgrid">
         <div *ngFor="let course of courseList">
-          <sb-course-card [course]="course"></sb-course-card>
+          <sb-course-card [course]="course" [cardImg]="course.appIcon" (cardClick)="navigateToCourse($event); getInteractData($event)" [section]="null"></sb-course-card>
         </div>
         
       </div>

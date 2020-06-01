@@ -1,6 +1,6 @@
-<div *ngIf="courseList.length > 0">
+<div *ngIf="courseList.length > 0" [appTelemetryImpression]="telemetryImpression">
 
-<div class="sb-bg-color-white">
+<div class="sb-bg-color-white" >
   <div class="ui container py-8">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-link
       sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()">
@@ -11,18 +11,17 @@
   </div>
 </div>
 
-<div class="content-header header-shadow" [ngStyle]="!defaultBg  && {'background': selectedCourse?.background}">
+<div class="content-header header-shadow" [ngStyle]="{'background': selectedCourse?.theme}">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="content-header__img mr-8">
-        <img [src]="icon">
+      <div class="content-header__img mr-8" *ngIf="selectedCourse?.cardImg">
+        <img [src]="selectedCourse?.cardImg">
       </div>
 
       <div class="flex-basis-1 mr-32 text-left">
         <h5 class="content-header__title mt-4 ellipsis" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">{{title}}</h5>
         <div class="content-header__info">
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length > 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
-        <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length === 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.oneCourse).toUpperCase()}}</div>
+          <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
         </div>
         
       </div>
@@ -31,12 +30,12 @@
 </div>
 
 <div class="ui container mt-24 sb-library-cards">
-    <div class="sbgrid">
-      <div *ngFor="let course of courseList">
-        <sb-course-card [course]="course" (cardClick)="navigateToCourseDetails(course)"></sb-course-card>
-      </div>
-      
+  <div class="sbgrid">
+    <div *ngFor="let course of mergedCourseList">
+      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course"  [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>
-
+  </div>
 </div>
+
 </div>
