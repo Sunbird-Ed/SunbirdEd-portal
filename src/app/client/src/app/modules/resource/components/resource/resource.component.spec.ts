@@ -147,4 +147,5 @@ describe('ResourceComponent', () => {
     });
     expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
   });
+
 });
