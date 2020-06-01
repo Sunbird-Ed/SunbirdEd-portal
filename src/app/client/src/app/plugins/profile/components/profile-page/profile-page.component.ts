@@ -8,7 +8,7 @@ import {
 import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
-import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 @Component({
@@ -54,7 +54,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
-    public navigationhelperService: NavigationHelperService, public certRegService: CertRegService) {
+    public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
+    private telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
@@ -134,7 +135,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrainingAttended() {
     this.coursesService.enrolledCourseData$.pipe(first()).subscribe(data => {
-      this.attendedTraining = _.reverse(_.sortBy(_.filter(data.enrolledCourses, { status: 2 }), val => {
+      this.attendedTraining = _.reverse(_.sortBy(data.enrolledCourses, val => {
         return _.isNumber(_.get(val, 'completedOn')) ? _.get(val, 'completedOn') : Date.parse(val.completedOn);
       })) || [];
     });
@@ -315,5 +316,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+  }
+
+  /**
+   * @since - #SH-19
+   * @param  {object} coursedata - data of the course which user will click from the courses section
+   * @description - This method will redirect to the courses page which enrolled by the user
+   */
+  navigateToCourse(coursedata) {
+    const courseId = _.get(coursedata, 'courseId');
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
+        cdata: [{
+          type: 'batch',
+          id: _.get(coursedata, 'batchId')
+        }]
+      },
+      edata: {
+        id: 'course-play',
+        type: 'click',
+        pageid: 'profile-read',
+      },
+      object: {
+        id: courseId,
+        type: _.get(coursedata, 'content.contentType'),
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    this.telemetryService.interact(interactData);
+    this.router.navigate([`learn/course/${courseId}`]);
   }
 }

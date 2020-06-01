@@ -38,7 +38,16 @@ describe('ContentPlayerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  // it('should define player config details', () => {
-  //   expect(component.playerConfig).toBeTruthy();
-  // });
+
+  it('should call onAssessmentEvents', () => {
+    spyOn(component.assessmentEvents, 'emit');
+    component.onAssessmentEvents({});
+    expect(component.assessmentEvents.emit).toHaveBeenCalled();
+  });
+
+  it('should call questionScoreSubmitEvents', () => {
+    spyOn(component.questionScoreSubmitEvents, 'emit');
+    component.onQuestionScoreSubmitEvents({});
+    expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalled();
+  });
 });

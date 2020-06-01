@@ -1,4 +1,4 @@
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -69,7 +69,7 @@ describe('ProfilePageComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService, CertRegService],
+        ToasterService, CertRegService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -193,5 +193,39 @@ describe('ProfilePageComponent', () => {
     spyOn(profileService, 'updateProfile').and.callFake(() => observableThrowError({}));
     component.updateProfile(mockFrameworkData);
     expect(toasterService.warning).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0012);
+  });
+
+  it('should navigate to courses page', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    const router = TestBed.get(Router);
+    const courseData = {
+      courseId: 'do_1234',
+      batchId: '124579954',
+      content: { contentType: 'course' }
+    };
+    const telemetryData = {
+      context: {
+        env: 'profile',
+        cdata: [{
+          type: 'batch',
+          id: '124579954'
+        }]
+      },
+      edata: {
+        id: 'course-play',
+        type: 'click',
+        pageid: 'profile-read',
+      },
+      object: {
+        id: 'do_1234',
+        type: 'course',
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    spyOn(telemetryService, 'interact').and.stub();
+    component.navigateToCourse(courseData);
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
+    expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
 });

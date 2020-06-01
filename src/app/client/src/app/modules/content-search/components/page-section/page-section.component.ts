@@ -25,11 +25,14 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   @Input() cardType: string;
 
+  @Input() hideProgress: boolean;
+
   @Output() playEvent = new EventEmitter<any>();
 
   @Output() visits = new EventEmitter<any>();
 
   @Output() viewAll = new EventEmitter<any>();
+
 
   private resourceDataSubscription: Subscription;
 

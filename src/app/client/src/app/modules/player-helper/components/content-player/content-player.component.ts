@@ -69,12 +69,25 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   ngOnInit() {
+    if (this.contentProgressEvents$) {
+      this.contentProgressEvents$.subscribe(data => {
+        this.contentProgressEvents$.next(data);
+      });
+    }
   }
 
   generateScoreSubmitEvent(event: any) {
     if (_.toLower(event.data) === (_.toLower(this.CONSTANT.ACCESSEVENT))) {
       this.questionScoreSubmitEvents.emit(event);
     }
+  }
+
+  onAssessmentEvents(event) {
+    this.assessmentEvents.emit(event);
+  }
+
+  onQuestionScoreSubmitEvents(event) {
+    this.questionScoreSubmitEvents.emit(event);
   }
 
   ngOnDestroy() {

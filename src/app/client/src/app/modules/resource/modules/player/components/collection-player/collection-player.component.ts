@@ -84,6 +84,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   copyAsCourseInteractEdata: IInteractEventEdata;
 
+  tocTelemetryInteractEdata: IInteractEventEdata;
+
   private subscription: Subscription;
 
   public contentType: string;
@@ -116,11 +118,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public telemetryCdata: Array<{}>;
   selectedContent: {};
   public unsubscribe$ = new Subject<void>();
-  telemetryInteractDataTocClick = {
-    id: 'toc-click',
-    type: 'click',
-    pageid: this.route.snapshot.data.telemetry.pageid
-  };
   mimeTypeFilters;
   activeMimeTypeFilter;
   isContentPresent: Boolean = false;
@@ -446,8 +443,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
   }
+  setTelemetryInteractData() {
+    this.tocTelemetryInteractEdata = {
+      id: 'library-toc',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
+  }
   tocCardClickHandler(event) {
     // console.log(event);
+    this.setTelemetryInteractData();
     this.callinitPlayer(event);
   }
   tocChapterClickHandler(event) {
@@ -487,7 +492,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
   }
-  
+
   /**
    * @since - #SH-66
    * @param  {ContentData} contentData
