@@ -559,6 +559,8 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should call getContentState', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getContentState').and.returnValue(of({}));
     component['getContentState']();
   });
 });

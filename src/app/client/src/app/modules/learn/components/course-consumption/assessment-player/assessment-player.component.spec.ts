@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule, UserService } from '@sunbird/core';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { AssessmentPlayerComponent } from './assessment-player.component';
@@ -23,13 +23,13 @@ describe('AssessmentPlayerComponent', () => {
   const resourceMockData = {
     messages: {
       emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' },
-      stmsg: { m0009: 'Cannot un-enrol now. Try again later' }
+      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
     }
   };
 
   const fakeActivatedRoute = {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
-    queryParams: of({})
+    queryParams: of({batchId: '12312433'})
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -80,8 +80,11 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call subscribeToQueryParam', () => {
     component.batchId = '0130272832104038409';
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
     component['subscribeToQueryParam']();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
   it('should call getCollectionInfo', () => {
@@ -122,10 +125,6 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of({ content: {} }));
     component['getContentState']();
-  });
-
-  xit('should call parseChildContent', () => {
-    component['parseChildContent']();
   });
 
   it('should call contentProgressEvent', () => {

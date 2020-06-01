@@ -1,4 +1,4 @@
-import { combineLatest, Subject, merge, pipe } from 'rxjs';
+import { combineLatest, Subject, merge } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService } from '@sunbird/core';
