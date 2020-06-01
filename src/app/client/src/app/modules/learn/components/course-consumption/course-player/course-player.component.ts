@@ -1,4 +1,4 @@
-import { combineLatest, Subject, merge } from 'rxjs';
+import { combineLatest, Subject, merge, pipe } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService } from '@sunbird/core';
@@ -139,7 +139,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
-    this.courseConsumptionService.updateContentConsumedStatus.subscribe((data) => {
+    this.courseConsumptionService.updateContentConsumedStatus
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((data) => {
       if (this.courseHierarchy) {
         this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
@@ -170,13 +172,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
         if (!contentProgressEvent) {
-          /* this.courseConsumptionService.updateContentConsumedStatus
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe(({courseId, batchId}) => {
-            if (this.courseId === courseId && this.batchId === batchId) {
-              this.getContentState();
-            }
-          }); */
           this.courseHierarchy = courseHierarchy;
           this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
           this.courseInteractObject = {
