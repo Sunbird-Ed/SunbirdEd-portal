@@ -39,7 +39,8 @@
         type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary">
         {{resourceService?.frmelmnts?.lbl?.addUser}}
       </button>
-      <button appTelemetryInteract type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+      <button appTelemetryInteract type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"
+              (click)="cancelUserCreation()">
       {{resourceService?.frmelmnts.btn.cancel}}</button>
     </div>
     </div>

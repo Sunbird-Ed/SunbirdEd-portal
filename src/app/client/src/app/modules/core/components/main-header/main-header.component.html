@@ -133,8 +133,7 @@
                         [isMenu]="false">
         </sb-member-card>
       </div>
-      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc"
-           *ngIf="((userListToShow && userListToShow.length) >=1)">
+      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
         {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
       </div>
 
