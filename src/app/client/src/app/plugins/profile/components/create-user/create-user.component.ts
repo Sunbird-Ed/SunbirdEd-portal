@@ -139,7 +139,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   cancelUserCreation() {
-    this.navigationhelperService.navigateToPreviousUrl()
+    this.navigationhelperService.navigateToPreviousUrl('/profile')
   }
 
   onSubmitForm() {
