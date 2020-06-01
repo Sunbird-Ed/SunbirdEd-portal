@@ -253,6 +253,23 @@ describe('BatchListComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['update/batch', '012767178876862464110'],
     {queryParamsHandling: 'merge', relativeTo: fakeActivatedRoute});
   });
+
+  it('should fetch the course names of the batches', () => {
+    component.batchList = testData.batchListWithCourseDetails;
+    const searcService = TestBed.get(SearchService);
+    const searchParams = {
+      'filters': {
+        'identifier': testData.courseIds,
+        'status': ['Live'],
+        'contentType': ['Course']
+      },
+      'fields': ['name']
+    };
+    spyOn(searcService, 'contentSearch').and.returnValue(observableOf(testData.contentSearchResult));
+    component.getCourseName(testData.courseIds);
+    expect(searcService.contentSearch).toHaveBeenCalledWith(searchParams, false);
+    expect(component.batchList).toEqual(testData.batchListWithCourseDetails);
+  });
 });
 
 
