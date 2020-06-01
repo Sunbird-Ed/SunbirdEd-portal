@@ -239,7 +239,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         if (participants && participants.length > 0) {
           this.addParticipantToBatch(response.result.batchId, participants);
         } else {
-          this.disableSubmitBtn = false;
+          // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
         }
