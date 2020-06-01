@@ -165,6 +165,9 @@ function getLocals(req) {
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
+  locals.collectionEditorCDN = envHelper.CONTENT_EDITORS_CDN_URL.COLLECTION_EDITOR;
+  locals.contentEditorCDN = envHelper.CONTENT_EDITORS_CDN_URL.CONTENT_EDITOR;
+  locals.genericEditorCDN = envHelper.CONTENT_EDITORS_CDN_URL.GENERIC_EDITOR;
   return locals
 }
 
