@@ -133,8 +133,7 @@
                         [isMenu]="false">
         </sb-member-card>
       </div>
-      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc"
-           *ngIf="((userListToShow && userListToShow.length) >=1)">
+      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
         {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
       </div>
 
@@ -171,7 +170,7 @@
           <img src="assets/images/user-circle.svg" alt="Add user">
         </div>
         <div class="add-user__label fnormal sb-color-secondary">
-          {{resourceService.frmelmnts?.lbl?.addUser}}
+          {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
         </div>
       </div>
       <ul class="profile__actions__list">

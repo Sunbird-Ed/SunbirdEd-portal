@@ -136,4 +136,11 @@ describe('ChooseUserComponent', () => {
     expect(userService.initialize).toHaveBeenCalled();
   });
 
+  it('should navigate', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    component.closeSwitchUser();
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+  });
+
 });

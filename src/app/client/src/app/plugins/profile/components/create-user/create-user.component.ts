@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, ToasterService, ServerResponse, UtilService, NavigationHelperService } from '@sunbird/shared';
+import {InterpolatePipe, ResourceService, ToasterService, ServerResponse, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
@@ -138,14 +138,14 @@ export class CreateUserComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/profile']);
+    this.navigationhelperService.navigateToPreviousUrl('/profile')
   }
 
   onSubmitForm() {
     this.enableSubmitBtn = false;
     const createUserRequest = {
       request: {
-        firstName: 'this.userDetailsForm.value.name',
+        firstName: this.userDetailsForm.value.name,
         managedBy: this.userService.userid,
         locationIds: _.map(_.get(this.userProfile, 'userLocations'), 'id')
       }
@@ -162,6 +162,12 @@ export class CreateUserComponent implements OnInit {
         }
       };
       this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
+        const filterPipe = new InterpolatePipe();
+        let successMessage = filterPipe.transform(this.resourceService.messages.imsg.m0096, '{firstName}', this.userDetailsForm.value.name);
+        this.toasterService.custom({
+          message: successMessage,
+          class: 'sb-toaster sb-toast-success sb-toast-normal'
+        });
         this.router.navigate(['/profile/choose-managed-user']);
       }, err => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
