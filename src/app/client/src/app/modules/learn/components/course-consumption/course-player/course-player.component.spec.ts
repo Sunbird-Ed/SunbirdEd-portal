@@ -584,4 +584,19 @@ describe('CoursePlayerComponent', () => {
     component.navigateToContent({ event: { type: 'click' } });
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
+
+  it('should call setTelemetryContentImpression', () => {
+    component['setTelemetryContentImpression']();
+  });
+
+  it('should call setContentInteractData', () => {
+    const config = {
+      metadata: {
+        contentType: 'application/vnd.ekstep.content-collection',
+        resourceType: 'Resource',
+        pkgVersion: 1
+      }
+    };
+    component['setContentInteractData'](config);
+  });
 });
