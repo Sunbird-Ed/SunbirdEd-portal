@@ -578,4 +578,10 @@ describe('CoursePlayerComponent', () => {
     courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
     expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
+
+  it('should call navigateToContent', () => {
+    spyOn<any>(component, 'navigateToPlayerPage');
+    component.navigateToContent({ event: { type: 'click' } });
+    expect(component.navigateToPlayerPage).toHaveBeenCalled();
+  });
 });

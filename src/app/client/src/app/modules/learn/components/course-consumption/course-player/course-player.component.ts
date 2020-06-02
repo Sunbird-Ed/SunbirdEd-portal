@@ -150,22 +150,22 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
-        mergeMap(({ courseId, batchId, courseStatus }) => {
-          this.courseId = courseId;
-          this.batchId = batchId;
-          this.courseStatus = courseStatus;
-          this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-            if (this.batchId) {
-              this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
-            }
-          this.setTelemetryCourseImpression();
-          const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-            if (this.batchId) {
-              return combineLatest(
-                this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-                this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-              ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-            }
+      mergeMap(({ courseId, batchId, courseStatus }) => {
+        this.courseId = courseId;
+        this.batchId = batchId;
+        this.courseStatus = courseStatus;
+        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
+        if (this.batchId) {
+          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+        }
+        this.setTelemetryCourseImpression();
+        const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+        if (this.batchId) {
+          return combineLatest(
+            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+            this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
+        }
         return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
           .pipe(map(courseHierarchy => ({ courseHierarchy })));
       })), this.subscribeToContentProgressEvents())
@@ -369,6 +369,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
   }
   public navigateToContent(event: any, collectionUnit?: any): void {
+    /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
@@ -609,6 +610,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
 
           let consumedContents = [];
+          /* istanbul ignore else */
           if (this.contentStatus.length) {
             consumedContents = flattenDeepContents.filter(o => {
               return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
@@ -619,6 +621,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           unit.isUnitConsumptionStart = false;
+
           if (consumedContents.length) {
             unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
             unit.isUnitConsumptionStart = true;
