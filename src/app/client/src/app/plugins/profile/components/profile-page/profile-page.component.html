@@ -25,7 +25,7 @@
     </div>  
     </div>
     <div class="mt-8 mb-16 d-flex flex-jc-center">
-      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
+      <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5">{{userProfile.userName}}</div>
     </div>
     <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
@@ -45,17 +45,16 @@
     </div>
     <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
       <div class="computer only">
-          <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="info"></i>
       </div>
       <div class="mobile only">
-          <i suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="info"></i>
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="info"></i>
       </div>
       
     </div>
 
     <!-- add state and district -->
-    <div class="ui container">
-      <!-- *ngIf="isCustodianOrgUser" -->
+    <div class="ui container" *ngIf="isCustodianOrgUser">
       <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
         <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
         <div class="fmedium ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !district}">
@@ -71,9 +70,9 @@
           [telemetryInteractEdata]="editProfileInteractEdata"
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
-
-        <button class="sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-          I'm a State Teacher<i class="question circle outline icon"></i> </button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="showSubmitTeacherDetails=true" class="sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+          {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
 
@@ -223,20 +222,26 @@
   </section>
 
   <!-- 4 section start teacher profile-->
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3">
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="udiseObj || teacherObj || schoolObj">
     <div class="d-flex flex-jc-center flex-dc school-id-section">
-      <div class="d-flex flex-jc-center mb-16">
-        <span class="fnormal white-space-nowrap">School UDISE ID:</span>
-        <span class="fnormal font-w-bold pl-4">ABC123</span>
+      <div class="d-flex flex-jc-center mb-16" *ngIf="schoolObj">
+        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</span>
+        <span class="fnormal font-w-bold pl-4">{{schoolObj?.id}}</span>
       </div>
-      <div class="d-flex flex-jc-center">
-        <span class="fnormal white-space-nowrap">School Teacher ID:</span>
-        <span class="fnormal font-w-bold pl-4">ABC123</span>
+      <div class="d-flex flex-jc-center mb-16" *ngIf="udiseObj">
+        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</span>
+        <span class="fnormal font-w-bold pl-4">{{udiseObj?.id}}</span>
+      </div>
+      <div class="d-flex flex-jc-center" *ngIf="teacherObj">
+        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</span>
+        <span class="fnormal font-w-bold pl-4">{{teacherObj?.id}}</span>
       </div>
       <div class="d-flex flex-jc-center my-16">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border" (click)="showSubmitModal = !showSubmitModal">Edit</button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
+        (click)="showUpdateTeacherDetails = !showUpdateTeacherDetails">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
-      <div class="d-flex flex-jc-center fsmall">Information submitted </div>
+      <div class="d-flex flex-jc-center fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
     </div>
   </section>
   <!-- 4 section end -->
@@ -360,152 +365,28 @@
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
+  <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup;" *ngIf="showEditUserDetailsPopup"
+    [userProfile]="userProfile"></app-update-user-details>
+  <app-submit-teacher-details [formAction]="'submit'" [userProfile]="userProfile" (showSuccessModal)="showSuccessModal=true;"
+      (close)="showSubmitTeacherDetails = !showSubmitTeacherDetails;" *ngIf="showSubmitTeacherDetails">
+    </app-submit-teacher-details>
+  <app-submit-teacher-details [formAction]="'update'" [userProfile]="userProfile"
+      (close)="showUpdateTeacherDetails = !showUpdateTeacherDetails" *ngIf="showUpdateTeacherDetails">
+    </app-submit-teacher-details>
 <router-outlet></router-outlet>
 
-
-<!-- submit information modal in TEACHER Profile -->
-<sui-modal *ngIf="showSubmitModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showSubmitModal = !showSubmitModal" #modal>
+<!-- information submitted modal in TEACHER Profile-->
+<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
   <div class="sb-modal-header font-weight-normal">
-    Submit Information
+    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
   </div>
-  <div class="sb-modal-content">
-    <div class="information-label mb-8 mx-16 font-weight-bold">Please provide the following details</div>
-    <div class="fsmall mx-16">These details may be made available to your declared State to validate and follow progress
-      on courses.</div>
-    <form class="sb-form mb-16 px-16">
-      <div class="ui stackable grid mt-24">
-        <div class="twelve wide column p-0 mx-16">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
-                <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
-                </option>
-              </select>
-              <label class="font-weight-normal">State<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16 my-8">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts">
-                <option [ngValue]="option" *ngFor="let option of districts" [value]="option">{{option?.name}}</option>
-              </select>
-              <label class="d-flex font-weight-normal">District<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter UDISE ID">
-              <label class="font-weight-normal">School UDISE ID<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16 my-8">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter teacher ID">
-              <label class="font-weight-normal">State teacher ID<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter ID by your State or Board">
-              <label class="font-weight-normal">Enter ID as requested by your State or Board<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 pt-16 mx-16">
-          <div class="sb-checkbox sb-checkbox-primary">
-            <input type="checkbox" id="check1" name="example">
-            <label for="check1">I understand and accept the<a class="text-underline fsmall"
-                href="javascript:void(0)">Terms of Use</a></label>
-          </div>
-        </div>
-      </div>
-    </form>
+  <div class="sb-modal-content text-center">
+    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showEditModal = !showEditModal">
-      Submit
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Cancel
+    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="showSuccessModal = !showSuccessModal">
+      {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
 </sui-modal>
-
-<!-- edit information modal in TEACHER Profile -->
- <sui-modal *ngIf="showEditModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showEditModal = !showEditModal" #modal>
-  <div class="sb-modal-header font-weight-normal">
-    Edit Details
-  </div>
-  <div class="sb-modal-content">
-    <form class="sb-form px-16">
-      <div class="ui stackable grid my-8">
-        <div class="twelve wide column p-0 mx-16">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter UDISE ID">
-              <label class="font-weight-normal">School UDISE ID<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16 my-8">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter teacher ID">
-              <label class="font-weight-normal">State teacher ID<span>*</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control selection fields-dropdown ui dropdown" type="text"
-                placeholder="Enter ID by your State or Board">
-              <label class="font-weight-normal">Enter ID as requested by your State or Board<span>*</span></label>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </form>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showSuccessModal = !showSuccessModal">
-      Update
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Cancel
-    </button>
-  </div>
-</sui-modal> 
-
-<!-- information submitted modal in TEACHER Profile-->
- <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
-  <div class="sb-modal-header font-weight-normal">
-    Information Submitted
-  </div>
-  <div class="sb-modal-content text-center">
-    <div class="fs-1 font-weight-bold my-8">Thank you for submitting your details</div>
-    <div class="my-16">You can edit this information from your profile if you need to</div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="SuccessToasterStandard()">
-      OK
-    </button>
-  </div>
-</sui-modal> 

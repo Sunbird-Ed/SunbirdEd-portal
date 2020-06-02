@@ -203,7 +203,7 @@ export class MainHeaderComponent implements OnInit {
         userListToProcess = [data[1]].concat(userListToProcess);
       }
       this.userListToShow = this.managedUserService.processUserList(userListToProcess.slice(0, 2), this.userService.userid);
-      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 1;
+      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 2;
       }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
