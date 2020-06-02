@@ -563,4 +563,9 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseProgressService, 'getContentState').and.returnValue(of({}));
     component['getContentState']();
   });
+
+  it('should call parseChildContent', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component['parseChildContent']();
+  });
 });
