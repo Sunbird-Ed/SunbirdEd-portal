@@ -9,16 +9,13 @@ build_tag=$1
 name=player
 node=$2
 org=$3
-export sunbird_content_editor_artifact_url=$4
-export sunbird_collection_editor_artifact_url=$5
-export sunbird_generic_editor_artifact_url=$6
-buildDockerImage=$7
-buildCdnAssests=$8
+buildDockerImage=$4
+buildCdnAssests=$5
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
 then
-    cdnUrl=$9
+    cdnUrl=$6
     echo "cdnUrl: " $cdnUrl
 fi
 
