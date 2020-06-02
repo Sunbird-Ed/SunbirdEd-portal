@@ -143,6 +143,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .subscribe((data) => {
         this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
         this.batchId = data.batchId;
+        this.courseId = data.courseId;
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
         this.getContentState();
     });
