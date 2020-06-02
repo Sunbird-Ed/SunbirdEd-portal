@@ -30,47 +30,6 @@ gulp.task('inject:cdnFallBack:script', () => {
         .pipe(gulp.dest('./../dist-cdn'))
 })
 
-//////////////////////// editor download and zip ///////////////////////////////////////////////////
-
-const contentEditor = process.env.sunbird_content_editor_artifact_url;
-const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
-const genericEditor = process.env.sunbird_generic_editor_artifact_url;
-const editorsDestPath = 'src/thirdparty/editors/'
-
-gulp.task('clean:editors', () => {
-    return gulp.src('./' + editorsDestPath, { read: false, allowEmpty: true })
-        .pipe(clean())
-})
-
-gulp.task('download:content:editor', () => {
-    return download(contentEditor)
-        .pipe(decompress())
-        .pipe(gulp.dest(editorsDestPath + 'content-editor'))
-})
-
-gulp.task('download:collection:editor', () => {
-    return download(collectionEditor)
-        .pipe(decompress())
-        .pipe(gulp.dest(editorsDestPath + 'collection-editor'))
-})
-
-gulp.task('download:generic:editor', () => {
-    return download(genericEditor)
-        .pipe(decompress())
-        .pipe(gulp.dest(editorsDestPath + 'generic-editor'))
-})
-
-
-gulp.task('gzip:editors', () => {
-    return gulp.src(['./client/src/thirdparty/editors/**/*.js', './client/src/thirdparty/editors/**/*.css'])
-        .pipe(gzip())
-        .pipe(gulp.dest('./client/src/thirdparty/editors'))
-})
-
-gulp.task('download:editors', gulp.series('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor']));
-
-/////////////////////////////////////////////////////////////////////////////
-
 gulp.task('client:gzip', () => {
     return gulp.src(['./../dist/*.js', './../dist/*.css'])
         .pipe(gzip())
