@@ -1,6 +1,5 @@
 // Card component
 $sb-card-width: calculateRem(292px);
-$sb-card-height: calculateRem(208px);
 $sb-card-body-height: calculateRem(204px);
 $sb-card-progressbar-height: calculateRem(4px);
 $sb-card-hover-movement: calculateRem(3px);
@@ -19,7 +18,7 @@ $sb-card-label-font-size: calculateRem(11px);
 $sb-card-label-color: $primary-color;
 $sb-card-label-border: calculateRem(1px) solid $primary-color;
 $sb-card-label-border-radius: calculateRem(2px);
-$sb-card-label-padding: calculateRem(4px) $base-block-space;
+$sb-card-label-padding: calculateRem(4px) calculateRem(8px);
 $sb-card-label-height: calculateRem(24px);
 $sb-card-badge-height: calculateRem(30px);
 $sb-card-badge-width: calculateRem(30px);
@@ -50,7 +49,6 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
 /* sb card styles */
 .sb-card {
   width: $sb-card-width;
-  // max-width: $sb-card-width;
   background-color: $sb-card-bg-color;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
@@ -84,7 +82,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     border-radius: $sb-card-image-border-radius;
     box-sizing: border-box;
     overflow: hidden;
-    margin: 0 ($base-block-space * 2) 0 0;
+    margin: 0 calculateRem(16px) 0 0;
 
     img {
       width: $sb-card-image-width;
@@ -168,7 +166,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
       background: rgba(153, 153, 153, .95);
       
       .sb-exclamation-icon, p {
-        color: white;
+        color: var(--white);
       }
 
     }
@@ -220,7 +218,7 @@ app-card[lang="ur"] {
       margin: 0 auto 0 0;
     }
     .sb-card-image {
-      margin: 0 0 0 ($base-block-space * 2);
+      margin: 0 0 0 calculateRem(16px);
     }
   }
 }
@@ -228,17 +226,17 @@ app-card[lang="ur"] {
 // workspace cards
 
 .sb-wspace-card {
-  height: $base-block-space*16;
+  height: calculateRem(128px);
   max-width: $sb-card-width;
   @include border(border, 0.5px, $gray-0);
   @include border(border-left, 4px, $white);
-  border-radius: $base-block-space/2;
+  border-radius: calculateRem(4px);
   background: $white;
-  padding: $base-block-space*2 $base-block-space*3;
+  padding: calculateRem(16px) calculateRem(24px);
   margin: 0px calculateRem(24px) calculateRem(24px) 0;
 
   .sb-wspace-title {
-    margin-bottom: $base-block-space;
+    margin-bottom: calculateRem(8px);
     font-size: $h5-font-size;
     font-weight: $font-weight-bold;
   }
@@ -305,7 +303,7 @@ app-card[lang="ur"] {
 .sb-no-batch-found {
   background-color: $tertiary-0;
   border: 1px solid $tertiary-100;
-  padding: ($base-block-space $base-block-space * 2);
+  padding: calculateRem(8px) calculateRem(16px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);
 }
