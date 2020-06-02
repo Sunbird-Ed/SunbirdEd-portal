@@ -139,7 +139,7 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userListToShow).toEqual(mockData.userList);
-    expect(component.totalUsersCount).toEqual(0);
+    expect(component.totalUsersCount).toEqual(-1);
   });
 
   it('should not fetch managed user list as user is not logged in', () => {
