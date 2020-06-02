@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ManagedUserService, UserService} from '@sunbird/core';
+import {CoursesService, ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
@@ -23,7 +23,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
-              public activatedRoute: ActivatedRoute) {
+              public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -89,7 +89,8 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
       request: {
         filters: {
           managedBy: this.managedUserService.getUserId()
-        }
+        },
+        sort_by: {createdDate: 'desc'}
       }
     };
     const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
@@ -115,6 +116,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
             this.telemetryService.setInitialization(false);
             this.telemetryService.initialize(this.getTelemetryContext());
             this.router.navigate(['/resources']);
@@ -124,6 +126,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               class: 'sb-toaster sb-toast-success sb-toast-normal'
             });
             this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
+            });
           }
         });
       }, (err) => {

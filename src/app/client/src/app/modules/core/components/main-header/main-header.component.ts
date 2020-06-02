@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService
+  ManagedUserService, ProgramsService, CoursesService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import {
@@ -110,6 +110,7 @@ export class MainHeaderComponent implements OnInit {
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
+    private courseService: CoursesService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -190,7 +191,10 @@ export class MainHeaderComponent implements OnInit {
   fetchManagedUsers() {
     const fetchManagedUserRequest = {
       request: {
-        filters: {managedBy: this.managedUserService.getUserId()}
+        filters: {
+          managedBy: this.managedUserService.getUserId()
+        },
+        sort_by: {createdDate: 'desc'}
       }
     };
     const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
@@ -202,8 +206,9 @@ export class MainHeaderComponent implements OnInit {
       if (data && data[1]) {
         userListToProcess = [data[1]].concat(userListToProcess);
       }
-      this.userListToShow = this.managedUserService.processUserList(userListToProcess.slice(0, 2), this.userService.userid);
-      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 2;
+      const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+      this.userListToShow = processedUserList.slice(0, 2);
+      this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length - 2;
       }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
@@ -413,7 +418,8 @@ export class MainHeaderComponent implements OnInit {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.setInitialization(false);
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.telemetryService.setInitialization(false);
             this.telemetryService.initialize(this.getTelemetryContext());
             this.router.navigate(['/resources']);
             this.toasterService.custom({
@@ -424,6 +430,7 @@ export class MainHeaderComponent implements OnInit {
             this.toggleSideMenu(false);
             this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
             userSubscription.unsubscribe();
+            });
           }
         });
       }, (err) => {
