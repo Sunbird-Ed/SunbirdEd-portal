@@ -14,6 +14,7 @@ import { assessmentPlayerMockData } from './assessment-player.component.data.spe
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { of, throwError } from 'rxjs';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
+import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -39,7 +40,7 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService,
+        UserService, CsCourseProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -115,13 +116,29 @@ describe('AssessmentPlayerComponent', () => {
     component['parseChildContent']();
   });
 
-  it('should call contentProgressEvent', () => {
-    component.contentProgressEvent({});
+  it('should not proceed further if batchId not found inside contentProgressEvent()', () => {
+    component.batchId = undefined;
+    component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
+    expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
+  });
+
+  it('should  proceed further if batch status is 1 inside contentProgressEvent()', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.batchId = '11259794895';
+    component.enrolledBatchInfo = {status: 1};
+    spyOn<any>(component, 'validEndEvent').and.returnValues(100);
+    spyOn<any>(courseConsumptionService, 'updateContentsState').and.returnValues(of({}));
+    component.activeContent = assessmentPlayerMockData.activeContent;
+    component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
+    expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
 
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
+    const assessmentScoreService = TestBed.get(AssessmentScoreService);
+    spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
+    spyOn(component, 'calculateProgress').and.stub();
     component.onAssessmentEvents({});
   });
 
@@ -140,9 +157,22 @@ describe('AssessmentPlayerComponent', () => {
     component.onQuestionScoreSubmitEvents({});
   });
 
-  it('should call validEndEvent', () => {
+  it('should call calculate method to get the courseProgress', () => {
+    const playerSummury = assessmentPlayerMockData.playerSummuryData;
+    const mimeType = 'application/vnd.ekstep.ecml-archive';
+    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
-    component['validEndEvent']({});
+    component['validEndEvent'](assessmentPlayerMockData.playerEndData);
+    expect(CsCourseProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
+    expect(component.courseProgress).toEqual(100);
+  });
+
+  it('should not call calculate method if the contentType is selfAssess', () => {
+    component.activeContent = assessmentPlayerMockData.activeContent;
+    component.activeContent.contentType = 'SelfAssess';
+    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    component['validEndEvent'](assessmentPlayerMockData.playerEndData);
+    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
 
   it('should call calculateProgress', () => {

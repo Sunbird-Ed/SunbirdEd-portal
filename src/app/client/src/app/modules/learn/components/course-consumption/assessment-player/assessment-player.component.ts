@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
+import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -36,6 +37,7 @@ export class AssessmentPlayerComponent implements OnInit {
   playerConfig;
   playerOption;
   courseName: string;
+  courseProgress: number;
 
   constructor(
     public resourceService: ResourceService,
@@ -196,7 +198,8 @@ export class AssessmentPlayerComponent implements OnInit {
       contentId: _.cloneDeep(_.get(telObject, 'object.id')),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: eid === 'END' ? 2 : 1
+      status: (eid === 'END' && this.courseProgress === 100) ? 2 : 1,
+      progress: this.courseProgress
     };
     if (!eid) {
       const contentType = this.activeContent.contentType;
@@ -227,25 +230,20 @@ export class AssessmentPlayerComponent implements OnInit {
       this.contentProgressEvent(event);
     }
   }
-
+  /**
+   * @since #SH-120
+   * @param  {object} event - telemetry end event data
+   * @description - It will return the progress calculated from cilent-service(Common Consumption)
+   */
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = this.activeContent.mimeType;
     const contentType = this.activeContent.contentType;
+    this.courseProgress = CsCourseProgressCalculator.calculate(playerSummary, contentMimeType);
     if (contentType === 'SelfAssess') {
       return false;
     }
-    const validSummary = (summaryList: Array<any>) => (percentage: number) => _.find(summaryList, (requiredProgress =>
-      summary => summary && summary.progress >= requiredProgress)(percentage));
-    if (validSummary(playerSummary)(20) && ['video/x-youtube', 'video/mp4', 'video/webm'].includes(contentMimeType)) {
-      return true;
-    } else if (validSummary(playerSummary)(0) &&
-      ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'].includes(contentMimeType)) {
-      return true;
-    } else if (validSummary(playerSummary)(100)) {
-      return true;
-    }
-    return false;
+    return this.courseProgress;
   }
 
   calculateProgress() {
