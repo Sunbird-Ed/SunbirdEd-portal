@@ -23,7 +23,7 @@
             [ngClass]="{'sb-btn-disabled': !selectedUser, 'sb-btn-primary': selectedUser}">
       {{resourceService.frmelmnts?.lbl?.switchUser}}
     </button>
-    <button type="submit"
+    <button type="submit" (click)="closeSwitchUser()"
             class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">{{resourceService.frmelmnts?.btn?.cancel}}</button>
   </div>
 </div>

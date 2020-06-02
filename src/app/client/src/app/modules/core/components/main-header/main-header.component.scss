@@ -38,6 +38,9 @@
             left: $base-block-space*2;
             cursor: pointer;
         }
+        &__desc{
+            padding: 0 0.5rem;
+        }
     }
 
     &__actions{
@@ -95,6 +98,7 @@
 
 .more-user {
     text-align: center;
+    cursor: pointer;
     &__btn {
         width: $base-block-space*4;
         height: $base-block-space*4;
@@ -130,6 +134,7 @@
         .icon-close {
             right: $base-block-space*2;
             left: unset;
+            z-index: 9999;
         }
         .user {
             flex-wrap: wrap;
