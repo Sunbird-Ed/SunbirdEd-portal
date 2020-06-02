@@ -147,10 +147,10 @@ let envVariables = {
   sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic,
 
   // Editors URLs
-  CONTENT_EDITORS_CDN_URL: {
-    COLLECTION_EDITOR: env.sunbird_collectionEditorCDN || '',
-    CONTENT_EDITOR: env.sunbird_contentEditorCDN || '',
-    GENERIC_EDITOR: env.sunbird_genericEditorCDN || ''
+  CONTENT_EDITORS_URL: {
+    COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
+    CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
+    GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
   }
 }
 
