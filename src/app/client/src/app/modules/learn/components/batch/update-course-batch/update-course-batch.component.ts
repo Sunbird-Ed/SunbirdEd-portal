@@ -370,6 +370,15 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentorList: _.uniqBy(mentorList, 'id')
     };
   }
+
+  private getUserListWithQuery(query, type) {
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
+  }
   private initDropDown() {
     const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
@@ -396,14 +405,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
     });
-  }
-  private getUserListWithQuery(query, type) {
-    if (this.userSearchTime) {
-      clearTimeout(this.userSearchTime);
-    }
-    this.userSearchTime = setTimeout(() => {
-      this.getUserList(query, type);
-    }, 1000);
   }
   /**
   *  api call to get user list

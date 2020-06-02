@@ -10,14 +10,6 @@ export class LazzyLoadScriptService {
   private cdnUrl = '';
   private _loadedLibraries: { [url: string]: ReplaySubject<any> } = {};
 
-  constructor(@Inject(DOCUMENT) private readonly document: any) {
-    const cdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
-                          ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
-      if (cdnWorking.toLowerCase() === 'yes') {
-        this.cdnUrl = (<HTMLInputElement>document.getElementById('cdnUrl'))
-                        ? (<HTMLInputElement>document.getElementById('cdnUrl')).value : '';
-      }
-  }
   public loadScript(url: string): Observable<any> {
     url = this.cdnUrl + url;
     if (this._loadedLibraries[url]) {
@@ -33,5 +25,14 @@ export class LazzyLoadScriptService {
     };
     this.document.body.appendChild(script);
     return this._loadedLibraries[url].asObservable();
+  }
+
+  constructor(@Inject(DOCUMENT) private readonly document: any) {
+    const cdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
+                          ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+      if (cdnWorking.toLowerCase() === 'yes') {
+        this.cdnUrl = (<HTMLInputElement>document.getElementById('cdnUrl'))
+                        ? (<HTMLInputElement>document.getElementById('cdnUrl')).value : '';
+      }
   }
 }

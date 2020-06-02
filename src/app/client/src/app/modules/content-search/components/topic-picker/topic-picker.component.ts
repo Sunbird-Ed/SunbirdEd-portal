@@ -77,6 +77,14 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.initTopicPicker(this.formatTopics(this.formTopic.range));
   }
+  private formatTopics(topics, subTopic = false): Array<TopicTreeNode> {
+    return _.map(topics, (topic) => ({
+      id: topic.identifier,
+      name: topic.name,
+      selectable: subTopic ? 'selectable' : 'notselectable',
+      nodes: this.formatTopics(topic.children, true)
+    }));
+  }
   private initTopicPicker(data: Array<TopicTreeNode>) {
     this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
       jQuery('.topic-picker-selector').treePicker({
@@ -105,14 +113,6 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
       setTimeout(() =>
         document.getElementById('topicSelector').classList.add(this.topicPickerClass), 100);
     });
-  }
-  private formatTopics(topics, subTopic = false): Array<TopicTreeNode> {
-    return _.map(topics, (topic) => ({
-      id: topic.identifier,
-      name: topic.name,
-      selectable: subTopic ? 'selectable' : 'notselectable',
-      nodes: this.formatTopics(topic.children, true)
-    }));
   }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
