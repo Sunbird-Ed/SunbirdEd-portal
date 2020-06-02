@@ -102,7 +102,8 @@ export class CourseProgressService {
 
   getReportsMetaData(requestParam): Observable<ServerResponse> {
     const url = `${this.config.urlConFig['URLS'].COURSE.GET_REPORTS_METADATA}`;
-    return this.usageService.getData(url, requestParam).pipe(map((response: any) =>  {
+    return this.usageService.getData(url, requestParam).pipe(map((response: any) => {
+      if (requestParam.telemetryData) {
         for (const reportName of Object.keys(response.result)) {
           const event = {
             context: {
@@ -110,7 +111,7 @@ export class CourseProgressService {
             },
             edata: {
               type: requestParam.telemetryData.snapshot.data.telemetry.type,
-              level:  _.get(response, `result.${reportName}.statusCode`) !== 200 ? 'ERROR' : 'SUCCESS',
+              level: _.get(response, `result.${reportName}.statusCode`) !== 200 ? 'ERROR' : 'SUCCESS',
               // tslint:disable-next-line: max-line-length
               message: _.get(response, `result.${reportName}.lastModified`) ? `${reportName} is available` : `${reportName} is not available`,
               pageid: requestParam.telemetryData.snapshot.data.telemetry.pageid
@@ -118,7 +119,8 @@ export class CourseProgressService {
           };
           this.telemetryService.log(event);
         }
-        return response;
+      }
+      return response;
     }));
   }
 }

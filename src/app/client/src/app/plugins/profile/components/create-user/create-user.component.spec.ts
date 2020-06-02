@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { CoreModule, FormService, TncService, UserService } from '@sunbird/core';
-import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import {NavigationHelperService, ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockRes } from './create-user.component.spec.data';
@@ -49,6 +49,9 @@ describe('CreateUserComponent', () => {
       'emsg': {
         'm0005': 'Something went wrong, try later'
       },
+      'imsg': {
+        'm0096': 'Successfully added "{firstName}"'
+      },
       'smsg': {
         'm0046': 'Profile updated successfully'
       }
@@ -66,7 +69,8 @@ describe('CreateUserComponent', () => {
         HttpClientTestingModule, TelemetryModule],
       declarations: [CreateUserComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService, TncService, UserService],
+        { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService, TncService, UserService,
+        NavigationHelperService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -133,6 +137,10 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with success', () => {
     const userService = TestBed.get(UserService);
     component.userProfile = mockRes.userData;
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
+    component.userDetailsForm.controls['name'].setValue('test');
     spyOn(userService, 'registerUser').and.returnValue(observableOf(mockRes.createUser));
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf(mockRes.tncAccept));
     component.onSubmitForm();
@@ -142,6 +150,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
     component.onSubmitForm();
@@ -151,6 +162,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
     component.onSubmitForm();
@@ -167,8 +181,11 @@ describe('CreateUserComponent', () => {
   });
 
   it('should redirect to profile page on cancel', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
     component.onCancel();
-    expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
   });
 
 });
+

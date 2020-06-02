@@ -205,4 +205,8 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
       }
     };
   }
+
+  closeSwitchUser() {
+    this.navigationhelperService.navigateToPreviousUrl('/profile')
+  }
 }

@@ -296,7 +296,7 @@ export class TelemetryService {
     if (this.userSid) {
       eventContextData.cdata.push({
         id: this.userSid,
-        type: 'sid'
+        type: 'UserSession'
       });
     }
     return eventContextData;

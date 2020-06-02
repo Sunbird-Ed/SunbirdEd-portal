@@ -28,9 +28,8 @@ button.sb-btn:focus {
   outline: 0;
   display: inline-block;
   border: calculateRem(1px) solid;
-  // color: $white-color;
   cursor: pointer;
-  min-width: ($base-block-space * 8);
+  min-width: calculateRem(64px);
   @include border-radius(0.125rem);
   position: relative;
   line-height: 1;
@@ -196,9 +195,6 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 .sb-btn-link {
   background: none;
   border: 0;
-  &:hover {
-    // font-weight: $font-weight-bold;
-  }
 }
 
 .sb-btn-download {
@@ -230,42 +226,37 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 
 // Buttons with icon
 .sb-right-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
   i.icon {
-    margin-left: $base-block-space;
+    margin-left: calculateRem(8px);
     margin-right: 0;
   }
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
     i.icon {
-      margin-right: ($base-block-space / 2);
+      margin-right:calculateRem(4px);
       margin-right: 0;
     }
   }
 }
 .sb-left-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
   i.icon {
-    margin-right: $base-block-space;
+    margin-right: calculateRem(4px);
   }
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
     i.icon {
-      margin-left: $base-block-space;
+      margin-left: calculateRem(8px);
     }
   }
 }
 .sb-left-icon-btn.sb-btn-xs {
-  padding: ($base-block-space * 0) ($base-block-space * 1)
-    ($base-block-space * 0) ($base-block-space * 1);
+  padding: 0 calculateRem(8px);
 }
 //Buttons toggle
 .ui.toggle.checkbox.sb-toggle {
-  min-height: ($base-block-space * 3);
+  min-height: calculateRem(24px);
   position: relative;
   display: inline-block;
   -webkit-backface-visibility: hidden;
@@ -273,12 +264,12 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   outline: 0;
   vertical-align: baseline;
   font-style: normal;
-  min-height: ($base-block-space * 2);
+  min-height: calculateRem(16px);
   font-size: 1rem;
-  min-width: ($base-block-space * 2);
+  min-width: calculateRem(16px);
   input {
-    width: ($base-block-space * 8);
-    height: ($base-block-space * 3);
+    width: calculateRem(64px);
+    height: calculateRem(24px);
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -294,8 +285,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     }
   }
   label {
-    min-height: ($base-block-space * 2);
-    padding-left: ($base-block-space * 9);
+    min-height: calculateRem(16px);
+    padding-left: calculateRem(72px);
     color: rgba(0, 0, 0, 0.87);
     position: relative;
     display: block;
@@ -312,8 +303,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       left: 0;
       background: rgba(0, 0, 0, 0.05);
       box-shadow: none;
-      width: ($base-block-space * 8);
-      height: ($base-block-space * 3);
+      width: calculateRem(64px);
+      height: calculateRem(24px);
       border-radius: 500rem;
       @include btn-theme($primary-color);
       transition: border 0.1s ease, opacity 0.1s ease, transform 0.1s ease,
@@ -326,9 +317,9 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       opacity: 1;
       z-index: 2;
       border: none;
-      width: (($base-block-space * 3) - 4);
-      height: (($base-block-space * 3) - 4);
-      top: 3px;
+      width: calculateRem(20px);
+      height: calculateRem(20px);
+      top: calculateRem(3px);
       left: 0;
       border-radius: 500rem;
       -webkit-transition: background 0.3s ease, left 0.3s ease;
@@ -363,7 +354,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     margin: 0;
     border: 0;
     color: $sb-btn-group-btn-color;
-    min-width: ($base-block-space * 5);
+    min-width: calculateRem(40px);
     &:first-child {
       border-left: none;
       margin-left: 0;
@@ -381,8 +372,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 }
 
 .sb-btn-loading-spinner {
-  padding: ($base-block-space * 1) ($base-block-space * 2)
-    ($base-block-space * 1) ($base-block-space * 1);
+  padding: calculateRem(8px) calculateRem(16px)
+  calculateRem(8px) calculateRem(8px);
 }
 
 @keyframes spinner-border {

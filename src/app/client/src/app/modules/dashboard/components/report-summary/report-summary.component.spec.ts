@@ -1,3 +1,5 @@
+import { TelemetryModule } from '@sunbird/telemetry';
+import { DashboardModule } from '@sunbird/dashboard';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -12,9 +14,9 @@ describe('ReportSummaryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ReportSummaryComponent],
+      declarations: [],
       providers: [ReportService],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule]
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, TelemetryModule.forRoot()]
     })
       .compileComponents();
   }));
