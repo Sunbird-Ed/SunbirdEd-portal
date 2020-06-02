@@ -1,6 +1,14 @@
 .content-header {
 background: #FAFAFA;
 min-height: 0.875rem;
+&__img {
+    overflow: hidden;
+    width: 48px;
+    height:48px;
+    img {
+    height: 100%;
+  }
+  }
 }
 .content-header__title {
     color: var(--primary-400);font-size: 1.125rem;
@@ -13,9 +21,4 @@ min-height: 0.875rem;
     grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
     grid-gap: 1rem;
     grid-row-gap: 1.5rem;
-}
-.content-header__img {
-    width: 48px;
-    height:48px;
-    overflow: hidden;
 }

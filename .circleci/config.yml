@@ -38,7 +38,7 @@ jobs:
           command: npm install -g sonarqube-scanner
       - run:
          name: run sonar scanner
-         command: 'cd ~/portal && sonar-scanner'
+         command: 'cd ~/portal && SONAR_SCANNER_MIRROR=https://dl.bintray.com/sonarsource/SonarQube/org/sonarsource/scanner/cli/sonar-scanner-cli/4.3.0.2102/ sonar-scanner'
 workflows:
   version: 2
   build_and_test:

@@ -66,6 +66,12 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       return this.contentSearchService.fetchFilter(boardName);
     }))
     .subscribe(filters => {
+      if (filters && filters.hasOwnProperty('medium')) {
+        filters['medium'] = _.sortBy(filters['medium'], ["name"]);
+      }
+      if (filters && filters.hasOwnProperty('board')) {
+        filters['board'] = _.sortBy(filters['board'], ["name"]);
+      }
       this.filters = filters;
       this.updateBoardList();
       this.updateMediumAndGradeLevelList();
@@ -135,7 +141,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.gradeLevels = [];
     this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
     this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
-      this.filters.medium = filters.medium || [];
+      this.filters.medium = _.sortBy(filters['medium'], ["name"]) || [];
       this.filters.gradeLevel = filters.gradeLevel || [];
       this.updateMediumAndGradeLevelList();
       this.emitFilterChangeEvent();

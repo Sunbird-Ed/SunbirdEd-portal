@@ -331,6 +331,16 @@
       "rtl": false
     }
   },
+  "LibraryCourses": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 4,
+      "slidesToScroll": 4,
+      "respondTo": "slider",
+      "infinite": false,
+      "rtl": false
+    }
+  },
   "CoursePageSection": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -357,6 +367,10 @@
           "framework",
           "contentType"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "contentType",
+        "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
       }
     },
     "enrolledCourses": {

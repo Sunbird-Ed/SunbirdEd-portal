@@ -86,7 +86,7 @@ export class CopyContentService {
         course: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
-          organisation: _.uniq(userData.organisationNames),
+          organisation: _.uniq(this.userService.orgNames),
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           framework: contentData.framework

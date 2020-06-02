@@ -35,7 +35,11 @@ const routes: Routes = [
       }
     },
     {
-      path: 'list/curriculum-courses', component: ExploreCurriculumCoursesComponent
+      path: 'list/curriculum-courses', component: ExploreCurriculumCoursesComponent, data: {
+        telemetry: {
+          env: 'curriculum-courses', pageid: 'curriculum-courses', type: 'view', subtype: 'paginate'
+        },
+      }
     }
   ];
   @NgModule({

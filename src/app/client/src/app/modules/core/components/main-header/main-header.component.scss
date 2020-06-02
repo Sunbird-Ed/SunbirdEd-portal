@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import "layout/header";
 
 .overlay-sidebar, .overlay-sidebar__menu {
     position: fixed;
@@ -37,6 +38,9 @@
             top: $base-block-space*2;
             left: $base-block-space*2;
             cursor: pointer;
+        }
+        &__desc{
+            padding: 0 0.5rem;
         }
     }
 
@@ -95,6 +99,7 @@
 
 .more-user {
     text-align: center;
+    cursor: pointer;
     &__btn {
         width: $base-block-space*4;
         height: $base-block-space*4;
@@ -120,7 +125,7 @@
 
 @include respond-below(sm) {
 .overlay-sidebar__menu {
-        width: calculateRem(340px);
+        width: calculateRem(280px);
         left: 0;
         right: unset;
     }
@@ -130,6 +135,7 @@
         .icon-close {
             right: $base-block-space*2;
             left: unset;
+            z-index: 9999;
         }
         .user {
             flex-wrap: wrap;

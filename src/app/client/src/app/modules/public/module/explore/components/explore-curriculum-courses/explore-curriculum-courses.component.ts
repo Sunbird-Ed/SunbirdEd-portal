@@ -1,91 +1,81 @@
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SearchService } from '@sunbird/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, map, mergeMap } from 'rxjs/operators';
-import { ContentSearchService } from '@sunbird/content-search';
 
 @Component({
   selector: 'app-explore-curriculum-courses',
   templateUrl: './explore-curriculum-courses.component.html',
   styleUrls: ['./explore-curriculum-courses.component.scss']
 })
-export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
-  public channelId: string;
-  public isCustodianOrg = true;
-  private unsubscribe$ = new Subject<void>();
+export class ExploreCurriculumCoursesComponent implements OnInit {
   public defaultBg = false;
-  public defaultFilters = {
-    board: [],
-    gradeLevel: [],
-    medium: []
-  };
-
   public selectedCourse;
   public courseList: Array<{}> = [];
   public title: string;
+  public telemetryImpression: IImpressionEventInput;
 
-  constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
-    public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
-    private router: Router, private orgDetailsService: OrgDetailsService, private navigationhelperService: NavigationHelperService,
-    private contentSearchService: ContentSearchService) { }
+  constructor(private searchService: SearchService, private toasterService: ToasterService,
+    public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
+    private router: Router, private navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService) { }
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
-        this.getChannelId().pipe(
-          mergeMap(({ channelId, isCustodianOrg }) => {
-            this.channelId = channelId;
-            this.isCustodianOrg = isCustodianOrg;
-            return this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
-          }),
-          takeUntil(this.unsubscribe$))
-          .subscribe(() => {
-            this.fetchCourses();
-          }, (error) => {
-            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-            this.navigationhelperService.goBack();
-          });
-    }
-
-    private getChannelId() {
-      if (this.userService.slug) {
-        return this.orgDetailsService.getOrgDetails(this.userService.slug)
-          .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, isCustodianOrg: false }))));
+      const subjectThemeAndCourse = this.searchService.subjectThemeAndCourse;
+      if (!_.isEmpty(_.get(subjectThemeAndCourse, 'contents'))) {
+        this.courseList = _.get(subjectThemeAndCourse, 'contents');
+        this.selectedCourse = _.omit(subjectThemeAndCourse, 'contents');
       } else {
-        return this.orgDetailsService.getCustodianOrgDetails()
-          .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), isCustodianOrg: true }))));
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+        this.navigationhelperService.goBack();
       }
+      this.setTelemetryImpression();
     }
 
-
-
-    private fetchCourses() {
-      const request = {
-        filters: this.defaultFilters,
-        isCustodianOrg: this.isCustodianOrg,
-        channelId: this.channelId,
-        frameworkId: this.contentSearchService.frameworkId
+    setTelemetryImpression() {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
       };
-      this.searchService.fetchCourses(request, true, this.title).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.courseList = !_.isEmpty(_.get(data, 'contents')) ? data.contents : [];
-        this.selectedCourse = _.get(data, 'selectedCourse');
-        this.defaultBg = _.isEmpty(this.selectedCourse);
-      }, err => {
-        this.courseList = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-      });
     }
 
-    ngOnDestroy() {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
+    navigateToCourse(event) {
+      this.router.navigate(['explore-course/course', event.data.identifier]);
     }
 
     goBack() {
       this.navigationhelperService.goBack();
+    }
+
+    getInteractData(event) {
+      const cardClickInteractData = {
+        context: {
+          cdata: [],
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+        },
+        edata: {
+          id: _.get(event, 'data.identifier'),
+          type: 'click',
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        },
+        object: {
+            id: event.data.identifier,
+            type: event.data.contentType || 'course',
+            ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
+        }
+      };
+      this.telemetryService.interact(cardClickInteractData);
     }
 }

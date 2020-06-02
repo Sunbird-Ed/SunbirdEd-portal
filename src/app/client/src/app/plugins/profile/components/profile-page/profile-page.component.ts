@@ -16,9 +16,9 @@ import { CacheService } from 'ng2-cache-service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  showSuccessModal;
-  showEditModal;
-  showSubmitModal;
+  showSuccessModal = false;
+  showSubmitTeacherDetails = false;
+  showUpdateTeacherDetails = false;
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -47,9 +47,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  submitTeacherDetailsInteractEdata: IInteractEventEdata;
+  updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
+  udiseObj: { idType: string, provider: string, id: string };
+  teacherObj: { idType: string, provider: string, id: string };
+  schoolObj: { idType: string, provider: string, id: string };
+  instance: string;
+
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
@@ -59,6 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
@@ -66,6 +74,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
         this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
+        this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
+        this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
+        this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
         this.getOrgDetails();
       }
     });
@@ -285,6 +296,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.downloadOthersCertificateEData = {
       id: 'profile-download-others-certificate',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.submitTeacherDetailsInteractEdata = {
+      id: 'add-teacher-details',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.updateTeacherDetailsInteractEdata = {
+      id: 'edit-teacher-details',
       type: 'click',
       pageid: 'profile-read'
     };

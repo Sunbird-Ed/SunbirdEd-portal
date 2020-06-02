@@ -1,8 +1,8 @@
-<div class="courseStructureHeader mt-8">
+<div class="courseStructureHeader sb-bg-white">
   <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
     <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
   </div>
-  <div class="ui container">
+  <div class="ui container sb-bg-white">
     <div class="ui padded grid">
       <div class="row">
         <div class="twelve wide column px-0">
@@ -37,7 +37,7 @@
               <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
                 [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
                 class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()"
-                *ngIf="permissionService.permissionAvailable && !enrolledCourse" appPermission
+                *ngIf="permissionService?.permissionAvailable && !enrolledCourse" appPermission
                 [permission]="dashboardPermission">
                 {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
               </button>
@@ -60,13 +60,12 @@
             <!-- <h6 class="ui small negative message mt-0 mb-15 ml-15" *ngIf="courseEndedErrorMessage">{{resourceService?.messages?.imsg?.m0043}}</h6> -->
             <!-- course ended Error message ends -->
           </div>
-          <div class="ui divider" *ngIf="!enrolledCourse"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div *ngIf="enrolledCourse">
+<div *ngIf="enrolledCourse" class="sb-bg-white">
   <div class="ui container">
     <div class="ui stackable padded grid" *ngIf="getBatchStatus() && batchEndDate">
       <div class="twelve wide column p-0 py-16">
@@ -78,7 +77,7 @@
       </div>
     </div>
   </div>
-  <div class="twelve wide column p-0 py-16">
+  <div class="twelve wide column p-0">
     <sui-progress class="ui tiny progress blue status" [ngClass]="{'expired':getBatchStatus()}" [value]="progress"
       [maximum]="100"></sui-progress>
   </div>
