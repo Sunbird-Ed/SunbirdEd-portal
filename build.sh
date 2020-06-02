@@ -31,7 +31,6 @@ rm -rf dist-cdn # remove cdn dist folder
 
 # function to run client build for docker image
 build_client_docker(){
-    npm run download-editors # download editors to assests folder
     echo "starting client local prod build"
     npm run build # Angular prod build
     echo "completed client local prod build"
