@@ -85,6 +85,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
     component['subscribeToQueryParam']();
     expect(toasterService.error).toHaveBeenCalled();
+    expect(component.showLoader).toBe(false);
   });
 
   it('should call getCollectionInfo', () => {
