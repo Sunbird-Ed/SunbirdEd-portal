@@ -38,7 +38,7 @@ export class OrgDetailsService {
 
   getOrgDetails(slug?: string): Observable<ServerResponse> {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH_CACHED, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
@@ -94,7 +94,7 @@ export class OrgDetailsService {
 
   searchOrg() {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH_CACHED, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
