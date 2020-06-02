@@ -81,7 +81,7 @@ describe('UpdateCourseBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateCourseBatchComponent);
     component = fixture.componentInstance;
-    spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(of({}));
+    spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(observableOf({}));
   });
 
   it('should fetch batch details and show update Form model', () => {
