@@ -160,7 +160,7 @@
     },
     "ADMIN": {
       "USER_SEARCH": "user/v1/search",
-      "ORG_SEARCH": "org/v1/search",
+      "ORG_SEARCH": "org/v2/search",
       "ORG_SEARCH_CACHED": "org/v1/search",
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
