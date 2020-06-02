@@ -568,4 +568,14 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component['parseChildContent']();
   });
+
+  it('should subscribe to updateContentConsumedStatus', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'updateContentConsumedStatus').and.returnValue(of({ courseHierarchy: {} }));
+    spyOn<any>(component, 'getContentState');
+    component.ngOnInit();
+    courseConsumptionService.updateContentConsumedStatus.subscribe((data) => {
+      expect(data).toBeTruthy();
+    });
+  });
 });
