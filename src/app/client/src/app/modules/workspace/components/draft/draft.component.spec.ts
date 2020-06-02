@@ -137,7 +137,8 @@ describe('DraftComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber],
+      { queryParams: component.queryParams });
     }));
 
   it('should call deleteConfirmModal method to delte the content', inject([],
@@ -205,7 +206,8 @@ describe('DraftComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber],
+      { queryParams: component.queryParams });
     }));
   xit('should fetch drafts list freshly if all contents are deleted from single page',
     inject([SuiModalService, ConfigService, Router, SearchService],
