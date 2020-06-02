@@ -140,6 +140,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.courseConsumptionService.updateContentConsumedStatus
+    .pipe(takeUntil(this.unsubscribe))
     .subscribe((data) => {
         this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
         this.batchId = data.batchId;
@@ -149,22 +150,22 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
-      mergeMap(({ courseId, batchId, courseStatus }) => {
-        this.courseId = courseId;
-        this.batchId = batchId;
-        this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-        if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
-        }
-        this.setTelemetryCourseImpression();
-        const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-        if (this.batchId) {
-          return combineLatest(
-            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-            this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-        }
+        mergeMap(({ courseId, batchId, courseStatus }) => {
+          this.courseId = courseId;
+          this.batchId = batchId;
+          this.courseStatus = courseStatus;
+          this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
+            if (this.batchId) {
+              this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+            }
+          this.setTelemetryCourseImpression();
+          const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+            if (this.batchId) {
+              return combineLatest(
+                this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+                this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+              ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
+            }
         return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
           .pipe(map(courseHierarchy => ({ courseHierarchy })));
       })), this.subscribeToContentProgressEvents())

@@ -59,13 +59,14 @@ describe('CoursePlayerComponent', () => {
       this.queryParamsMock = params;
     }
   }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],
       providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService, AssessmentScoreService,
         ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
@@ -567,15 +568,14 @@ describe('CoursePlayerComponent', () => {
   it('should call parseChildContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component['parseChildContent']();
+    expect(component.contentIds.length).toBeTruthy();
   });
 
   it('should subscribe to updateContentConsumedStatus', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    spyOn(courseConsumptionService, 'updateContentConsumedStatus').and.returnValue(of({ courseHierarchy: {} }));
-    spyOn<any>(component, 'getContentState');
+    spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe');
     component.ngOnInit();
-    courseConsumptionService.updateContentConsumedStatus.subscribe((data) => {
-      expect(data).toBeTruthy();
-    });
+    courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
+    expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
 });
