@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService} from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription, Subject } from 'rxjs';
 import { TenantService, OtpService, UserService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -33,7 +34,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   telemetryInteractObject: IInteractEventObject;
   remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
-    public otpService: OtpService, public userService: UserService,
+              public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
               public utilService: UtilService, public configService: ConfigService,
               public toasterService: ToasterService) {
   }
