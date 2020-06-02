@@ -23,8 +23,8 @@
         }
   
         .sb-upload-file {
-          height: ($base-block-space * 7);
-          width:  ($base-block-space * 7);
+          height: calculateRem(56px);
+          width:  calculateRem(56px);
           background: var(--gray-400);
           margin-top: auto;
           margin-bottom: auto;
@@ -69,8 +69,8 @@
       }
     .sb-bulk-upload-file {
       .sb-upload-file {
-          height: ($base-block-space * 7);
-          width:  ($base-block-space * 7);
+          height: calculateRem(56px);
+          width:  calculateRem(56px);
           background: var(--gray-400);
           margin-top: auto;
           margin-bottom: auto;
@@ -104,8 +104,8 @@
           font-size: $font-size-sm;
           color: $gray-400;
           line-height: calculateRem(20px);
-          margin-bottom: ($base-block-space / 2);
-          padding-bottom: ($base-block-space / 2);
+          margin-bottom: calculateRem(4px);
+          padding-bottom: calculateRem(4px);
           border-bottom: calculateRem(1px) solid #ddd;
           &:last-child {
             margin: 0;
