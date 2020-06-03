@@ -30,6 +30,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public courseList: any = [];
   public title: string;
   public mergedCourseList: any = [];
+  fallbackImg = './../../../../../assets/images/book.png';
 
   public telemetryImpression: IImpressionEventInput;
   constructor(private searchService: SearchService, private toasterService: ToasterService,
@@ -85,6 +86,8 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
           };
         }
       });
+
+      console.log('this.mergedCourseList', this.mergedCourseList);
     });
   }
 
