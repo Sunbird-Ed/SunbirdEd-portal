@@ -13,6 +13,18 @@ describe('userService', () => {
       providers: [UserService, ConfigService, LearnerService]
     });
   });
+  it('should call registerUser method', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.registerSuccess));
+    const reqData = { 'request': { 'firstName': 'test', 'managedBy': '5488df8f-2090-4735-a767-ad0588bf7659', 'locationIds': [] } };
+    spyOn(userService.createManagedUser, 'emit').and.returnValue('0008ccab-2103-46c9-adba-6cdf84d37f06');
+    userService.registerUser(reqData).subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06')
+    });
+  });
   it('should fetch user profile details', inject([UserService], (service: UserService) => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
@@ -86,18 +98,5 @@ describe('userService', () => {
     userService.userMigrate(params);
     const options = { url: 'user/v1/migrate', data: params};
     expect(learnerService.post).toHaveBeenCalledWith(options);
-  });
-
-  it('should call registerUser method', () => {
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.registerSuccess));
-    const reqData = { 'request': { 'firstName': 'test', 'managedBy': '5488df8f-2090-4735-a767-ad0588bf7659', 'locationIds': [] } };
-    spyOn(userService.createManagedUser, 'emit').and.returnValue('0008ccab-2103-46c9-adba-6cdf84d37f06');
-    userService.registerUser(reqData).subscribe(apiResponse => {
-      expect(apiResponse.responseCode).toBe('OK');
-      expect(apiResponse.result.response).toBe('SUCCESS');
-      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06')
-    });
   });
 });
