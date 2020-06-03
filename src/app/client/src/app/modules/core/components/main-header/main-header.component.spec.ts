@@ -71,27 +71,11 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.registerSuccess));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
     expect(component.userProfile).toBeTruthy();
   });
-
-
-
-  it('Should subscribe manageduser event when new managed user is created', () => {
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.success));
-    const userService = TestBed.get(UserService);
-    userService._authenticated = true;
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
-    spyOn(component, 'fetchManagedUsers');
-    component.ngOnInit();
-    userService.createManagedUser.emit({});
-    expect(component.fetchManagedUsers).toHaveBeenCalled();
-  });
-
-
 
   it('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
@@ -218,6 +202,18 @@ describe('MainHeaderComponent', () => {
   it('should not turn on the side menu', () => {
     component.toggleSideMenu(false);
     expect(component.showSideMenu).toEqual(false);
+  });
+
+  it('Should subscribe manageduser event when new managed user is created', () => {
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.success));
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    spyOn(component, 'fetchManagedUsers');
+    component.ngOnInit();
+    userService.createManagedUser.emit({});
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
   it('Should unsubscribe on ondestroy', () => {
