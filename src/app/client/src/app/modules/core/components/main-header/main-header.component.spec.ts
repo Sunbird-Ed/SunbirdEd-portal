@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError, of, observable} from 'rxjs';
+import {of as observableOf, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
