@@ -139,7 +139,7 @@
 
       <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')"
            class="add-user mb-16"
-           *ngIf="!((userListToShow && userListToShow.length) >=1)">
+           *ngIf="totalUsersCount <1">
         <div class="add-user__icon">
           <img src="assets/images/user-circle.svg" alt="Add user">
         </div>
@@ -154,17 +154,19 @@
                         [isMenu]="false"
                         (cardClick)="switchUser($event)">
         </sb-member-list>
-        <div class="more-user ml-16 mt-8" *ngIf="((userListToShow && userListToShow.length) >=1)"
+        <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2"
              (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
           <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
-          <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}} ({{totalUsersCount}})</div>
+          <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
+            ({{totalUsersCount - userListToShow.length}})
+          </div>
         </div>
       </div>
     </div>
 
     <div class="profile__actions">
       <div class="add-user add-user--horizontal"
-           *ngIf="((userListToShow && userListToShow.length) >=1)"
+           *ngIf="totalUsersCount >=1"
            (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
         <div class="add-user__icon">
           <img src="assets/images/user-circle.svg" alt="Add user">

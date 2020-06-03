@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ManagedUserService, UserService} from '@sunbird/core';
+import {CoursesService, ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
@@ -23,7 +23,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
-              public activatedRoute: ActivatedRoute) {
+              public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -54,6 +54,33 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     }
   }
 
+  switchUser() {
+    const userId = this.selectedUser.identifier;
+    const initiatorUserId = this.userService.userid;
+    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+        this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+        this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.telemetryService.setInitialization(false);
+              this.telemetryService.initialize(this.getTelemetryContext());
+              this.router.navigate(['/resources']);
+              this.toasterService.custom({
+                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                  this.selectedUser.firstName),
+                class: 'sb-toaster sb-toast-success sb-toast-normal'
+              });
+              this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
+            });
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
   telemetryImpressionEvent() {
     this.telemetryService.impression({
       context: {
@@ -82,54 +109,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
     };
-  }
-
-  getManagedUserList() {
-    const fetchManagedUserRequest = {
-      request: {
-        filters: {
-          managedBy: this.managedUserService.getUserId()
-        }
-      }
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
-    if (this.userService.userProfile.managedBy) {
-      requests.push(this.managedUserService.getParentProfile());
-    }
-    forkJoin(requests).subscribe((data) => {
-      let userListToProcess = _.get(data[0], 'result.response.content');
-      if (data[1]) {
-        userListToProcess = [data[1]].concat(userListToProcess);
-      }
-      this.userList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
-    }, (err) => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-    });
-  }
-
-  switchUser() {
-    const userId = this.selectedUser.identifier;
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
-      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.setInitialization(false);
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.router.navigate(['/resources']);
-            this.toasterService.custom({
-              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                this.selectedUser.firstName),
-              class: 'sb-toaster sb-toast-success sb-toast-normal'
-            });
-            this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
   }
 
   getStartEventData(userId, initiatorUserId) {
@@ -176,6 +155,29 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     this.router.navigate(['/profile/create-managed-user']);
   }
 
+  getManagedUserList() {
+    const fetchManagedUserRequest = {
+      request: {
+        filters: {
+          managedBy: this.managedUserService.getUserId()
+        }, sort_by: {createdDate: 'desc'}
+      }
+    };
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
+      }
+      this.userList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
+  }
+
   getTelemetryContext() {
     const userProfile = this.userService.userProfile;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -207,6 +209,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   closeSwitchUser() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile')
+    this.navigationhelperService.navigateToPreviousUrl('/profile');
   }
 }

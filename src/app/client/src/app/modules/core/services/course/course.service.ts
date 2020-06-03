@@ -28,10 +28,7 @@ export class CoursesService {
    *  To get url, app configs.
    */
   private config: ConfigService;
-  /**
-   * user id
-   */
-  userid: string;
+
   sectionId: any;
   /**
    * BehaviorSubject Containing enrolled courses.
@@ -58,14 +55,13 @@ export class CoursesService {
     this.config = config;
     this.userService = userService;
     this.learnerService = learnerService;
-    this.userid = this.userService.userid;
   }
   /**
    *  api call for enrolled courses.
    */
   public getEnrolledCourses() {
     const option = {
-      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid,
+      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userService.userid,
       param: { ...this.config.appConfig.Course.contentApiQueryParams, ...this.config.urlConFig.params.enrolledCourses }
     };
     return this.learnerService.get(option).pipe(
