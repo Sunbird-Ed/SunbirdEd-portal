@@ -103,8 +103,13 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
   navigateToCourseDetails(course) {
     this.getInteractData(course);
-    const courseId = _.get(course, 'metaData.courseId') || course.identifier;
-    this.router.navigate(['learn/course', courseId]);
+    const courseId = _.get(course, 'courseId') || course.identifier;
+
+    if (course.batchId) {
+      this.router.navigate(['/learn/course', courseId, 'batch', course.batchId]);
+    } else {
+      this.router.navigate(['/learn/course', courseId]);
+    }
   }
 
   getInteractData(course) {
