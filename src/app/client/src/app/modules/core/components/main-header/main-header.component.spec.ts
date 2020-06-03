@@ -204,15 +204,13 @@ describe('MainHeaderComponent', () => {
     expect(component.showSideMenu).toEqual(false);
   });
 
-  it('Should subscribe manageduser event when new managed user is created', () => {
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.success));
+  fit('Should subscribe manageduser event when new managed user is created', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    userService._userData$.next({err: null, userProfile: mockData.userProfile});
     spyOn(component, 'fetchManagedUsers');
     component.ngOnInit();
-    userService.createManagedUser.emit({});
+    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
     expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
