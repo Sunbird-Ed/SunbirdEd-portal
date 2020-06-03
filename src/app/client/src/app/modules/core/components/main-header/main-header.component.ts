@@ -417,7 +417,7 @@ export class MainHeaderComponent implements OnInit {
         const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-              this.telemetryService.setInitialization(false);
+            this.telemetryService.setInitialization(false);
             this.telemetryService.initialize(this.getTelemetryContext());
             this.router.navigate(['/resources']);
             this.toasterService.custom({
