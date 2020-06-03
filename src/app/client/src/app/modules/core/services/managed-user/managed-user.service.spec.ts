@@ -86,14 +86,14 @@ describe('ManagedUserService', () => {
   }));
 
   it('should getParentProfile from APi as data not present', inject([ManagedUserService], (service: ManagedUserService) => {
-    const userObject = {managedBy: 'mockUserID'};
+    const userObject = {result: {response: {managedBy: 'mockUserID'}}};
     const cacheService = TestBed.get(CacheService);
     const userService = TestBed.get(UserService);
     userService._userProfile = userObject;
     spyOn(cacheService, 'get').and.returnValue(null);
     spyOn(userService, 'getUserData').and.returnValue(observableOf(userObject));
     service.getParentProfile().subscribe((data: any) => {
-      expect(data).toEqual(userObject);
+      expect(data).toEqual(userObject.result.response);
     });
   }));
 
