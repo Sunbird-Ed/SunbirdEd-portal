@@ -206,7 +206,7 @@ export class MainHeaderComponent implements OnInit {
       }
       const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
       this.userListToShow = processedUserList.slice(0, 2);
-      this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length - 2;
+      this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
       }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
