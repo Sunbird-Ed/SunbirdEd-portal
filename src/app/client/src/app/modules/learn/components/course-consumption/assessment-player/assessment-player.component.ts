@@ -127,7 +127,7 @@ export class AssessmentPlayerComponent implements OnInit {
         this.activeContent = this.firstNonCollectionContent(flattenDeepContents);
       }
 
-
+      /* istanbul ignore else */
       if (this.activeContent) {
         this.isContentPresent = true;
         this.initPlayer(_.get(this.activeContent, 'identifier'));
@@ -146,9 +146,11 @@ export class AssessmentPlayerComponent implements OnInit {
   private initPlayer(id: string) {
     const options: any = { courseId: this.collectionId };
 
+    /* istanbul ignore else */
     if (this.batchId) {
       options.batchId = this.batchId;
     }
+
     this.courseConsumptionService.getConfigByContent(id, options)
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
