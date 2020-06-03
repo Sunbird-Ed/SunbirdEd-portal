@@ -113,9 +113,9 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
     this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+      this.userService.userData$.subscribe((user: IUserData) => {
+        if (user && !user.err && user.userProfile.userId === userId) {
+          this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
             this.telemetryService.setInitialization(false);
             this.telemetryService.initialize(this.getTelemetryContext());
             this.router.navigate(['/resources']);
@@ -125,9 +125,9 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               class: 'sb-toaster sb-toast-success sb-toast-normal'
             });
             this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
-            });
-          }
-        });
+          });
+        }
+      });
       }, (err) => {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
