@@ -1,7 +1,7 @@
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject, iif, of } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
@@ -11,6 +11,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import {CacheService} from 'ng2-cache-service';
+
 
 /**
  * Service to fetch user details from server
@@ -90,6 +91,7 @@ export class UserService {
   public rootOrgName: string;
 
   public organizationsDetails: Array<IOrganization>;
+  public createManagedUser = new EventEmitter();
 
   /**
    * Reference of public data service.
@@ -101,6 +103,7 @@ export class UserService {
     mergeMap(data => iif(() =>
     !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
     shareReplay(1));
+
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -396,7 +399,11 @@ export class UserService {
       url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
       data: data
     };
-    return this.learnerService.post(options);
+    return this.learnerService.post(options).pipe(
+      map((resp: ServerResponse) => {
+        this.createManagedUser.emit(_.get(resp, 'result.userId'))
+        return resp;
+      }));
   }
 
   getUserData(userId) {
