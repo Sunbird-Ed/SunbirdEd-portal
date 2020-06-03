@@ -158,7 +158,7 @@
              (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
           <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
           <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
-            {{totalUsersCount - userListToShow.length}}
+            ({{totalUsersCount - userListToShow.length}})
           </div>
         </div>
       </div>
