@@ -191,9 +191,7 @@ export class MainHeaderComponent implements OnInit {
   fetchManagedUsers() {
     const fetchManagedUserRequest = {
       request: {
-        filters: {
-          managedBy: this.managedUserService.getUserId()
-        },
+        filters: {managedBy: this.managedUserService.getUserId()},
         sort_by: {createdDate: 'desc'}
       }
     };

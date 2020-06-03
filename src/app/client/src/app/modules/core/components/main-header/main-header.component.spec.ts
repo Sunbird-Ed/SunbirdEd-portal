@@ -11,7 +11,7 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService
+  ManagedUserService, CoursesService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -55,7 +55,7 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
-        LearnerService]
+        LearnerService, CoursesService]
     })
       .compileComponents();
   }));
@@ -185,6 +185,8 @@ describe('MainHeaderComponent', () => {
       return {value: 'mock Id'};
     });
     const learnerService = TestBed.get(LearnerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
