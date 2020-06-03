@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { CoreModule, FormService, TncService, UserService } from '@sunbird/core';
+import {CoreModule, FormService, TncService, UserService, ManagedUserService} from '@sunbird/core';
 import {NavigationHelperService, ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
@@ -70,7 +70,7 @@ describe('CreateUserComponent', () => {
       declarations: [CreateUserComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService, TncService, UserService,
-        NavigationHelperService],
+        NavigationHelperService, ManagedUserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -136,7 +136,9 @@ describe('CreateUserComponent', () => {
 
   it('should call onSubmitForm with success', () => {
     const userService = TestBed.get(UserService);
-    component.userProfile = mockRes.userData;
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -150,6 +152,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -162,6 +167,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();

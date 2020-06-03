@@ -4,7 +4,15 @@ import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { OrgDetailsService, ChannelService, FrameworkService, UserService, FormService, TncService } from '@sunbird/core';
+import {
+  OrgDetailsService,
+  ChannelService,
+  FrameworkService,
+  UserService,
+  FormService,
+  TncService,
+  ManagedUserService
+} from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +23,6 @@ import { map } from 'rxjs/operators';
 })
 export class CreateUserComponent implements OnInit {
 
-  userProfile: any;
   userDetailsForm: FormGroup;
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
@@ -35,7 +42,7 @@ export class CreateUserComponent implements OnInit {
     public userService: UserService, public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
     public frameworkService: FrameworkService, public utilService: UtilService, public formService: FormService,
     private activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    public tncService: TncService) {
+    public tncService: TncService, private managedUserService: ManagedUserService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -44,7 +51,6 @@ export class CreateUserComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.fetchTncData();
     this.getFormDetails();
-    this.userProfile = this.userService.userProfile;
   }
 
   setTelemetryData() {
@@ -138,7 +144,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onCancel() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile')
+    this.navigationhelperService.navigateToPreviousUrl('/profile');
   }
 
   onSubmitForm() {
@@ -146,34 +152,40 @@ export class CreateUserComponent implements OnInit {
     const createUserRequest = {
       request: {
         firstName: this.userDetailsForm.value.name,
-        managedBy: this.userService.userid,
-        locationIds: _.map(_.get(this.userProfile, 'userLocations'), 'id')
+        managedBy: this.managedUserService.getUserId()
       }
     };
-    if (_.get(this.userProfile, 'framework') && !_.isEmpty(_.get(this.userProfile, 'framework'))) {
-      createUserRequest.request['framework'] = _.get(this.userProfile, 'framework');
-    }
+    this.managedUserService.getParentProfile().subscribe((userProfileData) => {
+      createUserRequest.request['locationIds'] = _.map(_.get(userProfileData, 'userLocations'), 'id');
+      if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
+        createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
+      }
+      this.registerUser(createUserRequest, userProfileData);
+    });
+  }
 
+  registerUser(createUserRequest, userProfileData) {
     this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
-      const requestBody = {
-        request: {
-          version: _.get(this.userProfile, 'tncLatestVersion'),
-          userId: resp.result.userId
-        }
-      };
-      this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
-        const filterPipe = new InterpolatePipe();
-        let successMessage = filterPipe.transform(this.resourceService.messages.imsg.m0096, '{firstName}', this.userDetailsForm.value.name);
-        this.toasterService.custom({
-          message: successMessage,
-          class: 'sb-toaster sb-toast-success sb-toast-normal'
+        const requestBody = {
+          request: {
+            version: _.get(userProfileData, 'tncLatestVersion'),
+            userId: _.get(resp, 'result.userId')
+          }
+        };
+        this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
+          const filterPipe = new InterpolatePipe();
+          const successMessage = filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0096'),
+            '{firstName}', this.userDetailsForm.value.name);
+          this.toasterService.custom({
+            message: successMessage,
+            class: 'sb-toaster sb-toast-success sb-toast-normal'
+          });
+          this.router.navigate(['/profile/choose-managed-user']);
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+          this.enableSubmitBtn = true;
         });
-        this.router.navigate(['/profile/choose-managed-user']);
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-        this.enableSubmitBtn = true;
-      });
-    },
+      },
       (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         this.enableSubmitBtn = true;
