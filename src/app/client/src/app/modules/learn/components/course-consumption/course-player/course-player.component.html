@@ -76,7 +76,7 @@
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData"></app-batch-details>
 
-        <div *ngIf="enrolledCourse" class="course-player--metadata mt-16">
+        <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata mt-16">
           <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
         </div>
       </div>
