@@ -141,6 +141,8 @@
   
       .menu {
         width: 100%;
+        right: 0;
+        left: inherit;
   
         & > .item {
           font-size: 0.86rem !important;

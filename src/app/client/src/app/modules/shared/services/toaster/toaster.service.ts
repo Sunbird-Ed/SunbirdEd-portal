@@ -18,6 +18,7 @@ export class ToasterService {
   constructor() {
     this.iziToast = iziToast; // global object
     this.iziToast.settings({
+      timeout: 10000000,
       position: 'topCenter',
       titleSize: '18'
     });

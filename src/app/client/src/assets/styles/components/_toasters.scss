@@ -1,7 +1,7 @@
 .sb-toaster {
   width: 100%;
   max-width: ($base-block-space * 56);
-  min-height: ($base-block-space * 10);
+  // min-height: ($base-block-space * 6);
   padding: $base-block-space*3 $base-block-space*3 $base-block-space*3 $block-padding-xy;
   border-radius: $base-block-space;
   border: 1px solid $primary-300;
@@ -105,7 +105,7 @@
     padding-left: 0px !important;
     display: flex;
     position: relative;
-
+    min-height: auto;
     .iziToast-icon,
     .sb-toast-icon {
       position: inherit;

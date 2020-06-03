@@ -59,7 +59,7 @@
                     height: $base-block-space*3;
                     margin-right: $base-block-space;
                 }
-                &:hover {
+                &:hover, &.active {
                     background-color: var(--primary-100);
                 }
             }
@@ -125,7 +125,7 @@
 
 @include respond-below(sm) {
 .overlay-sidebar__menu {
-        width: calculateRem(280px);
+        width: 88%;
         left: 0;
         right: unset;
     }
