@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CoreModule, UserService, ManagedUserService, LearnerService} from '@sunbird/core';
+import {CoreModule, UserService, ManagedUserService, LearnerService, CoursesService} from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {
   ResourceService, SharedModule, ConfigService,
@@ -125,6 +125,8 @@ describe('ChooseUserComponent', () => {
       }
       return {value: 'mock Id'};
     });
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userProfile));
     const managedUserService = TestBed.get(ManagedUserService);

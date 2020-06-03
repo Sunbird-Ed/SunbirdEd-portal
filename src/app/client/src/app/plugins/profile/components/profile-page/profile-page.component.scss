@@ -248,3 +248,7 @@ display: inline-block;
 .status-completed{
   color:var(--secondary-color);
 }
+
+.no-text-transform {
+  text-transform: unset;
+}
