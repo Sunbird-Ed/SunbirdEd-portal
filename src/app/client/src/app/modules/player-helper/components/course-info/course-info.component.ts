@@ -20,8 +20,8 @@ export class CourseInfoComponent {
 
   checkContentCreditAvailability() {
     /* istanbul ignore else */
-    if (this.courseHierarchy.copyright || this.courseHierarchy.creators || this.courseHierarchy.attributions ||
-      (!_.isEmpty(this.courseHierarchy.originData) && this.courseHierarchy.contentType === 'Course')) {
+    const { copyright, creators, attributions, originData, contentType } = this.courseHierarchy;
+    if (copyright || creators || attributions || (!_.isEmpty(originData) && contentType === 'Course')) {
       this.showCredits = true;
     }
   }
