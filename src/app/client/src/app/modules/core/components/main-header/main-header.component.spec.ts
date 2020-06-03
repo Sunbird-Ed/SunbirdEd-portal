@@ -204,4 +204,23 @@ describe('MainHeaderComponent', () => {
     expect(component.showSideMenu).toEqual(false);
   });
 
+  it('Should subscribe manageduser event when new managed user is created', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
+    component.ngOnInit();
+    expect(component.tenantInfo.logo).toBeUndefined();
+    expect(component.tenantInfo.titleName).toBeUndefined();
+  });
+
+  it('Should subscribe manageduser event when new managed user is created', () => {
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    spyOn(component, 'fetchManagedUsers')
+    spyOn(userService, 'createManagedUser').and.returnValue(observableOf('1234'));
+    component.ngOnInit();
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
+  });
+
+
+
 });
