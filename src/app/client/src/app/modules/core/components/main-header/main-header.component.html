@@ -38,7 +38,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="sb-bg-color-primary p-8"
+    <div class="sb-bg-color-primary p-8 px-16"
         *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
             <div class="ui container d-flex flex-ai-center mx-0 px-8">
@@ -46,7 +46,7 @@
             </div>
         </ng-container>
         <ng-template #defaultView>
-            <div class="ui container d-flex flex-ai-center mx-0 px-8">
+            <div class="ui container d-flex flex-ai-center mx-0">
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
@@ -213,7 +213,7 @@
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-            *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+            *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
           {{resourceService?.frmelmnts?.tab?.contribute}}

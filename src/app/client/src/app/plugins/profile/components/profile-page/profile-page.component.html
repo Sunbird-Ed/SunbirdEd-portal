@@ -276,34 +276,34 @@
       <!--contributions view ends-->
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
-          <div class="d-flex flex-ai-center sb-ct-list list-heading">
+          <div class="list-heading">
             <label class="mb-0">{{resourceService?.frmelmnts?.lbl?.courses}}({{attendedTraining.length}})&#x200E;</label>
             <span class="fsmall mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-            <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.courseName">
-              <a href="javascript:void(0);" (click)="navigateToCourse(data)" class="mr-auto mb-0 text-left">{{data.courseName}}</a>
-              <span class="list-date mr-24" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
-              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.completedOn">
-                  <span class="bar"></span>
+            <div class="list-items" *ngIf="data.courseName">
+              <div class="list-items__item"><a href="javascript:void(0);" (click)="navigateToCourse(data)" class="sb__ellipsis mr-auto mb-0 text-left">{{data.courseName}}</a></div>
+              <div class="list-items__item list-date" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</div>
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data.completedOn">
+                  <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="sb-certificate-trained-flex-space" *ngIf="data.certificates && data.certificates.length > 0">
+              <div class="list-items__item" *ngIf="data.certificates && data.certificates.length > 0">
                 <button appTelemetryInteract
                 [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCertificateEData" 
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.certificates)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
-                  <span class="bar"></span>
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
+                  <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="sb-certificate-trained-line sb-certificate-trained-no-flex-space status-progress fsmall font-weight-bold" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
-              <div class="sb-certificate-trained-line sb-certificate-trained-no-flex-space status-completed fsmall font-weight-bold" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
+              <div class="list-items__item status-progress fsmall font-weight-bold" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
+              <div class="list-items__item status-completed fsmall font-weight-bold" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
             </div>
           </div>
-          <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="attendedTraining.length > 3">
+          <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
@@ -320,27 +320,26 @@
 
          <!-- certificates-->
         <div class="container my-16 sb-certificate-trained" *ngIf="otherCertificates && otherCertificates.length">
-          <div class="d-flex flex-ai-center sb-ct-list list-heading">
-            <label
-              class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
+          <div class="list-heading">
+            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
-            <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.issuingAuthority">
-              <label class="mr-auto mb-0 text-left">{{data.certName}}</label>
-              <label class="mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
-              <label class="list-date mr-24" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
-              <div class="sb-certificate-trained-flex-space" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
+            <div class="list-items" *ngIf="data.issuingAuthority">
+              <label class="list-items__item mr-auto mb-0 text-left">{{data.certName}}</label>
+              <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
+              <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
+              <div class="list-items__item" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
                 <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadOthersCertificateEData"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
                   <span class="bar"></span>
                   <span class="bar"></span>
                 </div>
             </div>
           </div>
-          <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="otherCertificates.length > 3 ">
+          <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
