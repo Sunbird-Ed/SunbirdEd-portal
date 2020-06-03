@@ -1,4 +1,4 @@
-import {first} from 'rxjs/operators';
+import {first, takeUntil} from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -7,7 +7,7 @@ import {
   FormService,
   ManagedUserService, ProgramsService, CoursesService
 } from './../../services';
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
   ConfigService,
   ResourceService,
@@ -21,7 +21,8 @@ import * as _ from 'lodash-es';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subject} from 'rxjs';
+
 declare var jQuery: any;
 
 @Component({
@@ -29,7 +30,7 @@ declare var jQuery: any;
   templateUrl: './main-header.component.html',
 styleUrls: ['./main-header.component.scss']
 })
-export class MainHeaderComponent implements OnInit {
+export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
   languageFormQuery = {
     formType: 'content',
@@ -104,6 +105,7 @@ export class MainHeaderComponent implements OnInit {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  public unsubscribe = new Subject<void>();
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -133,6 +135,10 @@ export class MainHeaderComponent implements OnInit {
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
+          this.userService.createManagedUser.pipe(
+            takeUntil(this.unsubscribe)).subscribe((data: any) => {
+            this.fetchManagedUsers();
+          });
         }
       });
       this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
@@ -477,6 +483,11 @@ export class MainHeaderComponent implements OnInit {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
 }
