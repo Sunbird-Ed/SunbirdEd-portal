@@ -40,8 +40,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
-  collectionEditorCDN: string = (<HTMLInputElement>document.getElementById('collectionEditorCDN')) ?
-  (<HTMLInputElement>document.getElementById('collectionEditorCDN')).value : '';
+  collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -166,14 +166,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     return false;
   }
   private initEditor() {
-    if (environment.env !== 'prod') {
-      console.log('Editor loading from => ', this.collectionEditorCDN); // TODO: log!
-      console.log('Editor complete URL => ', this.collectionEditorCDN + '?' + this.buildNumber); // TODO: log!
-    }
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: this.collectionEditorCDN + '?' + this.buildNumber,
+      iframeURL: this.collectionEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
@@ -246,7 +242,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource']
+        contentType: ['Course', 'CourseUnit', 'Collection']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {

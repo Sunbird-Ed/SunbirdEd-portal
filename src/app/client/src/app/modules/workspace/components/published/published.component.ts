@@ -334,7 +334,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/published', this.pageNumber]);
+    this.route.navigate(['workspace/content/published', this.pageNumber], { queryParams: this.queryParams });
   }
 
   ngAfterViewInit () {
