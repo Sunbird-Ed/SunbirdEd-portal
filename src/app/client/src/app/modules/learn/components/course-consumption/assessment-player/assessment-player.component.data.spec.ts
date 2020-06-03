@@ -565,5 +565,106 @@ export const assessmentPlayerMockData = {
     'index': 1,
     'depth': 3,
     'parent': 'do_1130272760359813121209'
-  }
-}
+  },
+  playerEndData: {
+    'detail': {
+      'telemetryData': {
+        'eid': 'END',
+        'ets': 1591099873941,
+        'ver': '3.0',
+        'mid': 'END:e23932506d5e553cc50214b2cc96fdb2',
+        'actor': {
+          'id': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8',
+          'type': 'User'
+        },
+        'context': {
+          'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+          'pdata': {
+            'id': 'dev.sunbird.portal',
+            'ver': '3.0.0',
+            'pid': 'sunbird-portal.contentplayer'
+          },
+          'env': 'contentplayer',
+          'sid': 'F_9jOULYIsbdCeF1HQMPAuuUyBrKX1Ui',
+          'did': '436f0203af9f8818a5763174cb369b55',
+          'cdata': [
+            {
+              'id': 'do_1130340835443752961556',
+              'type': 'course'
+            },
+            {
+              'type': 'batch',
+              'id': '0130340915067043844'
+            },
+            {
+              'id': '1b83263e32b048e6b5254b4f8ff96619',
+              'type': 'ContentSession'
+            },
+            {
+              'id': 'fd938f5fcc252794788440d2716609d3',
+              'type': 'PlaySession'
+            }
+          ],
+          'rollup': {
+            'l1': 'b00bc992ef25f1a9a8d63291e20efc8d'
+          }
+        },
+        'object': {
+          'id': 'do_1130314875106672641123',
+          'type': 'Content',
+          'ver': '1',
+          'rollup': {}
+        },
+        'tags': [
+          'b00bc992ef25f1a9a8d63291e20efc8d'
+        ],
+        'edata': {
+          'type': 'content',
+          'mode': 'play',
+          'pageid': 'sunbird-player-Endpage',
+          'summary': [
+            {
+              'progress': 100
+            },
+            {
+              'totallength': 4
+            },
+            {
+              'visitedlength': 4
+            },
+            {
+              'visitedcontentend': true
+            },
+            {
+              'totalseekedlength': 0
+            },
+            {
+              'endpageseen': true
+            }
+          ],
+          'duration': 2437.485
+        }
+      }
+    }
+  },
+  playerSummuryData: [
+    {
+      'progress': 100
+    },
+    {
+      'totallength': 4
+    },
+    {
+      'visitedlength': 4
+    },
+    {
+      'visitedcontentend': true
+    },
+    {
+      'totalseekedlength': 0
+    },
+    {
+      'endpageseen': true
+    }
+  ]
+};

@@ -96,7 +96,7 @@
       </div>
     </div>
   </div>
-  <div class="twelve wide column" *ngIf="showLoader">
+  <div class="ui container py-16" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
   <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
