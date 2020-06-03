@@ -91,7 +91,7 @@ describe('userService', () => {
   it('should call registerUser method', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'post').and.returnValue(observableOf(mockUserData.registerSuccess));
+    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.registerSuccess));
     const reqData = { 'request': { 'firstName': 'test', 'managedBy': '5488df8f-2090-4735-a767-ad0588bf7659', 'locationIds': [] } };
     spyOn(userService.createManagedUser, 'emit').and.returnValue('0008ccab-2103-46c9-adba-6cdf84d37f06');
     userService.registerUser(reqData).subscribe(apiResponse => {
