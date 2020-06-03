@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import {of as observableOf, throwError as observableThrowError, of} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -209,11 +209,16 @@ describe('MainHeaderComponent', () => {
     userService._authenticated = true;
     userService._userData$.next({ err: null, userProfile: mockData.userProfile });
     spyOn(component, 'fetchManagedUsers');
-    spyOn(userService, 'createManagedUser').and.returnValue(observableOf('1234'));
+    spyOn(userService, 'createManagedUser').and.returnValue(of('1234'));
     component.ngOnInit();
     expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
-
-
+  it('Should unsubscribe on ondestroy', () => {
+    spyOn(component['unsubscribe'], 'next');
+    spyOn(component['unsubscribe'], 'complete');
+    component.ngOnDestroy();
+    expect(component['unsubscribe'].next).toHaveBeenCalled();
+    expect(component['unsubscribe'].complete).toHaveBeenCalled();
+  });
 });
