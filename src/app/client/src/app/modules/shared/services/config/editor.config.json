@@ -77,7 +77,8 @@
                 "childrenTypes": [
                     "CourseUnit",
                     "Collection",
-                    "Resource"
+                    "Resource",
+                    "Course"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-book"
@@ -91,6 +92,7 @@
                     "CourseUnit",
                     "Collection",
                     "Resource",
+                    "Course",
                     "SelfAssess",
                     "FocusSpot",
                     "LearningOutcomeDefinition",
@@ -107,15 +109,6 @@
             {
                 "type": "Collection",
                 "label": "Collection",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "Course",
-                "label": "Course",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
