@@ -168,6 +168,16 @@ describe('MainHeaderComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
+  it('should turn on the side menu', () => {
+    component.toggleSideMenu(true);
+    expect(component.showSideMenu).toEqual(true);
+  });
+
+  it('should not turn on the side menu', () => {
+    component.toggleSideMenu(false);
+    expect(component.showSideMenu).toEqual(false);
+  });
+
   it('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
@@ -190,20 +200,9 @@ describe('MainHeaderComponent', () => {
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
-    spyOn(userService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
-    expect(userService.initialize).toHaveBeenCalled();
-  });
-
-  it('should turn on the side menu', () => {
-    component.toggleSideMenu(true);
-    expect(component.showSideMenu).toEqual(true);
-  });
-
-  it('should not turn on the side menu', () => {
-    component.toggleSideMenu(false);
-    expect(component.showSideMenu).toEqual(false);
+    expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
 });
