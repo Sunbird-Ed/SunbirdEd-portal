@@ -208,7 +208,7 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
     userService._userData$.next({ err: null, userProfile: mockData.userProfile });
-    spyOn(component, 'fetchManagedUsers')
+    spyOn(component, 'fetchManagedUsers');
     spyOn(userService, 'createManagedUser').and.returnValue(observableOf('1234'));
     component.ngOnInit();
     expect(component.fetchManagedUsers).toHaveBeenCalled();
