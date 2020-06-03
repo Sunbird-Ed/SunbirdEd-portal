@@ -88,7 +88,7 @@ describe('userService', () => {
     expect(learnerService.post).toHaveBeenCalledWith(options);
   });
 
-  it('should call add method', () => {
+  it('should call registerUser method', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'post').and.returnValue(observableOf(mockUserData.registerSuccess));
