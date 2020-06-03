@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService
+  ManagedUserService, ProgramsService, CoursesService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -112,6 +112,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
+    private courseService: CoursesService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -190,30 +191,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         timeDiff: this.userService.getServerTimeDiff
       }
     };
-  }
-
-
-  fetchManagedUsers() {
-    const fetchManagedUserRequest = {
-      request: {
-        filters: {managedBy: this.managedUserService.getUserId()}
-      }
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
-    if (this.userService.userProfile.managedBy) {
-      requests.push(this.managedUserService.getParentProfile());
-    }
-    forkJoin(requests).subscribe((data) => {
-      let userListToProcess = _.get(data[0], 'result.response.content');
-      if (data && data[1]) {
-        userListToProcess = [data[1]].concat(userListToProcess);
-      }
-      this.userListToShow = this.managedUserService.processUserList(userListToProcess.slice(0, 2), this.userService.userid);
-      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 2;
-      }, (err) => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
   }
 
   navigate(navigationUrl) {
@@ -352,6 +329,31 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }
 
+  fetchManagedUsers() {
+    const fetchManagedUserRequest = {
+      request: {
+        filters: {managedBy: this.managedUserService.getUserId()},
+        sort_by: {createdDate: 'desc'}
+      }
+    };
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+        let userListToProcess = _.get(data[0], 'result.response.content');
+        if (data && data[1]) {
+          userListToProcess = [data[1]].concat(userListToProcess);
+        }
+        const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+        this.userListToShow = processedUserList.slice(0, 2);
+        this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
   getLogoutInteractEdata() {
     return {
       id: 'logout',
@@ -410,34 +412,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  switchUser(event) {
-    const selectedUser = _.get(event, 'data.data');
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
-    const userId = selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
-      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.setInitialization(false);
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.router.navigate(['/resources']);
-            this.toasterService.custom({
-              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                selectedUser.firstName),
-              class: 'sb-toaster sb-toast-success sb-toast-normal'
-            });
-            this.toggleSideMenu(false);
-            this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
-            userSubscription.unsubscribe();
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
-  }
-
   getStartEventData(selectedUser, initiatorUserId) {
     return {
       context: {
@@ -478,8 +452,42 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
+  switchUser(event) {
+    let userSubscription;
+    const selectedUser = _.get(event, 'data.data');
+    const initiatorUserId = this.userService.userid;
+    this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
+    const userId = selectedUser.identifier;
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
+        this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+        userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.telemetryService.setInitialization(false);
+              this.telemetryService.initialize(this.getTelemetryContext());
+              this.router.navigate(['/resources']);
+              this.toasterService.custom({
+                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                  selectedUser.firstName),
+                class: 'sb-toaster sb-toast-success sb-toast-normal'
+              });
+              this.toggleSideMenu(false);
+              this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
+              if (userSubscription) {
+                userSubscription.unsubscribe();
+              }
+            });
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+
 }

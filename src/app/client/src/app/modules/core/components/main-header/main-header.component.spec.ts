@@ -11,7 +11,7 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService
+  ManagedUserService, CoursesService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -55,7 +55,7 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
-        LearnerService]
+        LearnerService, CoursesService]
     })
       .compileComponents();
   }));
@@ -139,7 +139,7 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userListToShow).toEqual(mockData.userList);
-    expect(component.totalUsersCount).toEqual(-1);
+    expect(component.totalUsersCount).toEqual(1);
   });
 
   it('should not fetch managed user list as user is not logged in', () => {
@@ -168,6 +168,16 @@ describe('MainHeaderComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
+  it('should turn on the side menu', () => {
+    component.toggleSideMenu(true);
+    expect(component.showSideMenu).toEqual(true);
+  });
+
+  it('should not turn on the side menu', () => {
+    component.toggleSideMenu(false);
+    expect(component.showSideMenu).toEqual(false);
+  });
+
   it('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
@@ -185,23 +195,14 @@ describe('MainHeaderComponent', () => {
       return {value: 'mock Id'};
     });
     const learnerService = TestBed.get(LearnerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
-    spyOn(userService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
-    expect(userService.initialize).toHaveBeenCalled();
-  });
-
-  it('should turn on the side menu', () => {
-    component.toggleSideMenu(true);
-    expect(component.showSideMenu).toEqual(true);
-  });
-
-  it('should not turn on the side menu', () => {
-    component.toggleSideMenu(false);
-    expect(component.showSideMenu).toEqual(false);
+    expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
   fit('Should subscribe manageduser event when new managed user is created', () => {
