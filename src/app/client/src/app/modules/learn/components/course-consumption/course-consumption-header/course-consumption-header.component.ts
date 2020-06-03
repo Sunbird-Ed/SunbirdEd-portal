@@ -5,7 +5,7 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -33,7 +33,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    * to show loader while copying content
    */
   showCopyLoader = false;
-  onPageLoadResume = true;
+  onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
   resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
@@ -54,7 +54,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService) {
 
   }
 
@@ -84,34 +84,42 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
         }
       });
-      this.interval = setInterval(() => {
-        if (document.getElementById('closebutton')) {
-          this.showResumeCourse = true;
-        } else {
-          this.showResumeCourse = false;
-        }
-      }, 500);
+    this.interval = setInterval(() => {
+      if (document.getElementById('closebutton')) {
+        this.showResumeCourse = true;
+      } else {
+        this.showResumeCourse = false;
+      }
+    }, 500);
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        if (!this.flaggedCourse && this.onPageLoadResume &&
-          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-          this.resumeCourse();
-        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-        } else {
-          this.onPageLoadResume = false;
-        }
+          this.enrolledCourse = true;
+          this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+          this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+          if (!this.flaggedCourse && this.onPageLoadResume &&
+            !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+            this.resumeCourse();
+          } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+          } else {
+            this.onPageLoadResume = false;
+          }
       });
+
+      this.courseConsumptionService.updateContentConsumedStatus.emit(
+        {
+          courseId: this.courseId,
+          batchId: this.batchId,
+          courseHierarchy: this.courseHierarchy
+         });
   }
+
 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
@@ -119,10 +127,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   resumeCourse(showExtUrlMsg?: boolean) {
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.lastPlayedContentId },
-      relativeTo: this.activatedRoute
+      queryParams: {
+        batchId: this.batchId,
+        courseId: this.courseId,
+        selectedContent: this.lastPlayedContentId
+      }
     };
-    this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    this.router.navigate(['/learn/course/play', this.courseId], navigationExtras);
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 
@@ -164,7 +175,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
-   if (this.enrolledBatchInfo.endDate) {
+   /* istanbul ignore else */
+   if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);

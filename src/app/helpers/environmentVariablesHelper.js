@@ -144,7 +144,14 @@ let envVariables = {
 
   // Kafka Configuration
   sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
-  sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic
+  sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic,
+
+  // Editors URLs
+  CONTENT_EDITORS_URL: {
+    COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
+    CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
+    GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
+  }
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

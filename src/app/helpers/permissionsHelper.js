@@ -91,7 +91,12 @@ let PERMISSIONS_HELPER = {
   setUserSessionData (reqObj, body) {
     try {
       if (body.responseCode === 'OK') {
-        reqObj.session.userId = body.result.response.identifier
+        reqObj.session.userId = body.result.response.identifier;
+        if (body.result.response.managedBy) {
+          reqObj.session.userSid = uuidv1();
+        } else {
+          reqObj.session.userSid = reqObj.sessionID;
+        }
         reqObj.session.roles = body.result.response.roles
         if (body.result.response.organisations) {
           _.forEach(body.result.response.organisations, function (org) {
@@ -118,8 +123,8 @@ let PERMISSIONS_HELPER = {
     }
   },
 
-  getCurrentUserRoles: function (reqObj, callback) {
-    var userId = reqObj.session.userId
+  getCurrentUserRoles: function (reqObj, callback, userIdentifier) {
+    var userId = userIdentifier || reqObj.session.userId;
     var options = {
       method: 'GET',
       url: learnerURL + 'user/v1/read/' + userId,

@@ -78,16 +78,15 @@ describe('SearchService', () => {
         expect(data[1].count).toEqual('1 COURSE');
        }));
 
-       it('should return request options with courseType', inject([SearchService],
+       it('should assign filters.contentType as Course', inject([SearchService],
         (service: SearchService) => {
-        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, true);
-        expect(data.filters.contentType).toEqual('Course');
-        expect(data.filters.courseType).toEqual('CurriculumCourse');
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['Course']);
+        expect(data.filters.contentType[0]).toEqual('Course');
        }));
 
-       it('should return request options without courseType', inject([SearchService],
+       it('should assign filters.contentType as TextBook', inject([SearchService],
         (service: SearchService) => {
-        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, false);
+        const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['TextBook']);
         expect(data.filters.contentType).toEqual(['TextBook']);
        }));
 

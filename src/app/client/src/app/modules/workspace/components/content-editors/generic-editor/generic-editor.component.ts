@@ -32,6 +32,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
+  genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -86,12 +88,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     }
@@ -136,7 +138,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/generic-editor/index.html?' + this.buildNumber,
+      iframeURL: this.genericEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,

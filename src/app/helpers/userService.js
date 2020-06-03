@@ -1,4 +1,5 @@
 const {getKeyCloakClient} = require('./keyCloakHelper');
+const {getCurrentUserRoles} = require('./permissionsHelper');
 const envHelper = require('./environmentVariablesHelper.js');
 const keyCloakClient = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -15,6 +16,7 @@ const {acceptTermsAndCondition} = require('./userHelper');
 const httpSatusCode = require('http-status-codes');
 const logger = require('sb_logger_util_v2');
 const {delay} = require('../helpers/utilityService');
+const uuidv1 = require('uuid/v1');
 
 const handleError = (error) => {
   logger.error({
@@ -126,8 +128,55 @@ const acceptTnc = async (req, res) => {
   }
 };
 
+const switchUser = async (req, res) => {
+  if (!req.params.userId) {
+    logger.info({msg: 'switch user rejected missing userID'});
+    res.status(httpSatusCode.BAD_REQUEST).send(errorResponse);
+  }
+  getCurrentUserRoles(req, function (error, data) {
+    if (error) {
+      res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
+    } else {
+      req.session.userSid = uuidv1();
+      req.session.save(function (error) {
+        if (error) {
+          res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
+        } else {
+          res.status(httpSatusCode.OK).send({
+            id: "api.user.switch",
+            params: {
+              err: null,
+              status: "success",
+              errType: null,
+              message: "User Switched Successfully"
+            },
+            responseCode: httpSatusCode.OK,
+            result: {
+              response: "Success",
+              userSid: req.session.userSid
+            }
+          });
+        }
+      });
+    }
+  }, req.params.userId);
+};
 
-module.exports = {acceptTnc, acceptTncAndGenerateToken};
+const errorResponse = {
+  id: "api.user.switch",
+  params: {
+    err: "failed to switch user",
+    status: "error",
+    errType: "FAILED_TO_SWITCH_USER"
+  },
+  responseCode: httpSatusCode.BAD_REQUEST,
+  result: {
+    response: "ERROR"
+  }
+};
+
+
+module.exports = {acceptTnc, acceptTncAndGenerateToken, switchUser};
 
 
 

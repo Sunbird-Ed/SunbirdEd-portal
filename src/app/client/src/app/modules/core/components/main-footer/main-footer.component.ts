@@ -8,7 +8,8 @@ import {UserService, TenantService} from './../../services';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-footer',
-  templateUrl: './main-footer.component.html'
+  templateUrl: './main-footer.component.html',
+  styleUrls: ['./main-footer.component.scss']
 })
 export class MainFooterComponent implements OnInit, AfterViewInit {
   @ViewChild('footerFix') footerFix: ElementRef;

@@ -78,4 +78,7 @@ export interface SearchParam {
      * mode : soft
      */
  mode?: string;
+
+ fields?: string[];
+ locationIds?: string[];
 }

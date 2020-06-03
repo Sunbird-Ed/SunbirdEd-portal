@@ -40,6 +40,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
+  collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -99,12 +101,12 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
@@ -167,7 +169,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/collection-editor/index.html?' + this.buildNumber,
+      iframeURL: this.collectionEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
@@ -240,7 +242,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource']
+        contentType: ['Course', 'CourseUnit', 'Collection']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {

@@ -41,7 +41,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   ];
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
-  isUnenrollbtnDisabled = true;
+  isUnenrollbtnDisabled = false;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService) {
@@ -171,12 +171,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.enrolledBatchInfo.participant = [];
     }
-    this.isUnenrollDisabled();
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
-        this.isUnenrollDisabled();
       });
   }
   fetchUserDetails() {

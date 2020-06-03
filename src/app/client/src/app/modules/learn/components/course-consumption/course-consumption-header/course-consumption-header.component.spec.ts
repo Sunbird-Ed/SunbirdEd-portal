@@ -10,6 +10,7 @@ import {CourseConsumptionService, CourseProgressService} from '../../../services
 import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
+import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 
 const resourceServiceMockData = {
   messages : {
@@ -72,6 +73,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -87,18 +89,22 @@ describe('CourseConsumptionHeaderComponent', () => {
 
    it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
+    spyOn(courseConsumptionService.updateContentConsumedStatus, 'emit');
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     component.ngOnInit();
+    component.batchId = '01232121843';
     component.ngAfterViewInit();
     courseProgressService.courseProgressData.emit({});
     expect(component.courseHierarchy).toBeDefined();
     expect(component.flaggedCourse).toBeTruthy();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.showResumeCourse).toBeTruthy();
+    expect(courseConsumptionService.updateContentConsumedStatus.emit).toHaveBeenCalled();
   });
 
    it('should not enable resume button if batchId is not present', () => {
@@ -135,5 +141,14 @@ describe('CourseConsumptionHeaderComponent', () => {
     const returnValue = component.getBatchStatus();
     expect(component.getBatchStatus).toHaveBeenCalled();
     expect(returnValue).toBe(false);
+  });
+
+  it('should call onShareLink', () => {
+    const contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
+    spyOn(contentUtilsServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/learn');
+    spyOn(component, 'setTelemetryShareData');
+    component.onShareLink();
+    expect(component.shareLink).toEqual('http://localhost:3000/learn');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
 });

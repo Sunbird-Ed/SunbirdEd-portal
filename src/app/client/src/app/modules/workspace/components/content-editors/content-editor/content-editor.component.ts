@@ -33,6 +33,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
 
   /**
   * Default method of class ContentEditorComponent
@@ -90,12 +92,12 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     }
@@ -159,7 +161,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
+      iframeURL: this.contentEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,

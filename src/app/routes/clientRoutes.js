@@ -129,9 +129,11 @@ function getLocals(req) {
   if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
+    locals.userSid = _.get(req, 'session.userSid') || locals.sessionId || null;
   } else {
     locals.userId = null
     locals.sessionId = null
+    locals.userSid = null;
   }
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
@@ -163,6 +165,9 @@ function getLocals(req) {
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   locals.slug = slug ? slug : '';
+  locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
+  locals.contentEditorURL = envHelper.CONTENT_EDITORS_URL.CONTENT_EDITOR;
+  locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
   return locals
 }
 

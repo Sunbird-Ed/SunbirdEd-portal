@@ -1,0 +1,38 @@
+<div class="courseupdate mt-16">
+  <p class="mb-5" *ngIf="courseHierarchy?.author">{{resourceService?.frmelmnts?.lbl?.author}}:
+    {{courseHierarchy?.author}}</p>
+  <p class="mb-5" *ngIf="courseHierarchy?.creator">{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}:
+    {{courseHierarchy?.creator}}</p>
+  <p class="mb-5" *ngIf="courseHierarchy?.orgDetails?.orgName">
+    {{resourceService?.frmelmnts?.lbl?.publishedBy}}: {{courseHierarchy?.organisation?.join(', ')}}</p>
+  <p class="mb-5" *ngIf="courseHierarchy?.orgDetails?.email">
+    <a href="mailto:{{courseHierarchy?.orgDetails?.email}}?subject={{courseHierarchy?.name}}">
+      {{courseHierarchy?.orgDetails?.email}}
+    </a>
+  </p>
+  <div class="ui divider"></div>
+  <p class="mb-5"><span>{{resourceService?.frmelmnts?.lbl?.coursecreatedon}}</span>:
+    {{courseHierarchy?.createdOn | dateFormat}}</p>
+  <p class="mb-5"><span>{{resourceService?.frmelmnts?.lbl?.updatedon}}</span>:
+    {{courseHierarchy?.lastUpdatedOn | dateFormat}}</p>
+  <p class="mb-5">
+    <a (click)="showContentCreditsModal = true" title="{{resourceService?.frmelmnts?.lbl?.courseCredits}}"
+      class="cursor-pointer">
+      {{resourceService?.frmelmnts?.lbl?.courseCredits}}
+    </a>
+  </p>
+  <div class="ui divider"></div>
+  <p class="mb-5" *ngIf="!courseHierarchy?.licenseDetails?.name && courseHierarchy?.license">
+    {{resourceService?.frmelmnts?.lbl?.licenseTerms}}: {{courseHierarchy?.license}}&#x200E;</p>
+  <p class="mb-5" *ngIf="courseHierarchy?.licenseDetails?.name">
+    <span>{{resourceService?.frmelmnts?.lbl?.licenseTerms}}:</span>
+    {{courseHierarchy?.licenseDetails?.name}} <br>
+    <span class="licenseTag">
+      {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a [href]="courseHierarchy?.licenseDetails?.url"
+        target="_blank">{{courseHierarchy?.licenseDetails?.url}}</a>
+    </span>
+  </p>
+</div>
+
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
+  (close)="showContentCreditsModal = false"></app-content-credits>

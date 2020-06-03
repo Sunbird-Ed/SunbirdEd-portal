@@ -12,6 +12,10 @@ import { WorkSpaceService, EditorService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { of as observableOf } from 'rxjs';
 
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="genericEditorURL" value="https://dev.sunbirded.org/generic-editor/index.html"'
+  + ' type="hidden" />';
+
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
@@ -24,7 +28,9 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 class NavigationHelperServiceStub { }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
   let fixture: ComponentFixture<GenericEditorComponent>;

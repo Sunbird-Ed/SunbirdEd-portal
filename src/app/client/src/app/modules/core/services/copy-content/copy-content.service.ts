@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { ConfigService, ServerResponse, ContentData } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -58,17 +58,19 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
-    this.frameworkService.initialize();
-    const param = this.formatData(contentData);
-    const option = {
-      url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
-      data: param
-    };
-    return this.contentService.post(option).pipe(map((response: ServerResponse) => {
-      _.forEach(response.result.node_id, (value) => {
-        this.redirectToEditor(param.request.content, value);
-      });
-      return response;
+    return this.userService.userOrgDetails$.pipe(mergeMap(data => { // fetch user org details before copying content
+      this.frameworkService.initialize();
+      const param = this.formatData(contentData);
+      const option = {
+        url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,
+        data: param
+      };
+      return this.contentService.post(option).pipe(map((response: ServerResponse) => {
+        _.forEach(response.result.node_id, (value) => {
+          this.redirectToEditor(param.request.content, value);
+        });
+        return response;
+      }));
     }));
   }
   /**
@@ -84,7 +86,7 @@ export class CopyContentService {
         course: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
-          organisation: _.uniq(userData.organisationNames),
+          organisation: _.uniq(this.userService.orgNames),
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
           framework: contentData.framework
@@ -126,7 +128,7 @@ export class CopyContentService {
           creator: creator,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
-          organisation: _.uniq(userData.organisationNames),
+          organisation: _.uniq(this.userService.orgNames),
           framework: '',
           mimeType: contentData.mimeType,
           contentType: contentData.contentType

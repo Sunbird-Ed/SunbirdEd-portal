@@ -1,11 +1,27 @@
-import {filter, first, map} from 'rxjs/operators';
-import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
+import {first} from 'rxjs/operators';
+import {
+  UserService,
+  PermissionService,
+  TenantService,
+  OrgDetailsService,
+  FormService,
+  ManagedUserService, ProgramsService
+} from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
-import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
+import {
+  ConfigService,
+  ResourceService,
+  IUserProfile,
+  ServerResponse,
+  ToasterService,
+  IUserData,
+} from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import {environment} from '@sunbird/environment';
+import {forkJoin} from 'rxjs';
 declare var jQuery: any;
 
 @Component({
@@ -68,10 +84,32 @@ export class MainHeaderComponent implements OnInit {
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
   showExploreComponent: boolean;
+  showSideMenu = false;
+  instance: string;
+  userListToShow = [];
+  memberCardConfig = {
+    size: this.config.constants.SIZE.SMALL,
+    isSelectable: true,
+    view: this.config.constants.VIEW.VERTICAL,
+    isBold: false
+  };
+  cardConfig = {
+    size: this.config.constants.SIZE.SMALL,
+    isSelectable: false,
+    view: this.config.constants.VIEW.HORIZONTAL,
+    isBold: true
+  };
+  totalUsersCount: number;
+  libraryMenuIntractEdata: IInteractEventEdata;
+  learnMenuIntractEdata: IInteractEventEdata;
+  contributeMenuEdata: IInteractEventEdata;
+  showContributeTab: boolean;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
+    private managedUserService: ManagedUserService, public toasterService: ToasterService,
+    private telemetryService: TelemetryService, private programsService: ProgramsService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -82,16 +120,22 @@ export class MainHeaderComponent implements OnInit {
       this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
       this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
       this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
+          this.fetchManagedUsers();
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
         }
+      });
+      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
+        this.showContributeTab = showTab;
       });
     } else {
       this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
@@ -110,6 +154,64 @@ export class MainHeaderComponent implements OnInit {
     this.cdr.detectChanges();
     this.setWindowConfig();
 
+  }
+
+  getTelemetryContext() {
+    const userProfile = this.userService.userProfile;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    return {
+      userOrgDetails: {
+        userId: userProfile.userId,
+        rootOrgId: userProfile.rootOrgId,
+        rootOrg: userProfile.rootOrg,
+        organisationIds: userProfile.hashTagIds
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: version,
+          pid: this.config.appConfig.TELEMETRY.PID
+        },
+        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        uid: userProfile.userId,
+        sid: this.userService.sessionId,
+        channel: _.get(userProfile, 'rootOrg.hashTagId'),
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation,
+        timeDiff: this.userService.getServerTimeDiff
+      }
+    };
+  }
+
+
+  fetchManagedUsers() {
+    const fetchManagedUserRequest = {
+      request: {
+        filters: {managedBy: this.managedUserService.getUserId()}
+      }
+    };
+    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    forkJoin(requests).subscribe((data) => {
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data && data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
+      }
+      this.userListToShow = this.managedUserService.processUserList(userListToProcess.slice(0, 2), this.userService.userid);
+      this.totalUsersCount = userListToProcess && Array.isArray(userListToProcess) && userListToProcess.length - 2;
+      }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
+  navigate(navigationUrl) {
+    this.router.navigate([navigationUrl]);
   }
 
   private isCustodianOrgUser() {
@@ -223,6 +325,25 @@ export class MainHeaderComponent implements OnInit {
       type: 'click',
       pageid: 'explore'
     };
+    this.libraryMenuIntractEdata = {
+      id: 'library-tab',
+      type: 'click',
+      pageid: 'library'
+    };
+    this.learnMenuIntractEdata = {
+      id: 'learn-tab',
+      type: 'click',
+      pageid: 'learn'
+    };
+    this.contributeMenuEdata = {
+      id: 'contribute-tab',
+      type: 'click',
+      pageid: 'contribute'
+    };
+  }
+
+  getFeatureId(featureId, taskId) {
+    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }
 
   getLogoutInteractEdata() {
@@ -231,6 +352,10 @@ export class MainHeaderComponent implements OnInit {
       type: 'click',
       pageid: this.router.url.split('/')[1]
     };
+  }
+
+  toggleSideMenu(value: boolean) {
+    this.showSideMenu = value;
   }
 
   logout() {
@@ -272,6 +397,78 @@ export class MainHeaderComponent implements OnInit {
     };
   }
   showSideBar() {
-    jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+    if (this.userService.loggedIn) {
+      this.toggleSideMenu(true);
+    } else {
+      jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+    }
+  }
+
+  switchUser(event) {
+    const selectedUser = _.get(event, 'data.data');
+    const initiatorUserId = this.userService.userid;
+    this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
+    const userId = selectedUser.identifier;
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+        const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.telemetryService.setInitialization(false);
+            this.telemetryService.initialize(this.getTelemetryContext());
+            this.router.navigate(['/resources']);
+            this.toasterService.custom({
+              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                selectedUser.firstName),
+              class: 'sb-toaster sb-toast-success sb-toast-normal'
+            });
+            this.toggleSideMenu(false);
+            this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
+            userSubscription.unsubscribe();
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
+  getStartEventData(selectedUser, initiatorUserId) {
+    return {
+      context: {
+        env: 'main-header',
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: selectedUser.identifier
+        }]
+      },
+      edata: {
+        type: 'view',
+        pageid: this.router.url.split('/')[1],
+        mode: 'switch-user'
+      }
+    };
+  }
+
+  getEndEventData(selectedUser, initiatorUserId) {
+    return {
+      context: {
+        env: 'main-header',
+        cdata: [{
+          id: 'initiator-id',
+          type: initiatorUserId
+        }, {
+          id: 'managed-user-id',
+          type: selectedUser.identifier
+        }]
+      },
+      edata: {
+        type: 'view',
+        pageid: this.router.url.split('/')[1],
+        mode: 'switch-user'
+      }
+    };
   }
 }

@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import "layout/header";
 
 .overlay-sidebar, .overlay-sidebar__menu {
     position: fixed;
@@ -17,19 +18,19 @@
     background: rgba(0,0,0,.4);
 
     &__menu {
-        width: 400px;
+        width: calculateRem(400px);
         right: 0;
         background: var(--white);
         z-index: 100000;
         overflow-y: auto;
         overflow-x: hidden;
-        box-shadow: -6px 0 10px 0 rgba(0,0,0,0.1);
+        box-shadow: calculateRem(-6px) 0 calculateRem(10px) 0 rgba(0,0,0,0.1);
     }
 }
 
 .profile {
     &__info {
-        padding: 56px 24px 24px 24px;
+        padding: calculateRem(56px) calculateRem(24px) calculateRem(8px) calculateRem(24px);
         background-color: var(--primary-100);
         position: relative;
         .icon-close {
@@ -37,6 +38,9 @@
             top: $base-block-space*2;
             left: $base-block-space*2;
             cursor: pointer;
+        }
+        &__desc{
+            padding: 0 0.5rem;
         }
     }
 
@@ -77,7 +81,7 @@
         }
     }
     &__label {
-        margin-top: $base-block-space;
+        margin-top: calculateRem(9px);
     }
 
     &--horizontal {
@@ -95,6 +99,7 @@
 
 .more-user {
     text-align: center;
+    cursor: pointer;
     &__btn {
         width: $base-block-space*4;
         height: $base-block-space*4;
@@ -120,7 +125,7 @@
 
 @include respond-below(sm) {
 .overlay-sidebar__menu {
-        width: calculateRem(340px);
+        width: calculateRem(280px);
         left: 0;
         right: unset;
     }
@@ -130,6 +135,7 @@
         .icon-close {
             right: $base-block-space*2;
             left: unset;
+            z-index: 9999;
         }
         .user {
             flex-wrap: wrap;

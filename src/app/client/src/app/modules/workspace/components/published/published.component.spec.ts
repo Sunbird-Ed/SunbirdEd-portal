@@ -135,4 +135,17 @@ describe('PublishedComponent', () => {
     component.ngOnInit();
     expect(component.fetchPublishedContent).toHaveBeenCalledWith(9, 1, bothParams);
   });
+
+  it('should navigate to given pageNumber along with the filter if added', () => {
+      const route = TestBed.get(Router);
+      spyOn(route, 'navigate').and.stub();
+      component.pager = testData.pager;
+      const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+      component.queryParams = bothParams.queryParams ;
+      component.pageNumber = 1;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/published', 1],
+      { queryParams: component.queryParams });
+    });
 });

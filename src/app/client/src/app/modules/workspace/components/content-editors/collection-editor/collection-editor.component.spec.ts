@@ -12,6 +12,10 @@ import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="collectionEditorURL" value="https://dev.sunbirded.org/collection-editor/index.html"'
+  + ' type="hidden" />';
+
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
@@ -28,7 +32,9 @@ class RouterStub {
 class NavigationHelperServiceStub {
   public navigateToWorkSpace() {}
 }
-const mockUserService = { userProfile: {
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: {
   userId: '68777b59-b28b-4aee-88d6-50d46e4c35090',
   organisationIds: [],
   framework: {
@@ -62,8 +68,8 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should fetch tenant and collection details and set logo and collection details if success',
-  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService],
-    (editorService, toasterService, tenantService, workspaceService, frameworkService) => {
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
+    (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
       frameworkService._frameWorkData$ = mockRes.frameworkData;
       frameworkService._frameworkData$.next({
       err: null, frameworkdata: mockRes.frameworkData

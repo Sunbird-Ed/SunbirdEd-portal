@@ -1,18 +1,21 @@
+import { CourseProgressService } from './../course-progress/course-progress.service';
 import { IListReportsFilter, IReportsApiResponse, IDataSource } from './../../interfaces';
 import { ConfigService, IUserData } from '@sunbird/shared';
 import { UserService, BaseReportService, PermissionService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, pluck, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
+import * as moment from 'moment';
 
 @Injectable()
 export class ReportService {
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
-    private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService) { }
+    private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
+    private courseProgressService: CourseProgressService) { }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
     return this.usageService.getData(filePath).pipe(
@@ -30,6 +33,16 @@ export class ReportService {
       return this.fetchDataSource(_.get(source, 'path'), _.get(source, 'id'));
     });
     return forkJoin(...apiCalls).pipe(
+      mergeMap(response => {
+        return this.getFileMetaData(dataSources).pipe(
+          map(metadata => {
+            return _.map(response, res => {
+              res.lastModifiedOn = _.get(metadata[res.id], 'lastModified');
+              return res;
+            });
+          })
+        );
+      }),
       catchError(err => {
         if (err.status === 404) {
           return throwError({ messageText: 'messages.stmsg.reportNotReady' });
@@ -86,7 +99,7 @@ export class ReportService {
   }
 
   /**
-   * @description adds a report and chart level summary to add existing report
+   * @description adds a report and chart level summary to an existing report
    * @param body
    */
   public addSummary(body: object): Observable<any> {
@@ -103,15 +116,16 @@ export class ReportService {
     );
   }
 
-  public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string }[], downloadUrl: IDataSource[],
-    reportLevelDataSourceId: string): Array<{}> {
+  public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string, lastModifiedOn: undefined | string }[],
+    downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
     return _.map(chartsArray, chart => {
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       chartObj.downloadUrl = downloadUrl;
       chartObj.chartData = _.get(chart, 'dataSource') ? this.getChartData(data, chart) :
         _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
-      chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn');
+      chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn') ||
+        this.getLatestLastModifiedOnDate(data, _.get(chart, 'dataSource') || { ids: [reportLevelDataSourceId || 'default'] });
       return chartObj;
     });
   }
@@ -144,6 +158,15 @@ export class ReportService {
 
     const result = this.overlayMultipleDataSources(datasources as Array<any[]>, _.get(chartDataSource, 'commonDimension'));
     return result;
+  }
+
+  public getLatestLastModifiedOnDate(data: { result: any, id: string, lastModifiedOn: undefined | string }[],
+    dataSourceIds?: { ids: string[] }) {
+    let queryObj = data;
+    if (dataSourceIds) {
+      queryObj = _.filter(data, obj => _.includes(dataSourceIds.ids, obj.id));
+    }
+    return Date.parse(_.get(_.maxBy(queryObj, val => Date.parse(val.lastModifiedOn)), 'lastModifiedOn'));
   }
 
   private getDataSourceById(dataSources: { result: any, id: string }[], id: string = 'default') {
@@ -226,6 +249,39 @@ export class ReportService {
   }
 
   /**
+ * @description - fetches the report metadata from the blob
+ * to enable backward compatibilty taking filenames from the last
+ * @example because some reports use /reports/:slug/:filename
+ * @example while some other reports use /reports/fetch/:slug/:filename
+ * @param {IDataSource[]} dataSources
+ * @returns
+ * @memberof ReportService
+ */
+  public getFileMetaData(dataSources: IDataSource[]): Observable<any> {
+
+    const mappedfileIdWithPath = _.mapValues(_.keyBy(dataSources, 'id'), 'path');
+    _.forIn(mappedfileIdWithPath, (val, key, object) => {
+      object[key] = _.join(_.slice(_.split(val, '/'), -2), '/');
+    });
+
+    const requestParams = {
+      params: {
+        fileNames: JSON.stringify(mappedfileIdWithPath)
+      }
+    };
+
+    return this.courseProgressService.getReportsMetaData(requestParams)
+      .pipe(
+        pluck('result'),
+        catchError(err => of({}))
+      );
+  }
+
+  public getFormattedDate(dateString) {
+    return moment(dateString).format('DD-MMMM-YYYY');
+  }
+
+  /**
    * @description calls the API to fetch latest report and chart level summary
    */
   public getLatestSummary({ reportId, chartId = null }): Observable<any> {
@@ -238,5 +294,4 @@ export class ReportService {
       catchError(err => of([]))
     );
   }
-
 }

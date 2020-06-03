@@ -222,3 +222,30 @@ display: inline-block;
 .ui.label.dodger-blue > .recovery-img{
   background-color: var(--primary-color);
 }
+
+.school-id-section{
+  color:var(--white);
+}
+
+.sb-btn-border{
+  border-radius: calculateRem(40px);
+  text-transform: none;
+}
+
+.information-label{
+  color:var(--primary-color);
+}
+
+.profile-user-label{
+  font-size: calculateRem(32px);
+}
+.sb-certificate-trained-no-flex-space{
+  flex: 0;
+  max-width: calculateRem(240px);
+}
+.status-progress{
+  color:var(--primary-color);
+}
+.status-completed{
+  color:var(--secondary-color);
+}

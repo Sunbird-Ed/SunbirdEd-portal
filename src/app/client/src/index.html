@@ -13,6 +13,9 @@
   <% if (userId) { %>
   <input type="hidden" id="userId" value="<%=userId%>" />
   <% } %>
+  <% if (userSid) { %>
+  <input type="hidden" id="userSid" value="<%=userSid%>" />
+  <% } %>
   <% if (sessionId) { %>
   <input type="hidden" id="sessionId" value="<%=sessionId%>" />
   <% } %>
@@ -107,6 +110,15 @@
   <% } %>
   <% if (slugForProminentFilter) { %>
     <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
+  <% } %>
+  <% if (collectionEditorURL) { %>
+    <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
+  <% } %>
+  <% if (contentEditorURL) { %>
+    <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
+  <% } %>
+  <% if (genericEditorURL) { %>
+    <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
   <% } %>
   <app-root></app-root>
 </body>

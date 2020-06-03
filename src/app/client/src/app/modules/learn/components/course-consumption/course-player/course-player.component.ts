@@ -15,6 +15,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
 import { PopupControlService } from '../../../../../service/popup-control.service';
+import { TocCardType } from '@project-sunbird/common-consumption';
 
 @Component({
   selector: 'app-course-player',
@@ -57,8 +58,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public readMore = false;
 
-  public curriculum = [];
-
   public istrustedClickXurl = false;
 
   public showNoteEditor = false;
@@ -75,7 +74,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public courseProgressData: any;
 
-  public contentStatus: any;
+  public contentStatus = [];
 
   public contentDetails: { title: string, id: string, parentId: string }[] = [];
 
@@ -118,6 +117,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   pageId: string;
 
+  cardType: TocCardType = TocCardType.COURSE;
+  isSingleContent = false;
+  hasPreviewPermission = false;
+
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -134,57 +137,66 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
+    this.courseConsumptionService.updateContentConsumedStatus
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((data) => {
+        this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
+        this.batchId = data.batchId;
+        this.courseId = data.courseId;
+        this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
+        this.getContentState();
+    });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
-    merge(this.activatedRoute.params.pipe(first(),
-    mergeMap(({ courseId, batchId, courseStatus }) => {
-      this.courseId = courseId;
-      this.batchId = batchId;
-      this.courseStatus = courseStatus;
-      this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-      if (this.batchId) {
-        this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
-      }
-      this.setTelemetryCourseImpression();
-      const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-      if (this.batchId) {
-        return combineLatest(
-          this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-          this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-        ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-      }
-      return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
-        .pipe(map(courseHierarchy => ({ courseHierarchy })));
-    })), this.subscribeToContentProgressEvents())
-    .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
-       if (!contentProgressEvent) {
-        this.courseHierarchy = courseHierarchy;
-        this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
-        this.courseInteractObject = {
-          id: this.courseHierarchy.identifier,
-          type: 'Course',
-          ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-        };
-        if (this.courseHierarchy.status === 'Flagged') {
-          this.flaggedCourse = true;
-        }
-        this.parseChildContent();
+    merge(this.activatedRoute.params.pipe(
+      mergeMap(({ courseId, batchId, courseStatus }) => {
+        this.courseId = courseId;
+        this.batchId = batchId;
+        this.courseStatus = courseStatus;
+        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.enrolledBatchInfo = enrolledBatchDetails;
-          this.enrolledCourse = true;
-          setTimeout(() => {
-            this.setTelemetryStartEndData();
-          }, 100);
-          if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
-            this.getContentState();
-            this.subscribeToQueryParam();
-          }
-        } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
-          || this.courseHierarchy.createdBy === this.userService.userid) {
-          this.subscribeToQueryParam();
+          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
         }
-        this.collectionTreeNodes = { data: this.courseHierarchy };
-        this.loader = false;
-       }
+        this.setTelemetryCourseImpression();
+        const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+        if (this.batchId) {
+          return combineLatest(
+            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+            this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
+        }
+        return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
+          .pipe(map(courseHierarchy => ({ courseHierarchy })));
+      })), this.subscribeToContentProgressEvents())
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
+        if (!contentProgressEvent) {
+          this.courseHierarchy = courseHierarchy;
+          this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
+          this.courseInteractObject = {
+            id: this.courseHierarchy.identifier,
+            type: 'Course',
+            ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
+          };
+          if (this.courseHierarchy.status === 'Flagged') {
+            this.flaggedCourse = true;
+          }
+          this.parseChildContent();
+          if (this.batchId) {
+            this.enrolledBatchInfo = enrolledBatchDetails;
+            this.enrolledCourse = true;
+            setTimeout(() => {
+              this.setTelemetryStartEndData();
+            }, 100);
+            if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
+              this.getContentState();
+            }
+          } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
+            || this.courseHierarchy.createdBy === this.userService.userid) {
+            this.hasPreviewPermission = true;
+          }
+          this.collectionTreeNodes = { data: this.courseHierarchy };
+          this.loader = false;
+        }
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -194,6 +206,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(courseProgressData => this.courseProgressData = courseProgressData);
   }
   private parseChildContent() {
+    this.contentIds = [];
     const model = new TreeModel();
     const mimeTypeCount = {};
     this.treeModel = model.parse(this.courseHierarchy);
@@ -212,17 +225,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds.push(node.model.identifier);
       }
     });
-    let videoContentCount = 0;
-    _.forEach(mimeTypeCount, (value, key) => {
-      if (key.includes('video')) {
-        videoContentCount = videoContentCount + value;
-      } else {
-        this.curriculum.push({ mimeType: key, count: value });
-      }
-    });
-    if (videoContentCount > 0) {
-      this.curriculum.push({ mimeType: 'video', count: videoContentCount });
-    }
   }
   private getContentState() {
     const req = {
@@ -231,8 +233,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentState(req).pipe(first())
-      .subscribe(res => this.contentStatus = res.content,
+    this.courseProgressService.getContentState(req)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        this.contentStatus = res.content || [];
+        this.calculateProgress();
+      },
         err => console.log(err, 'content read api failed'));
   }
 
@@ -265,7 +271,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         contentPosition += 1;
       }
     });
-    return { contentNode, contentPosition};
+    return { contentNode, contentPosition };
   }
   private subscribeToQueryParam() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe))
@@ -326,7 +332,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       options.batchId = this.batchId;
     }
-    this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
+    this.courseConsumptionService.getConfigByContent(data.id, options)
+      .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
         if (config.context) {
           config.context.objectRollup = this.objectRollUp;
@@ -348,25 +355,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
-  public navigateToContent(content: { title: string, id: string, parentId?: string }): void {
-    const contentId = content.id;
-    const parentId = content.parentId || this.courseId; // should all defaults to courseID
-    const navigationExtras: NavigationExtras = {
-      queryParams: { contentId, parentId },
-      relativeTo: this.activatedRoute
-    };
-    const playContentDetail = this.findContentById(content.id);
-    if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-      this.showExtContentMsg = false;
-      this.istrustedClickXurl = true;
-      this.externalUrlPreviewService.generateRedirectUrl(playContentDetail.model, this.userService.userid, this.courseId, this.batchId);
-    }
-    if ((this.batchId && !this.flaggedCourse && this.enrolledBatchInfo.status)
-      || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
-      || this.courseHierarchy.createdBy === this.userService.userid) {
-      this.router.navigate([], navigationExtras);
-    } else if (!this.enrolledCourse) {
-      this.showJoinTrainingModal = true;
+  public navigateToContent(event: any, collectionUnit?: any): void {
+    /* istanbul ignore else */
+    if (!_.isEmpty(event.event)) {
+      this.navigateToPlayerPage(collectionUnit, event);
     }
   }
   public contentProgressEvent(event) {
@@ -393,7 +385,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.courseConsumptionService.updateContentsState(request).pipe(first())
+    this.courseConsumptionService.updateContentsState(request).pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
         err => console.log('updating content status failed', err));
   }
@@ -449,9 +441,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 100);
     }
-  }
-  showContentCreditsPopup() {
-    this.showContentCreditsModal = true;
   }
   ngOnDestroy() {
     this.unsubscribe.next();
@@ -584,5 +573,59 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.interact(telemetryIntractData);
+  }
+
+  navigateToPlayerPage(collectionUnit, event?) {
+    if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
+      };
+      if (event && !_.isEmpty(event.event)) {
+        navigationExtras.queryParams.selectedContent = event.data.identifier;
+      }
+      this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
+    } else {
+      this.showJoinTrainingModal = true;
+    }
+  }
+
+  calculateProgress() {
+    /* istanbul ignore else */
+    if (_.get(this.courseHierarchy, 'children')) {
+      this.courseHierarchy.children.forEach(unit => {
+        if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
+          const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+
+          let consumedContents = [];
+          /* istanbul ignore else */
+          if (this.contentStatus.length) {
+            consumedContents = flattenDeepContents.filter(o => {
+              return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
+            });
+          }
+
+          unit.consumedContent = consumedContents.length;
+          unit.contentCount = flattenDeepContents.length;
+          unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
+          unit.isUnitConsumptionStart = false;
+
+          if (consumedContents.length) {
+            unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+            unit.isUnitConsumptionStart = true;
+          } else {
+            unit.progress = 0;
+            unit.isUnitConsumptionStart = false;
+          }
+
+        } else {
+          const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
+          unit.consumedContent = consumedContent.length;
+          unit.contentCount = 1;
+          unit.isUnitConsumed = consumedContent.length === 1;
+          unit.progress = consumedContent.length ? 100 : 0;
+          unit.isUnitConsumptionStart = Boolean(consumedContent.length);
+        }
+      });
+    }
   }
 }
