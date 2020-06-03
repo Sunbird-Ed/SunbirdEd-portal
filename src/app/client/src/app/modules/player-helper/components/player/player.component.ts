@@ -66,7 +66,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
-    // If `sessionStorage` has UTM data; append the UTM data to context.cData
+    // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (sessionStorage.getItem('UTM')) {
       let utmData;
       try {
