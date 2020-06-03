@@ -65,23 +65,6 @@ describe('MainHeaderComponent', () => {
     component = fixture.componentInstance;
     component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
   });
-  it('Should subscribe manageduser event when new managed user is created', () => {
-    const userService = TestBed.get(UserService);
-    userService._authenticated = true;
-    userService._userData$.next({err: null, userProfile: mockData.userProfile});
-    spyOn(component, 'fetchManagedUsers');
-    component.ngOnInit();
-    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
-    expect(component.fetchManagedUsers).toHaveBeenCalled();
-  });
-
-  it('Should unsubscribe on ondestroy', () => {
-    spyOn(component['unsubscribe'], 'next');
-    spyOn(component['unsubscribe'], 'complete');
-    component.ngOnDestroy();
-    expect(component['unsubscribe'].next).toHaveBeenCalled();
-    expect(component['unsubscribe'].complete).toHaveBeenCalled();
-  });
 
   it('should subscribe to user service', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
@@ -220,5 +203,15 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
     expect(telemetryService.initialize).toHaveBeenCalled();
+  });
+
+  it('Should subscribe manageduser event when new managed user is created', () => {
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    userService._userData$.next({err: null, userProfile: mockData.userProfile});
+    spyOn(component, 'fetchManagedUsers');
+    component.ngOnInit();
+    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 });
