@@ -74,7 +74,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       } catch (error) {
         throw new Error('JSON Parse Error => UTM data');
       }
-      if (utmData && _.get(this.playerConfig, 'context.cdata') && !_.isEmpty(this.playerConfig.context.cdata)) {
+      if (utmData && _.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+      if (utmData && !_.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context['cdata'] = [];
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
     }
