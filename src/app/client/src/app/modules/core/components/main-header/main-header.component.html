@@ -211,7 +211,7 @@
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-            *ngIf="showContributeTab" class="list-item" [class.active]="router.isActive('/contribute')"
+            *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
           {{resourceService?.frmelmnts?.tab?.contribute}}
