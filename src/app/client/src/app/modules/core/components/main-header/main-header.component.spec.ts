@@ -205,7 +205,7 @@ describe('MainHeaderComponent', () => {
     expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
-  fit('Should subscribe manageduser event when new managed user is created', () => {
+  it('Should subscribe manageduser event when new managed user is created', () => {
     const userService = TestBed.get(UserService);
     userService._authenticated = true;
     userService._userData$.next({err: null, userProfile: mockData.userProfile});
