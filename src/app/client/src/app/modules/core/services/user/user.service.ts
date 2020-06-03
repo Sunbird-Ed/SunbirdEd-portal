@@ -400,8 +400,8 @@ export class UserService {
       data: data
     };
     return this.learnerService.post(options).pipe(
-      map((resp: ServerResponse) => {
-        this.createManagedUser.emit(_.get(resp, 'result.userId'))
+      map((resp) => {
+        this.createManagedUser.emit(_.get(resp, 'result.userId'));
         return resp;
       }));
   }

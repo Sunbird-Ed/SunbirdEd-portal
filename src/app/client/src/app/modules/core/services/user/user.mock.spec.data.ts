@@ -1,4 +1,21 @@
 export const mockUserData = {
+    registerSuccess: {
+        'id': '',
+        'ver': 'v4',
+        'ts': '2020-06-03 09:56:20:964+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': '86461789-0856-45f2-2ef4-e1bc18ad89b4',
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': 'SUCCESS',
+            'userId': '0008ccab-2103-46c9-adba-6cdf84d37f06'
+        }
+    },
     tenantSuccess:
     {
         'id': 'api.tenant.info',

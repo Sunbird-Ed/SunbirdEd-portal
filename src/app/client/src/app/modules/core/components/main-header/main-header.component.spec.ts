@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError, of} from 'rxjs';
+import {of as observableOf, throwError as observableThrowError, of, observable} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -71,11 +71,27 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.registerSuccess));
     userService.initialize(true);
     fixture.detectChanges();
     expect(component.userProfile).toBeTruthy();
   });
+
+
+
+  it('Should subscribe manageduser event when new managed user is created', () => {
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'post').and.returnValue(of(mockUserData.success));
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
+    spyOn(component, 'fetchManagedUsers');
+    component.ngOnInit();
+    userService.createManagedUser.emit({});
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
+  });
+
+
 
   it('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
@@ -202,16 +218,6 @@ describe('MainHeaderComponent', () => {
   it('should not turn on the side menu', () => {
     component.toggleSideMenu(false);
     expect(component.showSideMenu).toEqual(false);
-  });
-
-  it('Should subscribe manageduser event when new managed user is created', () => {
-    const userService = TestBed.get(UserService);
-    userService._authenticated = true;
-    userService._userData$.next({ err: null, userProfile: mockData.userProfile });
-    spyOn(component, 'fetchManagedUsers');
-    spyOn(userService, 'createManagedUser').and.returnValue(of('1234'));
-    component.ngOnInit();
-    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
   it('Should unsubscribe on ondestroy', () => {
