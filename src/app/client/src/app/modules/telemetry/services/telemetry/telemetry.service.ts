@@ -332,7 +332,7 @@ export class TelemetryService {
   }
 
   public makeUTMSession(params) {
-    this.UTMparam = _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
+    this.UTMparam = _.toPairs(params).filter(([key, value]) => value && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
     sessionStorage.setItem('UTM', JSON.stringify(this.UTMparam));
   }
 
