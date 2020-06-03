@@ -130,13 +130,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
+          console.log('1')
           this.fetchManagedUsers();
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
+          console.log('2')
           document.title = _.get(user, 'userProfile.rootOrgName');
           this.userService.createManagedUser.pipe(
             takeUntil(this.unsubscribe)).subscribe((data: any) => {
+              console.log('3')
             this.fetchManagedUsers();
           });
         }
