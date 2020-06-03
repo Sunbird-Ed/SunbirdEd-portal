@@ -237,4 +237,13 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(utm[4]['type']).toBe('UtmTerm');
     expect(utm[5]['type']).toBe('UtmContent');
   });
+
+  it('should not get user feed api data', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    userService._authenticated = true;
+    spyOn(userService, 'getFeedData');
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
+    component.getUserFeedData();
+    expect(userService.getFeedData).not.toHaveBeenCalled();
+  });
 });
