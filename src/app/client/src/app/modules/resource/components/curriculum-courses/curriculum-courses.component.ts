@@ -86,8 +86,6 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
           };
         }
       });
-
-      console.log('this.mergedCourseList', this.mergedCourseList);
     });
   }
 
