@@ -408,13 +408,14 @@ export class MainHeaderComponent implements OnInit {
   }
 
   switchUser(event) {
+    let userSubscription;
     const selectedUser = _.get(event, 'data.data');
     const initiatorUserId = this.userService.userid;
     this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
     const userId = selectedUser.identifier;
     this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        const userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+        userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
             this.telemetryService.setInitialization(false);
@@ -427,7 +428,9 @@ export class MainHeaderComponent implements OnInit {
             });
             this.toggleSideMenu(false);
             this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
-            userSubscription.unsubscribe();
+              if (userSubscription) {
+                userSubscription.unsubscribe();
+              }
             });
           }
         });
