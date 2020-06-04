@@ -41,7 +41,8 @@ describe('CreateUserComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
-        'm0004': 'Something went wrong, try later'
+        'm0004': 'Something went wrong, try later',
+        'm0100': 'User Creation limit exceeded'
       },
       'stmsg': {
         'm0130': 'We are fetching districts',
@@ -194,6 +195,21 @@ describe('CreateUserComponent', () => {
     component.onCancel();
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
   });
-
+  it('should throw error as max user creation limit excees', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(userService, 'registerUser').and.returnValue(observableThrowError({
+      error: {params: {status: 'MANAGED_USER_LIMIT_EXCEEDED'}}
+    }));
+    component.onSubmitForm();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0100);
+  });
 });
 
