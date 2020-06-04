@@ -67,7 +67,7 @@ describe('PageSectionComponent', () => {
   });
 
   it('should reinit slick on changes', () => {
-    spyOn(component, 'reInitSlick').and.callThrough();
+    spyOn(component, 'reInitSlick');
     component.ngOnChanges();
     expect(component.reInitSlick).toHaveBeenCalled();
   });
