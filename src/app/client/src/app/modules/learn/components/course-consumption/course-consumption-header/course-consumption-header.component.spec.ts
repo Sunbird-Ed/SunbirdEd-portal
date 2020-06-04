@@ -69,8 +69,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it(`should enable resume button if course is not flagged, batch status is not "0" and
-  courseProgressData obtained from courseProgressService`, () => {
+  it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
