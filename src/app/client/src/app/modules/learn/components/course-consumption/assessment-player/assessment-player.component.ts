@@ -5,7 +5,7 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -48,8 +48,7 @@ export class AssessmentPlayerComponent implements OnInit {
     private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
-    private assessmentScoreService: AssessmentScoreService,
-    private windowScrollService: WindowScrollService
+    private assessmentScoreService: AssessmentScoreService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -144,7 +143,6 @@ export class AssessmentPlayerComponent implements OnInit {
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
     this.getContentState();
-    this.windowScrollService.smoothScroll('app-player-collection-renderer', 700);
   }
 
   private firstNonCollectionContent(contents) {
