@@ -23,6 +23,7 @@ describe('CoursePlayerComponent', () => {
   let contentUtilsServiceService;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
   }
   const resourceServiceMockData = {
     messages: {
@@ -583,6 +584,41 @@ describe('CoursePlayerComponent', () => {
     spyOn<any>(component, 'navigateToPlayerPage');
     component.navigateToContent({ event: { type: 'click' } });
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
+  });
+
+  it('should navigate to the player page with selected content', () => {
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component['courseId'] = 'do_343432283682323';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.activeContent, { event: { type: 'click' }, data: { identifier: 'do_323243834364386' } });
+    expect(component['router'].navigate).toHaveBeenCalled();
+  });
+
+  it('should navigate to the player page with, first non-consumed content', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_11287204084174028818']);
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+  });
+
+  it('should show join course popup if the course is not enrolled or the user has preview permission', () => {
+    component.hasPreviewPermission = true;
+    component.contentStatus = [];
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+    expect(component.showJoinTrainingModal).toBe(false);
+  });
+
+  it('should show join course popup if the course is not enrolled or the user has preview permission', () => {
+    component.hasPreviewPermission = false;
+    component.contentStatus = [];
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+    expect(component.showJoinTrainingModal).toBe(true);
   });
 
   it('should call setTelemetryContentImpression', () => {
