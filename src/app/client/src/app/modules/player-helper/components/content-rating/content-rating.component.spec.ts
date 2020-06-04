@@ -10,12 +10,12 @@ import { CacheService } from 'ng2-cache-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { mockData } from './content-rating.component.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('ContentRatingComponent', () => {
 
   let component: ContentRatingComponent;
   let fixture: ComponentFixture<ContentRatingComponent>;
-
+  configureTestSuite();
   beforeEach(() => {
     const resourceServiceStub = {
       languageSelected$: of({}),

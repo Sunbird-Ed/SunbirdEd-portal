@@ -7,7 +7,7 @@ import {eventData} from './telemetry-share.directive.spec.data';
 import { ActivatedRoute, Data } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TelemetryShareDirective', () => {
   const env = 'workspace';
@@ -29,6 +29,7 @@ const fakeActivatedRoute = {
               }
             },
           };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryShareDirective],

@@ -8,11 +8,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileService } from './../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,

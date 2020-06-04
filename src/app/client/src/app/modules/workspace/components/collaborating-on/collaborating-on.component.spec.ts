@@ -15,6 +15,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CollaboratingOnComponent', () => {
   let component: CollaboratingOnComponent;
@@ -55,6 +56,7 @@ describe('CollaboratingOnComponent', () => {
     }
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent, DateFilterXtimeAgoPipe],

@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GetComponent } from './get.component';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('GetComponent', () => {
   let component: GetComponent;
@@ -27,6 +28,7 @@ describe('GetComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],

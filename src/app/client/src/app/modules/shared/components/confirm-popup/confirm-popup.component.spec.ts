@@ -3,14 +3,14 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 import { ConfirmPopupComponent } from './confirm-popup.component';
 
 describe('ConfirmPopupComponent', () => {
   let component: ConfirmPopupComponent;
   let fixture: ComponentFixture<ConfirmPopupComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent],

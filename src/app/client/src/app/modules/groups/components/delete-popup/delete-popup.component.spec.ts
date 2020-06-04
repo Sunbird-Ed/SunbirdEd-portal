@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { DeletePopupComponent } from './delete-popup.component';
 
 describe('DeletePopupComponent', () => {
   let component: DeletePopupComponent;
   let fixture: ComponentFixture<DeletePopupComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DeletePopupComponent ]

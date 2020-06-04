@@ -7,8 +7,10 @@ import { TestBed, inject } from '@angular/core/testing';
 import { CourseProgressService, UsageService } from './../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as testData from './course-progress.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseProgressService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],

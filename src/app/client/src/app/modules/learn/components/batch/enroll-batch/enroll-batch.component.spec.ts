@@ -16,6 +16,8 @@ import { fakeBatchDetails } from './enroll-batch.component.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('EnrollBatchComponent', () => {
   let component: EnrollBatchComponent;
   let fixture: ComponentFixture<EnrollBatchComponent>;
@@ -58,7 +60,7 @@ describe('EnrollBatchComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EnrollBatchComponent],

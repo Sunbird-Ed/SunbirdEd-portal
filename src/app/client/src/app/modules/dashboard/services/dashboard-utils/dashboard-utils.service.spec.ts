@@ -1,7 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { DashboardUtilsService } from './dashboard-utils.service';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('DashboardUtilsService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DashboardUtilsService]

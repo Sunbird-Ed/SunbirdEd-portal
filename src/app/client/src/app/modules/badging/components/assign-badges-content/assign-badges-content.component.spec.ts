@@ -9,7 +9,7 @@ import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { mockResponse } from './assign-badges-content.component.spec.data';
 import { ContentBadgeService } from './../../services';
 import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('AssignBadgesContentComponent', () => {
   let component: AssignBadgesContentComponent;
   let fixture: ComponentFixture<AssignBadgesContentComponent>;
@@ -19,6 +19,7 @@ describe('AssignBadgesContentComponent', () => {
   const fakeActivatedRoute = {
     'params': observableOf({ collectionId: 'Test_Textbook2_8907797' })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssignBadgesContentComponent],

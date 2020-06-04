@@ -11,7 +11,7 @@ import { UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from './content-creation-default-template.component';
 import { mockData } from './content-creation-default-template.component.spec.data';
-import { expand } from 'rxjs/operators';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DefaultTemplateComponent', () => {
   let component: DefaultTemplateComponent;
@@ -34,7 +34,7 @@ describe('DefaultTemplateComponent', () => {
   const fakeActivatedRoute = {
     'url': observableOf({ 'path': 'textbook' })
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],

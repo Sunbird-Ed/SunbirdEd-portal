@@ -8,6 +8,8 @@ import { Response } from './card.component.spec.data';
 import { CardComponent } from './card.component';
 import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
@@ -18,6 +20,7 @@ describe('CardComponent', () => {
   }
   class FakeActivatedRoute {
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

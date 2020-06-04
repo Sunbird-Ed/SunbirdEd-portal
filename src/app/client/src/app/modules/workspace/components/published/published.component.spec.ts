@@ -19,6 +19,7 @@ import { NgInviewModule } from 'angular-inport';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
@@ -55,6 +56,7 @@ describe('PublishedComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],

@@ -9,10 +9,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentChapterlistComponent;
   let fixture: ComponentFixture<ContentChapterlistComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentChapterlistComponent],
