@@ -9,11 +9,13 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { TenantService } from '@sunbird/core';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { APP_BASE_HREF } from '@angular/common';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
   let fixture: ComponentFixture<UserOnboardingComponent>;
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserOnboardingComponent],

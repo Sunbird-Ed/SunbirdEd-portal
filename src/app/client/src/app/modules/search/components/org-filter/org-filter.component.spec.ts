@@ -17,6 +17,7 @@ import { OrgFilterComponent } from './org-filter.component';
 import { OrgSearchComponent } from './../org-search/org-search.component';
 import { Response } from './org-filter.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrgFilterComponent', () => {
   let component: OrgFilterComponent;
@@ -30,6 +31,7 @@ describe('OrgFilterComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule],

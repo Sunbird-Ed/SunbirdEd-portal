@@ -10,7 +10,7 @@ import { SharedModule, ResourceService } from '@sunbird/shared';
 import { GroupsService } from '../../services';
 import { of as observableOf, of } from 'rxjs';
 import { mygroupsMockData } from './my-groups.component.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
@@ -27,6 +27,7 @@ describe('MyGroupsComponent', () => {
   class RouterStub {
       navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],

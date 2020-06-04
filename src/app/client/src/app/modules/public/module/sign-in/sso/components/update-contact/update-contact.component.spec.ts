@@ -13,7 +13,7 @@ import { ResourceService} from '@sunbird/shared';
 import {of as observableOf, Observable, throwError as observableThrowError} from 'rxjs';
 import {TenantService, UserService, OtpService, OrgDetailsService} from '@sunbird/core';
 import {mockUpdateContactData} from './update-contact.mock.spec.data';
-import {SignupService} from '../../../../signup/services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpdateContactComponent', () => {
   let component: UpdateContactComponent;
@@ -26,6 +26,7 @@ describe('UpdateContactComponent', () => {
   const fakeUserService = {
     getUserByKey: observableOf(mockUpdateContactData.userData)
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),

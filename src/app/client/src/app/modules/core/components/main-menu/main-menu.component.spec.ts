@@ -6,6 +6,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
@@ -18,6 +19,7 @@ describe('MainMenuComponent', () => {
   }
   class FakeActivatedRoute {
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],

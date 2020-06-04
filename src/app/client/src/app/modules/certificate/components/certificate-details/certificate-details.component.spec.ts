@@ -13,6 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { validateCertMockResponse } from './certificate-details.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CertificateDetailsComponent', () => {
   let component: CertificateDetailsComponent;
@@ -37,7 +38,7 @@ describe('CertificateDetailsComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule, SharedModule.forRoot(), SuiModule, TelemetryModule.forRoot(), PlayerHelperModule],

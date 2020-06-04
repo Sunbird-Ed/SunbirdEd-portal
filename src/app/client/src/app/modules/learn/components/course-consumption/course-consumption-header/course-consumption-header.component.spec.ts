@@ -11,6 +11,7 @@ import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const resourceServiceMockData = {
   messages : {
@@ -51,7 +52,7 @@ class RouterStub {
 describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseConsumptionHeaderComponent ],

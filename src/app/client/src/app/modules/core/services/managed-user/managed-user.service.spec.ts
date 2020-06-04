@@ -8,10 +8,10 @@ import {CacheService} from 'ng2-cache-service';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {APP_BASE_HREF} from '@angular/common';
 import {managedUserServiceMockData} from './managed-user.service.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ManagedUserService', () => {
-
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
     declarations: [InterpolatePipe],

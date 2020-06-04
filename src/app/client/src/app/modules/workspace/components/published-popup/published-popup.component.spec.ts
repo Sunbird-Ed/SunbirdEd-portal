@@ -13,6 +13,8 @@ import { SharedModule, ResourceService, ConfigService, ToasterService, Navigatio
 import { PublishedPopupComponent } from './published-popup.component';
 import { WorkSpaceService, ReviewCommentsService } from './../../services';
 import {mockRes} from './published-popup.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('PublishedPopupComponent', () => {
   let component: PublishedPopupComponent;
   let fixture: ComponentFixture<PublishedPopupComponent>;
@@ -66,7 +68,7 @@ describe('PublishedPopupComponent', () => {
       'errmsg': 'Required fields for publish content are missing'
     }, 'responseCode': 'CLIENT_ERROR', 'result': {}
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],

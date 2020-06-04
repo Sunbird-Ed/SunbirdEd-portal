@@ -13,6 +13,7 @@ import { UserService, TenantService } from '@sunbird/core';
 import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TermsAndConditionsPopupComponent', () => {
   let component: TermsAndConditionsPopupComponent;
@@ -39,6 +40,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],

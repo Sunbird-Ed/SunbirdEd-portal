@@ -4,8 +4,10 @@ import { TncService } from './tnc.service';
 import { ConfigService } from '@sunbird/shared';
 import { LearnerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TncService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

@@ -9,6 +9,7 @@ import { ConfigService, ResourceService, ToasterService, SharedModule } from '@s
 import { throwError, of } from 'rxjs';
 import { Response } from './profile-framework-popup.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ProfileFrameworkPopupComponent', () => {
   let component: ProfileFrameworkPopupComponent;
@@ -24,6 +25,7 @@ describe('ProfileFrameworkPopupComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

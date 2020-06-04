@@ -13,6 +13,7 @@ import { UsageReportsComponent } from './usage-reports.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UsageReportsComponent', () => {
   let component: UsageReportsComponent;
@@ -21,6 +22,7 @@ describe('UsageReportsComponent', () => {
     snapshot: { data: { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } } }
   };
   const routerStub = { url: '/dashBoard/organization' };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],

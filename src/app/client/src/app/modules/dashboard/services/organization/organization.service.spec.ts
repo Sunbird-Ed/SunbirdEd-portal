@@ -11,8 +11,10 @@ import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.serv
 // Test data
 import * as mockData from './organization.service.spec.data';
 const testData = <any>mockData.mockRes;
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrganisationService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

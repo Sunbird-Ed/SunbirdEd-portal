@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { Response } from './batch-card.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchCardComponent', () => {
   let component: BatchCardComponent;
@@ -34,6 +35,7 @@ describe('BatchCardComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],

@@ -9,13 +9,14 @@ import { UsageService } from '../usage/usage.service';
 import { SharedModule } from '@sunbird/shared';
 import { of, throwError } from 'rxjs';
 import * as mockData from './reports.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ReportService', () => {
   let userService: UserService;
   let reportService: ReportService;
   let usageService: UsageService;
   let baseReportService: BaseReportService;
-
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ReportService, UsageService, UserService, PermissionService, BaseReportService, CourseProgressService],
     imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()]
