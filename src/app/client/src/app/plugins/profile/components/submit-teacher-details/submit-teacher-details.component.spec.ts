@@ -41,7 +41,9 @@ describe('SubmitTeacherDetailsComponent', () => {
         'm0005': 'Something went wrong, try later',
         'm0018': 'error',
         'm0016': 'error',
-        'm0017': 'error'
+        'm0017': 'error',
+        'm0051': 'Teacher declaration submission failed',
+        'm0052': 'Teacher declaration updation failed',
       },
       'smsg': {
         'm0046': 'Profile updated successfully',
@@ -129,7 +131,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(component, 'closeModal');
     fixture.detectChanges();
     component.updateProfile('');
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0018);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0052);
     expect(component.closeModal).toHaveBeenCalled();
   });
 
