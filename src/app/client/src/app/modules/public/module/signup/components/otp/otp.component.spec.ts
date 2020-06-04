@@ -11,7 +11,7 @@ import { OtpComponent } from './otp.component';
 import { OtpComponentMockResponse } from './otp.component.spec.data';
 import { SignupService } from '../../services';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpComponent', () => {
   let component: OtpComponent;
@@ -32,7 +32,7 @@ describe('OtpComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OtpComponent, InterpolatePipe],

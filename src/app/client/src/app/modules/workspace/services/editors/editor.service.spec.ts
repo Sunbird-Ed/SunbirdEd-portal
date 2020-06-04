@@ -9,8 +9,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('EditorService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule,

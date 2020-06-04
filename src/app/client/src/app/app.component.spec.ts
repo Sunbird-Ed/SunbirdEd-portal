@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 class RouterStub {
@@ -44,6 +44,7 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,

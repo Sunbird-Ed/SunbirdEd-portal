@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const enrolledCourse = {
   courseSuccessEnroll: {
@@ -65,7 +66,7 @@ describe('CourseConsumptionPageComponent', () => {
   let fixture: ComponentFixture<CourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
   navigationHelperService;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],

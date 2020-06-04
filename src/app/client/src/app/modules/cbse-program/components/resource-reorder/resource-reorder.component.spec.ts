@@ -17,6 +17,7 @@ import { of as observableOf, throwError as observableError } from 'rxjs';
 import { ActionService } from '@sunbird/core';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ResourceReorderComponent', () => {
   let component: ResourceReorderComponent;
@@ -25,6 +26,7 @@ describe('ResourceReorderComponent', () => {
   let errorInitiate;
   const errorInitiate1 = false;
   const hierarchyServiceStub: any = {};
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,

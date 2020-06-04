@@ -11,7 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { configureTestSuite } from '@sunbird/test-util';
 const fakeActivatedRoute = {
   snapshot: {
     data: {
@@ -24,7 +24,7 @@ const fakeActivatedRoute = {
 describe('PageSectionComponent', () => {
   let component: PageSectionComponent;
   let fixture: ComponentFixture<PageSectionComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],

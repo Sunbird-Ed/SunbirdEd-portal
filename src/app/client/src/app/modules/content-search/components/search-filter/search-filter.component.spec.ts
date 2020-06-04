@@ -12,6 +12,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
 import { BehaviorSubject, throwError, of} from 'rxjs';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -40,6 +41,7 @@ describe('SearchFilterComponent', () => {
         };
         public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
       }
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],

@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Router, Routes, RouterModule } from '@angular/router';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('Redirect Router tests', () => {
   let location: Location;
@@ -14,6 +15,7 @@ describe('Redirect Router tests', () => {
       component: RedirectComponent
     }
   ];
+  configureTestSuite();
   // setup
   beforeEach(() => {
     TestBed.configureTestingModule({

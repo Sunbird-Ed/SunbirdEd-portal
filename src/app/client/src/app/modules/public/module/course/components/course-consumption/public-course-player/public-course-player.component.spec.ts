@@ -10,6 +10,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const resourceServiceMockData = {
   messages: {
@@ -51,7 +52,7 @@ describe('PublicCoursePlayerComponent', () => {
   let component: PublicCoursePlayerComponent;
   let fixture: ComponentFixture<PublicCoursePlayerComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

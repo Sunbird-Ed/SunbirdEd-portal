@@ -5,10 +5,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],

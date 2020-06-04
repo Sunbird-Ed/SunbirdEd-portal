@@ -5,6 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('AuthGardService', () => {
     // const authGuard: AuthGuard;
     const router = {
@@ -16,6 +18,7 @@ describe('AuthGardService', () => {
     const activeroutesnapshot = {
         route: jasmine.createSpy('')
     };
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [AuthGuard, PermissionService, ToasterService, UserService, ResourceService, ConfigService, LearnerService,

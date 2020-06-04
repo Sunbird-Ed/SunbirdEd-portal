@@ -19,6 +19,7 @@ import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -44,7 +45,7 @@ describe('MainHeaderComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,

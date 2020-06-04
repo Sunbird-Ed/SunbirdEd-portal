@@ -11,6 +11,7 @@ import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 document.body.innerHTML = document.body.innerHTML +
   '<input id="contentEditorURL" value="https://dev.sunbirded.org/content-editor/index.html"'
@@ -36,6 +37,7 @@ const mockUserService = {
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],

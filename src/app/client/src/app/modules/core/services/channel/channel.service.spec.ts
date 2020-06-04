@@ -9,7 +9,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { serverRes } from './channel.service.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PublicDataService } from './../public-data/public-data.service';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('ChannelService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],

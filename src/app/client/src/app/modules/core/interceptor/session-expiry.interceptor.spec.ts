@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('Session Expiry Interceptor', () => {
 
@@ -16,7 +17,7 @@ describe('Session Expiry Interceptor', () => {
         const http = TestBed.get(HttpClient);
         return http.get(mockUrl);
     };
-
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { FancyTreeComponent } from './fancy-tree.component';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
@@ -14,6 +14,7 @@ describe('FancyTreeComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FancyTreeComponent ],

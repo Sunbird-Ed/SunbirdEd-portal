@@ -63,6 +63,9 @@
       ],
       "@sunbird/content-search": [
         "app/modules/content-search"
+      ],
+      "@sunbird/test-util": [
+        "app/testUtil/"
       ]
     },
     "module": "es2015",
