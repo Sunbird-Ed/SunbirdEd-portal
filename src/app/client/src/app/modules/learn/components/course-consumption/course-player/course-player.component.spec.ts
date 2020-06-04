@@ -17,6 +17,8 @@ import { enrolledBatch } from './../../batch/batch-details/batch-details.compone
 import { CoursesService } from './../../../../core/services/course/course.service';
 import * as _ from 'lodash-es';
 import { assessmentPlayerMockData } from '../assessment-player/assessment-player.component.data.spec';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
@@ -60,7 +62,7 @@ describe('CoursePlayerComponent', () => {
       this.queryParamsMock = params;
     }
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CoursePlayerComponent],

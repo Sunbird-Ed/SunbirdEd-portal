@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
 import {ResourceService, InterpolatePipe} from '@sunbird/shared';
 import {TenantService} from '@sunbird/core';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import {AuthFailedComponent} from './auth-failed.component';
 
 describe('AuthFailedComponent', () => {
@@ -17,7 +17,7 @@ describe('AuthFailedComponent', () => {
   const resourceBundle = {
     languageSelected$: observableOf({})
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule],

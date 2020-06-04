@@ -10,6 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
+import { configureTestSuite } from '@sunbird/test-util';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
@@ -36,6 +37,7 @@ const resourceServiceMockData = {
 describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],

@@ -7,6 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './custom-multi-select.component.spec.data';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from './../../services';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CustomMultiSelectComponent', () => {
   let component: CustomMultiSelectComponent;
@@ -19,6 +20,7 @@ describe('CustomMultiSelectComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, SuiModule],

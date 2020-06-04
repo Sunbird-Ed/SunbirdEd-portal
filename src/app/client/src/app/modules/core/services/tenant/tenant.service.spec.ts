@@ -9,6 +9,7 @@ import { TenantService } from './tenant.service';
 import { } from 'jasmine';
 import { UserService } from '../user/user.service';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TenantService', () => {
   let userService: UserService;
@@ -19,6 +20,7 @@ describe('TenantService', () => {
       lastName: 'ekstep'
     }
   };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

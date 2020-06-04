@@ -8,6 +8,7 @@ import { CurriculumCourseDetailsComponent } from './curriculum-course-details.co
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CurriculumCourseDetailsComponent', () => {
   let component: CurriculumCourseDetailsComponent;
@@ -16,7 +17,7 @@ describe('CurriculumCourseDetailsComponent', () => {
   const fakeActivatedRoute = {
     params: of({ courseId: 'do_12121asa1212' }),
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CurriculumCourseDetailsComponent],

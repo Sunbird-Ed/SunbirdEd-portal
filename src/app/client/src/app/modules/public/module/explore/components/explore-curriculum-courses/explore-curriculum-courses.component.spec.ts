@@ -7,7 +7,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule} from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 
 describe('ExploreCurriculumCoursesComponent', () => {
@@ -35,7 +35,7 @@ describe('ExploreCurriculumCoursesComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreCurriculumCoursesComponent ],

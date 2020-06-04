@@ -18,6 +18,7 @@ import { Response } from './user-profile.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UserProfileComponent', () => {
     let component: UserProfileComponent;
@@ -51,7 +52,7 @@ describe('UserProfileComponent', () => {
             }
         }
     };
-
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, TelemetryModule.forRoot(),

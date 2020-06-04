@@ -14,10 +14,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerPageComponent;
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerPageComponent],

@@ -16,6 +16,7 @@ import { of, throwError } from 'rxjs';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { ActivatedRoute } from '@angular/router';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -32,6 +33,7 @@ describe('AssessmentPlayerComponent', () => {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
     queryParams: of({ batchId: '12312433' })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssessmentPlayerComponent],
