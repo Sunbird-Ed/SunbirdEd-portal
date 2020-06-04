@@ -126,6 +126,37 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
+
+  getTelemetryContext() {
+    const userProfile = this.userService.userProfile;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    return {
+      userOrgDetails: {
+        userId: userProfile.userId,
+        rootOrgId: userProfile.rootOrgId,
+        rootOrg: userProfile.rootOrg,
+        organisationIds: userProfile.hashTagIds
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: version,
+          pid: this.config.appConfig.TELEMETRY.PID
+        },
+        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        uid: userProfile.userId,
+        sid: this.userService.sessionId,
+        channel: _.get(userProfile, 'rootOrg.hashTagId'),
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation,
+        timeDiff: this.userService.getServerTimeDiff
+      }
+    };
+  }
+
   ngOnInit() {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
@@ -161,36 +192,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
     this.setWindowConfig();
 
-  }
-
-  getTelemetryContext() {
-    const userProfile = this.userService.userProfile;
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    return {
-      userOrgDetails: {
-        userId: userProfile.userId,
-        rootOrgId: userProfile.rootOrgId,
-        rootOrg: userProfile.rootOrg,
-        organisationIds: userProfile.hashTagIds
-      },
-      config: {
-        pdata: {
-          id: this.userService.appId,
-          ver: version,
-          pid: this.config.appConfig.TELEMETRY.PID
-        },
-        endpoint: this.config.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: this.config.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: userProfile.userId,
-        sid: this.userService.sessionId,
-        channel: _.get(userProfile, 'rootOrg.hashTagId'),
-        env: 'home',
-        enableValidation: environment.enableTelemetryValidation,
-        timeDiff: this.userService.getServerTimeDiff
-      }
-    };
   }
 
   navigate(navigationUrl) {

@@ -382,18 +382,6 @@ export class UserService {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid});
   }
 
-  userMigrate(requestBody) {
-    const option = {
-      url: this.config.urlConFig.URLS.USER.USER_MIGRATE,
-      data: requestBody
-    };
-    return this.learnerService.post(option);
-  }
-
-  setUserFramework(framework) {
-    this._userProfile.framework = framework;
-  }
-
   registerUser(data) {
     const options = {
       url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
@@ -404,6 +392,18 @@ export class UserService {
         this.createManagedUser.emit(_.get(resp, 'result.userId'));
         return resp;
       }));
+  }
+
+  userMigrate(requestBody) {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.USER_MIGRATE,
+      data: requestBody
+    };
+    return this.learnerService.post(option);
+  }
+
+  setUserFramework(framework) {
+    this._userProfile.framework = framework;
   }
 
   getUserData(userId) {
