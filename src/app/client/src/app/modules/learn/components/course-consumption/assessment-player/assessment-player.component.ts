@@ -5,11 +5,10 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
-import * as TreeModel from 'tree-model';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
@@ -49,7 +48,8 @@ export class AssessmentPlayerComponent implements OnInit {
     private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
-    private assessmentScoreService: AssessmentScoreService
+    private assessmentScoreService: AssessmentScoreService,
+    private windowScrollService: WindowScrollService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -75,15 +75,22 @@ export class AssessmentPlayerComponent implements OnInit {
         const selectedContent = queryParams.selectedContent;
 
         const isSingleContent = this.collectionId === selectedContent;
+        const isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
-          this.getCollectionInfo(this.collectionId)
+          this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
-              this.courseHierarchy = data.courseHierarchy;
+              if (!isParentCourse && data.courseHierarchy.children) {
+                this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+              } else {
+                this.courseHierarchy = data.courseHierarchy;
+              }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
+              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+              this.goBack();
             });
         } else {
           this.playerService.getCollectionHierarchy(this.collectionId, {})
@@ -137,6 +144,7 @@ export class AssessmentPlayerComponent implements OnInit {
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
     this.getContentState();
+    this.windowScrollService.smoothScroll('app-player-collection-renderer', 700);
   }
 
   private firstNonCollectionContent(contents) {
