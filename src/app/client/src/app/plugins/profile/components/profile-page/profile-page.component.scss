@@ -229,6 +229,7 @@ display: inline-block;
 
 .sb-btn-border{
   border-radius: calculateRem(40px);
+  text-transform: none;
 }
 
 .information-label{
@@ -247,4 +248,8 @@ display: inline-block;
 }
 .status-completed{
   color:var(--secondary-color);
+}
+
+.no-text-transform {
+  text-transform: unset;
 }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ConfigService, InterpolatePipe} from '@sunbird/shared';
+import {ConfigService, InterpolatePipe, ServerResponse} from '@sunbird/shared';
 import {HttpClient} from '@angular/common/http';
 import {LearnerService} from '../learner/learner.service';
 import {UserService} from '../user/user.service';
@@ -7,6 +7,7 @@ import {TelemetryService} from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import {CacheService} from 'ng2-cache-service';
 import {of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,11 @@ export class ManagedUserService {
     if (userProfile) {
       return of(userProfile);
     } else {
-      return this.userService.getUserData(this.userService.userProfile.managedBy);
+      const userId = this.getUserId();
+      return this.userService.getUserData(userId).pipe(map((res: ServerResponse) => {
+          return _.get(res, 'result.response');
+        }
+      ));
     }
   }
 }

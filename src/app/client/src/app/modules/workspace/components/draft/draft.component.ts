@@ -325,7 +325,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             return;
         }
         this.pageNumber = page;
-        this.route.navigate(['workspace/content/draft', this.pageNumber]);
+        this.route.navigate(['workspace/content/draft', this.pageNumber], { queryParams: this.queryParams });
     }
 
     ngAfterViewInit () {

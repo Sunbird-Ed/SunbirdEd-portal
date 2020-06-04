@@ -51,6 +51,13 @@
     background-color: #BCBEC0;
     height: 100%;
 }
+.link.cards{
+    width: 18.25rem;
+    border-radius: .25rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
 .w-162 {
     width: calculateRem(162px);
 }

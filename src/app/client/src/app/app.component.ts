@@ -520,7 +520,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
     this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
-      if (this.userService.loggedIn &&
+      if (this.userService.loggedIn && !this.userService.userProfile.managedBy &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
           this.userService.getFeedData().subscribe(
             (data) => {
