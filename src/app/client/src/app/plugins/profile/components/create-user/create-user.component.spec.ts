@@ -47,7 +47,7 @@ describe('CreateUserComponent', () => {
         'm0130': 'We are fetching districts',
       },
       'emsg': {
-        m0025: 'User Creation limit exceeded',
+        'm0025': 'User Creation limit exceeded',
         'm0005': 'Something went wrong, try later'
       },
       'imsg': {
@@ -180,7 +180,7 @@ describe('CreateUserComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
   });
 
-  it('should call onSubmitForm with error', () => {
+  it('should thorw error as max user creation limit excees', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
     const managedUserService = TestBed.get(ManagedUserService);
