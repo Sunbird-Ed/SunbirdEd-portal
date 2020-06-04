@@ -24,7 +24,7 @@ describe('AssessmentPlayerComponent', () => {
 
   const resourceMockData = {
     messages: {
-      emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' },
+      fmsg: { m0051: 'Fetching districts failed. Try again later' },
       stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
     }
   };
@@ -87,7 +87,7 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
   });
 
-  it('should call subscribeToQueryParam, when no bactID present', () => {
+  it('should call subscribeToQueryParam, when no bachID present', () => {
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
     component['subscribeToQueryParam']();
   });
