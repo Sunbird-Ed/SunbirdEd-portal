@@ -146,4 +146,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     }
     return rollup;
   }
+
+  ngOnChanges() {
+    this.reInitSlick();
+  }
 }
