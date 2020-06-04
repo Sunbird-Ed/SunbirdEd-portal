@@ -47,6 +47,7 @@ describe('CreateUserComponent', () => {
         'm0130': 'We are fetching districts',
       },
       'emsg': {
+        m0025: 'User Creation limit exceeded',
         'm0005': 'Something went wrong, try later'
       },
       'imsg': {
@@ -177,6 +178,23 @@ describe('CreateUserComponent', () => {
     spyOn(userService, 'registerUser').and.returnValue(observableThrowError({}));
     component.onSubmitForm();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
+  });
+
+  it('should call onSubmitForm with error', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(userService, 'registerUser').and.returnValue(observableThrowError({
+      error: {params: {status: 'MANAGED_USER_LIMIT_EXCEEDED'}}
+    }));
+    component.onSubmitForm();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0025);
   });
 
   it('should call onSubmitForm with error', () => {
