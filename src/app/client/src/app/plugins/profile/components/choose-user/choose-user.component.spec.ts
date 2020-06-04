@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CoreModule, UserService, ManagedUserService, LearnerService} from '@sunbird/core';
+import {CoreModule, UserService, ManagedUserService, LearnerService, CoursesService} from '@sunbird/core';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {
   ResourceService, SharedModule, ConfigService,
@@ -110,6 +110,13 @@ describe('ChooseUserComponent', () => {
     expect(component.userList).toEqual(mockData.selectedUserList);
   });
 
+  it('should navigate', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    component.closeSwitchUser();
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+  });
+
   it('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
@@ -125,22 +132,20 @@ describe('ChooseUserComponent', () => {
       }
       return {value: 'mock Id'};
     });
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userProfile));
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf({
+        result: {response: mockData.userProfile}
+      }
+    ));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
-    spyOn(userService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.selectedUser = mockData.selectedUser;
     component.switchUser();
-    expect(userService.initialize).toHaveBeenCalled();
+    expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
-  it('should navigate', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    component.closeSwitchUser();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
-  });
 
 });

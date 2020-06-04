@@ -30,6 +30,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public courseList: any = [];
   public title: string;
   public mergedCourseList: any = [];
+  fallbackImg = './../../../../../assets/images/book.png';
 
   public telemetryImpression: IImpressionEventInput;
   constructor(private searchService: SearchService, private toasterService: ToasterService,
@@ -102,8 +103,13 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
   navigateToCourseDetails(course) {
     this.getInteractData(course);
-    const courseId = _.get(course, 'metaData.courseId') || course.identifier;
-    this.router.navigate(['learn/course', courseId]);
+    const courseId = _.get(course, 'courseId') || course.identifier;
+
+    if (course.batchId) {
+      this.router.navigate(['/learn/course', courseId, 'batch', course.batchId]);
+    } else {
+      this.router.navigate(['/learn/course', courseId]);
+    }
   }
 
   getInteractData(course) {
