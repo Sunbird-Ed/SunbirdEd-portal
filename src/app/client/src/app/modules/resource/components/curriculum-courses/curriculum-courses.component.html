@@ -32,8 +32,8 @@
 <div class="ui container mt-24 sb-library-cards">
   <div class="sbgrid">
     <div *ngFor="let course of mergedCourseList">
-      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course"  [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
-      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
+      <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" [cardImg]="course?.courseLogoUrl || course?.appIcon || fallbackImg" [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>
+      <sb-course-card *ngIf="!course.isEnrolledCourse" [course]="course" [cardImg]="course?.appIcon" [section]="null" (cardClick)="navigateToCourseDetails(course)" ></sb-course-card>
     </div>
   </div>
 </div>
