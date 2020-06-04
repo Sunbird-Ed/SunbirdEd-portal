@@ -188,7 +188,7 @@ export class CreateUserComponent implements OnInit {
       },
       (err) => {
         if (_.get(err, 'error.params.status') === 'MANAGED_USER_LIMIT_EXCEEDED') {
-          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0025'));
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0100'));
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0085);
         }

@@ -41,13 +41,13 @@ describe('CreateUserComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
-        'm0004': 'Something went wrong, try later'
+        'm0004': 'Something went wrong, try later',
+        'm0100': 'User Creation limit exceeded'
       },
       'stmsg': {
         'm0130': 'We are fetching districts',
       },
       'emsg': {
-        'm0025': 'User Creation limit exceeded',
         'm0005': 'Something went wrong, try later'
       },
       'imsg': {
@@ -209,7 +209,7 @@ describe('CreateUserComponent', () => {
       error: {params: {status: 'MANAGED_USER_LIMIT_EXCEEDED'}}
     }));
     component.onSubmitForm();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0025);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0100);
   });
 });
 
