@@ -74,8 +74,17 @@ describe('CurriculumCoursesComponent', () => {
   });
 
   it('should call router with parameters', () => {
+    spyOn(component, 'getInteractData');
+    component.navigateToCourseDetails({courseId: 1, batchId: 121232});
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', 1, 'batch', 121232]);
+    expect(component.getInteractData).toHaveBeenCalled();
+  });
+
+  it('should call router with parameters, without batchId', () => {
+    spyOn(component, 'getInteractData');
     component.navigateToCourseDetails({identifier: 1});
-    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', 1]);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', 1]);
+    expect(component.getInteractData).toHaveBeenCalled();
   });
 
   it('should call telemetry.interact()', () => {

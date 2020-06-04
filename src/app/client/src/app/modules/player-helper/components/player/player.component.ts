@@ -66,6 +66,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
+    // If `sessionStorage` has UTM data; append the UTM data to context.cdata
+    if (this.playerConfig && sessionStorage.getItem('UTM')) {
+      let utmData;
+      try {
+        utmData = JSON.parse(sessionStorage.getItem('UTM'));
+      } catch (error) {
+        throw new Error('JSON Parse Error => UTM data');
+      }
+      if (utmData && _.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+      if (utmData && !_.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context['cdata'] = [];
+        this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+    }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
       this.showPlayIcon = false;

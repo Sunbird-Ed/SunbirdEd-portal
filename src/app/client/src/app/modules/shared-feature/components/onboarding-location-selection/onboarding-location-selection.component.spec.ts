@@ -351,4 +351,32 @@ describe('OnboardingLocationSelectionComponent', () => {
       expect(data).toEqual(onboardingLocationMockData.districtLocation.getUserLocationResponse.result.response);
     });
   });
+
+  it('should call setSelectedLocation', () => {
+    const location = {
+      'state': 'Maharashtra',
+      'district': 'Pune'
+    };
+    const mappedStateDetails = {
+      'code': '27',
+      'name': 'Maharashtra',
+      'id': '37809706-8f0e-4009-bf67-87bf04f220fa',
+      'type': 'state'
+    };
+    const mappedDistrictDetails = {
+      'code': '2725',
+      'name': 'Pune',
+      'id': '34b8ac6b-d6c9-4ab1-9fd0-cfb0ec1a2a81',
+      'type': 'district',
+      'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+    };
+    spyOn(component, 'processStateLocation').and.returnValue(mappedStateDetails);
+    spyOn(component, 'getLocationCodes').and.returnValue(of(mappedDistrictDetails));
+    spyOn(component, 'setStateDistrict');
+    component.setSelectedLocation(location, false, true);
+    expect(component.processStateLocation).toHaveBeenCalledWith('Maharashtra');
+    expect(component.getLocationCodes).toHaveBeenCalledWith(location);
+    expect(component.processedDeviceLocation).toEqual({ district: mappedDistrictDetails, state: mappedStateDetails });
+    expect(component.setStateDistrict).toHaveBeenCalledWith({ district: mappedDistrictDetails, state: mappedStateDetails });
+  });
 });

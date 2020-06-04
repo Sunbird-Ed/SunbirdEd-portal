@@ -9,7 +9,12 @@ const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
   {
-    path: 'play/:collectionId', component: AssessmentPlayerComponent
+    path: 'play/:collectionId', component: AssessmentPlayerComponent,
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+      }
+    }
   }, {
     path: '', component: CourseConsumptionPageComponent,
     data: { telemetry: { env: telemetryEnv } },
@@ -18,7 +23,7 @@ const routes: Routes = [
         path: ':courseId', component: CoursePlayerComponent,
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'course-player', type: 'view', object: { ver: '1.0', type: 'batch' }
+            env: telemetryEnv, pageid: 'course-details', type: 'view', object: { ver: '1.0', type: 'batch' }
           },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },

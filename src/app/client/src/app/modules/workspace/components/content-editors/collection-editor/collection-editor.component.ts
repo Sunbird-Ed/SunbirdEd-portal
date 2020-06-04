@@ -242,7 +242,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource']
+        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource', 'SelfAssess']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {
