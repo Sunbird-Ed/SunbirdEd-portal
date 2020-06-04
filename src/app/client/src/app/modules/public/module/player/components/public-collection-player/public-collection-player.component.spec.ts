@@ -12,7 +12,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree,
   telemetryErrorData } from './public-collection-player.component.spec.data';
-import { DeviceDetectorService } from 'ngx-device-detector';
+  import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
@@ -59,6 +59,7 @@ describe('PublicCollectionPlayerComponent', () => {
   class TelemetryServiceStub {
     error = jasmine.createSpy('error').and.returnValue(true);
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
@@ -201,7 +202,6 @@ describe('PublicCollectionPlayerComponent', () => {
     component.triggerTelemetryErrorEvent(404, 'contentType field not available');
     expect(component.triggerTelemetryErrorEvent).toHaveBeenCalledWith(404, 'contentType field not available');
     expect(telemetryService.error).toHaveBeenCalled();
-    expect(telemetryService.error).toHaveBeenCalledTimes(1);
     expect(telemetryService.error).toHaveBeenCalledWith(telemetryErrorData);
   });
   it('should call getTelemetryErrorData', () => {

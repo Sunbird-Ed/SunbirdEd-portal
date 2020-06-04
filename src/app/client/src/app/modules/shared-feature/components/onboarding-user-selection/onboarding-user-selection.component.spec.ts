@@ -6,7 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { APP_BASE_HREF } from '@angular/common';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OnboardingUserSelectionComponent', () => {
   let component: OnboardingUserSelectionComponent;
@@ -21,7 +21,7 @@ describe('OnboardingUserSelectionComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnboardingUserSelectionComponent],

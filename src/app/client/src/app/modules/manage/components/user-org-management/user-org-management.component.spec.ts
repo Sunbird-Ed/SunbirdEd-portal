@@ -13,6 +13,7 @@ import { throwError as observableThrowError, of as observableOf, of } from 'rxjs
 import { mockManageData } from './user-org-management.mock.spec';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -49,7 +50,7 @@ describe('UserOrgManagementComponent', () => {
 
   let component: UserOrgManagementComponent;
   let fixture: ComponentFixture<UserOrgManagementComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [

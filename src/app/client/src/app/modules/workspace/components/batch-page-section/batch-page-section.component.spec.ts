@@ -17,6 +17,7 @@ import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchPageSectionComponent', () => {
   let component: BatchPageSectionComponent;
@@ -67,6 +68,7 @@ describe('BatchPageSectionComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchPageSectionComponent],

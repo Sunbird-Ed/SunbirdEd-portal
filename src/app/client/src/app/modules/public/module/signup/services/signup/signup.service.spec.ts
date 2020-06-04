@@ -4,8 +4,10 @@ import {SignupService} from './signup.service';
 import {ConfigService, SharedModule} from '@sunbird/shared';
 import {LearnerService, UserService} from '@sunbird/core';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SignupService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

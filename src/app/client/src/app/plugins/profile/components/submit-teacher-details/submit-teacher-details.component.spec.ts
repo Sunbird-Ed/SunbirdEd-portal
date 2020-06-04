@@ -21,7 +21,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, FormService, SearchService } from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
@@ -54,7 +54,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [

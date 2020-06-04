@@ -10,6 +10,7 @@ import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
 import { FormControl } from '@angular/forms';
 import { OrderModule } from 'ngx-order-pipe';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const mockUserService = {
   userProfile: {
@@ -106,7 +107,7 @@ const commentList = {
 describe('ReviewCommentsComponent', () => {
   let component: ReviewCommentsComponent;
   let fixture: ComponentFixture<ReviewCommentsComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ReviewCommentsComponent ],

@@ -12,6 +12,7 @@ import { ResourceService, ConfigService, SharedModule, ToasterService } from '@s
 import { mockRes } from './organization-upload.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrganizationUploadComponent', () => {
   let component: OrganizationUploadComponent;
@@ -54,7 +55,7 @@ describe('OrganizationUploadComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationUploadComponent],

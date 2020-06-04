@@ -9,7 +9,7 @@ import {NavigationHelperService, ResourceService, SharedModule, ToasterService} 
 import { Router, ActivatedRoute } from '@angular/router';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockRes } from './create-user.component.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
@@ -62,7 +62,7 @@ describe('CreateUserComponent', () => {
         }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,

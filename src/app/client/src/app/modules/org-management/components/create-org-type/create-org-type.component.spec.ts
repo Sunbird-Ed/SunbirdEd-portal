@@ -16,6 +16,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   SharedModule, ResourceService, PaginationService, ToasterService, ServerResponse, RouterNavigationService
 } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CreateOrgTypeComponent', () => {
   let component: CreateOrgTypeComponent;
@@ -38,7 +39,7 @@ describe('CreateOrgTypeComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreateOrgTypeComponent],

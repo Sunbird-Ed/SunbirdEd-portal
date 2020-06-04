@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService, ToasterService } from '../../services';
 import { ExternalUrlPreviewService } from '../exturl-util/exturl-util.service';
-import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockResponse } from './exturl-util.service.mock.data';
@@ -13,6 +13,7 @@ class RouterStub {
 }
 
 describe('External Url UtilsService', () => {
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],

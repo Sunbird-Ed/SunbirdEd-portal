@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import {mockData} from './choose-user.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChooseUserComponent', () => {
   let component: ChooseUserComponent;
@@ -51,7 +52,7 @@ describe('ChooseUserComponent', () => {
       }
     };
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, TelemetryModule, HttpClientTestingModule, SharedModule.forRoot(),

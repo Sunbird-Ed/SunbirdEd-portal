@@ -5,8 +5,10 @@ import { CbseProgramService } from './cbse-program.service';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CbseProgramService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterTestingModule]
   }));

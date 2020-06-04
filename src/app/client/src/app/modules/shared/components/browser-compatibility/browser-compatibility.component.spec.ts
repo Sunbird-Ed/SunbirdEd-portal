@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './browser-compatibility.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BrowserCompatibilityComponent', () => {
   let component: BrowserCompatibilityComponent;
@@ -15,7 +16,7 @@ describe('BrowserCompatibilityComponent', () => {
   const mockDeviceDetector = {
     browser: 'chrome'
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, HttpClientTestingModule],

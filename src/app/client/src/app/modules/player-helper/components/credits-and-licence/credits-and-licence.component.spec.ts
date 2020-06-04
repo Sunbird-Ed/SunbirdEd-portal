@@ -6,6 +6,7 @@ import { ResourceService, SharedModule } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { contentInformation } from './credits-and-licence.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CreditsAndLicenceComponent', () => {
   let component: CreditsAndLicenceComponent;
@@ -22,7 +23,7 @@ describe('CreditsAndLicenceComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreditsAndLicenceComponent],
