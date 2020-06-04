@@ -39,3 +39,11 @@
 
   }
 }
+
+.orange-border {
+  border-color: $danger-color !important;
+}
+
+.orange.text {
+  color: $danger-color;
+}
