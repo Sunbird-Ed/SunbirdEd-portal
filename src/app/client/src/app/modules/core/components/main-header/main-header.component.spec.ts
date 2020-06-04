@@ -110,6 +110,18 @@ describe('MainHeaderComponent', () => {
     expect(component.queryParam).toEqual({ 'key': 'test' });
   });
 
+  it('should not fetch managed user list as user is not logged in', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    userService._authenticated = false;
+    spyOn(learnerService, 'getWithHeaders')
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'fetchManagedUserList');
+    component.ngOnInit();
+    expect(component.userListToShow).toEqual([]);
+    expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
+  });
+
   it('Should call getCacheLanguage if user is not login and cache exits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
@@ -142,16 +154,14 @@ describe('MainHeaderComponent', () => {
     expect(component.totalUsersCount).toEqual(1);
   });
 
-  it('should not fetch managed user list as user is not logged in', () => {
+  it('Should subscribe manageduser event when new managed user is created', () => {
     const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    userService._authenticated = false;
-    spyOn(learnerService, 'getWithHeaders')
-    const managedUserService = TestBed.get(ManagedUserService);
-    spyOn(managedUserService, 'fetchManagedUserList');
+    userService._authenticated = true;
+    userService._userData$.next({err: null, userProfile: mockData.userProfile});
+    spyOn(component, 'fetchManagedUsers');
     component.ngOnInit();
-    expect(component.userListToShow).toEqual([]);
-    expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
+    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
   it('should not fetch managed user list on init as api errored', () => {
