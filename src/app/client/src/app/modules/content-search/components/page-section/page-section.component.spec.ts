@@ -65,5 +65,10 @@ describe('PageSectionComponent', () => {
     component.playEvent.emit(Response.playContentData);
     expect(component.playContent).toHaveBeenCalled();
   });
+  it('should reinit slick on changes', () => {
+    spyOn(component, 'reInitSlick');
+    component.ngOnChanges();
+    expect(component.reInitSlick).toHaveBeenCalled();
+  });
 
 });

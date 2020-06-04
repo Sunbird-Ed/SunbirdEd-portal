@@ -575,12 +575,27 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(telemetryIntractData);
   }
 
-  navigateToPlayerPage(collectionUnit, event?) {
+  navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
-      if (event && !_.isEmpty(event.event)) {
+
+      if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+        && _.get(this.contentStatus, 'length')) {
+        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+        const collectionChildren = parsedChildren.filter(item => this.contentStatus.find(content => content.contentId === item));
+
+        /* istanbul ignore else */
+        if (collectionChildren.length) {
+          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
+
+          /* istanbul ignore else */
+          if (selectedContent) {
+            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
+          }
+        }
+      } else if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
