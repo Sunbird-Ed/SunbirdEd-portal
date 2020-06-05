@@ -376,51 +376,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  getStartEventData(selectedUser, initiatorUserId) {
-    return {
-      context: {
-        env: 'main-header',
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: selectedUser.identifier
-        }]
-      },
-      edata: {
-        type: 'view',
-        pageid: this.router.url.split('/')[1],
-        mode: 'switch-user'
-      }
-    };
-  }
-
-  getEndEventData(selectedUser, initiatorUserId) {
-    return {
-      context: {
-        env: 'main-header',
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: selectedUser.identifier
-        }]
-      },
-      edata: {
-        type: 'view',
-        pageid: this.router.url.split('/')[1],
-        mode: 'switch-user'
-      }
-    };
-  }
-
   switchUser(event) {
     let userSubscription;
     const selectedUser = _.get(event, 'data.data');
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
     const userId = selectedUser.identifier;
     this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
@@ -436,7 +394,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
                 class: 'sb-toaster sb-toast-success sb-toast-normal'
               });
               this.toggleSideMenu(false);
-              this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
               if (userSubscription) {
                 userSubscription.unsubscribe();
               }

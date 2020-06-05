@@ -96,6 +96,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
+        if (this.batchId) {
           this.enrolledCourse = true;
           this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
           this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
@@ -110,6 +111,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           } else {
             this.onPageLoadResume = false;
           }
+        }
       });
 
       this.courseConsumptionService.updateContentConsumedStatus.emit(
@@ -179,6 +181,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
-   return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
+   return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
   }
 }

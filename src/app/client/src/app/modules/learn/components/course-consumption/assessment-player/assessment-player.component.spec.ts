@@ -197,7 +197,7 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent.contentType = 'SelfAssess';
     spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
-    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeFalsy();
+    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
 
   it('should call calculateProgress', () => {

@@ -111,6 +111,21 @@ describe('TermsAndConditionsPopupComponent', () => {
     expect(component.onClose).toHaveBeenCalled();
   });
 
+  it('should send user id as managed user is active for tnc accept', () => {
+    component.disableContinueBtn = true;
+    const userService = TestBed.get(UserService);
+    const userData = mockUserData.success;
+    userData.result.response['managedBy'] = 'mock iD';
+    userService._userProfile = userData.result.response;
+    userService._userData$.next({err: null, userProfile: userData});
+    spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
+    spyOn(component, 'onClose').and.callThrough();
+    component.onSubmitTnc();
+    expect(component.onClose).toHaveBeenCalled();
+    expect(userService.acceptTermsAndConditions).toHaveBeenCalledWith(
+      {request: {version: undefined, userId: 'mock iD'}});
+  });
+
   it('should not call acceptTermsAndConditions api', () => {
     component.disableContinueBtn = true;
     const userService = TestBed.get(UserService);
