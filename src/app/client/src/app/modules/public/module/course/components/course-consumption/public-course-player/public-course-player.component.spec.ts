@@ -97,7 +97,6 @@ describe('PublicCoursePlayerComponent', () => {
     component.ngOnInit();
     component.navigateToContent({ event: { type: 'click' } }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
-    component.closeJoinTrainingModal();
     expect(component.showJoinTrainingModal).toBeFalsy();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
