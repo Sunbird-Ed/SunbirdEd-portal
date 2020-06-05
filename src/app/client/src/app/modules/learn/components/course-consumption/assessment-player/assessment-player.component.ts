@@ -102,6 +102,10 @@ export class AssessmentPlayerComponent implements OnInit {
               } else {
                 this.setActiveContent(selectedContent);
               }
+            }, error => {
+              console.error('Error while fetching data', error);
+              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+              this.goBack();
             });
         }
 
@@ -248,9 +252,6 @@ export class AssessmentPlayerComponent implements OnInit {
     const contentMimeType = this.activeContent.mimeType;
     const contentType = this.activeContent.contentType;
     this.courseProgress = CsCourseProgressCalculator.calculate(playerSummary, contentMimeType);
-    if (contentType === 'SelfAssess') {
-      return false;
-    }
     return this.courseProgress;
   }
 

@@ -580,10 +580,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
 
-      if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+      if (event && !_.isEmpty(event.event)) {
+        navigationExtras.queryParams.selectedContent = event.data.identifier;
+      } else if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
         && _.get(this.contentStatus, 'length')) {
         const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
-        const collectionChildren = parsedChildren.filter(item => this.contentStatus.find(content => content.contentId === item));
+        const collectionChildren = [];
+        this.contentStatus.forEach(item => {
+          if (parsedChildren.find(content => content === item.contentId)) {
+            collectionChildren.push(item);
+          }
+        });
 
         /* istanbul ignore else */
         if (collectionChildren.length) {
@@ -594,8 +601,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             navigationExtras.queryParams.selectedContent = selectedContent.contentId;
           }
         }
-      } else if (event && !_.isEmpty(event.event)) {
-        navigationExtras.queryParams.selectedContent = event.data.identifier;
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
