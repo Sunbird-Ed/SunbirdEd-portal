@@ -86,7 +86,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     }
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
-    if (this.userService.loggedIn) {
+    if (this.playerConfig && this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           const userProfile = user.userProfile;
