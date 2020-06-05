@@ -14,7 +14,7 @@ describe('ContentCreditsComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule , HttpClientTestingModule ],
+      imports: [SuiModule, HttpClientTestingModule],
       declarations: [ContentCreditsComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -46,4 +46,20 @@ describe('ContentCreditsComponent', () => {
     expect(actualKeys).toEqual(expectedKeys);
     expect(component.contentCreditsData).toBeDefined();
   });
+
+  it('should call closeModal', () => {
+    spyOn(component.close, 'emit');
+    const modal = { deny: () => jasmine.createSpy() };
+    component.closeModal(modal);
+    expect(component.close.emit).toHaveBeenCalled();
+  });
+
+  it('should call ngOnDestroy', () => {
+    spyOn(component['unsubscribe'], 'next');
+    spyOn(component['unsubscribe'], 'complete');
+    component.ngOnDestroy();
+    expect(component['unsubscribe'].next).toHaveBeenCalled();
+    expect(component['unsubscribe'].complete).toHaveBeenCalled();
+  });
+
 });

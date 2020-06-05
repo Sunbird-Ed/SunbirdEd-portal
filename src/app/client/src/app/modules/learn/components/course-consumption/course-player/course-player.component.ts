@@ -349,7 +349,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
-        this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
       }, (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
