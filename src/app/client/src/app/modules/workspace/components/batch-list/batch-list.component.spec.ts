@@ -16,6 +16,7 @@ const testData = mockData.mockRes;
 import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchListComponent', () => {
   let component: BatchListComponent;
@@ -67,6 +68,7 @@ describe('BatchListComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchListComponent],

@@ -19,6 +19,7 @@ import { NgInviewModule } from 'angular-inport';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
@@ -55,6 +56,7 @@ describe('PublishedComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
@@ -135,4 +137,17 @@ describe('PublishedComponent', () => {
     component.ngOnInit();
     expect(component.fetchPublishedContent).toHaveBeenCalledWith(9, 1, bothParams);
   });
+
+  it('should navigate to given pageNumber along with the filter if added', () => {
+      const route = TestBed.get(Router);
+      spyOn(route, 'navigate').and.stub();
+      component.pager = testData.pager;
+      const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+      component.queryParams = bothParams.queryParams ;
+      component.pageNumber = 1;
+      component.navigateToPage(1);
+      fixture.detectChanges();
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/published', 1],
+      { queryParams: component.queryParams });
+    });
 });

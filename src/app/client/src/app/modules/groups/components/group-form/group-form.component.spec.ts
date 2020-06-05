@@ -14,6 +14,7 @@ import { DebugElement } from '@angular/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { GroupsService } from '../../services';
 import { APP_BASE_HREF } from '@angular/common';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('GroupFormComponent', () => {
   let component: GroupFormComponent;
@@ -35,6 +36,7 @@ describe('GroupFormComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],

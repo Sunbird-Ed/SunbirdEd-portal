@@ -8,11 +8,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
 import { Subject } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
-import { of, throwError } from 'rxjs';
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerComponent],

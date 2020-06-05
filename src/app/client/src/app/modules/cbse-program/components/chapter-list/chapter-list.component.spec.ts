@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
@@ -86,7 +86,7 @@ describe('ChapterListComponent', () => {
     }
   };
   const compState = 'chapterListComponent';
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,

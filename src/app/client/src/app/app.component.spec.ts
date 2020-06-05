@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 class RouterStub {
@@ -44,6 +44,7 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -236,5 +237,14 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(utm[2]['type']).toBe('UtmSource');
     expect(utm[4]['type']).toBe('UtmTerm');
     expect(utm[5]['type']).toBe('UtmContent');
+  });
+
+  it('should not get user feed api data', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    userService._authenticated = true;
+    spyOn(userService, 'getFeedData');
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
+    component.getUserFeedData();
+    expect(userService.getFeedData).not.toHaveBeenCalled();
   });
 });

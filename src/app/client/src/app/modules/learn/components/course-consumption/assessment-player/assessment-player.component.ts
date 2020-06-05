@@ -9,7 +9,7 @@ import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared'
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
-import * as TreeModel from 'tree-model';
+import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -36,6 +36,7 @@ export class AssessmentPlayerComponent implements OnInit {
   playerConfig;
   playerOption;
   courseName: string;
+  courseProgress: number;
 
   constructor(
     public resourceService: ResourceService,
@@ -73,15 +74,22 @@ export class AssessmentPlayerComponent implements OnInit {
         const selectedContent = queryParams.selectedContent;
 
         const isSingleContent = this.collectionId === selectedContent;
+        const isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
-          this.getCollectionInfo(this.collectionId)
+          this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
-              this.courseHierarchy = data.courseHierarchy;
+              if (!isParentCourse && data.courseHierarchy.children) {
+                this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+              } else {
+                this.courseHierarchy = data.courseHierarchy;
+              }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
+              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+              this.goBack();
             });
         } else {
           this.playerService.getCollectionHierarchy(this.collectionId, {})
@@ -125,7 +133,7 @@ export class AssessmentPlayerComponent implements OnInit {
         this.activeContent = this.firstNonCollectionContent(flattenDeepContents);
       }
 
-
+      /* istanbul ignore else */
       if (this.activeContent) {
         this.isContentPresent = true;
         this.initPlayer(_.get(this.activeContent, 'identifier'));
@@ -144,9 +152,11 @@ export class AssessmentPlayerComponent implements OnInit {
   private initPlayer(id: string) {
     const options: any = { courseId: this.collectionId };
 
+    /* istanbul ignore else */
     if (this.batchId) {
       options.batchId = this.batchId;
     }
+
     this.courseConsumptionService.getConfigByContent(id, options)
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
@@ -196,7 +206,8 @@ export class AssessmentPlayerComponent implements OnInit {
       contentId: _.cloneDeep(_.get(telObject, 'object.id')),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: eid === 'END' ? 2 : 1
+      status: (eid === 'END' && this.courseProgress === 100) ? 2 : 1,
+      progress: this.courseProgress
     };
     if (!eid) {
       const contentType = this.activeContent.contentType;
@@ -227,25 +238,20 @@ export class AssessmentPlayerComponent implements OnInit {
       this.contentProgressEvent(event);
     }
   }
-
+  /**
+   * @since #SH-120
+   * @param  {object} event - telemetry end event data
+   * @description - It will return the progress calculated from cilent-service(Common Consumption)
+   */
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = this.activeContent.mimeType;
     const contentType = this.activeContent.contentType;
+    this.courseProgress = CsCourseProgressCalculator.calculate(playerSummary, contentMimeType);
     if (contentType === 'SelfAssess') {
       return false;
     }
-    const validSummary = (summaryList: Array<any>) => (percentage: number) => _.find(summaryList, (requiredProgress =>
-      summary => summary && summary.progress >= requiredProgress)(percentage));
-    if (validSummary(playerSummary)(20) && ['video/x-youtube', 'video/mp4', 'video/webm'].includes(contentMimeType)) {
-      return true;
-    } else if (validSummary(playerSummary)(0) &&
-      ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'].includes(contentMimeType)) {
-      return true;
-    } else if (validSummary(playerSummary)(100)) {
-      return true;
-    }
-    return false;
+    return this.courseProgress;
   }
 
   calculateProgress() {

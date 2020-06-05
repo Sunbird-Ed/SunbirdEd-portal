@@ -14,6 +14,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFilterComponent } from './user-filter.component';
 import { UserSearchService } from './../../services';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UserFilterComponent', () => {
   let component: UserFilterComponent;
@@ -25,7 +26,7 @@ describe('UserFilterComponent', () => {
  class RouterStub {
    navigate = jasmine.createSpy('navigate');
  }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

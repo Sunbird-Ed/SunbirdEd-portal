@@ -278,8 +278,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
       }
     }, err => {
-      this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0018);
+        this.closeModal();
+        this.toasterService.error(this.formAction === 'submit' ? this.resourceService.messages.emsg.m0051 :
+          this.resourceService.messages.emsg.m0052);
     });
   }
 

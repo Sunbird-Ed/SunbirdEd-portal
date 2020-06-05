@@ -19,6 +19,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('DraftComponent', () => {
@@ -61,6 +62,7 @@ describe('DraftComponent', () => {
     },
     languageSelected$: observableOf({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
@@ -137,7 +139,8 @@ describe('DraftComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber],
+      { queryParams: component.queryParams });
     }));
 
   it('should call deleteConfirmModal method to delte the content', inject([],
@@ -205,7 +208,8 @@ describe('DraftComponent', () => {
       component.pager.totalPages = 8;
       component.navigateToPage(1);
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber]);
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/draft', component.pageNumber],
+      { queryParams: component.queryParams });
     }));
   xit('should fetch drafts list freshly if all contents are deleted from single page',
     inject([SuiModalService, ConfigService, Router, SearchService],

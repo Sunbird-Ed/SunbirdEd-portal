@@ -1,9 +1,10 @@
 @import "variables";
 @import "mixins/mixins";
+@import "pages/course-player";
 
 .course-list_title {
   color: var(--gray-800);
-  font-size: calculateRem(18px);
+  font-size: calculateRem(14px);
   font-weight: bold;
   line-height: calculateRem(24px);
 }

@@ -299,3 +299,12 @@ app-workspace {
 .toc-box-shadow {
   box-shadow: 0 0 0.625rem 0 rgba(0,0,0,.25) !important;
 }
+
+// Footer fix 
+
+.footer-fix{
+  padding-bottom: calculateRem(160px);
+  @include respond-above(sm) {
+   padding-bottom: calculateRem(60px);
+ }
+}

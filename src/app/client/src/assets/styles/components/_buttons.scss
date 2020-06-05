@@ -28,9 +28,8 @@ button.sb-btn:focus {
   outline: 0;
   display: inline-block;
   border: calculateRem(1px) solid;
-  // color: $white-color;
   cursor: pointer;
-  min-width: ($base-block-space * 8);
+  min-width: calculateRem(64px);
   @include border-radius(0.125rem);
   position: relative;
   line-height: 1;
@@ -196,76 +195,43 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 .sb-btn-link {
   background: none;
   border: 0;
-  &:hover {
-    // font-weight: $font-weight-bold;
-  }
 }
 
-.sb-btn-download {
-  transition: all 1.2s ease-in-out;
-  i::after {
-    content: "\f019";
-    font-size: calculateRem(13px);
-    color: var(--white);
-  }
-  &:hover {
-    animation: pulse 0.2s 2 both;
-  }
-  &.loading {
-    i {
-      animation: loading 2s infinite linear;
-      &::after {
-        content: "\f1ce";
-      }
-    }
-  }
-  &.success {
-    i::after {
-      content: "\f00c";
-      color: transparent;
-      animation: change-icon 1s 0.6s linear both;
-    }
-  }
-}
+
 
 // Buttons with icon
 .sb-right-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
   i.icon {
-    margin-left: $base-block-space;
+    margin-left: calculateRem(8px);
     margin-right: 0;
   }
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
     i.icon {
-      margin-right: ($base-block-space / 2);
+      margin-right:calculateRem(4px);
       margin-right: 0;
     }
   }
 }
 .sb-left-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
   i.icon {
-    margin-right: $base-block-space;
+    margin-right: calculateRem(4px);
   }
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
     i.icon {
-      margin-left: $base-block-space;
+      margin-left: calculateRem(8px);
     }
   }
 }
 .sb-left-icon-btn.sb-btn-xs {
-  padding: ($base-block-space * 0) ($base-block-space * 1)
-    ($base-block-space * 0) ($base-block-space * 1);
+  padding: 0 calculateRem(8px);
 }
 //Buttons toggle
 .ui.toggle.checkbox.sb-toggle {
-  min-height: ($base-block-space * 3);
+  min-height: calculateRem(24px);
   position: relative;
   display: inline-block;
   -webkit-backface-visibility: hidden;
@@ -273,12 +239,12 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   outline: 0;
   vertical-align: baseline;
   font-style: normal;
-  min-height: ($base-block-space * 2);
+  min-height: calculateRem(16px);
   font-size: 1rem;
-  min-width: ($base-block-space * 2);
+  min-width: calculateRem(16px);
   input {
-    width: ($base-block-space * 8);
-    height: ($base-block-space * 3);
+    width: calculateRem(64px);
+    height: calculateRem(24px);
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -294,8 +260,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     }
   }
   label {
-    min-height: ($base-block-space * 2);
-    padding-left: ($base-block-space * 9);
+    min-height: calculateRem(16px);
+    padding-left: calculateRem(72px);
     color: rgba(0, 0, 0, 0.87);
     position: relative;
     display: block;
@@ -312,8 +278,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       left: 0;
       background: rgba(0, 0, 0, 0.05);
       box-shadow: none;
-      width: ($base-block-space * 8);
-      height: ($base-block-space * 3);
+      width: calculateRem(64px);
+      height: calculateRem(24px);
       border-radius: 500rem;
       @include btn-theme($primary-color);
       transition: border 0.1s ease, opacity 0.1s ease, transform 0.1s ease,
@@ -326,9 +292,9 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       opacity: 1;
       z-index: 2;
       border: none;
-      width: (($base-block-space * 3) - 4);
-      height: (($base-block-space * 3) - 4);
-      top: 3px;
+      width: calculateRem(20px);
+      height: calculateRem(20px);
+      top: calculateRem(3px);
       left: 0;
       border-radius: 500rem;
       -webkit-transition: background 0.3s ease, left 0.3s ease;
@@ -363,7 +329,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     margin: 0;
     border: 0;
     color: $sb-btn-group-btn-color;
-    min-width: ($base-block-space * 5);
+    min-width: calculateRem(40px);
     &:first-child {
       border-left: none;
       margin-left: 0;
@@ -377,150 +343,6 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       margin: 0;
       vertical-align: top;
     }
-  }
-}
-
-.sb-btn-loading-spinner {
-  padding: ($base-block-space * 1) ($base-block-space * 2)
-    ($base-block-space * 1) ($base-block-space * 1);
-}
-
-@keyframes spinner-border {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.sb-loading-spinner {
-  width: 1rem;
-  height: 1rem;
-  margin-right: calculateRem(8px);
-  border-width: 0.2em;
-  display: inline-block;
-  vertical-align: text-bottom;
-  border: 0.15em solid currentColor;
-  border-right-color: transparent;
-  border-radius: 50%;
-  -webkit-animation: spinner-border 0.75s linear infinite;
-  animation: spinner-border 0.75s linear infinite;
-}
-
-.sb-btn-loading:before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  border-radius: 500rem;
-  border: 0.2em solid rgba(0, 0, 0, 0.15);
-}
-
-.sb-btn-loading:after {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  -webkit-animation: button-spin 0.6s linear;
-  animation: button-spin 0.6s linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  border-radius: 500rem;
-  border-color: var(--white) transparent transparent;
-  border-style: solid;
-  border-width: 0.2em;
-  -webkit-box-shadow: 0 0 0 calculateRem(1px) transparent;
-  box-shadow: 0 0 0 calculateRem(1px) transparent;
-}
-/*Create ripple effec*/
-.ripple {
-  position: relative;
-  overflow: hidden;
-  transform: translate3d(0, 0, 0);
-}
-.ripple:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-  background-repeat: no-repeat;
-  background-position: 50%;
-  transform: scale(10, 10);
-  opacity: 0;
-  transition: transform 0.5s, opacity 1s;
-}
-.ripple:active:after {
-  transform: scale(0, 0);
-  opacity: 0.3;
-  transition: 0s;
-}
-
-//download button animation
-.sb-btn-download {
-  transition: all 1.2s ease-in-out;
-  i::after {
-    content: "\f019";
-    font-size: 13px;
-    color: var(--white);
-  }
-  &:hover {
-    animation: pulse 0.2s 2 both;
-  }
-  &.loading {
-    i {
-      animation: loading 2s infinite linear;
-      &::after {
-        content: "\f1ce";
-      }
-    }
-  }
-  &.success {
-    i::after {
-      content: "\f00c";
-      color: transparent;
-      animation: change-icon 1s 0.6s linear both;
-    }
-  }
-}
-
-@keyframes loading {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes change-icon {
-  0% {
-    color: transparent;
-  }
-  100% {
-    color: var(--white);
-  }
-}
-
-@keyframes pulse {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  50% {
-    transform: scale3d(1.05, 1.05, 1.05);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
   }
 }
 

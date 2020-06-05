@@ -7,13 +7,14 @@ import { OrgDetailsService } from './org-details.service';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { serverRes } from './org-details.service.spec.data';
-import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from '@sunbird/test-util';
+
 
 describe('OrgDetailsService', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],

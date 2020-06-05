@@ -3,8 +3,10 @@ import { ExtPluginService } from './ext-plugin.service';
 import { DataService } from '../data/data.service';
 import { ConfigService } from '@sunbird/shared';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExtPlugin', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

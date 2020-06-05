@@ -1,8 +1,4 @@
 .ui.menu.fixed {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
   position: sticky;
   z-index: 999;
   border: 0;
@@ -22,7 +18,7 @@
   }
 
   & > .container {
-    @media only screen and (min-width: 768px) {
+    @include respond-above(sm) {
       padding: $base-block-space 0;
     }
   }
@@ -115,52 +111,57 @@
   }
 }
 
-.ui.menu .language-selector {
-  font-size: 0.86rem;
+::ng-deep {
 
-  @media screen and (min-width: 992px) {
-    color: $white-color;
-  }
-
-  .ui.dropdown {
-    border: calculateRem(1px) solid $gray-100;
-    color: $primary-color;
+  .ui.menu .language-selector {
     font-size: 0.86rem;
-    border-radius: calculateRem(3px);
-    font-weight: bold;
-    padding: calculateRem(8px);
-
-    & > .dropdown.icon {
-      margin: 0 0 0 calculateRem(8px);
-    }
-
-    @media screen and (min-width: 1024px) {
+  
+    @include respond-above(md) {
       color: $white-color;
-      border: 0;
-      font-weight: 500;
-      padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
     }
-
-    .menu {
-      width: 100%;
-
-      & > .item {
-        font-size: 0.86rem !important;
+  
+    .ui.dropdown {
+      border: calculateRem(1px) solid $gray-100;
+      color: $primary-color;
+      font-size: 0.86rem;
+      border-radius: calculateRem(3px);
+      font-weight: bold;
+      padding: calculateRem(8px);
+  
+      & > .dropdown.icon {
+        margin: 0 0 0 calculateRem(8px);
       }
-
-      & > .active.item {
-        color: $primary-color !important;
+  
+      @media screen and (min-width: 1024px) {
+        color: $white-color;
+        border: 0;
+        font-weight: 500;
+        padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
+      }
+  
+      .menu {
+        width: 100%;
+        right: 0;
+        left: inherit;
+  
+        & > .item {
+          font-size: 0.86rem !important;
+        }
+  
+        & > .active.item {
+          color: $primary-color !important;
+        }
       }
     }
   }
-}
-*[dir="rtl"] {
-  .ui.menu .language-selector .ui.dropdown {
-    & > .dropdown.icon {
-      margin: 0 $base-block-space 0 0;
-    }
-    @media screen and (min-width: 1024px) {
-      padding: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0;
+  *[dir="rtl"] {
+    .ui.menu .language-selector .ui.dropdown {
+      & > .dropdown.icon {
+        margin: 0 $base-block-space 0 0;
+      }
+      @media screen and (min-width: 1024px) {
+        padding: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0;
+      }
     }
   }
 }

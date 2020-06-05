@@ -3,14 +3,14 @@ import { ISummaryObject } from './../../interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { AddSummaryModalComponent } from './add-summary-modal.component';
 import { inputProp } from './add-summary-modal.component.spec.data';
 
 describe('AddSummaryModalComponent', () => {
   let component: AddSummaryModalComponent;
   let fixture: ComponentFixture<AddSummaryModalComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddSummaryModalComponent],

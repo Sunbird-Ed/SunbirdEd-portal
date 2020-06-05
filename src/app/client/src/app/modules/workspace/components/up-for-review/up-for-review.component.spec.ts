@@ -14,6 +14,7 @@ import { Response } from './up-for-review.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpForReviewComponent', () => {
   let component: UpForReviewComponent;
@@ -68,6 +69,7 @@ describe('UpForReviewComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpForReviewComponent, DateFilterXtimeAgoPipe],

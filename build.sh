@@ -9,16 +9,13 @@ build_tag=$1
 name=player
 node=$2
 org=$3
-export sunbird_content_editor_artifact_url=$4
-export sunbird_collection_editor_artifact_url=$5
-export sunbird_generic_editor_artifact_url=$6
-buildDockerImage=$7
-buildCdnAssests=$8
+buildDockerImage=$4
+buildCdnAssests=$5
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
 then
-    cdnUrl=$9
+    cdnUrl=$6
     echo "cdnUrl: " $cdnUrl
 fi
 
@@ -31,7 +28,6 @@ rm -rf dist-cdn # remove cdn dist folder
 
 # function to run client build for docker image
 build_client_docker(){
-    npm run download-editors # download editors to assests folder
     echo "starting client local prod build"
     npm run build # Angular prod build
     echo "completed client local prod build"

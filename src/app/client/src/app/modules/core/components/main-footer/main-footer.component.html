@@ -50,9 +50,9 @@
             <div class="small-box border-round border-r50"></div>
           </div>
           <label
-            class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+            class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
           <a class="d-block app-download" (click)="redirectToMobileApp()">
-            <img class="playStore-img" src="/assets/images/google_playstore.png"
+            <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
               alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
           </a>
           <p class="d-block pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
@@ -66,8 +66,7 @@
           <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
         </label>
         <label class="sb-footer-license">
-          <img src="/assets/images/CCby.svg">
-          <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
+          <span><img src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
         </label>
       </div>
     </div>
