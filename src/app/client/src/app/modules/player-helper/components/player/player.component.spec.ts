@@ -7,6 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Subject } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UserService } from '../../../core/services';
+// import { UserService } from '@sunbird/core';
 
 const startEvent = {
   detail: {
@@ -40,12 +41,13 @@ const playerConfig = {
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
+  let userService;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [UserService],
+      providers: [{provide: UserService, useValue: {}}],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -56,6 +58,8 @@ describe('PlayerComponent', () => {
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
     component.contentIframe = { nativeElement: { contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } } } };
+    userService = TestBed.get(UserService);
+    userService._authenticated = false;
   });
 
   it('should emit "START"', fakeAsync(() => {
