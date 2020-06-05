@@ -1,3 +1,4 @@
+import { TelemetryService } from '@sunbird/telemetry';
 import { Location } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,7 +51,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
     private navigationHelperService: NavigationHelperService,
-    private router: Router
+    private router: Router,
+    private telemetryService: TelemetryService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -63,8 +65,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   goBack() {
     if (this.navigationHelperService['_history'].length === 1) {
-      const courseId = _.get(this.navigationHelperService, '_history[0].queryParams.courseId');
-      this.router.navigate(['/learn/course', courseId]);
+      this.navigationHelperService.navigateToPreviousUrl();
     } else {
       this.location.back();
     }
@@ -179,8 +180,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  onTocCardClick(event: any) {
+  onTocCardClick(event: any, id) {
     /* istanbul ignore else */
+    this.logTelemetry(id, event.data);
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
@@ -311,6 +313,26 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.unsubscribe)
     );
+  }
+
+  logTelemetry(id, content?: {}) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   ngOnDestroy() {

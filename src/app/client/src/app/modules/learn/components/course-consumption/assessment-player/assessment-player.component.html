@@ -3,7 +3,7 @@
   <div class="sb-bg-white relative position cc-player__btn-back ">
     <div class="ui container py-8 px-0">
       <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-        (click)="goBack()">
+        (click)="goBack(); logTelemetry('back-track')">
         <i class="icon-svg icon-svg--xxs icon-back mr-4">
           <svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -67,7 +67,7 @@
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event)" [type]="cardType"
+                  <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
                     [contentStatus]="contentStatus">
                   </sb-toc-card>
                 </div>
@@ -75,7 +75,7 @@
               <div *ngIf="item?.children?.length">
                 <div *ngFor="let child of item?.children">
                   <div>
-                    <sb-toc-child-item [childData]="child" (tocCardClick)="onTocCardClick($event)"
+                    <sb-toc-child-item [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
                   </div>

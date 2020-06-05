@@ -123,7 +123,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onTocCardClick', () => {
-    component.onTocCardClick({ data: {} });
+    component.onTocCardClick({ data: {} }, 'test');
   });
 
   it('should call getContentState', () => {

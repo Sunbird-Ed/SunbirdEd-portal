@@ -544,7 +544,6 @@ describe('CoursePlayerComponent', () => {
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
-    component.closeJoinTrainingModal();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
 

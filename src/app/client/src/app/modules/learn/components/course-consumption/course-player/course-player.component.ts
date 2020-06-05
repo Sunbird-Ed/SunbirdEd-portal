@@ -355,21 +355,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
   }
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
-      this.logTelemetry(id, event.data, this.getContentRollUp(_.get(event, 'rollup')));
+      this.logTelemetry(id, event.data);
     /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
   }
-  getContentRollUp(rollup: string[], id?) {
-    const objectRollUp = {};
-    if (!_.isEmpty(rollup)) {
-      for (let i = 0; i < rollup.length; i++ ) {
-        objectRollUp[`l${i + 1}`] = rollup[i];
-      }
-    }
-    return objectRollUp;
-  }
+
   public contentProgressEvent(event) {
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
       return;
@@ -636,7 +628,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  logTelemetry(id, content?: {}, rollup?: {}) {
+  logTelemetry(id, content?: {}) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -650,8 +642,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
         type: content ? _.get(content, 'contentType') :  'Course',
-        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: rollup
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`
       }
     };
     this.telemetryService.interact(interactData);

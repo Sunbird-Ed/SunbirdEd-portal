@@ -132,23 +132,13 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   }
 
   public navigateToContent(event: any, id) {
-    this.logTelemetry(id, event.data, this.getContentRollUp(_.get(event, 'rollup')));
+    this.logTelemetry(id, event.data);
     if (!_.get(this.userService, 'userid') && !_.isEmpty(event.event)) {
       this.showJoinTrainingModal = true;
     }
   }
 
-  getContentRollUp(rollup: string[], id?) {
-    const objectRollUp = {};
-    if (!_.isEmpty(rollup)) {
-      for (let i = 0; i < rollup.length; i++ ) {
-        objectRollUp[`l${i + 1}`] = rollup[i];
-      }
-    }
-    return objectRollUp;
-  }
-
-  logTelemetry(id, content?: {}, rollup?: {}) {
+  logTelemetry(id, content?: {}) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -162,8 +152,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
         type: content ? _.get(content, 'contentType') :  'Course',
-        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: rollup
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`
       }
     };
     this.telemetryService.interact(interactData);
