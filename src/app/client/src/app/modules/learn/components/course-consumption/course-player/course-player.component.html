@@ -49,11 +49,11 @@
               [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
                 <sb-toc-curriculum
                   *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
-                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item)" [tocData]="item"
+                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')" [tocData]="item"
                   [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
                 </sb-toc-curriculum>
                 <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
-                  (tocCardClick)="navigateToContent($event, item)" [type]="cardType" [contentStatus]="contentStatus">
+                  (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
                 </sb-toc-card>
                 <ng-template #noContent>
                   <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
@@ -88,7 +88,7 @@
 
 <router-outlet></router-outlet>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" *ngIf="showJoinTrainingModal">
   <!--Header-->
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.btn?.enroll}}

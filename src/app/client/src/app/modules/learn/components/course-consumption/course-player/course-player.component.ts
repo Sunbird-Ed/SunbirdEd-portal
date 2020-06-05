@@ -354,11 +354,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
-  public navigateToContent(event: any, collectionUnit?: any): void {
+  public navigateToContent(event: any, collectionUnit?: any, id?): void {
+      this.logTelemetry(id, event.data, this.getContentRollUp(_.get(event, 'rollup')));
     /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
+  }
+  getContentRollUp(rollup: string[], id?) {
+    const objectRollUp = {};
+    if (!_.isEmpty(rollup)) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+      }
+    }
+    return objectRollUp;
   }
   public contentProgressEvent(event) {
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -550,29 +560,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       pageid: 'course-consumption'
     };
   }
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryIntractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
-      },
-      edata: {
-        id: 'join-training-popup-close',
-        type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      },
-      object: {
-        id: this.courseId,
-        type: 'Course',
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
-      }
-    };
-    this.telemetryService.interact(telemetryIntractData);
-  }
+
 
   navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
@@ -647,4 +635,25 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+  logTelemetry(id, content?: {}, rollup?: {}) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: rollup
+      }
+    };
+    this.telemetryService.interact(interactData);
+}
 }

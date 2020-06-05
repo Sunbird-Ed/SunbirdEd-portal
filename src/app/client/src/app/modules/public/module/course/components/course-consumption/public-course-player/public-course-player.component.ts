@@ -131,33 +131,41 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     };
   }
 
-  public navigateToContent(event: any) {
+  public navigateToContent(event: any, id) {
+    this.logTelemetry(id, event.data, this.getContentRollUp(_.get(event, 'rollup')));
     if (!_.get(this.userService, 'userid') && !_.isEmpty(event.event)) {
       this.showJoinTrainingModal = true;
     }
   }
 
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryIntractData = {
+  getContentRollUp(rollup: string[], id?) {
+    const objectRollUp = {};
+    if (!_.isEmpty(rollup)) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+      }
+    }
+    return objectRollUp;
+  }
+
+  logTelemetry(id, content?: {}, rollup?: {}) {
+    const interactData = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
         cdata: []
       },
       edata: {
-        id: 'join-training-popup-close',
+        id: id,
         type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
       },
       object: {
-        id: this.activatedRoute.snapshot.params.courseId,
-        type: 'Course',
-        ver: '1.0',
-        rollup: {
-          l1: this.activatedRoute.snapshot.params.courseId
-        }
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: rollup
       }
     };
-    this.telemetryService.interact(telemetryIntractData);
-  }
+    this.telemetryService.interact(interactData);
+}
 }

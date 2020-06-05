@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
@@ -18,7 +18,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -63,7 +63,8 @@ export class AssessmentPlayerComponent implements OnInit {
 
   goBack() {
     if (this.navigationHelperService['_history'].length === 1) {
-      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+      const courseId = _.get(this.navigationHelperService, '_history[0].queryParams.courseId');
+      this.router.navigate(['/learn/course', courseId]);
     } else {
       this.location.back();
     }

@@ -85,7 +85,7 @@ describe('PublicCoursePlayerComponent', () => {
   it('should show join training popup', () => {
     courseService.initialize();
     component.ngOnInit();
-    component.navigateToContent({ event: { type: 'click' } });
+    component.navigateToContent({ event: { type: 'click' } }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
   });
   it('should log telemetry on click of join training popup close icon', () => {
@@ -95,7 +95,7 @@ describe('PublicCoursePlayerComponent', () => {
     spyOn(telemetryService, 'interact');
     courseService.initialize();
     component.ngOnInit();
-    component.navigateToContent({ event: { type: 'click' } });
+    component.navigateToContent({ event: { type: 'click' } }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
     component.closeJoinTrainingModal();
     expect(component.showJoinTrainingModal).toBeFalsy();
