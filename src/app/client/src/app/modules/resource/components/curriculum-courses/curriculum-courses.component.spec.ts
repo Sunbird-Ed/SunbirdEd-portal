@@ -67,10 +67,10 @@ describe('CurriculumCoursesComponent', () => {
     expect(component.setTelemetryImpression).toHaveBeenCalled();
   });
 
-  it('should call navigation helper service', () => {
-    spyOn(component['navigationhelperService'], 'goBack');
+  it('should go back to previous page', () => {
+    spyOn(component['location'], 'back');
     component.goBack();
-    expect(component['navigationhelperService'].goBack).toHaveBeenCalled();
+    expect(component['location'].back).toHaveBeenCalled();
   });
 
   it('should call router with parameters', () => {
