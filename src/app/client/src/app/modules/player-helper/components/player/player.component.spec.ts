@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Subject } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
+import { UserService } from '../../../core/services';
 
 const startEvent = {
   detail: {
@@ -44,6 +45,7 @@ describe('PlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
+      providers: [UserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
