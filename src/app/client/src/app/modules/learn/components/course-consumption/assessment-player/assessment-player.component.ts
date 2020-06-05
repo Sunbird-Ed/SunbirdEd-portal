@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -48,7 +48,9 @@ export class AssessmentPlayerComponent implements OnInit {
     private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
-    private assessmentScoreService: AssessmentScoreService
+    private assessmentScoreService: AssessmentScoreService,
+    private navigationHelperService: NavigationHelperService,
+    private router: Router
   ) {
     this.playerOption = {
       showContentRating: true
@@ -60,7 +62,11 @@ export class AssessmentPlayerComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    if (this.navigationHelperService['_history'].length === 1) {
+      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+    } else {
+      this.location.back();
+    }
   }
 
   private subscribeToQueryParam() {
