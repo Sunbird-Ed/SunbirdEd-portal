@@ -1,6 +1,6 @@
 import { throwError, of } from 'rxjs';
 import { ToasterService, SharedModule, ResourceService } from '@sunbird/shared';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule, UserService, SearchService, OrgDetailsService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -43,7 +43,7 @@ describe('CurriculumCoursesComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CurriculumCoursesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([])],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle}

@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExploreCurriculumCoursesComponent } from './explore-curriculum-courses.component';
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule} from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -40,7 +40,7 @@ describe('ExploreCurriculumCoursesComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ExploreCurriculumCoursesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([])],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         {provide: ResourceService, useValue: resourceBundle},
         { provide: Router, useClass: RouterStub }
