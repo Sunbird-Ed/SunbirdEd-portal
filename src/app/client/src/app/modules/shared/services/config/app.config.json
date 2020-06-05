@@ -396,7 +396,8 @@
       },
       "dynamicFields": {
         "maxCount": "leafNodesCount",
-        "progress": "progress"
+        "progress": "progress",
+        "ribbon.right.name": "content.contentType"
       }
     }
   },
