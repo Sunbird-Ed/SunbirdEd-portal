@@ -7,12 +7,13 @@ import { CoreModule, UserService, ContentService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as testData from './copy-content.service.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 
 describe('CopyContentService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

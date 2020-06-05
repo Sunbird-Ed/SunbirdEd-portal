@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ViewChild } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ContentData, ContentCreditsData } from '@sunbird/shared';
+import { fromEvent, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-content-credits',
@@ -9,41 +10,25 @@ import { ContentData, ContentCreditsData } from '@sunbird/shared';
   styleUrls: ['./content-credits.component.scss']
 })
 export class ContentCreditsComponent implements OnInit, OnChanges {
-   /**
-   * To show / hide modal
-  */
-  showContentCreditModal = false;
-  /**
-  *input for content credits;
-  */
   @Input() contentData: ContentData;
-  /**
-  *Output for close popup;
-  */
   @Output() close = new EventEmitter<any>();
-  /**
-  * To call resource service which helps to use language constant
-  */
-  public resourceService: ResourceService;
+  @ViewChild('contentCreditsModal') contentCreditsModal;
 
-  public contentCreditsData: ContentCreditsData;
-  /**
-  * Refrence of UserService
-  */
-  /**
-  * Constructor to create injected service(s) object
-  *Default method of unpublished Component class
-  *@param {ResourceService} SearchService Reference of SearchService
-  *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
-  */
- instance: string;
+  showContentCreditModal = false;
+  instance: string;
+  contentCreditsData: ContentCreditsData;
+  private unsubscribe = new Subject<void>();
 
-  constructor(resourceService: ResourceService) {
-    this.resourceService = resourceService;
+  constructor(public resourceService: ResourceService) {
   }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    /* Listen for back button click and close popup */
+    fromEvent(window, 'popstate')
+      .subscribe((e) => {
+        this.closeModal(this.contentCreditsModal);
+      });
   }
 
   ngOnChanges() {
@@ -68,7 +53,7 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
       // attributors
       if (_.get(this.contentData, 'attributions')) {
         const attributions = _.isString(_.get(this.contentData, 'attributions')) ?
-        _.get(this.contentData, 'attributions').split(',') : _.get(this.contentData, 'attributions');
+          _.get(this.contentData, 'attributions').split(',') : _.get(this.contentData, 'attributions');
         this.contentCreditsData['attributions'] = (_.compact(_.uniq(attributions).sort()).join(', '));
       }
     }
@@ -77,5 +62,10 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   public closeModal(contentCreditsModal) {
     contentCreditsModal.deny();
     this.close.emit();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

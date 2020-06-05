@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import { PlayerService } from '@sunbird/core';
 import { courseConsumptionServiceMockData } from './course-consumption.service.data.spec';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
@@ -42,6 +43,7 @@ describe('CourseConsumptionService', () => {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],

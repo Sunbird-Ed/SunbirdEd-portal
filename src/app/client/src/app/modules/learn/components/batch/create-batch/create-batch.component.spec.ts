@@ -18,7 +18,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mockResponse } from './create-batch.component.data';
 import { LearnModule, CourseBatchService,
   CourseProgressService, CourseConsumptionService} from '@sunbird/learn';
-
+  import { configureTestSuite } from '@sunbird/test-util';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -62,7 +62,7 @@ const fakeActivatedRoute = {
 describe('CreateBatchComponent', () => {
   let component: CreateBatchComponent;
   let fixture: ComponentFixture<CreateBatchComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;

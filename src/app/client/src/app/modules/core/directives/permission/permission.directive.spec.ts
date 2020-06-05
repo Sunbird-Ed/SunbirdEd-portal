@@ -7,7 +7,7 @@ import { ConfigService, ResourceService, ToasterService , BrowserCacheTtlService
 import { UserService, LearnerService, PermissionService, ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule } from '@sunbird/core';
-
+import { configureTestSuite } from '@sunbird/test-util';
 @Component({
   template: `<a appPermission id="permission" [permission]= 'adminDashboard'
   href="#">dashboard</a>`
@@ -18,6 +18,7 @@ class TestWrapperComponent {
 describe('PermissionDirective', () => {
   let component: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule],

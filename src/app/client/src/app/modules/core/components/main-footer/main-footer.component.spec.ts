@@ -10,6 +10,7 @@ import { of } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule, UserService } from '@sunbird/core';
 import { TenantService } from '../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
@@ -62,6 +63,7 @@ describe('MainFooterComponent', () => {
             }
         }
     };
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [],

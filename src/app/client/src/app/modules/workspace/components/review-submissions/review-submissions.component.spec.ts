@@ -21,6 +21,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const fakeActivatedRoute = {
   'params': observableOf({ 'pageNumber': 1 }),
@@ -57,7 +58,7 @@ const resourceBundle = {
 describe('ReviewSubmissionsComponent', () => {
   let component: ReviewSubmissionsComponent;
   let fixture: ComponentFixture<ReviewSubmissionsComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],

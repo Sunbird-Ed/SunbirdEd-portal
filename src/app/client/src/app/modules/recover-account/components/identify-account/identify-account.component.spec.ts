@@ -13,6 +13,7 @@ import { identifyAcountMockResponse } from './identify-account.component.spec.da
 import { RecaptchaModule } from 'ng-recaptcha';
 import { By } from '@angular/platform-browser';
 import { RecaptchaComponent } from 'ng-recaptcha';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
@@ -57,6 +58,7 @@ describe('IdentifyAccountComponent', () => {
       this.queryParamsMock = params;
     }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],

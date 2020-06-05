@@ -10,6 +10,7 @@ import { SharedModule,  ToasterService, ResourceService, NavigationHelperService
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './upforreview-content.component.spce.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('UpforreviewContentplayerComponent', () => {
@@ -30,6 +31,7 @@ describe('UpforreviewContentplayerComponent', () => {
     }
   }
 };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],

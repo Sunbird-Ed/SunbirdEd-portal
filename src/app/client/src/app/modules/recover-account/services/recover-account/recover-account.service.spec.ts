@@ -5,8 +5,10 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecoverAccountService } from './recover-account.service';
 import { of as observableOf, Observable } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('RecoverAccountService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

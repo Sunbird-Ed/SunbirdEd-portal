@@ -11,6 +11,7 @@ import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const resourceServiceMockData = {
   messages : {
@@ -51,7 +52,7 @@ class RouterStub {
 describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseConsumptionHeaderComponent ],
@@ -68,8 +69,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it(`should enable resume button if course is not flagged, batch status is not "0" and
-  courseProgressData obtained from courseProgressService`, () => {
+  it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);

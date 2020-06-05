@@ -11,6 +11,7 @@ import { UserService } from './../user/user.service';
 import { ConfigService, SharedModule, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from './../public-data/public-data.service';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SearchService', () => {
   const resourceBundle = {
@@ -21,6 +22,7 @@ describe('SearchService', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],

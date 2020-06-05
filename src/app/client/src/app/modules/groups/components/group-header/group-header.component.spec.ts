@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupHeaderComponent ]
