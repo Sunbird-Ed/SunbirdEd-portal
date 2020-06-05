@@ -38,13 +38,13 @@ module.exports = {
   /**
    * this function helps to generate session start event
    */
-  logSessionStart: function (req, callback) {
+  logSessionStart: function (req, cdata) {
     var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
     const edata = telemetry.startEventData('session')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({ channel: channel, env: 'user' })
+    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)})
     context.sid = req.sessionID
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
@@ -56,22 +56,21 @@ module.exports = {
       actor: actor,
       tags: _.concat([], channel)
     })
-    callback(null, {did: context.did})
   },
 
   /**
    * this function helps to generate session end event
    */
-  logSessionEnd: function (req) {
-    const edata = telemetry.endEventData('session')
-    const actor = telemetry.getActorData(req.session.userId, 'user')
-    var dims = _.clone(req.session.orgs || [])
-    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
-    const context = telemetry.getContextData({ channel: channel, env: 'user' })
-    context.sid = req.sessionID
-    context.did = req.session.deviceId
+  logSessionEnd: function (req, cdata) {
+    const edata = telemetry.endEventData('session');
+    const actor = telemetry.getActorData(req.session.userId, 'user');
+    var dims = _.clone(req.session.orgs || []);
+    var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id');
+    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)});
+    context.sid = req.sessionID;
+    context.did = req.session.deviceId;
     console.log('logging session end event', context.did);
-    context.rollup = telemetry.getRollUpData(dims)
+    context.rollup = telemetry.getRollUpData(dims);
     telemetry.end({
       edata: edata,
       context: context,
@@ -515,5 +514,13 @@ module.exports = {
     }
 
     next()
+  },
+
+  getTelemetryCdata: function (req, cdata = []) {
+    cdata.push({
+      id: req.session.userSid,
+      type: 'UserSession'
+    });
+    return cdata;
   }
 }
