@@ -43,9 +43,7 @@ const authenticated = function (request, next) {
       userHelper.updateLoginTime(request, callback)
     });
   }
-  postLoginRequest.push(function (callback) {
-    telemetryHelper.logSessionStart(request, callback)
-  });
+  telemetryHelper.logSessionStart(request);
   async.series(postLoginRequest, function (err, results) {
     if (err) {
       logger.error({msg: 'error loggin in user', error: err});
