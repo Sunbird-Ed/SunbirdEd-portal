@@ -1,12 +1,11 @@
-import { TelemetryService } from '@sunbird/telemetry';
-import { Location } from '@angular/common';
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -38,6 +37,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   playerOption;
   courseName: string;
   courseProgress: number;
+  public telemetryCourseImpression: IImpressionEventInput;
+  telemetryCdata: Array<{}>;
 
   constructor(
     public resourceService: ResourceService,
@@ -46,13 +47,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private configService: ConfigService,
     private courseBatchService: CourseBatchService,
     private toasterService: ToasterService,
-    private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
-    private navigationHelperService: NavigationHelperService,
-    private router: Router,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    private router: Router
   ) {
     this.playerOption = {
       showContentRating: true
@@ -63,12 +62,30 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.subscribeToQueryParam();
   }
 
+  private setTelemetryCourseImpression() {
+    this.telemetryCourseImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      },
+      object: {
+        id: this.courseId,
+        type: 'Course',
+        ver: '1.0',
+        rollup: {
+          l1: this.courseId
+        }
+      }
+    };
+  }
+
   goBack() {
-    if (this.navigationHelperService['_history'].length === 1) {
-      this.navigationHelperService.navigateToPreviousUrl();
-    } else {
-      this.location.back();
-    }
+    window.history.back();
   }
 
   private subscribeToQueryParam() {
@@ -80,10 +97,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
         const selectedContent = queryParams.selectedContent;
-
         const isSingleContent = this.collectionId === selectedContent;
         const isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
@@ -116,7 +133,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.goBack();
             });
         }
-
+        this.setTelemetryCourseImpression();
         this.subscribeToContentProgressEvents().subscribe(data => { });
       });
   }
