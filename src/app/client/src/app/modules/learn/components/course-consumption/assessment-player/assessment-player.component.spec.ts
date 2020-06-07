@@ -31,7 +31,12 @@ describe('AssessmentPlayerComponent', () => {
 
   const fakeActivatedRoute = {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
-    queryParams: of({ batchId: '12312433' })
+    queryParams: of({ batchId: '12312433' }),
+    snapshot: {
+      data: {
+        telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      }
+    }
   };
   configureTestSuite();
   beforeEach(async(() => {

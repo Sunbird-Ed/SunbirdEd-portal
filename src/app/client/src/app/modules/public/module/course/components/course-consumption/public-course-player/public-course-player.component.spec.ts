@@ -88,7 +88,7 @@ describe('PublicCoursePlayerComponent', () => {
     component.navigateToContent({ event: { type: 'click' } }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
   });
-  it('should log telemetry on click of join training popup close icon', () => {
+  xit('should log telemetry on click of join training popup close icon', () => {
     activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     const telemetryService = TestBed.get(TelemetryService);
