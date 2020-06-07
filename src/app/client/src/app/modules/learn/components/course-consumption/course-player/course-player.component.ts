@@ -555,6 +555,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
 
   navigateToPlayerPage(collectionUnit: any, event?) {
+    this.objectRollUp = [];
+    this.getContentRollUp(_.get(event, 'data.parent'));
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
@@ -628,7 +630,30 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
+  getContentRollUp(parentId) {
+    this.objectRollUp.unshift(parentId);
+    if (parentId) {
+      const parentContent = this.findContentById(parentId);
+      if (!_.isEmpty(_.get(parentContent, 'model.parent'))) {
+        parentId = _.get(parentContent, 'model.parent');
+        this.getContentRollUp(parentId) ;
+      }
+    }
+  }
+
+  getRollUp() {
+      const objectRollUp = {};
+      if (!_.isEmpty(this.objectRollUp)) {
+        for (let i = 0; i < this.objectRollUp.length; i++ ) {
+          objectRollUp[`l${i + 1}`] = this.objectRollUp[i];
+      }
+      }
+      return objectRollUp;
+  }
+
   logTelemetry(id, content?: {}) {
+    this.objectRollUp = [];
+    this.getContentRollUp(_.get(content, 'parent'));
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -642,7 +667,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
         type: content ? _.get(content, 'contentType') :  'Course',
-        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.getRollUp()
       }
     };
     this.telemetryService.interact(interactData);
