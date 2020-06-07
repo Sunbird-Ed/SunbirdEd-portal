@@ -42,16 +42,22 @@
                     suiTabHeader="graph" (activate)="showExportsOption=true"
                     [ngClass]="{'mr-auto': currentReport.tables.length === 0}"
                     (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
-                  <a appTelemetryInteract [ngClass]="{'mr-auto': currentReport.tables.length > 0}"
+                  <a appTelemetryInteract
+                    [ngClass]="{'mr-auto': currentReport.tables.length > 0 && !currentReport?.files.length}"
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                     (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
                     (click)="setDownloadUrl(table.downloadUrl)" class="item"
                     [suiTabHeader]="table.id">{{table?.name}}</a>
+                  <a *ngIf="currentReport?.files?.length" appTelemetryInteract
+                    [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata('download')" class="item"
+                    [ngClass]="{'mr-auto': currentReport.files.length > 0}" (activate)="showExportsOption=false"
+                    suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
                   <button appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
-                    *ngIf="currentReport?.reportMetaData?.downloadUrl"
+                    *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
                     class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
                       class="download icon"></i>
                     {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
@@ -62,6 +68,81 @@
                       <sui-select-option *ngFor="let option of exportOptions" [value]="option">
                       </sui-select-option>
                     </sui-select>
+                  </div>
+                </div>
+
+                <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="files">
+                  <div class="sb-graph-section p-24 my-24">
+                    <table *ngIf="currentReport?.files?.length" id="downloadTable"
+                      class="sb-table sb-table-striped sb-table-sortable sb-table-fixed" cellspacing="0">
+                      <thead class="sb-table-header sb-table-thead-gray">
+                        <tr>
+                          <th>
+                            <div class="cursor-pointer">
+                              {{resourceService?.frmelmnts?.lbl?.dashboard?.fileName}}
+                            </div>
+                          </th>
+                          <th>
+                            <div class="cursor-pointer">
+                              {{resourceService?.frmelmnts?.lbl?.dashboard?.description}}
+                            </div>
+                          </th>
+                          <th>
+                            <div class="cursor-pointer">
+                              {{resourceService?.frmelmnts?.lbl?.dashboard?.fileSize}}
+                            </div>
+                          </th>
+                          <th>
+                            <div class="cursor-pointer">
+                              {{resourceService?.frmelmnts?.lbl?.createdon}}
+                            </div>
+                          </th>
+                          <th class="table-headerDashboard">
+                            <div class="cursor-pointer">
+                              {{resourceService?.frmelmnts?.lbl?.dashboard?.action}}
+                            </div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="sb-table-body">
+                        <tr *ngFor="let file of currentReport.files; let i = index; let l = last;">
+                          <td *ngIf="file.name">
+                            {{file.name}}
+                          </td>
+                          <td *ngIf="!file.name">
+                            --
+                          </td>
+                          <td *ngIf="file.description">
+                            {{file.description}}
+                          </td>
+                          <td *ngIf="!file.description">
+                            --
+                          </td>
+                          <td *ngIf="file.fileSize">
+                            {{file.fileSize}}
+                          </td>
+                          <td *ngIf="!file.fileSize">
+                            --
+                          </td>
+                          <td *ngIf="file.createdOn">
+                            {{file.createdOn}}
+                          </td>
+                          <td *ngIf="!file.createdOn">
+                            --
+                          </td>
+                          <td>
+                            <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8"
+                              appTelemetryInteract
+                              [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                              [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
+                              (click)="downloadCSV(file.downloadUrl)"><i class="icon"></i>
+                              {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
+                          </td>
+                      </tbody>
+                    </table>
+                    <div class="ui warning message" *ngIf="!currentReport.files.length">
+                      File Not Available
+                    </div>
                   </div>
                 </div>
 
