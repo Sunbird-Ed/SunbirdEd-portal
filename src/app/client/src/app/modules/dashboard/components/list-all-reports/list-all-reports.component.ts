@@ -53,11 +53,11 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
       map((apiResponse: { reports: any[], count: number }) => {
         const reports = _.map(apiResponse.reports, report => {
           return {
-            ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
+            ..._.pick(report, ['reportid', 'createdon', 'title', 'description', 'reportgenerateddate',
               'tags', 'updatefrequency'], ...isUserReportAdmin ? ['status'] : [])
           };
         });
-        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency',
+        const headers = ['reportid', 'createdon', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency',
           ...isUserReportAdmin ? ['Status'] : []];
         const result = {
           table: {
@@ -65,7 +65,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
             data: _.map(reports, report => _.values(report)),
             defs: this.getColumnsDefs(),
             options: {
-              searching: true
+              searching: true,
+              order: [[1, "desc"]]
             }
           },
           count: _.get(apiResponse, 'count')
@@ -83,15 +84,15 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   private getColumnsDefs() {
     return [
       {
-        targets: 0,
+        targets: [0, 1],
         visible: false
       },
       {
-        targets: [1, 2],
+        targets: [2, 3],
         width: '25%'
       },
       {
-        targets: [4],
+        targets: [5],
         width: '15%',
         render: data => {
           if (Array.isArray(data)) {
@@ -101,7 +102,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         }
       },
       {
-        targets: [3, 5, 1, 2],
+        targets: [4, 6, 2, 3],
         render: (data) => {
           const date = moment(data);
           if (date.isValid()) {
@@ -111,7 +112,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         }
       },
       ...(this._isUserReportAdmin ? [{
-        targets: [6],
+        targets: [7],
         render: (data) => {
           const icon = {
             live: {
