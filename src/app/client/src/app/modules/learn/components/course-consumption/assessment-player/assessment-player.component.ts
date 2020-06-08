@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
@@ -44,6 +44,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   telemetryContentImpression: IImpressionEventInput;
   telemetryPlayerPageImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
+  isUnitCompleted = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -244,10 +245,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       }
     }
 
+    /* istanbul ignore else */
+    if (request.status === 2 && !this.isUnitCompleted) {
+      this.logAuditEvent();
+    }
+
     this.courseConsumptionService.updateContentsState(request)
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
-        err => console.error('updating content status failed', err));
+      .subscribe(updatedRes => {
+        this.contentStatus = _.cloneDeep(updatedRes.content);
+        /* istanbul ignore else */
+        if (!this.isUnitCompleted) {
+          this.calculateProgress(true);
+        }
+      }, err => console.error('updating content status failed', err));
   }
 
   onAssessmentEvents(event) {
@@ -279,9 +290,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     return this.courseProgress;
   }
 
-  calculateProgress() {
+  calculateProgress(isLogAuditEvent?: boolean) {
     /* istanbul ignore else */
-    if (this.courseHierarchy.children) {
+    if (_.get(this.courseHierarchy, 'children')) {
       const consumedContents = [];
       let totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
@@ -306,7 +317,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           const content = this.contentStatus.find(item => item.contentId === unit.identifier && item.status === 2);
           /* istanbul ignore else */
           if (content) {
-            consumedContents.push(...content);
+            consumedContents.push(content);
           }
         }
       });
@@ -314,6 +325,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       /* istanbul ignore else */
       if (consumedContents.length) {
         this.courseHierarchy.progress = (consumedContents.length / totalContents) * 100;
+      }
+      this.isUnitCompleted = totalContents === consumedContents.length;
+      /* istanbul ignore else */
+      if (isLogAuditEvent && this.isUnitCompleted) {
+        this.logAuditEvent(true);
       }
     }
   }
@@ -345,7 +361,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') :  'Course',
+        type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
@@ -388,11 +404,44 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: this.courseId,
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.ver || '1.0',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver || '1.0',
         rollup: { l1: this.courseId }
       }
     };
+  }
+
+  logAuditEvent(isUnit?: boolean) {
+    const auditEventInput: IAuditEventInput = {
+      'context': {
+        'env': this.activatedRoute.snapshot.data.telemetry.env,
+        'cdata': [
+          { id: this.courseId, type: 'CourseId' },
+          { id: this.userService.userid, type: 'UserId' },
+          { id: this.batchId, type: 'BatchId' },
+        ]
+      },
+      'object': {
+        'id': this.batchId,
+        'type': this.activatedRoute.snapshot.data.telemetry.object.type,
+        'ver': this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      'edata': {
+        props: ['courseId', 'userId', 'batchId'],
+        state: '',
+        prevstate: ''
+      }
+    };
+
+    if (isUnit) {
+      auditEventInput.context.cdata.push({ id: this.courseHierarchy.identifier, type: 'UnitId' });
+      auditEventInput.edata.props.push('unitId');
+    } else {
+      auditEventInput.context.cdata.push({ id: this.activeContent.identifier, type: 'ContentId' });
+      auditEventInput.edata.props.push('contentId');
+    }
+
+    this.telemetryService.audit(auditEventInput);
   }
 
   ngOnDestroy() {
