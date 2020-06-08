@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
@@ -10,8 +11,7 @@ import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
-import { IImpressionEventInput } from '@sunbird/telemetry';
-
+import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
@@ -19,7 +19,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -38,6 +38,8 @@ export class AssessmentPlayerComponent implements OnInit {
   playerOption;
   courseName: string;
   courseProgress: number;
+  private objectRollUp = [];
+  public treeModel: any;
   isParentCourse = false;
   telemetryContentImpression: IImpressionEventInput;
   telemetryPlayerPageImpression: IImpressionEventInput;
@@ -55,6 +57,7 @@ export class AssessmentPlayerComponent implements OnInit {
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
     private navigationHelperService: NavigationHelperService,
+    private telemetryService: TelemetryService,
     private router: Router
   ) {
     this.playerOption = {
@@ -93,6 +96,8 @@ export class AssessmentPlayerComponent implements OnInit {
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
+              const model = new TreeModel();
+              this.treeModel = model.parse(data.courseHierarchy);
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -122,7 +127,6 @@ export class AssessmentPlayerComponent implements OnInit {
               this.goBack();
             });
         }
-
         this.subscribeToContentProgressEvents().subscribe(data => { });
       });
   }
@@ -187,11 +191,12 @@ export class AssessmentPlayerComponent implements OnInit {
       });
   }
 
-  onTocCardClick(event: any) {
+  onTocCardClick(event: any, id) {
     /* istanbul ignore else */
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
+      this.logTelemetry(id, event.data);
     }
   }
 
@@ -325,13 +330,32 @@ export class AssessmentPlayerComponent implements OnInit {
     );
   }
 
-  private setTelemetryContentImpression() {
-    const objectRollUp = {};
-    let rollUp = this.getRollup(this.courseHierarchy, this.activeContent.identifier);
-    rollUp = _.slice(rollUp, 0, 4).slice(0, -1);
-    rollUp.forEach((item, index) => objectRollUp['l' + (index + 1)] = item);
 
-    this.telemetryContentImpression = {
+  logTelemetry(id, content?: {}) {
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  private setTelemetryContentImpression() {
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(this.activeContent, 'identifier'));
+    const telemetryContentImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: this.telemetryCdata
@@ -345,9 +369,10 @@ export class AssessmentPlayerComponent implements OnInit {
         id: this.activeContent.identifier,
         type: this.activeContent.contentType || 'content',
         ver: this.activeContent.pkgVersion ? this.activeContent.pkgVersion.toString() : '1.0',
-        rollup: objectRollUp
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
+    this.telemetryService.impression(telemetryContentImpression);
   }
 
   private setTelemetryCourseImpression() {
@@ -368,32 +393,6 @@ export class AssessmentPlayerComponent implements OnInit {
         rollup: { l1: this.courseId }
       }
     };
-  }
-
-  getRollup(tree, identifier) {
-    const rollup = [tree.identifier];
-    if (tree.identifier === identifier) {
-      return rollup;
-    }
-    if (!tree.children || !tree.children.length) {
-      return [];
-    }
-    let notDone = true;
-    let childRollup: any;
-    let index = 0;
-    while (notDone && tree.children[index]) {
-      childRollup = this.getRollup(tree.children[index], identifier);
-      if (childRollup && childRollup.length) {
-        notDone = false;
-      }
-      index++;
-    }
-    if (childRollup && childRollup.length) {
-      rollup.push(...childRollup);
-      return rollup;
-    } else {
-      return [];
-    }
   }
 
   ngOnDestroy() {

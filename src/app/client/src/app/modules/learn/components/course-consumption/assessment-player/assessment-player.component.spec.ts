@@ -194,8 +194,9 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onTocCardClick', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
-    component.onTocCardClick({ data: { identifier: 'do_2334343' } });
+    component.onTocCardClick({ data: { identifier: 'do_2334343' } }, 'test');
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
   });
@@ -333,21 +334,6 @@ describe('AssessmentPlayerComponent', () => {
     resp.subscribe((data: any) => {
       expect(data.contentProgressEvent.progress).toEqual(100);
     });
-  });
-
-  it('should return rollup for the given courseHierarchy', () => {
-    const resp = component.getRollup(assessmentPlayerMockData.courseHierarchy, assessmentPlayerMockData.activeContent.identifier);
-    console.log('resp', resp);
-    expect(resp).toBeDefined();
-    expect(resp).toEqual(['do_1130272760359485441199', 'do_1130272760359813121209', 'do_11287204084174028818']);
-  });
-
-  it('should set individual content play telemetry Impression', () => {
-    component.activeContent = assessmentPlayerMockData.activeContent;
-    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    spyOn(component, 'getRollup').and.returnValue(['do_1130272760359485441199', 'do_1130272760359813121209', 'do_11287204084174028818']);
-    component['setTelemetryContentImpression']();
-    expect(component.getRollup).toHaveBeenCalled();
   });
 
   it('should call ngOnDestroy', () => {
