@@ -29,6 +29,10 @@ export class ReportService {
   }
 
   public downloadMultipleDataSources(dataSources: IDataSource[]) {
+    if (!dataSources.length) {
+      // for India heat map scenario.
+      return of([]);
+    }
     const apiCalls = _.map(dataSources, (source: IDataSource) => {
       return this.fetchDataSource(_.get(source, 'path'), _.get(source, 'id'));
     });

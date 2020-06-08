@@ -93,7 +93,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
             this.report = report;
             const reportConfig = _.get(report, 'reportconfig');
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
-            const dataSource = _.get(reportConfig, 'dataSource');
+            const dataSource = _.get(reportConfig, 'dataSource') || [];
             const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
             const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table'), files = _.get(reportConfig, 'files');
             return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
