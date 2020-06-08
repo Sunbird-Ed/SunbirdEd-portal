@@ -42,8 +42,6 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
 
   cardType: TocCardType = TocCardType.COURSE;
 
-  private objectRollUp = [];
-
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -140,34 +138,10 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     }
   }
 
-  public findContentById(id: string) {
-    return this.treeModel.first(node => node.model.identifier === id);
-  }
 
-  getContentRollUp(parentId) {
-    this.objectRollUp.unshift(parentId);
-    if (parentId) {
-      const parentContent = this.findContentById(parentId);
-      if (!_.isEmpty(_.get(parentContent, 'model.parent'))) {
-        parentId = _.get(parentContent, 'model.parent');
-        this.getContentRollUp(parentId) ;
-      }
-    }
-  }
-
-  getRollUp() {
-      const objectRollUp = {};
-      if (!_.isEmpty(this.objectRollUp)) {
-        for (let i = 0; i < this.objectRollUp.length; i++ ) {
-          objectRollUp[`l${i + 1}`] = this.objectRollUp[i];
-      }
-      }
-      return objectRollUp;
-  }
 
   logTelemetry(id, content?: {}) {
-    this.objectRollUp = [];
-    this.getContentRollUp(_.get(content, 'parent'));
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -182,7 +156,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
         type: content ? _.get(content, 'contentType') :  'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: this.getRollUp()
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
