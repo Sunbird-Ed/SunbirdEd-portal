@@ -60,9 +60,19 @@ export class ReportService {
       map(apiResponse => _.get(apiResponse, 'result'))
     );
   }
-
+  /**
+   * @description publishes a report as live
+   * @param {string} reportId
+   * @returns
+   * @memberof ReportService
+   */
   public publishReport(reportId: string) {
-    return this.updateReport(reportId, { status: 'live' });
+    const req = {
+      url: `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}`
+    };
+    return this.baseReportService.get(req).pipe(
+      map(apiResponse => _.get(apiResponse, 'result'))
+    );
   }
 
   public listAllReports(filters: IListReportsFilter = {}): Observable<IReportsApiResponse> {

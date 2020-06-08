@@ -6,7 +6,7 @@ const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js
 const reqDataLimitOfContentUpload = '50mb'
 module.exports = function (app) {
 
-    app.patch([`${BASE_REPORT_URL}/update/:reportId`],
+    app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/retire/:reportId`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
