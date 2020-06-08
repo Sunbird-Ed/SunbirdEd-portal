@@ -363,8 +363,8 @@ export class AssessmentPlayerComponent implements OnInit {
       },
       object: {
         id: this.courseId,
-        type: 'Course',
-        ver: '1.0',
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        ver: this.activatedRoute.snapshot.data.telemetry.ver || '1.0',
         rollup: { l1: this.courseId }
       }
     };
