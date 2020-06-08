@@ -196,6 +196,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         err => console.log(err, 'content read api failed'));
   }
 
+  public findContentById(id: string) {
+    return this.treeModel.first(node => node.model.identifier === id);
+  }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
     this.logTelemetry(id, event.data);
