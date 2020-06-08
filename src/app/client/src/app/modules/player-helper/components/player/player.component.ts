@@ -91,13 +91,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
         if (user && !user.err) {
           const userProfile = user.userProfile;
           this.playerConfig.context['userData'] = {
-            identifier: userProfile.identifier ? userProfile.identifier : '',
             firstName: userProfile.firstName ? userProfile.firstName : '',
-            lastName: userProfile.lastName ? userProfile.lastName : '',
-            userName: userProfile.userName ? userProfile.userName : ''
+            lastName: userProfile.lastName ? userProfile.lastName : ''
           };
         } else {
-          this.playerConfig.context['userData'] = { identifier: '', firstName: '', lastName: '', userName: '' };
+          this.playerConfig.context['userData'] = { firstName: '', lastName: '' };
         }
       });
     }
