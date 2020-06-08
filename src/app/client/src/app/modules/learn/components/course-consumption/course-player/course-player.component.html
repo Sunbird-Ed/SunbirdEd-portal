@@ -1,4 +1,4 @@
-<div class="ui container mt-24">
+<div class="ui container mt-24" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="!loader">
     <div class="course-player" [appTelemetryImpression]="telemetryCourseImpression">
       <div class="sb-pageSection course-player--header text-left">
@@ -41,7 +41,7 @@
                 *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
                 class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
               <button (click)="navigateToPlayerPage(item)"
-                *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart"
+                *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
                 class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
             </div>
             <div class="chapter-box sb-g">
