@@ -8021,12 +8021,10 @@ ngx-daterangepicker-material@2.1.3:
   dependencies:
     tslib "^1.9.0"
 
-ngx-device-detector@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.4.2.tgz#0f08fec303cbb09ffd101e497a67824965d9b025"
-  integrity sha512-8x2vnAgLDI9b/+EgYYqILl1ZAVZWu09f/tH6SRvbYk2/u6cG+SPxrKwN0sXSOstp3/J5hoeeGkQiawHivAUCAA==
-  dependencies:
-    tslib "^1.9.0"
+ngx-device-detector@1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.3.5.tgz#febd134cc58c2a61e83bec5491d1e2f429bfde67"
+  integrity sha512-u/h/HGVTqOxweLSKQmXoOLHsYldSDAQePrMC6sa3WGAECoAR6S7W1QuwdNN1cj7NBdfY0wxar9MQ3MV7DiFfkg==
 
 ngx-filesize@^2.0.15:
   version "2.0.15"
