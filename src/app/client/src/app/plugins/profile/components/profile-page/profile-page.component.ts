@@ -23,6 +23,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('slickModal') slickModal;
   userProfile: any;
   contributions = [];
+  totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
   showMoreRoles = true;
@@ -136,6 +137,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
       this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
         this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+        this.totalContributions = _.get(data, 'result.count') || 0;
       });
   }
 
