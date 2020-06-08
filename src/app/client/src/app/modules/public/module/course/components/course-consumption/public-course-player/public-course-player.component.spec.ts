@@ -83,6 +83,7 @@ describe('PublicCoursePlayerComponent', () => {
     expect(component.loader).toBe(false);
   });
   it('should show join training popup', () => {
+    component.courseHierarchy = coursePlayerMockData.courseHierarchy;
     courseService.initialize();
     component.ngOnInit();
     component.navigateToContent({ event: { type: 'click' } }, 'id');

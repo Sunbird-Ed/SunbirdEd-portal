@@ -376,7 +376,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       edata: {
         id: id,
         type: 'click',
-        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,

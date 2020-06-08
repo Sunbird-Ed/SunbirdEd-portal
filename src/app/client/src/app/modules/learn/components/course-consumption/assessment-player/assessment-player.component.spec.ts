@@ -194,6 +194,7 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call onTocCardClick', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
     component.onTocCardClick({ data: { identifier: 'do_2334343' } }, 'test');
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
