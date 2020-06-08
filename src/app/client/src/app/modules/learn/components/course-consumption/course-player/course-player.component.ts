@@ -146,6 +146,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
         this.getContentState();
     });
+
+    this.courseConsumptionService.launchPlayer
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(data => {
+      this.navigateToPlayerPage(this.courseHierarchy);
+    });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {

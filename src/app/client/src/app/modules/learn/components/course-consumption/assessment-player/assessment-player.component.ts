@@ -37,6 +37,7 @@ export class AssessmentPlayerComponent implements OnInit {
   playerOption;
   courseName: string;
   courseProgress: number;
+  isParentCourse = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -80,12 +81,12 @@ export class AssessmentPlayerComponent implements OnInit {
         const selectedContent = queryParams.selectedContent;
 
         const isSingleContent = this.collectionId === selectedContent;
-        const isParentCourse = this.collectionId === this.courseId;
+        this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
-              if (!isParentCourse && data.courseHierarchy.children) {
+              if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
                 this.courseHierarchy = data.courseHierarchy;
