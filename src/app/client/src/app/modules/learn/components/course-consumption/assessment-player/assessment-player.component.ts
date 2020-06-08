@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,7 +6,7 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -51,9 +52,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private configService: ConfigService,
     private courseBatchService: CourseBatchService,
     private toasterService: ToasterService,
+    private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
+    private navigationHelperService: NavigationHelperService,
     private telemetryService: TelemetryService,
     private router: Router
   ) {
@@ -67,7 +70,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    window.history.back();
+    if (this.navigationHelperService['_history'].length === 1) {
+      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+    } else {
+      this.location.back();
+    }
   }
 
   private subscribeToQueryParam() {
@@ -111,7 +118,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
                 this.initPlayer(_.get(this.activeContent, 'identifier'));
-                this.setTelemetryContentImpression();
               } else {
                 this.setActiveContent(selectedContent);
               }
@@ -179,6 +185,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       .subscribe(config => {
         this.playerConfig = config;
         this.showLoader = false;
+        this.setTelemetryContentImpression();
       }, (err) => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
@@ -191,7 +198,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.activeContent = event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
       this.logTelemetry(id, event.data);
-      this.setTelemetryContentImpression();
     }
   }
 
