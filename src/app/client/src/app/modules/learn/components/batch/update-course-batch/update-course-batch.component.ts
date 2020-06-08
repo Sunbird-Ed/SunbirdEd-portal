@@ -11,6 +11,8 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-update-course-batch',
   templateUrl: './update-course-batch.component.html'
@@ -126,7 +128,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -368,9 +370,18 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentorList: _.uniqBy(mentorList, 'id')
     };
   }
+
+  private getUserListWithQuery(query, type) {
+    if (this.userSearchTime) {
+      clearTimeout(this.userSearchTime);
+    }
+    this.userSearchTime = setTimeout(() => {
+      this.getUserList(query, type);
+    }, 1000);
+  }
   private initDropDown() {
     const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
-    setTimeout(() => {
+    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
@@ -393,15 +404,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 0);
-  }
-  private getUserListWithQuery(query, type) {
-    if (this.userSearchTime) {
-      clearTimeout(this.userSearchTime);
-    }
-    this.userSearchTime = setTimeout(() => {
-      this.getUserList(query, type);
-    }, 1000);
+    });
   }
   /**
   *  api call to get user list
