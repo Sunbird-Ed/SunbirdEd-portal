@@ -96,7 +96,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        /* istanbul ignore else */
         if (this.batchId) {
           this.enrolledCourse = true;
           this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
@@ -114,39 +113,22 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           }
         }
       });
-    /* istanbul ignore else */
-    if (this.batchId) {
-      this.getContentState();
-    }
+
+      this.courseConsumptionService.updateContentConsumedStatus.emit(
+        {
+          courseId: this.courseId,
+          batchId: this.batchId,
+          courseHierarchy: this.courseHierarchy
+         });
   }
 
-  getContentState() {
-    const contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
-    /* istanbul ignore else */
-    if (_.hasIn(this.enrolledBatchInfo, 'status') && contentIds.length) {
-      const req = {
-        userId: this.userService.userid,
-        courseId: this.courseId,
-        contentIds: contentIds,
-        batchId: this.batchId
-      };
-      this.courseConsumptionService.getContentState(req);
-    }
-  }
 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: {
-        batchId: this.batchId,
-        courseId: this.courseId,
-        selectedContent: this.lastPlayedContentId
-      }
-    };
-    this.router.navigate(['/learn/course/play', this.courseId], navigationExtras);
+    this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 
@@ -192,6 +174,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
-   return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
+   return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
   }
 }

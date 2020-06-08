@@ -4,12 +4,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { CoreModule, FormService, TncService, UserService } from '@sunbird/core';
+import {CoreModule, FormService, TncService, UserService, ManagedUserService} from '@sunbird/core';
 import {NavigationHelperService, ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { mockRes } from './create-user.component.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
@@ -41,7 +41,8 @@ describe('CreateUserComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
-        'm0004': 'Something went wrong, try later'
+        'm0004': 'Something went wrong, try later',
+        'm0100': 'User Creation limit exceeded'
       },
       'stmsg': {
         'm0130': 'We are fetching districts',
@@ -62,7 +63,7 @@ describe('CreateUserComponent', () => {
         }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
@@ -70,7 +71,7 @@ describe('CreateUserComponent', () => {
       declarations: [CreateUserComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub }, ToasterService, TelemetryService, FormService, TncService, UserService,
-        NavigationHelperService],
+        NavigationHelperService, ManagedUserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -136,7 +137,9 @@ describe('CreateUserComponent', () => {
 
   it('should call onSubmitForm with success', () => {
     const userService = TestBed.get(UserService);
-    component.userProfile = mockRes.userData;
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -150,6 +153,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -162,6 +168,9 @@ describe('CreateUserComponent', () => {
   it('should call onSubmitForm with error', () => {
     const userService = TestBed.get(UserService);
     const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -186,6 +195,21 @@ describe('CreateUserComponent', () => {
     component.onCancel();
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
   });
-
+  it('should throw error as max user creation limit excees', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
+    spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    component.formData = mockRes.formData;
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.initializeFormFields();
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(userService, 'registerUser').and.returnValue(observableThrowError({
+      error: {params: {status: 'MANAGED_USER_LIMIT_EXCEEDED'}}
+    }));
+    component.onSubmitForm();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0100);
+  });
 });
 

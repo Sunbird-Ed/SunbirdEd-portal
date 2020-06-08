@@ -38,7 +38,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="sb-bg-color-primary p-8"
+    <div class="sb-bg-color-primary p-8 px-16"
         *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
             <div class="ui container d-flex flex-ai-center mx-0 px-8">
@@ -46,7 +46,7 @@
             </div>
         </ng-container>
         <ng-template #defaultView>
-            <div class="ui container d-flex flex-ai-center mx-0 px-8">
+            <div class="ui container d-flex flex-ai-center mx-0">
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
@@ -139,7 +139,7 @@
 
       <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')"
            class="add-user mb-16"
-           *ngIf="!((userListToShow && userListToShow.length) >=1)">
+           *ngIf="totalUsersCount <1">
         <div class="add-user__icon">
           <img src="assets/images/user-circle.svg" alt="Add user">
         </div>
@@ -154,17 +154,19 @@
                         [isMenu]="false"
                         (cardClick)="switchUser($event)">
         </sb-member-list>
-        <div class="more-user ml-16 mt-8" *ngIf="((userListToShow && userListToShow.length) >=1)"
+        <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2"
              (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
           <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
-          <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}} ({{totalUsersCount}})</div>
+          <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
+            ({{totalUsersCount - userListToShow.length}})
+          </div>
         </div>
       </div>
     </div>
 
     <div class="profile__actions">
       <div class="add-user add-user--horizontal"
-           *ngIf="((userListToShow && userListToShow.length) >=1)"
+           *ngIf="totalUsersCount >=1"
            (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
         <div class="add-user__icon">
           <img src="assets/images/user-circle.svg" alt="Add user">
@@ -211,7 +213,7 @@
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-            *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+            *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
           {{resourceService?.frmelmnts?.tab?.contribute}}

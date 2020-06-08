@@ -58,8 +58,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public readMore = false;
 
-  public curriculum = [];
-
   public istrustedClickXurl = false;
 
   public showNoteEditor = false;
@@ -139,6 +137,21 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
+    this.courseConsumptionService.updateContentConsumedStatus
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((data) => {
+        this.courseHierarchy = _.cloneDeep(data.courseHierarchy);
+        this.batchId = data.batchId;
+        this.courseId = data.courseId;
+        this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
+        this.getContentState();
+    });
+
+    this.courseConsumptionService.launchPlayer
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(data => {
+      this.navigateToPlayerPage(this.courseHierarchy);
+    });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
@@ -160,15 +173,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
           .pipe(map(courseHierarchy => ({ courseHierarchy })));
       })), this.subscribeToContentProgressEvents())
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
         if (!contentProgressEvent) {
-          this.courseConsumptionService.updateContentConsumedStatus
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe(({courseId, batchId}) => {
-            if (this.courseId === courseId && this.batchId === batchId) {
-              this.getContentState();
-            }
-          });
           this.courseHierarchy = courseHierarchy;
           this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
           this.courseInteractObject = {
@@ -188,12 +195,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             }, 100);
             if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
               this.getContentState();
-              this.subscribeToQueryParam();
             }
           } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
             || this.courseHierarchy.createdBy === this.userService.userid) {
             this.hasPreviewPermission = true;
-            this.subscribeToQueryParam();
           }
           this.collectionTreeNodes = { data: this.courseHierarchy };
           this.loader = false;
@@ -207,6 +212,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(courseProgressData => this.courseProgressData = courseProgressData);
   }
   private parseChildContent() {
+    this.contentIds = [];
     const model = new TreeModel();
     const mimeTypeCount = {};
     this.treeModel = model.parse(this.courseHierarchy);
@@ -225,17 +231,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds.push(node.model.identifier);
       }
     });
-    let videoContentCount = 0;
-    _.forEach(mimeTypeCount, (value, key) => {
-      if (key.includes('video')) {
-        videoContentCount = videoContentCount + value;
-      } else {
-        this.curriculum.push({ mimeType: key, count: value });
-      }
-    });
-    if (videoContentCount > 0) {
-      this.curriculum.push({ mimeType: 'video', count: videoContentCount });
-    }
   }
   private getContentState() {
     const req = {
@@ -244,7 +239,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       contentIds: this.contentIds,
       batchId: this.batchId
     };
-    this.courseConsumptionService.getContentState(req)
+    this.courseProgressService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
         this.contentStatus = res.content || [];
@@ -343,7 +338,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       options.batchId = this.batchId;
     }
-    this.courseConsumptionService.getConfigByContent(data.id, options).pipe(first())
+    this.courseConsumptionService.getConfigByContent(data.id, options)
+      .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
         if (config.context) {
           config.context.objectRollup = this.objectRollUp;
@@ -359,13 +355,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
-        this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
       }, (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
   public navigateToContent(event: any, collectionUnit?: any): void {
+    /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
@@ -394,7 +390,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.courseConsumptionService.updateContentsState(request).pipe(first())
+    this.courseConsumptionService.updateContentsState(request).pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
         err => console.log('updating content status failed', err));
   }
@@ -584,13 +580,33 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(telemetryIntractData);
   }
 
-  navigateToPlayerPage(collectionUnit, event?) {
+  navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
+
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
+      } else if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+        && _.get(this.contentStatus, 'length')) {
+        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+        const collectionChildren = [];
+        this.contentStatus.forEach(item => {
+          if (parsedChildren.find(content => content === item.contentId)) {
+            collectionChildren.push(item);
+          }
+        });
+
+        /* istanbul ignore else */
+        if (collectionChildren.length) {
+          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
+
+          /* istanbul ignore else */
+          if (selectedContent) {
+            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
+          }
+        }
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
@@ -600,12 +616,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   calculateProgress() {
     /* istanbul ignore else */
-    if (this.courseHierarchy.children) {
+    if (_.get(this.courseHierarchy, 'children')) {
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
           const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
 
           let consumedContents = [];
+          /* istanbul ignore else */
           if (this.contentStatus.length) {
             consumedContents = flattenDeepContents.filter(o => {
               return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
@@ -616,10 +633,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.contentCount = flattenDeepContents.length;
           unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
           unit.isUnitConsumptionStart = false;
+
           if (consumedContents.length) {
             unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
             unit.isUnitConsumptionStart = true;
           } else {
+            unit.progress = 0;
             unit.isUnitConsumptionStart = false;
           }
 
@@ -628,6 +647,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.consumedContent = consumedContent.length;
           unit.contentCount = 1;
           unit.isUnitConsumed = consumedContent.length === 1;
+          unit.progress = consumedContent.length ? 100 : 0;
+          unit.isUnitConsumptionStart = Boolean(consumedContent.length);
         }
       });
     }

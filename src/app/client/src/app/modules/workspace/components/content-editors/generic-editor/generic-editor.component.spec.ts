@@ -11,9 +11,10 @@ import { mockRes } from './generic-editor.component.spec.data';
 import { WorkSpaceService, EditorService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { of as observableOf } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 document.body.innerHTML = document.body.innerHTML +
-  '<input id="genericEditorCDN" value="https://dev.sunbirded.org/generic-editor/index.html"'
+  '<input id="genericEditorURL" value="https://dev.sunbirded.org/generic-editor/index.html"'
   + ' type="hidden" />';
 
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
@@ -34,6 +35,7 @@ const mockUserService = {
 describe('GenericEditorComponent', () => {
   let component: GenericEditorComponent;
   let fixture: ComponentFixture<GenericEditorComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GenericEditorComponent],

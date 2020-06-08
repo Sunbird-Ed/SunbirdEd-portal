@@ -6,6 +6,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService } from '../util/util.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 class RouterStub {
   // navigate = jasmine.createSpy('navigate');
@@ -29,6 +30,7 @@ class UtilServiceMock {
   public updateSearchKeyword() { }
 }
 describe('NavigationHelperService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot()],

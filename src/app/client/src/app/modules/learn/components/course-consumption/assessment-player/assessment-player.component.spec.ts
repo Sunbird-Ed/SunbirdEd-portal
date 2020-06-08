@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CoreModule, UserService } from '@sunbird/core';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { AssessmentPlayerComponent } from './assessment-player.component';
@@ -14,6 +14,9 @@ import { assessmentPlayerMockData } from './assessment-player.component.data.spe
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { of, throwError } from 'rxjs';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
+import { ActivatedRoute } from '@angular/router';
+import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -21,10 +24,16 @@ describe('AssessmentPlayerComponent', () => {
 
   const resourceMockData = {
     messages: {
-      emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' },
-      stmsg: { m0009: 'Cannot un-enrol now. Try again later' }
+      fmsg: { m0051: 'Fetching districts failed. Try again later' },
+      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
     }
   };
+
+  const fakeActivatedRoute = {
+    'params': of({ collectionId: 'Test_Textbook2_8907797' }),
+    queryParams: of({ batchId: '12312433' })
+  };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssessmentPlayerComponent],
@@ -39,8 +48,9 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService,
+        UserService, CsCourseProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -70,6 +80,18 @@ describe('AssessmentPlayerComponent', () => {
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
     component['subscribeToQueryParam']();
   });
+
+  it('should call subscribeToQueryParam, on error', () => {
+    component.batchId = '0130272832104038409';
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
+    component['subscribeToQueryParam']();
+  });
+
+  it('should call subscribeToQueryParam, when no bachID present', () => {
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
+    component['subscribeToQueryParam']();
+  });
+
 
   it('should call getCollectionInfo', () => {
     component['getCollectionInfo']('do_1212');
@@ -111,17 +133,37 @@ describe('AssessmentPlayerComponent', () => {
     component['getContentState']();
   });
 
+  it('should call contentProgressEvent', () => {
+    component.contentProgressEvent({});
+  });
+
   xit('should call parseChildContent', () => {
     component['parseChildContent']();
   });
 
-  it('should call contentProgressEvent', () => {
-    component.contentProgressEvent({});
+  it('should not proceed further if batchId not found inside contentProgressEvent()', () => {
+    component.batchId = undefined;
+    component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
+    expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
+  });
+
+  it('should  proceed further if batch status is 1 inside contentProgressEvent()', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.batchId = '11259794895';
+    component.enrolledBatchInfo = { status: 1 };
+    spyOn<any>(component, 'validEndEvent').and.returnValues(100);
+    spyOn<any>(courseConsumptionService, 'updateContentsState').and.returnValues(of({}));
+    component.activeContent = assessmentPlayerMockData.activeContent;
+    component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
+    expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
 
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
+    const assessmentScoreService = TestBed.get(AssessmentScoreService);
+    spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
+    spyOn(component, 'calculateProgress').and.stub();
     component.onAssessmentEvents({});
   });
 
@@ -140,9 +182,22 @@ describe('AssessmentPlayerComponent', () => {
     component.onQuestionScoreSubmitEvents({});
   });
 
-  it('should call validEndEvent', () => {
+  it('should call calculate method to get the courseProgress', () => {
+    const playerSummury = assessmentPlayerMockData.playerSummuryData;
+    const mimeType = 'application/vnd.ekstep.ecml-archive';
+    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
-    component['validEndEvent']({});
+    component['validEndEvent'](assessmentPlayerMockData.playerEndData);
+    expect(CsCourseProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
+    expect(component.courseProgress).toEqual(100);
+  });
+
+  it('should not call calculate method if the contentType is selfAssess', () => {
+    component.activeContent = assessmentPlayerMockData.activeContent;
+    component.activeContent.contentType = 'SelfAssess';
+    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    component['validEndEvent'](assessmentPlayerMockData.playerEndData);
+    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
 
   it('should call calculateProgress', () => {

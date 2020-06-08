@@ -1,5 +1,5 @@
+import { Location } from '@angular/common';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { Subject } from 'rxjs';
 import { SearchService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import {
@@ -21,7 +21,8 @@ export class ExploreCurriculumCoursesComponent implements OnInit {
 
   constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
-    private router: Router, private navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService) { }
+    private router: Router, private navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService,
+    private location: Location) { }
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
@@ -31,7 +32,7 @@ export class ExploreCurriculumCoursesComponent implements OnInit {
         this.selectedCourse = _.omit(subjectThemeAndCourse, 'contents');
       } else {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        this.navigationhelperService.goBack();
+        this.location.back();
       }
       this.setTelemetryImpression();
     }
@@ -56,7 +57,7 @@ export class ExploreCurriculumCoursesComponent implements OnInit {
     }
 
     goBack() {
-      this.navigationhelperService.goBack();
+      this.location.back();
     }
 
     getInteractData(event) {

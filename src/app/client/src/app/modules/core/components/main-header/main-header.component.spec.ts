@@ -11,7 +11,7 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService
+  ManagedUserService, CoursesService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -19,6 +19,7 @@ import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -44,7 +45,7 @@ describe('MainHeaderComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -55,7 +56,7 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
-        LearnerService]
+        LearnerService, CoursesService]
     })
       .compileComponents();
   }));
@@ -110,6 +111,18 @@ describe('MainHeaderComponent', () => {
     expect(component.queryParam).toEqual({ 'key': 'test' });
   });
 
+  it('should not fetch managed user list as user is not logged in', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    userService._authenticated = false;
+    spyOn(learnerService, 'getWithHeaders')
+    const managedUserService = TestBed.get(ManagedUserService);
+    spyOn(managedUserService, 'fetchManagedUserList');
+    component.ngOnInit();
+    expect(component.userListToShow).toEqual([]);
+    expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
+  });
+
   it('Should call getCacheLanguage if user is not login and cache exits', () => {
     const userService = TestBed.get(UserService);
     const cacheService = TestBed.get(CacheService);
@@ -139,19 +152,17 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userListToShow).toEqual(mockData.userList);
-    expect(component.totalUsersCount).toEqual(-1);
+    expect(component.totalUsersCount).toEqual(1);
   });
 
-  it('should not fetch managed user list as user is not logged in', () => {
+  it('Should subscribe manageduser event when new managed user is created', () => {
     const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    userService._authenticated = false;
-    spyOn(learnerService, 'getWithHeaders')
-    const managedUserService = TestBed.get(ManagedUserService);
-    spyOn(managedUserService, 'fetchManagedUserList');
+    userService._authenticated = true;
+    userService._userData$.next({err: null, userProfile: mockData.userProfile});
+    spyOn(component, 'fetchManagedUsers');
     component.ngOnInit();
-    expect(component.userListToShow).toEqual([]);
-    expect(managedUserService.fetchManagedUserList).not.toHaveBeenCalled();
+    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
   it('should not fetch managed user list on init as api errored', () => {
@@ -166,6 +177,16 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableThrowError(mockData.apiErrorResponse));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+  });
+
+  it('should turn on the side menu', () => {
+    component.toggleSideMenu(true);
+    expect(component.showSideMenu).toEqual(true);
+  });
+
+  it('should not turn on the side menu', () => {
+    component.toggleSideMenu(false);
+    expect(component.showSideMenu).toEqual(false);
   });
 
   it('should switch selected user', () => {
@@ -185,23 +206,14 @@ describe('MainHeaderComponent', () => {
       return {value: 'mock Id'};
     });
     const learnerService = TestBed.get(LearnerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
-    spyOn(userService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
-    expect(userService.initialize).toHaveBeenCalled();
-  });
-
-  it('should turn on the side menu', () => {
-    component.toggleSideMenu(true);
-    expect(component.showSideMenu).toEqual(true);
-  });
-
-  it('should not turn on the side menu', () => {
-    component.toggleSideMenu(false);
-    expect(component.showSideMenu).toEqual(false);
+    expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
 });

@@ -19,6 +19,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {getUserList, updateBatchDetails, getUserDetails, participantList} from './update-batch.component.spec.data';
 import { BatchService } from '../../services';
 import { UpdateBatchComponent } from './update-batch.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -63,6 +64,7 @@ describe('UpdateBatchComponent', () => {
   let component: UpdateBatchComponent;
   let fixture: ComponentFixture<UpdateBatchComponent>;
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],

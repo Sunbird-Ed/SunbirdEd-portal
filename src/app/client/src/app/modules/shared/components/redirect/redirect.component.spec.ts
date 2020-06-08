@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CacheService } from 'ng2-cache-service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('RedirectComponent', () => {
   let component: RedirectComponent;
@@ -45,6 +45,7 @@ describe('RedirectComponent', () => {
 
   }
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RedirectComponent],

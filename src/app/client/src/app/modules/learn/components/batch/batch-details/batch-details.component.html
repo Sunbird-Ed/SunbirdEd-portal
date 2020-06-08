@@ -5,7 +5,7 @@
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown"
                 [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
                 #batchStatusSelect>
-                <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
+                <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option">
                 </sui-select-option>
             </sui-select>
         </a>
@@ -75,7 +75,7 @@
                     <div class="content width-100">
                         <button
                             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
-                            class="ui right floated sb-btn sb-btn-normal" appTelemetryInteract
+                            class="ui right floated sb-btn sb-btn-normal ml-8" appTelemetryInteract
                             [telemetryInteractEdata]="unenrollBatchIntractEdata"
                             [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"
                             (click)="unenrollBatch(enrolledBatchInfo)"

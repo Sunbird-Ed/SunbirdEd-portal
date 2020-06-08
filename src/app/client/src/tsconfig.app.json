@@ -76,6 +76,7 @@
     "types": []
   },
   "exclude": [
+    "app/testUtil/**/*.*",
     "test.ts",
     "**/*.spec.ts",
     "**/*.spec.data.ts"

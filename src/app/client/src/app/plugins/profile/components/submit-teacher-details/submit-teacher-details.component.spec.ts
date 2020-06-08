@@ -21,7 +21,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, FormService, SearchService } from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
@@ -41,7 +41,9 @@ describe('SubmitTeacherDetailsComponent', () => {
         'm0005': 'Something went wrong, try later',
         'm0018': 'error',
         'm0016': 'error',
-        'm0017': 'error'
+        'm0017': 'error',
+        'm0051': 'Teacher declaration submission failed',
+        'm0052': 'Teacher declaration updation failed',
       },
       'smsg': {
         'm0046': 'Profile updated successfully',
@@ -54,7 +56,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -129,7 +131,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(component, 'closeModal');
     fixture.detectChanges();
     component.updateProfile('');
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0018);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0052);
     expect(component.closeModal).toHaveBeenCalled();
   });
 

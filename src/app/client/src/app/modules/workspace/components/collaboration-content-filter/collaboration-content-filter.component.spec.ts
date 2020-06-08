@@ -10,6 +10,8 @@ import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('CollaborationContentFilterComponent', () => {
   let component: CollaborationContentFilterComponent;
   let fixture: ComponentFixture<CollaborationContentFilterComponent>;
@@ -21,6 +23,7 @@ describe('CollaborationContentFilterComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollaborationContentFilterComponent ],

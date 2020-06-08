@@ -59,7 +59,7 @@
                     height: $base-block-space*3;
                     margin-right: $base-block-space;
                 }
-                &:hover {
+                &:hover, &.active {
                     background-color: var(--primary-100);
                 }
             }
@@ -124,11 +124,6 @@
 }
 
 @include respond-below(sm) {
-.overlay-sidebar__menu {
-        width: calculateRem(280px);
-        left: 0;
-        right: unset;
-    }
     .profile__info {
         padding: $base-block-space*2;
 
@@ -151,7 +146,13 @@
         }
     }
 }
-
+@include respond-below(xs){
+    .overlay-sidebar__menu {
+        width: 88%;
+        left: 0;
+        right: unset;
+    }
+}
 //sb member card styles from CC 
 .sb-member {
     display: flex;

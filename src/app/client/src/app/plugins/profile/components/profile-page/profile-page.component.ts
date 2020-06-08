@@ -66,7 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
@@ -78,11 +78,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
         this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
         this.getOrgDetails();
+        this.getContribution();
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
+        this.getTrainingAttended();
       }
     });
-    this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
-    this.getContribution();
-    this.getTrainingAttended();
     this.setInteractEventData();
   }
 
@@ -127,11 +127,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getContribution(): void {
-    const response = this.searchService.searchedContentList;
     const { constantData, metaData, dynamicFields } = this.configService.appConfig.Course.otherCourse;
-    if (response) {
-      this.contributions = this.utilService.getDataForCard(response.content, constantData, dynamicFields, metaData);
-    } else {
       const searchParams = {
         status: ['Live'],
         contentType: this.configService.appConfig.WORKSPACE.contentType,
@@ -141,11 +137,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
         this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
       });
-    }
   }
 
   getTrainingAttended() {
-    this.coursesService.enrolledCourseData$.pipe(first()).subscribe(data => {
+    this.coursesService.enrolledCourseData$.pipe().subscribe(data => {
       this.attendedTraining = _.reverse(_.sortBy(data.enrolledCourses, val => {
         return _.isNumber(_.get(val, 'completedOn')) ? _.get(val, 'completedOn') : Date.parse(val.completedOn);
       })) || [];

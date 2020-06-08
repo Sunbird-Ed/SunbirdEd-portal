@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { configureTestSuite } from '@sunbird/test-util';
 import {
   getUserList,
   updateBatchDetails,
@@ -66,7 +66,7 @@ const fakeActivatedRoute = {
 describe('UpdateCourseBatchComponent', () => {
   let component: UpdateCourseBatchComponent;
   let fixture: ComponentFixture<UpdateCourseBatchComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpdateCourseBatchComponent],

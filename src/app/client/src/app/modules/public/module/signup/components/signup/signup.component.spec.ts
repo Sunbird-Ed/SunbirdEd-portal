@@ -13,6 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import {SignUpComponentMockData} from './signup.component.spec.data';
 import {By} from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -60,6 +61,7 @@ describe('SignUpComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule,

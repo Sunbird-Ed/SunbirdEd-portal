@@ -14,6 +14,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 // import * as mockData from ./prominent-filter.component.spec.data';
 import { Response } from './prominent-filter.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ProminentFilterComponent', () => {
   let component: ProminentFilterComponent;
@@ -40,6 +41,7 @@ describe('ProminentFilterComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],

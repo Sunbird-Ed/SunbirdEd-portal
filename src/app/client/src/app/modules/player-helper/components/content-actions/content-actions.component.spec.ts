@@ -12,6 +12,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentActionsComponent', () => {
   let component: ContentActionsComponent;
@@ -24,7 +25,7 @@ describe('ContentActionsComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentActionsComponent],

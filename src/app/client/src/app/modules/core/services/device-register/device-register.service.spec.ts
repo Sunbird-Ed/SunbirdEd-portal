@@ -5,8 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient } from '@angular/common/http';
 import {of as observableOf, of} from 'rxjs';
 import {DeviceService} from '../device/device.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DeviceRegisterService', () => {
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],

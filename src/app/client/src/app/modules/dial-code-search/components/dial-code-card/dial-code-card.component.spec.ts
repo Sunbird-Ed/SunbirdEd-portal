@@ -7,11 +7,12 @@ import { Response } from './dial-code-card.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { DialCodeCardComponent } from './dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
   let fixture: ComponentFixture<DialCodeCardComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
