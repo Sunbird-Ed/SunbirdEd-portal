@@ -120,12 +120,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     this.contentRatingModal = false;
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        const playerElement = this.contentIframe.nativeElement;
-        playerElement.contentWindow.initializePreview(this.playerConfig);
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
