@@ -39,6 +39,8 @@ export class FrameworkService {
         }, err => {
           this._frameworkData$.next({ err: err, frameworkdata: null });
       });
+      } else if (_.get(this._frameworkData, framework)) {
+        this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData });
       } else {
         if (!_.get(this._frameworkData, 'defaultFramework')) {
           this.getChannel(hashTagId ? hashTagId : this.userService.hashTagId)
