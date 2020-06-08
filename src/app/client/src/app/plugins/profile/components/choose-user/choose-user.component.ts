@@ -56,8 +56,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   switchUser() {
     const userId = this.selectedUser.identifier;
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
     this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
@@ -71,7 +69,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
                   this.selectedUser.firstName),
                 class: 'sb-toaster sb-toast-success sb-toast-normal'
               });
-              this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
             });
           }
         });
@@ -108,46 +105,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
       id: 'submit-choose-managed-user',
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-    };
-  }
-
-  getStartEventData(userId, initiatorUserId) {
-    return {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: userId
-        }]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'switch-user'
-      }
-    };
-  }
-
-  getEndEventData(userId, initiatorUserId) {
-    return {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: userId
-        }]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'switch-user'
-      }
     };
   }
 
