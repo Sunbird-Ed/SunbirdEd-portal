@@ -200,7 +200,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     return this.treeModel.first(node => node.model.identifier === id);
   }
 
-  public navigateToContent(event: any, collectionUnit?: any): void {
+  public navigateToContent(event: any, collectionUnit?: any, id?): void {
+    this.logTelemetry(id, event.data);
     /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
@@ -287,32 +288,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
 
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryInteractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
-      },
-      edata: {
-        id: 'join-training-popup-close',
-        type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      },
-      object: {
-        id: this.courseId,
-        type: 'Course',
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
-      }
-    };
-    this.telemetryService.interact(telemetryInteractData);
-  }
-
   navigateToPlayerPage(collectionUnit: any, event?) {
-    this.registerCourseTocTelemetry(collectionUnit.identifier);
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
@@ -390,26 +366,25 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  registerCourseTocTelemetry(identifier: string) {
-    const telemetryInteractData = {
+  logTelemetry(id, content?: {}) {
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
         cdata: []
       },
       edata: {
-        id: 'course-toc',
+        id: id,
         type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
       },
       object: {
-        id: identifier,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    this.telemetryService.interact(telemetryInteractData);
-  }
+    this.telemetryService.interact(interactData);
+}
 }
