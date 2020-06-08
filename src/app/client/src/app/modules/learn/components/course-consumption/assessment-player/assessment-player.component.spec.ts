@@ -16,6 +16,7 @@ import { of, throwError } from 'rxjs';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { ActivatedRoute } from '@angular/router';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
@@ -23,7 +24,7 @@ describe('AssessmentPlayerComponent', () => {
 
   const resourceMockData = {
     messages: {
-      emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' },
+      fmsg: { m0051: 'Fetching districts failed. Try again later' },
       stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
     }
   };
@@ -32,6 +33,7 @@ describe('AssessmentPlayerComponent', () => {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
     queryParams: of({ batchId: '12312433' })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AssessmentPlayerComponent],
@@ -85,7 +87,7 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
   });
 
-  it('should call subscribeToQueryParam, when no bactID present', () => {
+  it('should call subscribeToQueryParam, when no bachID present', () => {
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
     component['subscribeToQueryParam']();
   });
@@ -195,7 +197,7 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent.contentType = 'SelfAssess';
     spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
-    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeFalsy();
+    expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
 
   it('should call calculateProgress', () => {

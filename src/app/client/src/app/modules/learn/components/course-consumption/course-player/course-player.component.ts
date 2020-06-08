@@ -146,6 +146,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.contentIds = this.courseConsumptionService.parseChildren(this.courseHierarchy);
         this.getContentState();
     });
+
+    this.courseConsumptionService.launchPlayer
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(data => {
+      this.navigateToPlayerPage(this.courseHierarchy);
+    });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
@@ -349,7 +355,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.enableContentPlayer = true;
         this.contentTitle = data.title;
-        this.windowScrollService.smoothScroll('app-player-collection-renderer', 500);
       }, (err) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
@@ -575,13 +580,33 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(telemetryIntractData);
   }
 
-  navigateToPlayerPage(collectionUnit, event?) {
+  navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
+
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
+      } else if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+        && _.get(this.contentStatus, 'length')) {
+        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+        const collectionChildren = [];
+        this.contentStatus.forEach(item => {
+          if (parsedChildren.find(content => content === item.contentId)) {
+            collectionChildren.push(item);
+          }
+        });
+
+        /* istanbul ignore else */
+        if (collectionChildren.length) {
+          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
+
+          /* istanbul ignore else */
+          if (selectedContent) {
+            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
+          }
+        }
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {

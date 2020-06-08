@@ -4,8 +4,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {RecaptchaService} from './recaptcha.service';
 import {of} from 'rxjs';
 import {ConfigService} from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('RecaptchaService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [HttpClient, ConfigService],
     imports: [HttpClientTestingModule]

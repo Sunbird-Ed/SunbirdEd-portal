@@ -5,11 +5,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('InstallAppComponent', () => {
     let comp: InstallAppComponent;
     let fixture: ComponentFixture<InstallAppComponent>;
-
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
           imports: [HttpClientTestingModule],

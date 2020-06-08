@@ -9,6 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('VerifyAccountIdentifierComponent', () => {
   let component: VerifyAccountIdentifierComponent;
@@ -45,6 +46,7 @@ describe('VerifyAccountIdentifierComponent', () => {
       this.queryParamsMock = params;
     }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [VerifyAccountIdentifierComponent],

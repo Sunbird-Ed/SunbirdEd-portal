@@ -1,15 +1,14 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
-import * as TreeModel from 'tree-model';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
@@ -38,6 +37,7 @@ export class AssessmentPlayerComponent implements OnInit {
   playerOption;
   courseName: string;
   courseProgress: number;
+  isParentCourse = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -49,7 +49,9 @@ export class AssessmentPlayerComponent implements OnInit {
     private location: Location,
     private playerService: PublicPlayerService,
     private userService: UserService,
-    private assessmentScoreService: AssessmentScoreService
+    private assessmentScoreService: AssessmentScoreService,
+    private navigationHelperService: NavigationHelperService,
+    private router: Router
   ) {
     this.playerOption = {
       showContentRating: true
@@ -61,7 +63,11 @@ export class AssessmentPlayerComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    if (this.navigationHelperService['_history'].length === 1) {
+      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+    } else {
+      this.location.back();
+    }
   }
 
   private subscribeToQueryParam() {
@@ -75,15 +81,22 @@ export class AssessmentPlayerComponent implements OnInit {
         const selectedContent = queryParams.selectedContent;
 
         const isSingleContent = this.collectionId === selectedContent;
+        this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
-          this.getCollectionInfo(this.collectionId)
+          this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
-              this.courseHierarchy = data.courseHierarchy;
+              if (!this.isParentCourse && data.courseHierarchy.children) {
+                this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
+              } else {
+                this.courseHierarchy = data.courseHierarchy;
+              }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
+              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+              this.goBack();
             });
         } else {
           this.playerService.getCollectionHierarchy(this.collectionId, {})
@@ -96,6 +109,10 @@ export class AssessmentPlayerComponent implements OnInit {
               } else {
                 this.setActiveContent(selectedContent);
               }
+            }, error => {
+              console.error('Error while fetching data', error);
+              this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+              this.goBack();
             });
         }
 
@@ -242,9 +259,6 @@ export class AssessmentPlayerComponent implements OnInit {
     const contentMimeType = this.activeContent.mimeType;
     const contentType = this.activeContent.contentType;
     this.courseProgress = CsCourseProgressCalculator.calculate(playerSummary, contentMimeType);
-    if (contentType === 'SelfAssess') {
-      return false;
-    }
     return this.courseProgress;
   }
 

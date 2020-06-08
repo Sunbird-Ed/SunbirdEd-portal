@@ -175,6 +175,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe))
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
+        this.isUnenrollDisabled();
       });
   }
   fetchUserDetails() {

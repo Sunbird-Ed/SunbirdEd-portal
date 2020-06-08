@@ -3,7 +3,7 @@ import { UserService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { ReportComponent } from './report.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -52,7 +52,7 @@ describe('ReportComponent', () => {
     },
     languageSelected$: of({})
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],

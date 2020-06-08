@@ -11,6 +11,7 @@ import { ContentService, UserService, LearnerService, CoreModule, TenantService,
 import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 document.body.innerHTML = document.body.innerHTML +
   '<input id="collectionEditorURL" value="https://dev.sunbirded.org/collection-editor/index.html"'
@@ -44,6 +45,7 @@ const mockUserService = {
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],

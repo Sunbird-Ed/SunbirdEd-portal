@@ -19,6 +19,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('DraftComponent', () => {
@@ -61,6 +62,7 @@ describe('DraftComponent', () => {
     },
     languageSelected$: observableOf({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],

@@ -10,7 +10,7 @@ import { CacheService } from 'ng2-cache-service';
 import { UserService, OrgDetailsService } from '@sunbird/core';
 import { commonMessageApiResp } from './comming-soon.component.spec.data';
 import { CoreModule } from '@sunbird/core';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CommingSoonComponent', () => {
   let component: CommingSoonComponent;
@@ -30,6 +30,7 @@ describe('CommingSoonComponent', () => {
     },
     languageSelected$: observableOf({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule, HttpClientTestingModule, SharedModule.forRoot()],

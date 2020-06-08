@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
 import { ContentSearchService } from '@sunbird/content-search';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
@@ -62,6 +63,7 @@ describe('ExploreComponent', () => {
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],

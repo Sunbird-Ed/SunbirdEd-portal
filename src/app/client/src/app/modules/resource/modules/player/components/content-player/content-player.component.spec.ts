@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -61,7 +62,7 @@ const fakeActivatedRoute = {
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],

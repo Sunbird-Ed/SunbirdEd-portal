@@ -6,7 +6,7 @@ import { BatchInfoComponent } from './batch-info.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { RouterModule } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 import { batchInfoMockResponse } from './batch-info.component.spec.data';
 
 describe('BatchInfoComponent', () => {
@@ -26,6 +26,7 @@ describe('BatchInfoComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

@@ -42,7 +42,9 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService,
+    private coursesService: CoursesService
+    ) {
   }
   ngOnInit() {
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -184,7 +186,21 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getInteractEdata(telemetryData);
 
     if (event.data.contents.length === 1) {
-      this.router.navigate(['learn/course', _.get(event.data, 'contents[0].identifier')]);
+      const metaData = _.pick(event.data.contents[0], ['identifier', 'mimeType', 'framework', 'contentType']);
+      const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+      this.coursesService.findEnrolledCourses(metaData.identifier);
+
+      /* istanbul ignore else */
+      if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+        return this.playerService.playContent(metaData);
+      }
+
+      if (onGoingBatchCount === 1) { // play course if only one open batch is present
+        metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+        return this.playerService.playContent(metaData);
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      }
     } else {
       this.searchService.subjectThemeAndCourse = event.data;
       this.router.navigate(['resources/curriculum-courses'], {

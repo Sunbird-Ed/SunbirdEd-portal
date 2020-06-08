@@ -22,7 +22,7 @@ import {contentUploadComponentInput, contentMetaData, contentMetaData1, playerCo
 import { HelperService } from '../../services/helper.service';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
+import { configureTestSuite } from '@sunbird/test-util';
 // Following describe method is for 'PREVIEW' scenario
 describe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
@@ -90,7 +90,7 @@ describe('ContentUploaderComponent', () => {
       userId: '123456789'
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
@@ -207,7 +207,7 @@ describe('ContentUploaderComponent', () => {
     },
     frameworkData$: observableOf(frameworkDetails)
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
@@ -321,7 +321,7 @@ describe('ContentUploaderComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,

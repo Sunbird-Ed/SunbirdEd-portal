@@ -11,7 +11,7 @@ import { ProfileService } from './../../services';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { testData } from './update-user-details.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('UpdateUserDetailsComponent', () => {
   let component: UpdateUserDetailsComponent;
   let fixture: ComponentFixture<UpdateUserDetailsComponent>;
@@ -59,7 +59,7 @@ describe('UpdateUserDetailsComponent', () => {
         }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,

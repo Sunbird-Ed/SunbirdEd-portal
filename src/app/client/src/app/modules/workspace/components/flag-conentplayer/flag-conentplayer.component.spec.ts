@@ -10,6 +10,8 @@ import { PlayerService, UserService, LearnerService, ContentService, CoreModule 
 import * as mockData from './flag-contentplayer.componemt.spec.data';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+
 const testData = mockData.mockRes;
 describe('FlagConentplayerComponent', () => {
   let component: FlagConentplayerComponent;
@@ -31,6 +33,7 @@ describe('FlagConentplayerComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlagConentplayerComponent],
