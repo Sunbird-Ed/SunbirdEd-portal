@@ -127,7 +127,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.goBack();
             });
         }
-        this.setTelemetryCourseImpression();
         this.subscribeToContentProgressEvents().subscribe(data => { });
       });
   }
