@@ -343,8 +343,8 @@ export class AssessmentPlayerComponent implements OnInit {
       },
       object: {
         id: this.activeContent.identifier,
-        type: 'content',
-        ver: '1.0',
+        type: this.activeContent.contentType || 'content',
+        ver: this.activeContent.pkgVersion ? this.activeContent.pkgVersion.toString() : '1.0',
         rollup: objectRollUp
       }
     };

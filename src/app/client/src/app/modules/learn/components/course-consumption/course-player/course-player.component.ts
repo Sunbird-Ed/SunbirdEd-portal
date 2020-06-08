@@ -403,7 +403,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: identifier,
-        type: 'Course',
+        type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
         rollup: {
           l1: this.courseId
