@@ -9,6 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '@sunbird/learn';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const resourceServiceMockData = {
   messages : {
@@ -45,6 +46,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
   let component: PublicCourseConsumptionPageComponent;
   let fixture: ComponentFixture<PublicCourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, navigationHelperService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

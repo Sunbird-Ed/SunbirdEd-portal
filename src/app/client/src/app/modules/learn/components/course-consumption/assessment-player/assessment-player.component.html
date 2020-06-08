@@ -1,4 +1,4 @@
-<div *ngIf="!showLoader">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression">
   <!--CC-Player Back button -->
   <div class="sb-bg-white relative position cc-player__btn-back ">
     <div class="ui container py-8 px-0">
@@ -21,14 +21,14 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
           <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
             <div class="content-header__img mr-8">
-              <img [src]="courseHierarchy?.appIcon" alt="" style="width: 55px; height: 55px;"
-                (error)="img.src = courseFallbackImg" #img>
+              <img [src]="courseHierarchy?.appIcon || courseHierarchy?.courseLogoUrl" alt=""
+                style="width: 55px; height: 55px;" (error)="img.src = courseFallbackImg" #img>
             </div>
             <div class="flex-basis-1 mr-32">
               <div class="content-header__title sb__ellipsis sb__ellipsis--one">
                 <div>{{courseName | titlecase}}</div>
               </div>
-              <div class="d-flex flex-ai-center content-header__info fsmall mt-4">
+              <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="!isParentCourse">
                 <h5 class="sb-color-primary font-weight-bold">{{courseHierarchy?.name | titlecase}}</h5>
               </div>
             </div>
@@ -45,7 +45,8 @@
         <div class="toc-content text-left" [appTelemetryImpression]="telemetryImpression">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
-              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio
+                [appTelemetryImpression]="telemetryContentImpression">
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-player>
@@ -95,6 +96,6 @@
     </div>
   </div>
 </div>
-<div class="twelve wide column" *ngIf="showLoader">
+<div class="ui container py-16" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
 </div>

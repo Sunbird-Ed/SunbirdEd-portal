@@ -6,9 +6,11 @@ import { ElementRef } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { BrowserCacheTtlService } from '../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('HighlightTextDirective', () => {
   let highlightTextDirective: HighlightTextDirective;
+  configureTestSuite();
   beforeEach(() => {
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr' } };
     TestBed.configureTestingModule({

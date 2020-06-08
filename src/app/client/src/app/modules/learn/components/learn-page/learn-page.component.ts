@@ -81,7 +81,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
-    combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
+    combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(
       mergeMap((data: Array<any>) => {
         this.enrolledSection = data[0];
         if (data[1]) {

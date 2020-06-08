@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ManagedUserService, UserService} from '@sunbird/core';
+import {CoursesService, ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
@@ -23,7 +23,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public toasterService: ToasterService, public router: Router,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
-              public activatedRoute: ActivatedRoute) {
+              public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -52,6 +52,30 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
+  }
+
+  switchUser() {
+    const userId = this.selectedUser.identifier;
+    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+        this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+        this.userService.userData$.subscribe((user: IUserData) => {
+          if (user && !user.err && user.userProfile.userId === userId) {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.telemetryService.setInitialization(false);
+              this.telemetryService.initialize(this.getTelemetryContext());
+              this.router.navigate(['/resources']);
+              this.toasterService.custom({
+                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                  this.selectedUser.firstName),
+                class: 'sb-toaster sb-toast-success sb-toast-normal'
+              });
+            });
+          }
+        });
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
   }
 
   telemetryImpressionEvent() {
@@ -84,12 +108,16 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     };
   }
 
+  navigateToCreateUser() {
+    this.router.navigate(['/profile/create-managed-user']);
+  }
+
   getManagedUserList() {
     const fetchManagedUserRequest = {
       request: {
         filters: {
           managedBy: this.managedUserService.getUserId()
-        }
+        }, sort_by: {createdDate: 'desc'}
       }
     };
     const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
@@ -105,75 +133,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
     });
-  }
-
-  switchUser() {
-    const userId = this.selectedUser.identifier;
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(userId, initiatorUserId));
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
-      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.telemetryService.setInitialization(false);
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.router.navigate(['/resources']);
-            this.toasterService.custom({
-              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                this.selectedUser.firstName),
-              class: 'sb-toaster sb-toast-success sb-toast-normal'
-            });
-            this.telemetryService.end(this.getEndEventData(userId, initiatorUserId));
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
-  }
-
-  getStartEventData(userId, initiatorUserId) {
-    return {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: userId
-        }]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'switch-user'
-      }
-    };
-  }
-
-  getEndEventData(userId, initiatorUserId) {
-    return {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: userId
-        }]
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        mode: 'switch-user'
-      }
-    };
-  }
-
-  navigateToCreateUser() {
-    this.router.navigate(['/profile/create-managed-user']);
   }
 
   getTelemetryContext() {
@@ -207,6 +166,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   closeSwitchUser() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile')
+    this.navigationhelperService.navigateToPreviousUrl('/profile');
   }
 }

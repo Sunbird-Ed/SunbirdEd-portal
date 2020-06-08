@@ -6,7 +6,10 @@ import { ResourceService } from './resource.service';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import {mockRes} from './resource.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('ResourceService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './library-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('LibrarySearchComponent', () => {
   let component: LibrarySearchComponent;
@@ -47,6 +48,7 @@ describe('LibrarySearchComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],

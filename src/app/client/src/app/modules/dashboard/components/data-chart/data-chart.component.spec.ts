@@ -15,11 +15,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReportService } from '../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
     let fixture: ComponentFixture<DataChartComponent>;
-
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [],

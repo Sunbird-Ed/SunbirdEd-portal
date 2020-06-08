@@ -12,6 +12,7 @@ import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCa
 import { CoreModule, FrameworkService, FormService, UserService, PublicDataService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DataDrivenFilterComponent', () => {
   let component: DataDrivenFilterComponent;
@@ -41,6 +42,7 @@ describe('DataDrivenFilterComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],

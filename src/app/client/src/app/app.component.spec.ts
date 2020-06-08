@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 class RouterStub {
@@ -44,6 +44,7 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -128,19 +129,6 @@ afterEach(() => {
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-  it('should not call register Device api for login Session', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    userService._authenticated = true;
-    spyOn(deviceRegisterService, 'initialize');
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
-  });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -175,18 +163,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
       }
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
-  });
-  it('should not call register Device api for Anonymous Session', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    spyOn(deviceRegisterService, 'initialize');
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
@@ -236,5 +212,14 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(utm[2]['type']).toBe('UtmSource');
     expect(utm[4]['type']).toBe('UtmTerm');
     expect(utm[5]['type']).toBe('UtmContent');
+  });
+
+  it('should not get user feed api data', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    userService._authenticated = true;
+    spyOn(userService, 'getFeedData');
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
+    component.getUserFeedData();
+    expect(userService.getFeedData).not.toHaveBeenCalled();
   });
 });
