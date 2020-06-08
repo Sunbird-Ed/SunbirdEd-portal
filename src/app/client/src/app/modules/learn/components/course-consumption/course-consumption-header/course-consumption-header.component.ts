@@ -128,14 +128,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: {
-        batchId: this.batchId,
-        courseId: this.courseId,
-        selectedContent: this.lastPlayedContentId
-      }
-    };
-    this.router.navigate(['/learn/course/play', this.courseId], navigationExtras);
+    this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 

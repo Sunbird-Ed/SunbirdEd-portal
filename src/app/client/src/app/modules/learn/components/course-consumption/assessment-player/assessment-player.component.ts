@@ -41,6 +41,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}>;
   private objectRollUp = [];
   public treeModel: any;
+  isParentCourse = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -100,7 +101,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.courseName = queryParams.courseName;
         const selectedContent = queryParams.selectedContent;
         const isSingleContent = this.collectionId === selectedContent;
-        const isParentCourse = this.collectionId === this.courseId;
+        this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
           this.getCollectionInfo(this.courseId)
@@ -108,7 +109,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
-              if (!isParentCourse && data.courseHierarchy.children) {
+              if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
                 this.courseHierarchy = data.courseHierarchy;
