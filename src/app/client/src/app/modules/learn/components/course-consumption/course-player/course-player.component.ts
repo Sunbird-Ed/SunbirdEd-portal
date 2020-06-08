@@ -94,11 +94,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.getContentState();
       });
 
-    // this.courseConsumptionService.launchPlayer
-    //   .pipe(takeUntil(this.unsubscribe))
-    //   .subscribe(data => {
-    //     this.navigateToPlayerPage(this.courseHierarchy);
-    //   });
+    this.courseConsumptionService.launchPlayer
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+        this.navigateToPlayerPage(this.courseHierarchy);
+      });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {

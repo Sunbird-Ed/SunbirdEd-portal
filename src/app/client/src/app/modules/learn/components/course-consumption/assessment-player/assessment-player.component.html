@@ -40,13 +40,11 @@
   <!-- CC-Player Video -->
   <div class="ui container">
     <div class="cc-player sb-g">
-      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
-        [appTelemetryImpression]="telemetryImpression">
-        <div class="toc-content text-left" [appTelemetryImpression]="telemetryImpression">
+      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column">
+        <div class="toc-content text-left">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
-              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio
-                [appTelemetryImpression]="telemetryContentImpression">
+              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-player>

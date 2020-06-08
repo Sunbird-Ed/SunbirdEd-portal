@@ -11,7 +11,6 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 import * as TreeModel from 'tree-model';
-
 const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
@@ -38,7 +37,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   playerOption;
   courseName: string;
   courseProgress: number;
-  public telemetryCourseImpression: IImpressionEventInput;
   private objectRollUp = [];
   public treeModel: any;
   isParentCourse = false;
@@ -113,6 +111,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
                 this.initPlayer(_.get(this.activeContent, 'identifier'));
+                this.setTelemetryContentImpression();
               } else {
                 this.setActiveContent(selectedContent);
               }
@@ -180,7 +179,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       .subscribe(config => {
         this.playerConfig = config;
         this.showLoader = false;
-        this.setTelemetryContentImpression();
       }, (err) => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
@@ -189,10 +187,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   onTocCardClick(event: any, id) {
     /* istanbul ignore else */
-    this.logTelemetry(id, event.data);
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
+      this.logTelemetry(id, event.data);
+      this.setTelemetryContentImpression();
     }
   }
 
@@ -376,7 +375,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   private setTelemetryContentImpression() {
     this.getContentRollUp(_.get(this.activeContent, 'parent'));
-    this.telemetryContentImpression = {
+    const telemetryContentImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: this.telemetryCdata
@@ -393,6 +392,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         rollup: this.getRollUp() || {}
       }
     };
+    this.telemetryService.impression(telemetryContentImpression);
   }
 
   private setTelemetryCourseImpression() {
