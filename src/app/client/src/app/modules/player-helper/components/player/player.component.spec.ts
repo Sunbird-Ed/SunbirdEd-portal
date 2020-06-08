@@ -7,7 +7,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Subject } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UserService } from '../../../core/services';
-// import { UserService } from '@sunbird/core';
 
 const startEvent = {
   detail: {
