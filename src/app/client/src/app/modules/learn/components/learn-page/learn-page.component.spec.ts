@@ -36,7 +36,8 @@ describe('LearnPageComponent', () => {
       'lbl': {
         'mytrainings': 'My Trainings'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
