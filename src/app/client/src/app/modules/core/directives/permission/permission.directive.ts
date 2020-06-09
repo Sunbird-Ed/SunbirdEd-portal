@@ -1,5 +1,5 @@
 import { PermissionService } from './../../services';
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 
 /**
  * Permission validator Directive
@@ -8,6 +8,10 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
   selector: '[appPermission]'
 })
 export class PermissionDirective implements OnInit {
+  parentNode;
+  // p = this.renderer.createElement('p');
+  // text = this.renderer.createText('Hello World !');
+
   /**
    * Permission to validate
    */
@@ -23,21 +27,22 @@ export class PermissionDirective implements OnInit {
   /**
    * constructor
    */
-  constructor(elementRef: ElementRef, permissionService: PermissionService) {
-      this.elementRef = elementRef;
-      this.permissionService = permissionService;
+  constructor(elementRef: ElementRef, permissionService: PermissionService, private renderer2: Renderer2) {
+    this.elementRef = elementRef;
+    this.permissionService = permissionService;
   }
   ngOnInit() {
+    this.parentNode = this.elementRef.nativeElement.parentNode;
     this.permissionService.permissionAvailable$.subscribe(
       (permissionAvailable: string) => {
         if (permissionAvailable && permissionAvailable === 'success') {
           if (!this.permissionService.checkRolesPermissions(this.permission)) {
-            this.elementRef.nativeElement.classList.add('hide');
+            this.elementRef.nativeElement.remove();
           } else {
-            this.elementRef.nativeElement.classList.remove('hide');
+            this.renderer2.appendChild(this.parentNode, this.elementRef.nativeElement);
           }
         } else if (permissionAvailable && permissionAvailable === 'error') {
-          this.elementRef.nativeElement.classList.add('hide');
+          this.elementRef.nativeElement.remove();
         }
       });
   }
