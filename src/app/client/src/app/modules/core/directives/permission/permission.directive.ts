@@ -9,8 +9,6 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 })
 export class PermissionDirective implements OnInit {
   parentNode;
-  // p = this.renderer.createElement('p');
-  // text = this.renderer.createText('Hello World !');
 
   /**
    * Permission to validate
@@ -28,8 +26,8 @@ export class PermissionDirective implements OnInit {
    * constructor
    */
   constructor(elementRef: ElementRef, permissionService: PermissionService, private renderer2: Renderer2) {
-    this.elementRef = elementRef;
-    this.permissionService = permissionService;
+  this.elementRef = elementRef;
+  this.permissionService = permissionService;
   }
   ngOnInit() {
     this.parentNode = this.elementRef.nativeElement.parentNode;
