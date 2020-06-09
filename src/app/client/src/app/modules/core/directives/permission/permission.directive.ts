@@ -32,10 +32,12 @@ export class PermissionDirective implements OnInit {
       (permissionAvailable: string) => {
         if (permissionAvailable && permissionAvailable === 'success') {
           if (!this.permissionService.checkRolesPermissions(this.permission)) {
-            this.elementRef.nativeElement.remove();
+            this.elementRef.nativeElement.classList.add('hide');
+          } else {
+            this.elementRef.nativeElement.classList.remove('hide');
           }
         } else if (permissionAvailable && permissionAvailable === 'error') {
-          this.elementRef.nativeElement.remove();
+          this.elementRef.nativeElement.classList.add('hide');
         }
       });
   }
