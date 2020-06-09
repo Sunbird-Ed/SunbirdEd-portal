@@ -308,3 +308,37 @@ app-workspace {
    padding-bottom: calculateRem(60px);
  }
 }
+
+//dropdown css
+.ui.sb-dotted-dropdown {
+  .menu {
+      right: 0;
+      left: auto; 
+      min-width: calculateRem(148px);
+      &>.item{
+          font-size:$font-size-sm;
+          &:hover {
+              color:$primary-400;
+          }
+      }
+  }
+}
+
+//iframe css
+.responsive-media {
+  position: relative;
+  padding-bottom: 56.25%;
+  width: 100%;
+  height:100%;
+  iframe {
+    width:100%;
+    height:100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    transform: translateY(-50%);  
+  }
+}
