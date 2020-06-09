@@ -104,7 +104,6 @@ function verifyToken () {
 }
 function validateUserToken (req, res, next) {
   var token = _.get(req, 'kauth.grant.access_token.token') || req.get('x-authenticated-user-token')
-  console.log("==============validate user token", token);
   if (!token) {
     return Promise.reject({
       err: 'TOKEN_MISSING',
