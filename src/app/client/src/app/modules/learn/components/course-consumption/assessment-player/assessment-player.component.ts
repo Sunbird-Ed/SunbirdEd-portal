@@ -360,8 +360,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') :  'Course',
-        ver: `${_.get(content, 'pkgVersion')}` || `1.0`,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
