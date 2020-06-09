@@ -89,11 +89,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         const selectedContent = queryParams.selectedContent;
         const isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-
-        this.setTelemetryCourseImpression();
         if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
@@ -128,6 +125,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.goBack();
             });
         }
+        this.setTelemetryCourseImpression();
         this.subscribeToContentProgressEvents().subscribe(data => { });
       });
   }
@@ -348,11 +346,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
 
   logTelemetry(id, content?: {}) {
+    this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: []
+        cdata: this.telemetryCdata
       },
       edata: {
         id: id,
@@ -403,9 +402,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         uri: this.router.url,
       },
       object: {
-        id: this.courseId,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver || '1.0',
+        id:  this.courseId || _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver:  `${_.get(this.courseHierarchy, 'pkgVersion')}` || '1.0',
         rollup: { l1: this.courseId }
       }
     };
