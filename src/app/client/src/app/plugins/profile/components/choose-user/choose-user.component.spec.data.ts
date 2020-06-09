@@ -166,6 +166,15 @@ export const mockData = {
     'managedBy': '8454cb21-3ce9-4e30-85b5-fade097880d8',
     'id': 'b2cb1e94-1a35-48d3-96dc-b7dfde252aa2'
   }],
+  notSelectedUserList: [{
+    'roles': ['PUBLIC'],
+    'firstName': 'firstName',
+    'title': 'firstName',
+    'initial': 'f',
+    'selected': false,
+    'managedBy': '8454cb21-3ce9-4e30-85b5-fade097880d8',
+    'id': 'b2cb1e94-1a35-48d3-96dc-b7dfde252aa2'
+  }],
   selectedUser: {
     'roles': ['PUBLIC'],
     'firstName': 'firstName',

@@ -94,9 +94,16 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   selectUser(event) {
     this.selectedUser = _.get(event, 'data.data');
+    if (this.selectedUser.selected) {
+      this.selectedUser = null;
+    }
     const userId = _.get(event, 'data.data.identifier');
     _.forEach(this.userList, (userData, index) => {
-      this.userList[index].selected = userData.identifier === userId;
+      if (userData.identifier === userId) {
+        this.userList[index].selected = !userData.selected;
+      } else {
+        this.userList[index].selected = userData.identifier === userId;
+      }
     });
   }
 
