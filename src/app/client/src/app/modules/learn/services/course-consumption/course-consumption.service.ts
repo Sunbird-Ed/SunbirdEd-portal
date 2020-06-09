@@ -3,7 +3,7 @@ import { of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { PlayerService } from '@sunbird/core';
-import { ServerResponse } from '@sunbird/shared';
+import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
@@ -17,7 +17,8 @@ export class CourseConsumptionService {
   updateContentConsumedStatus = new EventEmitter<any>();
   launchPlayer = new EventEmitter<any>();
 
-  constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
+  constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
+    private toasterService: ToasterService, private resourceService: ResourceService) { }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
@@ -100,6 +101,17 @@ getContentRollUp(tree, identifier) {
     return rollup;
   } else {
     return [];
+  }
+}
+getAllOpenBatches(contents) {
+  let openBatchCount = 0;
+  _.map(_.get(contents, 'content'), content => {
+    if (content.enrollmentType === 'open') {
+      openBatchCount++;
+    }
+  });
+  if (openBatchCount === 0) {
+    this.toasterService.error(this.resourceService.messages.emsg.m0003);
   }
 }
 }

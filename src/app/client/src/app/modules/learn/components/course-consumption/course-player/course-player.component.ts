@@ -386,4 +386,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     this.telemetryService.interact(interactData);
 }
+
+getAllBatchDetails(event) {
+  this.courseConsumptionService.getAllOpenBatches(event);
+}
 }

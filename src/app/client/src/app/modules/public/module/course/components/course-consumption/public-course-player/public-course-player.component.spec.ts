@@ -109,8 +109,9 @@ describe('PublicCoursePlayerComponent', () => {
   });
 
   it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
     component.getAllBatchDetails({content: [], count: 0});
-    expect(component['toasterService'].error).toHaveBeenCalledWith(component['resourceService'].messages.emsg.m0003);
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
   });
 
 });
