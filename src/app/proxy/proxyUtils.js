@@ -11,7 +11,8 @@ const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
   'realm': envHelper.KEY_CLOAK_REALM,
   'clientId': envHelper.PORTAL_AUTH_SERVER_CLIENT,
-  'public': envHelper.KEY_CLOAK_PUBLIC
+  'public': envHelper.KEY_CLOAK_PUBLIC,
+  'publicKey': envHelper.KEY_CLOAK_PUBLIC_KEY
 }
 
 const cacheConfig = {
@@ -103,6 +104,7 @@ function verifyToken () {
 }
 function validateUserToken (req, res, next) {
   var token = _.get(req, 'kauth.grant.access_token.token') || req.get('x-authenticated-user-token')
+  console.log("==============validate user token", token);
   if (!token) {
     return Promise.reject({
       err: 'TOKEN_MISSING',

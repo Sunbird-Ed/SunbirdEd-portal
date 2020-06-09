@@ -77,7 +77,7 @@ let envVariables = {
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.open-sunbird.org/auth',
-
+  KEY_CLOAK_PUBLIC_KEY: env.sunbird_keycloak_public_key,
 
   // Social login Configuration
   GOOGLE_OAUTH_CONFIG: {
