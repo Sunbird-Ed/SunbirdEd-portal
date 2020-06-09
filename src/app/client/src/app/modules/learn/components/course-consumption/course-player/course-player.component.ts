@@ -105,13 +105,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
         this.setTelemetryCourseImpression();
         const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-
         /* istanbul ignore else */
         if (this.batchId) {
           return combineLatest([
@@ -367,11 +365,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   logTelemetry(id, content?: {}) {
+    this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: []
+        cdata: this.telemetryCdata || []
       },
       edata: {
         id: id,

@@ -50,6 +50,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
+  telemetryCdata: Array<{}>;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -83,6 +85,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
         if (this.batchId) {
           this.enrolledCourse = true;
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
       });
     this.interval = setInterval(() => {
@@ -183,7 +186,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: []
+        cdata: this.telemetryCdata
       },
       edata: {
         id: id,
@@ -194,7 +197,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         id: _.get(this.courseHierarchy, 'identifier'),
         type: _.get(this.courseHierarchy, 'contentType') || 'Course',
         ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
-        rollup: {}
+        rollup: {l1: this.courseId}
       }
     };
     this.telemetryService.interact(interactData);
