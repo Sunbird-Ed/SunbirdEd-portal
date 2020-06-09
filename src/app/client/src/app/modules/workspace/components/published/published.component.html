@@ -5,7 +5,7 @@
 </div>
 
 <div class="ui grid" *ngIf="!showLoader">
-  <div *ngIf="showCourseQRCodeBtn" class="ml-auto">
+  <div *ngIf="showCourseQRCodeBtn" class="ml-auto mb-16">
     <button class="sb-btn sb-btn-normal sb-btn-secondary" appTelemetryInteract 
       [telemetryInteractObject]="{id:course-qrdownload,type:'course-qrcode',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'download-qrcsv',type:'click',pageid:'course-qrcode'}" 
@@ -50,13 +50,13 @@
 
       <!--Header-->
       <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}
+        {{resourceService?.frmelmnts?.lbl?.deletecontent}}
       </div>
       <!--/Header-->
 
       <!--Content-->
       <div class="sb-modal-content">
-        <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
+        <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
       </div>
       <!--/Content-->
 

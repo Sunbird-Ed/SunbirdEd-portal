@@ -9,7 +9,7 @@ import { CsCourseProgressCalculator } from '@project-sunbird/client-services/ser
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
 import { NavigationHelperService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { of, throwError } from 'rxjs';
@@ -32,7 +32,7 @@ describe('AssessmentPlayerComponent', () => {
   const fakeActivatedRoute = {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
     queryParams: of({ batchId: '12312433', selectedContent: assessmentPlayerMockData.activeContent.identifier }),
-    snapshot: { data: { telemetry: { env: 'course', type: '', pageid: 'course-read' } } }
+    snapshot: { data: { telemetry: { env: 'course', type: '', pageid: 'course-read', object: { ver: '1.0', type: 'batch' } } } }
   };
   configureTestSuite();
   beforeEach(async(() => {
@@ -340,5 +340,17 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(component['unsubscribe'], 'complete');
     component.ngOnDestroy();
     expect(component['unsubscribe'].complete).toHaveBeenCalled();
+  });
+
+  it('should call logAuditEvent', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.activeContent = assessmentPlayerMockData.activeContent;
+    const telemetryService = TestBed.get(TelemetryService);
+    component.batchId = '121787782323';
+    component['isUnit'] = true;
+    component.courseId = assessmentPlayerMockData.courseHierarchy.identifier;
+    spyOn(telemetryService, 'audit');
+    component.logAuditEvent(true);
+    expect(telemetryService.audit).toHaveBeenCalled();
   });
 });
