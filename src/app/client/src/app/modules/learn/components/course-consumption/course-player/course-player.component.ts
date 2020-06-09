@@ -99,6 +99,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.navigateToPlayerPage(this.courseHierarchy);
       });
+
+    this.courseConsumptionService.updateContentState
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+          this.getContentState();
+      });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
@@ -379,11 +385,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') :  'Course',
+        type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
-}
+  }
 }
