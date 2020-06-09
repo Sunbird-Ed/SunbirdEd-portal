@@ -113,7 +113,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     });
-    this.roles = _.uniq(this.roles);
+    this.roles = _.uniq(this.roles).sort();
     orgList = _.sortBy(orgList, ['orgjoindate']);
     this.orgDetails = orgList[0];
   }
