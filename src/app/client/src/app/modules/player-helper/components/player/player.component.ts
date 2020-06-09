@@ -87,6 +87,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
+      this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
       if (this.userService.loggedIn) {
         this.userService.userData$.subscribe((user: any) => {
           if (user && !user.err) {
@@ -99,8 +100,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
             this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
           }
         });
-      } else {
-        this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
       }
     }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
