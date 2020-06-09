@@ -108,7 +108,17 @@ describe('ChooseUserComponent', () => {
   it('should select user', () => {
     component.userList = [mockData.selectUserData.data.data];
     component.selectUser(mockData.selectUserData);
+    expect(component.selectedUser).toEqual(mockData.selectUserData.data.data);
     expect(component.userList).toEqual(mockData.selectedUserList);
+  });
+
+  it('should de select user if already selected', () => {
+    component.userList = [mockData.selectUserData.data.data];
+    const mockEventData = mockData.selectUserData;
+    mockEventData.data.data.selected = true;
+    component.selectUser(mockEventData);
+    expect(component.selectedUser).toEqual(null);
+    expect(component.userList).toEqual(mockData.notSelectedUserList);
   });
 
   it('should navigate', () => {
