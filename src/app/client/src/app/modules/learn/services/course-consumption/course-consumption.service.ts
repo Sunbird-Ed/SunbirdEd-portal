@@ -66,4 +66,40 @@ export class CourseConsumptionService {
       }, []);
     }
   }
+
+getRollUp(rollup) {
+    const objectRollUp = {};
+    if (!_.isEmpty(rollup)) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+    }
+    }
+    return objectRollUp;
+}
+
+getContentRollUp(tree, identifier) {
+  const rollup = [tree.identifier];
+  if (tree.identifier === identifier) {
+    return rollup;
+  }
+  if (!tree.children || !tree.children.length) {
+    return [];
+  }
+  let notDone = true;
+  let childRollup: any;
+  let index = 0;
+  while (notDone && tree.children[index]) {
+    childRollup = this.getContentRollUp(tree.children[index], identifier);
+    if (childRollup && childRollup.length) {
+      notDone = false;
+    }
+    index++;
+  }
+  if (childRollup && childRollup.length) {
+    rollup.push(...childRollup);
+    return rollup;
+  } else {
+    return [];
+  }
+}
 }
