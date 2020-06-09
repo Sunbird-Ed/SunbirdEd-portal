@@ -259,6 +259,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.calculateProgress(true);
         }
       }, err => console.error('updating content status failed', err));
+    this.courseConsumptionService.updateContentState.emit();
   }
 
   onAssessmentEvents(event) {
