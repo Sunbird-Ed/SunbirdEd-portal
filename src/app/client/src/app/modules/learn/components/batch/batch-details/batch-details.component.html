@@ -5,7 +5,7 @@
             <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown"
                 [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
                 #batchStatusSelect>
-                <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
+                <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option">
                 </sui-select-option>
             </sui-select>
         </a>

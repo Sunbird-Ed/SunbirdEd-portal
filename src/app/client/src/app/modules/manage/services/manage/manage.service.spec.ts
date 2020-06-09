@@ -2,11 +2,12 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { ManageService } from './manage.service';
 import { of } from 'rxjs';
 
 describe('ManageService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ManageService, HttpClient],

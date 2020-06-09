@@ -5,8 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormService, ContentService, CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { mockFormData } from './form.mock.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
   describe('FormService', () => {
+    configureTestSuite();
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],

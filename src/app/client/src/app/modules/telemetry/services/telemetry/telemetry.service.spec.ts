@@ -1,8 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { TelemetryService, TELEMETRY_PROVIDER } from './telemetry.service';
 import { mockData } from './telemetry.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TelemetryService', () => {
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],

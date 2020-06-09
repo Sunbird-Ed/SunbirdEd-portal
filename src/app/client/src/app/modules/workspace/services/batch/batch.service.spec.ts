@@ -7,8 +7,10 @@ import { CoreModule } from '@sunbird/core';
 import { Response } from './batch.service.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],

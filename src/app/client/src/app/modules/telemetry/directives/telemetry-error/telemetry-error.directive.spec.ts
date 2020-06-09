@@ -4,7 +4,9 @@ import { TelemetryErrorDirective } from './telemetry-error.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-error.dircetive.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('TelemetryErrorDirective', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryErrorDirective],

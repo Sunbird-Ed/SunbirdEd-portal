@@ -9,6 +9,7 @@ import * as mockData from './create-content.component.spec.data';
 const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('CreateContentComponent', () => {
   let component: CreateContentComponent;
   let fixture: ComponentFixture<CreateContentComponent>;
@@ -27,7 +28,7 @@ describe('CreateContentComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],

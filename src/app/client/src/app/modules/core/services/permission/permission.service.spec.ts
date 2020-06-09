@@ -7,6 +7,7 @@ import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService 
 import { PermissionService } from './permission.service';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
@@ -16,6 +17,7 @@ const mockResource = {
  }
 };
 describe('PermissionService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule],

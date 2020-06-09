@@ -15,6 +15,7 @@ export class CourseConsumptionService {
 
   courseHierarchy: any;
   updateContentConsumedStatus = new EventEmitter<any>();
+  launchPlayer = new EventEmitter<any>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService) { }
 

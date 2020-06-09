@@ -9,6 +9,8 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('WorkspaceContentFilterComponent', () => {
   let component: WorkspaceContentFilterComponent;
   let fixture: ComponentFixture<WorkspaceContentFilterComponent>;
@@ -20,6 +22,7 @@ describe('WorkspaceContentFilterComponent', () => {
     'params': observableOf({ pageNumber: '1' }),
     'queryParams': observableOf({ subject: ['english', 'odia'] })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceContentFilterComponent ],

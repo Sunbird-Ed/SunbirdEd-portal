@@ -1,8 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { BrowserCacheTtlService } from './browser-cache-ttl.service';
 
 describe('BrowserCacheTtlService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [BrowserCacheTtlService]

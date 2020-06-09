@@ -6,13 +6,15 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './content-credits.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
   let fixture: ComponentFixture<ContentCreditsComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule , HttpClientTestingModule ],
+      imports: [SuiModule, HttpClientTestingModule],
       declarations: [ContentCreditsComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -44,4 +46,20 @@ describe('ContentCreditsComponent', () => {
     expect(actualKeys).toEqual(expectedKeys);
     expect(component.contentCreditsData).toBeDefined();
   });
+
+  it('should call closeModal', () => {
+    spyOn(component.close, 'emit');
+    const modal = { deny: () => jasmine.createSpy() };
+    component.closeModal(modal);
+    expect(component.close.emit).toHaveBeenCalled();
+  });
+
+  it('should call ngOnDestroy', () => {
+    spyOn(component['unsubscribe'], 'next');
+    spyOn(component['unsubscribe'], 'complete');
+    component.ngOnDestroy();
+    expect(component['unsubscribe'].next).toHaveBeenCalled();
+    expect(component['unsubscribe'].complete).toHaveBeenCalled();
+  });
+
 });
