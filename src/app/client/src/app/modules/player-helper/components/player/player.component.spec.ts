@@ -191,5 +191,15 @@ describe('PlayerComponent', () => {
     expect(component.showPlayIcon).toBe(true);
   });
 
+  it('should remove Iframe element on destroy', () => {
+    component.contentIframe = {
+      nativeElement: {
+        remove: jasmine.createSpy()
+      }
+    };
+    component.ngOnDestroy();
+    expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
+  });
+
 });
 
