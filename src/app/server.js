@@ -46,14 +46,18 @@ const app = express()
 
 app.use(cookieParser())
 app.use(helmet())
-app.use(session({
-  secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
-  resave: false,
-  saveUninitialized: false,
-  store: memoryStore
-}))
 
-app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
+app.use([
+  '/api', '/v1/tenant', '/learner', '/content', '/user', '/merge', '/action',
+  '/certreg', '/device', '/google', '/report', '/v2/user', 'v1/sso', '/migrate',
+  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user'
+],
+  session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    saveUninitialized: false,
+    store: memoryStore
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
