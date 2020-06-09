@@ -96,8 +96,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
               firstName: userProfile.firstName ? userProfile.firstName : '',
               lastName: userProfile.lastName ? userProfile.lastName : ''
             };
-          } else {
-            this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
           }
         });
       }
