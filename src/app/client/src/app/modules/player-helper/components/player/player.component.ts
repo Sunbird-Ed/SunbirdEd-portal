@@ -9,6 +9,8 @@ const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService } from '../../../core/services';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -48,7 +50,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -82,6 +84,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
     }
+    // Check for loggedIn user; and append user data to context object
+    // User data (`firstName` and `lastName`) is used to show at the end of quiz
+    if (this.playerConfig) {
+      this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+      if (this.userService.loggedIn) {
+        this.userService.userData$.subscribe((user: any) => {
+          if (user && !user.err) {
+            const userProfile = user.userProfile;
+            this.playerConfig.context['userData'] = {
+              firstName: userProfile.firstName ? userProfile.firstName : '',
+              lastName: userProfile.lastName ? userProfile.lastName : ''
+            };
+          }
+        });
+      }
+    }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
       this.showPlayIcon = false;
@@ -101,12 +119,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     this.contentRatingModal = false;
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        const playerElement = this.contentIframe.nativeElement;
-        playerElement.contentWindow.initializePreview(this.playerConfig);
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
