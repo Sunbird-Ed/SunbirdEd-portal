@@ -6,7 +6,7 @@
 
 <div class="ui grid" *ngIf="!showLoader">
   <div *ngIf="showCourseQRCodeBtn" class="ml-auto mb-16">
-    <button class="sb-btn sb-btn-normal sb-btn-secondary" appTelemetryInteract 
+    <button class="sb-btn sb-btn-normal sb-btn-secondary my-16" appTelemetryInteract 
       [telemetryInteractObject]="{id:course-qrdownload,type:'course-qrcode',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'download-qrcsv',type:'click',pageid:'course-qrcode'}" 
       [telemetryInteractCdata]="[{id: 'course:download:QRCode', type: 'Feature'},{id: 'SB-13798', type: 'Task'}]" (click)=getCourseQRCsv();
