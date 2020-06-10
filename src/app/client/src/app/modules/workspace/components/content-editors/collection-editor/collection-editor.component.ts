@@ -238,7 +238,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         type: 'plugin'
       });
       window.config.nodeDisplayCriteria = {
-        contentType: ['TextBookUnit', 'Course']
+        contentType: ['TextBookUnit']
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
