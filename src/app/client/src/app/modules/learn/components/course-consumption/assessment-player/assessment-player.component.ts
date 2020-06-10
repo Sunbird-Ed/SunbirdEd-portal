@@ -347,7 +347,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
 
   logTelemetry(id, content?: {}) {
-    this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
       context: {

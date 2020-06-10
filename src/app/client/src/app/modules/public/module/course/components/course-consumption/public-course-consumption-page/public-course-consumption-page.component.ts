@@ -46,7 +46,11 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.courseHierarchy = courseHierarchy;
       this.showLoader = false;
     }, (error) => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      if (_.isEqual(_.get(error, 'error.responseCode'), 'RESOURCE_NOT_FOUND')) {
+        this.toasterService.error(this.resourceService.messages.emsg.m0002);
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
       this.redirectToExplore();
     });
   }
