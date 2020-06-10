@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { Response } from './profile-page.spec.data';
 import {of as observableOf,  throwError as observableThrowError } from 'rxjs';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
@@ -60,6 +60,7 @@ describe('ProfilePageComponent', () => {
     },
     languageSelected$: observableOf({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule,

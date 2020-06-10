@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { ListAllReportsComponent } from './list-all-reports.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReportService } from '../../services';
@@ -20,7 +20,7 @@ describe('ListAllReportsComponent', () => {
   let fixture: ComponentFixture<ListAllReportsComponent>;
   const routerStub = { navigate: () => Promise.resolve(true) };
   let reportService: ReportService;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],

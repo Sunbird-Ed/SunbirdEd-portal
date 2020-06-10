@@ -1,11 +1,11 @@
 import { throwError, of } from 'rxjs';
 import { ToasterService, SharedModule, ResourceService } from '@sunbird/shared';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule, UserService, SearchService, OrgDetailsService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 import { CurriculumCoursesComponent } from './curriculum-courses.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -38,12 +38,12 @@ describe('CurriculumCoursesComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CurriculumCoursesComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), HttpClientTestingModule, RouterModule.forRoot([])],
       providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle}
@@ -67,15 +67,24 @@ describe('CurriculumCoursesComponent', () => {
     expect(component.setTelemetryImpression).toHaveBeenCalled();
   });
 
-  it('should call navigation helper service', () => {
-    spyOn(component['navigationhelperService'], 'goBack');
+  it('should go back to previous page', () => {
+    spyOn(component['location'], 'back');
     component.goBack();
-    expect(component['navigationhelperService'].goBack).toHaveBeenCalled();
+    expect(component['location'].back).toHaveBeenCalled();
   });
 
   it('should call router with parameters', () => {
+    spyOn(component, 'getInteractData');
+    component.navigateToCourseDetails({courseId: 1, batchId: 121232});
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', 1, 'batch', 121232]);
+    expect(component.getInteractData).toHaveBeenCalled();
+  });
+
+  it('should call router with parameters, without batchId', () => {
+    spyOn(component, 'getInteractData');
     component.navigateToCourseDetails({identifier: 1});
-    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', 1]);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', 1]);
+    expect(component.getInteractData).toHaveBeenCalled();
   });
 
   it('should call telemetry.interact()', () => {

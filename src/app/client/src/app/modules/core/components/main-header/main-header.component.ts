@@ -126,42 +126,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
-  ngOnInit() {
-    if (this.userService.loggedIn) {
-      this.userService.userData$.subscribe((user: any) => {
-        if (user && !user.err) {
-          this.fetchManagedUsers();
-          this.userProfile = user.userProfile;
-          this.getLanguage(this.userService.channel);
-          this.isCustodianOrgUser();
-          document.title = _.get(user, 'userProfile.rootOrgName');
-          this.userService.createManagedUser.pipe(
-            takeUntil(this.unsubscribe)).subscribe((data: any) => {
-            this.fetchManagedUsers();
-          });
-        }
-      });
-      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
-        this.showContributeTab = showTab;
-      });
-    } else {
-      this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
-        if (data && !data.err) {
-          this.getLanguage(data.orgDetails.hashTagId);
-        }
-      });
-    }
-    this.getUrl();
-    this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
-    this.tenantService.tenantData$.subscribe(({tenantData}) => {
-      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
-      this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
-    });
-    this.setInteractEventData();
-    this.cdr.detectChanges();
-    this.setWindowConfig();
-
-  }
 
   getTelemetryContext() {
     const userProfile = this.userService.userProfile;
@@ -412,51 +376,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  getStartEventData(selectedUser, initiatorUserId) {
-    return {
-      context: {
-        env: 'main-header',
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: selectedUser.identifier
-        }]
-      },
-      edata: {
-        type: 'view',
-        pageid: this.router.url.split('/')[1],
-        mode: 'switch-user'
-      }
-    };
-  }
-
-  getEndEventData(selectedUser, initiatorUserId) {
-    return {
-      context: {
-        env: 'main-header',
-        cdata: [{
-          id: 'initiator-id',
-          type: initiatorUserId
-        }, {
-          id: 'managed-user-id',
-          type: selectedUser.identifier
-        }]
-      },
-      edata: {
-        type: 'view',
-        pageid: this.router.url.split('/')[1],
-        mode: 'switch-user'
-      }
-    };
-  }
-
   switchUser(event) {
     let userSubscription;
     const selectedUser = _.get(event, 'data.data');
-    const initiatorUserId = this.userService.userid;
-    this.telemetryService.start(this.getStartEventData(selectedUser, initiatorUserId));
     const userId = selectedUser.identifier;
     this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
@@ -472,7 +394,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
                 class: 'sb-toaster sb-toast-success sb-toast-normal'
               });
               this.toggleSideMenu(false);
-              this.telemetryService.end(this.getEndEventData(selectedUser, initiatorUserId));
               if (userSubscription) {
                 userSubscription.unsubscribe();
               }
@@ -483,6 +404,42 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       }
     );
+  }
+
+  ngOnInit() {
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          this.fetchManagedUsers();
+          this.userProfile = user.userProfile;
+          this.getLanguage(this.userService.channel);
+          this.isCustodianOrgUser();
+          document.title = _.get(user, 'userProfile.rootOrgName');
+          this.userService.createManagedUser.pipe(
+            takeUntil(this.unsubscribe)).subscribe((data: any) => {
+            this.fetchManagedUsers();
+          });
+        }
+      });
+      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
+        this.showContributeTab = showTab;
+      });
+    } else {
+      this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
+        if (data && !data.err) {
+          this.getLanguage(data.orgDetails.hashTagId);
+        }
+      });
+    }
+    this.getUrl();
+    this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
+    this.tenantService.tenantData$.subscribe(({tenantData}) => {
+      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
+      this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
+    });
+    this.setInteractEventData();
+    this.cdr.detectChanges();
+    this.setWindowConfig();
   }
 
   ngOnDestroy() {

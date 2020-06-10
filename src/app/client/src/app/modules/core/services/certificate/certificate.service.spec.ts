@@ -5,8 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { mockResponseData } from './certificate.service.spec.data';
 import { CertificateService } from './certificate.service';
 import { of as observableOf, Observable } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CertificateService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
     providers: [ConfigService, LearnerService]

@@ -1,84 +1,85 @@
-<div class="ui container mt-24">
+<div class="ui container mt-24" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="!loader">
-    <div class="sb-g" [appTelemetryImpression]="telemetryCourseImpression">
-      <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
-        <div class="sb-pageSection course-player--header">
-          <div class="sb-pageSection-header">
-            <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{resourceService?.frmelmnts?.lbl?.aboutthecourse}}</h4>
-          </div>
-          <div class="sb-pageSection-content">
-            <div *ngIf="courseHierarchy?.description">
-              <p *ngIf="!readMore">
-                {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
-                <span class="ui cardsKnowMore mouse-pointer"
-                  *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
-                  (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
-              </p>
-              <p *ngIf="readMore">
-                {{ courseHierarchy?.description}}&nbsp;
-                <span class="ui cardsKnowMore mouse-pointer"
-                  (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
-              </p>
-            </div>
+    <div class="course-player" [appTelemetryImpression]="telemetryCourseImpression">
+      <div class="sb-pageSection course-player--header text-left">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title sb-pageSection-title-light">
+            {{resourceService?.frmelmnts?.lbl?.aboutthecourse}}</h4>
+        </div>
+        <div class="sb-pageSection-content">
+          <div *ngIf="courseHierarchy?.description">
+            <p *ngIf="!readMore">
+              {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
+              <span class="ui cardsKnowMore mouse-pointer"
+                *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
+                (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+            </p>
+            <p *ngIf="readMore">
+              {{ courseHierarchy?.description}}&nbsp;
+              <span class="ui cardsKnowMore mouse-pointer"
+                (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+            </p>
           </div>
         </div>
-        <div class="py-16">
-          <h4 class="sb-pageSection-title sb-pageSection-title-light">
-            {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+      </div>
 
-          <div class="sb-pageSection">
-            <div *ngFor="let item of courseHierarchy?.children; let index = index">
-              <div class="d-flex flex-ai-center flex-jc-space-between py-8">
-                <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-                <button (click)="navigateToPlayerPage(item)" *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
-                  class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-                <button (click)="navigateToPlayerPage(item)" *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart"
-                  class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
-              </div>
-              <div class="chapter-box sb-g">
-                <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8"
-                  [ngClass]="{'sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse}">
-                  <sb-toc-curriculum
-                    *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
-                    [isAccordion]="true" (tocCardClick)="navigateToContent($event, item)" [tocData]="item"
-                    [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
-                  </sb-toc-curriculum>
-                  <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
-                    (tocCardClick)="navigateToContent($event, item)" [type]="cardType" [contentStatus]="contentStatus">
-                  </sb-toc-card>
-                  <ng-template #noContent>
-                    <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
-                      {{resourceService?.messages?.stmsg?.m0121}}</div>
-                  </ng-template>
-                </section>
-                <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
-                  <div class="sb-bg-color-white course-list-progress text-left">
-                    <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
-                    </div>
-                    <div class="course-list-progress__status mt-8">
-                      {{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}}
-                      {{resourceService?.frmelmnts?.lbl?.completed}}
-                    </div>
-                    <sui-progress [value]="item?.progress" maximum="100"
-                      class="green course-list-progress__barholder mt-8">
-                    </sui-progress>
+      <div class="course-player--card text-left">
+        <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
+          [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
+          [courseProgressData]="courseProgressData"  (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
+      </div>
+
+      <div class="course-player--content text-left">
+        <h4 class="sb-pageSection-title sb-pageSection-title-light">
+          {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+
+        <div class="sb-pageSection">
+          <div *ngFor="let item of courseHierarchy?.children; let index = index">
+            <div class="d-flex flex-ai-center flex-jc-space-between py-8">
+              <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
+              <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
+                *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+              <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
+                *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
+            </div>
+            <div class="chapter-box sb-g">
+              <section class="sb-g-col-xs-12"
+              [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
+                <sb-toc-curriculum
+                  *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
+                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')" [tocData]="item"
+                  [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
+                </sb-toc-curriculum>
+                <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
+                  (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                </sb-toc-card>
+                <ng-template #noContent>
+                  <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
+                    {{resourceService?.messages?.stmsg?.m0121}}</div>
+                </ng-template>
+              </section>
+              <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
+                <div class="sb-bg-color-white course-list-progress text-left">
+                  <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
                   </div>
-                </section>
-              </div>
+                  <div class="course-list-progress__status mt-8">
+                    {{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}}
+                    {{resourceService?.frmelmnts?.lbl?.completed}}
+                  </div>
+                  <sui-progress [value]="item?.progress" maximum="100"
+                    class="green course-list-progress__barholder mt-8">
+                  </sui-progress>
+                </div>
+              </section>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
-        <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
-          [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
-          [courseProgressData]="courseProgressData"></app-batch-details>
-
-        <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata mt-16">
-          <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
-        </div>
+      <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata text-left">
+        <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
       </div>
     </div>
   </div>
@@ -87,7 +88,7 @@
 
 <router-outlet></router-outlet>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" *ngIf="showJoinTrainingModal">
   <!--Header-->
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.btn?.enroll}}

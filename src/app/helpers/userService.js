@@ -1,5 +1,6 @@
 const {getKeyCloakClient} = require('./keyCloakHelper');
 const {getCurrentUserRoles} = require('./permissionsHelper');
+const telemetryHelper = require('./telemetryHelper.js');
 const envHelper = require('./environmentVariablesHelper.js');
 const keyCloakClient = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -133,15 +134,24 @@ const switchUser = async (req, res) => {
     logger.info({msg: 'switch user rejected missing userID'});
     res.status(httpSatusCode.BAD_REQUEST).send(errorResponse);
   }
+  const initiatorUserData = {
+    session: req.session
+  };
+  const cdata = [
+    {id: 'initiator-id', type: initiatorUserData.session.userId},
+    {id: 'managed-user-id', type: req.params.userId}
+  ];
   getCurrentUserRoles(req, function (error, data) {
     if (error) {
       res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
     } else {
+      telemetryHelper.logSessionEnd(initiatorUserData, cdata);
       req.session.userSid = uuidv1();
       req.session.save(function (error) {
         if (error) {
           res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
         } else {
+          telemetryHelper.logSessionStart(req, cdata);
           res.status(httpSatusCode.OK).send({
             id: "api.user.switch",
             params: {
@@ -177,9 +187,3 @@ const errorResponse = {
 
 
 module.exports = {acceptTnc, acceptTncAndGenerateToken, switchUser};
-
-
-
-
-
-

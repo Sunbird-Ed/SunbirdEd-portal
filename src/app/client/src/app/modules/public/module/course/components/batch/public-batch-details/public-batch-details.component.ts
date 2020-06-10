@@ -2,7 +2,7 @@
 import { takeUntil } from 'rxjs/operators';
 import { CourseBatchService } from '@sunbird/learn';
 import { Router } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -21,6 +21,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   batchStatus: Number;
   @Input() courseId: string;
   @Input() courseHierarchy: any;
+  @Output() allBatchDetails = new EventEmitter();
 
   public baseUrl = '';
   public showLoginModal = false;
@@ -66,6 +67,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     this.courseBatchService.getAllBatchDetails(searchParams).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data: ServerResponse) => {
+        this.allBatchDetails.emit(_.get(data, 'result.response'));
         if (data.result.response.content && data.result.response.content.length > 0) {
           this.batchList = data.result.response.content;
         }

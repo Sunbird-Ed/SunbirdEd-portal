@@ -5,8 +5,11 @@ import { Renderer2 } from '@angular/core';
 import { CacheService } from 'ng2-cache-service';
 import { ContentDirectionDirective } from './content-direction.directive';
 import {mockRes} from './content-direction.directive.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('ContentDirectionDirective', () => {
   let contentDirectionDirective: ContentDirectionDirective;
+  configureTestSuite();
   beforeEach(() => {
     const configServiceStub = { appConfig: { mediumCode: {'english': 'en'} } };
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr'} };

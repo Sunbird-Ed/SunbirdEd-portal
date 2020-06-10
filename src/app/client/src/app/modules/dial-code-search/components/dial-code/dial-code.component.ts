@@ -86,9 +86,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
             !sessionStorage.getItem('singleContentRedirect')) {
             this.singleContentRedirect = this.searchResults[0]['name'];
-            this.getEvent({
-              data: this.searchResults[0]
-            });
+            if (this.searchResults[0].contentType.toLowerCase() !== 'course') {
+              this.getEvent({
+                data: this.searchResults[0]
+              });
+            }
           }
         }
         this.showLoader = false;

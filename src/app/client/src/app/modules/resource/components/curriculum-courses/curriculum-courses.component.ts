@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 // import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
 import { SearchService, CoursesService } from '@sunbird/core';
@@ -30,12 +31,14 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public courseList: any = [];
   public title: string;
   public mergedCourseList: any = [];
+  fallbackImg = './../../../../../assets/images/book.png';
 
   public telemetryImpression: IImpressionEventInput;
   constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private router: Router, private navigationhelperService: NavigationHelperService,
-    private coursesService: CoursesService, private telemetryService: TelemetryService
+    private coursesService: CoursesService, private telemetryService: TelemetryService,
+    private location: Location
    ) { }
 
   ngOnInit() {
@@ -46,7 +49,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
       this.fetchEnrolledCourses();
     } else {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-      this.navigationhelperService.goBack();
+      this.location.back();
     }
     this.setTelemetryImpression();
   }
@@ -97,13 +100,18 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.navigationhelperService.goBack();
+    this.location.back();
   }
 
   navigateToCourseDetails(course) {
     this.getInteractData(course);
-    const courseId = _.get(course, 'metaData.courseId') || course.identifier;
-    this.router.navigate(['learn/course', courseId]);
+    const courseId = _.get(course, 'courseId') || course.identifier;
+
+    if (course.batchId) {
+      this.router.navigate(['/learn/course', courseId, 'batch', course.batchId]);
+    } else {
+      this.router.navigate(['/learn/course', courseId]);
+    }
   }
 
   getInteractData(course) {

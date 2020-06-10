@@ -6,8 +6,10 @@ import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { ExtPluginService } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
  describe('ReviewCommentsService', () => {
+    configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],

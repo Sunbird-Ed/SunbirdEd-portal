@@ -12,6 +12,7 @@ import { Response } from './dial-code.component.spec.data';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
 import { mockData } from '../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
@@ -73,6 +74,7 @@ describe('DialCodeComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = 'browse';
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
@@ -256,7 +258,6 @@ describe('DialCodeComponent', () => {
     dialCodeService['dialSearchResults'] = { count: 2 };
     component.handleCloseButton();
     expect(router.navigate).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledWith(['/get/dial', fakeActivatedRoute.snapshot.params.dialCode]);
   });
 
@@ -266,7 +267,6 @@ describe('DialCodeComponent', () => {
     dialCodeService['dialSearchResults'] = { count: 2 };
     component.handleCloseButton();
     expect(router.navigate).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledWith(['/get/dial', 'T4S6T3']);
   });
 
@@ -277,7 +277,6 @@ describe('DialCodeComponent', () => {
     dialCodeService['dialSearchResults'] = { count: 2 };
     component.handleCloseButton();
     expect(router.navigate).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledWith(['/get/dial', 'T4S6T3']);
   });
 
@@ -288,7 +287,6 @@ describe('DialCodeComponent', () => {
     dialCodeService['dialSearchResults'] = { count: 2 };
     component.handleCloseButton();
     expect(router.navigate).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledTimes(1);
     expect(router.navigate).toHaveBeenCalledWith(['/get/dial', 'T4S6T3']);
   });
 

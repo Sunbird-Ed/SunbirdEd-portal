@@ -1,5 +1,6 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
 import * as _ from 'lodash-es';
+import { IAuditEventInput } from '../../interfaces/telemetry';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput, IExDataEventInput,
@@ -47,7 +48,7 @@ export class TelemetryService {
    * @type {Boolean}
    * @memberof TelemetryService
    */
-  private isInitialized: Boolean = false;
+  private isInitialized = false;
 
   /**
    * Creates an instance of TelemetryService.
@@ -137,6 +138,13 @@ export class TelemetryService {
     }
   }
 
+  public audit(auditEventInput: IAuditEventInput) {
+    if (this.isInitialized) {
+      auditEventInput = _.cloneDeep(this.addUTM(auditEventInput));
+      const eventData: ITelemetryEvent = this.getEventData(auditEventInput);
+      this.telemetryProvider.audit(eventData.edata, eventData.options);
+    }
+  }
   /**
    * Logs 'share' telemetry event
    *
@@ -332,7 +340,8 @@ export class TelemetryService {
   }
 
   public makeUTMSession(params) {
-    this.UTMparam = _.toPairs(params).filter(([key, value]) => UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
+    this.UTMparam = _.toPairs(params).
+    filter(([key, value]) => value && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
     sessionStorage.setItem('UTM', JSON.stringify(this.UTMparam));
   }
 
