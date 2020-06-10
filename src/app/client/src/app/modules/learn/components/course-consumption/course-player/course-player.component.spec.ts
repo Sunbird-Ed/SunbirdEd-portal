@@ -26,7 +26,7 @@ describe('CoursePlayerComponent', () => {
     messages: {
       imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error' }
+      emsg: { m0005: 'error', m0003: `The Course doesn't have any open batches` }
     },
     frmelmnts: {
       btn: {
@@ -446,9 +446,11 @@ describe('CoursePlayerComponent', () => {
     expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
 
-  xit('should call navigateToContent', () => {
+  it('should call navigateToContent', () => {
+    spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
-    component.navigateToContent({id: '1234'}, { event: { type: 'click' } });
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToContent({ event: { type: 'click' }, data: {identifier: '12343536'}}, 'test');
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
 
@@ -487,4 +489,9 @@ describe('CoursePlayerComponent', () => {
     expect(component.showJoinTrainingModal).toBe(true);
   });
 
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
+    component.getAllBatchDetails({content: [], count: 0});
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
+  });
 });
