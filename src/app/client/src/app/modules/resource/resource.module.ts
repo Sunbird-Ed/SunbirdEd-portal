@@ -12,7 +12,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { CurriculumCourseDetailsComponent } from './components/curriculum-course-details/curriculum-course-details.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +27,7 @@ import { CurriculumCourseDetailsComponent } from './components/curriculum-course
     CommonConsumptionModule,
     ContentSearchModule
   ],
-  declarations: [ResourceComponent, CurriculumCoursesComponent, CurriculumCourseDetailsComponent]
+  declarations: [ResourceComponent, CurriculumCoursesComponent]
 })
 export class ResourceModule {
   }
