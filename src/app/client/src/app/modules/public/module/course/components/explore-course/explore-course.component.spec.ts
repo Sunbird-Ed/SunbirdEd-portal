@@ -12,7 +12,7 @@ import { Response } from './explore-course.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExploreCourseComponent', () => {
   let component: ExploreCourseComponent;
@@ -48,6 +48,7 @@ describe('ExploreCourseComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],

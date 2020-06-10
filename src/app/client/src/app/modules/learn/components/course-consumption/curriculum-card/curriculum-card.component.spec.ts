@@ -3,10 +3,12 @@ import { CurriculumCardComponent } from './curriculum-card.component';
 import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('CurriculumCardComponent', () => {
   let component: CurriculumCardComponent;
   let fixture: ComponentFixture<CurriculumCardComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

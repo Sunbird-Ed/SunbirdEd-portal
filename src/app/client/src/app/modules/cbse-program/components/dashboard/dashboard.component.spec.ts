@@ -19,6 +19,7 @@ import { ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
 import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -57,7 +58,7 @@ describe('DashboardComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, CoreModule, SharedModule.forRoot(),

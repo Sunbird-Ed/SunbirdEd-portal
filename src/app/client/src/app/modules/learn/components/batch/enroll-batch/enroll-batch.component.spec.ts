@@ -16,6 +16,8 @@ import { fakeBatchDetails } from './enroll-batch.component.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('EnrollBatchComponent', () => {
   let component: EnrollBatchComponent;
   let fixture: ComponentFixture<EnrollBatchComponent>;
@@ -33,10 +35,7 @@ describe('EnrollBatchComponent', () => {
         }
       ],
       data: {
-        telemetry: {
-          env: 'workspace', pageid: 'workspace-course-batch', subtype: 'scroll', type: 'list',
-          object: { type: 'batch', ver: '1.0' }
-        }
+        telemetry: { env: 'Course', pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
       }
     }
   };
@@ -58,7 +57,7 @@ describe('EnrollBatchComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EnrollBatchComponent],
@@ -209,4 +208,15 @@ describe('EnrollBatchComponent', () => {
     expect(toasterSpy).toHaveBeenCalled();
     expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.smsg.m0036);
   }));
+
+  it('should send audit event on course enrolled', () => {
+    component.batchDetails = {
+      identifier: '01278712683697766417',
+      courseId: 'do_2127871108662804481320',
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'audit');
+    component.logAuditEvent();
+    expect(telemetryService.audit).toHaveBeenCalled();
+  });
 });

@@ -9,7 +9,7 @@
           <div class="d-flex flex-jc-space-between flex-ai-end flex-w-wrap">
             <div class="sb-pageSection">
               <div class="sb-pageSection-header sb-pageSection-header-compact">
-                <h1 class="sb-pageSection-title">{{courseHierarchy.name}}</h1>
+                <h1 class="sb-pageSection-title">{{courseHierarchy?.name}}</h1>
               </div>
               <div class="sb-pageSection-content d-flex flex-ai-center flex-w-wrap">
                 <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="ui star rating mr-16" [isReadonly]="true"
@@ -83,5 +83,5 @@
   </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-  (close)="sharelinkModal = false">
+  (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>

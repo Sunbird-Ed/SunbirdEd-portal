@@ -11,8 +11,10 @@ import { CourseConsumptionService } from './course-consumption.service';
 // Test data
 import * as mockData from './course-consumption.service.spec.data';
 const testData = <any>mockData.mockRes;
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseConsumptionService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

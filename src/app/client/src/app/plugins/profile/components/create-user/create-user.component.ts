@@ -187,7 +187,11 @@ export class CreateUserComponent implements OnInit {
         });
       },
       (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        if (_.get(err, 'error.params.status') === 'MANAGED_USER_LIMIT_EXCEEDED') {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0100'));
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+        }
         this.enableSubmitBtn = true;
       }
     );

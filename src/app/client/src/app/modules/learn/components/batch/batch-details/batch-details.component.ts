@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -42,6 +42,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
   isUnenrollbtnDisabled = false;
+  @Output() allBatchDetails = new EventEmitter();
+
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService) {
@@ -148,6 +150,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
        this.courseBatchService.getAllBatchDetails(searchParams).pipe(
         takeUntil(this.unsubscribe))
         .subscribe((data: ServerResponse) => {
+          this.allBatchDetails.emit(_.get(data, 'result.response'));
           if (data.result.response.content && data.result.response.content.length > 0) {
             this.batchList = data.result.response.content;
             this.fetchUserDetails();
@@ -175,6 +178,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe))
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
+        this.isUnenrollDisabled();
       });
   }
   fetchUserDetails() {

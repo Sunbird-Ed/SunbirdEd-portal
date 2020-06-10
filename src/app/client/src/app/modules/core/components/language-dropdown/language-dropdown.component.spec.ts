@@ -9,6 +9,7 @@ import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('LanguageDropdownComponent', () => {
     let component: LanguageDropdownComponent;
@@ -42,6 +43,7 @@ describe('LanguageDropdownComponent', () => {
             }
         }
     };
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],

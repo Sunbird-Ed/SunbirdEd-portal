@@ -15,6 +15,7 @@ import { ProfileService } from '@sunbird/profile';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OnboardingLocationSelectionComponent', () => {
   let component: OnboardingLocationSelectionComponent;
@@ -26,7 +27,7 @@ describe('OnboardingLocationSelectionComponent', () => {
 
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnboardingLocationSelectionComponent],

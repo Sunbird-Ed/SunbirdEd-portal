@@ -9,11 +9,12 @@ import { CardCreationComponent } from './card-creation.component';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CardCreationComponent', () => {
   let component: CardCreationComponent;
   let fixture: ComponentFixture<CardCreationComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],

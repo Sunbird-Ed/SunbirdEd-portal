@@ -131,33 +131,38 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     };
   }
 
-  public navigateToContent(event: any) {
+  public navigateToContent(event: any, id) {
+    this.logTelemetry(id, event.data);
     if (!_.get(this.userService, 'userid') && !_.isEmpty(event.event)) {
       this.showJoinTrainingModal = true;
     }
   }
 
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryIntractData = {
+
+
+  logTelemetry(id, content?: {}) {
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
         cdata: []
       },
       edata: {
-        id: 'join-training-popup-close',
+        id: id,
         type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'explore-course-toc',
       },
       object: {
-        id: this.activatedRoute.snapshot.params.courseId,
-        type: 'Course',
-        ver: '1.0',
-        rollup: {
-          l1: this.activatedRoute.snapshot.params.courseId
-        }
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') :  'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    this.telemetryService.interact(telemetryIntractData);
-  }
+    this.telemetryService.interact(interactData);
+}
+
+getAllBatchDetails(event) {
+  this.courseConsumptionService.getAllOpenBatches(event);
+}
 }

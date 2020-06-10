@@ -9,12 +9,13 @@ const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
+export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -101,12 +102,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     this.contentRatingModal = false;
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        const playerElement = this.contentIframe.nativeElement;
-        playerElement.contentWindow.initializePreview(this.playerConfig);
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
@@ -278,5 +274,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  ngOnDestroy() {
+    if (this.contentIframe.nativeElement) {
+      this.contentIframe.nativeElement.remove();
+    }
   }
 }

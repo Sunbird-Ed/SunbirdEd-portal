@@ -6,8 +6,10 @@ import { DialCodeService } from './dial-code.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
-describe('DialCodeService', () => {
+import { configureTestSuite } from '@sunbird/test-util';
 
+describe('DialCodeService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
     providers: [SearchService, PlayerService]

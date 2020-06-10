@@ -10,11 +10,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { testData } from './otp-popup.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpPopupComponent', () => {
   let component: OtpPopupComponent;
   let fixture: ComponentFixture<OtpPopupComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,

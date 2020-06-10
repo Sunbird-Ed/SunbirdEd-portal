@@ -14,6 +14,7 @@ import { Response } from './flag-reviewer.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FlagReviewerComponent', () => {
   let component: FlagReviewerComponent;
@@ -65,6 +66,7 @@ describe('FlagReviewerComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlagReviewerComponent, DateFilterXtimeAgoPipe],
