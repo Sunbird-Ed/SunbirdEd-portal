@@ -115,7 +115,6 @@ describe('TermsAndConditionsPopupComponent', () => {
     component.disableContinueBtn = true;
     const userService = TestBed.get(UserService);
     const userData = mockUserData.success;
-    userData.result.response['managedBy'] = 'mock iD';
     userService._userProfile = userData.result.response;
     userService._userData$.next({err: null, userProfile: userData});
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
@@ -123,7 +122,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     component.onSubmitTnc();
     expect(component.onClose).toHaveBeenCalled();
     expect(userService.acceptTermsAndConditions).toHaveBeenCalledWith(
-      {request: {version: undefined, userId: 'mock iD'}});
+      {request: {version: undefined, userId: userService.userProfile.userId}});
   });
 
   it('should not call acceptTermsAndConditions api', () => {
