@@ -12,7 +12,7 @@ const keyCloakConfig = {
   'realm': envHelper.KEY_CLOAK_REALM,
   'clientId': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public': envHelper.KEY_CLOAK_PUBLIC,
-  'publicKey': envHelper.KEY_CLOAK_PUBLIC_KEY
+  'realmPublicKey': envHelper.KEY_CLOAK_PUBLIC_KEY
 }
 
 const cacheConfig = {
