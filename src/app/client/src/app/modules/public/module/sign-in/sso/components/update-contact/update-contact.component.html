@@ -1,12 +1,12 @@
 <sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
   <div [appTelemetryImpression]="telemetryImpression" class="signup-background">
-    <div class="ui raised shadow container segment">
+    <div class="fullpage-background-image">
       <div *ngIf="!showOtpComp">
         <div class="d-flex flex-jc-center mb-30">
           <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
         </div>
         <h6 class="text-center mb-24">{{resourceService?.frmelmnts?.lbl?.mobileEmailInfoText |  interpolate:'{instance}': resourceService.instance}}</h6>
-        <div class="width-300 mx-auto mt-30">
+        <div class="container-wrapper">
           <form #contactDetailsForm="ngForm">
             <div class="inline fields d-flex flex-w-wrap" id="Mandatory">
               <div class="field mb-16 mr-16">

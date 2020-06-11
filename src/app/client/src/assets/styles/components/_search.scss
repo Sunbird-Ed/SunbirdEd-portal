@@ -70,7 +70,7 @@
     min-width: auto;
     white-space: nowrap;
     border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-    color: $blue;
+    color: var(--primary-400);
     font-size: $sb-search-btn-font-size;
     font-weight: bold;
     margin: 0 !important;
@@ -145,8 +145,6 @@
     }
   }
 }
-
-
 
 input:-internal-autofill-previewed, 
 input:-internal-autofill-selected, 

@@ -1,5 +1,7 @@
 @import "variables";
 @import 'mixins/mixins';
+@import 'pages/sign_in_up';
+
 .ui.raised.shadow.container.segment {
   margin: calculateRem(20px) auto !important;
   padding: calculateRem(10px);
@@ -70,7 +72,7 @@
   padding: calculateRem(10px) 0;
 }
 .ui.basic.error.label {
-  background: $white-color !important;
+  background: none !important;
   color: $danger-color !important;
   border: 0 !important;
   padding-left: 0;
@@ -157,51 +159,19 @@ input[type=number]::-webkit-inner-spin-button {
 .ctct-inline-form .g-recaptcha {
   display: none !important
 }
-.signup-background {
-  background: url('/assets/images/bg.svg') no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: auto;
-  @media screen and (min-width: 768px) {
-    position: fixed;
-  }
-}
+
 .sb-requirement-field {
   font-size: calculateRem(12px);
   span {
     color: $red;
   }
 }
-.sb-account-header-text {
-  font-size: calculateRem(16px);
-  font-weight: bold;
-}
+
 .grey-text {
   color: var(--gray-300) !important;
   font-size: calculateRem(16px) !important;
 }
-@media only screen and (max-width: 767px) {
-  .signup-background {
-    margin: 0 auto !important;
-    box-shadow: none !important;
-    width: 100% !important;
-    background: #fff;
-    position: fixed;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    .ui.raised.shadow.container.segment {
-      box-shadow: none;
-      margin: 0 auto !important;
-      padding: calculateRem(16px) 0 calculateRem(24px) 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      overflow: auto;
-    }
-  }
-}
+
 .sb-form-control {
   height: calculateRem(32px);
 }
@@ -215,6 +185,7 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: $font-size-xs !important;
   color: $gray-200;
   border: none !important;
+  background: none;
   &:focus,
   &:hover {
     outline: none;
@@ -273,3 +244,5 @@ form.Off {
 form.On {
   opacity:1;
 }
+
+
