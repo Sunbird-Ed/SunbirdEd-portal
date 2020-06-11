@@ -38,7 +38,7 @@ module.exports = (app) => {
         }))
 
     app.all('/content/*',
-        isAPIWhitelisted.isAPIWhiteListed('CONTENT'),
+        isAPIWhitelisted.isAPIWhiteListed(),
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         proxyUtils.verifyToken(),
         permissionsHelper.checkPermission(),
