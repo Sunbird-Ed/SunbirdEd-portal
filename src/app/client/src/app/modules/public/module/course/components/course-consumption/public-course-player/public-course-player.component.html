@@ -25,7 +25,7 @@
       </div>
       <!-- Card Section -->
       <div class="course-player--card text-left">
-        <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy">
+        <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy" (allBatchDetails)="getAllBatchDetails($event)">
         </app-public-batch-details>
       </div>
       <!-- Content Section -->

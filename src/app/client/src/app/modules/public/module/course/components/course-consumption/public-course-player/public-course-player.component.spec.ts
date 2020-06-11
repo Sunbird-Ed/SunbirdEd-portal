@@ -1,6 +1,6 @@
 
 import { of, Observable } from 'rxjs';
-import { CourseHierarchyGetMockResponse, telemetryInteractMockData, coursePlayerMockData } from './public-course-player.component.mock.data';
+import { CourseHierarchyGetMockResponse, coursePlayerMockData } from './public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicCoursePlayerComponent } from './public-course-player.component';
 import { SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
@@ -16,7 +16,10 @@ const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
     fmsg: { m0001: 'error', m0003: 'error' },
-    emsg: { m0005: 'error' }
+    emsg: {
+      m0005: 'error',
+      m0003: `The Course doesn't have any open batches`
+    }
   },
   frmelmnts: {
     btn: {
@@ -89,23 +92,26 @@ describe('PublicCoursePlayerComponent', () => {
     component.navigateToContent({ event: { type: 'click' } }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
   });
-  xit('should log telemetry on click of join training popup close icon', () => {
+
+  it('should log telemetry on click of join training popup close icon', () => {
     activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact');
-    courseService.initialize();
-    component.ngOnInit();
-    component.navigateToContent({ event: { type: 'click' } }, 'id');
+    component.courseHierarchy = coursePlayerMockData.courseHierarchy;
+    spyOn(component, 'logTelemetry');
+    component.navigateToContent({ event: { type: 'click' }, data: {identifier: 'do_212347136096788480178'} }, 'id');
     expect(component.showJoinTrainingModal).toBeTruthy();
-    expect(component.showJoinTrainingModal).toBeFalsy();
-    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
+    expect(component.logTelemetry).toHaveBeenCalledWith('id', {identifier: 'do_212347136096788480178'});
   });
 
   it('should call parseChildContent', () => {
     component.courseHierarchy = coursePlayerMockData.courseHierarchy;
     component['parseChildContent']();
     expect(component.curriculum).toEqual(coursePlayerMockData.curriculum);
+  });
+
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
+    component.getAllBatchDetails({content: [], count: 0});
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
   });
 
 });

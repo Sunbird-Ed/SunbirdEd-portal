@@ -99,19 +99,23 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.navigateToPlayerPage(this.courseHierarchy);
       });
+
+    this.courseConsumptionService.updateContentState
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+          this.getContentState();
+      });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
         this.setTelemetryCourseImpression();
         const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-
         /* istanbul ignore else */
         if (this.batchId) {
           return combineLatest([
@@ -367,11 +371,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: []
+        cdata: this.telemetryCdata || []
       },
       edata: {
         id: id,
@@ -380,11 +387,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') :  'Course',
+        type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
+}
+
+getAllBatchDetails(event) {
+  this.courseConsumptionService.getAllOpenBatches(event);
 }
 }
