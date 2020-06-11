@@ -5,6 +5,7 @@ import {
   IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -59,7 +60,7 @@ export class TelemetryService {
   public UTMparam;
   userSid;
 
-  constructor() {
+  constructor(private deviceDetectorService: DeviceDetectorService) {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -299,6 +300,10 @@ export class TelemetryService {
         type: 'UserSession'
       });
     }
+    eventContextData.cdata.push({
+      id: this.isMobileTablet(),
+      type: 'Device'
+    });
     return eventContextData;
   }
 
@@ -358,5 +363,17 @@ export class TelemetryService {
 
   public setSessionIdentifier(value) {
     this.userSid = value;
+  }
+
+  public isMobileTablet() {
+    let device = '';
+    if (this.deviceDetectorService.isMobile()) {
+      device = 'Mobile';
+    } else if (this.deviceDetectorService.isTablet()) {
+      device = 'Tab';
+    } else if (this.deviceDetectorService.isDesktop()) {
+      device = 'Desktop';
+    }
+    return device;
   }
 }
