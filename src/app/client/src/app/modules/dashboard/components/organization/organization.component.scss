@@ -7,3 +7,29 @@
 .ui.dropdown .menu {
    width: 100%;
 }
+span.dashBoardMenuItem.active {
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+.dashBoardMenuItem {
+    font-weight: 500;
+    font-size: 0.9375em;
+    color: var(--primary-color);
+  }
+.ui.cards > .card .meta.dashBoardCardText {
+    font-weight: 500;
+    font-size: 1.1em;
+    color: #7c7b7b;
+  }
+  .ui.cards > .card > .content > .description.dashboardCardSubText {
+    font-weight: 500;
+    font-size: 1.6em;
+    color: var(--gray-800);
+  }
+  .dashBoardSectionHeading {
+    font-weight: bold;
+    font-size: 1.4em;
+  }
+  .text-align-right {
+    text-align: right !important;
+  }

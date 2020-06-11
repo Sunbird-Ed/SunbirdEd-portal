@@ -168,3 +168,7 @@ input[type=number]::-webkit-inner-spin-button {
   width: 100%;
   position: fixed;
 }  
+.cursor-pointerText {
+    cursor: text;
+    pointer-events: none !important;
+  }
