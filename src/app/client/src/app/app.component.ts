@@ -378,6 +378,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this.userProfile = user.userProfile;
         this.channel = this.userService.hashTagId;
+        this.botObject['channel'] = this.channel;
         return of(user.userProfile);
       }));
   }
@@ -389,6 +390,7 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
+        this.botObject['channel'] = this.channel;
         if (this.userService.slug !== '') {
           this.cacheService.set('orgDetailsFromSlug', data, {
             maxAge: 86400
