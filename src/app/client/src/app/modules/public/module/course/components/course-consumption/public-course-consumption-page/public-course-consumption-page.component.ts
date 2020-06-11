@@ -5,7 +5,7 @@ import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
@@ -30,7 +30,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
     private resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
-    private configService: ConfigService) {
+    private configService: ConfigService, private telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
@@ -70,6 +70,29 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   redirectToExplore() {
     this.navigationHelperService.navigateToResource('explore-course');
   }
+
+  closeSharePopup(id) {
+    this.sharelinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'explore',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'explore-course-toc',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: { l1: this.courseId }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
