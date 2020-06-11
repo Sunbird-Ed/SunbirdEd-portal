@@ -49,7 +49,7 @@ app.use(helmet())
 
 app.use([
   '/api', '/learner', '/content', '/user', '/merge', '/action',
-  '/certreg', '/device', '/google', '/report', '/v2/user', 'v1/sso', '/migrate',
+  '/certreg', '/device', '/google', '/report', '/v2/user', '/v1/sso', '/migrate',
   '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user'
 ],
   session({
