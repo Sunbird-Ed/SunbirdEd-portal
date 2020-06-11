@@ -99,19 +99,23 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.navigateToPlayerPage(this.courseHierarchy);
       });
+
+    this.courseConsumptionService.updateContentState
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+          this.getContentState();
+      });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
       mergeMap(({ courseId, batchId, courseStatus }) => {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
         this.setTelemetryCourseImpression();
         const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-
         /* istanbul ignore else */
         if (this.batchId) {
           return combineLatest([
@@ -200,7 +204,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     return this.treeModel.first(node => node.model.identifier === id);
   }
 
-  public navigateToContent(event: any, collectionUnit?: any): void {
+  public navigateToContent(event: any, collectionUnit?: any, id?): void {
+    this.logTelemetry(id, event.data);
     /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
@@ -287,32 +292,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
 
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryInteractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
-      },
-      edata: {
-        id: 'join-training-popup-close',
-        type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      },
-      object: {
-        id: this.courseId,
-        type: 'Course',
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
-      }
-    };
-    this.telemetryService.interact(telemetryInteractData);
-  }
-
   navigateToPlayerPage(collectionUnit: any, event?) {
-    this.registerCourseTocTelemetry(collectionUnit.identifier);
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
@@ -390,26 +370,32 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  registerCourseTocTelemetry(identifier: string) {
-    const telemetryInteractData = {
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata || []
       },
       edata: {
-        id: 'course-toc',
+        id: id,
         type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
       },
       object: {
-        id: identifier,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    this.telemetryService.interact(telemetryInteractData);
-  }
+    this.telemetryService.interact(interactData);
+}
+
+getAllBatchDetails(event) {
+  this.courseConsumptionService.getAllOpenBatches(event);
+}
 }

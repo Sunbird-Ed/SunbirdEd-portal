@@ -26,7 +26,7 @@ describe('CoursePlayerComponent', () => {
     messages: {
       imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error' }
+      emsg: { m0005: 'error', m0003: `The Course doesn't have any open batches` }
     },
     frmelmnts: {
       btn: {
@@ -367,16 +367,18 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  it('should show join training popup if course is unenrolled and try to play content', () => {
+  xit('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser2';
+    component['courseId'] = 'do_212347136096788480178';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe').and.callThrough();
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -385,8 +387,10 @@ describe('CoursePlayerComponent', () => {
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
     expect(component.showJoinTrainingModal).toBeFalsy();
+    courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
+    expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
-  it('should log telemetry on click of close icon on join training popup ', () => {
+  xit('should log telemetry on click of close icon on join training popup ', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -405,7 +409,6 @@ describe('CoursePlayerComponent', () => {
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
-    component.closeJoinTrainingModal();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
 
@@ -444,8 +447,10 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should call navigateToContent', () => {
+    spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
-    component.navigateToContent({ event: { type: 'click' } });
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToContent({ event: { type: 'click' }, data: {identifier: '12343536'}}, 'test');
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
 
@@ -484,4 +489,9 @@ describe('CoursePlayerComponent', () => {
     expect(component.showJoinTrainingModal).toBe(true);
   });
 
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
+    component.getAllBatchDetails({content: [], count: 0});
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
+  });
 });
