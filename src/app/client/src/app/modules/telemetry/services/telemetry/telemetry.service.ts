@@ -59,8 +59,9 @@ export class TelemetryService {
   sessionId;
   public UTMparam;
   userSid;
+  private deviceType: string;
 
-  constructor(private deviceDetectorService: DeviceDetectorService) {
+  constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -70,6 +71,7 @@ export class TelemetryService {
     }
     this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
     ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
+    this.deviceType = this.getDeviceType();
   }
 
   /**
@@ -301,7 +303,7 @@ export class TelemetryService {
       });
     }
     eventContextData.cdata.push({
-      id: this.isMobileTablet(),
+      id: this.deviceType,
       type: 'Device'
     });
     return eventContextData;
@@ -365,13 +367,14 @@ export class TelemetryService {
     this.userSid = value;
   }
 
-  public isMobileTablet() {
+  public getDeviceType() {
+    const deviceDetectorService = new DeviceDetectorService('browser');
     let device = '';
-    if (this.deviceDetectorService.isMobile()) {
+    if (deviceDetectorService.isMobile()) {
       device = 'Mobile';
-    } else if (this.deviceDetectorService.isTablet()) {
+    } else if (deviceDetectorService.isTablet()) {
       device = 'Tab';
-    } else if (this.deviceDetectorService.isDesktop()) {
+    } else if (deviceDetectorService.isDesktop()) {
       device = 'Desktop';
     }
     return device;
