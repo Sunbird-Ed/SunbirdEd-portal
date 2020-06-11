@@ -180,7 +180,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   isLocationStatusRequired() {
-    const url = this.router.url;
+    const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
@@ -225,6 +225,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showUserTypePopup = !localStorage.getItem('userType');
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }
