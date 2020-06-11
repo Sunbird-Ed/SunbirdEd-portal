@@ -168,6 +168,8 @@ function getLocals(req) {
   locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
   locals.contentEditorURL = envHelper.CONTENT_EDITORS_URL.CONTENT_EDITOR;
   locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
+  locals.botConfigured = envHelper.Sunbird_bot_configured;
+  locals.botServiceURL = envHelper.Sunbird_bot_service_URL;
   return locals
 }
 

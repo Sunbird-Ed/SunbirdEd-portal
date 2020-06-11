@@ -66,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
   viewinBrowser = false;
   sessionExpired = false;
   instance: string;
+  public botObject: any;
   resourceDataSubscription: any;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
@@ -82,9 +83,10 @@ export class AppComponent implements OnInit, OnDestroy {
   feedCategory = 'OrgMigrationAction';
   labels: {};
   showUserTypePopup = false;
+  isBotEnabled: string;
+  botServiceURL: string;
   deviceId: string;
-  userId: string;
-  appId: string;
+  baseUrl: string;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -98,6 +100,13 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    this.isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+    ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+    this.botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+    ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+    this.baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+    this.botObject = {};
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -172,11 +181,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.changeLanguageAttribute();
     if (this.userService.loggedIn) {
-      this.userId = this.userService.userid;
+      this.botObject['userId'] = this.userService.userid;
     } else {
-      this.userId = this.deviceId;
+      this.botObject['userId'] = this.deviceId;
     }
-    this.appId = this.userService.appId;
+    this.botObject['appId'] = this.userService.appId;
+    this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
   }
 
   isLocationStatusRequired() {
@@ -350,6 +360,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.botObject['did'] = deviceId;
           this.deviceId = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
