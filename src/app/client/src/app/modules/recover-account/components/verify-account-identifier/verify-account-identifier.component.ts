@@ -15,6 +15,11 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   disableResendOtp = false;
   form: FormGroup;
   errorCount = 0;
+  counter;
+  resendOTPbtn: string;
+  resendOtpCounter = 1;
+  maxResendTry = 4;
+  errorMessage: string;
   telemetryImpression: IImpressionEventInput;
   telemetryCdata = [{
     id: 'user:account:recovery',
@@ -32,10 +37,23 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     if (this.verifyState()) {
       this.initializeForm();
     }
+    this.resendOtpEnablePostTimer();
+    this.setTelemetryImpression();
+  }
+  resendOtpEnablePostTimer(){
+    this.counter = 20;
+    this.disableResendOtp = false;
     setTimeout(() => {
       this.disableResendOtp = true;
-    }, 10000);
-    this.setTelemetryImpression();
+    }, 22000);
+    const interval = setInterval(() => {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.counter--;
+      if (this.counter < 0) {
+        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        clearInterval(interval);
+      }
+    }, 1000);
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -102,6 +120,12 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
   handleResendOtp() {
     this.disableResendOtp = false;
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendOtp = false;
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretryreached;
+      return false;
+    }
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
@@ -111,9 +135,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
-      setTimeout(() => {
-        this.disableResendOtp = true;
-      }, 10000);
+      this.resendOtpEnablePostTimer();
       this.toasterService.success('OTP sent successfully.');
     }, error => {
       this.toasterService.error('Resend OTP failed. Please try again');
