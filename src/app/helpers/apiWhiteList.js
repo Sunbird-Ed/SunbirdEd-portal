@@ -6,10 +6,10 @@
  */
 
 const _           = require('lodash');
-const logger      = require('sb_logger_util_v2');
 const uuidv1      = require('uuid/v1');
 const dateFormat  = require('dateformat');
 const ROUTE       = require('./whitelistApis');
+const utils       = require('./utilityService');
 
 /**
  * @description - Function to check whether incoming API is whitelisted (or) not
@@ -17,16 +17,14 @@ const ROUTE       = require('./whitelistApis');
  * 2. If API is does not exists then request is terminated and 401 UNAUTHORIZED response is sent
  * @since release-3.1.0
  */
-const isAPIWhiteListed = () => {
+const isAllowed = () => {
   return function (req, res, next) {
     const REQ_URL = req.originalUrl;
     if (_.get(ROUTE, REQ_URL)) {
       next();
     } else {
-      logger.error({
-        msg: 'API WHITELIST :: API [ ' + REQ_URL + ' ]',
-        url: REQ_URL
-      });
+      const err = ({ msg: 'API WHITELIST :: Unauthorized access for API [ ' + REQ_URL + ' ]', url: REQ_URL });
+      utils.logError(req, err, err.msg);
       res.status(401);
       res.send({
         id: 'api.error',
@@ -48,5 +46,5 @@ const isAPIWhiteListed = () => {
 };
 
 module.exports = {
-  isAPIWhiteListed
+  isAllowed
 };
