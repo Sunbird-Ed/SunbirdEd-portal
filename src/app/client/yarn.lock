@@ -628,17 +628,17 @@
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
 
-"@project-sunbird/common-consumption@^3.0.16":
-  version "3.0.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.0.20.tgz#1fe2fac9eee4412d1e0313f2ed9ebbe8b1e93d0c"
-  integrity sha512-5FCMCc5nAAxKFZZ7SR/pZTyeUKlII0O6eP6DzFbrAtMWlmu43cCHhF0/gq+RxVKrpMkEaqy7kreqa/CmcdR9QQ==
+"@project-sunbird/common-consumption@^3.0.23":
+  version "3.0.23"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.0.23.tgz#18ea816e44b0a5028b889d7e639d948e07ea94c8"
+  integrity sha512-Q5D/e6xt7rdLJjkOaC1e5VIPQDn91RjP3Vio/ZMWkmnJXz8WUMoZ9HtVHTSRUXKV8lH3Lg2B3bCCroXCvGE5Ng==
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/telemetry-sdk@^0.0.24":
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.24.tgz#a405f2e4e5b77cbed4b87327dfe48c5c3891649c"
-  integrity sha512-D43wwlNrTR159Kw1Ygw8f+A3OORzx+fCbCHBctzT3u1EtbKWMH6HMBRT+iuKqNJ8qb10JL0FSqhFZnjWgELrHg==
+"@project-sunbird/telemetry-sdk@^0.0.25":
+  version "0.0.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.25.tgz#78d0a2ea4507bca99311c790a79b3fdc26dfa851"
+  integrity sha512-dR9MgYqQeDV63UR4km09wGOxbwzvULyEcG1f3SeV4iESNsIhi/l2Hwya0TwLPa4sb/sTQkq8CGODDZam1WXspA==
   dependencies:
     grunt-karma "^0.12.2"
     karma "^3.0.0"
