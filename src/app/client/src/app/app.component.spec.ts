@@ -222,12 +222,4 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.getUserFeedData();
     expect(userService.getFeedData).not.toHaveBeenCalled();
   });
-  it('should call the buildChatBotObject method', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    spyOn(component, 'buildChatBotObject');
-    component.ngOnInit();
-    expect(component.buildChatBotObject).toHaveBeenCalled();
-  });
 });

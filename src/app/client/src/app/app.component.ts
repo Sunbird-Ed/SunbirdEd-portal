@@ -83,10 +83,14 @@ export class AppComponent implements OnInit, OnDestroy {
   feedCategory = 'OrgMigrationAction';
   labels: {};
   showUserTypePopup = false;
-  isBotEnabled: string;
-  botServiceURL: string;
   deviceId: string;
-  baseUrl: string;
+  isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+    ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+    ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+  baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -100,12 +104,6 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    this.isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
-    ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
-    this.botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
-    ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
-    this.baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
-    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
     this.botObject = {};
   }
   /**
@@ -180,10 +178,6 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.changeLanguageAttribute();
-   this.buildChatBotObject();
-  }
-  
-  buildChatBotObject() {
     if (this.userService.loggedIn) {
       this.botObject['userId'] = this.userService.userid;
     } else {
@@ -192,6 +186,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['appId'] = this.userService.appId;
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
   }
+  
   isLocationStatusRequired() {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
