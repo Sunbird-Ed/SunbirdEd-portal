@@ -126,6 +126,10 @@ let envVariables = {
   sunbird_content_service_health_status: 'true',
   sunbird_portal_cassandra_db_health_status: 'true',
 
+  // Bot configuration 
+  sunbird_bot_configured: env.sunbird_bot_configured,
+  sunbird_bot_service_URL: env.sunbird_bot_service_URL,
+
 
   // Desktop App Configuration
   sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
@@ -151,11 +155,7 @@ let envVariables = {
     COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
     CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
     GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
-  },
-
-  // Bot configuration 
-  sunbird_bot_configured: env.sunbird_bot_configured,
-  sunbird_bot_service_URL: env.sunbird_bot_service_URL
+  }
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
