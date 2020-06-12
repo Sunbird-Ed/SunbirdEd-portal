@@ -43,6 +43,7 @@ const WHITELIST_URLS = [
 
     //User related APIs
     'user/v1/create',
+    'user/v1/managed',
     'user/v1/tnc/accept',
     'user/v1/update',
     'user/v1/skill/endorse/add',

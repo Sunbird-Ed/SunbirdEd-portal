@@ -25,10 +25,9 @@ export class ManagedUserService {
 
   public fetchManagedUserList(request) {
     const options = {
-      url: this.configService.urlConFig.URLS.USER.SEARCH_USER,
-      data: request,
+      url: `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${request.userId}?withTokens=false`
     };
-    return this.learnerService.post(options);
+    return this.learnerService.get(options);
   }
 
   public initiateSwitchUser(userId) {

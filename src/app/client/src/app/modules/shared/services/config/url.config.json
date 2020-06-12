@@ -84,7 +84,8 @@
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
       "SIGN_UP_V4": "user/v4/create",
       "SEARCH_USER": "user/v1/search",
-      "SWITCH_USER": "user/v1/switch"
+      "SWITCH_USER": "user/v1/switch",
+      "GET_MANAGED_USER": "user/v1/managed"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search"
