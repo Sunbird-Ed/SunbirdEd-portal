@@ -105,6 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     this.botObject = {};
   }
+  
   /**
    * dispatch telemetry window unload event before browser closes
    * @param  event
