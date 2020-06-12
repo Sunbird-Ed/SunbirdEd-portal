@@ -82,9 +82,14 @@ export class AppComponent implements OnInit, OnDestroy {
   feedCategory = 'OrgMigrationAction';
   labels: {};
   showUserTypePopup = false;
-  deviceId: string;
-  userId: string;
-  appId: string;
+  deviceId: string
+  public botObject: any;
+  isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+  ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+  ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+  baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+  ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -98,6 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    this.botObject = {};
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -172,11 +178,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.changeLanguageAttribute();
     if (this.userService.loggedIn) {
-      this.userId = this.userService.userid;
+      this.botObject['userId'] = this.userService.userid;
     } else {
-      this.userId = this.deviceId;
+      this.botObject['userId'] = this.deviceId;
     }
-    this.appId = this.userService.appId;
+    this.botObject['appId'] = this.userService.appId;
+    this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
   }
 
   isLocationStatusRequired() {
@@ -352,6 +359,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;
+          this.botObject['did'] = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
@@ -368,6 +376,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this.userProfile = user.userProfile;
         this.channel = this.userService.hashTagId;
+        this.botObject['channel'] = this.channel;
         return of(user.userProfile);
       }));
   }
@@ -379,6 +388,7 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
+        this.botObject['channel'] = this.channel;
         if (this.userService.slug !== '') {
           this.cacheService.set('orgDetailsFromSlug', data, {
             maxAge: 86400
