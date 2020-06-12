@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
-  ILoaderMessage, ConfigService, ICollectionTreeOptions, ToasterService, ResourceService,
+  ILoaderMessage, ConfigService, ICollectionTreeOptions, ResourceService,
   NavigationHelperService
 } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
@@ -12,6 +12,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { UserService } from '@sunbird/core';
 import { TocCardType } from '@project-sunbird/common-consumption';
+import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-public-course-player',
@@ -19,50 +20,46 @@ import { TocCardType } from '@project-sunbird/common-consumption';
   styleUrls: ['./public-course-player.component.scss']
 })
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
-
   private courseId: string;
-
-  public collectionTreeNodes: any;
-
-  public loader = true;
-
-  public showError = false;
-
-  public courseHierarchy: any;
-
-  public readMore = false;
-
-  public curriculum = [];
-
-  public telemetryCourseImpression: IImpressionEventInput;
-
-  public treeModel: any;
-
+  collectionTreeNodes: any;
+  loader = true;
+  showError = false;
+  courseHierarchy: any;
+  readMore = false;
+  curriculum = [];
+  telemetryCourseImpression: IImpressionEventInput;
+  treeModel: any;
   showContentCreditsModal: boolean;
-
   cardType: TocCardType = TocCardType.COURSE;
-
-  public loaderMessage: ILoaderMessage = {
+  loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
   };
+  collectionTreeOptions: ICollectionTreeOptions;
+  unsubscribe = new Subject<void>();
+  showJoinTrainingModal = false;
+  shareLinkModal = false;
+  telemetryShareData: Array<ITelemetryShare>;
+  shareLink: string;
 
-  public collectionTreeOptions: ICollectionTreeOptions;
-
-  public unsubscribe = new Subject<void>();
-  public showJoinTrainingModal = false;
-  constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService,
     public router: Router,
-    private toasterService: ToasterService, private resourceService: ResourceService,
-    public navigationhelperService: NavigationHelperService, private userService: UserService, public telemetryService: TelemetryService) {
+    public resourceService: ResourceService,
+    public navigationhelperService: NavigationHelperService,
+    private userService: UserService,
+    public telemetryService: TelemetryService,
+    private contentUtilsServiceService: ContentUtilsServiceService
+  ) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 
   ngOnInit() {
     const routeParams: any = { ...this.activatedRoute.snapshot.params };
     this.courseId = routeParams.courseId;
-    const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
     this.courseConsumptionService.getCourseHierarchy(routeParams.courseId, inputParams).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(courseHierarchy => {
@@ -99,7 +96,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       this.curriculum.push({ mimeType: 'video', count: videoContentCount });
     }
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryCourseImpression();
     });
@@ -154,11 +151,51 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       },
       object: {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
-        type: content ? _.get(content, 'contentType') :  'Course',
+        type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
-}
+  }
+
+  getAllBatchDetails(event) {
+    this.courseConsumptionService.getAllOpenBatches(event);
+  }
+
+  shareUnitLink(unit: any) {
+    this.shareLink = `${this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId)}?moduleId=${unit.identifier}`;
+    this.shareLinkModal = true;
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  closeSharePopup(id) {
+    this.shareLinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'explore',
+        cdata: [{ id: this.courseId, type: 'Course' }]
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'explore-course-toc',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: { l1: this.courseId }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
 }

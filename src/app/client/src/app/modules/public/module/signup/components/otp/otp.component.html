@@ -28,7 +28,7 @@
        
        <input appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
         class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
-       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="Resend OTP"/>
+       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="{{resendOTPbtn}}"/>
        <input  appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
        class="ui button w-50" [ngClass]="{'grey':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
