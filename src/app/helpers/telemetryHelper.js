@@ -228,7 +228,7 @@ module.exports = {
     var channel = (req.reqObj && req.reqObj.session && req.reqObj.session.rootOrghashTagId) ||
       req.channel || _.get(req, 'headers.X-Channel-Id')
     if (channel) {
-      var dims = _.clone(req.reqObj.session.orgs || [])
+      var dims = _.clone(_.get(req, 'reqObj.session.orgs') || [])
       dims = dims ? _.concat(dims, channel) : channel
       const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
       if (req && req.reqObj && req.reqObj.sessionID) {
