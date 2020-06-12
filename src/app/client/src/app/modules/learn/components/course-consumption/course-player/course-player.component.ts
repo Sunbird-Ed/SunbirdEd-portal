@@ -403,7 +403,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getAllOpenBatches(event);
   }
 
-<<<<<<< HEAD
   shareUnitLink(unit: any) {
     this.shareLink = `${this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId)}?moduleId=${unit.identifier}`;
     this.shareLinkModal = true;
@@ -440,8 +439,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(interactData);
   }
 
-=======
->>>>>>> afaa8aac2825763cb11986599207afe395b9bf32
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
