@@ -1,4 +1,4 @@
-@import "variables";
+
 @import "mixins/mixins";
 
 .ui.image {
@@ -37,4 +37,27 @@
 .disable {
     visibility: hidden;
 }
-
+.sliderCardHeading {
+    font-weight: bold;
+    font-size: 1.1875em;
+    float: left;
+    padding-left: 10px;
+  }
+  .courseHeader-rating.ui.star.rating .active.icon {
+    background: 0 0 !important;
+    color: var(--primary-color) !important;
+    text-shadow: none !important;
+  }
+  .cardImageText {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--white);
+    width: 100%;
+    margin: 0;
+    max-height: 70px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+  }

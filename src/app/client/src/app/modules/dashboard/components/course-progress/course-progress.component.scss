@@ -92,9 +92,6 @@ a {
   }
 }
 @include respond-below(sm){
-  .black-divider {
-    border: 0px solid #d4d8da!important;
-  }
   .course-participants-label {
     width: 100%;
     margin-bottom: calculateRem(8px);

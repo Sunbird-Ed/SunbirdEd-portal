@@ -1,5 +1,6 @@
 @import "variables";
 @import 'mixins/mixins';
+@import 'pages/sign_in_up';
 
 .ui.raised.shadow.container.segment {
   margin: calculateRem(20px) auto !important;
@@ -72,7 +73,7 @@
   padding: calculateRem(10px) 0;
 }
 .ui.basic.error.label {
-  background: $white-color !important;
+  background: none !important;
   color: $danger-color !important;
   border: 0 !important;
   padding-left: 0;
@@ -119,13 +120,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .opacity-1 {
   opacity: 1 !important;
-}
-
-.signup-background {
-  background: url("/assets/images/bg.svg") no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  position: fixed;
 }
 
 .ui[class*="left icon"].input > input {
