@@ -325,7 +325,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   toggleSideMenu(value: boolean) {
     if (value) {
-      this.fetchManagedUsersFromCache();
+      this.fetchManagedUsers();
     }
     this.showSideMenu = value;
   }
