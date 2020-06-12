@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
+   ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -19,7 +20,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -42,6 +43,9 @@ export class AssessmentPlayerComponent implements OnInit {
   telemetryContentImpression: IImpressionEventInput;
   telemetryPlayerPageImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
+  shareLink: string;
+  telemetryShareData: Array<ITelemetryShare>;
+  shareLinkModal: boolean;
 
   constructor(
     public resourceService: ResourceService,
@@ -55,7 +59,8 @@ export class AssessmentPlayerComponent implements OnInit {
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
     private navigationHelperService: NavigationHelperService,
-    private router: Router
+    private router: Router,
+    private contentUtilsServiceService: ContentUtilsServiceService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -399,5 +404,17 @@ export class AssessmentPlayerComponent implements OnInit {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsServiceService.getCourseModulePublicShareUrl(this.courseId, this.collectionId);
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
   }
 }
