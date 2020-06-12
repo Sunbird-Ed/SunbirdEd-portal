@@ -48,7 +48,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public enrolledBatchInfo: any;
   public treeModel: any;
   public showExtContentMsg = false;
-  private objectRollUp: any;
   public previewContentRoles = ['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION'];
   public collectionTreeOptions: ICollectionTreeOptions;
   public unsubscribe = new Subject<void>();
@@ -97,7 +96,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.launchPlayer
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(data => {
-        this.navigateToPlayerPage(this.courseHierarchy);
+        /* istanbul ignore else */
+        if (_.get(this.courseHierarchy, 'children.length')) {
+          const unconsumedUnit = this.courseHierarchy.children.find(item => !item.isUnitConsumed);
+          const unit = unconsumedUnit ? unconsumedUnit : this.courseHierarchy;
+          this.navigateToPlayerPage(unit);
+        }
       });
 
     this.courseConsumptionService.updateContentState
@@ -210,11 +214,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
   }
 
   private setTelemetryStartEndData() {
@@ -393,9 +392,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.interact(interactData);
-}
+  }
 
-getAllBatchDetails(event) {
-  this.courseConsumptionService.getAllOpenBatches(event);
-}
+  getAllBatchDetails(event) {
+    this.courseConsumptionService.getAllOpenBatches(event);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
 }
