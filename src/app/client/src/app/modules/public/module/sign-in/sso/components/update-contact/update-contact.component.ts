@@ -56,9 +56,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.fetchTncConfiguration();
     this.setTenantInfo();
-    setTimeout(() => {
-      this.showMergeConfirmation = true;
-    }, 3000)
   }
   ngAfterViewInit () {
     this.handleFormChangeEvent();

@@ -24,8 +24,10 @@ export class ManagedUserService {
   instance: string;
 
   public fetchManagedUserList(request) {
+    let url = `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${request.userId}?withTokens=false`;
+    url = url + '&sortBy=createdDate&order=desc';
     const options = {
-      url: `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${request.userId}?withTokens=false`
+      url: url
     };
     return this.learnerService.get(options);
   }
