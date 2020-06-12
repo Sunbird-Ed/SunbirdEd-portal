@@ -8,7 +8,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
-import { NavigationHelperService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService, SharedModule, ToasterService,
+  ContentUtilsServiceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -52,6 +53,7 @@ describe('AssessmentPlayerComponent', () => {
         UserService, CsCourseProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        ContentUtilsServiceService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -354,5 +356,14 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(component['unsubscribe'], 'complete');
     component.ngOnDestroy();
     expect(component['unsubscribe'].complete).toHaveBeenCalled();
+  });
+
+  it('should call onShareLink', () => {
+    spyOn(component, 'setTelemetryShareData');
+    component.courseId = 'do_2130355309225574401298';
+    component.collectionId = 'do_2130355309234831361304';
+    component.onShareLink();
+    expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
 });

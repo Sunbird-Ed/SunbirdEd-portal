@@ -47,6 +47,9 @@ export class ContentUtilsServiceService {
     return `${this.baseUrl}explore-course/course/${courseid}`;
   }
 
+  getCourseModulePublicShareUrl (courseId: string, moduleId: string) {
+    return `${this.baseUrl}explore-course/course/${courseId}?moduleId=${moduleId}`;
+  }
   /**
   * {content} is node which comes from collection tree for each content and returns rollup object upto 4 elements
   *  this function is called from public and private modules of collection and course players
