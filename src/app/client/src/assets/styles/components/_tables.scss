@@ -63,7 +63,7 @@
   border-collapse: separate;
   border-spacing: 0;
 
-  // Table Fixed
+  /* Table Fixed */
   &-fixed {
     table-layout: fixed;
 
@@ -81,7 +81,7 @@
     }
   }
 
-  // Table on hover
+  /* Table on hover */
   &-hover {
     tbody tr:hover {
       background: var(--secondary-0);
@@ -90,12 +90,12 @@
     }
   }
 
-  // Table striped
+  /* Table striped */
   .sb-table-striped tbody tr:nth-child(2n) {
     background-color: var(--primary-0);
   }
 
-  // Table sortable
+  /* Table sortable */
   &-sortable {
     th.sb-sort-icon {
       cursor: pointer;
@@ -127,7 +127,7 @@
     }
   }
 
-  // Table heading variations
+  /* Table heading variations */
   thead th {
     font-size: calculateRem(12px);
     color: var(--gray);
@@ -138,7 +138,7 @@
     border-bottom: 1px solid var(--gray-100);
   }
 
-  // Heading with background for course-dashboard
+  /* Heading with background for course-dashboard */
   &.sb-table-course-dashboard {
     thead th {
       font-size: calculateRem(14px);
@@ -147,7 +147,7 @@
     }
   }
 
-  // large heading
+  /* large heading */
   &.sb-table-lg {
     thead th {
       padding: calculateRem(16px) calculateRem(24px);
@@ -160,7 +160,7 @@
     }
   }
 
-  // Table body variations
+  /* Table body variations */
   tbody {
     td {
       font-size: calculateRem(14px);
@@ -176,7 +176,7 @@
       }
     }
 
-    // Table row active, success, warning, danger classes
+    /* Table row active, success, warning, danger classes */
     .sb-table {
 
       &-active,
@@ -208,7 +208,7 @@
     }
   }
 
-  // Table Media Object inside td
+  /* Table Media Object inside td */
 
   .sb-media {
     display: flex;
@@ -259,66 +259,6 @@
     font-size: calculateRem(12px);
   }
 }
-
-// Table loading Placeholder
-// .sb-table {
-//   &.sb-table-placeholder {
-//     .sb-media-obj-placeholder {
-//       display: flex;
-//       align-items: center;
-
-//       .image {
-//         width: $base-block-space*4;
-//         height: $base-block-space*4;
-//         background: var(--gray-0);
-//         margin-top: auto;
-//         margin-bottom: auto;
-//         margin-right: calculateRem(16px);
-//       }
-
-//       .text {
-//         background: var(--gray-0);
-//         height: calculateRem(8px);
-//         width: calculateRem(100px);
-//       }
-//     }
-
-//     .bar {
-//       width: $base-block-space*15;
-//       height: $base-block-space;
-//       background: var(--gray-0);
-//     }
-
-//     .loading {
-//       position: relative;
-//       overflow: hidden;
-
-//       &::after {
-//         content: '';
-//         display: block;
-//         background-color: #a8a8a8;
-//         position: absolute;
-//         top: 0;
-//         bottom: 0;
-//         width: 100%;
-//         height: 100%;
-//         transform: translateX(0);
-//         animation: 1s loading-placeholder ease-in-out infinite;
-//       }
-//     }
-
-//     @keyframes loading-placeholder {
-//       0% {
-//         transform: translateX(-100%);
-//       }
-
-//       100% {
-//         transform: translateX(100%);
-//       }
-//     }
-
-//   }
-// }
 
 // Semantic Ui Data table customised CSS
 
