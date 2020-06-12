@@ -18,7 +18,7 @@
           {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
         <div class="fs-1 font-weight-bold text-center mb-30">{{resourceService?.frmelmnts?.lbl?.enterOTP}}</div>
         <form class="ui form borderd mb-20" [formGroup]="otpForm">
-          <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
+          <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
           <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
           <div class="field">
             <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">

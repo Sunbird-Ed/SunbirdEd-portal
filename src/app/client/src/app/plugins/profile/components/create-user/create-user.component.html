@@ -22,16 +22,6 @@
           </div>
           <p class="fsmall my-8 text-left lineHeight-normal">{{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
         </div>
-        <div class="twelve wide column p-0 pt-8 text-left" *ngIf="field.inputType==='checkbox' && field.visible===true">
-          <div class="sb-checkbox sb-checkbox-primary">
-            <input formControlName="{{field.code}}" type="checkbox" id="{{field.code}}" name="{{field.code}}" required>
-            <label for="{{field.code}}" class="fsmall font-weight-normal text-left">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
-              <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
-                {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
-              </a>
-            </label>
-          </div>
-        </div>
       </div>
     </form>
     <div class="user-profile-box__actions pb-16 px-16">

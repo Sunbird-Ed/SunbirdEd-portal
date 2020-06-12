@@ -30,7 +30,7 @@
   align-items: center;
   border: 1px solid var(--primary-400);
   &:hover {
-    color: var(--blue);
+    color: var(--primary-400);
     box-sizing: border-box;
     border-radius: calculateRem(2px);
   }
