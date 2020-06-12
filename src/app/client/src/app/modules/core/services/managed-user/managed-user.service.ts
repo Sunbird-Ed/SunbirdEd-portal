@@ -24,11 +24,12 @@ export class ManagedUserService {
   instance: string;
 
   public fetchManagedUserList(request) {
+    let url = `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${request.userId}`;
+    url = url + '?sortBy=createdDate&order=desc';
     const options = {
-      url: this.configService.urlConFig.URLS.USER.SEARCH_USER,
-      data: request,
+      url: url
     };
-    return this.learnerService.post(options);
+    return this.learnerService.get(options);
   }
 
   public initiateSwitchUser(userId) {

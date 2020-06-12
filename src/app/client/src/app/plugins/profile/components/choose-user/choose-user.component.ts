@@ -121,11 +121,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   getManagedUserList() {
     const fetchManagedUserRequest = {
-      request: {
-        filters: {
-          managedBy: this.managedUserService.getUserId()
-        }, sort_by: {createdDate: 'desc'}
-      }
+      userId: this.managedUserService.getUserId()
     };
     const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
     if (this.userService.userProfile.managedBy) {
