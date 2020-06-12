@@ -50,7 +50,7 @@ app.use(helmet())
 app.use([
   '/learner', '/content', '/user', '/merge', '/action',
   '/certreg', '/device', '/google', '/report', '/v2/user', '/v1/sso', '/migrate',
-  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user'
+  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user', '/sessionExpired'
 ],
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
