@@ -324,6 +324,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSideMenu(value: boolean) {
+    if (value) {
+      this.fetchManagedUsers();
+    }
     this.showSideMenu = value;
   }
 
@@ -416,10 +419,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
-          this.userService.createManagedUser.pipe(
-            takeUntil(this.unsubscribe)).subscribe((data: any) => {
-            this.fetchManagedUsers();
-          });
         }
       });
       this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
