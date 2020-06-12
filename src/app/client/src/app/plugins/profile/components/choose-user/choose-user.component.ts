@@ -56,7 +56,11 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   switchUser() {
     const userId = this.selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+    const switchUserRequest = {
+      userId: this.selectedUser.identifier,
+      isManagedUser: this.selectedUser.managedBy ? true : false
+    };
+    this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {

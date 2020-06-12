@@ -377,7 +377,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     let userSubscription;
     const selectedUser = _.get(event, 'data.data');
     const userId = selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
+    const switchUserRequest = {
+      userId: selectedUser.identifier,
+      isManagedUser: selectedUser.managedBy ? true : false
+    };
+    this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data: any) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
