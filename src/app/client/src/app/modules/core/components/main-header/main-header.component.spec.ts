@@ -180,8 +180,10 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should turn on the side menu', () => {
+    spyOn(component, 'fetchManagedUsers');
     component.toggleSideMenu(true);
     expect(component.showSideMenu).toEqual(true);
+    expect(component.fetchManagedUsers).toHaveBeenCalled();
   });
 
   it('should not turn on the side menu', () => {
