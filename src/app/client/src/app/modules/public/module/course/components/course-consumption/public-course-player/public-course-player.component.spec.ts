@@ -114,4 +114,34 @@ describe('PublicCoursePlayerComponent', () => {
     expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
   });
 
+
+  it('should call shareUnitLink', () => {
+    const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
+    spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
+    spyOn(component, 'setTelemetryShareData');
+    component.shareUnitLink({ identifier: 'do_23823253221' });
+    expect(component.shareLink).toEqual('http://localhost:3000/explore-course/course/do_1130314965721088001129?moduleId=do_23823253221');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    const param = {
+      identifier: 'do_1130314965721088001129',
+      contentType: 'Course',
+      pkgVersion: 2
+    };
+    component.setTelemetryShareData(param);
+    expect(component.telemetryShareData).toBeDefined();
+    expect(component.telemetryShareData).toEqual([{ id: param.identifier, type: param.contentType, ver: param.pkgVersion.toString() }]);
+  });
+
+  it('should close the popup and generate telemetry', () => {
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component['courseId'] = CourseHierarchyGetMockResponse.result.content.identifier;
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.closeSharePopup('close-share-link-popup');
+    expect(component.shareLinkModal).toBe(false);
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
 });
