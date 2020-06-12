@@ -4,7 +4,7 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { CoursesService, PermissionService, UserService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
-  ResourceService, ToasterService, WindowScrollService
+  ResourceService, ToasterService, WindowScrollService, ITelemetryShare
 } from '@sunbird/shared';
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -14,6 +14,7 @@ import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
+import { ContentUtilsServiceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-course-player',
@@ -59,6 +60,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   contentInteract: IInteractEventEdata;
   startInteract: IInteractEventEdata;
   continueInteract: IInteractEventEdata;
+  shareLinkModal = false;
+  telemetryShareData: Array<ITelemetryShare>;
+  shareLink: string;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -77,7 +81,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public coursesService: CoursesService,
     private courseProgressService: CourseProgressService,
     private deviceDetectorService: DeviceDetectorService,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    private contentUtilsServiceService: ContentUtilsServiceService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -107,7 +112,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(data => {
-          this.getContentState();
+        this.getContentState();
       });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
@@ -396,6 +401,42 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   getAllBatchDetails(event) {
     this.courseConsumptionService.getAllOpenBatches(event);
+  }
+
+  shareUnitLink(unit: any) {
+    this.shareLink = `${this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId)}?moduleId=${unit.identifier}`;
+    this.shareLinkModal = true;
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  closeSharePopup(id) {
+    this.shareLinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: { l1: this.courseId }
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   ngOnDestroy() {
