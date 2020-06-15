@@ -85,6 +85,7 @@ describe('NavigationHelperService', () => {
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
         spyOn(service.history, 'pop');
         spyOn(service.utilService, 'updateSearchKeyword');
+        spyOn(service.router, 'navigate');
         service.goBack();
         expect(service.utilService.updateSearchKeyword).toHaveBeenCalledWith('test');
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url], { queryParams: previousUrl.queryParams });
@@ -98,8 +99,22 @@ describe('NavigationHelperService', () => {
           'url': '/view-all'
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
+        spyOn(service.router, 'navigate');
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
 
+  it('Should emit contentFullScreenEvent as TRUE',  inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+    spyOn(service.contentFullScreenEvent, 'emit');
+    service.emitFullScreenEvent(true);
+    expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(true);
+  }));
+
+  it('Should emit contentFullScreenEvent as FALSE',  inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+    spyOn(service.contentFullScreenEvent, 'emit');
+    service.emitFullScreenEvent(false);
+    expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(false);
+  }));
 });

@@ -366,4 +366,27 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
     expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
+
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    expect(component.isFullScreenView).toBeFalsy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    component.ngOnInit();
+    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(component.isFullScreenView).toBeTruthy();
+    });
+  });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    expect(component.isFullScreenView).toBeTruthy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    component.ngOnInit();
+    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeFalsy();
+      expect(component.isFullScreenView).toBeFalsy();
+    });
+  });
+
 });
