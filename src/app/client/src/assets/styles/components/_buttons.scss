@@ -1,5 +1,17 @@
 @import "../mixins/mixins";
 
+// Dashed Buttons
+$sb-btn-dashed-border: 0.5 solid $primary-color;
+$sb-btn-dashed-background-color: $white-color;
+$sb-btn-dashed-color: $primary-400;
+// Button groups
+$sb-btn-group-border-width: 0.0625rem;
+$sb-btn-group-border-width: 1px;
+$sb-btn-group-border-color: $gray-100;
+$sb-btn-group-btn-background: $white-color;
+$sb-btn-group-btn-color: $primary-400;
+$sb-btn-group-btn-active-background-color: $primary-100;
+
 /* buttons sytle guide */
 input[type="submit"],
 input[type="reset"],
