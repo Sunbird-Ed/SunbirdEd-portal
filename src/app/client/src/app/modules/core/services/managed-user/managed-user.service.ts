@@ -32,8 +32,8 @@ export class ManagedUserService {
     return this.learnerService.get(options);
   }
 
-  public initiateSwitchUser(userId) {
-    const url = this.configService.urlConFig.URLS.USER.SWITCH_USER + '/' + userId;
+  public initiateSwitchUser(request) {
+    const url = this.configService.urlConFig.URLS.USER.SWITCH_USER + '/' + request.userId + '?isManagedUser=' + request.isManagedUser;
     return this.http.get(url);
   }
 

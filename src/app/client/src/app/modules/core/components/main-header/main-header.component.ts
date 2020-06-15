@@ -324,6 +324,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSideMenu(value: boolean) {
+    if (value) {
+      this.fetchManagedUsers();
+    }
     this.showSideMenu = value;
   }
 
@@ -377,7 +380,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     let userSubscription;
     const selectedUser = _.get(event, 'data.data');
     const userId = selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
+    const switchUserRequest = {
+      userId: selectedUser.identifier,
+      isManagedUser: selectedUser.managedBy ? true : false
+    };
+    this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data: any) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
@@ -412,10 +419,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
-          this.userService.createManagedUser.pipe(
-            takeUntil(this.unsubscribe)).subscribe((data: any) => {
-            this.fetchManagedUsers();
-          });
         }
       });
       this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
