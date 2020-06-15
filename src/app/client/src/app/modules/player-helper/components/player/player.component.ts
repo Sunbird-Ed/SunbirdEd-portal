@@ -231,7 +231,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (playerSummary) {
       contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
     }
-    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100 && !this.isFullScreenView) {
+    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
       this.contentRatingModal = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
