@@ -54,7 +54,7 @@ export class ManagedUserService {
   }
 
   updateUserList(data) {
-    this._managedUserProfile.result.response.content.push(data);
+    this._managedUserProfile.result.response.content = [data].concat(this._managedUserProfile.result.response.content);
     this._managedUserList$.next(this._managedUserProfile);
   }
 

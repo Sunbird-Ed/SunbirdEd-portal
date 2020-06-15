@@ -140,6 +140,7 @@ describe('CreateUserComponent', () => {
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    spyOn(managedUserService, 'updateUserList');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
