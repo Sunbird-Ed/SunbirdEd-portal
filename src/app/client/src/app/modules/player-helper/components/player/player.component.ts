@@ -1,5 +1,5 @@
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService, NavigationHelperService, ContentUtilsServiceService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
 OnChanges, HostListener, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -53,8 +53,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService, private userService: UserService,
-    private contentUtilsServiceService: ContentUtilsServiceService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))

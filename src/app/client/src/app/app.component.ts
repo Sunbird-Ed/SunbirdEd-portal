@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-  NavigationHelperService, ConfigService, BrowserCacheTtlService, ContentUtilsServiceService,
+  NavigationHelperService, ConfigService, BrowserCacheTtlService,
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
