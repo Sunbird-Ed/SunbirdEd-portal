@@ -21,7 +21,7 @@ import * as _ from 'lodash-es';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
-import {forkJoin, Subject} from 'rxjs';
+import {Subject, zip} from 'rxjs';
 
 declare var jQuery: any;
 
@@ -294,14 +294,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   fetchManagedUsers() {
-    const fetchManagedUserRequest = {
-      userId: this.managedUserService.getUserId()
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    const requests = [this.managedUserService.managedUserList$];
     if (this.userService.userProfile.managedBy) {
       requests.push(this.managedUserService.getParentProfile());
     }
-    forkJoin(requests).subscribe((data) => {
+    zip(...requests).subscribe((data) => {
         let userListToProcess = _.get(data[0], 'result.response.content');
         if (data && data[1]) {
           userListToProcess = [data[1]].concat(userListToProcess);
@@ -414,6 +411,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
+          this.managedUserService.fetchManagedUserList();
           this.fetchManagedUsers();
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
