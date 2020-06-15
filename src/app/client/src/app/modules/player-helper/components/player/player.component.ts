@@ -1,4 +1,4 @@
-import { ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ContentUtilsServiceService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
 OnChanges, HostListener, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -44,13 +44,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   playerOverlayImage: string;
+  isFullScreenView = false;
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService,
+    private contentUtilsServiceService: ContentUtilsServiceService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -105,6 +107,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       this.showPlayIcon = false;
     }
     this.setTelemetryData();
+    this.contentUtilsServiceService.contentFullScreenEvent.
+    pipe().subscribe(response => {this.handleFullScreen();
+    });
   }
   /**
    * loadPlayer method will be called
@@ -113,6 +118,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.playerConfig) {
       this.loadPlayer();
     }
+  }
+
+  handleFullScreen() {
+    this.loadPlayer();
+    this.isFullScreenView = !this.isFullScreenView;
   }
 
   ngOnChanges(changes) {
@@ -279,6 +289,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     this.closePlayerEvent.emit();
   }
 
+  closeContentFullScreen() {
+    this.contentUtilsServiceService.emitFullScreenEvent();
+  }
   setTelemetryData() {
     this.closeButtonInteractEdata = {
       id: 'player-close-button',

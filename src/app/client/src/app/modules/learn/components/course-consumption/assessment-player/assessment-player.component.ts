@@ -46,7 +46,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   shareLink: string;
   telemetryShareData: Array<ITelemetryShare>;
   shareLinkModal: boolean;
-
+  isFullScreenView = false;
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
@@ -69,6 +69,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToQueryParam();
+    this.contentUtilsServiceService.contentFullScreenEvent.
+    pipe().subscribe(response => {this.isFullScreenView = !this.isFullScreenView;
+    });
   }
 
   goBack() {
@@ -246,7 +249,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
     this.courseConsumptionService.updateContentsState(request)
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
+      .subscribe(updatedRes => this.contentStatus = _.cloneDeep(_.get(updatedRes, 'content')),
         err => console.error('updating content status failed', err));
   }
 

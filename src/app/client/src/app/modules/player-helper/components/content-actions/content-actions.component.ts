@@ -68,8 +68,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
           this.printPdf(content);
           this.logTelemetry('print-content', content);
           break;
+        case 'FULLSCREEN':
+          this.contentUtilsServiceService.emitFullScreenEvent();
       }
     }
+
   printPdf(content: any) {
     const pdfUrl = _.get(content, 'itemSetPreviewUrl');
     window.open(pdfUrl, '_blank');

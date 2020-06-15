@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-  NavigationHelperService, ConfigService, BrowserCacheTtlService
+  NavigationHelperService, ConfigService, BrowserCacheTtlService, ContentUtilsServiceService,
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
@@ -21,7 +21,8 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   deviceId: string;
   userId: string;
   appId: string;
-
+  isFullScreenView = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -95,6 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
+    private contentUtilsServiceService: ContentUtilsServiceService,
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
@@ -177,6 +179,9 @@ export class AppComponent implements OnInit, OnDestroy {
       this.userId = this.deviceId;
     }
     this.appId = this.userService.appId;
+    this.contentUtilsServiceService.contentFullScreenEvent.subscribe(() => {
+      this.isFullScreenView = !this.isFullScreenView;
+    });
   }
 
   isLocationStatusRequired() {
