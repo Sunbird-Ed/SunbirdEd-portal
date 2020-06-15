@@ -1,3 +1,33 @@
+
+// Filters
+$sb-prominent-filter-background-color: $white-color;
+$sb-prominent-filter-padding: $base-block-space * 2 $base-block-space * 2;
+$sb-prominent-filter-header-font-weight: bold;
+$sb-prominent-filter-header-margin: ($base-block-space) 0
+  ($base-block-space * 2) 0;
+$sb-prominent-filter-header-color: $primary-color;
+$sb-prominent-filter-field-width-below-sm: 50%;
+$sb-prominent-filter-field-width-above-sm: 33.3333%;
+$sb-prominent-filter-field-width-above-md: 25%;
+$sb-prominent-filter-field-width-above-lg: 20%;
+$sb-prominent-filter-field-bottom-spacing: ($base-block-space * 2);
+$sb-prominent-filter-field-side-spacing: ($base-block-space * 2);
+$sb-prominent-filter-field-label-font-size: 14px;
+$sb-prominent-filter-field-label-font-weight: normal;
+$sb-prominent-filter-field-label-color: $gray-800;
+$sb-prominent-filter-field-label-margin: 0 0 $base-block-space 0;
+$sb-prominent-filter-field-font-size: 12px;
+$sb-prominent-filter-field-color: #4a4a4a;
+$sb-prominent-filter-field-border: 1px solid #999999;
+$sb-prominent-filter-field-border-radius: 3px;
+$sb-prominent-filter-field-height: 32px;
+$sb-prominent-filter-field-width: 100%;
+$sb-prominent-filter-field-input-padding: 8px;
+$sb-prominent-filter-dropdown-font-size: 12px;
+$sb-prominent-filter-dropdown-header-font-weight: 500;
+$sb-prominent-filter-dropdown-item-active-color: $primary-color;
+$sb-prominent-filter-dropdown-item-active-font-weight: 700;
+
 .sb-prominent-filter {
   background: $sb-prominent-filter-background-color;
   padding: calculateRem(8px) 0px 0px 0px;

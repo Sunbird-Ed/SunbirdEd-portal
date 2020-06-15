@@ -30,28 +30,28 @@
 .ui.form.borderd input[type=url],
 .ui.form.borderd input:not([type]),
 .ui.form.borderd input:not([type]):focus {
-  border: calculateRem(1px) solid $form-input-border-color;
+  border: calculateRem(1px) solid var(--gray-300);
   padding: 0.5rem 0 0.5rem 1em;
   border-radius: calculateRem(4px);
   font-size: calculateRem(14px);
 }
 .ui.form.borderd input:focus {
-  border-color: $form-input-border-active-color !important;
+  border-color: var(--primary-400) !important;
 }
 .ui.light-sea-green.button {
-  background: $signup-btn-bg-active-color;
+  background: var(--secondary-400);
   color: $white-color;
   height: calculateRem(38px) !important;
 }
 .ui.grey.button {
-  background: $signup-btn-bg-not-active-color;
+  background: var(--gray-200);
   color: $white-color;
   pointer-events: none !important;
   cursor: not-allowed !important;
   height: calculateRem(38px) !important;
 }
 .grey.text {
-  color: $signup-thankyou-text-color;
+  color: var(--gray-400);
 }
 .orange.text {
   color: $danger-color;
@@ -114,19 +114,19 @@ input[type=number]::-webkit-inner-spin-button {
   top: 0;
   width: calculateRem(16px);
   height: calculateRem(16px);
-  border: calculateRem(2px) solid $form-input-border-color !important;
+  border: calculateRem(2px) solid var(--gray-300) !important;
   border-radius: 100%;
   background: $white-color;
 }
 .ui.form.borderd [type="radio"]:checked + label:before {
-  border: calculateRem(2px) solid $form-input-border-active-color !important;
+  border: calculateRem(2px) solid var(--primary-400) !important;
 }
 .ui.form.borderd [type="radio"]:checked + label:after,
 .ui.form.borderd [type="radio"]:not(:checked) + label:after {
   content: '';
   width: calculateRem(8px);
   height: calculateRem(8px);
-  background: $form-input-border-active-color !important;
+  background: var(--primary-400)!important;
   position: absolute;
   top: calculateRem(4px);
   left: calculateRem(4px);
