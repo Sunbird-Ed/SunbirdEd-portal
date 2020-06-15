@@ -30,6 +30,11 @@
               </div>
               <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="!isParentCourse">
                 <h5 class="sb-color-primary font-weight-bold">{{courseHierarchy?.name | titlecase}}</h5>
+                <a (click)="onShareLink();shareLinkModal=true;"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16">
+                  <i class="blue share alternate icon"></i>
+                  {{resourceService?.frmelmnts?.lbl?.share}}
+                </a>
               </div>
             </div>
           </div>
@@ -60,7 +65,7 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16">
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16">
         <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentLabel}}</p>
         <div class="side-toc-content chapter-box">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;">
@@ -99,3 +104,6 @@
 <div class="ui container py-16" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
 </div>
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="shareLinkModal = false">
+</app-share-link>
