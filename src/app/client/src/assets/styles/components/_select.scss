@@ -1,130 +1,71 @@
-.ui.selection.dropdown:focus,
-.ui.multiple.dropdown:focus,
-.ui.selection.dropdown:focus .menu {
+.ui.selection.dropdown {
+  border-radius: $sb-dropdown-border-radius;
+  min-height: $sb-selection-dropdown-min-height;
+  padding: $sb-selection-dropdown-padding;
+  font-size: calculateRem(12px);
+
+  &:focus ,.menu {
     border-color: #96C8DA;
+    width: calc(100%);
+  }
 }
 
 .ui.selection.active.dropdown:hover {
-    border-color: $sb-dropdown-border-hover;
-}
-
-.ui.multiple.dropdown {
-    border-color: $sb-dropdown-border-color;
+  border-color: $sb-dropdown-border-hover;
 }
 
 .ui.selection.dropdown .menu>.item.active,
 .prominent-filter .ui.selection.dropdown .menu>.item.active {
-    color: $sb-dropdown-active-item;
+  color: $sb-dropdown-active-item;
 }
 
-.multi-select-dropdown i.icon {
-    font-size: $sb-multi-select-dropdown-icon-font-size;
+.ui.default.dropdown:not(.button)>.text,
+.ui.dropdown:not(.button)>.default.text {
+  color: var(--gray-800);
 }
 
-.ui.selection.dropdown {
-    border-radius: $sb-dropdown-border-radius;
-    min-height: $sb-selection-dropdown-min-height;
-    padding: $sb-selection-dropdown-padding;
-    //line-height: $sb-selection-line-height;
-    font-size: calculateRem(12px);
-}
+.ui.multiple.dropdown {
+  border-color: $sb-dropdown-border-color;
 
-.ui.multiple.dropdown .label {
-    font-size: $sb-dropdown-label-font-size;
-    font-size:$sb-multiple-dropdown-label-font-size;
+  &.label {
+    font-size: $sb-multiple-dropdown-label-font-size;
     margin: 0 ($base-block-space/4) ($base-block-space/2) ($base-block-space/4);
-}
+  }
 
-.ui.selection.dropdown>.dropdown.icon,
-.ui.selection.dropdown>.search.icon {
-    margin: -.8571429em;
-}
+  &:focus {
+    border-color: #96C8DA;
+  }
 
-.ui.multiple.dropdown>.text {
+  &>.text {
     margin: $sb-multiple-dropdown-text-margin;
     font-size: $sb-multiple-dropdown-text-font-size;
-}
-
-.ui.selection.dropdown .menu {
-   // min-width: calc(100% + 1px);
-    width: calc(100%);
-}
-
-.ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
-    color: var(--gray-800);
-}
-
-.ui.dropdown .menu>.item {
-    font-size:0.86rem;
-}
-
-.ui.selection.state-selection.active.dropdown:hover .menu {
-    border-color: var(--primary-color);
-}
-
-.ui.selection.dropdown.state-selection .menu {
-  top: calc(100% + 4px);
-  border-color: var(--primary-color);
-  border-radius: calculateRem(2px);
-  border-top-width: 0.5px !important;
-
-  &::-webkit-scrollbar-thumb {
-    background: #E5EDF5;
   }
-  &::-webkit-scrollbar-track {
-    background: var(--white);
-    border-top: .5px solid var(--primary-color);
-  }
+}
 
-  >.item {
-    &.active {
-      color: var(--primary-color);
-      background-color: #E5EDF5;
+.sb-field {
+  .ui.sb-form-control.dropdown>.dropdown.icon {
+    float: right;
+  }
+}
+
+.sb-form {
+  .ui.selection.dropdown.fields-dropdown {
+    min-height: 2rem !important;
+
+    &:focus {
+      border: calculateRem(1px) solid #0076FE;
+      color: #0076FE !important;
     }
-    padding: calculateRem(4px) calculateRem(8px) !important;
-  }
-}
 
-@include respond-above (md) {
-    .ui.selection.dropdown.state-selection .menu {
-        max-height: calculateRem(368px);
+    &:focus~label {
+      border: 0px;
+      color: #0076FE;
+      font-weight: normal;
     }
-}
 
-.sb-field{
-    .ui.sb-form-control.dropdown>.dropdown.icon {
-     float:right;
-    }
-  }
-
-  .sb-form{
-    .ui.selection.dropdown.fields-dropdown {
-       min-height: 2rem !important;
-        &:focus{
-            border: calculateRem(1px) solid #0076FE;  
-            color:#0076FE !important;
-        }
-      }
-      
-      .ui.selection.dropdown.fields-dropdown:focus~label {
-        border: 0px;
-        color: #0076FE;
-        font-weight: normal;
-      }
-      
-      .ui.selection.dropdown.fields-dropdown option{
+    option {
       background: var(--white);
-      color:var(--black);
-      }
-      
-  .onboard-content {
-    margin-left: 0;
-    @include respond-above(sm) {
-      margin-left:1rem ;
-      html[dir="rtl"] & {
-        margin-left:0 ;
-        margin-right:1rem ;
-      }
+      color: var(--black);
     }
   }
 }
