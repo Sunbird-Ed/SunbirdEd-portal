@@ -1,9 +1,7 @@
-<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" #modal [mustScroll]="true">
+<sui-modal [isClosable]="false" class="fullpage signup-background" [size]="'fullscreen'" #modal [mustScroll]="true">
 
-  <div class="sb-certificatePage p-16">
-    <div class="sb-certificatePage-header">
-      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
-    </div>
+  <div class="fullpage-background-image p-16">
+    <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
     <div class="sb-merged-account-content text-center">
       <h3 class="sb-merged-account-body-header my-24 font-weight-bold f-18">
         {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>

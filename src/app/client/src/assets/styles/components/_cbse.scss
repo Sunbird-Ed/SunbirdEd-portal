@@ -71,20 +71,20 @@ i.icon {
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: 50%;
       }
       .speaker {
         width: ($base-block-space - 3);
         height: calculateRem(74px);
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: ($base-block-space + 2);
         margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: 50%;
       }
     }

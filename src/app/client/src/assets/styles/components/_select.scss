@@ -1,3 +1,16 @@
+
+// Dropdown
+$sb-dropdown-border-hover: $primary-300;
+$sb-dropdown-border-radius: 3px;
+$sb-dropdown-border: $input-border-width solid $sb-dropdown-border-color;
+$sb-dropdown-active-item: #333;
+$sb-selection-dropdown-min-height: ($base-block-space * 4);
+$sb-selection-dropdown-padding: ($base-block-space/2) ($base-block-space/1);
+$sb-multiple-dropdown-label-font-size: $font-size-sm;
+$sb-multiple-dropdown-text-margin: 0.23238095em 0 0.23238095em 0.64285714em;
+$sb-multiple-dropdown-text-font-size: $font-size-sm;
+
+
 .ui.selection.dropdown {
   border-radius: $sb-dropdown-border-radius;
   min-height: $sb-selection-dropdown-min-height;

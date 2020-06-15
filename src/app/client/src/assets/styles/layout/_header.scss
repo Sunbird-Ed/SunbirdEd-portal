@@ -44,7 +44,7 @@
   }
 
   .ui.icon.button {
-    background: $qr-btn;
+    background: var(--gray-100);
     padding: calculateRem(4px) calculateRem(7px);
   }
 }
