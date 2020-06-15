@@ -96,7 +96,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private contentUtilsServiceService: ContentUtilsServiceService,
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
