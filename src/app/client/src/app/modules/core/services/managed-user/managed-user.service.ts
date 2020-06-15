@@ -6,8 +6,8 @@ import {UserService} from '../user/user.service';
 import {TelemetryService} from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import {CacheService} from 'ng2-cache-service';
-import {of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {BehaviorSubject, of} from 'rxjs';
+import {map, skipWhile} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,15 +21,41 @@ export class ManagedUserService {
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
+  private _managedUserProfile;
+
+  /**
+   * BehaviorSubject Containing managed user list.
+   */
+  private _managedUserList$ = new BehaviorSubject(undefined);
+
+  /**
+   * Read only observable Containing managed user list.
+   */
+  public readonly managedUserList$ = this._managedUserList$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
+
   instance: string;
 
-  public fetchManagedUserList(request) {
-    let url = `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${request.userId}`;
+  public fetchManagedUserList() {
+    const userId = this.getUserId();
+    let url = `${this.configService.urlConFig.URLS.USER.GET_MANAGED_USER}/${userId}`;
     url = url + '?sortBy=createdDate&order=desc';
     const options = {
       url: url
     };
-    return this.learnerService.get(options);
+    this.learnerService.get(options).subscribe((data: ServerResponse) => {
+        this._managedUserProfile = data;
+        this._managedUserList$.next(this._managedUserProfile);
+      },
+      (err: ServerResponse) => {
+        this._managedUserList$.next(this._managedUserProfile);
+      }
+    );
+  }
+
+  updateUserList(data) {
+    this._managedUserProfile.result.response.content.push(data);
+    this._managedUserList$.next(this._managedUserProfile);
   }
 
   public initiateSwitchUser(request) {
