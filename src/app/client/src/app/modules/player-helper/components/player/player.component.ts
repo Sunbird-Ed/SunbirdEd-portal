@@ -1,6 +1,7 @@
+import { takeUntil } from 'rxjs/operators';
 import { ConfigService, NavigationHelperService, ContentUtilsServiceService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit } from '@angular/core';
+OnChanges, HostListener, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -16,7 +17,7 @@ import { UserService } from '../../../core/services';
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
+export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -30,6 +31,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
+  public unsubscribe = new Subject<void>();
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -107,8 +109,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       this.showPlayIcon = false;
     }
     this.setTelemetryData();
-    this.contentUtilsServiceService.contentFullScreenEvent.
-    pipe().subscribe(response => {this.handleFullScreen();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+      this.loadPlayer();
     });
   }
   /**
@@ -118,11 +122,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.playerConfig) {
       this.loadPlayer();
     }
-  }
-
-  handleFullScreen() {
-    this.loadPlayer();
-    this.isFullScreenView = !this.isFullScreenView;
   }
 
   ngOnChanges(changes) {
@@ -208,7 +207,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     const eid = event.detail.telemetryData.eid;
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
-      this.contentProgressEvents$.next(event);
+      if (this.contentProgressEvents$) {
+        this.contentProgressEvents$.next(event);
+      }
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
@@ -230,7 +231,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
     if (playerSummary) {
       contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
     }
-    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
+    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100 && !this.isFullScreenView) {
       this.contentRatingModal = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
@@ -290,8 +291,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   closeContentFullScreen() {
-    this.contentUtilsServiceService.emitFullScreenEvent();
+    this.navigationHelperService.emitFullScreenEvent(false);
   }
+
   setTelemetryData() {
     this.closeButtonInteractEdata = {
       id: 'player-close-button',
@@ -304,5 +306,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

@@ -1,7 +1,7 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 })
 export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
-  actionButtons = actionButtons;
+  actionButtons;
   contentRatingModal = false;
   contentId;
   collectionId;
@@ -36,10 +36,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public resourceService: ResourceService,
     public toasterService: ToasterService,
     public contentUtilsServiceService: ContentUtilsServiceService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    private navigationHelperService: NavigationHelperService
   ) { }
 
   ngOnInit() {
+    this.actionButtons = _.cloneDeep(actionButtons);
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
@@ -69,7 +71,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
           this.logTelemetry('print-content', content);
           break;
         case 'FULLSCREEN':
-          this.contentUtilsServiceService.emitFullScreenEvent();
+        this.navigationHelperService.emitFullScreenEvent(true);
       }
     }
 

@@ -130,6 +130,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.telemetryService.makeUTMSession(params);
       }
     });
+    this.navigationHelperService.contentFullScreenEvent.subscribe((isFullScreen) => {
+      this.isFullScreenView = isFullScreen;
+    });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
@@ -179,9 +182,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.userId = this.deviceId;
     }
     this.appId = this.userService.appId;
-    this.contentUtilsServiceService.contentFullScreenEvent.subscribe(() => {
-      this.isFullScreenView = !this.isFullScreenView;
-    });
   }
 
   isLocationStatusRequired() {

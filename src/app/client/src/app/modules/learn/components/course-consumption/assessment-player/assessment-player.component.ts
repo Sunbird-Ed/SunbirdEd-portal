@@ -69,8 +69,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToQueryParam();
-    this.contentUtilsServiceService.contentFullScreenEvent.
-    pipe().subscribe(response => {this.isFullScreenView = !this.isFullScreenView;
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
     });
   }
 

@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
 import * as _ from 'lodash-es';
@@ -13,7 +13,6 @@ export class ContentUtilsServiceService {
   *input for Sharelink;
   */
   contentShare: ISharelink;
-  contentFullScreenEvent = new EventEmitter();
   constructor(public configService: ConfigService) {
     this.baseUrl = document.location.origin + '/';
   }
@@ -77,9 +76,5 @@ export class ContentUtilsServiceService {
       playertype = 'content';
     }
     return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
-  }
-
-  emitFullScreenEvent() {
-    this.contentFullScreenEvent.emit();
   }
 }
