@@ -11,7 +11,16 @@
 </div>
 <!-- Portal player-->
 <div *ngIf="!isMobileOrTab">
-    <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
+  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
+    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
+        <svg class="icon icon-svg--white">
+          <use xlink:href="assets/images/sprite.svg#close-button"></use>
+        </svg>
+    </div>
+  </div>
+    <!-- <div > -->
+    <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
+    <!-- </div> -->
 </div>
 
     <!--Rating popup -->

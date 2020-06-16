@@ -21,7 +21,8 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -84,6 +85,8 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserTypePopup = false;
   deviceId: string;
   public botObject: any = {};
+  isFullScreenView = false;
+
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
   ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
   botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
@@ -132,6 +135,9 @@ export class AppComponent implements OnInit, OnDestroy {
       if (_.some(_.intersection(utmParams, _.keys(params)))) {
         this.telemetryService.makeUTMSession(params);
       }
+    });
+    this.navigationHelperService.contentFullScreenEvent.subscribe((isFullScreen) => {
+      this.isFullScreenView = isFullScreen;
     });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
