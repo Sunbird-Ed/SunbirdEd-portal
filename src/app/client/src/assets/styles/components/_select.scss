@@ -28,7 +28,7 @@
         border-radius: calculateRem(2px);
         border-top-width: calculateRem(0.5px) !important;
         &::-webkit-scrollbar-thumb {
-          background: var(--rc-bgE5EDF5);
+          background: var(--rc-E5EDF5);
         }
         &::-webkit-scrollbar-track {
           background: var(--white);
@@ -37,7 +37,7 @@
         >.item {
           &.active {
             color: var(--primary-color);
-            background-color: var(--rc-bgE5EDF5);
+            background-color: var(--rc-E5EDF5);
           }
           padding: calculateRem(4px) calculateRem(8px) !important;
         }
