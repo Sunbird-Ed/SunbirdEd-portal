@@ -4,37 +4,37 @@ $pValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 52, 56, 60, 
   $basePvalue: 0.0625 * $value + rem;
   /* padding in all direction */
   .p-#{$value} {
-    padding: ($basePvalue) !important;
+    padding: $basePvalue !important;
   }
   /* padding in top direction */
   .pt-#{$value} {
-    padding: ($basePvalue 0 0 0) !important;
+    padding: $basePvalue 0 0 0 !important;
   }
   /* padding in bottom direction */
   .pb-#{$value} {
-    padding: (0 0 $basePvalue 0) !important;
+    padding: 0 0 $basePvalue 0 !important;
   }
   /* padding in top and bottom direction */
   .py-#{$value} {
-    padding: ($basePvalue 0 $basePvalue 0) !important;
+    padding: $basePvalue 0 $basePvalue 0 !important;
   }
   /* padding in left and right direction */
   .px-#{$value} {
-    padding: (0 $basePvalue 0 $basePvalue) !important;
+    padding: 0 $basePvalue 0 $basePvalue !important;
   }
   /* padding in left direction */
   .pl-#{$value} {
-    padding: (0 0 0 $basePvalue) !important;
+    padding: 0 0 0 $basePvalue !important;
     html[dir="rtl"] & {
-      padding: (0 $basePvalue 0 0) !important;
+      padding: 0 $basePvalue 0 0 !important;
       padding-left: 0 !important;
     }
   }
   /* padding in right direction */
   .pr-#{$value} {
-    padding: (0 $basePvalue 0 0) !important;
+    padding: 0 $basePvalue 0 0 !important;
     html[dir="rtl"] & {
-      padding: (0 0 0 $basePvalue) !important;
+      padding: 0 0 0 $basePvalue !important;
       padding-right: 0 !important;
     }
   }
@@ -43,6 +43,6 @@ $pValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 52, 56, 60, 
 /* Negative paddings */
 @media screen and (min-width: 768px) {
   .px--20 {
-    padding: 0 calculateRem(-20px);
+    padding: 0 calculateRem-20px;
   }
 }
