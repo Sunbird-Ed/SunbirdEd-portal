@@ -69,6 +69,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
   }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeContentFullScreen();
+  }
+
   ngOnInit() {
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
