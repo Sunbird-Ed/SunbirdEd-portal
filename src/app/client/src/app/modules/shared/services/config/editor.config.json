@@ -430,13 +430,13 @@
                 "isRoot": true,
                 "editable": true,
                 "childrenTypes": [
-                  "CourseUnit",
-                  "Collection",
-                  "Resource"
+                    "CourseUnit",
+                    "Collection",
+                    "Resource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-book"
-              },
+            },
             {
                 "type": "CourseUnit",
                 "label": "Course Unit",
@@ -580,6 +580,7 @@
                 "childrenTypes": [
                     "TextBookUnit",
                     "Collection",
+                    "Course",
                     "Resource",
                     "FocusSpot",
                     "LearningOutcomeDefinition",
@@ -593,6 +594,15 @@
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "Course",
+                "label": "Course",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
                 "type": "Collection",
