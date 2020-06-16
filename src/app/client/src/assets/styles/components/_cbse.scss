@@ -71,20 +71,20 @@ i.icon {
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: 50%;
       }
       .speaker {
         width: ($base-block-space - 3);
         height: calculateRem(74px);
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: ($base-block-space + 2);
         margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: $sb-mobileDevice-sensor-background;
+        background: #252525;
         border-radius: 50%;
       }
     }
@@ -137,7 +137,7 @@ i.icon {
     .sb-mark {
       font-size: $font-size-sm;
       padding-right: $base-block-space;
-      color: var(--blue);
+      color: var(--primary-400);
     }
     &.sb-learning-outcome-header {
       align-items: center;
@@ -181,7 +181,7 @@ i.icon {
     .sb-question {
       margin-right: auto;
       font-size: $font-size-sm;
-      color: var(--blue);
+      color: var(--primary-400);
       margin-bottom: ($base-block-space * 2);
     }
 

@@ -1,6 +1,7 @@
 @import "variables";
+@import "components/form";
 .ui.grey.button {
-    background: $signup-btn-bg-not-active-color;
+    background: var(--gray-200);
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
@@ -16,7 +17,7 @@
 }
 
 .ui.basic.error.label {
-    background: $white-color !important;
+    background: none !important;
     color: $danger-color !important;
     border: 0 !important;
     padding-left: 0;

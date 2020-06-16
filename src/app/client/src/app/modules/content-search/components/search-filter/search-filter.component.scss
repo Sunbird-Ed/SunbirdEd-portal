@@ -28,6 +28,9 @@
     overflow-x: auto;
     overflow-y: hidden;
     height: 64px;
+    @include respond-below(xs){
+      flex:0 0 50%;
+    }
   }
 }
 
@@ -41,7 +44,7 @@
 }
 
 .ui.selection.dropdown.state-medium {
-  color: var(--blue);
+  color: var(--primary-400);
   display: flex;
   align-items: center;
   border: none;
@@ -77,7 +80,7 @@
   }
 
   &:hover {
-    color: var(--blue) !important;
+    color: var(--primary-400) !important;
     box-sizing: border-box;
     border-radius: calculateRem(2px);
     background-color: #E5EDF5;
