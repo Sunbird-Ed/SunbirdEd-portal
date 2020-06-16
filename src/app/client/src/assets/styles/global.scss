@@ -7,7 +7,7 @@ body {
 }
 
 body {
-  background: #E5EDF5 !important;
+  background: var(--rc-bgE5EDF5) !important;
   position: relative;
   font-family: $font-stack-en;
   letter-spacing: 0.2px;
@@ -17,7 +17,7 @@ body {
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
-    background: #E5EDF5 !important;
+    background: var(--rc-bgE5EDF5) !important;
     & > .pusher {
       background: transparent !important;
      // padding-bottom: 400px !important;

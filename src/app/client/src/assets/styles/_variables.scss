@@ -90,8 +90,12 @@
   --icon-svg-md: calc(var(--base-block-space) * 4);
   --icon-svg-lg: calc(var(--base-block-space) * 5);
   --icon-svg-xl: calc(var(--base-block-space) * 6);
-}
 
+  //random colors and backgrounds
+  --rc-96C8DA: #96C8DA;
+  --rc-0076FE: #0076FE;
+  --rc-bgE5EDF5:#E5EDF5;
+}
 
 // Variables
 $font-stack-en: var(--font-stack-en);
@@ -204,3 +208,4 @@ $base-btn-sm-height: ($base-block-space * 5);
 $base-btn-md-height: ($base-block-space * 6);
 $base-btn-lg-height: ($base-block-space * 7);
 $base-btn-fluid: 100%;
+
