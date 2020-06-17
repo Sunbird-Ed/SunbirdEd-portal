@@ -38,6 +38,11 @@ module.exports = function (app) {
         }
       }
   }))
+
+  app.get('/learner/user/v1/managed/*',
+    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
+    proxyManagedUserRequest()
+  )
   // Generate telemetry fot proxy service
   app.all('/learner/*', telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy)
@@ -146,6 +151,37 @@ module.exports = function (app) {
         }
       }
     }))
+}
+
+function proxyManagedUserRequest() {
+  return proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.originalUrl.replace('/learner/', '');
+      let query = require('url').parse(req.url).query;
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
+      }
+    },
+    userResDecorator: function (proxyRes, proxyResData, req, res) {
+      try {
+        let data = JSON.parse(proxyResData.toString('utf8'));
+        _.forEach(_.get(data.result.response, 'content'), (managedUser, index) => {
+          if (managedUser.managedToken) {
+            delete data.result.response.content[index].managedToken
+          }
+        });
+        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
+      } catch (err) {
+        logger.error({msg: 'content api user res decorator json parse error:', proxyResData})
+        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+      }
+    }
+  });
 }
 
 function checkForValidUser (){
