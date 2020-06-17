@@ -94,3 +94,8 @@
   height: auto;
   width: auto;
 }
+.modal.mini.fixed-small {
+  max-width: 320px;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
