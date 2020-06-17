@@ -148,33 +148,28 @@ describe('MainHeaderComponent', () => {
     userService._authenticated = true;
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     userService.initialize(true);
-    spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableOf(mockData.managedUserList));
+    managedUserService.fetchManagedUserList();
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.userList));
     spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
     component.ngOnInit();
     expect(component.userListToShow).toEqual(mockData.userList);
     expect(component.totalUsersCount).toEqual(1);
   });
 
-  it('Should subscribe manageduser event when new managed user is created', () => {
-    const userService = TestBed.get(UserService);
-    userService._authenticated = true;
-    userService._userData$.next({err: null, userProfile: mockData.userProfile});
-    spyOn(component, 'fetchManagedUsers');
-    component.ngOnInit();
-    userService.createManagedUser.emit('b2cb1e94-1a35-48d3-96dc-b7dfde252aa2');
-    expect(component.fetchManagedUsers).toHaveBeenCalled();
-  });
-
   it('should not fetch managed user list on init as api errored', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
+    const userData = mockData.userReadApiResponse;
+    userData.result.response['managedBy'] = 'mock managed by id';
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(userData));
     userService.initialize(true);
     const managedUserService = TestBed.get(ManagedUserService);
     const toasterService = TestBed.get(ToasterService);
+    managedUserService.fetchManagedUserList();
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.userList));
+    spyOn(managedUserService, 'getParentProfile').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    spyOn(managedUserService, 'fetchManagedUserList').and.returnValue(observableThrowError(mockData.apiErrorResponse));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });

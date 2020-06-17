@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
-import {forkJoin} from 'rxjs';
+import {zip} from 'rxjs';
 
 @Component({
   selector: 'app-choose-user',
@@ -124,14 +124,11 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   getManagedUserList() {
-    const fetchManagedUserRequest = {
-      userId: this.managedUserService.getUserId()
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    const requests = [this.managedUserService.managedUserList$];
     if (this.userService.userProfile.managedBy) {
       requests.push(this.managedUserService.getParentProfile());
     }
-    forkJoin(requests).subscribe((data) => {
+    zip(...requests).subscribe((data) => {
       let userListToProcess = _.get(data[0], 'result.response.content');
       if (data[1]) {
         userListToProcess = [data[1]].concat(userListToProcess);
