@@ -205,4 +205,15 @@ process.on('uncaughtException', (err) => {
   console.log('Uncaught Exception', err)
   process.exit(1);
 });
+
+process.on('SIGTERM', () => {
+  console.info('SIGTERM signal received.');
+  console.log('Closing http server.');
+  portal.server.close(() => {
+    console.log('Http server closed.');
+    // close cassandra connection of session store and ext framework
+    process.exit(0);
+  });
+});
+
 exports.close = () => portal.server.close()
