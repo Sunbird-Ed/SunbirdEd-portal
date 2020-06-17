@@ -37,14 +37,12 @@
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <div class="d-flex flex-ai-center flex-jc-space-between py-8">
               <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-              <button class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto"
-                (click)="shareUnitLink(item);">{{resourceService?.frmelmnts?.lbl?.share}}</button>
               <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
                 *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
-                class="sb-btn sb-btn-outline-primary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
               <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
                 *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
-                class="sb-btn sb-btn-outline-primary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
             </div>
             <div class="chapter-box sb-g">
               <section class="sb-g-col-xs-12"
