@@ -3,7 +3,7 @@
  * @description :: Responsible for check content service health
  * @author      :: Rajath V B
  */
-
+const {logInfo, logDebug, logErr} = require('./utilityService');
 var async = require('async')
 var request = require('request')
 var uuidv1 = require('uuid/v1')
@@ -255,6 +255,7 @@ function checkSunbirdPortalHealth (req, response) {
  */
 function checkDependantServiceHealth (dependancyServices) {
   return function (req, res, next) {
+    logDebug(req, {}, ' checkDependantServiceHealth() called');
     if (envHelper.sunbird_portal_health_check_enabled === 'false') {
       next()
     } else {
@@ -270,6 +271,7 @@ function checkDependantServiceHealth (dependancyServices) {
       });
 
       if (dependancyServices.length !== heathyServiceCount) {
+        logErr(req, {error: 'SERVICE_UNAVAILABLE'}, 'error in checkDependantServiceHealth()')
         res.status(503)
         res.send({
           'id': 'api.error',

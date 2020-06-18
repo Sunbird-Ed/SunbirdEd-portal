@@ -52,7 +52,7 @@ app.use(session({
   saveUninitialized: false,
   store: memoryStore
 }))
-
+app.use(bodyParser.json())
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.all('/logoff', endSession, (req, res) => {

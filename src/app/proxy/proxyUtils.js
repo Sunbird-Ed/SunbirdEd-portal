@@ -5,7 +5,8 @@ const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
 const ApiInterceptor = require('sb_api_interceptor')
-const logger = require('sb_logger_util_v2')
+const logger = require('sb_logger_util_v2');
+const { logInfo, logDebug, logErr } = require('./../helpers/utilityService');
 
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -23,6 +24,7 @@ const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
+    logDebug(proxyReqOpts, {}, ' decorateRequestHeaders() called');
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
     if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
@@ -65,6 +67,7 @@ const decoratePublicRequestHeaders = function () {
  * Add request info into logger for debug perpose
  */
 const addReqLog = function (req) {
+  logDebug(req, {}, 'addReqLog() called ');
   let reqBody = req.body ? JSON.stringify(req.body) : "";
   let userId =  _.get(req, 'headers.x-Authenticated-Userid');
   logger.info({
@@ -77,10 +80,13 @@ const addReqLog = function (req) {
 
 function verifyToken () {
   return async (req, res, next) => {
+    logDebug(req, {}, 'verifyToken is called');
     try {
+      logInfo(req, {}, 'validateUserToken() is calling from verifyToken');
       await validateUserToken(req, res)
       next()
     } catch (error) {
+      logErr(req, {error: 'UNAUTHORIZED_ACCESS'}, 'user is unauthorized');
       const responseCode = 'UNAUTHORIZED_ACCESS';
       res.status(401)
       res.send({
@@ -102,6 +108,7 @@ function verifyToken () {
   }
 }
 function validateUserToken (req, res, next) {
+  logInfo(req, {}, 'validateUserToken() is called');
   var token = _.get(req, 'kauth.grant.access_token.token') || req.get('x-authenticated-user-token')
   if (!token) {
     return Promise.reject({
@@ -123,7 +130,9 @@ function validateUserToken (req, res, next) {
   });
 }
 const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
+  logDebug(req, {}, 'handleSessionExpiry() called');
   if ((proxyRes.statusCode === 401) && !req.session.userId) {
+    logErr(req, {error: 'SESSION_EXPIRED'}, `Session expired`);
       return {
         id: 'app.error',
         ver: '1.0',
@@ -140,6 +149,7 @@ const handleSessionExpiry = (proxyRes, proxyResData, req, res, data) => {
         result: { }
     };
   } else {
+    logInfo(req, {}, `Session is not expired`);
     return proxyResData;
   }
 }
