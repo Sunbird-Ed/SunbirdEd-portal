@@ -29,7 +29,7 @@
       font-size: calculateRemI(14px);
       @include padding(0 0); //bourbon
       @include margin(0 0);
-      @include size(2.5rem 2.5rem); //bourbon
+      @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
       display: flex;
       align-items: center;
       justify-content: center;
