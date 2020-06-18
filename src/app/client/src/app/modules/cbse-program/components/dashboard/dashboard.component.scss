@@ -11,7 +11,7 @@
 }
 
 .topicSection{
-    border-right: calculateRem(1px) solid #dedede;
+    border-right: calculateRem(1px) solid var(--rc-dedede);
 }
    
  .selectionField{
