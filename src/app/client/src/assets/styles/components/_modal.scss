@@ -26,7 +26,7 @@
     }
     & > .close {
       color: var(--white);
-      font-size: calculateRemI(14px);
+      font-size: calculateRem(14px);
       @include padding(0 0); //bourbon
       @include margin(0 0);
       @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
