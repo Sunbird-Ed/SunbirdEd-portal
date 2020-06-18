@@ -5,7 +5,7 @@
   max-height: calculateRem(200px);
 
   .batch-name {
-    color: $gray-400;
+    color: var(--gray-400);
   }
   .batch-date{
       span {
@@ -17,8 +17,8 @@
 
 .ui {
   &.divider {
-    margin-left: $block-margin-xl-minus;
-    margin-right: $block-margin-xr-minus;
+    margin-left: calculateRem(-16px);
+    margin-right: calculateRem(-16px);
   }
 }
 
