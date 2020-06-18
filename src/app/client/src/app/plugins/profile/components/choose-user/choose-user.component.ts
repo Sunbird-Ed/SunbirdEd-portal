@@ -67,7 +67,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.router.navigate(['/resources']);
+              window.location.href = '/resources';
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   this.selectedUser.firstName),
