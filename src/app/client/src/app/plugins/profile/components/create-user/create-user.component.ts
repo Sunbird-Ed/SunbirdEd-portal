@@ -175,7 +175,8 @@ export class CreateUserComponent implements OnInit {
         this.managedUserService.updateUserList({
           firstName: this.userDetailsForm.value.name,
           identifier: _.get(resp, 'result.userId'),
-          id: _.get(resp, 'result.userId')
+          id: _.get(resp, 'result.userId'),
+          managedBy: this.managedUserService.getUserId()
         });
         this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
           const filterPipe = new InterpolatePipe();
