@@ -209,35 +209,6 @@
   }
 }
 
-//Meta Data
-.sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-  padding-right: $base-block-space*3;
-  flex-basis: auto;
-  margin: 0;
-
-  &:last-child {
-    padding-right: 0;
-  }
-
-  dt {
-    font-size: $base-block-space*3;
-    color: $gray-800;
-    margin-bottom: $base-block-space;
-  }
-
-  &.active {
-
-    dt,
-    dd {
-      color: var(--secondary-200);
-    }
-  }
-
-  dd {
-    font-size: $font-size-sm;
-  }
-}
-
 .sb-btn-radius {
   border-radius: 2rem;
   box-shadow: 0 calculateRem(4px) calculateRem(4px) 0 #C8D6EA;
