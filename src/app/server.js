@@ -214,7 +214,8 @@ function handleShutDowns() {
 
   // setInterval(() => portal.server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 1000);
 
-  const cleanup = signal => new Promise((resolve, reject) => { // close db connections
+  const cleanup = signal => new Promise(async (resolve, reject) => { // close db connections
+    await frameworkAPI.closeCassandraConnections();
     console.log(`Closed db connection after ${signal} signal.`);
     resolve();
   });
@@ -222,9 +223,9 @@ function handleShutDowns() {
   gracefulShutdown(portal.server, {
     signals: 'SIGINT SIGTERM',
     timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
-    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
     onShutdown: cleanup,
-    finally: () => console.log('Server gracefully shut down.')
+    finally: () => console.log('Server gracefully shut down.'),
+    development: false // process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
   });
 }
 
