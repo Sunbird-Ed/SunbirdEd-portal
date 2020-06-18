@@ -53,9 +53,6 @@ app.use(session({
   saveUninitialized: false,
   store: memoryStore
 }))
-app.get('/ping', (req, res) => {
-  setTimeout(__ => res.send("pong"), 10000)
-})
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.all('/logoff', endSession, (req, res) => {
@@ -211,8 +208,6 @@ process.on('uncaughtException', (err) => {
 });
 
 function handleShutDowns() {
-
-  // setInterval(() => portal.server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 1000);
 
   const cleanup = signal => new Promise(async (resolve, reject) => { // close db connections
     await frameworkAPI.closeCassandraConnections();
