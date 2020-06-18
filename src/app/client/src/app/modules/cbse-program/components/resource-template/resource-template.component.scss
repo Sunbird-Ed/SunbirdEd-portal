@@ -19,9 +19,6 @@
   
     // }
   
-  
-    @import "variables";
-  
   //Chapterlist Accordion Section
   .chapter-lists {
     display: block;
@@ -184,34 +181,5 @@
     li {
       font-size: $font-size-sm;
       line-height: ($base-block-space * 2) + 4;
-    }
-  }
-  
-  //Meta Data
-  .sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-    padding-right: calculateRem(24px);
-    flex-basis: auto;
-    margin: 0;
-  
-    &:last-child {
-      padding-right: 0;
-    }
-  
-    dt {
-      font-size: calculateRem(24px);
-      color: var(--gray-800);
-      margin-bottom: calculateRem(8px);
-    }
-  
-    &.active {
-  
-      dt,
-      dd {
-        color: var(--secondary-200);
-      }
-    }
-  
-    dd {
-      font-size: calculateRem(12px);
     }
   }
