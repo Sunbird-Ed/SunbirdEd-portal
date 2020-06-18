@@ -137,7 +137,7 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
 // class height padding fontsize width
 $btnsizes: "xs" 1.5rem "0.25rem 0.5rem" 0.75rem null,
   "normal" 2rem "0.5rem 1rem" 0.75rem null, "sm" 2.5rem "0.5rem 1rem" 1rem null,
-  "md" 3rem "0.5rem 1rem" 1remrem null, "lg" 3.5rem "1rem 1.5rem" 1.25rem null,
+  "md" 3rem "0.5rem 1rem" 1rem null, "lg" 3.5rem "1rem 1.5rem" 1.25rem null,
   "full" 1.5rem "0.5rem 1rem" 1.25rem 100%;
 @each $btn in $btnsizes {
   .sb-btn-#{nth($btn, 1)} {

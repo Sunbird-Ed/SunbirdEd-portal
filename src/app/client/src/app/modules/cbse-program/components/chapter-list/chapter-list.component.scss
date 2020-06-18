@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import 'components/metadata';
 
 .sb-table .sb-table-body td {
     padding: calculateRem(16px) calculateRem(24px);
