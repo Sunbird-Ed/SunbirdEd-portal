@@ -33,7 +33,7 @@
             border-right: none;
             display: inline-block;
             &:hover {
-                border: calculateRem(0.5px) solid var(--primary-250);
+                border: calculateRem(0.5px) solid var(--primary-300);
             }
             &:first-child {
                 border-radius: calculateRem(4px) 0 0 calculateRem(4px);
@@ -42,7 +42,7 @@
                 border: calculateRem(1px) solid var(--rc-dedede);
                 border-radius: 0 calculateRem(4px) calculateRem(4px) 0;
                 &:hover{
-                    border: calculateRem(0.5px) solid var(--primary-250);
+                    border: calculateRem(0.5px) solid var(--primary-300);
                 }
             }
 
@@ -53,7 +53,7 @@
             }
         }
         .sb-item.active{
-            border: calculateRem(0.5px) solid var(--primary-250);
+            border: calculateRem(0.5px) solid var(--primary-300);
             background: var(--primary-250);
         }
         .no-border {
