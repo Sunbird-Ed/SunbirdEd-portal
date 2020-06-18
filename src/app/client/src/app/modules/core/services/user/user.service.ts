@@ -376,7 +376,7 @@ export class UserService {
 
   public endSession() {
     const url = `/endSession`;
-    return this.http.get(url);
+    this.http.get(url).subscribe();
   }
 
   getUserByKey(key) {
