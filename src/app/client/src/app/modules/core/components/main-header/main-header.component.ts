@@ -12,7 +12,7 @@ import {
   ConfigService,
   ResourceService,
   IUserProfile,
-  ServerResponse,
+  UtilService,
   ToasterService,
   IUserData,
 } from '@sunbird/shared';
@@ -112,7 +112,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
-    private courseService: CoursesService,
+    private courseService: CoursesService, private utilService: UtilService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -388,7 +388,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.router.navigate(['/resources']);
+              this.utilService.redirect('/resources');
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   selectedUser.firstName),

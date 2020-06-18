@@ -4,7 +4,14 @@ import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MainHeaderComponent } from './main-header.component';
-import { ConfigService, ResourceService, ToasterService, SharedModule, BrowserCacheTtlService } from '@sunbird/shared';
+import {
+  ConfigService,
+  ResourceService,
+  ToasterService,
+  SharedModule,
+  BrowserCacheTtlService,
+  UtilService
+} from '@sunbird/shared';
 import {
   UserService,
   LearnerService,
@@ -53,7 +60,7 @@ describe('MainHeaderComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
-        PermissionService, ManagedUserService,
+        PermissionService, ManagedUserService, UtilService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
         LearnerService, CoursesService]
@@ -203,7 +210,9 @@ describe('MainHeaderComponent', () => {
       return {value: 'mock Id'};
     });
     const learnerService = TestBed.get(LearnerService);
+    const utilsService = TestBed.get(UtilService);
     const coursesService = TestBed.get(CoursesService);
+    spyOn(utilsService, 'redirect');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);
