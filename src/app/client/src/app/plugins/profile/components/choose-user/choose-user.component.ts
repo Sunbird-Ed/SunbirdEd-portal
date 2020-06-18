@@ -4,7 +4,7 @@ import {
   ConfigService,
   ResourceService,
   ToasterService,
-  IUserData, NavigationHelperService
+  IUserData, NavigationHelperService, UtilService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
@@ -20,7 +20,7 @@ import {zip} from 'rxjs';
 export class ChooseUserComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
-              public toasterService: ToasterService, public router: Router,
+              public toasterService: ToasterService, public router: Router, private utilService: UtilService,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
@@ -67,12 +67,14 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.router.navigate(['/resources']);
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   this.selectedUser.firstName),
                 class: 'sb-toaster sb-toast-success sb-toast-normal'
               });
+              setTimeout(() => {
+                this.utilService.redirect('/resources');
+              }, 5100);
             });
           }
         });
