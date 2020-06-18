@@ -75,21 +75,52 @@
   --red-100: #ff6979; // buttong bg, toast
   --red-400: var(--red); // icon color, lable, notification
 
+  // status colors
+  --info-color: var(--blue);
+  --success-color: var(--green);
+  --warning-color: var(--orange);
+  --danger-color: var(--red);
+  --body-background-color: var(--primary-0);
+  --default-text-color: var(--gray-800);
+  --bg-body: var(--primary-0);
+  --body-color: var(--gray-800);
+
   // alpha
   --alpha0: 0;
   --alpha25: 0.25;
   --alpha50: 0.5;
   --alpha75: 0.75;
 
-  // base variables
-  --base-font-size: 0.875rem;
-  --base-block-space: 0.5rem; //8px,
-  --icon-svg-xxs: 0.75rem;
-  --icon-svg-xs: calc(var(--base-block-space) * 2);
-  --icon-svg-sm: calc(var(--base-block-space) * 3);
-  --icon-svg-md: calc(var(--base-block-space) * 4);
-  --icon-svg-lg: calc(var(--base-block-space) * 5);
-  --icon-svg-xl: calc(var(--base-block-space) * 6);
+  // fonts
+--font-default-size: 0.875rem;
+--font-size-base: 0.875rem; // 14px Assumes the browser default, typically `16px`
+--font-weight-light: 300;
+--font-weight-normal: 400;
+--font-weight-bold: 700;
+--font-weight-base: var(--font-weight-normal);
+--line-height-base: calc(var(--font-size-base) * 1.61803398875);
+--h1-font-size: 2rem; // 32px
+--h2-font-size: 1.75rem; // 28px
+--h3-font-size: 1.5rem; // 24px
+--h4-font-size: 1.2rem; // 20px
+--h5-font-size: 1rem; // 16px
+--h6-font-size: var(--font-size-base); // 14px
+--font-size-lg: var(--h4-font-size); //20px
+--font-size-md: var(--h5-font-size); // 16px
+--font-size-normal: var(--font-size-base); // 14px
+--font-size-sm: 0.75rem; // 12px
+--font-size-xs: 0.625rem; // 10px
+--p-font-size: var(--font-size-base); //14px
+
+// base variables
+--base-font-size: 0.875rem;
+--base-block-space: 0.5rem; //8px,
+--icon-svg-xxs: 0.75rem;
+--icon-svg-xs: calc(var(--base-block-space) * 2);
+--icon-svg-sm: calc(var(--base-block-space) * 3);
+--icon-svg-md: calc(var(--base-block-space) * 4);
+--icon-svg-lg: calc(var(--base-block-space) * 5);
+--icon-svg-xl: calc(var(--base-block-space) * 6);
 
   //random colors and backgrounds
   --rc-96C8DA: #96C8DA;
@@ -178,39 +209,25 @@ $bg-body: var(--primary-0);
 $body-color: var(--gray-800);
 
 /* Fonts */
-// $font-default-size: 14px;
-$font-size-base: 0.875rem; // 14px Assumes the browser default, typically `16px`
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-bold: 700;
-$font-weight-base: $font-weight-normal;
-$line-height-base: ($font-size-base * 1.61803398875);
-$h1-font-size: 2rem; // 32px
-$h2-font-size: 1.75rem; // 28px
-$h3-font-size: 1.5rem; // 24px
-$h4-font-size: 1.2rem; // 20px
-$h5-font-size: 1rem; // 16px
-$h6-font-size: $font-size-base; // 14px
-$font-size-lg: $h4-font-size; //20px
-$font-size-md: $h5-font-size; // 16px
-$font-size-normal: $font-size-base; // 14px
-$font-size-sm: 0.75rem; // 12px
-$font-size-xs: 0.625rem; // 10px
-$p-font-size: $font-size-base; //14px
+$font-default-size: var(--font-default-size);
+$font-size-base: var(--font-size-base); // 14px Assumes the browser default, typically `16px`
+$font-weight-light: var(--font-weight-light);
+$font-weight-normal: var(--font-weight-normal);
+$font-weight-bold: var(--font-weight-bold);
+$font-weight-base: var(--font-weight-normal);
+$line-height-base: calc(var(--font-size-base) * 1.61803398875);
+$h1-font-size: var(--h1-font-size); // 32px
+$h2-font-size: var(--h2-font-size); // 28px
+$h3-font-size: var(--h3-font-size); // 24px
+$h4-font-size: var(--h4-font-size); // 20px
+$h5-font-size: var(--h5-font-size); // 16px
+$h6-font-size: var(--font-size-base); // 14px
+$font-size-lg: var(--h4-font-size); //20px
+$font-size-md: var(--h5-font-size); // 16px
+$font-size-normal: var(--font-size-base); // 14px
+$font-size-sm: var(--font-size-sm); // 12px
+$font-size-xs: var(--font-size-xs); // 10px
+$p-font-size: var(--font-size-base); //14px
 
 // spaces
 $base-block-space: 0.5rem;
-$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 2); // any block default spacing 16px
-$block-padding-xy: ($base-block-space * 2); // top right bottom left spacing
-$block-padding-x: ($base-block-space * 2) ($base-block-space * 2); // left right spacing
-$block-padding-y: ($base-block-space * 1) ($base-block-space * 1); // top bottom spacing
-$block-margin-xl-minus: -($base-block-space * 2); // minus margin 16px left
-$block-margin-xr-minus: -($base-block-space * 2); // minus margin 16px right
-$block-margin-xr-minus: -($base-block-space * 2) - ($base-block-space * 2); // minus margin 16px left & right
-$base-btn-xs-height: ($base-block-space * 3);
-$base-btn-normal-height: ($base-block-space * 4);
-$base-btn-sm-height: ($base-block-space * 5);
-$base-btn-md-height: ($base-block-space * 6);
-$base-btn-lg-height: ($base-block-space * 7);
-$base-btn-fluid: 100%;
-
