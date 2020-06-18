@@ -103,7 +103,7 @@
                     "ExperientialResource",
                     "PracticeResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -112,7 +112,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -121,7 +121,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },{
                 "type": "SelfAssess",
@@ -129,7 +129,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -138,7 +138,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -147,7 +147,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -156,7 +156,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -165,7 +165,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -174,7 +174,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -183,7 +183,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -192,7 +192,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -201,7 +201,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -222,7 +222,7 @@
                     "ExplanationResource",
                     "ExperientialResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -231,7 +231,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -240,7 +240,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -249,7 +249,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -258,7 +258,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -267,7 +267,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -276,7 +276,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -285,7 +285,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -294,7 +294,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -303,7 +303,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -318,7 +318,7 @@
                     "Collection",
                     "Resource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-book"
             },
             {
@@ -338,7 +338,7 @@
                     "ExplanationResource",
                     "ExperientialResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -347,7 +347,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -356,7 +356,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -365,7 +365,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -374,7 +374,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -383,7 +383,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -392,7 +392,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -401,7 +401,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -410,7 +410,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -419,7 +419,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -434,7 +434,7 @@
                   "Collection",
                   "Resource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-book"
               },
             {
@@ -456,7 +456,7 @@
                     "ExperientialResource",
                     "PracticeResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -465,7 +465,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -474,7 +474,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },{
                 "type": "SelfAssess",
@@ -482,7 +482,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -491,7 +491,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -500,7 +500,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -509,7 +509,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -518,7 +518,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -527,7 +527,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -536,7 +536,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -545,7 +545,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -554,7 +554,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -569,7 +569,7 @@
                     "Collection",
                     "Resource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-book"
             },
             {
@@ -602,7 +602,7 @@
                     "PreviousBoardExamPapers",
                     "LessonPlanResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -611,7 +611,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -620,7 +620,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -629,7 +629,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -638,7 +638,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -647,7 +647,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -656,7 +656,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -665,7 +665,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -674,7 +674,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -683,7 +683,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -692,7 +692,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -701,7 +701,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -710,7 +710,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -719,7 +719,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -728,7 +728,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -737,7 +737,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -746,7 +746,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -755,7 +755,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -764,7 +764,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -773,7 +773,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -782,7 +782,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -791,7 +791,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -800,7 +800,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -809,7 +809,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
