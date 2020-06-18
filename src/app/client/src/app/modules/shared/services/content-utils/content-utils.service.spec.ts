@@ -30,6 +30,6 @@ describe('ContentUtilsService', () => {
   inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
     const url = service.getPublicShareUrl('123', 'application/pdf', '456');
     expect(url).toBeDefined();
+    expect(url).toBe(`${service.baseUrl}play/collection/456?contentId=123`);
   }));
-
 });

@@ -51,7 +51,7 @@ export class ContentUtilsServiceService {
   getPublicShareUrl(identifier, type, collectionId?) {
     let playertype: string;
     if (collectionId) {
-      return `${this.baseUrl}play/collection/${collectionId}?contentId=${identifier}`
+      return `${this.baseUrl}play/collection/${collectionId}?contentId=${identifier}`;
     }
     if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       playertype = 'collection';
