@@ -266,3 +266,40 @@ $sb-modal-corner-radius: $base-block-space;
     }
   }
 }
+
+// In workspace, course card modal 
+.sb-course-modal{
+  .sb-modal-content{
+    .sb-card {
+      height: 8.75rem;
+      max-height: 100%;
+      .sb-card-body {
+        height: 8.75rem;
+        max-height: 100%;
+        padding: 1rem;
+        &.active,&:hover{
+          background:#BFE1CF;
+          border: calculateRem(1px) solid var(--green);
+          border-radius: calculateRem(4px);
+          .checkbox-img{
+            display:inline;
+          }
+        }
+        .checkbox-img{
+          display:none;
+          float: right;
+        }
+        .sb-card-title{
+          color: var(--black);
+          margin-bottom: 0;
+          font-weight: bold;
+        }
+        .sb-card-org {
+          font-size: 0.75rem;
+          color: var(--gray-400);
+          line-height: 1.8;
+        }
+      }
+    }
+  }
+}

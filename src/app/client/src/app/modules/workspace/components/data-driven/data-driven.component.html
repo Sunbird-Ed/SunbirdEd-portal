@@ -1,43 +1,64 @@
-<sui-modal
-    [mustScroll]="true"
-    [isClosable]="false"
-    [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
-    appBodyScroll
-    (dismissed)="goToCreate();"
-    #modal
-    [appTelemetryImpression]="telemetryImpression">
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-course-modal" appBodyScroll (dismissed)="goToCreate();" #modal
+  [appTelemetryImpression]="telemetryImpression">
 
-    <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+  <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
 
-    <!--Header-->
-    <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+  <!--Header-->
+  <div class="sb-modal-header">
+    What do you want create?
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content o-y-visible pb-8" *ngIf="formFieldProperties && categoryMasterList">
+    <div class="ui grid p-16">
+      <div class="six wide column">
+        <div class="sb-card w-100" tabindex="0">
+          <div class="sb-card-body">
+            <div class="checkbox-img">
+              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
+            </div>
+            <h4 class="sb-card-title">
+              Accademic Content
+            </h4>
+            <div class="sb-card-org">
+              Choose this if your are creating content mapped to your state curriculam
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="six wide column">
+        <div class="sb-card w-100" tabindex="0">
+          <div class="sb-card-body">
+            <div class="checkbox-img">
+              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
+            </div>
+            <h4 class="sb-card-title">
+              Non Accademic Content
+            </h4>
+            <div class="sb-card-org">
+              Choose this if you are creating content which is not mapped to your state curriculam
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!--/Header-->
+    <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
+      [categoryMasterList]="categoryMasterList">
+    </app-content-creation-default-template>
+  </div>
+  <!--/Content-->
 
-    <!--Content-->
-    <div class="sb-modal-content o-y-visible pb-8" *ngIf="formFieldProperties && categoryMasterList">
-        <app-content-creation-default-template
-            #formData
-            [formFieldProperties]="formFieldProperties"
-            [categoryMasterList]="categoryMasterList">
-        </app-content-creation-default-template>
-    </div>
-    <!--/Content-->
-
-    <!--Actions-->
-    <div class="sb-modal-actions">
-        <button
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            (click)="createContent();modal.deny()"
-            appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating',
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
+      [telemetryInteractEdata]="{id:'start-creating',
             type: 'click',
-            pageid: 'workspace'}"
-        >
-            {{resourceService?.frmelmnts?.btn?.startcreating}}
-        </button>
-    </div>
-    <!--/Actions-->
+            pageid: 'workspace'}">
+      Next
+    </button>
+    <!-- {{resourceService?.frmelmnts?.btn?.startcreating}} -->
+  </div>
+  <!--/Actions-->
 </sui-modal>
