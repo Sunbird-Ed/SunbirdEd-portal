@@ -137,7 +137,7 @@ describe('ChooseUserComponent', () => {
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
   });
 
-  it('should switch selected user', () => {
+  xit('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
