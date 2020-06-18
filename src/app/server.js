@@ -67,7 +67,7 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.redirect(logoutUrl);
 })
 
-app.all('/endSession', endSession, (req, res) => {
+app.get('/endSession', endSession, (req, res) => {
   delete req.session.userId;
   res.cookie('connect.sid', '', { expires: new Date() });
   res.status(200)
