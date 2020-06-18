@@ -212,7 +212,8 @@ describe('MainHeaderComponent', () => {
     const learnerService = TestBed.get(LearnerService);
     const utilsService = TestBed.get(UtilService);
     const coursesService = TestBed.get(CoursesService);
-    spyOn(utilsService, 'redirect');
+    spyOn(utilsService, 'redirect').and.callFake(() => {
+    });
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
     const managedUserService = TestBed.get(ManagedUserService);

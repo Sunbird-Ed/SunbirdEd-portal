@@ -162,7 +162,8 @@ describe('ChooseUserComponent', () => {
     ));
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
-    spyOn(utilService, 'redirect');
+    spyOn(utilService, 'redirect').and.callFake(() => {
+    });
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.selectedUser = mockData.selectedUser;
     component.switchUser();
