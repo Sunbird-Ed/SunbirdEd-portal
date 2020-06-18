@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express');
+const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
@@ -79,8 +80,8 @@ app.get('/service/health', healthService.createAndValidateRequestBody, healthSer
 
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
-app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
-app.get('/user/v1/switch/:userId', bodyParser.json({limit: '1mb'}),keycloak.protect(), userService.switchUser);
+app.post('/user/v2/accept/tnc', bodyParser.json({ limit: '1mb' }), userService.acceptTnc);
+app.get('/user/v1/switch/:userId', bodyParser.json({ limit: '1mb' }), keycloak.protect(), userService.switchUser);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
@@ -168,8 +169,8 @@ function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
-      handleConnections();
     })
+    handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;
   })
 }
@@ -209,35 +210,22 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-function handleConnections() {
+function handleShutDowns() {
 
-  // let connections = [];
+  // setInterval(() => portal.server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 1000);
 
-  process.on('SIGTERM', shutDown);
-  process.on('SIGINT', shutDown);
+  const cleanup = signal => new Promise((resolve, reject) => { // close db connections
+    console.log(`Closed db connection after ${signal} signal.`);
+    resolve();
+  });
 
-  function shutDown() {
-    console.log('Received kill signal, shutting down gracefully');
-    portal.server.close(() => {
-        console.log('Closed out remaining connections');
-        // close db connection
-        process.exit(0);
-    });
-
-    setTimeout(() => {
-        console.error('Could not close connections in time, forcefully shutting down');
-        process.exit(1);
-    }, 10 * 1000);
-
-    // connections.forEach(curr => curr.end());
-    // setTimeout(() => connections.forEach(curr => curr.destroy()), 5000);
-  }
-  // portal.server.on('connection', connection => {
-  //   console.log('Got connection');
-  //   connections.push(connection);
-  //   connection.on('close', () => connections = connections.filter(curr => curr !== connection));
-  // });
-  setInterval(() => portal.server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 1000);
+  gracefulShutdown(portal.server, {
+    signals: 'SIGINT SIGTERM',
+    timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
+    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+    onShutdown: cleanup,
+    finally: () => console.log('Server gracefully shut down.')
+  });
 }
 
 exports.close = () => portal.server.close()
