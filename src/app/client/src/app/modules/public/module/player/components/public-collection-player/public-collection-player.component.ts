@@ -422,6 +422,26 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  callinitPlayer (event) {
+    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
+      this.isContentPresent = true;
+      if (this.contentId) {
+        const data = this.setActiveContent(this.contentId);
+        if (data) {
+          event.data = data;
+          const navigationExtras: NavigationExtras = {
+            relativeTo: this.route,
+            queryParams: { contentType: this.contentType }
+          };
+          this.router.navigate([], navigationExtras);
+        }
+      }
+      this.activeContent = event.data;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
+      this.initPlayer(_.get(this.activeContent, 'identifier'));
+    }
+  }
+
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     let cData = [];
@@ -473,25 +493,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
     }
   }
-  callinitPlayer (event) {
-    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
-      this.isContentPresent = true;
-      if (this.contentId) {
-        const data = this.setActiveContent(this.contentId);
-        if (data) {
-          event.data = data;
-          const navigationExtras: NavigationExtras = {
-            relativeTo: this.route,
-            queryParams: { contentType: this.contentType }
-          };
-          this.router.navigate([], navigationExtras);
-        }
-      }
-      this.activeContent = event.data;
-      this.objectRollUp = this.getContentRollUp(event.rollup);
-      this.initPlayer(_.get(this.activeContent, 'identifier'));
-    }
-  }
+
   setActiveContent(id: string) {
     if (this.collectionData && this.collectionData.children) {
       const flattenDeepContents = this.flattenDeep(this.collectionData.children);

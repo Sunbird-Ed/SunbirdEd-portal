@@ -26,4 +26,10 @@ describe('ContentUtilsService', () => {
     expect(service).toBeDefined();
     expect(service.getBase64Url).toBeDefined();
   }));
+  it('should return with collection id in url if parent id is passed',
+  inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
+    const url = service.getPublicShareUrl('123', 'application/pdf', '456');
+    expect(url).toBeDefined();
+  }));
+
 });
