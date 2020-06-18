@@ -1,3 +1,10 @@
+// tooltip Component
+$tooltip-bg: $gray;
+$tooltip-color: $gray-0;
+$tooltip-content-color: $gray-200;
+$tooltip-content-font-size: $font-size-sm;
+$tooltip-header-font-size: $font-size-sm;
+
 .ui {
     &.popup {
       background: $tooltip-bg;

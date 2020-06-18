@@ -88,6 +88,8 @@ export class MainMenuComponent implements OnInit {
         this.hrefPath = url.replace('explore-course', 'learn');
       } else if (url.indexOf('explore') >= 0) {
         this.hrefPath = url.replace('explore', 'resources');
+      } else if (url.indexOf('play') >= 0) {
+        this.hrefPath = '/resources' + url;
       } else {
         this.hrefPath = '/resources';
       }

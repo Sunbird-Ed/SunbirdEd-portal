@@ -1,3 +1,11 @@
+/* Search Component */
+$sb-search-box-shadow-color: $primary-300;
+$sb-search-input-font-size: $font-size-sm;
+$sb-search-border-color: $primary-300;
+$sb-search-btn-bg: $primary-100;
+$sb-search-btn-font-size: $font-size-sm;
+$sb-search-close-btn-bg: $blue;
+$sb-search-close-btn-color: $white;
 .sb-search-box {
   display: flex;
   align-items: center;

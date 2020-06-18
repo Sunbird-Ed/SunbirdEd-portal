@@ -1,77 +1,77 @@
-$mValues: 0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
+$mValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 50, 52, 56, 60, 64, 68, 72, 76, 80,
   84, 88, 96, 192;
-@each $value in $mValues {
-  $baseMvalue: 0.0625 * $value + rem;
-  /* Margin in all direction */
-  .m-#{$value} {
-    @include margin($baseMvalue); 
-  }
-  /* Margin in top direction */
-  .mt-#{$value} {
-    @include margin($baseMvalue null null null);
-  }
-  /* Margin in bottom direction */
-  .mb-#{$value} {
-    @include margin(null null $baseMvalue null);
-  }
-  /* Margin in top and bottom direction */
-  .my-#{$value} {
-    @include margin($baseMvalue null $baseMvalue null);
-  }
-  /* Margin in left and right direction */
-  .mx-#{$value} {
-    @include margin(null $baseMvalue null $baseMvalue);
-  }
-  /* Margin in left direction */
-  .ml-#{$value} {
-    @include margin(null null null $baseMvalue);
-    html[dir="rtl"] & {
+  @each $value in $mValues {
+    $baseMvalue: 0.0625 * $value + rem;
+    /* Margin in all direction */
+    .m-#{$value} {
+      @include margin($baseMvalue); 
+    }
+    /* Margin in top direction */
+    .mt-#{$value} {
+      @include margin($baseMvalue null null null);
+    }
+    /* Margin in bottom direction */
+    .mb-#{$value} {
+      @include margin(null null $baseMvalue null);
+    }
+    /* Margin in top and bottom direction */
+    .my-#{$value} {
+      @include margin($baseMvalue null $baseMvalue null);
+    }
+    /* Margin in left and right direction */
+    .mx-#{$value} {
+      @include margin(null $baseMvalue null $baseMvalue);
+    }
+    /* Margin in left direction */
+    .ml-#{$value} {
+      @include margin(null null null $baseMvalue);
+      html[dir="rtl"] & {
+        @include margin(null $baseMvalue null null);
+        margin-left: 0 !important;
+      }
+    }
+    /* Margin in right direction */
+    .mr-#{$value} {
       @include margin(null $baseMvalue null null);
+      html[dir="rtl"] & {
+        @include margin(null null null $baseMvalue);
+        margin-right: 0 !important;
+      }
+    }
+  }
+  
+  .m-auto {
+    @include margin(0 auto 0 auto);
+  }
+  .mt-auto {
+    @include margin(auto null null null);
+  }
+  .mb-auto {
+    @include margin(null null auto null);
+  }
+  .mx-auto {
+    @include margin(null auto);
+  }
+  .my-auto {
+    @include margin(auto null);
+  }
+  .ml-auto {
+    @include margin(null null null auto);
+    html[dir="rtl"] & {
+      @include margin(null auto null null);
       margin-left: 0 !important;
     }
   }
-  /* Margin in right direction */
-  .mr-#{$value} {
-    @include margin(null $baseMvalue null null);
+  .mr-auto {
+    @include margin(null auto null null);
     html[dir="rtl"] & {
-      @include margin(null null null $baseMvalue);
+      @include margin(null null null auto);
       margin-right: 0 !important;
     }
   }
-}
-
-.m-auto {
-  @include margin(0 auto 0 auto);
-}
-.mt-auto {
-  @include margin(auto null null null);
-}
-.mb-auto {
-  @include margin(null null auto null);
-}
-.mx-auto {
-  @include margin(null auto);
-}
-.my-auto {
-  @include margin(auto null);
-}
-.ml-auto {
-  @include margin(null null null auto);
-  html[dir="rtl"] & {
-    @include margin(null auto null null);
-    margin-left: 0 !important;
+  /* Negative margins */
+  @media screen and (min-width: 768px) {
+    .mx--20 {
+      margin: 0 calculateRem(-20px) !important;
+    }
   }
-}
-.mr-auto {
-  @include margin(null auto null null);
-  html[dir="rtl"] & {
-    @include margin(null null null auto);
-    margin-right: 0 !important;
-  }
-}
-/* Negative margins */
-@media screen and (min-width: 768px) {
-  .mx--20 {
-    margin: 0 calculateRem(-20px) !important;
-  }
-}
