@@ -117,6 +117,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     const userData = mockUserData.success;
     userData.result.response['managedBy'] = 'mock iD';
     userService._userProfile = userData.result.response;
+    userService.setUserId('mock iD');
     userService._userData$.next({err: null, userProfile: userData});
     spyOn(userService, 'acceptTermsAndConditions').and.returnValue(observableOf({}));
     spyOn(component, 'onClose').and.callThrough();

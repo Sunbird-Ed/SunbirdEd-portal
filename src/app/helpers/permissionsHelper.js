@@ -97,6 +97,9 @@ let PERMISSIONS_HELPER = {
         } else {
           reqObj.session.userSid = reqObj.sessionID;
         }
+        if (body.result.response.managedToken) {
+          reqObj.session.managedToken = body.result.response.managedToken
+        }
         reqObj.session.roles = body.result.response.roles
         if (body.result.response.organisations) {
           _.forEach(body.result.response.organisations, function (org) {
@@ -123,11 +126,15 @@ let PERMISSIONS_HELPER = {
     }
   },
 
-  getCurrentUserRoles: function (reqObj, callback, userIdentifier) {
+  getCurrentUserRoles: function (reqObj, callback, userIdentifier, isManagedUser) {
     var userId = userIdentifier || reqObj.session.userId;
+    var url = learnerURL + 'user/v1/read/' + userId;
+    if (isManagedUser) {
+      url = url + '?withTokens=true'
+    }
     var options = {
       method: 'GET',
-      url: learnerURL + 'user/v1/read/' + userId,
+      url: url,
       headers: {
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),

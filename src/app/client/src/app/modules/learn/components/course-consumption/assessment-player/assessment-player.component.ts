@@ -171,6 +171,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private initPlayer(id: string) {
+    this.assessmentScoreService.init({
+      batchDetails: this.enrolledBatchInfo,
+      courseDetails: this.courseHierarchy,
+      contentDetails: { identifier: id }
+    });
     const options: any = { courseId: this.collectionId };
 
     /* istanbul ignore else */

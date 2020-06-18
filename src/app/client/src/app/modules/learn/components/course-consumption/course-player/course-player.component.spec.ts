@@ -450,7 +450,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    component.navigateToContent({ event: { type: 'click' }, data: {identifier: '12343536'}}, 'test');
+    component.navigateToContent({ event: { type: 'click' }, data: { identifier: '12343536' } }, 'test');
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
 
@@ -491,7 +491,38 @@ describe('CoursePlayerComponent', () => {
 
   it(`Show throw error with msg The course doesn't have any open batches`, () => {
     spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
-    component.getAllBatchDetails({content: [], count: 0});
-    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({content: [], count: 0});
+    component.getAllBatchDetails({ content: [], count: 0 });
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({ content: [], count: 0 });
+  });
+
+  it('should call shareUnitLink', () => {
+    const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
+    spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
+    spyOn(component, 'setTelemetryShareData');
+    component.shareUnitLink({ identifier: 'do_23823253221' });
+    expect(component.shareLink).toEqual('http://localhost:3000/explore-course/course/do_1130314965721088001129?moduleId=do_23823253221');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    const param = {
+      identifier: 'do_1130314965721088001129',
+      contentType: 'Course',
+      pkgVersion: 2
+    };
+    component.setTelemetryShareData(param);
+    expect(component.telemetryShareData).toBeDefined();
+    expect(component.telemetryShareData).toEqual([{ id: param.identifier, type: param.contentType, ver: param.pkgVersion.toString() }]);
+  });
+
+  it('should close the popup and generate telemetry', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.telemetryCdata = [{ id: '22321244', type: 'CourseBatch' }];
+    component['courseId'] = assessmentPlayerMockData.courseHierarchy.identifier;
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.closeSharePopup('close-share-link-popup');
+    expect(component.shareLinkModal).toBe(false);
+    expect(telemetryService.interact).toHaveBeenCalled();
   });
 });

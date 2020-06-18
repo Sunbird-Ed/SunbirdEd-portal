@@ -26,7 +26,7 @@
       <div class="course-player--card text-left">
         <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
-          [courseProgressData]="courseProgressData"  (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
+          [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
       </div>
 
       <div class="course-player--content text-left">
@@ -39,21 +39,22 @@
               <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
               <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
                 *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
-                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
               <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
                 *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
-                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
             </div>
             <div class="chapter-box sb-g">
               <section class="sb-g-col-xs-12"
-              [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
+                [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
                 <sb-toc-curriculum
                   *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
-                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')" [tocData]="item"
-                  [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
+                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')"
+                  [tocData]="item" [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
                 </sb-toc-curriculum>
                 <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
-                  (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType" [contentStatus]="contentStatus">
+                  (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType"
+                  [contentStatus]="contentStatus">
                 </sb-toc-card>
                 <ng-template #noContent>
                   <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
@@ -88,7 +89,8 @@
 
 <router-outlet></router-outlet>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')" *ngIf="showJoinTrainingModal">
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
+  *ngIf="showJoinTrainingModal">
   <!--Header-->
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.btn?.enroll}}
@@ -102,3 +104,7 @@
   </div>
   <!--/Content-->
 </sui-modal>
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="closeSharePopup('close-share-link-popup')">
+</app-share-link>
