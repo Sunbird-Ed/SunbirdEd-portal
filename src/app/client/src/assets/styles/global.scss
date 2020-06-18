@@ -51,15 +51,15 @@ body {
 
 
 *[lang="en"] body {
-  font-family: $font-stack-en;
+  font-family: $font-stack-en !important;
 }
 
 *[lang="hi"] body {
-  font-family: $font-stack-hi;
+  font-family: $font-stack-hi !important;
 }
 
 *[lang="ur"] body {
-  font-family: $font-stack-ur;
+  font-family: $font-stack-ur !important;
 }
 
 .publicmenusection.ui.secondary.menu .active.item {
