@@ -388,7 +388,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.utilService.redirect('/resources');
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   selectedUser.firstName),
@@ -398,6 +397,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
               if (userSubscription) {
                 userSubscription.unsubscribe();
               }
+              setTimeout(() => {
+                this.utilService.redirect('/resources');
+              }, 5100);
             });
           }
         });
