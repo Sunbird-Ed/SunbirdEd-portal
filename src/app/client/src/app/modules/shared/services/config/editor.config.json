@@ -80,7 +80,7 @@
                     "Resource",
                     "Course"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor", "Browser"],
                 "iconClass": "fa fa-book"
             },
             {
