@@ -52,7 +52,9 @@ app.use(session({
   saveUninitialized: false,
   store: memoryStore
 }))
-
+app.get('/ping', (req, res) => {
+  setTimeout(__ => res.send("pong"), 10000)
+})
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
 app.all('/logoff', endSession, (req, res) => {
@@ -166,6 +168,7 @@ function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
+      handleConnections();
     })
     portal.server.keepAliveTimeout = 60000 * 5;
   })
@@ -206,14 +209,35 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-process.on('SIGTERM', () => {
-  console.info('SIGTERM signal received.');
-  console.log('Closing http server.');
-  portal.server.close(() => {
-    console.log('Http server closed.');
-    // close cassandra connection of session store and ext framework
-    process.exit(0);
-  });
-});
+function handleConnections() {
+
+  // let connections = [];
+
+  process.on('SIGTERM', shutDown);
+  process.on('SIGINT', shutDown);
+
+  function shutDown() {
+    console.log('Received kill signal, shutting down gracefully');
+    portal.server.close(() => {
+        console.log('Closed out remaining connections');
+        // close db connection
+        process.exit(0);
+    });
+
+    setTimeout(() => {
+        console.error('Could not close connections in time, forcefully shutting down');
+        process.exit(1);
+    }, 10 * 1000);
+
+    // connections.forEach(curr => curr.end());
+    // setTimeout(() => connections.forEach(curr => curr.destroy()), 5000);
+  }
+  // portal.server.on('connection', connection => {
+  //   console.log('Got connection');
+  //   connections.push(connection);
+  //   connection.on('close', () => connections = connections.filter(curr => curr !== connection));
+  // });
+  setInterval(() => portal.server.getConnections((err, connections) => console.log(`${connections} connections currently open`)), 1000);
+}
 
 exports.close = () => portal.server.close()
