@@ -37,7 +37,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public sharelinkModal: boolean;
   public mimeType: string;
   public queryParams: any;
-  public collectionData: object;
+  public collectionData: any;
 
   public showPlayer: Boolean = false;
 
@@ -364,18 +364,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
           this.dialCode = queryParams.dialCode;
-          if (this.contentId) {
-            const content = this.findContentById(data, this.contentId);
-            this.playerContent = _.get(content, 'model');
-            if (content) {
-              this.objectRollUp = this.contentUtilsService.getContentRollup(content);
-              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
-            } else {
-              // show toaster error
-            }
-          } else {
-            this.closeContentPlayer();
-          }
         });
         this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
@@ -488,10 +476,44 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   callinitPlayer (event) {
     if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
       this.isContentPresent = true;
+      if (this.contentId) {
+        const data = this.setActiveContent(this.contentId);
+        if (data) {
+          event.data = data;
+          const navigationExtras: NavigationExtras = {
+            relativeTo: this.route,
+            queryParams: { contentType: this.contentType }
+          };
+          this.router.navigate([], navigationExtras);
+        }
+      }
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
+  }
+  setActiveContent(id: string) {
+    if (this.collectionData && this.collectionData.children) {
+      const flattenDeepContents = this.flattenDeep(this.collectionData.children);
+      return this.findContent(flattenDeepContents, id);
+    }
+  }
+
+  private flattenDeep(contents) {
+    if (contents) {
+      return contents.reduce((acc, val) => {
+        if (val.children) {
+          acc.push(val);
+          return acc.concat(this.flattenDeep(val.children));
+        } else {
+          return acc.concat(val);
+        }
+      }, []);
+    }
+  }
+
+  private findContent(contents, id: string) {
+    return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection' && content.identifier === id);
   }
   setTelemetryInteractData() {
     this.tocTelemetryInteractEdata = {
