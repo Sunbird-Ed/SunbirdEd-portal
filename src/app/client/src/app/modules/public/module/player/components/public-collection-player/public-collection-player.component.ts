@@ -442,6 +442,49 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the content object
+  * @since release-3.1.0
+  */
+  setActiveContent(id: string) {
+    if (this.collectionData && this.collectionData.children) {
+      const flattenDeepContents = this.flattenDeep(this.collectionData.children);
+      return this.findContent(flattenDeepContents, id);
+    }
+  }
+
+  /**
+  * @param  {array} contents - Accepts contents hierarchy
+  * @returns object
+  * @description Function to get all childrens
+  * @since release-3.1.0
+  */
+  private flattenDeep(contents) {
+    if (contents) {
+      return contents.reduce((acc, val) => {
+        if (val.children) {
+          acc.push(val);
+          return acc.concat(this.flattenDeep(val.children));
+        } else {
+          return acc.concat(val);
+        }
+      }, []);
+    }
+  }
+
+  /**
+  * @param  {object} contents - Accepts contents flatten object
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the contents object which matches the content id
+  * @since release-3.1.0
+  */
+  private findContent(contents, id: string) {
+    return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection' && content.identifier === id);
+  }
+
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     let cData = [];
@@ -494,48 +537,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
-  /**
-  * @param  {String} id - Accepts content id
-  * @returns object
-  * @description Function to get the content object
-  * @since release-3.1.0
-  */
-  setActiveContent(id: string) {
-    if (this.collectionData && this.collectionData.children) {
-      const flattenDeepContents = this.flattenDeep(this.collectionData.children);
-      return this.findContent(flattenDeepContents, id);
-    }
-  }
-
-  /**
-  * @param  {array} contents - Accepts contents hierarchy
-  * @returns object
-  * @description Function to get all childrens
-  * @since release-3.1.0
-  */
-  private flattenDeep(contents) {
-    if (contents) {
-      return contents.reduce((acc, val) => {
-        if (val.children) {
-          acc.push(val);
-          return acc.concat(this.flattenDeep(val.children));
-        } else {
-          return acc.concat(val);
-        }
-      }, []);
-    }
-  }
-
-  /**
-  * @param  {object} contents - Accepts contents flatten object
-  * @param  {String} id - Accepts content id
-  * @returns object
-  * @description Function to get the contents object which matches the content id
-  * @since release-3.1.0
-  */
-  private findContent(contents, id: string) {
-    return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection' && content.identifier === id);
-  }
   setTelemetryInteractData() {
     this.tocTelemetryInteractEdata = {
       id: 'library-toc',

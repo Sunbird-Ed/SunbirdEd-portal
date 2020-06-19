@@ -42,24 +42,6 @@ export class ContentUtilsServiceService {
       return `${this.baseUrl}resources/play/content/${contentShare.identifier}/Unlisted`;
     }
   }
-  /**
-  * getPublicShareUrl
-  * {string}  identifier - content or course identifier
-  * {string}  type - content or course type
-  * returns {string} url to share
-  */
-  getPublicShareUrl(identifier, type, collectionId?) {
-    let playertype: string;
-    if (collectionId) {
-      return `${this.baseUrl}play/collection/${collectionId}?contentId=${identifier}`;
-    }
-    if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      playertype = 'collection';
-    } else {
-      playertype = 'content';
-    }
-    return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
-  }
 
   getCoursePublicShareUrl (courseid) {
     return `${this.baseUrl}explore-course/course/${courseid}`;
@@ -78,5 +60,23 @@ export class ContentUtilsServiceService {
     nodes = _.slice(nodes, 0, 4).slice(0, -1);
     nodes.forEach((eachnode, index) => objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
     return objectRollUp;
+  }
+  /**
+  * getPublicShareUrl
+  * {string}  identifier - content or course identifier
+  * {string}  type - content or course type
+  * returns {string} url to share
+  */
+  getPublicShareUrl(identifier, type, collectionId?) {
+    let playertype: string;
+    if (collectionId) {
+      return `${this.baseUrl}play/collection/${collectionId}?contentId=${identifier}`;
+    }
+    if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      playertype = 'collection';
+    } else {
+      playertype = 'content';
+    }
+    return this.baseUrl + 'play' + '/' + playertype + '/' + identifier;
   }
 }
