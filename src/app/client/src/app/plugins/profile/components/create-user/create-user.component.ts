@@ -156,7 +156,7 @@ export class CreateUserComponent implements OnInit {
       }
     };
     this.managedUserService.getParentProfile().subscribe((userProfileData) => {
-      createUserRequest.request['locationIds'] = _.map(_.get(userProfileData, 'userLocations'), 'id');
+      createUserRequest.request['locationIds'] = _.map(_.get(userProfileData, 'userLocations'), 'code');
       if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
         createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
       }
