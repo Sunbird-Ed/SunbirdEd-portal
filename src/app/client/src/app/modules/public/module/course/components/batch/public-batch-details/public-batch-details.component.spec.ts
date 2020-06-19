@@ -22,7 +22,7 @@ const fakeActivatedRoute = {
   'queryParams': observableOf({}),
   'snapshot' : {
     data: {
-      telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      telemetry: { env: 'explore-course', pageid: 'explore-course', type: 'view', object: { ver: '1.0', type: 'course' } }
     }
   }
 };
@@ -111,6 +111,19 @@ describe('PublicBatchDetailsComponent', () => {
       expect(component.showLoginModal).toBeTruthy();
   });
 
+  it('should navigate to enroll course if user is loggedin', () => {
+      const courseBatchService = TestBed.get(CourseBatchService);
+      const route = TestBed.get(Router);
+      spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+      const userService = TestBed.get(UserService);
+      userService._authenticated = true;
+      component.courseId = 'do_1125083286221291521153';
+      component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+      component.ngOnInit();
+      component.enrollBatch(component.batchList[0].identifier);
+      expect(route.navigate).toHaveBeenCalledWith([component.baseUrl]);
+  });
+
   it('should log telemetry event when user close login popup', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
@@ -118,6 +131,7 @@ describe('PublicBatchDetailsComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact');
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.courseId = 'do_1125083286221291521153';
     component.ngOnInit();
     component.enrollBatch(component.batchList[0].identifier);
     expect(component.showLoginModal).toBeTruthy();
