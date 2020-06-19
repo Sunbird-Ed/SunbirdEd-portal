@@ -4,10 +4,11 @@ const _ = require('lodash');
 const httpSatusCode = require('http-status-codes');
 const logger = require('sb_logger_util_v2');
 const {sendRequest} = require('./httpRequestHandler');
-const {parseJson} = require('./utilityService');
+const {parseJson, logInfo,logDebug,logErr} = require('./utilityService');
 const uuidv1 = require('uuid/v1');
 
 const getDeviceProfile = async (req, res) => {
+  logDebug(req, {}, 'getDeviceProfile() is called');
   const options = {
     method: CONSTANTS.HTTP.METHOD.GET,
     url: envHelper.sunbird_device_api + CONSTANTS.API_VERSION.V3 + '/device/profile/' + req.params.deviceId,
@@ -20,11 +21,12 @@ const getDeviceProfile = async (req, res) => {
     }
   };
   try {
+    logInfo(req, {}, 'sendRequest() is calling from getDeviceProfile()');
     const responseData = await sendRequest(options);
-    logger.info({msg: 'deviceService:getDeviceProfile', data: responseData.responseCode});
+    logInfo(req, {}, `data: ${responseData.responseCode}`);
     res.status(httpSatusCode.OK).send(parseJson(responseData))
   } catch (e) {
-    logger.error({msg: 'deviceService:getDeviceProfile caught exception', errorMessage: e.message, error: e});
+    logErr(req, e, `deviceService:getDeviceProfile caught exception errorMessage:, ${ e.message}, ${e}`);
     res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
       "id": "api.device.profile",
       "ver": CONSTANTS.API_VERSION.V3,
@@ -45,6 +47,7 @@ const getDeviceProfile = async (req, res) => {
 };
 
 const registerDeviceProfile = async (req, res) => {
+  logDebug(req, {}, 'registerDeviceProfile() called');
   const options = {
     method: CONSTANTS.HTTP.METHOD.POST,
     url: envHelper.sunbird_device_api + CONSTANTS.API_VERSION.V3 + '/device/register/' + req.params.deviceId,
@@ -58,16 +61,17 @@ const registerDeviceProfile = async (req, res) => {
     json: true
   };
   try {
+    logInfo(req, {}, 'sendRequest() is calling from registerDeviceProfile()');
     const responseData = await sendRequest(options);
-    logger.info({msg: 'devi' +
-        'ceService:registerDeviceProfile', data: responseData.responseCode});
+    logInfo(req, {}, `'devi' +
+    'ceService:registerDeviceProfile', data: ${responseData.responseCode}`);
     res.status(httpSatusCode.OK).send(responseData)
   } catch (error) {
-    logger.error({
-      msg: 'deviceService:registerDeviceProfile caught exception',
-      errorMessage: error.message,
-      error: error,
-    });
+    logErr(req, error,
+      `deviceService:registerDeviceProfile caught exception,
+      errorMessage: ${error.message},
+      error: ${error}`,
+    );
     res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
       "id": "api.device.profile",
       "ver": CONSTANTS.API_VERSION.V3,
