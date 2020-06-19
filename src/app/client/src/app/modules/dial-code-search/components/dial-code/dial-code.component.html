@@ -23,13 +23,14 @@
   <div class="dial-code-section-result">
     <div class="sb-pageSection" *ngIf="!showLoader && searchResults.length > 0">
       <div class="section-header">
-        <p>Showing {{searchResults.length}} results for<strong>"{{dialCode}}"</strong></p>
-        <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
+        <p>Showing {{searchResults.length}} results for "<strong>{{dialCode}}</strong>"</p>
+        <!-- <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
           [telemetryInteractCdata]="telemetryCdata"
           class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn computer only" type="button"
           (click)="handleCloseButton()">
           {{resourceService?.frmelmnts?.btn?.close}}
-          <i class="close icon" aria-hidden="true"></i></button>
+          <i class="close icon" aria-hidden="true"></i>
+        </button> -->
       </div>
     </div>
     <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="mb-24">
