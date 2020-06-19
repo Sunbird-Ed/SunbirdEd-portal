@@ -1,4 +1,5 @@
 @import "variables";
+
 @import "./mixins/mixins";
 
 /*get dial code page responsive css*/
@@ -296,4 +297,7 @@
       margin-left: calculateRem(8px);
     }
   }
+}
+.sb-placeholder {
+  justify-content: center !important;
 }
