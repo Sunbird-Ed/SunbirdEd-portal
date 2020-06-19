@@ -111,7 +111,7 @@ describe('PublicBatchDetailsComponent', () => {
       expect(component.showLoginModal).toBeTruthy();
   });
 
-  it('should log telemetry event when user close login popup close', () => {
+  it('should log telemetry event when user close login popup', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     const userService = TestBed.get(UserService);
@@ -123,5 +123,6 @@ describe('PublicBatchDetailsComponent', () => {
     expect(component.showLoginModal).toBeTruthy();
     component.closeLoginModal();
     expect(telemetryService.interact).toHaveBeenCalled();
+    expect(component.showLoginModal).toBeFalsy();
   });
 });
