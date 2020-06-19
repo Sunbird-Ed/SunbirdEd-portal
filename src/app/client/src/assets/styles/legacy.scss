@@ -684,6 +684,7 @@ li.subStr::after {
   display: flex;
   align-items: center;
   margin: calculateRem(4px);
+  font-size: calculateRem(12px);
 }
 .textcontent i.icon {
   font-size: 3.5em;
