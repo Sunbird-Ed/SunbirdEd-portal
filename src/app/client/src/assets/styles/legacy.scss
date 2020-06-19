@@ -102,7 +102,7 @@ span.icon.play.circle:before {
 .ShowFilterSubTitle {
   font-weight: 500;
   font-size: 0.9375em;
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
 }
 
 .opacity-1 {
@@ -264,13 +264,13 @@ i.large.icon.limitedPublishingLinkIcon {
   padding-top: calculateRem(20px);
   font-size: calculateRem(18px);
   font-weight: 600;
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
 }
 .no-result-container .no-result-search-text {
   text-align: center;
   padding-top: calculateRem(5px);
   font-size: calculateRem(16px);
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
 }
 .announcement-description {
   font-weight: 500;
@@ -407,7 +407,7 @@ li.subStr::after {
   margin: 0;
 }
 .courseupdate {
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
   line-height: 1.6;
   font-size: 1em;
   word-break: break-word;
@@ -574,23 +574,23 @@ li.subStr::after {
   font-size: 1em !important;
   font-weight: 600 !important;
   line-height: calculateRem(20px) !important;
-  color: #7c7b7b !important;
+  color: var(--rc-7c7b7b) !important;
 }
 .profileitems.ui.items > .item > .content > a.header,
 .profileitems.ui.items > .item > .content > a.header:hover {
   font-size: 1em !important;
   font-weight: 600 !important;
   line-height: calculateRem(20px) !important;
-  color: #7c7b7b !important;
+  color: var(--rc-7c7b7b) !important;
 }
 .profileitems.ui.items > .item .description {
-  color: #7c7b7b !important;
+  color: var(--rc-7c7b7b) !important;
   font-size: 0.89em !important;
   line-height: calculateRem(17px) !important;
   margin-top: 0 !important;
 }
 .profileitems .item .metadata .date {
-  color: #7c7b7b !important;
+  color: var(--rc-7c7b7b) !important;
   font-size: 0.89em !important;
   line-height: calculateRem(14px) !important;
 }
@@ -613,7 +613,7 @@ li.subStr::after {
   border-radius: 0 !important;
 }
 .iniformationcontent {
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
 }
 .searchListInfo {
   border-bottom: calculateRem(1px) solid rgba(34, 36, 38, 0.15) !important;
@@ -646,7 +646,7 @@ li.subStr::after {
   padding: 0 0 0 calculateRem(4px);
 }
 .publicmenusection.ui.secondary.vertical.menu > .item {
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -670,11 +670,11 @@ li.subStr::after {
 }
 .workspaceinstuction {
   text-align: center;
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
   font-size: calculateRem(12px);
 }
 .uploador p {
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
   font-size: calculateRem(10px);
 }
 .iwt {
@@ -823,7 +823,7 @@ ol.ui.list ol li:before {
 }
 .create-ann-header-desc {
   font-size: 0.9em;
-  color: #7c7b7b;
+  color: var(--rc-7c7b7b);
 }
 iframe.iziModal-iframe {
   width: 100vw !important;
@@ -863,7 +863,7 @@ iframe.iziModal-iframe {
   height: 2.1666em !important;
 }
 .secondary-text-color-sunbird {
-  color: #7c7b7b !important;
+  color: var(--rc-7c7b7b) !important;
 }
 /*adding outline none because router link of angular is adding extra outline, */
 .remove-outline {
