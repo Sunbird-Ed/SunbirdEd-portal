@@ -494,6 +494,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the content object
+  * @since release-3.1.0
+  */
   setActiveContent(id: string) {
     if (this.collectionData && this.collectionData.children) {
       const flattenDeepContents = this.flattenDeep(this.collectionData.children);
@@ -501,6 +507,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+  * @param  {array} contents - Accepts contents hierarchy
+  * @returns object
+  * @description Function to get all childrens
+  * @since release-3.1.0
+  */
   private flattenDeep(contents) {
     if (contents) {
       return contents.reduce((acc, val) => {
@@ -514,6 +526,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  /**
+  * @param  {object} contents - Accepts contents flatten object
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the contents object which matches the content id
+  * @since release-3.1.0
+  */
   private findContent(contents, id: string) {
     return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection' && content.identifier === id);
   }
