@@ -70,7 +70,7 @@ const acceptTnc = async (req, res) => {
   const identifier = _.get(req, 'body.request.identifier');
   const tncVersionAccepted = _.get(req, 'body.request.version');
   if (!identifier || !tncVersionAccepted) {
-    logErr(req, {}, `Userservice: acceptTnc, missing mandatory parameters additionalInfo: ${additionalInfo},
+    logErr(req, {err: "mandatory parameters missing"}, `Userservice: acceptTnc, missing mandatory parameters additionalInfo: ${additionalInfo},
     identifier: ${identifier}, tncVersionAccepted: ${tncVersionAccepted}
     `)
     res.status(httpSatusCode.BAD_REQUEST).send({

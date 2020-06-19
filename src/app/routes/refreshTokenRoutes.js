@@ -88,12 +88,12 @@ module.exports = (app) => {
           'responseCode': error.error || 'UNHANDLED_EXCEPTION',
           'result': {}
         })
-        logInfo(req, error, {msg: '<<<<< /auth/v1/refresh/token'});
+        logErr(req, error, {msg: '<<<<< /auth/v1/refresh/token'});
       }
   })
 }
 const handleError = (error) => {
-  logger.error({}, error, 'refresh token api error');
+  logErr({}, error, 'refresh token api error');
   const errorRes = JSON.parse(error.error)
   throw {
     statusCode: error.statusCode,

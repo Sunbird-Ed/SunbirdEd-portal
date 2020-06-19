@@ -13,7 +13,7 @@ const validateRecaptcha = async (req, res) => {
   try {
     // Validating if request is valid or not
     if (!req.query.captchaResponse) {
-      logErr(req, {}, `googleService:validateRecaptcha throwing error of MISSING_QUERY_PARAMS ${req.query.captchaResponse}`)
+      logErr(req, {}, `googleService:validateRecaptcha throwing error of MISSING_QUERY_PARAMS ${_.get(req, 'query.captchaResponse')}`)
       errType = 'MISSING_QUERY_PARAMS';
       throw new Error('MISSING_CAPTCHA_RESPONSE');
     }

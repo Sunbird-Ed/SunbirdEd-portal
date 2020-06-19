@@ -111,7 +111,7 @@ module.exports = function (app) {
   app.all(csLocalProxyURI + '*', function (req, res, next) {
     var urlAfterBU = req.url.split(csLocalProxyURI)[1]
     logDebug(req, {}, `localProxy: ${csLocalProxyURI}`);
-    logInfo(req, {}, `getRedirectUrl() is calling with ${actualUrl, redirectUrl} from localProxy: ${csLocalProxyURI}`);
+    logInfo(req, {}, `getRedirectUrl() is calling from localProxy: ${csLocalProxyURI}`);
     getRedirectUrl(urlAfterBU, contentServiceApi, function (actualUrl, redirectUrl) {
       req.url = req.url.replace(actualUrl, redirectUrl)
       next()
@@ -134,7 +134,7 @@ module.exports = function (app) {
 
   app.all(lsLocalProxyURI + '*', function (req, res, next) {
     logDebug(req, {}, `localProxy: ${lsLocalProxyURI}`);
-    logInfo(req, {}, `getRedirectUrl() is calling with ${actualUrl, redirectUrl} from localProxy: ${lsLocalProxyURI}`);
+    logInfo(req, {}, `getRedirectUrl() is calling from localProxy: ${lsLocalProxyURI}`);
 
     var urlAfterBU = req.url.split(lsLocalProxyURI)[1]
     getRedirectUrl(urlAfterBU, learnerServiceApi, function (actualUrl, redirectUrl) {
