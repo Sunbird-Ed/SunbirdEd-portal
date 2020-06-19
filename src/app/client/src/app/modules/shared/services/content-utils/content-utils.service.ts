@@ -46,6 +46,7 @@ export class ContentUtilsServiceService {
   * getPublicShareUrl
   * {string}  identifier - content or course identifier
   * {string}  type - content or course type
+  * {string}  collectionId - collection Id
   * returns {string} url to share
   */
   getPublicShareUrl(identifier, type, collectionId?) {
