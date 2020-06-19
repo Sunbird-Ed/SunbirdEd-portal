@@ -6,17 +6,17 @@
   <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
 
   <!--Header-->
-  <!-- <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
-  </div> -->
-
   <div class="sb-modal-header">
-   What do you want to create?
+    {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
   </div>
+
+  <!-- <div class="sb-modal-header">
+   What do you want to create?
+  </div> -->
   <!--/Header-->
 
   <!--Content-->
-  <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
+  <div class="sb-modal-content o-y-visible" *ngIf="!formFieldProperties && categoryMasterList">
     <div class="ui grid p-16">
       <div class="six wide column">
         <div class="sb-card w-100" tabindex="0">
@@ -57,18 +57,18 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <!-- <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
     [telemetryInteractEdata]="{id:'start-creating',
           type: 'click',
           pageid: 'workspace'}">
    {{resourceService?.frmelmnts?.btn?.startcreating}} 
-  </button> -->
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
+  </button>
+    <!-- <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
       [telemetryInteractEdata]="{id:'start-creating',
             type: 'click',
             pageid: 'workspace'}">
       Next
-    </button>
+    </button> -->
  
   </div>
   <!--/Actions-->
