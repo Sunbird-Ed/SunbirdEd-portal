@@ -1,26 +1,5 @@
 @import "./buttons";
 
-// modal component
-$sb-modal-header-bg: $primary-400;
-$sb-modal-header-color: $white-color;
-$sb-modal-header-padding: calculateRem(8px) calculateRem(16px);
-$sb-modal-header-height: calculateRem(40px);
-$sb-modal-fs-header-height: calculateRem(56px);
-$sb-modal-header-line-height: calculateRem(24px);
-$sb-modal-content-padding: calculateRem(16px);
-$sb-modal-actions-bg: $white-color;
-$sb-modal-content-padding: calculateRem(16px);
-$sb-modal-actions-bg: $white-color;
-$sb-modal-actions-height: calculateRem(56px);
-$sb-modal-header-bg-success: $secondary-200;
-$sb-modal-header-bg-warning: $tertiary-100;
-$sb-modal-header-bg-error: $red-400;
-$sb-modal-header-fsize: $h5-font-size;
-$sb-modal-small-width: calculateRem(480px);
-$sb-modal-normal-width: calculateRem(720px);
-$sb-modal-large-width: calculateRem(900px);
-$sb-modal-corner-radius: $base-block-space; 
-
 /* modal styles */
 .sb-modal {
   .ui.modal {
@@ -29,24 +8,24 @@ $sb-modal-corner-radius: $base-block-space;
     @include size(100%, auto); //bourbon
     background: none;
     .sb-modal-header {
-      background-color: $sb-modal-header-bg;
-      color: $sb-modal-header-color;
-      font-weight: $font-weight-bold;
-      font-size: $sb-modal-header-fsize;
-      padding: $sb-modal-header-padding;
-      border-bottom: 0 solid $gray-100; //@include size(auto,($base-block-space * 5)); //bourbon
-      min-height: $sb-modal-header-height;
-      line-height: $sb-modal-header-line-height;
+      background-color: var(--primary-400);
+      color: var(--white);
+      font-weight: 700;
+      font-size: calculateRem(16px);
+      padding: calculateRem(8px) calculateRem(16px);
+      border-bottom: 0 solid var(--gray-100); //@include size(auto,($base-block-space * 5)); //bourbon
+      min-height: calculateRem(40px);
+      line-height: calculateRem(24px);
     }
     .sb-modal-content {
       min-height: 100px;
-      padding: $sb-modal-content-padding;
+      padding: calculateRem(16px);
       overflow-y: auto;
-      background: $white;
+      background: var(--white);
     }
     & > .close {
-      color: $white-color;
-      font-size: $font-size-base;
+      color: var(--white);
+      font-size: calculateRem(14px);
       @include padding(0 0); //bourbon
       @include margin(0 0);
       @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
@@ -58,24 +37,24 @@ $sb-modal-corner-radius: $base-block-space;
     }
     .sb-modal-actions {
       padding: calculateRem(8px) calculateRem(16px);
-      background: $sb-modal-actions-bg;
-      border-top: calculateRem(1px) solid $gray-100;
-      min-height: $sb-modal-actions-height;
+      background: var(--white);
+      border-top: calculateRem(1px) solid var(--gray-100);
+      min-height: calculateRem(56px);
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
       .sb-btn + .sb-btn {
-        @include margin(0 $base-block-space 0 0);
+        @include margin(0 0.5rem 0 0);
       }
     }
     .small {
-      color: $gray-400;
+      color: var(--gray-400);
     }
     &.small {
-      max-width: $sb-modal-small-width;
+      max-width: calculateRem(480px);
     }
     &.normal {
-      max-width: $sb-modal-normal-width;
+      max-width: calculateRem(720px);
       .sb-modal-content {
         max-height: calculateRem(380px);
         &.o-y-visible {
@@ -84,7 +63,7 @@ $sb-modal-corner-radius: $base-block-space;
       }
     }
     &.large {
-      max-width: $sb-modal-large-width;
+      max-width: calculateRem(900px);
       .sb-modal-content {
         height: calc(100vh - 200px);
       }
@@ -96,7 +75,7 @@ $sb-modal-corner-radius: $base-block-space;
       overflow-y: auto;
       overflow-x: hidden;
       .sb-modal-header {
-        height: $sb-modal-fs-header-height;
+        height: calculateRem(56px);
         width: auto;
         border-radius: 0;
         display: flex;
@@ -136,7 +115,7 @@ $sb-modal-corner-radius: $base-block-space;
   }
   &.sb-warning .ui.modal {
     .sb-modal-header {
-      background-color: $sb-modal-header-bg-warning;
+      background-color: var(--tertiary-100);
     }
     .sb-modal-actions {
       .sb-btn:nth-child(1) {
@@ -149,7 +128,7 @@ $sb-modal-corner-radius: $base-block-space;
   }
   &.sb-success .ui.modal {
     .sb-modal-header {
-      background-color: $sb-modal-header-bg-success;
+      background-color: var(--secondary-200);
     }
     .sb-modal-actions {
       .sb-btn:nth-child(1) {
@@ -162,7 +141,7 @@ $sb-modal-corner-radius: $base-block-space;
   }
   &.sb-error .ui.modal {
     .sb-modal-header {
-      background-color: $sb-modal-header-bg-error;
+      background-color: var(--red-400);
     }
     .sb-modal-actions {
       .sb-btn:nth-child(1) {
@@ -183,7 +162,7 @@ $sb-modal-corner-radius: $base-block-space;
     }
     .sb-modal-actions {
       .sb-btn + .sb-btn {
-        @include margin(0 0 0 $base-block-space);
+        @include margin(0 0 0 0.5rem);
       }
     }
   }
@@ -193,7 +172,7 @@ $sb-modal-corner-radius: $base-block-space;
   .sb-modal {
     .ui.modal {
       position: absolute;
-      width: 95%;
+      width: 100%;
       margin: 0 auto !important;
       top: 50%;
       transform: translate(0, -50%);
@@ -203,7 +182,7 @@ $sb-modal-corner-radius: $base-block-space;
         right: 0 !important;
       }
       & > .sb-modal-actions {
-        padding: var(--base-block-space) calc(var(--base-block-space) * 2); // recheck this style
+        padding: calculateRem(8px) calculateRem(16px); // recheck this style
       }
     }
     .ui.modal .scrolling.content {
@@ -250,56 +229,3 @@ $sb-modal-corner-radius: $base-block-space;
     }
 }
 
-// Rating Modal
-@include respond-below(sm) {
-  .sb-rating-modal {
-    &.sb-modal {
-      .ui.modal.normal {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100% !important;
-        .sb-modal-content {
-          min-height: calc(100% - 96px);
-          max-height: 100%;
-        }
-      }
-    }
-  }
-}
-
-// In workspace, course card modal 
-.sb-course-modal{
-  .sb-modal-content{
-    .sb-card {
-      height: 8.75rem;
-      max-height: 100%;
-      .sb-card-body {
-        height: 8.75rem;
-        max-height: 100%;
-        padding: 1rem;
-        &.active,&:hover{
-          background:#BFE1CF;
-          border: calculateRem(1px) solid var(--green);
-          border-radius: calculateRem(4px);
-          .checkbox-img{
-            display:inline;
-          }
-        }
-        .checkbox-img{
-          display:none;
-          float: right;
-        }
-        .sb-card-title{
-          color: var(--black);
-          margin-bottom: 0;
-          font-weight: bold;
-        }
-        .sb-card-org {
-          font-size: 0.75rem;
-          color: var(--gray-400);
-          line-height: 1.8;
-        }
-      }
-    }
-  }
-}
