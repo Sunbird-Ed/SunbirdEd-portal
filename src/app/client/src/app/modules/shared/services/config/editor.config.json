@@ -101,10 +101,30 @@
                     "MarkingSchemeRubric",
                     "ExplanationResource",
                     "ExperientialResource",
-                    "PracticeResource"
+                    "PracticeResource",
+                    "LessonPlan",
+                    "eTextBook"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "LessonPlan",
+                "label": "LessonPlan",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "eTextBook",
+                "label": "eTextBook",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
             },
             {
                 "type": "Collection",
