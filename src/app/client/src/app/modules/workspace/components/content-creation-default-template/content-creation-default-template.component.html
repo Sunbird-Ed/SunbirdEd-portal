@@ -1,5 +1,5 @@
 
-<div class="ui grid sb-form m-0 sb-workspace-modal">
+<div class="ui grid sb-form m-0 sb-workspace-modal p-16">
   <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
 
     <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
