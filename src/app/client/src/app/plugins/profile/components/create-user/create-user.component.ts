@@ -156,7 +156,7 @@ export class CreateUserComponent implements OnInit {
       }
     };
     this.managedUserService.getParentProfile().subscribe((userProfileData) => {
-      createUserRequest.request['locationIds'] = _.map(_.get(userProfileData, 'userLocations'), 'id');
+      createUserRequest.request['locationCodes'] = _.map(_.get(userProfileData, 'userLocations'), 'code');
       if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
         createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
       }
@@ -175,7 +175,8 @@ export class CreateUserComponent implements OnInit {
         this.managedUserService.updateUserList({
           firstName: this.userDetailsForm.value.name,
           identifier: _.get(resp, 'result.userId'),
-          id: _.get(resp, 'result.userId')
+          id: _.get(resp, 'result.userId'),
+          managedBy: this.managedUserService.getUserId()
         });
         this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
           const filterPipe = new InterpolatePipe();
