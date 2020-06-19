@@ -137,7 +137,7 @@ const getLogObj = (req, err, msg) => {
     sid: _.get(req, 'sessionID'),
     payload: (JSON.stringify(_.get(req, 'body')) && JSON.stringify(_.get(req, 'body')).length <=500) ? JSON.stringify(_.get(req, 'body')) : '',
     msg: msg,
-    errMsg: JSON.stringify(err)
+    error: JSON.stringify(err)
   }
   return logObj;
 }

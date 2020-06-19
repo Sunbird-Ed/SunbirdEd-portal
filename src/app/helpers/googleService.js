@@ -2,17 +2,18 @@ const envHelper = require('./environmentVariablesHelper.js');
 const CONSTANTS = require('./constants');
 const _ = require('lodash');
 const httpSatusCode = require('http-status-codes');
-const logger = require('sb_logger_util_v2');
 const {sendRequest} = require('./httpRequestHandler');
 const uuidv1 = require('uuid/v1');
-const {parseJson} = require('./utilityService');
+const {parseJson, logInfo, logDebug, logErr} = require('./utilityService');
 
 
 const validateRecaptcha = async (req, res) => {
+  logDebug(req, {}, 'validateRecaptcha() is called');
   let errType;
   try {
     // Validating if request is valid or not
     if (!req.query.captchaResponse) {
+      logErr(req, {}, `googleService:validateRecaptcha throwing error of MISSING_QUERY_PARAMS ${req.query.captchaResponse}`)
       errType = 'MISSING_QUERY_PARAMS';
       throw new Error('MISSING_CAPTCHA_RESPONSE');
     }
@@ -29,27 +30,18 @@ const validateRecaptcha = async (req, res) => {
     responseData = parseJson(responseData);
     errType = '';
     if (responseData && responseData.success) {
+      logInfo(req, {}, `recaptcha is validated`);
       res.status(httpSatusCode.OK).send({
         'id': 'api.validate.recaptcha', 'ts': new Date(),
         'params': {'resmsgid': uuidv1(), 'status': 'successful'},
         'responseCode': 'OK', 'result': responseData
       })
     } else {
-      logger.info({
-        msg: 'googleService:validateRecaptcha success',
-        data: responseData,
-        did: req.headers['x-device-id']
-      });
+      logErr(req, {}, `googleService:validateRecaptcha throwing error of CAPTCHA_VALIDATING_FAILED ${responseData}`)
       throw new Error('CAPTCHA_VALIDATING_FAILED');
     }
   } catch (error) {
-    logger.error({
-      msg: 'googleService:validateRecaptcha caught exception',
-      errorMessage: error.message,
-      error: error,
-      errType: errType,
-      did: req.headers['x-device-id']
-    });
+    logErr(req, error, `googleService:validateRecaptcha caught exception: ${errType}`);
     res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
       'id': 'api.validate.recaptcha', 'ts': new Date(),
       'params': {

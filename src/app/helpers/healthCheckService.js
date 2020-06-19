@@ -35,6 +35,7 @@ var hcMessages = {
 }
 // Function return to get health check object
 function getHealthCheckObj (name, healthy, err, errMsg) {
+  logDebug({}, err, `called getHealthCheckObj() with name: ${name}, healthy: ${healthy}, errMsg: ${errMsg}` )
   return {
     name: name,
     healthy: healthy,
@@ -45,6 +46,7 @@ function getHealthCheckObj (name, healthy, err, errMsg) {
 
 // Function help to get health check response
 function getHealthCheckResp (rsp, healthy, checksArrayObj) {
+  logDebug({}, {}, `getHealthCheckResp() is called with rsp: ${JSON.stringify(rsp)}, healthy: ${healthy}, checksArrayObj:${checksArrayObj} `);
   rsp.result = {}
   rsp.result.name = hcMessages.NAME
   rsp.result.version = hcMessages.API_VERSION
@@ -54,6 +56,8 @@ function getHealthCheckResp (rsp, healthy, checksArrayObj) {
 }
 
 function createAndValidateRequestBody (req, res, next) {
+
+  logDebug(req, {}, `createAndValidateRequestBody() is called`);
   req.body = req.body || {}
   req.body.ts = new Date()
   req.body.url = req.url
@@ -71,9 +75,11 @@ function createAndValidateRequestBody (req, res, next) {
     method: req.originalMethod
   }
   req.rspObj = rspObj
+  logInfo(req, {}, `added rspObj: ${JSON.stringify(rspObj)} to req`);
   next()
 }
 function successResponse (data) {
+  logDebug({}, {}, `successResponse() is called with ${data}`)
   var response = {}
   response.id = data.apiId
   response.ver = data.apiVersion
