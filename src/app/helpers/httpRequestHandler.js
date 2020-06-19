@@ -3,6 +3,7 @@ const logger = require('sb_logger_util_v2');
 
 const sendRequest = async (options) => {
   logger.info({msg: 'httpRequestHandler:sendRequest fetching data for ' + options.url});
+  options.forever = true
   return requestPromise(options).then(data => {
     logger.info({msg: 'sendRequest data successfully fetched for' + options.url});
     return data;

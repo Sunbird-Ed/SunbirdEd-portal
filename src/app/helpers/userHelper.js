@@ -67,6 +67,7 @@ module.exports = {
   getUserDetails: async function (userId, userToken) {
     const options = {
       method: 'GET',
+      forever: true,
       url: learnerURL + 'user/v1/read/' + userId,
       headers: {
         'x-msgid': uuidv1(),
@@ -89,6 +90,7 @@ module.exports = {
   acceptTermsAndCondition: async function (data, userToken) {
     const options = {
       method: 'POST',
+      forever: true,
       url: learnerURL + 'user/v1/tnc/accept',
       headers: {
         'x-msgid': uuidv1(),

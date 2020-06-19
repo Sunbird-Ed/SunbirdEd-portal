@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const { initiateAccountMerge } = require('../helpers/accountMergeHelper');
 const { generateAuthToken } = require('../helpers/keyCloakHelperService');
 const { parseJson } = require('../helpers/utilityService');
-const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const authorizationToken = envHelper.PORTAL_API_AUTH_TOKEN;
 const logger = require('sb_logger_util_v2');

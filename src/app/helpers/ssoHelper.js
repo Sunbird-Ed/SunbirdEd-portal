@@ -34,6 +34,7 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
+    forever: true,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
@@ -79,6 +80,7 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
+    forever: true,
     url: `${envHelper.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
@@ -105,6 +107,7 @@ const freeUpUser = async (req) => {
   };
   const options = {
     method: 'POST',
+    forever: true,
     url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
     headers: getHeaders(req),
     body: {
@@ -142,6 +145,7 @@ const createUser = async (req, jwtPayload) => {
   }
   const options = {
     method: 'POST',
+    forever: true,
     url: envHelper.LEARNER_URL + 'user/v3/create',
     headers: getHeaders(req),
     body: {
@@ -203,6 +207,7 @@ const updateContact = (req, userDetails) => { // will be called from player dock
   }
   const options = {
     method: 'PATCH',
+    forever: true,
     url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
     headers: getHeaders(req),
     body: {
@@ -228,6 +233,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
   }
   const options = {
     method: 'POST',
+    forever: true,
     url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
     headers: getHeaders(req),
     body: {
@@ -259,6 +265,7 @@ const migrateUser = (req, jwtPayload) => { // will be called from player docker 
 
   const options = {
     method: 'PATCH',
+    forever: true,
     url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
     headers: getHeaders(req),
     body: {
@@ -323,6 +330,7 @@ const getSsoUpdateWhiteListChannels = async (req) => {
 
   let options = {
     method: 'GET',
+    forever: true,
     url: envHelper.LEARNER_URL + 'data/v1/system/settings/get/ssoUpdateWhitelistChannels',
     headers: {
       'content-type': 'application/json',

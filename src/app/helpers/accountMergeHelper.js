@@ -8,6 +8,7 @@ const initiateAccountMerge = async (initiatorAccountDetails, fromAccountUserToke
   var fromAccountId = getUserIdFromToken(fromAccountUserToken);
   const options = {
     method: 'PATCH',
+    forever: true,
     url: `${envHelper.LEARNER_URL}user/v1/account/merge`,
     headers: getAccountMergeHeaders(initiatorAccountDetails, fromAccountUserToken),
     body: {
