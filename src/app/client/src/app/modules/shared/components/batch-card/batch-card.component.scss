@@ -1,4 +1,4 @@
-@import "variables";
+
 @import "mixins/mixins";
 
 .ui.cards>.card.workspace-card {
@@ -28,9 +28,9 @@
     font-size: 1em;
 }
 .batch-content-meta {
-    color: #7c7b7b;
+    color: var(--rc-7c7b7b);
     .batch-course-name {
-        font-weight: $font-weight-bold;
+        font-weight: 700;
         color: var(--gray-400);
     }
 }
