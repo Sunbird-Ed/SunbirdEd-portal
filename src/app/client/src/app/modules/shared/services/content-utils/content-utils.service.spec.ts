@@ -26,10 +26,22 @@ describe('ContentUtilsService', () => {
     expect(service).toBeDefined();
     expect(service.getBase64Url).toBeDefined();
   }));
-  it('should return with collection id in url if parent id is passed',
-  inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
-    const url = service.getPublicShareUrl('123', 'application/pdf', '456');
-    expect(url).toBeDefined();
-    expect(url).toBe(`${service.baseUrl}play/collection/456?contentId=123`);
-  }));
+  it('should return with content id as query params in url if parent id is passed',
+    inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
+      const url = service.getPublicShareUrl('123', 'application/pdf', '456');
+      expect(url).toBeDefined();
+      expect(url).toBe(`${service.baseUrl}play/collection/456?contentId=123`);
+    }));
+  it('should contain collection in url',
+    inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
+      const url = service.getPublicShareUrl('123', 'application/vnd.ekstep.content-collection');
+      expect(url).toBeDefined();
+      expect(url).toBe(`${service.baseUrl}play/collection/123`);
+    }));
+  it('should contain content in url',
+    inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
+      const url = service.getPublicShareUrl('123', 'application/pdf');
+      expect(url).toBeDefined();
+      expect(url).toBe(`${service.baseUrl}play/content/123`);
+    }));
 });
