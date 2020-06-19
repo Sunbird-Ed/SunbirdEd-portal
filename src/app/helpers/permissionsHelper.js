@@ -158,7 +158,7 @@ let PERMISSIONS_HELPER = {
         logErr(req, error, 'error while user/v1/read');
         callback(error, null)
       } else if (!error && body) {
-        logInfo(reqobj, {}, 'setUserSessionData() is calling from getCurrentUserRoles()')
+        logInfo(reqObj, {}, 'setUserSessionData() is calling from getCurrentUserRoles()')
         module.exports.setUserSessionData(reqObj, body);
         logInfo(reqObj, {}, `getCurrentUserRoles session obj`);
         reqObj.session.save(function (error) {
