@@ -10,6 +10,7 @@ const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerURL = envHelper.LEARNER_URL
+const { logInfo, logDebug, logErr } = require('./../helpers/utilityService');
 
 module.exports = function (app) {
 
@@ -20,6 +21,7 @@ module.exports = function (app) {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
+      logDebug(req, {}, `/plugins/v1/search called for ${req.originalUrl}`);
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/', '')
       return require('url').parse(contentServiceBaseUrl + originalUrl).path
@@ -60,6 +62,7 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: proxyReqPathResolverMethod,
       proxyReqBodyDecorator: function (bodyContent, srcReq) {
+        logDebug(srcReq, {}, `/action/content/v3/unlisted/publish/:contentId  is called ${bodyContent.request}`);
         if (bodyContent && bodyContent.request && bodyContent.request.content) {
           bodyContent.request.content.baseUrl = srcReq.protocol + '://' + srcReq.headers.host
         }
@@ -70,6 +73,7 @@ module.exports = function (app) {
   app.use('/action/data/v1/page/assemble', proxy(learnerServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
+      logDebug(req, {}, `action/data/v1/page/assemble called for ${req.originalUrl}`);
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
       return require('url').parse(learnerServiceBaseUrl + originalUrl).path
@@ -80,6 +84,7 @@ module.exports = function (app) {
   app.use('/action/data/v1/form/read', proxy(contentServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: function (req) {
+      logDebug(req, {}, `/action/data/v1/form/read called for ${req.originalUrl}`);
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
       return require('url').parse(contentServiceBaseUrl + originalUrl).path
@@ -110,6 +115,7 @@ module.exports = function (app) {
   proxy(learnerURL, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
+      logDebug(req, {}, `/action/textbook/v1/toc/* called for ${req.originalUrl}`);
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/textbook/v1/', 'textbook/v1/')
       return require('url').parse(learnerURL + originalUrl).path
@@ -124,6 +130,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: function (req) {
+        logDebug(req, {}, `/action/user/v1/search called for ${req.originalUrl}`);
         let originalUrl = req.originalUrl.replace('/action/', '')
         return require('url').parse(learnerURL + originalUrl).path
       },
@@ -143,11 +150,13 @@ module.exports = function (app) {
   }))
 }
 const userResDecorator = (proxyRes, proxyResData, req, res) => {
+  logDebug(req, {}, `userResDecorator() called`);
   try {
       const data = JSON.parse(proxyResData.toString('utf8'));
       if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
       else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
   } catch(err) {
+      logErr(req, err, `error in user decorator for ${_.get(req, 'originalUrl')}`)
       console.log('content api user res decorator json parse error', proxyResData);
       return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
   }

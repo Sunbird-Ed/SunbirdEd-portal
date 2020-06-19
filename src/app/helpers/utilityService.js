@@ -135,9 +135,8 @@ const getLogObj = (req, err, msg) => {
     url: _.get(req, 'originalUrl'),
     uid: _.get(req, 'headers.x-msgid'),
     sid: _.get(req, 'sessionID'),
-    payload: (JSON.stringify(_.get(req, 'body')) && JSON.stringify(_.get(req, 'body')).length <=500) ? JSON.stringify(_.get(req, 'body')) : '',
-    msg: msg,
-    error: JSON.stringify(err)
+    msg: msg ? msg : 'Unavailable',
+    error: JSON.stringify(err) ? JSON.stringify(err) : 'Unavailable'
   }
   return logObj;
 }

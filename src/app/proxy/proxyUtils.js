@@ -24,7 +24,7 @@ const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
 
 const decorateRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
-    logDebug(proxyReqOpts, {}, ' decorateRequestHeaders() called');
+    logDebug(srcReq, {}, ' decorateRequestHeaders() called');
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
     if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel

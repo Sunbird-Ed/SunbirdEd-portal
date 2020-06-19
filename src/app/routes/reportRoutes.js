@@ -4,6 +4,7 @@ const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
 const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb'
+const { logDebug, logErr, logInfo } = require('./../helpers/utilityService');
 module.exports = function (app) {
 
     app.patch([`${BASE_REPORT_URL}/update/:reportId`],
@@ -16,11 +17,13 @@ module.exports = function (app) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
+                logDebug(req, {}, `${BASE_REPORT_URL}/update/:reportId is called`);
                 try {
                     const data = JSON.parse(proxyResData.toString('utf8'));
                     if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                     else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
                 } catch (err) {
+                    logErr(req, err, `Error in : ${BASE_REPORT_URL}/update/:reportId`)
                     return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
                 }
             }
@@ -37,11 +40,13 @@ module.exports = function (app) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
+                logDebug(req, {}, `${BASE_REPORT_URL}/list is called`);
                 try {
                     const data = JSON.parse(proxyResData.toString('utf8'));
                     if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                     else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
                 } catch (err) {
+                    logErr(req, err, `Error in : ${BASE_REPORT_URL}/list`)
                     return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
                 }
             }

@@ -27,8 +27,8 @@ module.exports = function (app) {
         return '/private/user/v1/update';
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
+        logDebug(req, {}, {msg: '/learner/portal/user/v1/update called'});
         try {
-            logDebug(req, err, {msg: '/learner/portal/user/v1/update called'});
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -52,8 +52,8 @@ module.exports = function (app) {
         return require('url').parse(learnerURL + '/content/v1/media/upload').path
       },
       userResDecorator: function (proxyRes, proxyResData,  req, res) {
+        logDebug(req, {}, '/learner/content/v1/media/upload called');
         try {
-          logInfo(req, {}, '/learner/content/v1/media/upload called');
           let data = JSON.parse(proxyResData.toString('utf8'))
           if (data.responseCode === 'OK') {
             data.success = true
@@ -82,8 +82,8 @@ module.exports = function (app) {
         }
       },
       userResDecorator: function (proxyRes, proxyResData,  req, res) {
+        logDebug(req, {}, `/learner/data/v1/role/read called`)
         try {
-          logInfo(req, {}, `/learner/data/v1/role/read called`)
           let data = JSON.parse(proxyResData.toString('utf8'))
           if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -137,8 +137,8 @@ module.exports = function (app) {
         
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
+        logDebug(req, {}, {msg: 'learner/* userResDecorator'});
         try {
-            logInfo(req, {}, {msg: 'learner/* userResDecorator'});
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -174,8 +174,8 @@ function checkForValidUser (){
       return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
     },
     userResDecorator: function (proxyRes, proxyResData,  req, res) {
+      logDebug(req, {}, 'proxyObj');
       try {
-        logInfo(req, {}, 'proxyObj');
         let data = JSON.parse(proxyResData.toString('utf8'));
         let response = data.result.response;
         data.result.response = {id: '', rootOrgId: '',isUserExists:''};
@@ -210,8 +210,8 @@ function proxyObj (){
       }
     },
     userResDecorator: function (proxyRes, proxyResData,  req, res) {
+      logDebug(req, {}, 'proxyObj');
       try {
-        logInfo(req, {}, 'proxyObj');
         let data = JSON.parse(proxyResData.toString('utf8'));
         let response = data.result.response;
         data.result.response = {id: '', rootOrgId: '',isUserExists:''};

@@ -14,10 +14,12 @@ pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
+const { logInfo, logDebug, logErr } = require('./../helpers/utilityService');
 
-logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
+logInfo({}, {}, {msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
+    logDebug(req, {}, 'setZipConfig() is called');
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
     }
@@ -34,7 +36,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      logger.info({msg:'zip file not exist' ,
+      logInfo(req, {}, {msg:'zip file not exist' ,
       additionalInfo: {
         url: req.url,
         type: type
@@ -124,6 +126,7 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals(req) {
+  logDebug(req, {}, 'getLocals() called');
   const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
@@ -172,6 +175,7 @@ function getLocals(req) {
 }
 
 const indexPage = (loggedInRoute) => {
+  logDebug(req, {}, 'indexPage() called');
   return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
@@ -180,19 +184,21 @@ const indexPage = (loggedInRoute) => {
       if(!loggedInRoute) { // for public route, if user token is valid then send user details
         await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
       }
+      logInfo(req, {}, 'renderDefaultIndexPage() calling from indexPage()');
       renderDefaultIndexPage(req, res)
     }
   }
 }
 
 const renderDefaultIndexPage = (req, res) => {
+  logDebug(req, {}, 'renderDefaultIndexPage() called');
   const mobileDetect = new MobileDetect(req.headers['user-agent'])
   if ((req.path == '/get' || req.path == `/${req.params.slug}/get`) && mobileDetect.os() == 'AndroidOS') {
     res.redirect(envHelper.ANDROID_APP_URL)
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    logger.info({
+    logInfo(req, {}, {
       msg:'cdn parameters:',
       additionalInfo: {
         PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
@@ -205,11 +211,12 @@ const renderDefaultIndexPage = (req, res) => {
       res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
       if(req.cookies.cdnFailed === 'yes'){
-        logger.info({msg:'CDN Failed - loading local files',
-      additionalInfo: {
-        cdnIndexFileExist: cdnIndexFileExist,
-        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
-      }})
+        logInfo(req, {}, {msg:'CDN Failed - loading local files',
+                          additionalInfo: {
+                          cdnIndexFileExist: cdnIndexFileExist,
+                          PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+                          }
+        })
       }
       res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
@@ -218,33 +225,40 @@ const renderDefaultIndexPage = (req, res) => {
 }
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
+  logDebug(req, {}, 'renderTenantPage() called');
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
   if(req.query.cdnFailed === 'true') {
+    logInfo(req, {}, 'loadTenantFromLocal() is calling from renderTenantPage() when req.query.cdnFailed is failed');
     loadTenantFromLocal(req, res)
     return;
   }
   if (envHelper.TENANT_CDN_URL) {
     request(`${envHelper.TENANT_CDN_URL}/${tenantName}/index.html`, (error, response, body) => {
       if (error || !body || response.statusCode !== 200) {
+        logErr(req, error, 'loadTenantFromLocal() is calling from renderTenantPage()');
         loadTenantFromLocal(req, res)
       } else {
         res.send(body)
       }
     })
   } else {
+    logInfo(req, {}, 'loadTenantFromLocal() is calling from renderTenantPage()');
     loadTenantFromLocal(req, res)
   }
 }
 // in fallback option check always for local tenant folder and redirect to / if not exists
 const loadTenantFromLocal = (req, res) => {
+  logDebug(req, {}, 'loadTenantFromLocal() called');
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
   if (tenantName && fs.existsSync(path.join(__dirname, './../tenant', tenantName, 'index.html'))) {
     res.sendFile(path.join(__dirname, './../tenant', tenantName, 'index.html'))
   } else {
+    logInfo(req, {}, 'renderDefaultIndexPage() is calling from loadTenantFromLocal()');
     renderDefaultIndexPage(req, res)
   }
 }
 const redirectTologgedInPage = (req, res) => {
+  logDebug(req, {}, 'redirectTologgedInPage() called');
 	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
 	if (req.params.slug) {
 		redirectRoutes = {
@@ -270,23 +284,28 @@ const redirectTologgedInPage = (req, res) => {
         renderDefaultIndexPage(req, res);
       }
       else {
+        logInfo(req, {}, 'renderDefaultIndexPage() is calling from redirectTologgedInPage() when there is session id ');
 				renderDefaultIndexPage(req, res)
 			}
 		}
 	} else {
+    logInfo(req, {}, 'renderDefaultIndexPage() is calling from redirectTologgedInPage() when there is no sessionId');
 		renderDefaultIndexPage(req, res)
 	}
 }
 
 const playContent = (req, res) => {
+  logDebug(req, {}, 'playContent() is called');
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
   } else {
+    logInfo(req, {}, 'renderDefaultIndexPage() is calling from playContent()');
     renderDefaultIndexPage(req, res);
   }
 }
 
 const redirectToLogin = (req, res) => {
+  logDebug(req, {}, 'redirectToLogin() is called');
   const redirectUrl = req.query.redirectUri || '/resources';
   const url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
   const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/${redirectUrl}&scope=openid&version=${CONSTANTS.KEYCLOAK.VERSION}&response_type=code&error_message=${req.query.error_message}`;
