@@ -209,7 +209,7 @@ describe('DialCodeComponent', () => {
   });
 
   it('should append the items to display list', () => {
-    component.searchResults = ['one', 'two'];
+    component.searchResults = [{name: 'textbook', contentType: 'textbook'}, {name: 'Course', contentType: 'course'}];
     component.appendItems(0, 1);
     fixture.detectChanges();
     expect(component.itemsToDisplay).toBeDefined();

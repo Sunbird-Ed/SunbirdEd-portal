@@ -265,7 +265,7 @@
 .header {
   display: flex;
   flex-direction: row;
-  @include margin(1rem 0 1rem 0);
+  @include margin(1rem 0 0 0);
   padding: 0px 0;
   align-items: center;
 
