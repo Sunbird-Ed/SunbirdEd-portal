@@ -340,4 +340,11 @@ describe('DialCodeComponent', () => {
     component.playCourse({ section: {}, data: {} });
     expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
   });
+  it('should log all viewport items', () => {
+    const event = {
+      inview: Response.inview
+    };
+    component.inview(event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
 });
