@@ -1,4 +1,4 @@
-@import "variables";
+
 @import "mixins/mixins";
 
 .sb-graph-section{
@@ -8,6 +8,11 @@
     background: var(--white);
     box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0,0,0,.16);
     border-radius: calculateRem(4px);
+    .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
+        text-overflow: initial;
+        overflow: initial;
+        white-space: unset;
+    }
 }
 .sb-btn-normal i::after {
     content: "\f019";
@@ -23,15 +28,10 @@
     align-items: flex-start;
 }
 
-.sb-sidebar-menu{
-    position: sticky !important;
-    position: -webkit-sticky !important;
-    top: 0;
-}
 
 .hawkeye-label {
     line-height: normal;
-    border-radius: 32px;
+    border-radius: calculateRem(32px);
     vertical-align: middle;
 }
 

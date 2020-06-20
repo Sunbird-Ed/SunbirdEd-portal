@@ -1,4 +1,4 @@
-@import 'variables';
+
 @import "./mixins/mixins";
 
 /*get dial code page responsive css*/
@@ -252,4 +252,7 @@
   grid-row-gap: 1.5rem;
   &--item{
   }
+}
+.sb-placeholder {
+  justify-content: center !important;
 }
