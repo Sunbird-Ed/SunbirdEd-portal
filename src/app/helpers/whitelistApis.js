@@ -93,23 +93,23 @@ const API_LIST = {
 
     '/content/content/v1/copy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC, ROLE.CONTENT_CREATOR, ROLE.CONTENT_CREATION, ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_CREATION, ROLE.CONTENT_REVIEWER]
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC, ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
     },
     '/content/content/v1/reject/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC, ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
     },
     '/content/content/v1/flag/accept/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC, ROLE.FLAG_REVIEWER]
+      ROLE_CHECK: [ROLE.FLAG_REVIEWER]
     },
     '/content/content/v1/flag/reject/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC, ROLE.FLAG_REVIEWER]
+      ROLE_CHECK: [ROLE.FLAG_REVIEWER]
     },
 
     '/content/v3/update': {
