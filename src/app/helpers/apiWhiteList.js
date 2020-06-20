@@ -39,7 +39,9 @@ const isAllowed = () => {
       // Iterate for checks defined for API and push to array
       URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
         checksToExecute.push(new Promise((res, rej) => {
-          urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK]);
+          if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
+            urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK]);
+          }
         }));
       });
       executeChecks(req, res, next, checksToExecute);
@@ -84,6 +86,7 @@ const executeChecks = async (req, res, next, checksToExecute) => {
       })
       .catch((pError) => {
         utils.logError(req, pError, {});
+        respond403(req, res);
       });
   } catch (error) {
     utils.logError(req, error, {});
