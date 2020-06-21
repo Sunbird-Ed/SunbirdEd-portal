@@ -347,4 +347,16 @@ describe('DialCodeComponent', () => {
     component.inview(event);
     expect(component.telemetryImpression).toBeDefined();
   });
+  it('should navigate to player page', () => {
+    const event = {
+      data: {
+        metaData: {
+          mimeType: 'application/pdf'
+        }
+      }
+    };
+    component.getEvent(event);
+    expect(component.redirectCollectionUrl).toEqual('play/collection');
+    expect(component.redirectContentUrl).toEqual('play/content');
+  });
 });
