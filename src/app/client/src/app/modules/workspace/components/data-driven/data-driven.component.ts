@@ -23,6 +23,15 @@ import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/o
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('formData') formData: DefaultTemplateComponent;
   @ViewChild('modal') modal;
+  sbcards = [{
+    title:'Academic content',
+    para:'Choose this if your are creating content mapped to your state curriculam'
+  },
+  {
+    title:'Non Academic content',
+    para:'Choose this if you are creating content which is not mapped to your state curriculam'
+  }
+];
 
   /**
 	 * This variable hepls to show and hide page loader.
