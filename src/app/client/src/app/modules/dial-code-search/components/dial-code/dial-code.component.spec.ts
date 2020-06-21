@@ -2,12 +2,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreModule, OrgDetailsService, SearchService, UserService } from '@sunbird/core';
+import { CoreModule, OrgDetailsService, SearchService, UserService, CoursesService, PlayerService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, NavigationHelperService, ResourceService, SharedModule, ToasterService, UtilService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { of as observableOf, throwError } from 'rxjs';
+import { of as observableOf, throwError, of } from 'rxjs';
 import { mockData } from '../../services';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
 import { DialCodeComponent } from './dial-code.component';
@@ -340,6 +340,62 @@ describe('DialCodeComponent', () => {
     component.playCourse({ section: {}, data: {} });
     expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
   });
+  it('should play content from explore page, while logged in', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in, for onGoingBatch', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const returnValue = {
+      onGoingBatchCount: 1,
+      expiredBatchCount: 0,
+      openBatch: {
+        ongoing: [{ batchId: 1213421 }]
+      },
+      inviteOnlyBatch: false
+    };
+    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
+    spyOn(playerService, 'playContent');
+    spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in, non enrolled user', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const returnValue = {
+      onGoingBatchCount: 0,
+      expiredBatchCount: 0,
+      openBatch: true,
+      inviteOnlyBatch: false
+    };
+    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
+    spyOn(playerService, 'playContent');
+    spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
   it('should log all viewport items', () => {
     const event = {
       inview: Response.inview
@@ -347,7 +403,7 @@ describe('DialCodeComponent', () => {
     component.inview(event);
     expect(component.telemetryImpression).toBeDefined();
   });
-  it('should navigate to player page', () => {
+  it('should navigate to player page for non-collection type', () => {
     const event = {
       data: {
         metaData: {
@@ -358,5 +414,19 @@ describe('DialCodeComponent', () => {
     component.getEvent(event);
     expect(component.redirectCollectionUrl).toEqual('play/collection');
     expect(component.redirectContentUrl).toEqual('play/content');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+  it('should navigate to player page for collection type', () => {
+    const event = {
+      data: {
+        metaData: {
+          mimeType: 'application/vnd.ekstep.content-collection'
+        }
+      }
+    };
+    component.getEvent(event);
+    expect(component.redirectCollectionUrl).toEqual('play/collection');
+    expect(component.redirectContentUrl).toEqual('play/content');
+    expect(router.navigate).toHaveBeenCalled();
   });
 });
