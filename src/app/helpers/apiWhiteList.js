@@ -23,7 +23,9 @@ const utils             = require('./utilityService');
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    let REQ_URL = req.originalUrl;
+    // Retain until 3.1.0 release
+    // let REQ_URL = req.originalUrl;
+    let REQ_URL = req.path;
     // Pattern match for URL
     _.forEach(API_LIST.URL_PATTERN, (url) => {
       let regExp = pathToRegexp(url);
