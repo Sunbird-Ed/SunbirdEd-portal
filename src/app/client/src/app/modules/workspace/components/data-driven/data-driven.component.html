@@ -17,36 +17,17 @@
 
   <!--Content-->
   <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
-    <div class="ui grid p-16">
-      <div class="six wide column">
-        <div class="sb-card w-100" tabindex="0">
-          <div class="sb-card-body">
-            <div class="checkbox-img">
-              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
-            </div>
-            <h4 class="sb-card-title">
-              Accademic Content
-            </h4>
-            <div class="sb-card-org">
-              Choose this if your are creating content mapped to your state curriculam
-            </div>
-          </div>
+    <div class="sbgrid p-16">
+      <div class="sb-education-card" *ngFor="let sbcard of sbcards">
+        <div class="checkbox-img">
+          <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
         </div>
-      </div>
-      <div class="six wide column">
-        <div class="sb-card w-100" tabindex="0">
-          <div class="sb-card-body">
-            <div class="checkbox-img">
-              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
-            </div>
-            <h4 class="sb-card-title">
-              Non Accademic Content
-            </h4>
-            <div class="sb-card-org">
-              Choose this if you are creating content which is not mapped to your state curriculam
-            </div>
-          </div>
-        </div>
+        <h4 class="sb-education-card__title">
+          {{sbcard.title}}
+        </h4>
+        <p class="sb-education-card__text">
+          {{sbcard.para}}
+        </p>
       </div>
     </div>
     <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
