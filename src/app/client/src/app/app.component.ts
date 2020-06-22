@@ -297,14 +297,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-    this.userService.userData$.subscribe((user: IUserData) => {
-      if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
-        _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-        this.showTermsAndCondPopUp = true;
-      } else {
-        this.checkFrameworkSelected();
-      }
-    });
+    if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
+      _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
+      this.showTermsAndCondPopUp = true;
+    } else {
+      this.checkFrameworkSelected();
+    }
   }
   public getOrgDetails() {
     const slug = this.userService.slug;
