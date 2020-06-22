@@ -33,6 +33,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      outline: 0px;
       @include position(absolute, 0 0 null null); //bourbon
     }
     .sb-modal-actions {
