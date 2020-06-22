@@ -228,7 +228,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   isStateChanged() {
     let isStateChanged = false;
-    this.userProfile.userLocations.forEach((location) => {
+    _.forEach(_.get(this.userProfile, 'userLocations'), (location) => {
       if (location.type === 'state' && location.code !== _.get(this.userDetailsForm, 'value.state.code')) {
         isStateChanged = true;
       }

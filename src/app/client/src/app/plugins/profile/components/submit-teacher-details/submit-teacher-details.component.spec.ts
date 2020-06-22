@@ -222,4 +222,10 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0017);
   });
+
+  it('should return false as state not changed', () => {
+    const data = component.isStateChanged();
+    expect(data).toBe(false);
+  });
+  
 });
