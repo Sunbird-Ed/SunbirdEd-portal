@@ -40,7 +40,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
+    this.activatedRoute.params.subscribe((params) => {
+      this.collectionId = params.collectionId;
+    });
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
   }
@@ -61,7 +63,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
             type: _.get(content, 'contentType'),
           };
           this.setTelemetryShareData(param);
-          this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
           this.logTelemetry('share-content', content);
           break;
         case 'PRINT':
