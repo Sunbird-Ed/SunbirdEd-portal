@@ -55,7 +55,6 @@ const WHITELIST_URLS = [
     'user/v1/search',
     'user/v1/upload',
     'user/v2/read/',  
-    'user/v2/create',
     'user/v2/accept/tnc',
     'user/v2/bulk/upload',
     'user/v2/upload',
@@ -112,6 +111,9 @@ const WHITELIST_URLS = [
     // 'org/v1/upload',
     // 'org/v1/type/create',
     // 'org/v1/type/update',
+
+    // Internal APIs
+    // 'user/v2/create',
 ];
 
 const allowedUrls = function() {
