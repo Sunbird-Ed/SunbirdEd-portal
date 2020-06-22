@@ -53,7 +53,7 @@ export class UserOnboardingComponent implements OnInit {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
 
           /* istanbul ignore else */
-          if (_.get(orgDetailsFromSlug, 'slug') === 'igot') {
+          if (_.get(orgDetailsFromSlug, 'slug') === this.tenantService.slugForIgot) {
             this.tenantInfo.titleName = _.upperCase(orgDetailsFromSlug.slug);
             this.stage = Stage.LOCATION_SELECTION;
           }

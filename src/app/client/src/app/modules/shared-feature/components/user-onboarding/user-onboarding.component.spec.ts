@@ -57,6 +57,7 @@ describe('UserOnboardingComponent', () => {
     spyOn(cacheService, 'get').and.returnValue({ slug: 'igot' });
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
     tenantService._tenantData$.next({ err: null, tenantData: tenantData });
+    tenantService.slugForIgot = 'igot';
     component.ngOnInit();
     expect(component.tenantInfo.titleName).toEqual('IGOT');
     expect(component.tenantInfo.logo).toEqual('/logo.png');
