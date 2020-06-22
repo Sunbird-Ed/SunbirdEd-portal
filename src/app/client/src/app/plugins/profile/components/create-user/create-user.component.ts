@@ -26,9 +26,6 @@ export class CreateUserComponent implements OnInit {
   userDetailsForm: FormGroup;
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
-  tncLatestVersion: any;
-  termsAndConditionLink: any;
-  showTncPopup = false;
   instance: string;
   formData;
   showLoader = true;
@@ -49,7 +46,6 @@ export class CreateUserComponent implements OnInit {
   ngOnInit() {
     this.setTelemetryData();
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
-    this.fetchTncData();
     this.getFormDetails();
   }
 
@@ -94,23 +90,6 @@ export class CreateUserComponent implements OnInit {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
       this.showLoader = false;
     });
-  }
-
-  fetchTncData() {
-    this.tncService.getTncConfig()
-      .pipe(map((data) => {
-        const response = _.get(data, 'result.response.value');
-        return this.utilService.parseJson(response);
-      })).subscribe((tncConfig) => {
-        this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-        this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      });
-  }
-
-  showAndHidePopup(mode: boolean) {
-    this.showTncPopup = mode;
   }
 
   initializeFormFields() {
@@ -166,33 +145,21 @@ export class CreateUserComponent implements OnInit {
 
   registerUser(createUserRequest, userProfileData) {
     this.userService.registerUser(createUserRequest).subscribe((resp: ServerResponse) => {
-        const requestBody = {
-          request: {
-            version: _.get(userProfileData, 'tncLatestVersion'),
-            userId: _.get(resp, 'result.userId')
-          }
-        };
         this.managedUserService.updateUserList({
           firstName: this.userDetailsForm.value.name,
           identifier: _.get(resp, 'result.userId'),
           id: _.get(resp, 'result.userId'),
           managedBy: this.managedUserService.getUserId()
         });
-        this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
-          const filterPipe = new InterpolatePipe();
-          const successMessage = filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0096'),
-            '{firstName}', this.userDetailsForm.value.name);
-          this.toasterService.custom({
-            message: successMessage,
-            class: 'sb-toaster sb-toast-success sb-toast-normal'
-          });
-          this.router.navigate(['/profile/choose-managed-user']);
-        }, err => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0085);
-          this.enableSubmitBtn = true;
+        const filterPipe = new InterpolatePipe();
+        const successMessage = filterPipe.transform(_.get(this.resourceService, 'messages.imsg.m0096'),
+          '{firstName}', this.userDetailsForm.value.name);
+        this.toasterService.custom({
+          message: successMessage,
+          class: 'sb-toaster sb-toast-success sb-toast-normal'
         });
-      },
-      (err) => {
+        this.router.navigate(['/profile/choose-managed-user']);
+      }, (err) => {
         if (_.get(err, 'error.params.status') === 'MANAGED_USER_LIMIT_EXCEEDED') {
           this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0100'));
         } else {
