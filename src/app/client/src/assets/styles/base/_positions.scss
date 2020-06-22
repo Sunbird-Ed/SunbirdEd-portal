@@ -1,8 +1,13 @@
+/* position styles */
+
 .relative {
   position: relative !important;
 }
 .absolute {
   position: absolute !important;
+}
+.fixed {
+  position:fixed !important;
 }
 
 .right-0 {
@@ -47,3 +52,5 @@
 .zindex-2 {
   z-index: 2;
 }
+
+/* position styles ends */
