@@ -10,6 +10,7 @@ import { TenantService } from '@sunbird/core';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
+import { CacheService } from 'ng2-cache-service';
 
 describe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
@@ -25,7 +26,7 @@ describe('UserOnboardingComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule
       ],
-      providers: [TelemetryService, TenantService, PopupControlService, {provide: APP_BASE_HREF, useValue: 'test'}],
+      providers: [TelemetryService, TenantService, PopupControlService, { provide: APP_BASE_HREF, useValue: 'test' }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -48,6 +49,18 @@ describe('UserOnboardingComponent', () => {
     component.ngOnInit();
     expect(component.tenantInfo.titleName).toEqual('SUNBIRD');
     expect(component.tenantInfo.logo).toEqual('/logo.png');
+  });
+
+  it('should call ngOnInit for igot instance', () => {
+    const tenantService = TestBed.get(TenantService);
+    const cacheService = TestBed.get(CacheService);
+    spyOn(cacheService, 'get').and.returnValue({ slug: 'igot' });
+    const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
+    tenantService._tenantData$.next({ err: null, tenantData: tenantData });
+    component.ngOnInit();
+    expect(component.tenantInfo.titleName).toEqual('IGOT');
+    expect(component.tenantInfo.logo).toEqual('/logo.png');
+    expect(component.stage).toEqual('location');
   });
 
   it('should call userTypeSubmit', () => {
