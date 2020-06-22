@@ -49,31 +49,6 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     this.setTelemetryData();
   }
 
-  closeLoginModal() {
-    this.showLoginModal = false;
-    let telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }];
-    if (this.enrollToBatch) {
-      telemetryCdata = [{ id: this.enrollToBatch, type: 'CourseBatch' }];
-    }
-    const interactData = {
-      context: {
-        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
-        cdata: telemetryCdata
-      },
-      edata: {
-        id: 'join-training-login-popup-close',
-        type: 'click',
-        pageid: 'course-details',
-      },
-      object: {
-        id: this.courseId,
-        type: 'Course',
-        ver: '1.0'
-      }
-    };
-    this.telemetryService.interact(interactData);
-  }
-
   getAllBatchDetails() {
     this.showBatchList = false;
     this.showError = false;
@@ -100,6 +75,31 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
+  }
+
+  closeLoginModal() {
+    this.showLoginModal = false;
+    let telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }];
+    if (this.enrollToBatch) {
+      telemetryCdata = [{ id: this.enrollToBatch, type: 'CourseBatch' }];
+    }
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
+        cdata: telemetryCdata
+      },
+      edata: {
+        id: 'join-training-login-popup-close',
+        type: 'click',
+        pageid: 'course-details',
+      },
+      object: {
+        id: this.courseId,
+        type: 'Course',
+        ver: '1.0'
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   isValidEnrollmentEndDate(enrollmentEndDate) {
