@@ -49,7 +49,7 @@ const routes: Routes = [
             path: 'course', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'worksapce-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
+                env: telemetryEnv, pageid: 'workspace-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
