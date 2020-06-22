@@ -17,11 +17,21 @@ import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html'
+  templateUrl: './data-driven.component.html',
+  styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('formData') formData: DefaultTemplateComponent;
   @ViewChild('modal') modal;
+  sbcards = [{
+    title:'Academic content',
+    para:'Choose this if your are creating content mapped to your state curriculam'
+  },
+  {
+    title:'Non Academic content',
+    para:'Choose this if you are creating content which is not mapped to your state curriculam'
+  }
+];
 
   /**
 	 * This variable hepls to show and hide page loader.
