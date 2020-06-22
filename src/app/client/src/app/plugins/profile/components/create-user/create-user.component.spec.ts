@@ -85,11 +85,9 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call ngOnInit', () => {
-    spyOn(component, 'fetchTncData');
     spyOn(component, 'getFormDetails');
     component.ngOnInit();
     expect(component.instance).toEqual('SUNBIRD');
-    expect(component.fetchTncData).toHaveBeenCalled();
     expect(component.getFormDetails).toHaveBeenCalled();
   });
 
@@ -110,29 +108,6 @@ describe('CreateUserComponent', () => {
     component.getFormDetails();
     expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-  });
-
-  it('should set mode', () => {
-    component.showAndHidePopup(false);
-    expect(component.showTncPopup).toBeFalsy();
-  });
-
-  it('should fetchTncData with success', () => {
-    const tncService = TestBed.get(TncService);
-    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfigData));
-    spyOn(component['utilService'], 'parseJson').and.returnValue(mockRes.tncParsedConfigData);
-    component.fetchTncData();
-    expect(component.tncLatestVersion).toEqual('v1');
-    expect(component.termsAndConditionLink).toEqual('https://dev-sunbird-temp.azureedge.net/portal/terms-and-conditions-v1.html');
-  });
-
-  it('should fetchTncData with error', () => {
-    const tncService = TestBed.get(TncService);
-    spyOn(tncService, 'getTncConfig').and.returnValue(observableThrowError({}));
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    component.fetchTncData();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 
   it('should call onSubmitForm with success', () => {
