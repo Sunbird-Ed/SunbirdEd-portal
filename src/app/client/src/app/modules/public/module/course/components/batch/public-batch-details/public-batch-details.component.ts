@@ -57,8 +57,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     }
     const interactData = {
       context: {
-        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: telemetryCdata || []
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
+        cdata: telemetryCdata
       },
       edata: {
         id: 'join-training-login-popup-close',
