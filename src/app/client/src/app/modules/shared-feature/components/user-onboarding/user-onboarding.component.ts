@@ -7,6 +7,7 @@ import { TenantService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import { IDeviceProfile } from '../../interfaces';
 import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
+import { CacheService } from 'ng2-cache-service';
 
 export enum Stage {
   USER_SELECTION = 'user',
@@ -28,13 +29,16 @@ export class UserOnboardingComponent implements OnInit {
   get Stage() { return Stage; }
   stage = Stage.USER_SELECTION;
   tenantInfo: ITenantData;
+  isIGotSlug = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     public resourceService: ResourceService,
     public toasterService: ToasterService,
     public popupControlService: PopupControlService,
-    public tenantService: TenantService) {
+    public tenantService: TenantService,
+    private cacheService: CacheService
+    ) {
   }
 
   ngOnInit() {
@@ -46,6 +50,13 @@ export class UserOnboardingComponent implements OnInit {
         if (_.get(data, 'tenantData')) {
           this.tenantInfo = data.tenantData;
           this.tenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
+          const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+
+          /* istanbul ignore else */
+          if (_.get(orgDetailsFromSlug, 'slug') === 'igot') {
+            this.tenantInfo.titleName = _.upperCase(orgDetailsFromSlug.slug);
+            this.stage = Stage.LOCATION_SELECTION;
+          }
         }
       });
   }
