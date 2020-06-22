@@ -1,0 +1,6 @@
+<select *ngIf="optionData" [(ngModel)]="selectedOption" (ngModelChange)="onChange()" [compareWith]="compareByObj">
+  <optgroup *ngFor="let group of optionData" label="{{group.label}}">
+    <option *ngFor="let option of group.option"
+      [ngValue]="{label: group.label, value: group.value, selectedOption: option.value }">{{option.name}}</option>
+  </optgroup>
+</select>
