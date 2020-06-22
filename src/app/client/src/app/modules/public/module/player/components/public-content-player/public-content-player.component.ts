@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
-import { Subject, of, throwError } from 'rxjs';
+import { Subject, of, throwError, Subscription } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService, UtilService, ContentUtilsServiceService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ITelemetryShare
@@ -13,6 +13,7 @@ import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
+import { PlatformLocation } from '@angular/common';
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html',
@@ -67,13 +68,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   showCloseButton = false;
   contentRatingModal = false;
   showLoader = true;
+  paramsSub: Subscription;
 
-
-  constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
+    constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService, public utilService: UtilService, private contentUtilsService: ContentUtilsServiceService) {
+    private configService: ConfigService, public utilService: UtilService, private contentUtilsService: ContentUtilsServiceService,
+    private location: PlatformLocation) {
     this.playerOption = {
       showContentRating: true
     };
@@ -83,12 +85,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
-    this.isSingleContent = _.get(history.state, 'isSingleContent') ;
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
-    this.activatedRoute.params.subscribe((params) => {
+    this.paramsSub = this.activatedRoute.params.subscribe((params) => {
       this.showLoader = true; // show loader every time the param changes, used in route reuse strategy
+      /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
+      this.isSingleContent = _.get(history.state, 'isSingleContent') ;
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
       if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')) {
@@ -99,7 +101,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.setTelemetryData();
       this.getContent();
     });
-
+    // Used to handle browser back button
+    this.location.onPopState(() => {
+      if (this.isSingleContent) {
+        const prevUrl = this.navigationHelperService.history[this.navigationHelperService.history.length - 3];
+        window.location.href = prevUrl.url;
+      }
+    });
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -178,7 +186,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
     } finally {
       setTimeout(() => {
-        if (this.dialCode) {
+        if (this.dialCode && !this.isSingleContent) {
           sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
           const navigateOptions = {
             queryParams: {
@@ -187,7 +195,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           };
           this.router.navigate(['/get/dial/', this.dialCode], navigateOptions);
         } else {
-          this.navigationHelperService.navigateToPreviousUrl('/explore');
+          const prevUrl = this.navigationHelperService.history[this.navigationHelperService.history.length - 3];
+          this.router.navigate([prevUrl.url]);
         }
       }, 100);
     }
@@ -233,6 +242,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if (this.paramsSub) {
+      this.paramsSub.unsubscribe();
+    }
   }
 
   onShareLink() {
