@@ -338,7 +338,7 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.frameworkCardData).toEqual([
       {
         title: 'Academic content',
-        description: 'Choose this if your are creating content mapped to your state curriculum',
+        description: 'Choose this if you are creating content mapped to your state curriculum',
         framework: 'NCFCOPY'
       },
       {
