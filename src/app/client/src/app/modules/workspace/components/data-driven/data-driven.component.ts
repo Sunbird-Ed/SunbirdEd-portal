@@ -383,7 +383,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }]
       },
       edata: {
-        id: cardData.framework + '-selected',
+        id: _.get(cardData, 'title'),
         type: 'click',
         pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       }
