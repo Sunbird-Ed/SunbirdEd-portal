@@ -374,6 +374,11 @@ export class UserService {
     this.http.get(url).subscribe();
   }
 
+  public endSession() {
+    const url = this.config.urlConFig.URLS.USER.END_SESSION;
+    this.http.get(url).subscribe();
+  }
+
   getUserByKey(key) {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
