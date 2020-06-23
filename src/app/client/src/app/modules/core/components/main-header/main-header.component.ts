@@ -447,4 +447,15 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
+  showLanguageDropdown() {
+    const restrictedRoutes = ['workspace', 'manage'];
+    let showLanguageChangeDropdown = true;
+    for (const route of restrictedRoutes) {
+      if (this.router.isActive(route, false)) {
+        showLanguageChangeDropdown = false;
+        break;
+      }
+    }
+    return showLanguageChangeDropdown;
+  }
 }
