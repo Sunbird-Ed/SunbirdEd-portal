@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
   deviceId: string;
   userId: string;
   appId: string;
+  chatBotApiUrl: string;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
