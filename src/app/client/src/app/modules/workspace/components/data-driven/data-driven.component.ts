@@ -310,6 +310,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
+    this.logTelemetry(content.identifier);
   }
 
   /**
@@ -382,11 +383,40 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }]
       },
       edata: {
-        id: 'framework-selection-card',
+        id: _.get(cardData, 'title'),
         type: 'click',
         pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       }
     };
     this.telemetryService.interact(telemetryInteractData);
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {string} contentId
+   * @description - it triggers an interact event when Start creating button is clicked.
+   */
+  logTelemetry(contentId) {
+    const telemetryData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + this.contentType,
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: contentId,
+        type: this.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }
