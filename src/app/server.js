@@ -67,6 +67,13 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.redirect(logoutUrl);
 })
 
+app.get('/endSession', endSession, (req, res) => {
+  delete req.session.userId;
+  res.cookie('connect.sid', '', { expires: new Date() });
+  res.status(200)
+  res.end()
+});
+
 // device routes
 require('./routes/deviceRoutes.js')(app);
 require('./routes/googleRoutes.js')(app);
