@@ -150,6 +150,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+  * @description Function to update route
+  * @since release-3.1.0
+  */
   private updateRoute() {
     this.router.navigate([], {
       queryParams: this.getSelectedFilter(),
@@ -157,6 +161,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+  * @description Function called after selection of Board/publisher
+  * @since release-3.1.0
+  */
   selectedGroupOption(data) {
     console.log('data', data);
     this.type = data.label;
