@@ -31,8 +31,8 @@
   
     <!--Actions-->
     <div class="sb-modal-actions">
-      <button [ngClass]="{'sb-btn-disabled' : !enableCreateButton}" class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" 
-          appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating', type: 'click', pageid: 'workspace'}">
+      <button [ngClass]="{'sb-btn-disabled' : !enableCreateButton}" [disabled]="!enableCreateButton"
+        class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()">
             {{resourceService?.frmelmnts?.btn?.startcreating}}
       </button>
     </div>
@@ -57,10 +57,7 @@
   
     <!--Actions-->
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
-        [telemetryInteractEdata]="{id:'start-creating',
-            type: 'click',
-            pageid: 'workspace'}">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()">
         {{resourceService?.frmelmnts?.btn?.startcreating}}
       </button>
     </div>
