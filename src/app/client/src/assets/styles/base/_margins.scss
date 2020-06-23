@@ -6,68 +6,72 @@ $mValues: 0, 2, 3, 4, 5, 8, 10, 12, 15, 16, 20, 24, 30, 32, 40, 48, 50, 52, 56, 
     $baseMvalue: 0.0625 * $value + rem;
     /* Margin in all direction */
     .m-#{$value} {
-      @include margin($baseMvalue); 
+      margin:$baseMvalue !important; 
     }
     /* Margin in top direction */
     .mt-#{$value} {
-      @include margin($baseMvalue null null null);
+      margin-top:$baseMvalue !important; 
     }
     /* Margin in bottom direction */
     .mb-#{$value} {
-      @include margin(null null $baseMvalue null);
+      margin-bottom:$baseMvalue !important; 
     }
     /* Margin in top and bottom direction */
     .my-#{$value} {
-      @include margin($baseMvalue null $baseMvalue null);
+      margin-top:$baseMvalue !important; 
+      margin-bottom:$baseMvalue !important; 
     }
     /* Margin in left and right direction */
     .mx-#{$value} {
-      @include margin(null $baseMvalue null $baseMvalue);
+      margin-left:$baseMvalue !important; 
+      margin-right:$baseMvalue !important;
     }
     /* Margin in left direction */
     .ml-#{$value} {
-      @include margin(null null null $baseMvalue);
+      margin-left:$baseMvalue !important; 
       html[dir="rtl"] & {
-        @include margin(null $baseMvalue null null);
+        margin-right:$baseMvalue !important;
         margin-left: 0 !important;
       }
     }
     /* Margin in right direction */
     .mr-#{$value} {
-      @include margin(null $baseMvalue null null);
+      margin-right:$baseMvalue !important;
       html[dir="rtl"] & {
-        @include margin(null null null $baseMvalue);
+        margin-left:$baseMvalue !important;
         margin-right: 0 !important;
       }
     }
   }
   
   .m-auto {
-    @include margin(0 auto 0 auto);
+     margin: 0 auto 0 auto !important;
   }
   .mt-auto {
-    @include margin(auto null null null);
+     margin-top:auto !important;
   }
   .mb-auto {
-    @include margin(null null auto null);
+    margin-bottom:auto !important;
   }
   .mx-auto {
-    @include margin(null auto);
+    margin-left:auto !important;
+    margin-right:auto !important;
   }
   .my-auto {
-    @include margin(auto null);
+    margin-top:auto !important;
+    margin-bottom:auto !important;
   }
   .ml-auto {
-    @include margin(null null null auto);
+    margin-left:auto !important;
     html[dir="rtl"] & {
-      @include margin(null auto null null);
+      margin-right:auto !important;
       margin-left: 0 !important;
     }
   }
   .mr-auto {
-    @include margin(null auto null null);
+    margin-right:auto !important;
     html[dir="rtl"] & {
-      @include margin(null null null auto);
+      margin-left:auto !important;
       margin-right: 0 !important;
     }
   }
