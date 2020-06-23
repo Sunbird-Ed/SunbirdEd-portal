@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CourseProgressService, UsageService } from './../../services';
@@ -7,7 +6,6 @@ import * as dayjs from 'dayjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
-import { UUID } from 'angular2-uuid';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-usage-reports',
