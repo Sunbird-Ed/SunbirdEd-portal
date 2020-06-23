@@ -364,7 +364,7 @@ describe('DataDrivenComponent', () => {
         }]
       },
       edata: {
-        id: 'NCFCOPY-selected',
+        id: mockCardData.title,
         type: 'click',
         pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
       }
