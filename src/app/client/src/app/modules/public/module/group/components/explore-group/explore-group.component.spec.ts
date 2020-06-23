@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { ExploreGroupComponent } from './explore-group.component';
 import { configureTestSuite } from '@sunbird/test-util';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ExploreGroupComponent', () => {
   let component: ExploreGroupComponent;
@@ -24,6 +25,7 @@ describe('ExploreGroupComponent', () => {
       declarations: [ ExploreGroupComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule],
       providers: [ { provide: ResourceService, useValue: resourceBundle }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
