@@ -1,7 +1,9 @@
+import { Observable } from 'rxjs';
 import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { UsageService } from './../../services';
+import { CourseProgressService, UsageService } from './../../services';
 import * as _ from 'lodash-es';
+import * as dayjs from 'dayjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, INoResultMessage, NavigationHelperService } from '@sunbird/shared';
@@ -29,13 +31,16 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractDownloadEdata: IInteractEventEdata;
   downloadUrl;
+  public courseProgressService: CourseProgressService;
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,
-    public navigationhelperService: NavigationHelperService
+    public navigationhelperService: NavigationHelperService,
+    courseProgressService: CourseProgressService
   ) {
     this.activatedRoute = activatedRoute;
+    this.courseProgressService = courseProgressService;
   }
 
   ngOnInit() {
@@ -108,7 +113,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
 
   renderFiles(files, data) {
     this.files = [];
-    _.forEach(files, file =>  {
+    _.forEach(files, file => {
       const fileData: any = {};
       fileData.id = _.get(file, 'id');
       fileData.name = _.get(file, 'name');
@@ -123,6 +128,25 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     } else {
       this.isFileDataLoaded = false;
     }
+    _.forEach(this.files, file => {
+      const path = (file.downloadUrl).replace('/reports/', '');
+      const requestParams = {
+        params: {
+          fileNames: JSON.stringify({ path })
+        },
+        telemetryData: this.activatedRoute
+      };
+      this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
+        if (_.get(response, 'responseCode') === 'OK') {
+          file.size = (_.get(response, 'result.path.fileSize')) / 1024;
+          if (_.get(response, 'result.path.lastModified')) {
+            file.createdOn = dayjs(new Date(_.get(response, 'result.path.lastModified'))).format('DD MMM YYYY');
+          } else {
+            file.createdOn = '';
+          }
+        }
+      });
+    });
   }
 
   createChartData(charts, data, downloadUrl) {
