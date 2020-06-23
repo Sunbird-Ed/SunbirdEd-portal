@@ -364,7 +364,7 @@ describe('DataDrivenComponent', () => {
         }]
       },
       edata: {
-        id: 'framework-selection-card',
+        id: 'NCFCOPY-selected',
         type: 'click',
         pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
       }
@@ -375,5 +375,41 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.enableCreateButton).toBe(true);
     expect(componentParent.selectedCard).toEqual(mockCardData);
     expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+
+  it('should create lock to the opened content and redirect to editor after logging an interact event', () => {
+    const contentData = { identifier: 'do_123456' };
+    spyOn(componentParent, 'logTelemetry').and.stub();
+    componentParent.createLockAndNavigateToEditor(contentData);
+    expect(componentParent.logTelemetry).toHaveBeenCalledWith('do_123456');
+  });
+
+  it('should trigger interact event', () => {
+    componentParent.contentType = 'Resource';
+    componentParent.framework = 'NCFCOPY';
+    const telemetryData = {
+      context: {
+        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: componentParent.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + componentParent.contentType,
+        type: 'click',
+        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: 'do_123456',
+        type: componentParent.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    componentParent.logTelemetry('do_123456');
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
 });
