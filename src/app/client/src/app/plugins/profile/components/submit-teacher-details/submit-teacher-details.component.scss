@@ -2,11 +2,11 @@
 @import 'mixins/mixins';
 
 is-invalid {
-  border-color: #E02020 !important;
+  border-color: rgb(224,32,32) !important;
 }
 
 .invalid-msg {
-  color: #E02020;
+  color: rgb(224,32,32);
 }
 
 .primary.text {
@@ -36,7 +36,7 @@ is-invalid {
 
 .otp-field{
   width: 100%;
-  max-width: 216px;
+  max-width: calculateRem(216px);
 }
 
   .sb-modal.sb-modal-fullscreen .sb-modal-header{
