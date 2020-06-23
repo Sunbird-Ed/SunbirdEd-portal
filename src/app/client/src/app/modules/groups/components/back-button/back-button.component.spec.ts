@@ -1,10 +1,10 @@
+import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BackButtonComponent } from './back-button.component';
-import { NavigationHelperService, UtilService, ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 
 describe('BackButtonComponent', () => {
   let component: BackButtonComponent;
@@ -13,8 +13,7 @@ describe('BackButtonComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BackButtonComponent ],
-      imports: [RouterTestingModule, HttpClientTestingModule],
-      providers: [NavigationHelperService, CacheService, UtilService, ResourceService, ConfigService, BrowserCacheTtlService]
+      imports: [RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],
     })
     .compileComponents();
   }));
