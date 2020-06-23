@@ -7,6 +7,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
@@ -16,6 +17,7 @@ describe('GroupHeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GroupHeaderComponent ],
       imports: [SuiModule, CommonConsumptionModule, SharedModule.forRoot(), HttpClientModule, RouterTestingModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
