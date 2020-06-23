@@ -14,6 +14,8 @@ import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './data-driven.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
 
 describe('DataDrivenComponent', () => {
   let componentParent: DataDrivenComponent;
@@ -53,7 +55,10 @@ describe('DataDrivenComponent', () => {
           object: { type: '', ver: '1.0' }
         }
       }
-    }
+    },
+    queryParams: observableOf({
+      showFrameworkSelection: 'true'
+    })
   };
   configureTestSuite();
   beforeEach(async(() => {
@@ -61,7 +66,7 @@ describe('DataDrivenComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule.forRoot()],
       declarations: [DataDrivenComponent, DefaultTemplateComponent],
-      providers: [CacheService, EditorService, WorkSpaceService,
+      providers: [CacheService, EditorService, WorkSpaceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -302,11 +307,109 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
   });
-  it('should fetch the default framework while creating any content from training sub-tab', () => {
+
+  it('should fetch frameworks from channel-read api and set for the associated popup cards based on queryParams', () => {
     const frameworkService = TestBed.get(FrameworkService);
-    spyOn(componentParent, 'fetchFrameworkMetaData').and.callThrough();
-    spyOn(frameworkService, 'getDefaultCourseFramework').and.returnValue(observableOf('cbse-tpd'));
+    spyOn<any>(componentParent, 'setFrameworkData').and.stub();
+    spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
+    componentParent.ngOnInit();
+    expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
+  });
+
+  it('should throw error if channel read api fails', () => {
+    const frameworkService = TestBed.get(FrameworkService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(frameworkService, 'getChannel').and.callFake(() => observableThrowError({}));
+    componentParent.ngOnInit();
+    expect(toasterService.error).toHaveBeenCalledWith('api failed, please try again');
+  });
+
+  it('should fetch form config metadata if framework selection popup does not appear', () => {
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.queryParams = observableOf({showFrameworkSelection: false});
+    spyOn<any>(componentParent, 'fetchFrameworkMetaData').and.stub();
     componentParent.ngOnInit();
     expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
+  });
+
+  it(`should set framework selection card's metadata`, () => {
+    componentParent.setFrameworkData(mockFrameworkData.channelData);
+    expect(componentParent.frameworkCardData).toEqual([
+      {
+        title: 'Academic content',
+        description: 'Choose this if you are creating content mapped to your state curriculum',
+        framework: 'NCFCOPY'
+      },
+      {
+        title: 'Non Academic content',
+        description: 'Choose this if you are creating content which is not mapped to your state curriculum',
+        framework: 'TPD'
+      }
+    ]);
+  });
+
+  it('should select a framework card and fires an interact event', () => {
+    const mockCardData =  {
+      title: 'Academic content',
+      description: 'Choose this if your are creating content mapped to your state curriculum',
+      framework: 'NCFCOPY'
+    };
+    const interactData = {
+      context: {
+        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: 'NCFCOPY'
+        }]
+      },
+      edata: {
+        id: 'NCFCOPY-selected',
+        type: 'click',
+        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
+      }
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    componentParent.selectFramework(mockCardData);
+    expect(componentParent.enableCreateButton).toBe(true);
+    expect(componentParent.selectedCard).toEqual(mockCardData);
+    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+
+  it('should create lock to the opened content and redirect to editor after logging an interact event', () => {
+    const contentData = { identifier: 'do_123456' };
+    spyOn(componentParent, 'logTelemetry').and.stub();
+    componentParent.createLockAndNavigateToEditor(contentData);
+    expect(componentParent.logTelemetry).toHaveBeenCalledWith('do_123456');
+  });
+
+  it('should trigger interact event', () => {
+    componentParent.contentType = 'Resource';
+    componentParent.framework = 'NCFCOPY';
+    const telemetryData = {
+      context: {
+        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: componentParent.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + componentParent.contentType,
+        type: 'click',
+        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: 'do_123456',
+        type: componentParent.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    componentParent.logTelemetry('do_123456');
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
 });

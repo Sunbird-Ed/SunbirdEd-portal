@@ -93,7 +93,7 @@
 
   // fonts
 --font-default-size: 0.875rem;
---font-size-base: 0.875rem; // 14px Assumes the browser default, typically `16px`
+--font-size-base: var(--font-default-size); // 14px Assumes the browser default, typically `16px`
 --font-weight-light: 300;
 --font-weight-normal: 400;
 --font-weight-bold: 700;

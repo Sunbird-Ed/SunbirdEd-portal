@@ -49,6 +49,7 @@ describe('Session Expiry Interceptor', () => {
 
     it('should handle session expiry when status code is 401 and user is logged in ', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+        spyOn(userService, 'endSession');
         spyOn(sessionExpiryInterceptor, 'handleSessionExpiry').and.callThrough();
         makeApiCall().subscribe(null, err => {
             expect(err.error).toEqual({ responseCode: 'SESSION_EXPIRED' });
