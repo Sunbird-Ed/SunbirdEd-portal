@@ -166,7 +166,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   * @since release-3.1.0
   */
   selectedGroupOption(data) {
-    console.log('data', data);
     this.type = data.label;
     this.selectedOption = data;
     if (data.label === this.optionLabel.Publisher) {
