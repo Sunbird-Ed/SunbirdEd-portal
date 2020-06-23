@@ -187,7 +187,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
         this.objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
-        config.context.objectRollup = this.courseConsumptionService.getRollUp(this.objectRollUp) || {};
+        const objectRollUp = this.objectRollUp ? this.courseConsumptionService.getRollUp(this.objectRollUp) : {};
+        if (config && config.context) {
+          config.context.objectRollup = objectRollUp;
+        }
         this.playerConfig = config;
         this.showLoader = false;
         this.setTelemetryContentImpression();

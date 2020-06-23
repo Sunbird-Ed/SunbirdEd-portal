@@ -171,7 +171,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(resp).toEqual(undefined);
   });
 
-  it('should call initPlayer success', () => {
+  xit('should call initPlayer success', () => {
     component.collectionId = 'do_11287204084174028818';
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of({}));
