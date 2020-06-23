@@ -16,8 +16,8 @@ describe('ExploreFtuPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreFtuPopupComponent ],
-      imports: [HttpClientModule],
-      providers: [ { provide: ResourceService, useValue: resourceBundle }, SharedModule.forRoot()]
+      imports: [HttpClientModule, SharedModule.forRoot()],
+      providers: [ { provide: ResourceService, useValue: resourceBundle }]
     })
     .compileComponents();
   }));
