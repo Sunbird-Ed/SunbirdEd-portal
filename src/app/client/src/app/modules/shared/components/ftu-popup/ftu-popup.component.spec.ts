@@ -1,4 +1,4 @@
-import { SharedModule } from '@sunbird/shared';
+import { ResourceService } from './../../services/resource/resource.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FtuPopupComponent } from './ftu-popup.component';
@@ -10,7 +10,7 @@ describe('FtuPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],
-      imports: [ SharedModule.forRoot()]
+      providers: [ ResourceService]
     })
     .compileComponents();
   }));
