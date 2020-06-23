@@ -1,14 +1,46 @@
 @import "variables";
 @import 'mixins/mixins';
 
-.orange-border {
-  border-color: $danger-color !important;
+is-invalid {
+  border-color: #E02020 !important;
 }
 
-.orange.text {
-  color: $danger-color;
+.invalid-msg {
+  color: #E02020;
+}
+
+.primary.text {
+  color: var(--info-color);
 }
 
 .ui.stackable.grid>.wide.column{
   padding: 0rem !important;
 }
+
+.sb-btn-border{
+  border-radius: calculateRem(40px);
+  text-transform: none;
+}
+
+.info-error-icon{
+ position: absolute;
+ right: calculateRem(16px);
+ bottom: calculateRem(8px);
+ background: var(--white);
+}
+
+.sb-field .ui.selection.dropdown {
+  min-height: calculateRem(40px) !important;
+  font-weight: bold;
+}
+
+.otp-field{
+  width: 100%;
+  max-width: 216px;
+}
+
+  .sb-modal.sb-modal-fullscreen .sb-modal-header{
+    color: var(--black);
+    border-bottom: 0.0625rem solid var(--gray-100);
+   }
+
