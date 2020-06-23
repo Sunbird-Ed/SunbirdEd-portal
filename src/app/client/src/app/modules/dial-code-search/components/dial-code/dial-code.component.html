@@ -99,7 +99,7 @@
         <div class="sb-card-grid mt-16">
           <div in-view-item [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">
             <sb-course-card appContentDirection [data]="content" class="sb-card-grid__item" [course]="content"
-              [cardImg]="content?.image || 'assets/images/book.png'" (cardClick)="playCourse($event)"
+              [cardImg]="content?.image || 'assets/images/book.png'" (cardClick)="playCourse($event)" [section]="null"
               appTelemetryInteract [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]"
               [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
               [telemetryInteractEdata]="content.telemetryInteractEdata">
