@@ -1,5 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, SharedModule } from '@sunbird/shared';
 import { ExploreGroupComponent } from './explore-group.component';
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -7,10 +8,22 @@ describe('ExploreGroupComponent', () => {
   let component: ExploreGroupComponent;
   let fixture: ComponentFixture<ExploreGroupComponent>;
   configureTestSuite();
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        loginToCreateGroup: 'login'
+      },
+      btn: {
+        login: 'login'
+      }
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExploreGroupComponent ],
-      providers: [ ResourceService ]
+      imports: [SharedModule.forRoot(), HttpClientTestingModule],
+      providers: [ { provide: ResourceService, useValue: resourceBundle }],
     })
     .compileComponents();
   }));
@@ -19,5 +32,9 @@ describe('ExploreGroupComponent', () => {
     fixture = TestBed.createComponent(ExploreGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });

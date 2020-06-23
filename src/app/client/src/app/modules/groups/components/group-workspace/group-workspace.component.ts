@@ -5,10 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './group-workspace.component.html',
   styleUrls: ['./group-workspace.component.scss']
 })
-export class GroupWorkspaceComponent implements OnInit {
+export class GroupWorkspaceComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 }

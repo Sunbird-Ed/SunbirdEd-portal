@@ -5,7 +5,7 @@ import { ResourceService, NavigationHelperService } from '@sunbird/shared';
   templateUrl: './group-header.component.html',
   styleUrls: ['./group-header.component.scss']
 })
-export class GroupHeaderComponent implements OnInit {
+export class GroupHeaderComponent {
   showDeleteModal;
   showPastMemberModal;
   @ViewChild('modal') modal;
@@ -21,9 +21,6 @@ export class GroupHeaderComponent implements OnInit {
         this.closeModal();
       }
      });
-  }
-
-  ngOnInit() {
   }
   deleteGroup() {
     this.showModal = true;
