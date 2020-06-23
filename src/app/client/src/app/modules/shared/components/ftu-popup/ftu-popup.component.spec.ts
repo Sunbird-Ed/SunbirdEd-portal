@@ -1,4 +1,7 @@
-import { ResourceService } from './../../services/resource/resource.service';
+import { CacheService } from 'ng2-cache-service';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfigService, ResourceService, BrowserCacheTtlService } from './../../services';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FtuPopupComponent } from './ftu-popup.component';
@@ -6,11 +9,18 @@ import { FtuPopupComponent } from './ftu-popup.component';
 describe('FtuPopupComponent', () => {
   let component: FtuPopupComponent;
   let fixture: ComponentFixture<FtuPopupComponent>;
-
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        groupWelcomeTitle: 'Welcome to groups',
+      },
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],
-      providers: [ ResourceService]
+      imports: [HttpClientModule],
+      providers: [ { provide: ResourceService, useValue: resourceBundle }, ConfigService, CacheService, BrowserCacheTtlService]
     })
     .compileComponents();
   }));

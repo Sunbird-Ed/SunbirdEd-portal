@@ -25,10 +25,6 @@ export class GroupHeaderComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  goBack() {
-    this.navigationHelperService.goBack();
-  }
   deleteGroup() {
     this.showModal = true;
     this.modalName = 'deleteGroup';

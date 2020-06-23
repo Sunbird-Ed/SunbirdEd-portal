@@ -1,0 +1,27 @@
+<div class="status-container flex-dc d-flex flex-jc-center p-24 sb-bg-color-white bs-3">
+  <div  (click)="addMember()"> add member </div>
+  <div class="ui container mt-24 sb-library-cards" *ngIf="membersList.length">
+    <div class="sbgrid">
+      <div *ngFor="let member of membersList">
+        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
+         [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+        </sb-member-card>
+        <div class="dropdown-menu-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
+          <div class="list" (click)="openModal('Promote')" >
+            <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
+            <span>{{resourceService?.frmelmnts?.btn?.groupAdmin}}</span>
+          </div>
+          <div class="list mb-8" (click)="openModal('Dismiss')">
+            <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
+            <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
+          </div>
+          <div class="list" (click)="openModal('Remove')">
+            <img class="" alt="admin" src="./../../../../../assets/images/remove-from-group.svg">
+            <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<app-member-actions *ngIf="showModal" [modalName]="modalName" [member]="selectedMember"></app-member-actions>

@@ -8,12 +8,13 @@ import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent,
   GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
-  AddActivityComponent, MemberActionsComponent} from './components';
+  AddActivityComponent, MemberActionsComponent, GroupMembersComponent} from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from 'CsLibInitializer';
+
 
 @NgModule({
   imports: [
@@ -27,12 +28,13 @@ import { CsLibInitializerService } from 'CsLibInitializer';
     NgInviewModule,
     SharedFeatureModule,
     GroupsRoutingModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    SharedModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
     GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
-    AddActivityComponent, MemberActionsComponent, ]
+    AddActivityComponent, MemberActionsComponent, GroupMembersComponent, ]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {

@@ -6,3 +6,4 @@ export * from './my-groups/my-groups.component';
 export * from './no-group-result/no-group-result.component';
 export * from './add-activity/add-activity.component';
 export * from './member-actions/member-actions.component';
+export * from './group-members/group-members.component';

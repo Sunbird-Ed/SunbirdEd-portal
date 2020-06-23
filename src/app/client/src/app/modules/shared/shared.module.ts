@@ -5,7 +5,8 @@ import {
   NoResultComponent, AppLoaderComponent, CardComponent,
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
-  OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, FtuPopupComponent
+  OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, FtuPopupComponent,
+  BackButtonComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -36,15 +37,14 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent,
-    FtuPopupComponent],
+    ConfirmPopupComponent, FtuPopupComponent, BackButtonComponent],
   exports: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    FtuPopupComponent]
+    FtuPopupComponent, BackButtonComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
