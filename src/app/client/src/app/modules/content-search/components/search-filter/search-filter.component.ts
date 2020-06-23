@@ -198,14 +198,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.updateRoute();
     }
   }
-  public getBoardInteractEdata(selectedBoard: any = {}) {
+  public getBoardInteractEdata() {
     const selectBoardInteractEdata: IInteractEventEdata = {
       id: 'apply-filter',
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     const appliedFilter: any = this.getSelectedFilter() || {};
-    appliedFilter.board = selectedBoard.name ? selectedBoard.name : appliedFilter.board;
+    appliedFilter.board = _.get(this.selectedBoard, 'selectedOption') ? _.get(this.selectedBoard, 'selectedOption') : appliedFilter.board;
     selectBoardInteractEdata['extra'] = {
       filters: appliedFilter
     };

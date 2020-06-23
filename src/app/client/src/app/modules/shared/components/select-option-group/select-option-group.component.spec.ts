@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectOptionGroupComponent } from './select-option-group.component';
 
-describe('SelectOptionGroupComponent', () => {
+xdescribe('SelectOptionGroupComponent', () => {
   let component: SelectOptionGroupComponent;
   let fixture: ComponentFixture<SelectOptionGroupComponent>;
 

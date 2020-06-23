@@ -3,23 +3,12 @@
     <div class="d-flex state-medium-container sb-bg-color-white">
         <div class="ui container d-flex flex-ai-center">
             <div *ngIf="boards?.length" class="state-medium-container__dropdown">
-                <!-- state section -->
+                <!-- board section -->
                 <div class="sb-field mb-0">
-                    <!-- <sui-select class="selection state-selection"
-                        [placeholder]="resourceService?.messages?.stmsg?.m0126" [(ngModel)]="selectedBoard"
-                        labelField="name" (ngModelChange)="onBoardChange(selectedBoard)">
-                        <sui-select-option *ngFor="let board of boards | sortBy:'name':'asc'" [value]="board" appTelemetryInteract
-                            [telemetryInteractEdata]="getBoardInteractEdata(board)"></sui-select-option>
-                    </sui-select> -->
-
-
-                    <!-- selectedChannel = {{selectedChannel | json}} \\ 
-                    selectedBoard = {{selectedBoard | json}} -->
-
-
-                    <app-select-option-group *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
+                    <app-select-option-group appTelemetryInteract
+                    [telemetryInteractEdata]="getBoardInteractEdata()" *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
                 </div>
-                <!-- state section ends -->
+                <!-- board section ends -->
             </div>
             <!-- medium section -->
             <div *ngIf="boards?.length && mediums?.length" class="state-medium-container__separator"></div>
