@@ -12,9 +12,6 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-<!--lib-chat-window 
-        [inputValues]="inputValue">
-</lib-chat-window-->
 <lib-chat-window 
   [inputValues]="{
       'deviceId': deviceId, 
