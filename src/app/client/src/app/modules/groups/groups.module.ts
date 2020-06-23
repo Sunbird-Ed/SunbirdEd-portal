@@ -14,7 +14,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from 'CsLibInitializer';
-import { GroupActionsComponent } from './components/group-actions/group-actions.component';
 
 @NgModule({
   imports: [
@@ -33,7 +32,7 @@ import { GroupActionsComponent } from './components/group-actions/group-actions.
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
     GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
-    AddActivityComponent, MemberActionsComponent, GroupActionsComponent, ]
+    AddActivityComponent, MemberActionsComponent, ]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {
