@@ -16,6 +16,7 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import {CsModule} from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -141,6 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
     combineLatest(queryParams$, this.setDeviceId())
       .pipe(
         mergeMap(data => {
+          this.initializeCs();
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
@@ -552,6 +554,34 @@ export class AppComponent implements OnInit, OnDestroy {
             });
       }
     });
+  }
+
+  async initializeCs() {
+    if (!CsModule.instance.isInitialised) {
+       // Singleton initialised or not
+      await CsModule.instance.init({
+          core: {
+              httpAdapter: 'HttpClientBrowserAdapter',
+              global: {
+                  channelId: this.channel, // required
+                  producerId: this.userService.appId, // required
+                  deviceId: this.fingerprintInfo // required
+              },
+              api: {
+                  host: 'https://staging.ntp.net.in', // default host
+                  authentication: {
+                      // userToken: string; // optional
+                      // bearerToken: string; // optional
+                  }
+              }
+          },
+          services: {
+              groupServiceConfig: {
+                apiPath: 'api/v1/group',
+              }
+          }
+  });
+  }
   }
 
 }

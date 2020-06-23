@@ -15,3 +15,4 @@ export * from './offline-application-download/offline-application-download.compo
 export * from './full-page-modal/full-page-modal.component';
 export * from './account-merge-modal/account-merge-modal.component';
 export * from './confirm-popup/confirm-popup.component';
+export * from './ftu-popup/ftu-popup.component';

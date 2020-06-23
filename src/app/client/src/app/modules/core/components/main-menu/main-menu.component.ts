@@ -196,6 +196,8 @@ export class MainMenuComponent implements OnInit {
     }
   }
 
+  navigateToGroups() {}
+
   getFeatureId(featureId, taskId) {
     return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }

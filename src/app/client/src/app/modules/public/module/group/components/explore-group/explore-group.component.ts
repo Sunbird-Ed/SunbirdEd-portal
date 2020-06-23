@@ -11,7 +11,7 @@ export class ExploreGroupComponent {
   constructor(public resourceService: ResourceService) { }
 
   redirectTologin() {
-    window.location.href = '/groups';
+    window.location.href = '/my-groups';
   }
 
 }

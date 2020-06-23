@@ -14,7 +14,8 @@ import { GroupRoutingModule } from './group-routing.module';
     CoreModule,
     SharedModule,
     GroupRoutingModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    SharedModule
   ],
   declarations: [ ExploreGroupComponent ],
   exports: []

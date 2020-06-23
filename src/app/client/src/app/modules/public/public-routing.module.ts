@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
 import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
-
+import './module/group/group.module'
 const routes: Routes = [
   {
     path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],

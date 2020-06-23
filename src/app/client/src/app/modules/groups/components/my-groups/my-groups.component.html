@@ -15,7 +15,7 @@
 
 
 <div class="ui container my-16" *ngIf="groupList.length">
-    <!-- group cards screen with sticky create-group button screen in right side same as desktop -->
+  <!-- add my-groups header -->
     <div class="ui stackable grid m-0">
       <div class="nine wide column p-0 ">
         <div class="my-groups-container">
@@ -43,29 +43,6 @@
           </div>
         </div>
   
-      </div>
-      <div class="three wide column p-0 pl-16">
-
-        <!-- add create-group screen once the group is created the below can be shown on the right side for the feature group creation-->
-        <div class="sb-sticky-right-panel" >
-            <div class="info-container d-flex flex-dc flex-jc-center p-24 sb-bg-color-white bs-3">
-                <div class="flex-dc d-flex flex-ai-center flex-jc-center create-group-container">
-                  <div class="d-flex flex-dc flex-ai-center flex-jc-center">
-                   <div class="my-16">Place holder images</div>
-                   <div class="d-flex flex-as-center"><img src="./assets/images/create-group-img.png" width="220px" height="220px"></div>
-                   <div class="my-24 fs-1 text-center">
-                     Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
-                     (Group discription here)</div>
-                   <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" type="button"
-                     (click)="showCreateFormModal()">
-                      <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
-                      {{ resourceService.frmelmnts.lbl.createGroup }}
-                     </button>
-                  </div>
-               </div>
-           
-              </div>
-          </div>
       </div>
     </div>
 </div>

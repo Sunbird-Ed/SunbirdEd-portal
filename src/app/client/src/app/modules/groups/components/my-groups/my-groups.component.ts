@@ -30,6 +30,6 @@ export class MyGroupsComponent implements OnInit {
   }
 
   public navigateToDetailPage(groupId) {
-    this.router.navigate(['groups/view', groupId]);
+    this.router.navigate(['my-groups/view', groupId]);
   }
 }
