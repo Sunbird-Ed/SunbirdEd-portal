@@ -226,6 +226,16 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return updateInteractEdata;
   }
 
+  isStateChanged() {
+    let isStateChanged = false;
+    _.forEach(_.get(this.userProfile, 'userLocations'), (location) => {
+      if (location.type === 'state' && location.code !== _.get(this.userDetailsForm, 'value.state.code')) {
+        isStateChanged = true;
+      }
+    });
+    return isStateChanged;
+  }
+
   onSubmitForm() {
     this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
       takeUntil(this.unsubscribe))
@@ -236,8 +246,16 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
           if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
-          const operation = this.formAction === 'submit' ? 'add' : 'edit';
-          const externalIds = [];
+          let operation = this.formAction === 'submit' ? 'add' : 'edit';
+          let externalIds = [];
+          if (this.formAction === 'update' && this.isStateChanged() || provider !== _.get(this.userProfile, 'externalIds[0].provider')) {
+            operation = 'add';
+            const extIds = this.userProfile.externalIds || [];
+            _.forEach(extIds, (externalId, index) => {
+              extIds[index]['operation'] = 'remove';
+            });
+            externalIds = extIds.concat(externalIds);
+          }
           if (_.get(this.userDetailsForm, 'value.school')) {
             externalIds.push({
               id: _.get(this.userDetailsForm, 'value.school'),
