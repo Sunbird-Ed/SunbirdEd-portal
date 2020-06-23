@@ -1,6 +1,6 @@
-import { ResourceService } from './../../services';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
-import { NavigationHelperService } from '../../services';
+
 
 @Component({
   selector: 'app-back-button',
@@ -13,6 +13,7 @@ export class BackButtonComponent implements OnInit {
 
   ngOnInit() {
   }
+
   goBack() {
     this.navigationHelperService.goBack();
   }

@@ -1,3 +1,4 @@
+import { GROUP_DETAILS, ADD_MEMBER, MY_GROUPS } from './../routerLinks';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -34,6 +35,6 @@ export class GroupMembersComponent implements OnInit {
   }
 
   addMember() {
-    this.router.navigate(['my-groups/group-details', this.groupId, 'add-member-to-group']);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, ADD_MEMBER]);
   }
 }

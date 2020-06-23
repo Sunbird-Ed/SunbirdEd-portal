@@ -7,3 +7,5 @@ export * from './no-group-result/no-group-result.component';
 export * from './add-activity/add-activity.component';
 export * from './member-actions/member-actions.component';
 export * from './group-members/group-members.component';
+export * from './ftu-popup/ftu-popup.component';
+export * from './back-button/back-button.component';

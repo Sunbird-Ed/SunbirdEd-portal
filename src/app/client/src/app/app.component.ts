@@ -568,7 +568,7 @@ export class AppComponent implements OnInit, OnDestroy {
                   deviceId: this.fingerprintInfo // required
               },
               api: {
-                  host: 'https://staging.ntp.net.in', // default host
+                  host: document.location.origin, // default host
                   authentication: {
                       // userToken: string; // optional
                       // bearerToken: string; // optional
