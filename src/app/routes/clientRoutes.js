@@ -14,7 +14,6 @@ pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
-const { env } = require('process');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
