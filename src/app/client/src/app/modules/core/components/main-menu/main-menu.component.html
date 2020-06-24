@@ -10,6 +10,10 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/my-groups')" appTelemetryInteract
+		[telemetryInteractEdata]="groupsMenuIntractEdata" routerLink="/my-groups">
+		{{resourceService?.frmelmnts?.tab?.mygroups}}
+		</a>
 		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
@@ -46,6 +50,9 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/explore-groups')" 
+		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+		routerLink="/explore-groups"> {{resourceService?.frmelmnts?.tab?.mygroups}} </a>
 		<span class="item divider">|</span>
 		<a class="item font-weight-bold sb-color-primary pr-0" href={{hrefPath}} appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
