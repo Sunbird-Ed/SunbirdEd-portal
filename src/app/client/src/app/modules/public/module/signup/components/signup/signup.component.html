@@ -56,12 +56,12 @@
             </div>
             <div class="field" *ngIf="showContact === 'email'">
               <input class="sb-form-control" type="email" [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
-                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
+                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}" (blur)="getReCaptchaToken('email')">
             </div>
             <div class="field" *ngIf="showContact === 'phone'">
               <div class="ui left icon input">
                 <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
-                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}">
+                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}" (blur)="getReCaptchaToken('phone')">
                 <i class=" icon">+91-</i>
               </div>
             </div>

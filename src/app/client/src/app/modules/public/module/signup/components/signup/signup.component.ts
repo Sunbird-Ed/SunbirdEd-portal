@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import {
@@ -24,6 +24,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('captchaRef') captchaRef: any;
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -50,6 +51,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   showTncPopup = false;
   birthYearOptions: Array<number> = [];
   isMinor: Boolean = false;
+  formInputType: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -186,7 +188,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.onContactTypeValueChanges();
     this.enableSignUpSubmitButton();
-    this.onPhoneChange();
+    // this.onPhoneChange();
   }
 
   onPasswordChange(passCtrl: FormControl): void {
@@ -219,12 +221,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           this.signUpForm.controls['phone'].setValue('');
           emailControl.setValidators([Validators.required, Validators.email]);
           phoneControl.clearValidators();
-          this.onEmailChange();
+          // this.onEmailChange();
         } else if (mode === 'phone') {
           this.signUpForm.controls['email'].setValue('');
           emailControl.clearValidators();
           phoneControl.setValidators([Validators.required, Validators.pattern('^\\d{10}$')]);
-          this.onPhoneChange();
+          // this.onPhoneChange();
         }
         emailControl.updateValueAndValidity();
         phoneControl.updateValueAndValidity();
@@ -300,13 +302,36 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showPassword = true;
     }
   }
+  /**
+   * @param  {string} inputType : User input type `email` or `phone`
+   * @description : Function to trigger reCaptcha for onBlur event of user input
+   * @since - release-3.0.1
+   */
+  getReCaptchaToken(inputType: string) {
+    console.log('type => ', inputType); // TODO: log!
+    this.formInputType = inputType;
+    const emailControl = this.signUpForm.get('email');
+    const phoneControl = this.signUpForm.get('phone');
+    if (inputType === 'email' && emailControl.status === 'VALID' && emailControl.value !== '') {
+       this.signUpForm.controls['uniqueContact'].setValue('');
+      this.captchaRef.execute();
+    } else if (inputType === 'phone' && phoneControl.status === 'VALID' && phoneControl.value !== '') {
+       this.signUpForm.controls['uniqueContact'].setValue('');
+      this.captchaRef.execute();
+    }
+  }
 
   resolved(captchaResponse: string) {
     if (captchaResponse) {
       this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
         if (_.get(data, 'result.success')) {
           this.telemetryLogEvents('validate-recaptcha', true);
-          this.onSubmitSignUpForm();
+          if (!this.formInputType) {
+            this.onSubmitSignUpForm();
+          } else {
+            this.vaidateUserContact();
+            this.formInputType = undefined;
+          }
         }
       }, (error) => {
         const telemetryErrorData = {
@@ -315,6 +340,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           stackTrace: JSON.stringify((error && error.error) || '')
         };
         this.telemetryService.generateErrorEvent(telemetryErrorData);
+        this.formInputType = undefined;
         this.resetGoogleCaptcha();
       });
     }
