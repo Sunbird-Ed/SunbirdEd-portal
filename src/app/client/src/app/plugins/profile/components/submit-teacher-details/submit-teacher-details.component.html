@@ -1,5 +1,4 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
+
   <div class="sb-modal-header" *ngIf="formAction === 'submit'">
     {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
   <div class="sb-modal-header" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}}
@@ -98,4 +97,20 @@
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
-</sui-modal>
+
+  <!-- information submitted modal in TEACHER Profile-->
+  <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+             class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
+    <div class="sb-modal-header font-weight-normal">
+      {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
+    </div>
+    <div class="sb-modal-content text-center">
+      <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-success"
+              (click)="closeSuccessModal()">
+        {{resourceService?.frmelmnts?.btn?.ok}}
+      </button>
+    </div>
+  </sui-modal>

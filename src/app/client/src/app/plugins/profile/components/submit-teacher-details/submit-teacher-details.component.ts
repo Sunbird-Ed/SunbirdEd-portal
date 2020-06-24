@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import {IUserData, ResourceService, ToasterService} from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
+import {ActivatedRoute, Router} from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService, SearchService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-submit-teacher-details',
@@ -15,11 +16,10 @@ import { Subject } from 'rxjs';
 })
 export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
-  @Output() close = new EventEmitter<any>();
-  @Output() showSuccessModal = new EventEmitter<any>();
-  @Input() userProfile: any;
-  @Input() formAction: string;
-  @ViewChild('userDetailsModal') userDetailsModal;
+  @ViewChild('modal') modal;
+  showSuccessModal = false;
+  userProfile: any;
+  formAction: string;
   public unsubscribe = new Subject<void>();
   allStates: any;
   allDistricts: any;
@@ -44,17 +44,25 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   udiseObj;
   teacherObj;
   schoolObj;
+  userSubscription: Subscription;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
-    public userService: UserService, public formService: FormService,
-    public searchService: SearchService) {
+    public userService: UserService, public formService: FormService, public router: Router,
+    public searchService: SearchService, private activatedRoute: ActivatedRoute) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
+    const queryParams = this.activatedRoute.snapshot.queryParams;
+    this.formAction = queryParams.formaction;
+    this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+      if (user.userProfile) {
+        this.userProfile = user.userProfile;
+        this.setFormDetails();
+      }
+    });
     this.setTelemetryData();
-    this.setFormDetails();
   }
 
   setTelemetryData() {
@@ -226,6 +234,12 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return updateInteractEdata;
   }
 
+  closeSuccessModal() {
+    this.modal.deny();
+    this.showSuccessModal = false;
+    this.router.navigate(['/profile']);
+  }
+
   onSubmitForm() {
     this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
       takeUntil(this.unsubscribe))
@@ -272,10 +286,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   updateProfile(data) {
     this.profileService.updateProfile(data).subscribe(res => {
-      this.closeModal();
-      this.showSuccessModal.emit();
       if (this.formAction === 'update') {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
+        this.closeModal();
+      } else {
+        this.showSuccessModal = true;
       }
     }, err => {
         this.closeModal();
@@ -285,13 +300,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
-    this.userDetailsModal.deny();
-    this.close.emit();
+    this.router.navigate(['/profile']);
   }
 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    this.userDetailsModal.deny();
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }
