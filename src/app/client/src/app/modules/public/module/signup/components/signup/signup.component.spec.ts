@@ -91,7 +91,6 @@ describe('SignUpComponent', () => {
     expect(component.signUpForm.valid).toBeFalsy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show validation error message for name', () => {
@@ -107,7 +106,6 @@ describe('SignUpComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show validation error message for phone', () => {
@@ -123,7 +121,6 @@ describe('SignUpComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show pattern match error message for phone', () => {
@@ -139,7 +136,6 @@ describe('SignUpComponent', () => {
     expect(errors['pattern']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show required lowercase validation error message for password', fakeAsync(() => {
@@ -222,7 +218,6 @@ describe('SignUpComponent', () => {
     component.ngOnInit();
     const contactType = component.signUpForm.controls['contactType'];
     contactType.setValue('email');
-     expect(component.onEmailChange).toHaveBeenCalled();
      expect(component.disableSubmitBtn).toBeTruthy();
      expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
   });
