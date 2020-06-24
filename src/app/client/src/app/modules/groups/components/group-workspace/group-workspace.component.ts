@@ -7,10 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupWorkspaceComponent {
   showModal = false;
-  modalName: string;
   addActivity() {
     this.showModal = true;
-    this.modalName = 'addActivity';
   }
   closeModal() {
     this.showModal = false;
