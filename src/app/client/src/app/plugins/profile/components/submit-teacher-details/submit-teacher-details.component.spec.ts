@@ -227,5 +227,20 @@ describe('SubmitTeacherDetailsComponent', () => {
     const data = component.isStateChanged();
     expect(data).toBe(false);
   });
+
+  it('should return add operation as form action is submit', () => {
+    component.formAction = 'submit';
+    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    expect(data).toBe('add');
+  });
+
+  it('should return add operation as form action is submit', () => {
+    component.formAction = 'update';
+    const userData = mockRes.userData;
+    userData.result.response['externalIds'] = mockRes.externalId;
+    component.userProfile = userData;
+    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    expect(data).toBe('add');
+  });
   
 });

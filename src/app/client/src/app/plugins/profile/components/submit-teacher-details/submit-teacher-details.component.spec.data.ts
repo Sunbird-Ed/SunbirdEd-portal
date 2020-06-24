@@ -558,5 +558,17 @@ export const mockRes = {
         'tncAcceptedVersion': 'v1'
       }
     }
-  }
+  },
+  externalId: [
+    {
+      "idType": "declared-ext-id",
+      "provider": "tp",
+      "id": "p"
+    },
+    {
+      "idType": "declared-school-name",
+      "provider": "tp",
+      "id": "2222"
+    }
+  ]
 };
