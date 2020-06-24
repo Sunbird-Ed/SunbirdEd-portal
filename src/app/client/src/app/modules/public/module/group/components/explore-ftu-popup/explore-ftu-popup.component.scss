@@ -1,12 +1,5 @@
-@import"variables";
-@import 'mixins/mixins';
-
-.create-group-container {
-    max-width: 420px;
-    width:100%;
-    margin: 0 auto;
-  }
-  .sb-group-welcome-page-container {
+ /* welcome screen */
+ .sb-group-welcome-page-container {
     position:fixed;
     top:0px;
     left:0px;

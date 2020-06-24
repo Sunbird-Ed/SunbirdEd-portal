@@ -69,7 +69,7 @@ describe('MyGroupsComponent', () => {
     const groupid = mygroupsMockData.mockGroupList[0].identifier;
     const router = TestBed.get(Router);
     component.navigateToDetailPage(groupid);
-    expect(router.navigate).toHaveBeenCalledWith(['groups/view', groupid]);
+    expect(router.navigate).toHaveBeenCalledWith(['my-groups/group-details', groupid]);
   });
 
 });
