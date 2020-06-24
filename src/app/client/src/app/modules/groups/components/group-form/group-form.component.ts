@@ -1,3 +1,4 @@
+import { MY_GROUPS } from './../routerLinks';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { first, mergeMap, map  } from 'rxjs/operators';
@@ -196,6 +197,8 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
         control.markAsTouched({ onlySelf: true });
       });
     }
+    this.createGroupModal.deny();
+    this.route.navigate([MY_GROUPS]);
   }
   ngOnDestroy() {
     if (this.unsubscribe) {
