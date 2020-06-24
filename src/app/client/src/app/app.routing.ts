@@ -49,6 +49,9 @@ const appRoutes: Routes = [
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {
+    path: 'my-groups', loadChildren: 'app/modules/groups/groups.module#GroupsModule'
+  },
+  {
     path: 'error', component: ErrorPageComponent
   },
   {
