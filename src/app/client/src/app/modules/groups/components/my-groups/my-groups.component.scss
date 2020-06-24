@@ -1,6 +1,19 @@
 @import"variables";
 @import 'mixins/mixins';
 
+.sb-page-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calculateRem(64px);
+  h2 {
+    color: var(--primary-color);
+    font-size: calculateRem(18px);
+    font-weight: bold;
+    line-height: 24px;
+  }
+}
+
 .section-header {
   display: flex;
   flex-direction: row;
@@ -136,8 +149,9 @@
   }
 
   .create-group-container {
-    max-width: 420px;
+    max-width: calculateRem(420px);
     width:100%;
     margin: 0 auto;
+    padding:calculateRem(32px);
   }
   

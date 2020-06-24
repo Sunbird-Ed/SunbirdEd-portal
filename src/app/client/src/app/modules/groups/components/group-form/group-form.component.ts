@@ -52,6 +52,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedOption = _.pickBy(_.cloneDeep(this.userProfile.framework), 'length') || {};
     this.groupForm = this.fb.group({
       groupName: ['', [ Validators.required ]],
+      groupDescription: ['', [ ]],
       board: [_.get(this.selectedOption, 'board') || [], [ Validators.required ]],
       medium: [_.get(this.selectedOption, 'medium') || [], [ Validators.required ]],
       gradeLevel: [_.get(this.selectedOption, 'gradeLevel') || [], [ Validators.required ]],
