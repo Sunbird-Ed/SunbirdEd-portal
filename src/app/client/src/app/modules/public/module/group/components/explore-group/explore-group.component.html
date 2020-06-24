@@ -2,11 +2,8 @@
   <app-explore-ftu-popup></app-explore-ftu-popup>
 
 <!-- login screen -->
-      <div class="flex-dc d-flex flex-jc-center p-24 login-to-create-group-container">
-        <div class="my-48 p-16 d-flex flex-jc-center flex-as-center">
-          <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
-            <div><img src="./assets/images/noun_School.svg" width="91px" height="162px"></div>
-            <div class="mt-8 fs-1">{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}</div>
-            <button class="sb-btn sb-btn-primary sb-btn-md mt-16 mb-8 w-50" type="button"  (click)="redirectTologin()">{{ resourceService.frmelmnts.btn.login }}</button>
-          </div>
-
+<div class="d-flex flex-dc flex-jc-center text-center flex-ai-center mt-48 create-group-container">
+  <div><img src="./assets/images/mygroups.svg" width="100%"></div>
+  <div class="mt-8 fs-1">{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}</div>
+  <button class="sb-btn sb-btn-primary sb-btn-normal mt-16 mb-8 w-50" type="button"  (click)="redirectTologin()">{{ resourceService.frmelmnts.btn.login }}</button>
+</div>

@@ -1,6 +1,6 @@
 /* flex styles */
 
-.flex-ai-jc-center {
+.flex-ai-jc-center,.flex-jc-ai-center {
   @extend .d-flex;
   @extend .flex-jc-center;
   @extend .flex-ai-center;

@@ -1,6 +1,6 @@
-<div class="status-container flex-dc d-flex flex-jc-center p-24 sb-bg-color-white bs-3">
+<div class="status-container flex-dc d-flex flex-jc-center p-16 sb-bg-color-white bs-3">
   <div  (click)="addMember()"> add member </div>
-  <div class="ui container mt-24 sb-library-cards" *ngIf="membersList.length">
+  <div class="sb-library-cards" *ngIf="membersList.length">
     <div class="sbgrid">
       <div *ngFor="let member of membersList">
         <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
