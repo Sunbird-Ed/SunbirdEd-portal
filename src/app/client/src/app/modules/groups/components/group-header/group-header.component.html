@@ -65,7 +65,7 @@
   appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showEditModal">
   <div class="sb-modal-header">Edit group details</div>
   <div class="sb-modal-content o-y-visible">
-    <form class="sb-form" [formGroup]="groupForm">
+    <form class="sb-form">
       <div class="sb-field mb-16">
         <label>{{ resourceService.frmelmnts.lbl.groupName }}</label>
         <input class="sb-form-control" type="text" placeholder="Class FiveB Science" formControlName="groupName">
