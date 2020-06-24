@@ -70,7 +70,7 @@
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  background-color: #F5F9FC;
+  background-color: var(--rc-F5F9FC);
   border: calculateRem(1px) dashed $primary-200;
 }
 
@@ -112,7 +112,7 @@
   height: calculateRem(96px);
   overflow: hidden;
   border-radius: calculateRem(4px);
-  box-shadow: inset 0 calculateRem(1px) calculateRem(3px) 0 rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 calculateRem(1px) calculateRem(3px) 0 rgba(#000000, 0.5);
 }
 
 .sb-image-section {
@@ -140,7 +140,7 @@
 .overlay-image {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(#000000, 0.3);
   position: absolute;
   left: 0;
   right: 0;
@@ -152,7 +152,7 @@
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  color: rgba(255, 255, 255, .6);
+  color: rgba(#ffffff, .6);
   font-size: $base-block-space*4;
   cursor: pointer;
 }
@@ -167,7 +167,7 @@
   .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar, .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
     border-left: none;
     border-right: none;
-    border-bottom: calculateRem(1px) solid #c4c4c4;
+    border-bottom: calculateRem(1px) solid var(--rc-c4c4c4);
     border-radius: 0;
   }
   
@@ -180,7 +180,7 @@
   border-radius: calculateRem(4px);
   width: 100%;
   min-height: calculateRem(192px);
-  background: #F5F9FC;
+  background: var(--rc-F5F9FC);
   border: calculateRem(1px) dashed var(--primary-400);
 }
 
@@ -207,7 +207,7 @@
   justify-content: center;
   flex-direction: column;
   margin: 0 auto;
-  background-color: #F5F9FC;
+  background-color: var(--rc-F5F9FC);
   border: calculateRem(1px) dashed $primary-200;
 }
 
