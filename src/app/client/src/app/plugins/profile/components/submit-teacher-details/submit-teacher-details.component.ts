@@ -238,29 +238,16 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   getOperation(fieldType, provider, inputFieldValue) {
     let operation;
-    if (this.formAction === 'submit') {
-      operation = 'add'
-    } else if (this.formAction === 'update' && this.isStateChanged()) {
+    if (this.formAction === 'submit' || this.formAction === 'update' && this.isStateChanged()) {
       operation = 'add'
     } else {
-      const externalIds = _.get(this.userProfile, 'externalIds');
-      const externalIdObj = _.find(externalIds, function (externalId) {
-        return (externalId.idType === fieldType && externalId.provider === provider)
-      });
-      if (externalIdObj) {
-        if (inputFieldValue) {
-          operation = 'edit';
-        } else {
-          operation = 'remove';
-        }
-      } else {
-        operation = 'add';
-      }
+      const externalIdObj = this.findExternalIdObj(fieldType, provider);
+      operation = externalIdObj ? inputFieldValue ? 'edit' : 'remove' : 'add';
     }
     return operation;
   }
 
-  getValue(fieldType, provider) {
+  findExternalIdObj(fieldType, provider) {
     const externalIds = _.get(this.userProfile, 'externalIds');
     const externalIdObj = _.find(externalIds, function (externalId) {
       return (externalId.idType === fieldType && externalId.provider === provider)
@@ -278,38 +265,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
           if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
-          let operation = this.formAction === 'submit' ? 'add' : 'edit';
           let externalIds = [];
           if (this.formAction === 'update' && this.isStateChanged() || provider !== _.get(this.userProfile, 'externalIds[0].provider')) {
-            operation = 'add';
             const extIds = this.userProfile.externalIds || [];
             _.forEach(extIds, (externalId, index) => {
               extIds[index]['operation'] = 'remove';
             });
             externalIds = extIds.concat(externalIds);
           }
-          if (_.get(this.userDetailsForm, 'value.school') || this.getValue('declared-school-name', provider)) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.school') || this.getValue('declared-school-name', provider),
-              operation: this.getOperation('declared-school-name', provider, _.get(this.userDetailsForm, 'value.school')),
-              idType: 'declared-school-name', provider
-            });
-          }
-          if (_.get(this.userDetailsForm, 'value.udiseId') || this.getValue('declared-school-udise-code', provider)) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.udiseId') || this.getValue('declared-school-udise-code', provider),
-              operation: this.getOperation('declared-school-udise-code',
-                provider, _.get(this.userDetailsForm, 'value.udiseId')),
-              idType: 'declared-school-udise-code', provider
-            });
-          }
-          if (_.get(this.userDetailsForm, 'value.teacherId') || this.getValue('declared-ext-id', provider)) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.teacherId') || this.getValue('declared-ext-id', provider),
-              operation: this.getOperation('declared-ext-id', provider, _.get(this.userDetailsForm, 'value.teacherId')),
-              idType: 'declared-ext-id', provider
-            });
-          }
+          const fields = new Map([['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
+          fields.forEach((fieldKey, formKey) => {
+            const id = _.get(this.userDetailsForm, formKey) || this.findExternalIdObj(fieldKey, provider);
+            if (id) {
+              externalIds.push({
+                id,
+                operation: this.getOperation(fieldKey, provider, _.get(this.userDetailsForm, formKey)),
+                idType: fieldKey,
+                provider
+              });
+            }
+          });
           const data = {
             userId: this.userService.userid,
             locationCodes,
