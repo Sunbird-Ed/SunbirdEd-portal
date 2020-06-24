@@ -11,6 +11,7 @@
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+  </div>
   <lib-chat-window 
   [inputValues]="{
       'deviceId': deviceId, 
@@ -25,7 +26,6 @@
     }"
   >
   </lib-chat-window>
-</div>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
