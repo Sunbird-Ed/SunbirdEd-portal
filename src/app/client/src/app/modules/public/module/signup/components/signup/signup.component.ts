@@ -308,7 +308,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
    * @since - release-3.0.1
    */
   getReCaptchaToken(inputType: string) {
-    console.log('type => ', inputType); // TODO: log!
+    this.resetGoogleCaptcha();
     this.formInputType = inputType;
     const emailControl = this.signUpForm.get('email');
     const phoneControl = this.signUpForm.get('phone');
