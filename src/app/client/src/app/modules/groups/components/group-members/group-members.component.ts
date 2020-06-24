@@ -18,6 +18,7 @@ export class GroupMembersComponent implements OnInit {
   modalName: string;
   selectedMember: {};
   groupId;
+  config={size:'small', isBold:false, isSelectable:false, view:"horizontal"}
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {

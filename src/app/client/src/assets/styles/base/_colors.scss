@@ -46,4 +46,15 @@ $colours: "gray-hs" var(--gray-hs), "gray" var(--gray), "gray-0" var(--gray-0),
   background-size: contain;
 }
 
+//opacity
+
+$odeclarations: 0, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 100;
+
+@each $ovalue in $odeclarations {
+  .opacity#{$ovalue} {
+    opacity: var(--alpha#{$ovalue}) !important;
+  }
+}
+
 /* colors end */
+

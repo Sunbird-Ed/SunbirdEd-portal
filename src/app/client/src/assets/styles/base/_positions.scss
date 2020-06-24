@@ -46,11 +46,14 @@
 .sb-sticky-top {
   top: 0;
 }
-.zindex-1 {
-  z-index: 1;
-}
-.zindex-2 {
-  z-index: 2;
+
+
+$zindexes: 1, 2, 9, 99, 999, 9999, 99999;
+
+@each $zindex in $zindexes {
+  .zindex-#{$zindex} {
+    z-index: #{$zindex} !important;
+  }
 }
 
 /* position styles ends */
