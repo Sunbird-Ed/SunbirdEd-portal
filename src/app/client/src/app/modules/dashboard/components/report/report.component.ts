@@ -36,9 +36,11 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private _reportSummary: string;
   private addSummaryBtnClickStream$ = new Subject<ISummaryObject>();
   private publishBtnStream$ = new Subject();
+  private retireBtnStream$ = new Subject();
   public currentReportSummary: any;
   public showComponent = true;
   public showConfirmationModal = false;
+  public confirmationPopupInput: { title: string, event: 'retire' | 'publish', body: string };
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -279,22 +281,50 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.addSummaryBtnClickStream$.next(event);
   }
 
-  public toggleConfirmationModal() {
-    this.showConfirmationModal = !this.showConfirmationModal;
+  public openConfirmationModal(eventType: 'publish' | 'retire') {
+    const { confirmReportPublish, confirmRetirePublish } = _.get(this.resourceService, 'messages.imsg');
+    this.confirmationPopupInput = {
+      title: "Confirm",
+      body: eventType === 'publish' ? confirmReportPublish : confirmRetirePublish,
+      event: eventType
+    };
+    this.showConfirmationModal = true;
   }
 
-  public onPublish(event: boolean) {
+  private closeConfirmationModal() {
+    this.showConfirmationModal = false;
+  }
+
+  public handleConfirmationEvent(event: boolean) {
+    this.closeConfirmationModal();
     if (event) {
-      this.publishBtnStream$.next(event);
+      switch (this.confirmationPopupInput.event) {
+        case 'publish': {
+          this.onPublish(event);
+          break;
+        }
+        case 'retire': {
+          this.onRetire(event);
+          break;
+        }
+      }
     }
-    this.toggleConfirmationModal();
+  }
+
+  public onPublish(event) {
+    this.publishBtnStream$.next(event);
+  }
+
+  public onRetire(event): void {
+    this.retireBtnStream$.next(event);
   }
 
   private mergeClickEventStreams() {
-    merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream())
+    merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream(), this.handleRetireBtnStream())
       .subscribe(res => {
         this.refreshComponent();
       }, err => {
+        console.log({ err });
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
   }
@@ -349,6 +379,19 @@ export class ReportComponent implements OnInit, AfterViewInit {
       })
     );
   }
+
+  private handleRetireBtnStream() {
+    return this.retireBtnStream$.pipe(
+      switchMap(event => {
+        return this.reportService.retireReport(this.activatedRoute.snapshot.params.reportId);
+      }),
+      tap(res => {
+        this.toasterService.info(this.resourceService.messages.imsg.reportRetired);
+        this.report.status = 'retired';
+      })
+    )
+  }
+
 }
 
 

@@ -64,6 +64,7 @@ export class ReportService {
       map(apiResponse => _.get(apiResponse, 'result'))
     );
   }
+
   /**
    * @description publishes a report as live
    * @param {string} reportId
@@ -73,6 +74,21 @@ export class ReportService {
   public publishReport(reportId: string) {
     const req = {
       url: `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}`
+    };
+    return this.baseReportService.get(req).pipe(
+      map(apiResponse => _.get(apiResponse, 'result'))
+    );
+  }
+
+  /**
+   * @description retires a report and deactivates all jobs associated with this report.
+   * @param {string} reportId
+   * @returns
+   * @memberof ReportService
+   */
+  public retireReport(reportId: string) {
+    const req = {
+      url: `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}`
     };
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
