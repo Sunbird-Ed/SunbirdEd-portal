@@ -570,5 +570,11 @@ export const mockRes = {
       "provider": "tp",
       "id": "2222"
     }
-  ]
+  ],
+  stateDetails: {
+    'code': '50',
+    'name': 'mock state',
+    'id': '969dd3c1-4e9',
+    'type': 'state'
+  }
 };
