@@ -11,8 +11,7 @@
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
-</div>
-<lib-chat-window 
+  <lib-chat-window 
   [inputValues]="{
       'deviceId': deviceId, 
       'userId': userId, 
@@ -21,10 +20,12 @@
       'imageUrl': 'assets/images/tara-bot-icon.png',
       'chatbotUrl': chatBotApiUrl,
       'title':'Ask Tara',
-      'header': 'Ask Tara'
+      'header': 'Ask Tara',
+      'collapsed': true
     }"
   >
-</lib-chat-window>
+  </lib-chat-window>
+</div>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">

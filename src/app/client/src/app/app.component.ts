@@ -99,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    this.chatBotApiUrl = (<HTMLInputElement>document.getElementById('chatbotApiUrl')) ? (<HTMLInputElement>document.getElementById('chatbotApiUrl')).value : '';
   }
   /**
    * dispatch telemetry window unload event before browser closes

@@ -14,6 +14,7 @@ pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
+const { env } = require('process');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -168,6 +169,7 @@ function getLocals(req) {
   locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
   locals.contentEditorURL = envHelper.CONTENT_EDITORS_URL.CONTENT_EDITOR;
   locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
+  locals.chatbotApiUrl = envHelper.CHATBOT_TARA_API_URL;
   return locals
 }
 
