@@ -92,11 +92,6 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
-
-  showAndHidePopup(mode: boolean) {
-    this.showTncPopup = mode;
-  }
-
   initializeFormFields() {
     const formGroupObj = {};
     for (const key of this.formData) {
