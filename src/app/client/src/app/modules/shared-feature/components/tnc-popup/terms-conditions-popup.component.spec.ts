@@ -124,7 +124,7 @@ describe('TermsAndConditionsPopupComponent', () => {
     component.onSubmitTnc();
     expect(component.onClose).toHaveBeenCalled();
     expect(userService.acceptTermsAndConditions).toHaveBeenCalledWith(
-      {request: {version: undefined, userId: userService.userId}});
+      {request: {version: undefined, userId: 'mock iD'}});
   });
 
   it('should not call acceptTermsAndConditions api', () => {
