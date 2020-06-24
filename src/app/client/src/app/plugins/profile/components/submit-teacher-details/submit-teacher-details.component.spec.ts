@@ -18,7 +18,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CoreModule, FormService, SearchService } from '@sunbird/core';
+import {CoreModule, FormService, SearchService, UserService} from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -69,7 +69,7 @@ describe('SubmitTeacherDetailsComponent', () => {
         RouterTestingModule,
         SharedModule.forRoot()],
       declarations: [SubmitTeacherDetailsComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [{provide: ResourceService, useValue: resourceBundle}, UserService,
         ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService, FormService, SearchService,
         NavigationHelperService, DeviceDetectorService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -96,9 +96,11 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call ng on init', () => {
+    const userService = TestBed.get(UserService);
     spyOn(component, 'setTelemetryData');
     spyOn(component, 'setFormDetails');
     spyOn(component, 'initializeFormFields');
+    userService._userData$.next({err: null, userProfile: {}});
     component.ngOnInit();
     expect(component.setTelemetryData).toHaveBeenCalled();
     expect(component.setFormDetails).toHaveBeenCalled();
