@@ -10,7 +10,7 @@ import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-course-consumption-header',
@@ -50,11 +50,14 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
+  telemetryCdata: Array<{}>;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
+    private telemetryService: TelemetryService) {
 
   }
 
@@ -82,6 +85,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
         if (this.batchId) {
           this.enrolledCourse = true;
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
       });
     this.interval = setInterval(() => {
@@ -175,5 +179,27 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
+  }
+
+  closeSharePopup(id) {
+    this.sharelinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: {l1: this.courseId}
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 }
