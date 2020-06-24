@@ -1,5 +1,23 @@
-<div class="status-container flex-dc d-flex flex-jc-center p-16 sb-bg-color-white bs-3">
-  <div  (click)="addMember()"> add member </div>
+<div class="status-container flex-dc d-flex flex-jc-center sb-bg-color-white bs-3">
+  <div class="sb-pageSection">
+    <div class="sb-pageSection-header">
+      <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16">
+        <span class="mr-8">Members</span>
+        <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error">1</span>
+      </h4>
+    </div>
+  </div>
+  <div class="sb-search-box small no-btn mb-24">
+    <div class="input-div relative">
+        <i class="search icon"></i>
+        <input class="sb-search-input" type="text" placeholder="Search within group" />
+    </div>
+    <button class="sb-btn sb-btn-normal">Search</button>
+</div>
+  <div class="cursor-pointer mb-16" (click)="addMember()"> 
+    <img class="" alt="admin" src="./../../../../../assets/images/add-member-1.png"> Add member
+  </div>
+  <div class="devided-line"></div>
   <div class="sb-library-cards" *ngIf="membersList.length">
     <div class="sbgrid">
       <div *ngFor="let member of membersList">
