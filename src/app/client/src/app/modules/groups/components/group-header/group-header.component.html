@@ -7,14 +7,30 @@
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="flex-basis-1 mr-32">
         <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
-          <div>groupName</div>
+          <div>Class FiveB Science</div>
+        </div>
+        <div class="d-flex flex-ai-center content-header__info mt-8">
+          <div>Created by Arka Mani</div>
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+        <img class="cursor-pointer mr-16" alt="info icon" src="./assets/images/info-icon-blue.svg">
+        <div class="kabab-menu" (click)="dropdownMenu()"></div>
+        <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
+          <div class="list">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="editGroup()">Edit group details</button>
+          </div>
+          <div class="list">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="deleteGroup()">Delete group</button>
+          </div>
+        </div>
+       
+      </div>
+      <!-- <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8" (click)="deleteGroup()">
           <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> {{resourceService?.frmelmnts?.btn?.delete}}</button>
         <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" />{{resourceService?.frmelmnts?.btn?.edit}}</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -43,4 +59,32 @@
     <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 
+</sui-modal>
+<!-- add create group form -->
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showEditModal">
+  <div class="sb-modal-header">Edit group details</div>
+  <div class="sb-modal-content o-y-visible">
+    <form class="sb-form" [formGroup]="groupForm">
+      <div class="sb-field mb-16">
+        <label>{{ resourceService.frmelmnts.lbl.groupName }}</label>
+        <input class="sb-form-control" type="text" placeholder="Class FiveB Science" formControlName="groupName">
+        <small class="mt-4 pull-right sb-color-grey fxsmall">150 Characters remaining</small>
+      </div>
+   
+      <div class="sb-field mb-16">
+        <label>Description</label>
+        <textarea class="sb-form-control" rows="5" type="text" placeholder="Enter a description to help members understand the purpose of the group" formControlName="groupDescription"></textarea>
+        <small class="mt-4 pull-right sb-color-grey fxsmall">150 Characters remaining</small>
+      </div>
+    </form>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary">
+      Submit
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Reset
+    </button>
+  </div>
 </sui-modal>
