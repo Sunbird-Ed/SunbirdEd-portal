@@ -1,3 +1,4 @@
+import { GROUP_DETAILS, MY_GROUPS, CREATE_EDIT_GROUP } from './../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService } from '@sunbird/shared';
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 export class MyGroupsComponent implements OnInit {
   showGroupCreateForm = false;
   public groupList = [];
-  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {}
+  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {
+    }
 
   ngOnInit() {
     this.getMyGroupList();
@@ -26,10 +28,10 @@ export class MyGroupsComponent implements OnInit {
   }
 
   public showCreateFormModal() {
-    this.showGroupCreateForm = true;
+    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
   }
 
   public navigateToDetailPage(groupId) {
-    this.router.navigate(['groups/view', groupId]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, groupId]);
   }
 }

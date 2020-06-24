@@ -1,3 +1,4 @@
+import { MY_GROUPS } from './modules/groups/components/routerLinks';
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -47,6 +48,9 @@ const appRoutes: Routes = [
   },
   {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
+  },
+  {
+    path: MY_GROUPS, loadChildren: 'app/modules/groups/groups.module#GroupsModule'
   },
   {
     path: 'error', component: ErrorPageComponent
