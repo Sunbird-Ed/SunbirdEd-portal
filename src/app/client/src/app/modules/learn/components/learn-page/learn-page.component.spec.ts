@@ -36,7 +36,8 @@ describe('LearnPageComponent', () => {
       'lbl': {
         'mytrainings': 'My Trainings'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
@@ -114,9 +115,16 @@ describe('LearnPageComponent', () => {
   });
   it('should fetch enrolledSection from API and name must be My Trainings', () => {
     coursesService.initialize();
+    spyOn<any>(component, 'getLanguageChange');
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
+    expect(component['getLanguageChange']).toHaveBeenCalled();
+  });
+  it('should change the title for My-training on language change', () => {
+    component.enrolledSection = { name: 'My Courses' };
+    component['getLanguageChange']();
+    expect(component.enrolledSection.name).toBeDefined();
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
     coursesService.initialize();
