@@ -55,7 +55,7 @@ module.exports = function (app) {
 
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN']),
+        reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
         reportHelper.getLastModifiedDate);
 
     app.get(`/reports/fetch/:slug/:filename`,
