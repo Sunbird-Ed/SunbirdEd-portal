@@ -1,4 +1,4 @@
-import { MY_GROUPS } from './../../../../../groups/components/routerLinks';
+import { MY_GROUPS } from '../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
