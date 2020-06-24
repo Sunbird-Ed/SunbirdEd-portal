@@ -21,7 +21,7 @@
         <div class="flex-ai-jc-center">
           <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mr-8" appTelemetryInteract
             [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject"
-            type="button" (click)="onSubmitForm()">
+            type="button" (click)="showCreateFormModal()">
             <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
             {{ resourceService.frmelmnts.lbl.createGroup }}
           </button>
@@ -52,7 +52,3 @@
   </div>
 
 </div>
-
-
-<app-group-form *ngIf="showGroupCreateForm" (closeEvent)="showGroupCreateForm = false"
-  (submitForm)="updateGroupList($event)"></app-group-form>

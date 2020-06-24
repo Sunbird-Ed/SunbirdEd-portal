@@ -1,4 +1,4 @@
-import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_EDIT_GROUP } from './components/routerLinks';
+import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_EDIT_GROUP, MY_GROUPS } from './components/routerLinks';
 import { MyGroupsComponent, GroupWorkspaceComponent, AddMemberComponent, GroupFormComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -10,8 +10,8 @@ const routes: Routes = [
     path: '', component: MyGroupsComponent,
     data: {
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Groups', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'my-groups', type: 'view', subtype: 'paginate' },
-      baseUrl: 'my-groups'
+      telemetry: { env: telemetryEnv, pageid: MY_GROUPS, type: 'view', subtype: 'paginate' },
+      baseUrl: MY_GROUPS
     }
   },
 
