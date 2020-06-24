@@ -16,7 +16,8 @@ const getDeviceProfile = async (req, res) => {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
-      'X-REAL-IP': req.headers['x-real-ip']
+      'X-REAL-IP': req.headers['x-real-ip'],
+      'X-FORWARDED-FOR': req.headers['x-real-ip']
     }
   };
   try {

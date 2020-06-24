@@ -525,4 +525,14 @@ describe('CoursePlayerComponent', () => {
     expect(component.shareLinkModal).toBe(false);
     expect(telemetryService.interact).toHaveBeenCalled();
   });
+
+  it('should close the join training popup on browser back button click', () => {
+    component.hasPreviewPermission = false;
+    component.contentStatus = [];
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+    expect(component.showJoinTrainingModal).toBe(true);
+    component.ngOnDestroy();
+    expect(component.joinTrainingModal).toBeUndefined();
+  });
 });

@@ -144,4 +144,14 @@ describe('PublicCoursePlayerComponent', () => {
     expect(component.shareLinkModal).toBe(false);
     expect(telemetryService.interact).toHaveBeenCalled();
   });
+
+  it('should close the join training popup on browser back button click', () => {
+    activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
+    component.courseHierarchy = coursePlayerMockData.courseHierarchy;
+    component.navigateToContent({ event: { type: 'click' }, data: {identifier: 'do_212347136096788480178'} }, 'id');
+    expect(component.showJoinTrainingModal).toBeTruthy();
+    component.ngOnDestroy();
+    expect(component.joinTrainingModal).toBeUndefined();
+  });
+
 });
