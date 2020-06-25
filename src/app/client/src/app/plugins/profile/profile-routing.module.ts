@@ -35,11 +35,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'submit-teacher-details', component: SubmitTeacherDetailsComponent,
+    path: 'teacher-declaration', component: SubmitTeacherDetailsComponent,
     data: {
       telemetry: {
-        env: telemetryEnv, pageid: 'submit-teacher-details', type: 'view',
-        uri: '/profile/submit-teacher-details',
+        env: telemetryEnv, pageid: 'teacher-declaration', type: 'view',
+        uri: '/profile/teacher-declaration',
       }
     }
   }
