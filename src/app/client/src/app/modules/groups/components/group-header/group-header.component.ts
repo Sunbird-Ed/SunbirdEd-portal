@@ -8,12 +8,14 @@ import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 export class GroupHeaderComponent {
   showDeleteModal;
   showPastMemberModal;
+  dropdownContent: boolean;
   @ViewChild('modal') modal;
   @Input() modalName: string;
   @Output() modalClosed = new EventEmitter();
   @Input() pastMembersList;
   @Input() groupName: string;
   showModal = false;
+  showEditModal: boolean;
   constructor(private renderer: Renderer2, public resourceService: ResourceService,
     private navigationHelperService: NavigationHelperService) {
     this.renderer.listen('window', 'click', (e: Event) => {
@@ -26,8 +28,14 @@ export class GroupHeaderComponent {
     this.showModal = true;
     this.modalName = 'deleteGroup';
   }
+  editGroup() {
+    this.showEditModal = true;
+  }
 
   closeModal() {
     this.showModal = false;
+  }
+  dropdownMenu(){
+    this.dropdownContent = !this.dropdownContent;
   }
 }

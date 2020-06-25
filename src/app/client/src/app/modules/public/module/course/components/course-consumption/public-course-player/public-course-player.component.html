@@ -25,7 +25,8 @@
       </div>
       <!-- Card Section -->
       <div class="course-player--card text-left">
-        <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy">
+        <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy"
+          (allBatchDetails)="getAllBatchDetails($event)">
         </app-public-batch-details>
       </div>
       <!-- Content Section -->
@@ -35,17 +36,18 @@
         <div *ngFor="let item of courseHierarchy?.children; let index = index">
           <div class="d-flex flex-ai-center flex-jc-space-between py-8">
             <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-            <button (click)="showJoinTrainingModal = true"
-              class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-auto">Start</button>
+            <button (click)="showJoinTrainingModal = true; logTelemetry('start-course', item)"
+              class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
           </div>
           <div class="chapter-box sb-g">
             <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
               <sb-toc-curriculum
                 *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
-                [tocData]="item" [isAccordion]="true" [type]="cardType" (tocCardClick)="navigateToContent($event)">
+                [tocData]="item" [isAccordion]="true" [type]="cardType"
+                (tocCardClick)="navigateToContent($event, 'curriculum-card')">
               </sb-toc-curriculum>
               <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
-                (tocCardClick)="navigateToContent($event)" [type]="cardType">
+                (tocCardClick)="navigateToContent($event, 'toc-card')" [type]="cardType">
               </sb-toc-card>
               <ng-template #noContent>
                 <div class="heading">{{resourceService?.messages?.stmsg?.m0121}}</div>
@@ -67,7 +69,8 @@
 </div>
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
+  *ngIf="showJoinTrainingModal" #joinTrainingModal>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.btn?.enroll}}
   </div>
@@ -77,3 +80,7 @@
     </div>
   </div>
 </sui-modal>
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="closeSharePopup('close-share-link-popup')">
+</app-share-link>

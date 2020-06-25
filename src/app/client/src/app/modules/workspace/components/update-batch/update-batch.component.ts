@@ -9,6 +9,8 @@ import { BatchService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -110,7 +112,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, userService: UserService,
     batchService: BatchService,
     toasterService: ToasterService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,  private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -292,7 +294,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private initDropDown() {
     const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
-    setTimeout(() => {
+    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
@@ -315,7 +317,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 0);
+    });
   }
   private getUserListWithQuery(query, type) {
     if (this.userSearchTime) {

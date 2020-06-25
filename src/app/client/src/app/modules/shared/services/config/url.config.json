@@ -85,7 +85,8 @@
       "SIGN_UP_V4": "user/v4/create",
       "SEARCH_USER": "user/v1/search",
       "SWITCH_USER": "user/v1/switch",
-      "END_SESSION": "endSession"
+      "END_SESSION": "endSession",
+      "GET_MANAGED_USER": "user/v1/managed"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search"

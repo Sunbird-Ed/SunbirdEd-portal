@@ -1,11 +1,49 @@
 <app-group-header></app-group-header>
 <div class="ui container">
 <div class="sb-g mt-24">
-  <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-bg-color-white p-24">
-    <app-add-activity></app-add-activity>
+  <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+    <div class="sb-pageSection">
+      <div class="sb-pageSection-header">
+        <h4 class="sb-pageSection-title m-0 mr-5"> Activities</h4>
+        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="addActivity()"><i class="plus icon"></i> Add activity</button>
+      </div>
     </div>
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white p-24">
+    <app-add-activity></app-add-activity>
+  </div>
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
       <app-group-members></app-group-members>
     </div>
 </div>
 </div>
+
+
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
+    Select activity 
+  </div>
+  <div class="sb-modal-content">
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
+      <input type="radio" id="radio1" name="example">
+      <label for="radio1">Courses</label>
+    </div>
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
+      <input type="radio" id="radio2" name="example">
+      <label for="radio2">Textbooks</label>
+    </div>
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+      <input type="radio" id="radio3" name="example">
+      <label for="radio3">Lesson plan</label>
+    </div>
+     
+  </div>
+  <!-- Delete Group modal -->
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary">
+      Next
+    </button>
+  </div>
+
+</sui-modal>
+
+
