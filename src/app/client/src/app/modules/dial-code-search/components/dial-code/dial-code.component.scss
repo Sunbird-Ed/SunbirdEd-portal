@@ -20,7 +20,7 @@
   transition: opacity 0.1s ease;
 }
 .get-page-background {
-  background: linear-gradient(-90deg, #5c8db7, #91aecc);
+  background: linear-gradient(-90deg, var(--rc-5c8db7), var(--rc-91aecc));
   height: 100vh;
 }
 .dailcode-page-background {
