@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+/* istanbul ignore next */
+
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-activity-form',

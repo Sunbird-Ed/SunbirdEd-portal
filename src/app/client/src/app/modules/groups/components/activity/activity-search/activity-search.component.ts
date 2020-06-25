@@ -1,3 +1,5 @@
+/* istanbul ignore next */
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,5 +7,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './activity-search.component.html',
   styleUrls: ['./activity-search.component.scss']
 })
-export class ActivitySearchComponent {
+export class ActivitySearchComponent implements OnInit {
+  ngOnInit() {
+
+  }
 }

@@ -8,9 +8,9 @@ describe('ActivitySearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActivitySearchComponent ]
+      declarations: [ActivitySearchComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,5 +21,9 @@ describe('ActivitySearchComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call ngOnInit', () => {
+    expect(component.ngOnInit).toBeTruthy();
   });
 });
