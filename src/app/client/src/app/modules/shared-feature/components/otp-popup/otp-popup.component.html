@@ -24,7 +24,7 @@
         </form>
         <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
         [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': !enableResendButton}" (click)="resendOTP(); disableResendButton = true" class="fs-1 text-center blue text mb-30 cursor-pointer"
-          role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.resendOTP}}</div>
+          role="button" tabindex="0">{{resendOTPbtn}}</div>
       </div>
 </div>
 <!--/Content-->

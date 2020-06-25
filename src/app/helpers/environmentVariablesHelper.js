@@ -130,6 +130,11 @@ let envVariables = {
   sunbird_portal_cassandra_db_health_status: 'true',
 
 
+  // Bot configuration 
+  sunbird_bot_configured: env.sunbird_bot_configured,
+  sunbird_bot_service_URL: env.sunbird_bot_service_URL,
+
+
   // Desktop App Configuration
   sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
   sunbird_portal_offline_supported_languages: env.sunbird_portal_offline_supported_languages,

@@ -16,9 +16,6 @@ import { CacheService } from 'ng2-cache-service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  showSuccessModal = false;
-  showSubmitTeacherDetails = false;
-  showUpdateTeacherDetails = false;
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
@@ -306,6 +303,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+  }
+
+  navigate(url, formAction) {
+    this.router.navigate([url], {queryParams: {formaction: formAction}});
   }
 
   ngAfterViewInit() {

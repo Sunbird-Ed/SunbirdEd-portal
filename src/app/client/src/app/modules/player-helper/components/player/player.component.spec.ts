@@ -56,9 +56,14 @@ describe('PlayerComponent', () => {
     fixture = TestBed.createComponent(PlayerComponent);
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
-    component.contentIframe = { nativeElement: { contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } } } };
     userService = TestBed.get(UserService);
     userService._authenticated = false;
+    component.contentIframe = {
+      nativeElement: {
+        contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
+        remove: jasmine.createSpy()
+      }
+    };
   });
 
   it('should emit "START"', fakeAsync(() => {
@@ -92,17 +97,17 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
-  it('should call ngOnChange ',  () => {
+  it('should call ngOnChange ', () => {
     component.playerConfig = playerConfig;
     component.ngOnChanges({});
     expect(component.contentRatingModal).toBeFalsy();
-   });
+  });
 
-   describe('should rotate player', () => {
+  describe('should rotate player', () => {
     let mockDomElement;
     beforeEach(() => {
-        mockDomElement = document.createElement('div');
-        mockDomElement.setAttribute('id', 'playerFullscreen');
+      mockDomElement = document.createElement('div');
+      mockDomElement.setAttribute('id', 'playerFullscreen');
     });
 
     it('should rotate player for a default chrome browser', fakeAsync(() => {
@@ -115,7 +120,7 @@ describe('PlayerComponent', () => {
 
     it('should rotate player for mozilla browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
-      mockDomElement.mozRequestFullScreen = () => {};
+      mockDomElement.mozRequestFullScreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -126,7 +131,7 @@ describe('PlayerComponent', () => {
     it('should rotate player for webkit browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
-      mockDomElement.webkitRequestFullscreen = () => {};
+      mockDomElement.webkitRequestFullscreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -138,7 +143,7 @@ describe('PlayerComponent', () => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
       mockDomElement.webkitRequestFullscreen = undefined;
-      mockDomElement.msRequestFullscreen = () => {};
+      mockDomElement.msRequestFullscreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -156,7 +161,7 @@ describe('PlayerComponent', () => {
 
     it('should close player fullscreen for mozilla browser', () => {
       document['exitFullscreen'] = undefined;
-      document['mozCancelFullScreen'] = () => {};
+      document['mozCancelFullScreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -165,7 +170,7 @@ describe('PlayerComponent', () => {
     it('should close player fullscreen for webkit browser ', () => {
       document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitExitFullscreen'] = () => {};
+      document['webkitExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -175,7 +180,7 @@ describe('PlayerComponent', () => {
       document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
       document['webkitExitFullscreen'] = undefined;
-      document['msExitFullscreen'] = () => {};
+      document['msExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -194,6 +199,16 @@ describe('PlayerComponent', () => {
     component.isSingleContent = true;
     component.closeFullscreen();
     expect(component.showPlayIcon).toBe(true);
+  });
+
+  it('should remove Iframe element on destroy', () => {
+    component.contentIframe = {
+      nativeElement: {
+        remove: jasmine.createSpy()
+      }
+    };
+    component.ngOnDestroy();
+    expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
   });
 
 });

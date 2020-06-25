@@ -142,4 +142,19 @@ describe('TelemetryService', () => {
             expect(EkTelemetry.exdata).not.toHaveBeenCalled();
         }));
     });
+
+    describe('Audit Event', () => {
+        it('should send audit event if service is Initialized', inject([TelemetryService], (service: TelemetryService) => {
+            service.initialize(mockData.telemetry);
+            spyOn(EkTelemetry, 'audit');
+            service.audit(mockData.auditEventData);
+            expect(EkTelemetry.audit).toHaveBeenCalled();
+        }));
+
+        it('should send audit event if service is Initialized', inject([TelemetryService], (service: TelemetryService) => {
+            spyOn(EkTelemetry, 'audit');
+            service.audit(mockData.auditEventData);
+            expect(EkTelemetry.audit).not.toHaveBeenCalled();
+        }));
+    });
 });
