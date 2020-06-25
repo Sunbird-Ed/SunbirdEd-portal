@@ -9,7 +9,7 @@
           <i class="search icon"></i>
           <input class="sb-search-input" type="text" placeholder="Search within group" />
       </div>
-      <button class="sb-btn sb-btn-normal">Search</button>
+      <button class="sb-btn sb-btn-normal" type="button">Search</button>
   </div>
    </div>
   
@@ -17,6 +17,7 @@
       <img class="" alt="admin" src="./assets/images/add-member-1.png" width="32"> Add member
     </div>
     <div class="devided-line m-8"></div>
+  
     <div class="d-flex flex-dc">
       <div *ngFor="let member of membersList">
         <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
@@ -38,10 +39,10 @@
         </div>
       </div>
     </div>
-    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+    <div class="flex-dc flex-ai-jc-center text-center mt-24">
       <img height="176" width="210" src="./assets/images/no-member.png">
     </div>
-    <div class="member-no-result pt-32">
+    <div class="member-no-result p-24">
       <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
         <img height="165" width="206" src="./assets/images/mygroups.svg">
         <div class="mt-16 no-result-text">

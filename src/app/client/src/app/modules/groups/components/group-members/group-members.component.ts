@@ -9,9 +9,7 @@ import * as _ from 'lodash-es';
 })
 export class GroupMembersComponent implements OnInit {
   public  membersList = [
-    {identifier: '1', initial: 'A', title: 'Abc', isAdmin: true,  isMenu: true, indexOfMember: 1},
-    {identifier: '2', initial: 'B', title: 'Bcd', isMenu: true, indexOfMember: 5 },
-    {identifier: '6', initial: 'C', title: 'Cde', isMenu: true, indexOfMember: 7}
+    {identifier: '1', initial: 'A', title: 'Abc', isAdmin: true,  isMenu: true, indexOfMember: 1}
   ];
   showMenu: Boolean = false;
   showModal: Boolean = false;
