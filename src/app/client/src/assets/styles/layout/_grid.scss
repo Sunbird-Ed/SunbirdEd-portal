@@ -18,6 +18,7 @@ $grid_arr: ((xs, $screen_viewport_xs),
   (xxxl, $screen_viewport_xxxl));
 
 // Grid template creation
+
 .sb-g {
   display: grid;
   grid-template-columns: repeat(12, 1fr);

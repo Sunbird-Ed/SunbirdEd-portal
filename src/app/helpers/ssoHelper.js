@@ -42,7 +42,9 @@ const verifySignature = async (token) => {
     }
   }
   const echoRes = await request(options);
-  if(echoRes !== '/test'){
+  if (echoRes !== 'test') {
+    // TODO: To be removed in future relase
+    console.log('SsoHelper: verifySignature -echoRes', echoRes);
     throw new Error('INVALID_SIGNATURE');
   }
   return true

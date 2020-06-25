@@ -1,0 +1,25 @@
+@import './mixins/mixins';
+
+.state-selection {
+    &__section {
+        padding-bottom: 8px;
+     &:first-child{
+     border-bottom: 1px solid var(--primary-color);
+    }
+    &:not(:first-child) {
+        margin-top: 8px;
+    }
+     .header {
+         color:var(--primary-color);
+         padding:0px 8px;
+     }
+     .item {
+        padding:4px 8px;
+         display: block;
+         cursor: pointer;
+         &:hover, &.active {
+            background-color:var(--primary-100);
+         }
+     }
+    }
+}

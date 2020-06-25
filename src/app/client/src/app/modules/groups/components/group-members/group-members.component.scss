@@ -1,0 +1,8 @@
+@import 'mixins/mixins';
+
+.sb-result-label, .sb-pageSection-count{
+    background: var(--gray-100);
+}
+.devided-line{
+    border-bottom: calculateRem(0.5px) solid var(--gray-100);
+}
