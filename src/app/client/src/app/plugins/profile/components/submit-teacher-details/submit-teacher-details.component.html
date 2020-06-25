@@ -33,8 +33,7 @@
               </div>
             </div>
             <div *ngIf="!showDistrictDivLoader">
-              <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
-              >{{field.label}}<span *ngIf="field.required">*</span></label>
+              <label>{{field.label}}<span *ngIf="field.required">*</span></label>
               <div class="sb-field field-focus mb-8">
                 <sui-select [isSearchable]="false" class="selection"
                   [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
@@ -60,8 +59,7 @@
         </div>
         <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='input' && field.visible===true">
           <div class="fields-selection p-0">
-            <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
-              >{{field.label}}<span *ngIf="field.required">*</span></label>
+            <label>{{field.label}}<span *ngIf="field.required">*</span></label>
             <div class="sb-field field-focus mb-8">
               <input class="sb-form-control"
                 [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
