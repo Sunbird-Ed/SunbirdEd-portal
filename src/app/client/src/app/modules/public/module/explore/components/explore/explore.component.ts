@@ -165,7 +165,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
-    this.cardData = cardData;
+    this.cardData = _.sortBy(cardData, ['title']);
   }, err => {
       this.isLoading = false;
       this.cardData = [];

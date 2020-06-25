@@ -16,7 +16,6 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import {CsModule} from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -84,8 +83,13 @@ export class AppComponent implements OnInit, OnDestroy {
   labels: {};
   showUserTypePopup = false;
   deviceId: string;
-  userId: string;
-  appId: string;
+  public botObject: any = {};
+  isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+  ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+  ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+  baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+  ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -142,7 +146,6 @@ export class AppComponent implements OnInit, OnDestroy {
     combineLatest(queryParams$, this.setDeviceId())
       .pipe(
         mergeMap(data => {
-          this.initializeCs();
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
@@ -174,15 +177,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.changeLanguageAttribute();
     if (this.userService.loggedIn) {
-      this.userId = this.userService.userid;
+      this.botObject['userId'] = this.userService.userid;
     } else {
-      this.userId = this.deviceId;
+      this.botObject['userId'] = this.deviceId;
     }
-    this.appId = this.userService.appId;
+    this.botObject['appId'] = this.userService.appId;
+    this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
   }
 
   isLocationStatusRequired() {
-    const url = this.router.url;
+    const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
@@ -227,6 +231,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showUserTypePopup = !localStorage.getItem('userType');
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }
@@ -355,6 +360,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;
+          this.botObject['did'] = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
@@ -371,6 +377,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this.userProfile = user.userProfile;
         this.channel = this.userService.hashTagId;
+        this.botObject['channel'] = this.channel;
         return of(user.userProfile);
       }));
   }
@@ -382,6 +389,7 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
+        this.botObject['channel'] = this.channel;
         if (this.userService.slug !== '') {
           this.cacheService.set('orgDetailsFromSlug', data, {
             maxAge: 86400
@@ -554,34 +562,6 @@ export class AppComponent implements OnInit, OnDestroy {
             });
       }
     });
-  }
-
-  async initializeCs() {
-    if (!CsModule.instance.isInitialised) {
-       // Singleton initialised or not
-      await CsModule.instance.init({
-          core: {
-              httpAdapter: 'HttpClientBrowserAdapter',
-              global: {
-                  channelId: this.channel, // required
-                  producerId: this.userService.appId, // required
-                  deviceId: this.fingerprintInfo // required
-              },
-              api: {
-                  host: document.location.origin, // default host
-                  authentication: {
-                      // userToken: string; // optional
-                      // bearerToken: string; // optional
-                  }
-              }
-          },
-          services: {
-              groupServiceConfig: {
-                apiPath: 'api/v1/group',
-              }
-          }
-  });
-  }
   }
 
 }

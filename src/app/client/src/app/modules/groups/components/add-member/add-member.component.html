@@ -2,46 +2,88 @@
 <app-back-button></app-back-button>
 
 
-<div>
-</div>
-
-<!-- Add member with verify button content -->
-<div>
-  <div class="title my-16 font-weight-bold">
-    Add Member
-  </div>
-  <div class="sb-field">
-    <label for="id">User ID</label>
-    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-    <small class="message sb-color-error font-weight-bold">Invalid user ID</small>
-  </div>
-  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-    Verify
-  </button>
-</div>
-
-<!-- Add to group button content -->
-<div>
-  <div class="title my-16 font-weight-bold">
-    Add new Member
-  </div>
-  <div class="sb-field">
-    <label for="id">User ID</label>
-    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-    <small class="message sb-color-error font-weight-bold hide">Invalid user ID</small>
-  </div>
-  <div class="d-flex flex-jc-center flex-ai-center add-member-content py-24">
-    <div class="add-member-text text-center">
-      <div class="oval">A</div>
-      <div class="fs-1 mt-4 font-weight-bold">Gupta</div>
+<div class="ui container">
+<div class="sb-g mt-24">
+  <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-bg-color-white p-24">
+    <div class="title mb-16 font-weight-bold">
+      Add Member
     </div>
-
+    <div class="sb-field">
+      <label for="id" class="d-flex flex-ai-center flex-jc-space-between"><span>SUNBIRD ID</span><span class="font-weight-normal">What is SUNBIRD ID? <i class="icon circle info cursor-pointer sb-color-primary"></i></span></label>
+      <div class="d-flex flex-ai-flex-start flex-jc-space-between">
+      <div class="w-100 pr-8">
+        <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
+        <i class="icon close icon-input-close"></i>
+      </div>
+        <small class="message sb-color-error font-weight-bold">Invalid user ID</small>
+      </div>
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled">
+        Verify
+      </button>
+    </div>
+    </div>
+    
+    <!-- Add to group button content -->
+    <div class="fs-1 my-4">Before clicking on 'Add to group', check that the SUNBIRD ID matches the member's name</div>
+    <div class="flex-ai-jc-center add-member-content p-24">
+      <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying please wait</span></div>
+    </div>
+    <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24">
+      <div class="add-member-text text-center">
+        Membername from CC
+      </div>
+      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal">
+        <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
+      </button>
+    </div>
   </div>
-  <!-- <div class="fs-1 mt-4">Do you want to add <span class="font-weight-bold">Arvind Gupta</span> as a member?</div> -->
-  <div class="fs-1 mt-4">See that the user ID matches the user name before you proceed</div>
-  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-    <img src="./assets/images/ic_person_add.svg" width="24px" height="24px" class="mr-4"> Add to group
-  </button>
+  <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
+    <app-group-members></app-group-members>
+  </div>
+  </div>
 </div>
 
-<app-group-members></app-group-members>
+
+  <div class="ui container">
+    <div class="sb-course-details sb-g py-16">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+        <div>
+        <h4 class="font-weight-bold mb-16">Course Details</h4>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary"><img src="assets/images/certificate-icon.png" alt="Certificate" class="mr-4">Certified course</button>
+        <div class="training-relevant my-8">
+          <h6 class="mt-0 mb-8 fsmall training-relevant__heading">Training is relevant for teachers of:</h6>
+          <div class="fnormal mb-4"><span>Class:&nbsp;</span><span>9, 10</span></div>
+          <div class="fnormal mb-4"><span>Subject:&nbsp;</span><span>English, Mathmatics</span></div>
+          <div class="fnormal"><span>Medium:&nbsp;</span><span>English</span></div>
+        </div>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
+      </div>
+      <div class="d-flex flex-ai-center flex-jc-space-between mt-32">
+        <h4 class="font-weight-bold">Course modules</h4>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"><i class="icon plus mr-4"></i>Expand All</button>
+      </div>
+      </div>
+
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+        <sui-accordion class="styled fluid sb-accordion">
+          <sui-accordion-panel [isOpen]="true">
+            <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
+              Content Information
+              <i class="chevron down icon ml-auto"></i>
+            </div>
+            <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+              <div class="pb-24">
+                <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">Published on SUNBIRD by</div>
+                <div class="content-metadeta__text fnormal sb-color-gray-400">Chandigarh SCERT</div>
+              </div>
+              <div class="pb-24">
+                <div class="content-metadeta__title font-weight-bold fsmall mb-8 sb-color-gray-800">License Terms</div>
+                <div class="content-metadeta__text  fnormal sb-color-gray-400">Creative Commons Attribution(CC by)</div>
+              </div>
+              <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
+            </div>
+          </sui-accordion-panel>
+        </sui-accordion>
+      </div>
+    </div>
+  </div>
