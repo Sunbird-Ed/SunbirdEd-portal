@@ -11,7 +11,7 @@ export class GroupWorkspaceComponent {
   showActivityList = false;
   HideAddActivity = true;
   showFilters: boolean = false;
- 
+
   constructor(private renderer: Renderer2, public resourceService: ResourceService,
     private navigationHelperService: NavigationHelperService) {
     this.renderer.listen('window', 'click', (e: Event) => {
