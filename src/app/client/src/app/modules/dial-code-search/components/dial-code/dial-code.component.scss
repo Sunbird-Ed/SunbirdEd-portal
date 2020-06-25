@@ -50,7 +50,7 @@
   margin-top: 10em;
 }
 .mobile-popup-dimmer {
-  background: rgba($black, 0.5);
+  background: rgba(var(--black), 0.5);
   display: none;
   position: fixed;
   top: 0;
@@ -73,7 +73,7 @@
       bottom: 0 !important;
       padding: calculateRem(32px) calculateRem(12px) 0 calculateRem(12px);
       background: var(--gray-800);
-      box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba($black, 0.2);
+      box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(var(--black), 0.2);
       max-width: calculateRem(250px);
       right: 0;
       left: 0;
@@ -218,7 +218,7 @@
   }
 }
 .menu-public-header {
-  border-top: calculateRem(2px) solid rgba($black, 0.13);
+  border-top: calculateRem(2px) solid rgba(var(--black), 0.13);
 }
 @media screen and (min-width: 240px) and (max-width: 767px) {
   .mobile-popup-dimmer {
@@ -231,7 +231,7 @@
         margin: 0 auto;
         right: 0;
         left: 0;
-        box-shadow: 0 0 calculateRem(20px) calculateRem(10px) rgba($black, 0.2);
+        box-shadow: 0 0 calculateRem(20px) calculateRem(10px) rgba(var(--black), 0.2);
         height: calculateRem(185px);
         p {
           display: block !important;
