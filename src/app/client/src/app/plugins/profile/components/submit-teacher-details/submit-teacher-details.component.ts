@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import {IUserData, ResourceService, ToasterService} from '@sunbird/shared';
+import {IUserData, NavigationHelperService, ResourceService, ToasterService} from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import {ActivatedRoute, Router} from '@angular/router';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { UserService, FormService, SearchService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
@@ -47,15 +47,17 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   userSubscription: Subscription;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public profileService: ProfileService, formBuilder: FormBuilder,
+    public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
     public userService: UserService, public formService: FormService, public router: Router,
-    public searchService: SearchService, private activatedRoute: ActivatedRoute) {
+    public searchService: SearchService, private activatedRoute: ActivatedRoute,
+    public navigationhelperService: NavigationHelperService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
     const queryParams = this.activatedRoute.snapshot.queryParams;
     this.formAction = queryParams.formaction;
+    this.telemetryImpressionEvent();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
         this.userProfile = user.userProfile;
@@ -63,6 +65,21 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.setTelemetryData();
+  }
+
+  telemetryImpressionEvent() {
+    this.telemetryService.impression({
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        subtype: this.formAction,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.activatedRoute.snapshot.data.telemetry.uri,
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
+    });
   }
 
   setTelemetryData() {
