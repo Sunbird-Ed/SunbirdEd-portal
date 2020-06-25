@@ -79,9 +79,6 @@ let envVariables = {
   PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.open-sunbird.org/auth',
 
 
-  // Chat Bot Configuration
-  CHATBOT_TARA_API_URL: env.chat_bot_api_url || 'https://staging.ntp.net.in/chatapi/bot',
-
   // Social login Configuration
   GOOGLE_OAUTH_CONFIG: {
     clientId: env.sunbird_google_oauth_clientId,
