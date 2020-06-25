@@ -1,5 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-group-workspace',
@@ -10,14 +9,9 @@ export class GroupWorkspaceComponent {
   showModal = false;
   showActivityList = false;
   HideAddActivity = true;
-  showFilters: boolean = false;
+  showFilters = false;
 
-  constructor(private renderer: Renderer2, public resourceService: ResourceService) {
-    this.renderer.listen('window', 'click', (e: Event) => {
-      if (e.target['tabIndex'] === -1) {
-        this.closeModal();
-      }
-     });
+  constructor() {
   }
   addActivity() {
     this.showModal = true;
@@ -31,6 +25,6 @@ export class GroupWorkspaceComponent {
     this.HideAddActivity = false;
   }
   filterList() {
-    this.showFilters = !this.showFilters;
+    this.showFilters = true;
   }
 }
