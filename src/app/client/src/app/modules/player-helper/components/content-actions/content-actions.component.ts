@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetry
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-
+import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: 'app-content-actions',
   templateUrl: './content-actions.component.html',
@@ -37,11 +37,16 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public toasterService: ToasterService,
     public contentUtilsServiceService: ContentUtilsServiceService,
     private telemetryService: TelemetryService,
-    private navigationHelperService: NavigationHelperService
+    private navigationHelperService: NavigationHelperService,
+    private deviceDetectorService: DeviceDetectorService
   ) { }
 
   ngOnInit() {
     this.actionButtons = _.cloneDeep(actionButtons);
+    _.find(this.actionButtons, (button) => {
+      button.disabled = (button.label === 'Fullscreen') ? (this.deviceDetectorService.isMobile() ||
+        this.deviceDetectorService.isTablet()) : button.disabled;
+    });
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
