@@ -1,3 +1,4 @@
+
 .ui.dropdown {
   &.selection {
     border-radius: calculateRem(3px);
@@ -27,6 +28,9 @@
         border-color: var(--primary-color);
         border-radius: calculateRem(2px);
         border-top-width: calculateRem(0.5px) !important;
+        @include respond-below(sm) {
+          max-height:calculateRem(320px);
+        }
         &::-webkit-scrollbar-thumb {
           background: var(--rc-E5EDF5);
         }

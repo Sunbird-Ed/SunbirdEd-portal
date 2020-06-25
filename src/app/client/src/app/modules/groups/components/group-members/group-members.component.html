@@ -1,9 +1,25 @@
-<div class="status-container flex-dc d-flex flex-jc-center p-16 sb-bg-color-white bs-3">
-  <div  (click)="addMember()"> add member </div>
+<div class="status-container flex-dc d-flex p-8 py-16">
+  <div class="title mb-16 font-weight-bold pl-8"> Members <span class="badge">25</span></div>
+
   <div class="sb-library-cards" *ngIf="membersList.length">
-    <div class="sbgrid">
+
+   <div class="px-8">
+    <div class="sb-search-box small no-btn mb-16">
+      <div class="input-div relative">
+          <i class="search icon"></i>
+          <input class="sb-search-input" type="text" placeholder="Search within group" />
+      </div>
+      <button class="sb-btn sb-btn-normal">Search</button>
+  </div>
+   </div>
+  
+    <div class="cursor-pointer mb-8 fnormal px-8" (click)="addMember()"> 
+      <img class="" alt="admin" src="./assets/images/add-member-1.png" width="32"> Add member
+    </div>
+    <div class="devided-line m-8"></div>
+    <div class="d-flex flex-dc">
       <div *ngFor="let member of membersList">
-        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
+        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
          [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
         </sb-member-card>
         <div class="dropdown-menu-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">

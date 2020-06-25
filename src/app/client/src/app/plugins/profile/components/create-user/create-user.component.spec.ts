@@ -110,16 +110,12 @@ describe('CreateUserComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
-  it('should set mode', () => {
-    component.showAndHidePopup(false);
-    expect(component.showTncPopup).toBeFalsy();
-  });
-
   it('should call onSubmitForm with success', () => {
     const userService = TestBed.get(UserService);
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    spyOn(managedUserService, 'updateUserList');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();

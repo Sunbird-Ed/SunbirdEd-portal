@@ -6,5 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./group-workspace.component.scss']
 })
 export class GroupWorkspaceComponent {
-
+  showModal = false;
+  addActivity() {
+    this.showModal = true;
+  }
+  closeModal() {
+    this.showModal = false;
+  }
 }
