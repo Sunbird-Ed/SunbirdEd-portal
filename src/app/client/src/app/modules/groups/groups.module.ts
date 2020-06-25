@@ -14,7 +14,7 @@ import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { CsLibInitializerService } from 'CsLibInitializer';
+import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
 
 @NgModule({

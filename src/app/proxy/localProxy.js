@@ -66,7 +66,6 @@ var learnerServiceApi = {
   'org/v1/upload': 'v1/org/upload',
   'data/v1/upload/status': 'v1/upload/status',
   'user/v1/block': 'v1/user/block',
-  'org/v1/role/assign': 'v1/user/assign/role',
   'org/v1/badges/list': 'v1/badges/list',
   'user/v1/badges/add': 'v1/user/badges/add',
   'org/v1/type/list': 'v1/org/type/list',

@@ -11,6 +11,12 @@
         <h4 *ngIf="content?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
         <p class="description">{{content?.author}}</p>
 
+        <h4 *ngIf="content?.createdOn" class="title">{{resourceService?.frmelmnts?.lbl?.createdon}}</h4>
+        <p class="description">{{content?.createdOn | dateFormat}}</p>
+
+        <h4 *ngIf="content?.lastUpdatedOn" class="title">{{resourceService?.frmelmnts?.lbl?.updatedon}}</h4>
+        <p class="description">{{content?.lastUpdatedOn | dateFormat}}</p>
+
         <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
         </h4>
         <p class="description">{{attributions}}</p>

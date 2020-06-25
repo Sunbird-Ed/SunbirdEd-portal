@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
+import { of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('TopicPickerComponent', () => {
@@ -22,6 +23,7 @@ describe('TopicPickerComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(TopicPickerComponent);
         component = fixture.componentInstance;
+        spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(of({}));
     });
 
     it('should create', () => {

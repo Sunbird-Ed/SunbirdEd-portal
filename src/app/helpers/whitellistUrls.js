@@ -43,6 +43,7 @@ const WHITELIST_URLS = [
 
     //User related APIs
     'user/v1/create',
+    'user/v1/managed',
     'user/v1/tnc/accept',
     'user/v1/update',
     'user/v1/skill/endorse/add',
@@ -58,7 +59,6 @@ const WHITELIST_URLS = [
     'user/v1/type/list',
     'user/v1/block',
     'user/v1/search',
-    'user/v1/role/assign',
     'user/v1/read/', 
     'user/v1/upload',
     'user/v2/read/',  
@@ -87,7 +87,6 @@ const WHITELIST_URLS = [
     'org/v1/type/list',
     'org/v1/type/create',
     'org/v1/type/update',
-    'org/v1/role/assign',
 
     //Dashboard related APIs
     'dashboard/v1/creation/org',
