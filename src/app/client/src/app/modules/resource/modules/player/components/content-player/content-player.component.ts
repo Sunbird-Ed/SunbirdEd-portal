@@ -9,8 +9,7 @@ import {
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+
 /**
  *Component to play content
  */
@@ -89,9 +88,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
   closeUrl: any;
   playerOption: any;
   showLoader = true;
-  isFullScreenView = false;
-  public unsubscribe = new Subject<void>();
-
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -113,13 +109,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       this.contentStatus = params.contentStatus;
       this.getContent();
     });
-
-    this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
   }
-
   setTelemetryData() {
     this.telemetryImpression = {
       context: {

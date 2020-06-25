@@ -1,5 +1,5 @@
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
@@ -36,8 +36,6 @@ export class NavigationHelperService {
    * Name used to store previous url in session
    */
   private cacheServiceName = 'previousUrl';
-  contentFullScreenEvent = new EventEmitter<any>();
-
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -204,10 +202,6 @@ export class NavigationHelperService {
 
   public clearHistory() {
     this._history = [];
-  }
-
-  emitFullScreenEvent(value) {
-    this.contentFullScreenEvent.emit(value);
   }
 
 }
