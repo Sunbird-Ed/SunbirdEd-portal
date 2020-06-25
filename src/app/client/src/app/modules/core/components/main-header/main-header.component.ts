@@ -12,7 +12,7 @@ import {
   ConfigService,
   ResourceService,
   IUserProfile,
-  ServerResponse,
+  UtilService,
   ToasterService,
   IUserData,
 } from '@sunbird/shared';
@@ -21,7 +21,7 @@ import * as _ from 'lodash-es';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
-import {forkJoin, Subject} from 'rxjs';
+import {Subject, zip} from 'rxjs';
 
 declare var jQuery: any;
 
@@ -112,7 +112,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
-    private courseService: CoursesService,
+    private courseService: CoursesService, private utilService: UtilService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -294,17 +294,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   fetchManagedUsers() {
-    const fetchManagedUserRequest = {
-      request: {
-        filters: {managedBy: this.managedUserService.getUserId()},
-        sort_by: {createdDate: 'desc'}
-      }
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    const requests = [this.managedUserService.managedUserList$];
     if (this.userService.userProfile.managedBy) {
       requests.push(this.managedUserService.getParentProfile());
     }
-    forkJoin(requests).subscribe((data) => {
+    zip(...requests).subscribe((data) => {
         let userListToProcess = _.get(data[0], 'result.response.content');
         if (data && data[1]) {
           userListToProcess = [data[1]].concat(userListToProcess);
@@ -327,6 +321,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSideMenu(value: boolean) {
+    if (value) {
+      this.fetchManagedUsers();
+    }
     this.showSideMenu = value;
   }
 
@@ -380,14 +377,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     let userSubscription;
     const selectedUser = _.get(event, 'data.data');
     const userId = selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data: any) => {
+    const switchUserRequest = {
+      userId: selectedUser.identifier,
+      isManagedUser: selectedUser.managedBy ? true : false
+    };
+    this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data: any) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.router.navigate(['/resources']);
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   selectedUser.firstName),
@@ -397,6 +397,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
               if (userSubscription) {
                 userSubscription.unsubscribe();
               }
+              setTimeout(() => {
+                this.utilService.redirect('/resources');
+              }, 5100);
             });
           }
         });
@@ -410,15 +413,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
+          this.managedUserService.fetchManagedUserList();
           this.fetchManagedUsers();
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
           document.title = _.get(user, 'userProfile.rootOrgName');
-          this.userService.createManagedUser.pipe(
-            takeUntil(this.unsubscribe)).subscribe((data: any) => {
-            this.fetchManagedUsers();
-          });
         }
       });
       this.programsService.allowToContribute$.subscribe((showTab: boolean) => {

@@ -7,13 +7,16 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent,
-  GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, DeletePopupComponent,
-  NoGroupResultComponent} from './components';
+  GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
+  AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
+  BackButtonComponent} from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { CsLibInitializerService } from 'CsLibInitializer';
+import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -30,7 +33,9 @@ import { CsLibInitializerService } from 'CsLibInitializer';
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
-    GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, DeletePopupComponent, NoGroupResultComponent, ]
+    GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
+    AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
+    BackButtonComponent]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {

@@ -32,6 +32,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
+  public isLargeFileUpload = false;
   genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
   (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
 
@@ -54,6 +55,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.isLargeFileUpload = _.get(this.activatedRoute, 'snapshot.data.isLargeFileUpload');
     this.disableBrowserBackButton();
     this.getDetails().pipe(first(),
       tap(data => {
@@ -181,6 +183,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+    if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
+      window.context['uploadInfo'] = {
+        isLargeFileUpload: true
+      };
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

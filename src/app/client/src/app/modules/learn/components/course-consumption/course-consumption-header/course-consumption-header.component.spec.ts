@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 
 import { of as observableOf, Observable } from 'rxjs';
 import {
@@ -58,7 +59,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionHeaderComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]

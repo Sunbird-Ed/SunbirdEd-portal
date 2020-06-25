@@ -1,6 +1,5 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'fullscreen'" class="sb-modal sb-modal-fullscreen" 
-  appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
-  <div class="sb-modal-header sb-bg-color-white px-24" *ngIf="formAction === 'submit'">
+
+  <div class="sb-modal-header" *ngIf="formAction === 'submit'">
     {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
   <div class="sb-modal-header sb-bg-color-white px-24" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}}
   </div>
@@ -8,8 +7,8 @@
    <app-loader></app-loader>
   </div>
   <div class="sb-modal-content" *ngIf="!showLoader">
-    <!-- <div class="fs-1">{{resourceService?.frmelmnts?.lbl?.stateValidationDetails}}</div> -->
-    <form class="sb-form px-24 py-16" [formGroup]="userDetailsForm">
+    <p class="fsmall">{{resourceService?.frmelmnts?.lbl?.stateValidationDetails}}</p>
+    <form class="sb-form my-16" [formGroup]="userDetailsForm">
       <div class="ui stackable grid" *ngFor="let field of formData">
         <div class="twelve wide column p-0 mb-8" *ngIf="field.code==='state' && field.visible===true">
           <div class="fields-selection p-0">
@@ -45,7 +44,6 @@
                     [value]="district"></sui-select-option>
                 </sui-select>
               </div>
-
 
               <label class="font-weight-normal orange text"
                 *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
@@ -195,4 +193,20 @@
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
-</sui-modal>
+
+  <!-- information submitted modal in TEACHER Profile-->
+  <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+             class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
+    <div class="sb-modal-header font-weight-normal">
+      {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
+    </div>
+    <div class="sb-modal-content text-center">
+      <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-success"
+              (click)="closeSuccessModal()">
+        {{resourceService?.frmelmnts?.btn?.ok}}
+      </button>
+    </div>
+  </sui-modal>

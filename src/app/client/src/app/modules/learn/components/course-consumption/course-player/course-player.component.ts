@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { CoursesService, PermissionService, UserService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
-  ResourceService, ToasterService, WindowScrollService
+  ResourceService, ToasterService, WindowScrollService, ITelemetryShare
 } from '@sunbird/shared';
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -14,6 +14,7 @@ import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
+import { ContentUtilsServiceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-course-player',
@@ -48,7 +49,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public enrolledBatchInfo: any;
   public treeModel: any;
   public showExtContentMsg = false;
-  private objectRollUp: any;
   public previewContentRoles = ['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION'];
   public collectionTreeOptions: ICollectionTreeOptions;
   public unsubscribe = new Subject<void>();
@@ -60,7 +60,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   contentInteract: IInteractEventEdata;
   startInteract: IInteractEventEdata;
   continueInteract: IInteractEventEdata;
-
+  shareLinkModal = false;
+  telemetryShareData: Array<ITelemetryShare>;
+  shareLink: string;
+  @ViewChild('joinTrainingModal') joinTrainingModal;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -78,7 +81,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public coursesService: CoursesService,
     private courseProgressService: CourseProgressService,
     private deviceDetectorService: DeviceDetectorService,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    private contentUtilsServiceService: ContentUtilsServiceService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -97,7 +101,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.launchPlayer
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(data => {
-        this.navigateToPlayerPage(this.courseHierarchy);
+        /* istanbul ignore else */
+        if (_.get(this.courseHierarchy, 'children.length')) {
+          const unconsumedUnit = this.courseHierarchy.children.find(item => !item.isUnitConsumed);
+          const unit = unconsumedUnit ? unconsumedUnit : this.courseHierarchy;
+          this.navigateToPlayerPage(unit);
+        }
+      });
+
+    this.courseConsumptionService.updateContentState
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+        this.getContentState();
       });
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     merge(this.activatedRoute.params.pipe(
@@ -105,13 +120,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseId = courseId;
         this.batchId = batchId;
         this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
         if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
         this.setTelemetryCourseImpression();
         const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-
         /* istanbul ignore else */
         if (this.batchId) {
           return combineLatest([
@@ -200,16 +213,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     return this.treeModel.first(node => node.model.identifier === id);
   }
 
-  public navigateToContent(event: any, collectionUnit?: any): void {
+  public navigateToContent(event: any, collectionUnit?: any, id?): void {
+    this.logTelemetry(id, event.data);
     /* istanbul ignore else */
     if (!_.isEmpty(event.event)) {
       this.navigateToPlayerPage(collectionUnit, event);
     }
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
   }
 
   private setTelemetryStartEndData() {
@@ -287,32 +296,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
 
-  public closeJoinTrainingModal() {
-    this.showJoinTrainingModal = false;
-    const telemetryInteractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
-      },
-      edata: {
-        id: 'join-training-popup-close',
-        type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      },
-      object: {
-        id: this.courseId,
-        type: 'Course',
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
-      }
-    };
-    this.telemetryService.interact(telemetryInteractData);
-  }
-
   navigateToPlayerPage(collectionUnit: any, event?) {
-    this.registerCourseTocTelemetry(collectionUnit.identifier);
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
@@ -390,26 +374,76 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  registerCourseTocTelemetry(identifier: string) {
-    const telemetryInteractData = {
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata || []
       },
       edata: {
-        id: 'course-toc',
+        id: id,
         type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
       },
       object: {
-        id: identifier,
-        type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
-        rollup: {
-          l1: this.courseId
-        }
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    this.telemetryService.interact(telemetryInteractData);
+    this.telemetryService.interact(interactData);
+  }
+
+  getAllBatchDetails(event) {
+    this.courseConsumptionService.getAllOpenBatches(event);
+  }
+
+  shareUnitLink(unit: any) {
+    this.shareLink = `${this.contentUtilsServiceService.getCoursePublicShareUrl(this.courseId)}?moduleId=${unit.identifier}`;
+    this.shareLinkModal = true;
+    this.setTelemetryShareData(this.courseHierarchy);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  closeSharePopup(id) {
+    this.shareLinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: { l1: this.courseId }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  ngOnDestroy() {
+    if (this.joinTrainingModal && this.joinTrainingModal.deny) {
+      this.joinTrainingModal.deny();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

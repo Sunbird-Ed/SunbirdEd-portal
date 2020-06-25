@@ -71,7 +71,7 @@
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="showSubmitTeacherDetails=true" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="navigate('/profile/submit-teacher-details','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
@@ -246,8 +246,8 @@
       </div>
       <div class="my-8">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal fnormal sb-btn-outline-primary sb-btn-border"
-        (click)="showUpdateTeacherDetails = !showUpdateTeacherDetails">{{resourceService.frmelmnts?.btn?.update}}</button>
+        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
+        (click)="navigate('/profile/submit-teacher-details','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
       <div class="fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
     </div>
@@ -374,26 +374,5 @@
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
   <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup;" *ngIf="showEditUserDetailsPopup"
     [userProfile]="userProfile"></app-update-user-details>
-  <app-submit-teacher-details [formAction]="'submit'" [userProfile]="userProfile" (showSuccessModal)="showSuccessModal=true;"
-      (close)="showSubmitTeacherDetails = !showSubmitTeacherDetails;" *ngIf="showSubmitTeacherDetails">
-    </app-submit-teacher-details>
-  <app-submit-teacher-details [formAction]="'update'" [userProfile]="userProfile"
-      (close)="showUpdateTeacherDetails = !showUpdateTeacherDetails" *ngIf="showUpdateTeacherDetails">
-    </app-submit-teacher-details>
 <router-outlet></router-outlet>
 
-<!-- information submitted modal in TEACHER Profile-->
-<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
-  <div class="sb-modal-header font-weight-normal">
-    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
-  </div>
-  <div class="sb-modal-content text-center">
-    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="showSuccessModal = !showSuccessModal">
-      {{resourceService?.frmelmnts?.btn?.ok}}
-    </button>
-  </div>
-</sui-modal>
