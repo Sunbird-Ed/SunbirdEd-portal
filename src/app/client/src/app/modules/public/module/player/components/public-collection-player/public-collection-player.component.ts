@@ -401,6 +401,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   closeCollectionPlayer() {
     if (this.isMobile) {
       this.isMobile = false;
+      this.activeContent = null;
     } else {
       if (this.dialCode) {
         sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
