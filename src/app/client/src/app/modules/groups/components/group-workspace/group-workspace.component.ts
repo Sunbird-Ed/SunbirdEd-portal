@@ -1,5 +1,5 @@
 import { Component, Renderer2 } from '@angular/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-group-workspace',
@@ -12,8 +12,7 @@ export class GroupWorkspaceComponent {
   HideAddActivity = true;
   showFilters: boolean = false;
 
-  constructor(private renderer: Renderer2, public resourceService: ResourceService,
-    private navigationHelperService: NavigationHelperService) {
+  constructor(private renderer: Renderer2, public resourceService: ResourceService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1) {
         this.closeModal();
