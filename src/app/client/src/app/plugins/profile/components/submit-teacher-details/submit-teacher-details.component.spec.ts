@@ -22,11 +22,23 @@ import {CoreModule, FormService, SearchService, UserService} from '@sunbird/core
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
+import { Router, ActivatedRoute } from '@angular/router';
 
 describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;
   let configService;
+
+  const fakeActivatedRoute = {
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'teacher-declaration', type: 'view',
+          uri: '/profile/teacher-declaration',
+        }
+      }, queryParams: {}
+    }
+  };
 
   const resourceBundle = {
     'messages': {
@@ -70,6 +82,7 @@ describe('SubmitTeacherDetailsComponent', () => {
         SharedModule.forRoot()],
       declarations: [SubmitTeacherDetailsComponent],
       providers: [{provide: ResourceService, useValue: resourceBundle}, UserService,
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
         ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService, FormService, SearchService,
         NavigationHelperService, DeviceDetectorService],
       schemas: [NO_ERRORS_SCHEMA]
