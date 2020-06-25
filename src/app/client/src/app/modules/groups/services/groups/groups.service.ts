@@ -1,3 +1,4 @@
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
 import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
 import { map, mergeMap, filter, first } from 'rxjs/operators';
@@ -5,13 +6,17 @@ import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { CsModule } from '@project-sunbird/client-services';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class GroupsService {
   private groupCservice: any;
   constructor(private channelService: ChannelService, private orgDetailsService: OrgDetailsService, private userService: UserService,
-    private frameworkService: FrameworkService) {
+    private frameworkService: FrameworkService, private csLibInitializerService: CsLibInitializerService) {
+      if (!CsModule.instance.isInitialised) {
+        this.csLibInitializerService.initializeCs();
+      }
       this.groupCservice = CsModule.instance.groupService;
     }
 
@@ -81,9 +86,11 @@ export class GroupsService {
     return await this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject).toPromise();
   }
 
-  async getAllGroups() {
-    return await this.groupCservice.getAll().toPromise();
+  getAllGroups() {
+    return this.groupCservice.getAll();
   }
 
-
+  getGroupById(groupId) {
+    return  this.groupCservice.getById(groupId);
+  }
 }

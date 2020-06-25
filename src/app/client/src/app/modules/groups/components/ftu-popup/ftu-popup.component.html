@@ -1,6 +1,6 @@
-<div class="sb-group-welcome-page-container" *ngIf="showWelcomePopup">
+<div class="sb-group-welcome-page-container" *ngIf="showWelcomePopup" #modal>
   <div class="sb-group-welcome-container">
-    <a class="close" (click)="showWelcomePopup = false"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+    <a class="close" (click)="closeModal()"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
       <use xlink:href="./assets/images/sprite.svg#close"></use>
     </svg></i></a>
     <h4 class="sb-group-welcome-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>

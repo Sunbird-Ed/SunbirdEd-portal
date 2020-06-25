@@ -11,6 +11,12 @@ export class ExploreFtuPopupComponent implements OnInit {
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
+    this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
+  }
+
+  redirectTologin() {
+    localStorage.setItem('anonymous_ftu_groups', 'anonymous_user');
+    this.showWelcomePopup = false;
   }
 
 }

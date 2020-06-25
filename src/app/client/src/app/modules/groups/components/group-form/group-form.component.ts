@@ -197,7 +197,14 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
         control.markAsTouched({ onlySelf: true });
       });
     }
-    this.createGroupModal.deny();
+  this.closeModal();
+  }
+
+  closeModal() {
+
+    if (this.createGroupModal && this.createGroupModal.deny) {
+      this.createGroupModal.deny();
+    }
     this.route.navigate([MY_GROUPS]);
   }
   ngOnDestroy() {

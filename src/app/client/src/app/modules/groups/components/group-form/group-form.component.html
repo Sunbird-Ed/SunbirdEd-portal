@@ -11,7 +11,7 @@
   appBodyScroll 
   #createGroupModal 
   [appTelemetryImpression]="telemetryImpression"
-  (dismissed)="closeEvent.emit()"
+  (dismissed)="closeModal()"
   >
   <div class="sb-modal-header">{{ resourceService.frmelmnts.lbl.createGroup }}</div>
   <div class="sb-modal-content o-y-visible">
