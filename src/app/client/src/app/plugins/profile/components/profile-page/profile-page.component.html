@@ -71,7 +71,7 @@
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="navigate('/profile/submit-teacher-details','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="navigate('/profile/teacher-declaration','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
@@ -223,25 +223,33 @@
 
   <!-- 4 section start teacher profile-->
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="udiseObj || teacherObj || schoolObj">
-    <div class="d-flex flex-jc-center flex-dc school-id-section">
-      <div class="d-flex flex-jc-center mb-16" *ngIf="schoolObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{schoolObj?.id}}</span>
+    <div class="flex-ai-jc-center flex-dc text-center school-id-section">
+      <div *ngIf="udiseObj">
+        <div class="fnormal white-space-nowrap">Phone Number:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">+91 987654321</div>
       </div>
-      <div class="d-flex flex-jc-center mb-16" *ngIf="udiseObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{udiseObj?.id}}</span>
+      <div *ngIf="teacherObj">
+        <div class="fnormal white-space-nowrap">Email ID:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">state.govt.teacher@gmail.com</div>
       </div>
-      <div class="d-flex flex-jc-center" *ngIf="teacherObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{teacherObj?.id}}</span>
+      <div *ngIf="schoolObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{schoolObj?.id}}</div>
       </div>
-      <div class="d-flex flex-jc-center my-16">
+      <div *ngIf="udiseObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{udiseObj?.id}}</div>
+      </div>
+      <div *ngIf="teacherObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{teacherObj?.id}}</div>
+      </div>
+      <div class="my-8">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
-        (click)="navigate('/profile/submit-teacher-details','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
+        (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
-      <div class="d-flex flex-jc-center fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
+      <div class="fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
     </div>
   </section>
   <!-- 4 section end -->

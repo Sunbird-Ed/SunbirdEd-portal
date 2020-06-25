@@ -6,25 +6,28 @@
 <div class="sb-g mt-24">
   <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-bg-color-white p-24">
     <div class="title mb-16 font-weight-bold">
-      Add Member
+      Add new member
     </div>
     <div class="sb-field">
-      <label for="id" class="d-flex flex-ai-center flex-jc-space-between"><span>SUNBIRD ID</span><span class="font-weight-normal">What is SUNBIRD ID? <i class="icon circle info cursor-pointer sb-color-primary"></i></span></label>
-      <div class="d-flex flex-ai-flex-start flex-jc-space-between">
+      <div class="d-flex flex-ai-flex-start flex-jc-space-between flex-ai-center">
       <div class="w-100 pr-8">
+        <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span>SUNBIRD ID</span><span class="font-weight-normal">What is SUNBIRD ID? 
+          <img class="cursor-pointer ml-4" alt="info icon" src="./assets/images/info-icon-blue.svg" width="18">
+        </span>
+      </label>
         <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
         <i class="icon close icon-input-close"></i>
       </div>
-        <small class="message sb-color-error font-weight-bold">Invalid user ID</small>
+        <small class="message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
       </div>
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled">
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled mt-4">
         Verify
       </button>
     </div>
     </div>
     
     <!-- Add to group button content -->
-    <div class="fs-1 my-4">Before clicking on 'Add to group', check that the SUNBIRD ID matches the member's name</div>
+    <div class="fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
     <div class="flex-ai-jc-center add-member-content p-24">
       <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying please wait</span></div>
     </div>

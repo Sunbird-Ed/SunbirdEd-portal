@@ -9,3 +9,4 @@ export * from './member-actions/member-actions.component';
 export * from './group-members/group-members.component';
 export * from './ftu-popup/ftu-popup.component';
 export * from './back-button/back-button.component';
+export * from './activity';
