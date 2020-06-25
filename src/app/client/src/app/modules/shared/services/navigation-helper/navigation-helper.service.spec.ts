@@ -102,18 +102,4 @@ describe('NavigationHelperService', () => {
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
 
-  it('Should emit contentFullScreenEvent as TRUE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
-    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
-      spyOn(service.contentFullScreenEvent, 'emit');
-      service.emitFullScreenEvent(true);
-      expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(true);
-    }));
-
-  it('Should emit contentFullScreenEvent as FALSE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
-    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
-      spyOn(service.contentFullScreenEvent, 'emit');
-      service.emitFullScreenEvent(false);
-      expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(false);
-    }));
-
 });

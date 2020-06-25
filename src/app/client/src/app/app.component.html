@@ -6,7 +6,7 @@
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
   <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
 [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-  <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$"  [ngClass]="{'header-block': isFullScreenView}"></app-header>
+  <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$"></app-header>
   <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
