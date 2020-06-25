@@ -243,36 +243,36 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  onPhoneChange() {
-    const phoneControl = this.signUpForm.get('phone');
-    let phoneValue = '';
-    phoneControl.valueChanges.subscribe(
-      (data: string) => {
-        if (phoneControl.status === 'VALID' && phoneValue !== phoneControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
-          this.vaidateUserContact();
-          phoneValue = phoneControl.value;
-        }
-      });
-  }
+  // onPhoneChange() {
+  //   const phoneControl = this.signUpForm.get('phone');
+  //   let phoneValue = '';
+  //   phoneControl.valueChanges.subscribe(
+  //     (data: string) => {
+  //       if (phoneControl.status === 'VALID' && phoneValue !== phoneControl.value) {
+  //         this.signUpForm.controls['uniqueContact'].setValue('');
+  //         this.vaidateUserContact();
+  //         phoneValue = phoneControl.value;
+  //       }
+  //     });
+  // }
 
-  onEmailChange() {
-    const emailControl = this.signUpForm.get('email');
-    let emailValue = '';
-    emailControl.valueChanges.subscribe(
-      (data: string) => {
-        if (emailControl.status === 'VALID' && emailValue !== emailControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
-          this.vaidateUserContact();
-          emailValue = emailControl.value;
-        }
-      });
-  }
+  // onEmailChange() {
+  //   const emailControl = this.signUpForm.get('email');
+  //   let emailValue = '';
+  //   emailControl.valueChanges.subscribe(
+  //     (data: string) => {
+  //       if (emailControl.status === 'VALID' && emailValue !== emailControl.value) {
+  //         this.signUpForm.controls['uniqueContact'].setValue('');
+  //         this.vaidateUserContact();
+  //         emailValue = emailControl.value;
+  //       }
+  //     });
+  // }
 
-  vaidateUserContact() {
+  vaidateUserContact(captchaResponse) {
     const value = this.signUpForm.controls.contactType.value === 'phone' ?
       this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
-    const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
+    const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value + '?captchaResponse=' + 'captchaResponse';
     this.signupService.checkUserExists(uri).subscribe(
       (data: ServerResponse) => {
         if (_.get(data, 'result.exists')) {
@@ -323,26 +323,26 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   resolved(captchaResponse: string) {
     if (captchaResponse) {
-      this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
-        if (_.get(data, 'result.success')) {
-          this.telemetryLogEvents('validate-recaptcha', true);
-          if (!this.formInputType) {
-            this.onSubmitSignUpForm();
-          } else {
-            this.vaidateUserContact();
-            this.formInputType = undefined;
-          }
-        }
-      }, (error) => {
-        const telemetryErrorData = {
-          env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
-          errorType: 'SYSTEM', pageid: 'signup',
-          stackTrace: JSON.stringify((error && error.error) || '')
-        };
-        this.telemetryService.generateErrorEvent(telemetryErrorData);
+      if (this.formInputType) {
+        this.vaidateUserContact(captchaResponse);
         this.formInputType = undefined;
-        this.resetGoogleCaptcha();
-      });
+      } else {
+        this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+          if (_.get(data, 'result.success')) {
+            this.telemetryLogEvents('validate-recaptcha', true);
+            this.onSubmitSignUpForm();
+          }
+        }, (error) => {
+          const telemetryErrorData = {
+            env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
+            errorType: 'SYSTEM', pageid: 'signup',
+            stackTrace: JSON.stringify((error && error.error) || '')
+          };
+          this.telemetryService.generateErrorEvent(telemetryErrorData);
+          this.formInputType = undefined;
+          this.resetGoogleCaptcha();
+        });
+      }
     }
   }
 
