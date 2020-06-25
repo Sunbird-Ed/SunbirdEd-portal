@@ -5,11 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './activity-search.component.html',
   styleUrls: ['./activity-search.component.scss']
 })
-export class ActivitySearchComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class ActivitySearchComponent {
 }

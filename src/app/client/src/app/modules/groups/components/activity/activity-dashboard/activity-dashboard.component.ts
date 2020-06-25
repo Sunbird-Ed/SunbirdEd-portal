@@ -5,11 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './activity-dashboard.component.html',
   styleUrls: ['./activity-dashboard.component.scss']
 })
-export class ActivityDashboardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class ActivityDashboardComponent {
 }
