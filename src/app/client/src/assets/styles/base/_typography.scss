@@ -1,5 +1,6 @@
-@import "./variables";
 /* typography styles */
+@import "./variables";
+
 $line-height-value: 1.61803398875;
 
 // Headings
@@ -198,3 +199,5 @@ a {
 .lineHeight-normal {
   line-height: normal !important;
 }
+
+/* typography styles ends */

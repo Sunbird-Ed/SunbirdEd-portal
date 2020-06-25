@@ -33,6 +33,12 @@ export interface IInteractEventEdata {
   'target'?: string;
   'plugin'?: string;
 }
+
+export interface IAuditEventEData {
+  'props': string[];
+  'state': string;
+  'prevstate': string;
+}
 export interface IShareEventData {
   'type': string;
   'dir': string;
@@ -152,6 +158,19 @@ export interface IInteractEventObject {
   'type'?: string;
   'ver'?: string;
   'rollup'?: {};
+}
+
+export interface IAuditEventInput {
+  'context': {
+    'env': string;
+    'cdata': Array<object>;
+  };
+  'object'?: {
+    'id': string;
+    'type': string;
+    'ver'?: string;
+  };
+  'edata': IAuditEventEData;
 }
 export interface ILogEventInput {
   'context': {

@@ -89,7 +89,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();

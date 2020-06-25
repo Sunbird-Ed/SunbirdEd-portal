@@ -5,72 +5,64 @@
 
   <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
 
-  <!--Header-->
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
-  </div>
-
-  <!-- <div class="sb-modal-header">
-   What do you want to create?
-  </div> -->
-  <!--/Header-->
-
-  <!--Content-->
-  <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
-    <div class="ui grid p-16">
-      <div class="six wide column">
-        <div class="sb-card w-100" tabindex="0">
-          <div class="sb-card-body">
-            <div class="checkbox-img">
-              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
-            </div>
-            <h4 class="sb-card-title">
-              Accademic Content
-            </h4>
-            <div class="sb-card-org">
-              Choose this if your are creating content mapped to your state curriculam
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="six wide column">
-        <div class="sb-card w-100" tabindex="0">
-          <div class="sb-card-body">
-            <div class="checkbox-img">
-              <img src="assets/images/checkbox-icon.svg" width="20px" height="20px">
-            </div>
-            <h4 class="sb-card-title">
-              Non Accademic Content
-            </h4>
-            <div class="sb-card-org">
-              Choose this if you are creating content which is not mapped to your state curriculam
-            </div>
-          </div>
+  <!-- This section will show framework selection cards -->
+  <div *ngIf="showFrameworkSelection">
+    <!--Header-->
+    <div class="sb-modal-header">
+      {{resourceService?.frmelmnts?.lbl?.whatToCreate}}
+    </div>
+    <!--/Header-->
+  
+    <!--Content-->
+    <div class="sb-modal-content o-y-visible">
+      <div class="sbgrid p-16" #formData>
+        <div [ngClass]="{'active': selectedCard === data}" (click)="selectFramework(data)"  class="sb-education-card" *ngFor="let data of frameworkCardData">
+          <div class="checkbox-img"></div>
+          <h4 class="sb-education-card__title">
+            {{data.title}}
+          </h4>
+          <p class="sb-education-card__text">
+            {{data.description}}
+          </p>
         </div>
       </div>
     </div>
-    <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
-      [categoryMasterList]="categoryMasterList">
-    </app-content-creation-default-template>
+    <!--/Content-->
+  
+    <!--Actions-->
+    <div class="sb-modal-actions">
+      <button [ngClass]="{'sb-btn-disabled' : !enableCreateButton}" [disabled]="!enableCreateButton"
+        class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()">
+            {{resourceService?.frmelmnts?.btn?.startcreating}}
+      </button>
+    </div>
+    <!-- /Actions-->
   </div>
-  <!--/Content-->
 
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
-    [telemetryInteractEdata]="{id:'start-creating',
-          type: 'click',
-          pageid: 'workspace'}">
-   {{resourceService?.frmelmnts?.btn?.startcreating}} 
-  </button>
-    <!-- <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()" appTelemetryInteract
-      [telemetryInteractEdata]="{id:'start-creating',
-            type: 'click',
-            pageid: 'workspace'}">
-      Next
-    </button> -->
- 
+  <!-- This section will show as usual creation popup -->
+  <div *ngIf="!showFrameworkSelection">
+    <!--Header-->
+    <div class="sb-modal-header">
+      {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+    </div>
+    <!--/Header-->
+  
+    <!--Content-->
+    <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
+      <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
+        [categoryMasterList]="categoryMasterList">
+      </app-content-creation-default-template>
+    </div>
+    <!--/Content-->
+  
+    <!--Actions-->
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()">
+        {{resourceService?.frmelmnts?.btn?.startcreating}}
+      </button>
+    </div>
   </div>
+
   <!--/Actions-->
 </sui-modal>
 

@@ -1,38 +1,71 @@
 @import 'variables';
 @import "mixins/mixins";
-
 // In workspace, course card modal 
 .sb-modal.sb-course-modal .sb-modal-content {
-    .sb-card {
-      height: 8.75rem !important;
-      max-height: 100%;
-      .sb-card-body {
-        height: 8.75rem;
-        max-height: 100%;
-        padding: 1rem;
-        &.active,
-        &:hover {
-          background: #BFE1CF;
-          border: calculateRem(1px) solid var(--green);
-          border-radius: calculateRem(4px);
-          .checkbox-img {
-            display: inline;
-          }
-        }
+  .sbgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
+    grid-gap: 1.5rem;
+    grid-row-gap: 1.5rem;
+    .sb-education-card {
+      padding: calculateRem(16px);
+      border: calculateRem(1px) solid var(--gray-100);
+      border-radius: calculateRem(4px);
+      position: relative;
+      &:hover {
+        cursor: pointer;
+        border: calculateRem(1px) solid var(--gray-200);
         .checkbox-img {
-          display: none;
-          float: right;
+          position: absolute;
+          top: calculateRem(8px);
+          right: calculateRem(8px);
+          display: inline;
+          width: calculateRem(20px);
+          height: calculateRem(20px);
+          background: var(--gray-200);
+          -webkit-mask-image: url(assets/images/checkbox-icon.svg);
+          mask-image: url(assets/images/checkbox-icon.svg);
+          -webkit-mask-size: contain;
+          -webkit-mask-position: 50% 50%;
+          -webkit-mask-repeat: no-repeat;
+          mask-size: contain;
+          mask-position: 50% 50%;
+          mask-repeat: no-repeat;
         }
-        .sb-card-title {
-          color: var(--black);
-          margin-bottom: 0;
-          font-weight: bold;
+      }
+      &.active {
+        background: #BFE1CF;
+        border: calculateRem(1px) solid var(--green);
+        cursor: pointer;
+        .checkbox-img {
+          position: absolute;
+          top: calculateRem(8px);
+          right: calculateRem(8px);
+          display: inline;
+          width: calculateRem(20px);
+          height: calculateRem(20px);
+          background-color: #009D53;
+          -webkit-mask-image: url(assets/images/checkbox-icon.svg);
+          mask-image: url(assets/images/checkbox-icon.svg);
+          -webkit-mask-size: contain;
+          -webkit-mask-position: 50% 50%;
+          -webkit-mask-repeat: no-repeat;
+          mask-size: contain;
+          mask-position: 50% 50%;
+          mask-repeat: no-repeat;
         }
-        .sb-card-org {
-          font-size: 0.75rem;
-          color: var(--gray-400);
-          line-height: 1.8;
-        }
+      }
+      .checkbox-img {
+        display: none;
+      }
+      &__title {
+        color: var(--black);
+        font-weight: bold;
+      }
+      &__text {
+        font-size: calculateRem(12px);
+        color: var(--gray-400);
       }
     }
   }
+}

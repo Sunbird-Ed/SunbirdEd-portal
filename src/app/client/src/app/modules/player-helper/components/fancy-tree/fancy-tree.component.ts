@@ -4,6 +4,8 @@ import { IFancytreeOptions } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-fancy-tree',
   templateUrl: './fancy-tree.component.html'
@@ -16,7 +18,7 @@ export class FancyTreeComponent implements AfterViewInit {
   @Input() public telemetryInteractData;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
-  constructor(public activatedRoute: ActivatedRoute) { }
+  constructor(public activatedRoute: ActivatedRoute, private lazzyLoadScriptService: LazzyLoadScriptService) { }
   ngAfterViewInit() {
     let options: any = {
       extensions: ['glyph'],
@@ -41,10 +43,14 @@ export class FancyTreeComponent implements AfterViewInit {
       },
     };
     options = { ...options, ...this.options };
-    $(this.tree.nativeElement).fancytree(options);
-    if (this.options.showConnectors) {
-      $('.fancytree-container').addClass('fancytree-connectors');
-    }
+    this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
+      $(this.tree.nativeElement).fancytree(options);
+      if (this.options.showConnectors) {
+        $('.fancytree-container').addClass('fancytree-connectors');
+      }
+    }, err => {
+      console.error('loading fancy tree failed');
+    });
   }
 
   getTelemetryInteractObject(data) {

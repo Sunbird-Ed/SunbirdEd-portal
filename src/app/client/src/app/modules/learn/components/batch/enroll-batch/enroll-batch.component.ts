@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, ConfigService, NavigationHelperService
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TelemetryService, IImpressionEventInput,  IInteractEventObject, IInteractEventEdata  } from '@sunbird/telemetry';
+import { TelemetryService, IImpressionEventInput, IInteractEventObject, IInteractEventEdata, IAuditEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
@@ -93,6 +93,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   enrollToCourse(batchId?: any) {
     this.setTelemetryData();
+    this.logAuditEvent();
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
@@ -130,7 +131,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }, 2000);
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -156,6 +157,31 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'course-consumption'
     };
-    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier }];
+  }
+
+  logAuditEvent() {
+    const auditEventInput: IAuditEventInput = {
+      'context': {
+        'env': this.activatedRoute.snapshot.data.telemetry.env,
+        'cdata': [
+          { id: this.batchDetails.courseId, type: 'CourseId' },
+          { id: this.userService.userid, type: 'UserId' },
+          { id: this.batchDetails.identifier, type: 'BatchId' },
+        ]
+      },
+      'object': {
+        'id': this.batchDetails.identifier,
+        'type': this.activatedRoute.snapshot.data.telemetry.object.type,
+        'ver': this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      'edata': {
+        props: ['courseId', 'userId', 'batchId'],
+        state: '',
+        prevstate: ''
+      }
+    };
+
+    this.telemetryService.audit(auditEventInput);
   }
 }

@@ -26,22 +26,27 @@ describe('ManagedUserService', () => {
 
   it('should fetch managed user list', inject([ManagedUserService], (service: ManagedUserService) => {
     const mockData = {success: 'success'};
-    const request = {request: {filters: {managedBy: 'mockUserID'}}};
+    const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(managedUserServiceMockData.userReadApiResponse));
+    userService.initialize(true);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockData));
-    service.fetchManagedUserList(request).subscribe((data: any) => {
+    service.fetchManagedUserList();
+    service.managedUserList$.subscribe((data: any) => {
       expect(data).toBe(mockData);
     });
   }));
 
   it('should not fetch managed user list', inject([ManagedUserService], (service: ManagedUserService) => {
     const mockError = {'error': 'error'};
-    const request = {request: {filters: {managedBy: 'mockUserID'}}};
+    const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(managedUserServiceMockData.userReadApiResponse));
+    userService.initialize(true);
     spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockError));
-    service.fetchManagedUserList(request).subscribe((data: any) => {
-    }, err => {
-      expect(err).toBe(mockError);
+    service.fetchManagedUserList();
+    service.managedUserList$.subscribe((data: any) => {
+      expect(data).toBe(true);
     });
   }));
 

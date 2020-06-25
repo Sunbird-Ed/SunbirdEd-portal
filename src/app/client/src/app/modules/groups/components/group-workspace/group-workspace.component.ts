@@ -5,11 +5,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './group-workspace.component.html',
   styleUrls: ['./group-workspace.component.scss']
 })
-export class GroupWorkspaceComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+export class GroupWorkspaceComponent {
+  showModal = false;
+  addActivity() {
+    this.showModal = true;
   }
-
+  closeModal() {
+    this.showModal = false;
+  }
 }

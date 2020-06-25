@@ -18,15 +18,27 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CoreModule, FormService, SearchService } from '@sunbird/core';
+import {CoreModule, FormService, SearchService, UserService} from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
+import { Router, ActivatedRoute } from '@angular/router';
 
 describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;
   let configService;
+
+  const fakeActivatedRoute = {
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'profile', pageid: 'teacher-declaration', type: 'view',
+          uri: '/profile/teacher-declaration',
+        }
+      }, queryParams: {}
+    }
+  };
 
   const resourceBundle = {
     'messages': {
@@ -69,7 +81,8 @@ describe('SubmitTeacherDetailsComponent', () => {
         RouterTestingModule,
         SharedModule.forRoot()],
       declarations: [SubmitTeacherDetailsComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [{provide: ResourceService, useValue: resourceBundle}, UserService,
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
         ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService, FormService, SearchService,
         NavigationHelperService, DeviceDetectorService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -96,9 +109,11 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call ng on init', () => {
+    const userService = TestBed.get(UserService);
     spyOn(component, 'setTelemetryData');
     spyOn(component, 'setFormDetails');
     spyOn(component, 'initializeFormFields');
+    userService._userData$.next({err: null, userProfile: {}});
     component.ngOnInit();
     expect(component.setTelemetryData).toHaveBeenCalled();
     expect(component.setFormDetails).toHaveBeenCalled();
@@ -222,4 +237,10 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0017);
   });
+
+  it('should return false as state not changed', () => {
+    const data = component.isStateChanged();
+    expect(data).toBe(false);
+  });
+  
 });
