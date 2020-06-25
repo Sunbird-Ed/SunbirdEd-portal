@@ -101,7 +101,7 @@
 }
 // State Selection and Board Medium Selection CSS ends here
 .sb-class {
-  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(#000000, 0.2);
+  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba($black, 0.2);
   background-color: var(--gray-0);
   &__pills-container {
     padding: $base-block-space 0;
@@ -157,7 +157,7 @@
   }
   &:hover {
     transform: translate(0,-3px);
-    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(#000000,.16);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba($black,.16);
   }
   @include respond-above(sm) {
     border-radius: calculateRem(2px);
@@ -269,7 +269,7 @@
 }
 // Overridden CSS
 .sb-btn-white {
-  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(#000000, 0.1), 0 3px 4px 0 rgba(#000000, 0.2);
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba($black, 0.1), 0 3px 4px 0 rgba($black, 0.2);
   border: 0px solid var(--rc-dddddd);
 }
 .sb-pageSection-count {
