@@ -14,39 +14,38 @@
   .teacher-buttons{
     border-top: calculateRem(0.5px) solid #979797;
   }
-}
-
-.is-invalid {
-  border-color: var(--red-400) !important;
-}
-
-.invalid-msg {
-  color: var(--red-400);
-}
-
-.primary.text {
-  color: var(--info-color);
-}
-
-.ui.stackable.grid>.wide.column {
-  padding: 0rem !important;
-}
-
-.sb-btn-border {
-  border-radius: calculateRem(40px);
-  text-transform: none;
-}
-
-.info-error-icon {
-  position: absolute;
-  right: calculateRem(16px);
-  bottom: calculateRem(38px);
-  background: var(--white);
-}
-
-.sb-field .ui.selection.dropdown {
-  font-weight: bold;
-  position: relative;
+  .is-invalid {
+    border-color: var(--red-400) !important;
+  }
+  
+  .invalid-msg {
+    color: var(--red-400);
+  }
+  
+  .primary.text {
+    color: var(--info-color);
+  }
+  
+  .ui.stackable.grid>.wide.column {
+    padding: 0rem !important;
+  }
+  
+  .sb-btn-border {
+    border-radius: calculateRem(40px);
+    text-transform: none;
+  }
+  
+  .info-error-icon {
+    position: absolute;
+    right: calculateRem(16px);
+    bottom: calculateRem(34px);
+    background: var(--white);
+  }
+  
+  .sb-field .ui.selection.dropdown {
+    font-weight: bold;
+    position: relative;
+  }
 }
 
 .otp-field {
