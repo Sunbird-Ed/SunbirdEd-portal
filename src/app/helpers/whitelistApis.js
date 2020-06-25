@@ -184,7 +184,11 @@ const API_LIST = {
     }
   },
   URL_PATTERN: [
-    '/content/content/v1/copy/:do_id'
+    '/content/content/v1/copy/:do_id',
+    '/content/content/v1/publish/:do_id',
+    '/content/content/v1/reject/:do_id',
+    '/content/content/v1/flag/accept/:do_id',
+    '/content/content/v1/flag/reject/:do_id'
   ]
 };
 module.exports = API_LIST;
