@@ -112,7 +112,7 @@
   height: calculateRem(96px);
   overflow: hidden;
   border-radius: calculateRem(4px);
-  box-shadow: inset 0 calculateRem(1px) calculateRem(3px) 0 rgba($black, 0.5);
+  box-shadow: inset 0 calculateRem(1px) calculateRem(3px) 0 rgba(var(--black), 0.5);
 }
 
 .sb-image-section {
@@ -140,7 +140,7 @@
 .overlay-image {
   width: 100%;
   height: 100%;
-  background: rgba($black, 0.3);
+  background: rgba(var(--black), 0.3);
   position: absolute;
   left: 0;
   right: 0;
@@ -152,7 +152,7 @@
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  color: rgba($white, .6);
+  color: rgba(var(--white), .6);
   font-size: $base-block-space*4;
   cursor: pointer;
 }
