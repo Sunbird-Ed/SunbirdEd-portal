@@ -7,10 +7,10 @@ const routes: Routes = [
     {
         path: 'collection/:collectionId', component: CollectionPlayerComponent,
         data: {
-            // routeReuse: {
-            //     reuse: true,
-            //     path: 'resources/play/collection'
-            // },
+            routeReuse: {
+                reuse: true,
+                path: 'resources/play/collection'
+            },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'collection-player', type: 'play' }
         }
@@ -23,10 +23,10 @@ const routes: Routes = [
     }, {
         path: 'content/:contentId', component: ContentPlayerComponent,
         data: {
-            // routeReuse: {
-            //     reuse: true,
-            //     path: 'resources/play/content'
-            // },
+            routeReuse: {
+                reuse: true,
+                path: 'resources/play/content'
+            },
             telemetry: {
                 env: telemetryEnv, pageid: 'content-player', type: 'play'
             }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
