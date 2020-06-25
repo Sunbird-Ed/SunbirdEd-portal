@@ -376,7 +376,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.telemetryService.audit({
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{FromPage: 'teacher-self-declaration'}]
+        cdata: [{id: 'FromPage', type: 'teacher-self-declaration'}]
       },
       object: {id: 'data_sharing', type: 'TnC', ver: this.tncLatestVersion},
       edata: {state: 'Updated', props: [], prevstate: '', type: 'tnc-data-sharing'}
