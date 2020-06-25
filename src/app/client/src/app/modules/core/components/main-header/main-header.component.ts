@@ -7,7 +7,7 @@ import {
   FormService,
   ManagedUserService, ProgramsService, CoursesService
 } from './../../services';
-import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy, OnChanges } from '@angular/core';
 import {
   ConfigService,
   ResourceService,
@@ -15,6 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -30,7 +31,7 @@ declare var jQuery: any;
   templateUrl: './main-header.component.html',
 styleUrls: ['./main-header.component.scss']
 })
-export class MainHeaderComponent implements OnInit, OnDestroy {
+export class MainHeaderComponent implements OnInit, OnDestroy, OnChanges {
   @Input() routerEvents;
   languageFormQuery = {
     formType: 'content',
@@ -105,6 +106,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  hideHeader = false;
   public unsubscribe = new Subject<void>();
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
@@ -233,6 +235,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       let currentRoute = this.activatedRoute.root;
       this.showAccountMergemodal = false; // to remove popup on browser back button click
       this.contributeTabActive = this.router.isActive('/contribute', true);
+      this.hideHeader = (_.includes(this.router.url, 'explore-groups') || _.includes(this.router.url, 'my-groups'));
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;
@@ -440,6 +443,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+  }
+
+  ngOnChanges() {
+    console.log('c mdnvbdfvfblrejk');
   }
 
   ngOnDestroy() {

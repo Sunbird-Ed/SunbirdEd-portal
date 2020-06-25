@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService } from '@sunbird/shared';
 import { Router } from '@angular/router';
-
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
@@ -17,11 +17,12 @@ export class MyGroupsComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.showModal = !localStorage.getItem('login_ftu_groups');
     this.getMyGroupList();
   }
+
   async getMyGroupList() {
     this.groupService.getAllGroups().subscribe(data => {
-      console.log('dstaattata', data);
       this.groupList = data;
     });
   }
@@ -36,16 +37,16 @@ export class MyGroupsComponent implements OnInit {
   }
 
   public navigateToDetailPage(event) {
-    console.log('cbnfgbjgp', event);
-    // this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, groupId]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.identifier')]);
   }
 
   showFtuPopup() {
     this.showModal = !this.showModal;
   }
 
-  closeModal(event) {
+  closeModal() {
     this.showModal = false;
+    localStorage.setItem('login_ftu_groups', 'login_user');
   }
 
 }

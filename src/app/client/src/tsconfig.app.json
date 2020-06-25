@@ -70,7 +70,10 @@
       ],
       "LazzyLoadScriptService": [
         "app/service/LazzyLoadScript/lazzy-load-script.service.ts"
-      ]
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
+      ],
     },
     "module": "es2015",
     "types": []

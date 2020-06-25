@@ -50,23 +50,23 @@
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
-                    title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
+                    title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}" *ngIf="!hideHeader">
                     <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
                     <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
                     <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
                 </button>
                 <!--/QR Button-->
                 <!--Divider-->
-                <span class="computer only search-qrcode-divider"></span>
+                <span class="computer only search-qrcode-divider" *ngIf="!hideHeader"></span>
                 <!--/Divider-->
                 <!--Search Box-->
                 <!--Logged in Pages-->
-                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent"
+                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent && !hideHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 </app-search>
                 <!--/Logged in Pages-->
                 <!--Explore Pages-->
-                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent"
+                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent && !hideHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                     <div class="input-div relative">
                         <!-- <i class="search icon"></i> -->

@@ -15,8 +15,8 @@ export class ExploreFtuPopupComponent implements OnInit {
   }
 
   redirectTologin() {
-    localStorage.setItem('anonymous_ftu_groups', 'anonymous_user');
     this.showWelcomePopup = false;
+    localStorage.setItem('anonymous_ftu_groups', 'anonymous_user');
   }
 
 }

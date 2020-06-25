@@ -1,3 +1,4 @@
+import { GroupsModule } from './../../../groups';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -14,7 +15,8 @@ import { GroupRoutingModule } from './group-routing.module';
     CoreModule,
     SharedModule,
     GroupRoutingModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    GroupsModule
   ],
   declarations: [ ExploreGroupComponent, ExploreFtuPopupComponent ],
   exports: []
