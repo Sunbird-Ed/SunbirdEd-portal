@@ -70,6 +70,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnInit() {
+    this.getLanguageChange();
     // TODO change the slug to 'Igot'
     if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
@@ -99,6 +100,16 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
         });
+  }
+
+  private getLanguageChange() {
+    this.resourceService.languageSelected$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(item => {
+        if (_.get(this.enrolledSection, 'name')) {
+          this.enrolledSection.name = this.resourceService.frmelmnts.lbl.mytrainings;
+        }
+      });
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)

@@ -41,10 +41,10 @@ const routes: Routes = [
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
         data: {
-          routeReuse: {
-            reuse: true,
-            path: 'learn/course/play'
-          },
+          // routeReuse: {
+          //   reuse: true,
+          //   path: 'learn/course/play'
+          // },
           telemetry: { env: telemetryEnv, pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
