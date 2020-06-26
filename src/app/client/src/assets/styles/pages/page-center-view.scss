@@ -1,6 +1,4 @@
-@import './mixins/mixins';
-/* welcome screen */
- .sb-group-welcome-page-container {
+.sb-group-page-container {
     position:fixed;
     top:0px;
     left:0px;
@@ -11,26 +9,26 @@
     align-items:center;
     justify-content:center;
     background:rgba(0,0,0,0.75);
-    .sb-group-container {
-      position:relative;
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-direction: column;
-      max-width:calculateRem(480px);
-      width:calc(100% - 48px);
-      height:calc(100vh - 100px);
-      @include respond-above(sm){
-        max-height:calculateRem(490px);
-      }
-      text-align:center;
-      background: var(--white);
-      padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
-      border-radius:calculateRem(8px);
- 
-    }
   }
 
+  .sb-group-container {
+    position:relative;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    max-width:calculateRem(480px);
+    width:calc(100% - 48px);
+    height:calc(100vh - 100px);
+    @include respond-above(sm){
+      max-height:calculateRem(490px);
+    }
+    text-align:center;
+    margin:0 auto;
+    padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+    border-radius:calculateRem(8px);
+
+  }
 
   /* can be remove, comes from CC */
   .close {

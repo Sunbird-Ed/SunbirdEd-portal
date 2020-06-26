@@ -36,5 +36,10 @@ $width: "100" 100%,
 .min-height-auto {
   min-height: auto !important;
 }
-
+.min-w-auto {
+  min-width: auto !important;
+}
+.max-w-auto {
+  max-width: auto !important;
+}
 /* sizing styles ends */

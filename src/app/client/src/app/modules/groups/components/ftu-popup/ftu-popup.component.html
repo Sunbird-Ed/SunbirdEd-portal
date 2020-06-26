@@ -1,10 +1,11 @@
-<div class="sb-group-welcome-page-container" *ngIf="showWelcomePopup" #modal>
-  <div class="sb-group-welcome-container">
+<div class="sb-group-page-container" *ngIf="showWelcomePopup">
+  <div class="sb-group-container sb-bg-color-white">
     <a class="close" (click)="closeModal()"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
-      <use xlink:href="./assets/images/sprite.svg#close"></use>
-    </svg></i></a>
-    <h4 class="sb-group-welcome-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
-    <img src="./assets/images/welcome-group-img.svg" class="sb-group-welcome-container__img" />
-    <p class="sb-group-welcome-container__description">{{ resourceService.frmelmnts.lbl.groupWelcomeMsg }}</p>
+      <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
+
+    <!-- below content comes from CC -->
+    <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
+    <img src="./assets/images/welcome-group-img.svg" class="sb-group-container__img" />
+    <p class="sb-group-container__description">{{ resourceService.frmelmnts.lbl.groupWelcomeMsg }}</p>
   </div>
 </div>

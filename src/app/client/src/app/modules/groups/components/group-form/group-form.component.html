@@ -34,7 +34,7 @@
       <label class="d-flex flex-ai-center">
         <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
         [ngClass]="{'is-invalid' : isFieldValid('groupToc')}">
-        <span class="font-weight-normal fnormal">I Agree to the group's <a href="https://staging.ntp.net.in/term-of-use.html " target="_blank" class="sb-color-primary">terms of services</a></span>
+        <span class="font-weight-normal fnormal">I Agree to the group's <a href="/term-of-use.html " target="_blank" class="sb-color-primary">terms of services</a></span>
       </label>
       <small class="d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">You have to agree to group's terms of service, before you proceed</small>
     </div>
