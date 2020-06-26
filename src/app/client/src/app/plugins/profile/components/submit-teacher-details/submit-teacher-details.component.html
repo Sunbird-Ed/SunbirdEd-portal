@@ -179,6 +179,16 @@
             </div>
           </div>
         </div>
+        <div class="sb-checkbox sb-checkbox-primary sb-field mt-16"
+             *ngIf="field.inputType==='checkbox' && field.visible===true">
+          <input formControlName="{{field.code}}" type="checkbox" id="{{field.code}}" name="{{field.code}}" required>
+          <label for="{{field.code}}" class="fsmall mr-0">
+            {{resourceService?.frmelmnts?.lbl?.teacherDetailsTnc | interpolate:'{instance}': instance}}
+            <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+              {{resourceService?.frmelmnts?.lbl?.privacyPolicy}}
+            </a>
+          </label>
+        </div>
       </div>
     </div>
     <div class="sb-modal-actions">
@@ -204,3 +214,7 @@
       </button>
     </div>
   </sui-modal>
+
+  <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
+                 *ngIf="showTncPopup">
+  </app-tnc-popup>
