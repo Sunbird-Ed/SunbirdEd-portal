@@ -10,7 +10,6 @@
   class="sb-modal" 
   appBodyScroll 
   #createGroupModal 
-  [appTelemetryImpression]="telemetryImpression"
   (dismissed)="closeModal()"
   >
   <div class="sb-modal-header">{{ resourceService.frmelmnts.lbl.createGroup }}</div>
@@ -40,12 +39,11 @@
     </div>
     </form>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" appTelemetryInteract 
-      [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject" type="button"
+      <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
       [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
       (click)="onSubmitForm()">
        <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
-        {{ resourceService.frmelmnts.lbl.createGroup }}
+        {{ resourceService?.frmelmnts?.lbl?.createGroup }}
       </button>
     </div>
 

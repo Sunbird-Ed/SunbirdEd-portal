@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { MY_GROUPS, CREATE_EDIT_GROUP } from '../routerLinks';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -16,8 +18,7 @@ export class GroupHeaderComponent {
   @Input() groupData: string;
   showModal = false;
   showEditModal: boolean;
-  constructor(private renderer: Renderer2, public resourceService: ResourceService,
-    private navigationHelperService: NavigationHelperService) {
+  constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1) {
         this.closeModal();
@@ -26,16 +27,16 @@ export class GroupHeaderComponent {
   }
   deleteGroup() {
     this.showModal = true;
-    this.modalName = 'deleteGroup';
   }
   editGroup() {
-    this.showEditModal = true;
+    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+
   }
 
   closeModal() {
     this.showModal = false;
   }
-  dropdownMenu(){
+  dropdownMenu() {
     this.dropdownContent = !this.dropdownContent;
   }
 }
