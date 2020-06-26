@@ -1,6 +1,6 @@
-<div class="flex-dc d-flex flex-ai-center flex-jc-center mt-48 create-group-container" *ngIf="!groupList.length">
+<div class="flex-dc mt-48 sb-group-container" *ngIf="!groupList.length">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
-    <div class="d-flex flex-as-center"><img src="./assets/images/mygroups.svg" width="100%"></div>
+    <img src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
       Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
       (Group discription here)</div>
@@ -17,18 +17,16 @@
   <div class="sb-bg-color-white">
     <div class="ui container">
       <div class="sb-page-header-bar">
-        <h2>{{resourceService?.frmelmnts?.tab?.mygroups}}
-          <!-- <span class="badge">25</span> -->
-        </h2>
+        <h2>My Groups</h2>
         <div class="flex-ai-jc-center">
           <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mr-8" appTelemetryInteract
             [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject"
             type="button" (click)="showCreateFormModal()">
-            <img src="./assets/images/Group-4.svg" width="24px" class="mr-4" />
+            <img src="./assets/images/Group-4.svg" width="24" class="mr-4" />
             {{ resourceService.frmelmnts.lbl.createGroup }}
           </button>
-          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"  (click)="showFtuPopup()">
-            <img src="./assets/images/info-icon-blue.svg" width="20">
+          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup()">
+            <img src="./assets/images/info-icon-blue.svg" width="20" >
           </button>
         </div>
       </div>
@@ -37,7 +35,6 @@
 
   <div class="ui container mt-24">
     <div class="sb-card-grid">
-      
       <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList">
         <sb-group-card [group]= "group" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
