@@ -1,14 +1,13 @@
 import { SharedModule, ResourceService } from '@sunbird/shared';
-import { CacheService } from 'ng2-cache-service';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { FtuPopupComponent } from './ftu-popup.component';
 
 describe('FtuPopupComponent', () => {
   let component: FtuPopupComponent;
   let fixture: ComponentFixture<FtuPopupComponent>;
+  configureTestSuite();
   const resourceBundle = {
     frmelmnts: {
       lbl: {
@@ -33,5 +32,8 @@ describe('FtuPopupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    spyOn(component.close, 'emit');
+    component.closeModal();
+    expect(component.close.emit).toHaveBeenCalledWith(true);
   });
 });

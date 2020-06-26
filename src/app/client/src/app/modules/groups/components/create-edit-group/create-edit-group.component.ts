@@ -25,6 +25,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeForm();
   }
+
   private initializeForm() {
     this.groupForm = this.fb.group({
       groupName: ['', [
@@ -36,21 +37,25 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     });
   }
 
-  async onSubmitForm() {
+  onSubmitForm() {
     if (this.groupForm.valid) {
-      const group = await this.groupService.createGroup(this.groupForm.value);
-      if (group) {
-        this.toasterService.success('Group created successfully');
-        this.submitForm.emit(group);
-      }
-    } else {
-      Object.keys(this.groupForm.controls).forEach(field => {
-        const control = this.groupForm.get(field);
-
-        control.markAsTouched({ onlySelf: true });
+      this.groupService.createGroup(this.groupForm.value).subscribe(group => {
+        if (group) {
+          this.toasterService.success(this.resourceService.messages.smsg.m001);
+          this.submitForm.emit(group);
+        }
+        this.closeModal();
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m001);
+        Object.keys(this.groupForm.controls).forEach(field => {
+          const control = this.groupForm.get(field);
+          control.markAsTouched({ onlySelf: true });
+        });
+        this.closeModal();
       });
+    } else {
+      this.closeModal();
     }
-    this.closeModal();
   }
 
   closeModal() {

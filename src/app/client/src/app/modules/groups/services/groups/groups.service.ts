@@ -82,8 +82,8 @@ export class GroupsService {
     return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
   }
 
-  async createGroup(data: any) {
-    return await this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject).toPromise();
+  createGroup(data: any) {
+    return this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject);
   }
 
   getAllGroups() {
@@ -91,6 +91,6 @@ export class GroupsService {
   }
 
   getGroupById(groupId) {
-    return  this.groupCservice.getById(groupId);
+    return this.groupCservice.getById(groupId);
   }
 }

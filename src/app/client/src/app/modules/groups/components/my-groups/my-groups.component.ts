@@ -27,11 +27,6 @@ export class MyGroupsComponent implements OnInit {
     });
   }
 
-  public updateGroupList($event: any) {
-    this.showGroupCreateForm = false;
-    this.groupList.push($event);
-  }
-
   public showCreateFormModal() {
     this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
   }

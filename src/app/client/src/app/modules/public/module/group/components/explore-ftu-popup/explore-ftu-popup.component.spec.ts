@@ -2,10 +2,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { ExploreFtuPopupComponent } from './explore-ftu-popup.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExploreFtuPopupComponent', () => {
   let component: ExploreFtuPopupComponent;
   let fixture: ComponentFixture<ExploreFtuPopupComponent>;
+  configureTestSuite();
   const resourceBundle = {
     frmelmnts: {
       lbl: {
