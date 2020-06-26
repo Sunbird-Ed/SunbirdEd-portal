@@ -7,7 +7,7 @@ import {
   FormService,
   ManagedUserService, ProgramsService, CoursesService
 } from './../../services';
-import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
   ConfigService,
   ResourceService,
@@ -15,7 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData,
-  NavigationHelperService
+
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -31,7 +31,7 @@ declare var jQuery: any;
   templateUrl: './main-header.component.html',
 styleUrls: ['./main-header.component.scss']
 })
-export class MainHeaderComponent implements OnInit, OnDestroy, OnChanges {
+export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
   languageFormQuery = {
     formType: 'content',
@@ -443,10 +443,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy, OnChanges {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
-  }
-
-  ngOnChanges() {
-    console.log('c mdnvbdfvfblrejk');
   }
 
   ngOnDestroy() {

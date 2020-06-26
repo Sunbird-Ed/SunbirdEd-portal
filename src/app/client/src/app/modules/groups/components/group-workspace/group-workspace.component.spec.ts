@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupWorkspaceComponent } from './group-workspace.component';
@@ -11,6 +12,7 @@ describe('GroupWorkspaceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ GroupWorkspaceComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [ResourceService]
     })
     .compileComponents();
   }));
