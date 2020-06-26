@@ -13,7 +13,7 @@ export class GroupHeaderComponent {
   @Input() modalName: string;
   @Output() modalClosed = new EventEmitter();
   @Input() pastMembersList;
-  @Input() groupName: string;
+  @Input() groupData: string;
   showModal = false;
   showEditModal: boolean;
   constructor(private renderer: Renderer2, public resourceService: ResourceService,
