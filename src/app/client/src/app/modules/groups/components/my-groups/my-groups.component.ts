@@ -14,7 +14,7 @@ export class MyGroupsComponent implements OnInit {
   public groupList = [];
   public showModal = false;
   constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {
-    }
+  }
 
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_ftu_groups');

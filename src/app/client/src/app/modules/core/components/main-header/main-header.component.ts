@@ -15,7 +15,6 @@ import {
   UtilService,
   ToasterService,
   IUserData,
-
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';

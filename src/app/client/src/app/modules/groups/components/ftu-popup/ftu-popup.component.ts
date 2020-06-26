@@ -1,5 +1,5 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-ftu-popup',
