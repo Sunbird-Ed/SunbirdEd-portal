@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
 @Component({
@@ -20,7 +20,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   public editMode: boolean;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
-    private fb: FormBuilder, public groupService: GroupsService, private route: Router) { }
+    private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -60,7 +60,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.close();
-    this.route.navigate(['my-groups']);
+    this.navigationHelperService.goBack();
   }
 
   close() {
