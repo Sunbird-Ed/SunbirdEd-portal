@@ -30,5 +30,7 @@ describe('ExploreFtuPopupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    component.addUserLog();
+    expect(component.showWelcomePopup).toBeFalsy();
   });
 });

@@ -1,19 +1,15 @@
-import { MY_GROUPS } from './../routerLinks';
-import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { ResourceService, ToasterService, IUserProfile } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { ResourceService, ToasterService } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-
 @Component({
-  selector: 'app-group-form',
-  templateUrl: './group-form.component.html',
-  styleUrls: ['./group-form.component.scss']
+  selector: 'app-create-edit-group',
+  templateUrl: './create-edit-group.component.html',
+  styleUrls: ['./create-edit-group.component.scss']
 })
-export class GroupFormComponent implements OnInit, OnDestroy {
+export class CreateEditGroupComponent implements OnInit, OnDestroy {
   @ViewChild('createGroupModal') createGroupModal;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() submitForm = new EventEmitter<any>();
@@ -21,10 +17,6 @@ export class GroupFormComponent implements OnInit, OnDestroy {
   public formFieldOptions = [];
   public selectedOption: any = {};
   private unsubscribe: Subscription;
-  submitInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
-  telemetryImpression: IImpressionEventInput;
-  public userProfile: IUserProfile;
   public editMode: boolean;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,

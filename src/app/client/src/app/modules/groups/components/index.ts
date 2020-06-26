@@ -1,5 +1,4 @@
 export * from './add-member/add-member.component';
-export * from './group-form/group-form.component';
 export * from './group-header/group-header.component';
 export * from './group-workspace/group-workspace.component';
 export * from './my-groups/my-groups.component';
@@ -10,3 +9,4 @@ export * from './group-members/group-members.component';
 export * from './ftu-popup/ftu-popup.component';
 export * from './back-button/back-button.component';
 export * from './activity';
+export * from './create-edit-group/create-edit-group.component';

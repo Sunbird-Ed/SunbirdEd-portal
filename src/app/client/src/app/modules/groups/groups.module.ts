@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MyGroupsComponent, AddMemberComponent,
-  GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
+import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
   AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
   BackButtonComponent, ActivityListComponent, ActivityDashboardComponent, ActivitySearchComponent,
-  ActivityFormComponent } from './components';
+  ActivityFormComponent, CreateEditGroupComponent } from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
@@ -33,13 +32,14 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
-    GroupFormComponent, GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
+    GroupHeaderComponent, GroupWorkspaceComponent, NoGroupResultComponent,
     AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
     BackButtonComponent,
     ActivityListComponent,
     ActivityDashboardComponent,
     ActivitySearchComponent,
-    ActivityFormComponent]
+    ActivityFormComponent,
+    CreateEditGroupComponent]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {
