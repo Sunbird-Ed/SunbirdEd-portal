@@ -1,16 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
+
 @Component({
-  selector: 'app-group-workspace',
-  templateUrl: './group-workspace.component.html',
-  styleUrls: ['./group-workspace.component.scss']
+  selector: 'app-group-details',
+  templateUrl: './group-details.component.html',
+  styleUrls: ['./group-details.component.scss']
 })
-export class GroupWorkspaceComponent implements OnInit, OnDestroy {
+export class GroupDetailsComponent implements OnInit, OnDestroy {
   groupData;
   showModal = false;
   private groupId: string;
@@ -20,7 +21,7 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   showFilters = false;
 
   constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, private toasterService: ToasterService) {
     this.groupService = groupService;
   }
   ngOnInit() {
@@ -30,7 +31,9 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   getGroupData() {
     this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupData = groupData;
-    }, err => { });
+    }, err => {
+      this.toasterService.error('');
+    });
   }
   addActivity() {
     this.showModal = true;

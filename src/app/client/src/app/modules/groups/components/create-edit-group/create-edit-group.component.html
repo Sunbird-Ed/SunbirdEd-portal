@@ -12,30 +12,29 @@
   #createGroupModal 
   (dismissed)="closeModal()"
   >
-  <div class="sb-modal-header">{{ resourceService.frmelmnts.lbl.createGroup }}</div>
+  <div class="sb-modal-header">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
   <div class="sb-modal-content o-y-visible">
-    <div class="create-group-title pb-16">{{ resourceService.frmelmnts.lbl.enterFollowingInfo }}</div>
     <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
-        <label>{{ resourceService.frmelmnts.lbl.groupName }}</label>
-        <input class="sb-form-control" type="text" placeholder="{{ resourceService.frmelmnts.lbl.enterGroupName }}" formControlName="groupName" [ngClass]="{'is-invalid' : isFieldValid('groupName')}" maxlength="50">
-        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.groupName?.length}} Characters remaining</small>
-        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('groupName')">{{ resourceService.frmelmnts.lbl.groupNameRequired }}</small>
+        <label>{{ resourceService?.frmelmnts?.lbl?.groupName }}</label>
+        <input class="sb-form-control" type="text" placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="groupName" [ngClass]="{'is-invalid' : isFieldValid('groupName')}" maxlength="50">
+        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.groupName?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('groupName')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
       </div>
       <div class="sb-field mb-16">
-        <label>Description</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
         <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="groupDescription" [ngClass]="{'is-invalid' : isFieldValid('groupDescription')}" maxlength="150"
-        placeholder="Enter a description to help members understand the purpose of the group"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription }}"
         ></textarea>
-        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.groupDescription?.length}} Characters remaining</small>
+        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.groupDescription?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
       </div>
       <div class="sb-field mt-24 my-8">
       <label class="d-flex flex-ai-center">
         <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
         [ngClass]="{'is-invalid' : isFieldValid('groupToc')}">
-        <span class="font-weight-normal fnormal">I Agree to the group's <a href="/term-of-use.html " target="_blank" class="sb-color-primary">terms of services</a></span>
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc}}<a href="/term-of-use.html " target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.termsOfService}}</a></span>
       </label>
-      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">You have to agree to group's terms of service, before you proceed</small>
+      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc}}</small>
     </div>
     </form>
     <div class="sb-modal-actions">

@@ -14,9 +14,9 @@ export class ExploreFtuPopupComponent implements OnInit {
     this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
   }
 
-  addUserLog() {
+  userVisited() {
     this.showWelcomePopup = false;
-    localStorage.setItem('anonymous_ftu_groups', 'anonymous_user');
+    localStorage.setItem('anonymousUser_visited_groups', 'anonymous_user');
   }
 
 }

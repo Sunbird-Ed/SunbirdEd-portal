@@ -1,8 +1,9 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { GroupDetailsComponent } from './group-details.component';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { ResourceService, SharedModule } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
-import { GroupWorkspaceComponent } from './group-workspace.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { GroupsService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -10,9 +11,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 
-describe('GroupWorkspaceComponent', () => {
-  let component: GroupWorkspaceComponent;
-  let fixture: ComponentFixture<GroupWorkspaceComponent>;
+describe('GroupDetailsComponent', () => {
+  let component: GroupDetailsComponent;
+  let fixture: ComponentFixture<GroupDetailsComponent>;
   configureTestSuite();
   const fakeActivatedRoute = {};
   class RouterStub {
@@ -21,7 +22,7 @@ describe('GroupWorkspaceComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupWorkspaceComponent ],
+      declarations: [ GroupDetailsComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule, SuiModalModule],
       providers: [ResourceService, GroupsService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
@@ -34,7 +35,7 @@ describe('GroupWorkspaceComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GroupWorkspaceComponent);
+    fixture = TestBed.createComponent(GroupDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

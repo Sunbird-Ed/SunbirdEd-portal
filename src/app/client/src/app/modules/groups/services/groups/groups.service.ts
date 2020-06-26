@@ -5,6 +5,7 @@ import { map, mergeMap, filter, first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { CsModule } from '@project-sunbird/client-services';
+import { IGroup } from '../../interfaces';
 
 
 @Injectable({
@@ -82,15 +83,23 @@ export class GroupsService {
     return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
   }
 
-  createGroup(data: any) {
-    return this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject);
+  createGroup({groupName, groupDescription}: IGroup) {
+    return this.groupCservice.create(groupName, groupDescription);
   }
 
   getAllGroups() {
     return this.groupCservice.getAll();
   }
 
-  getGroupById(groupId) {
+  getGroupById(groupId: string) {
     return this.groupCservice.getById(groupId);
+  }
+
+  deleteGroupById (groupId: string) {
+    return this.groupCservice.deleteById(groupId);
+  }
+
+  addMemberById(memberId: string, groupId: string) {
+    return this.groupCservice.addMemberById(memberId, groupId);
   }
 }

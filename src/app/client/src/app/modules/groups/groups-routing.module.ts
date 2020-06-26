@@ -1,5 +1,5 @@
 import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_EDIT_GROUP, MY_GROUPS } from './components/routerLinks';
-import { MyGroupsComponent, GroupWorkspaceComponent, AddMemberComponent, CreateEditGroupComponent } from './components';
+import { MyGroupsComponent, AddMemberComponent, CreateEditGroupComponent, GroupDetailsComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../core/guard/auth-gard.service';
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
 
   {path: CREATE_EDIT_GROUP, component: CreateEditGroupComponent},
-  {path: WORKSPACE.GROUP_ID, component: GroupWorkspaceComponent },
+  {path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent },
   {path: ADD_MEMBER_TO_GROUP, component: AddMemberComponent },
 ];
 
