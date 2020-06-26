@@ -12,7 +12,7 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-<div *ngIf= "isBotEnabled === 'true'">
+<div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
