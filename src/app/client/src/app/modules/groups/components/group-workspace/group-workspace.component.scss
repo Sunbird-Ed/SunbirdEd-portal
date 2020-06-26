@@ -1,5 +1,5 @@
 @import "components/tabs";
-
+@import 'mixins/mixins';
 .section-header {
     display: flex;
     flex-direction: row;
@@ -72,3 +72,31 @@
       }
     }
   }
+  
+  .content-header {
+      background:var(--rc-FAFAFA);
+      min-height: calculateRem(14px);
+        &__content{
+            display:flex;
+            align-items: center;
+            justify-content: space-between;
+            @include respond-below(sm) {
+              display: block;
+            }
+        }
+        
+        &__title {
+            color: var(--primary-400);
+            font-size: calculateRem(18px);
+        }
+        &__info {
+          color: var(--gray-800);
+          font-size: calculateRem(14px);
+      }
+    }
+    .sb-pagesection-activity{
+      font-size: calculateRem(18px);
+    }
+    .sb-pageSection-activity-title{
+      color: var(--primary-400);
+    }

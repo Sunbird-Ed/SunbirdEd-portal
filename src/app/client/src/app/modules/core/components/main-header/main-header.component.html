@@ -86,7 +86,7 @@
                 <!--/Search Box-->
                 <!--Language Dropdown-->
                 <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
-                    *ngIf="languages && !router.isActive('workspace', false)">
+                    *ngIf="languages && showLanguageDropdown()">
                 </app-language-dropdown>
                 <!--/Language Dropdown-->
             </div>

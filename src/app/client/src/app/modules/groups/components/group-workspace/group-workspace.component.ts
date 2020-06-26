@@ -15,6 +15,10 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
+  showActivityList = false;
+  HideAddActivity = true;
+  showFilters = false;
+
   constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService,
     public resourceService: ResourceService) {
     this.groupService = groupService;
@@ -34,11 +38,16 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   closeModal() {
     this.showModal = false;
   }
-
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-
+  ActivitiesList() {
+    this.showActivityList = true;
+    this.closeModal();
+    this.HideAddActivity = false;
+  }
+  filterList() {
+    this.showFilters = true;
+  }
 }

@@ -1,10 +1,11 @@
-<app-group-header [groupData]="groupData"></app-group-header>
+<div *ngIf="HideAddActivity">
+  <app-group-header [groupData]="groupData"></app-group-header>
 <div class="ui container">
 <div class="sb-g mt-24">
   <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
     <div class="sb-pageSection">
       <div class="sb-pageSection-header">
-        <h4 class="sb-pageSection-title m-0 mr-5"> Activities</h4>
+        <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity"> Activities</h4>
         <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="addActivity()"><i class="plus icon"></i> Add activity</button>
       </div>
     </div>
@@ -15,7 +16,7 @@
     </div>
 </div>
 </div>
-
+</div>
 
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showModal">
@@ -24,7 +25,7 @@
   </div>
   <div class="sb-modal-content">
     <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
-      <input type="radio" id="radio1" name="example">
+      <input type="radio" id="radio1" name="example" checked>
       <label for="radio1">Courses</label>
     </div>
     <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
@@ -39,11 +40,55 @@
   </div>
   <!-- Delete Group modal -->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="ActivitiesList()">
       Next
     </button>
   </div>
 
 </sui-modal>
 
-
+<div class="vinod" *ngIf="showActivityList">
+  <app-back-button></app-back-button>
+  <div class="content-header">
+    <div class="ui container py-16">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <div class="flex-basis-1 mr-32">
+          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
+            <div>Add course</div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
+            <div class="sb-search-box large">
+              <div class="input-div relative">
+                  <i class="search icon"></i>
+                  <input class="sb-search-input" type="text" placeholder="Type to search for content. e.g. ’Story’" />
+              </div>
+              <button class="sb-btn sb-btn-normal">Search</button>
+          </div>
+          <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="filterList()">
+            <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg" width="16">Filter by
+          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-prominent-filter" *ngIf="showFilters">
+    <div class="ui container">
+      <div class="py-16">Filter section will come here</div>
+    </div>
+  </div>
+  <div class="ui container">
+    <div class="mt-24">
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title"> Recommendations based on your profile details</h4>
+        </div>
+      </div>
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">Showing 2 results for “social”</h4>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
