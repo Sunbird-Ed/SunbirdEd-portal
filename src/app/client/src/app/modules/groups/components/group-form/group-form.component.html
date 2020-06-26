@@ -6,7 +6,7 @@
   [mustScroll]="true" 
   [isClosable]="true" 
   [transitionDuration]="0"
-  [size]="'normal'" 
+  [size]="'small'" 
   class="sb-modal" 
   appBodyScroll 
   #createGroupModal 
@@ -34,7 +34,7 @@
         <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
         <span class="font-weight-normal fnormal">I Agree to SUNBIRD <a href="#" class="sb-color-primary">Terms of services</a></span>
       </label>
-      <small class="d-block message sb-color-error font-weight-bold mt-8 pl-20">You have to agree to SUNBIRD terms of service, before you proceed</small>
+      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20">You have to agree to SUNBIRD terms of service, before you proceed</small>
     </div>
       <!-- <div class="sb-field mb-16">
         <label>{{ resourceService.frmelmnts.lbl.boards }}:</label>
@@ -80,7 +80,7 @@
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" appTelemetryInteract 
     [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject" type="button"
     (click)="onSubmitForm()">
-     <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
+     <img src="./assets/images/Group-4.svg" width="24" height="24" class="mr-4">
       {{ resourceService.frmelmnts.lbl.createGroup }}
     </button>
   </div>

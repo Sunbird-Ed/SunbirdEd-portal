@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-group-workspace',
@@ -7,10 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupWorkspaceComponent {
   showModal = false;
+  showActivityList = false;
+  HideAddActivity = true;
+  showFilters = false;
+
+  constructor() {
+  }
   addActivity() {
     this.showModal = true;
   }
   closeModal() {
     this.showModal = false;
+  }
+  ActivitiesList() {
+    this.showActivityList = true;
+    this.closeModal();
+    this.HideAddActivity = false;
+  }
+  filterList() {
+    this.showFilters = true;
   }
 }
