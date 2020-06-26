@@ -35,7 +35,7 @@
         border-radius: 50%;
         border: calculateRem(6px) solid var(--white);
         background-color: var(--white);
-        box-shadow: 0 0 calculateRem(6px) 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--black), 0.1);
     }
     }
 }
