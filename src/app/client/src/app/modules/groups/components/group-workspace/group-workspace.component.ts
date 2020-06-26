@@ -22,15 +22,15 @@ export class GroupWorkspaceComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService,
     public resourceService: ResourceService) {
     this.groupService = groupService;
- }
+  }
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
   }
   getGroupData() {
-      this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-        this.groupData = groupData;
-       }, err => {});
+    this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupData = groupData;
+    }, err => { });
   }
   addActivity() {
     this.showModal = true;
