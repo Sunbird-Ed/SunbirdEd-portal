@@ -1,11 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import {IUserData, NavigationHelperService, ResourceService, ToasterService} from '@sunbird/shared';
+import {
+  IUserData,
+  NavigationHelperService,
+  ResourceService,
+  ServerResponse,
+  ToasterService,
+  UtilService
+} from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
-import { UserService, FormService, SearchService } from '@sunbird/core';
+import {UserService, FormService, SearchService, TncService} from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
 
@@ -45,16 +52,23 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   teacherObj;
   schoolObj;
   userSubscription: Subscription;
+  instance: string;
+  showTncPopup = false;
+  tncLatestVersion: any;
+  termsAndConditionLink: any;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
     public userService: UserService, public formService: FormService, public router: Router,
     public searchService: SearchService, private activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public tncService: TncService, public utilService: UtilService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.fetchTncData();
     const queryParams = this.activatedRoute.snapshot.queryParams;
     this.formAction = queryParams.formaction;
     this.telemetryImpressionEvent();
@@ -65,6 +79,28 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.setTelemetryData();
+  }
+
+  fetchTncData() {
+    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
+  }
+
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
   }
 
   telemetryImpressionEvent() {
@@ -324,12 +360,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
         this.closeModal();
       } else {
+        if (_.get(this.userDetailsForm, 'value.tnc')) {
+          this.logAuditEvent();
+        }
         this.showSuccessModal = true;
       }
     }, err => {
         this.closeModal();
         this.toasterService.error(this.formAction === 'submit' ? this.resourceService.messages.emsg.m0051 :
           this.resourceService.messages.emsg.m0052);
+    });
+  }
+
+  logAuditEvent() {
+    this.telemetryService.audit({
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{id: 'FromPage', type: 'teacher-self-declaration'}]
+      },
+      object: {id: 'data_sharing', type: 'TnC', ver: this.tncLatestVersion},
+      edata: {state: 'Updated', props: [], prevstate: '', type: 'tnc-data-sharing'}
     });
   }
 
