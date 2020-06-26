@@ -447,4 +447,20 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
+
+  /**
+   * Used to hide language change dropdown for specific route
+   * restrictedRoutes[] => routes where do not require language change dropdown
+   */
+  showLanguageDropdown() {
+    const restrictedRoutes = ['workspace', 'manage'];
+    let showLanguageChangeDropdown = true;
+    for (const route of restrictedRoutes) {
+      if (this.router.isActive(route, false)) {
+        showLanguageChangeDropdown = false;
+        break;
+      }
+    }
+    return showLanguageChangeDropdown;
+  }
 }
