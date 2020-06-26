@@ -125,14 +125,16 @@
               </div>
             </div>
 
-            <!-- ///// agree details and policy content ////-->
-            <!-- <div class="twelve wide column">
-              <div class="sb-checkbox sb-checkbox-primary p-24">
-                <input type="checkbox" id="check1" name="example">
-                <label for="check1" class="mb-0">I agree to share these details with the Administrators of DIKSHA as per the
-                  <a class="text-underline" href="javascript:void(0)">Privacy Policy</a></label>
-              </div>
-            </div> -->
+            <div class="sb-checkbox sb-checkbox-primary sb-field mt-16"
+                 *ngIf="field.inputType==='checkbox' && field.visible===true">
+              <input formControlName="{{field.code}}" type="checkbox" id="{{field.code}}" name="{{field.code}}" required>
+              <label for="{{field.code}}" class="fsmall mr-0">
+                {{resourceService?.frmelmnts?.lbl?.teacherDetailsTnc | interpolate:'{instance}': instance}}
+                <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+                  {{resourceService?.frmelmnts?.lbl?.privacyPolicy}}
+                </a>
+              </label>
+            </div>
 
           </div>
         </form>
@@ -178,16 +180,6 @@
               </label>
             </div>
           </div>
-        </div>
-        <div class="sb-checkbox sb-checkbox-primary sb-field mt-16"
-             *ngIf="field.inputType==='checkbox' && field.visible===true">
-          <input formControlName="{{field.code}}" type="checkbox" id="{{field.code}}" name="{{field.code}}" required>
-          <label for="{{field.code}}" class="fsmall mr-0">
-            {{resourceService?.frmelmnts?.lbl?.teacherDetailsTnc | interpolate:'{instance}': instance}}
-            <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
-              {{resourceService?.frmelmnts?.lbl?.privacyPolicy}}
-            </a>
-          </label>
         </div>
       </div>
     </div>
