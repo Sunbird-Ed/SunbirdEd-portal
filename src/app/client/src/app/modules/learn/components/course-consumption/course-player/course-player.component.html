@@ -108,3 +108,67 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
+
+
+
+<!-- new UI -->
+<div class="sb-bg-color-gray-0 textbook-container hide">
+  <div class="ui container">
+    <div class="textbook py-16 d-flex flex-ai-center">
+      <div class="textbook__details d-flex flex-ai-center">
+        <img src="./assets/images/book.png" class="textbook__bookimg" alt="textbook">
+        <div class="ml-8 textbook__heading">
+          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
+          <div class="textbook__rating">
+            <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
+          </div>
+        </div>
+      </div>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">Add to Group</button>
+    </div>
+  </div>
+</div>
+
+  <div class="ui container hide">
+    <div class="sb-course-details sb-g py-16">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+        <div>
+        <h4 class="font-weight-bold mb-16">Course Details</h4>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary"><img src="assets/images/certificate-icon.png" alt="Certificate" class="mr-4">Certified course</button>
+        <div class="training-relevant my-8">
+          <h6 class="mt-0 mb-8 fsmall training-relevant__heading">Training is relevant for teachers of:</h6>
+          <div class="fnormal mb-4"><span>Class:&nbsp;</span><span>9, 10</span></div>
+          <div class="fnormal mb-4"><span>Subject:&nbsp;</span><span>English, Mathmatics</span></div>
+          <div class="fnormal"><span>Medium:&nbsp;</span><span>English</span></div>
+        </div>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
+      </div>
+      <div class="d-flex flex-ai-center flex-jc-space-between mt-32">
+        <h4 class="font-weight-bold">Course modules</h4>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"><i class="icon plus mr-4"></i>Expand All</button>
+      </div>
+      </div>
+
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+        <sui-accordion class="styled fluid sb-accordion">
+          <sui-accordion-panel [isOpen]="true">
+            <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
+              Content Information
+              <i class="chevron down icon ml-auto"></i>
+            </div>
+            <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+              <div class="pb-24">
+                <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">Published on SUNBIRD by</div>
+                <div class="content-metadeta__text fnormal sb-color-gray-400">Chandigarh SCERT</div>
+              </div>
+              <div class="pb-24">
+                <div class="content-metadeta__title font-weight-bold fsmall mb-8 sb-color-gray-800">License Terms</div>
+                <div class="content-metadeta__text  fnormal sb-color-gray-400">Creative Commons Attribution(CC by)</div>
+              </div>
+              <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
+            </div>
+          </sui-accordion-panel>
+        </sui-accordion>
+      </div>
+    </div>
+  </div>
