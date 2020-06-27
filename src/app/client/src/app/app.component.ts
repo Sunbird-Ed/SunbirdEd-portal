@@ -183,6 +183,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.botObject['appId'] = this.userService.appId;
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
+
+    this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
+    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
 
   isLocationStatusRequired() {
