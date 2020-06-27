@@ -1,3 +1,26 @@
-<p>
-  activity-form works!
-</p>
+<div>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.selectActivity}}
+  </div>
+
+  <div class="sb-modal-content">
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
+      <input type="radio" id="radio1" name="example" checked>
+      <label for="radio1">{{resourceService?.frmelmnts?.lbl?.courses}}</label>
+    </div>
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
+      <input type="radio" id="radio2" name="example">
+      <label for="radio2">{{resourceService?.frmelmnts?.lbl?.textbooks}}</label>
+    </div>
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+      <input type="radio" id="radio3" name="example">
+      <label for="radio3">Lesson plan</label>
+    </div>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="next()">
+      {{resourceService?.frmelmnts?.lbl?.next}}
+    </button>
+  </div>
+</div>

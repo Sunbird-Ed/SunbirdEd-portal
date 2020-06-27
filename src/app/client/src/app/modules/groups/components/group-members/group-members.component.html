@@ -1,49 +1,54 @@
 <div class="status-container flex-dc d-flex p-8 py-16">
-  <div class="title mb-16 font-weight-bold pl-8"> Members <span class="badge">25</span></div>
-
-  <div class="sb-library-cards" *ngIf="membersList.length">
-
-   <div class="px-8">
-    <div class="sb-search-box small no-btn mb-16">
-      <div class="input-div relative">
-          <i class="search icon"></i>
-          <input class="sb-search-input" type="text" placeholder="Search within group" />
-      </div>
-      <button class="sb-btn sb-btn-normal">Search</button>
+  <div class="title mb-16 font-weight-bold pl-8">
+    {{resourceService?.frmelmnts?.lbl?.members}}
+    <span *ngIf="config?.showMemberCount" class="badge">{{members?.length}}</span>
   </div>
-   </div>
-  
-    <div class="cursor-pointer mb-8 fnormal px-8" (click)="addMember()"> 
-      <img class="" alt="admin" src="./assets/images/add-member-1.png" width="32"> Add member
+
+  <div class="sb-library-cards">
+    <div class="px-8" *ngIf="config?.showSearchBox">
+      <div class="sb-search-box small no-btn mb-16">
+        <div class="input-div relative">
+          <i class="search icon" aria-hidden="true"></i>
+          <input class="sb-search-input" type="text" #searchInputBox [(ngModel)]="searchQuery"
+            (input)="search(searchInputBox.value)" [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
+        </div>
+        <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+      </div>
     </div>
-    <div class="devided-line m-8"></div>
-    <div class="d-flex flex-dc">
-      <div *ngFor="let member of membersList">
-        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
-         [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+
+    <div *ngIf="config?.showAddMemberButton" (click)="addMember()">
+      <div class="cursor-pointer mb-8 fnormal px-8">
+        <img alt="admin" src="./assets/images/add-member-1.png" width="32">
+        {{resourceService?.frmelmnts?.lbl?.addMember}}
+      </div>
+      <div class="devided-line m-8"></div>
+    </div>
+
+    <div class="d-flex flex-dc" *ngIf="memberListToShow?.length">
+      <div *ngFor="let member of memberListToShow" style="position: relative;">
+        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
+          [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu" [indexOfMember]="member?.indexOfMember"
+          [initial]="member?.initial" (menuClick)="getMenuData($event)">
         </sb-member-card>
-        <div class="dropdown-menu-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
-          <div class="list" (click)="openModal('Promote')" >
-            <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
-            <span>{{resourceService?.frmelmnts?.btn?.groupAdmin}}</span>
+        <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
+          <div class="list" (click)="openModal('promote')">
+            <span>{{resourceService?.frmelmnts?.btn?.makeAdmin}}</span>
           </div>
-          <div class="list mb-8" (click)="openModal('Dismiss')">
-            <img class="" alt="admin" src="./../../../../../assets/images/admin-blue.svg">
+          <div class="list mb-8" (click)="openModal('dismiss')">
             <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
           </div>
-          <div class="list" (click)="openModal('Remove')">
-            <img class="" alt="admin" src="./../../../../../assets/images/remove-from-group.svg">
+          <div class="list" (click)="openModal('remove')" style="color: red">
             <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-      <img height="176" width="210" src="./assets/images/no-member.png">
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center" *ngIf="!memberListToShow?.length">
+      <img height="176" alt="no member" width="210" src="./assets/images/no-member.png">
     </div>
-    <div class="member-no-result pt-32">
+    <div class="member-no-result pt-32 hide">
       <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-        <img height="165" width="206" src="./assets/images/mygroups.svg">
+        <img alt="no member" height="165" width="206" src="./assets/images/mygroups.svg">
         <div class="mt-16 no-result-text">
           Sorry! there are no results to match your search. To continue your search
         </div>
@@ -53,6 +58,7 @@
         </div>
       </div>
     </div>
+  </div>
 </div>
-</div>
-<app-member-actions *ngIf="showModal" [modalName]="modalName" [member]="selectedMember"></app-member-actions>
+<app-member-actions *ngIf="showModal" [action]="memberAction" [member]="selectedMember" (modalClose)="onModalClose()"
+  (actionConfirm)="onActionConfirm()"></app-member-actions>

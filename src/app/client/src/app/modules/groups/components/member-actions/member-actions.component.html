@@ -1,25 +1,17 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="closeModal()" #modal>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  [ngClass]="{'sb-error': memberActionData?.theme === 'error'}" appBodyScroll (dismissed)="closeModal()" #modal>
+
   <div class="sb-modal-header">
-    {{modalName}} {{resourceService?.frmelmnts?.lbl?.member}} ?
+    {{memberActionData?.title}}
   </div>
+
   <div class="sb-modal-content">
-    <p *ngIf="modalName === 'Remove'">{{resourceService?.frmelmnts?.lbl?.doRemove}} <span class="font-weight-bold">memberName</span> {{resourceService?.frmelmnts?.lbl?.fromGroup}} ?</p>
-    <p *ngIf="modalName === 'Dismiss'"> {{resourceService?.frmelmnts?.lbl?.doDismiss}} <span class="font-weight-bold">memberName</span> {{resourceService?.frmelmnts?.lbl?.asAdmin}} ?</p>
-    <p *ngIf="modalName === 'Promote'">{{resourceService?.frmelmnts?.lbl?.doMake}} <span class="font-weight-bold">memberName</span> {{resourceService?.frmelmnts?.lbl?.asAdmin}} ?</p>
-  </div>
-  <div class="sb-modal-actions" *ngIf="modalName === 'Remove'">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="removeMember(modalName)">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
+    <p> {{memberActionData?.description}}</p>
   </div>
 
-  <!-- Admin Dismiss Modal ,make admin modal-->
-  <div class="sb-modal-actions" *ngIf="modalName === 'Dismiss' || modalName ===
-    'Promote'">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="removeMember(modalName)">{{resourceService?.frmelmnts?.btn?.yes}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
+      (click)="closeModal()">{{memberActionData?.buttonText}}</button>
   </div>
 
-  <!-- Delete Group modal -->
-
-</sui-modal> 
+</sui-modal>
