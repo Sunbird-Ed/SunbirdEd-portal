@@ -1,5 +1,3 @@
-/* istanbul ignore next */
-
 import { Component, OnInit } from '@angular/core';
 import { FrameworkService, SearchService } from '@sunbird/core';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -28,6 +26,7 @@ export class ActivitySearchComponent implements OnInit {
     private frameworkService: FrameworkService,
     private searchService: SearchService
   ) { }
+
   ngOnInit() {
     this.getFrameworkId();
     this.fetchContents();
@@ -37,12 +36,12 @@ export class ActivitySearchComponent implements OnInit {
     this.frameworkService.channelData$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((channelData) => {
+        /* istanbul ignore else */
         if (!channelData.err) {
           this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
-          this.fetchContents();
         }
       }, error => {
-        this.fetchContents();
+        console.error('Unable to fetch framework', error);
       });
   }
 
@@ -56,6 +55,8 @@ export class ActivitySearchComponent implements OnInit {
       mode: 'soft',
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
+
+    /* istanbul ignore else */
     if (this.frameworkId) {
       option.params.framework = this.frameworkId;
     }
@@ -64,11 +65,15 @@ export class ActivitySearchComponent implements OnInit {
       .subscribe(data => {
         this.showLoader = false;
         this.contentList = _.get(data, 'result.content');
-        console.log('contentList', this.contentList);
       }, err => {
         this.showLoader = false;
         this.contentList = [];
       });
+  }
+
+  toggleFilter() {
+    this.showFilters = !this.showFilters;
+    // TOTO add interact telemetry here
   }
 
 }
