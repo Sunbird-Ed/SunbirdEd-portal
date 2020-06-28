@@ -28,19 +28,22 @@ describe('MemberActionsComponent', () => {
   });
 
   it('should emit close event', () => {
+    component.modal = {
+      deny: jasmine.createSpy('deny')
+    };
     spyOn(component.modalClose, 'emit');
-    spyOn(component.modal, 'close');
     component.closeModal();
     expect(component.modalClose.emit).toHaveBeenCalled();
-    expect(component.modal.close).toHaveBeenCalled();
+    expect(component.modal.deny).toHaveBeenCalled();
   });
 
   it('should emit handleMember event', () => {
     spyOn(component.actionConfirm, 'emit');
     spyOn(component, 'closeModal');
+    component.action = 'dismiss';
     component.member = { identifier: '123' };
-    component.removeMember('Dismiss');
-    expect(component.actionConfirm.emit).toHaveBeenCalledWith({ data: { identifier: '123', modalName: 'Dismiss' } });
+    component.performAction();
+    expect(component.actionConfirm.emit).toHaveBeenCalled();
     expect(component.closeModal).toHaveBeenCalled();
   });
 });

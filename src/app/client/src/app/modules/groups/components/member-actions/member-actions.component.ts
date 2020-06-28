@@ -58,7 +58,7 @@ export class MemberActionsComponent implements OnDestroy {
     this.modalClose.emit();
   }
 
-  removeMember(name) {
+  performAction() {
     this.actionConfirm.emit({ data: this.member, action: this.action });
     this.closeModal();
   }

@@ -52,6 +52,7 @@ export class GroupMembersComponent implements OnInit {
     this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
 
+    /* istanbul ignore else */
     if (!this.config.showMemberMenu) {
       this.memberListToShow.forEach(item => item.isMenu = false);
     }
