@@ -54,7 +54,7 @@
   position: absolute;
   border-radius: calculateRem(2px);
   background-color: var(--white);
-  box-shadow: 0 2px 7px 0 rgba(var(--black),0.16);
+  box-shadow: 0 2px 7px 0 rgba(var(--rc-rgba-black),0.16);
   padding: calculateRem(16px);
   z-index: 1;
   text-align: left;
