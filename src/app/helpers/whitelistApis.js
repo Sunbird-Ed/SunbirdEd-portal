@@ -6,48 +6,189 @@
  * @version 1.0
  */
 
-module.exports = {
-  // Content related APIs
-  '/content/retire': '/content/retire',
-  '/content/reject': '/content/reject',
-  '/content/create': '/content/create',
-  '/content/update': '/content/update',
-  '/content/review': '/content/review',
-  '/content/content/v1/publish': '/content/content/v1/publish',
-  '/content/flag/accept': '/content/flag/accept',
-  '/content/flag/reject': '/content/flag/reject',
-
-  '/content/v1/search': '/content/v1/search',
-  '/content/content/v1/create': '/content/content/v1/create',
-  '/content/v1/media/upload': '/content/v1/media/upload',
-  '/content/v1/read': '/content/v1/read',
-  '/content/content/v1/retire': '/content/content/v1/retire',
-  '/content/content/v1/reject': '/content/content/v1/reject',
-  '/content/v1/flag': '/content/v1/flag',
-  '/content/content/v1/flag/accept': '/content/content/v1/flag/accept',
-  '/content/content/v1/flag/reject': '/content/content/v1/flag/reject',
-  '/content/content/v1/copy': '/content/content/v1/copy',
-
-  '/content/v3/update': '/content/v3/update',
-  '/content/v3/review': '/content/v3/review',
-  '/content/v3/hierarchy/add': '/content/v3/hierarchy/add',
-  '/content/v3/hierarchy/remove': '/content/v3/hierarchy/remove',
-  '/content/course/v1/create': '/content/course/v1/create',
-
-  // Collection Editor
-  '/action/content/v1/collaborator/update': '/action/content/v1/collaborator/update',
-  '/action/content/v3/hierarchy/update': '/action/content/v3/hierarchy/update',
-  '/action/content/v3/read': '/action/content/v3/read',
-  '/content/lock/v1/create': '/content/lock/v1/create',
-  '/content/lock/v1/retire': '/content/lock/v1/retire',
-  '/content/lock/v1/list': '/content/lock/v1/list',
-  '/action/content/v3/review': '/action/content/v3/review',
-  '/action/content/v3/update': '/action/content/v3/update',
-
-  // Content Editor
-  '/content/composite/v1/search': '/content/composite/v1/search',
-
-  // Generic Editor
-  '/action/content/v3/bundle': '/action/content/v3/bundle',
-  '/action/content/v3/upload': '/action/content/v3/upload'
+const CHECK = {
+  ROLE: 'ROLE_CHECK',
 };
+const ROLE = {
+  CONTENT_CREATOR: 'CONTENT_CREATOR',
+  CONTENT_REVIEW: 'CONTENT_REVIEW',
+  CONTENT_CREATION: 'CONTENT_CREATION',
+  CONTENT_REVIEWER: 'CONTENT_REVIEWER',
+  FLAG_REVIEWER: 'FLAG_REVIEWER',
+  PUBLIC: 'PUBLIC'
+};
+
+const API_LIST = {
+  URL: {
+    // Content related APIs
+    '/content/retire': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/reject': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/review': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/publish': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/flag/accept': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/flag/reject': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/v1/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v1/media/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v1/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/retire': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/reject': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v1/flag': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/flag/accept': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/content/v1/flag/reject': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/content/v1/copy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_CREATION, ROLE.CONTENT_REVIEWER]
+    },
+    '/content/content/v1/publish/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+    },
+    '/content/content/v1/reject/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+    },
+    '/content/content/v1/flag/accept/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.FLAG_REVIEWER]
+    },
+    '/content/content/v1/flag/reject/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.FLAG_REVIEWER]
+    },
+
+    '/content/v3/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v3/review': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v3/hierarchy/add': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/v3/hierarchy/remove': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/course/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    // Collection Editor
+    '/action/content/v1/collaborator/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v3/hierarchy/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v3/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/lock/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/lock/v1/retire': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/content/lock/v1/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v3/review': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v3/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    // Content Editor
+    '/content/composite/v1/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    // Generic Editor
+    '/action/content/v3/bundle': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/content/v3/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    }
+  },
+  URL_PATTERN: [
+    '/content/content/v1/copy/:do_id',
+    '/content/content/v1/publish/:do_id',
+    '/content/content/v1/reject/:do_id',
+    '/content/content/v1/flag/accept/:do_id',
+    '/content/content/v1/flag/reject/:do_id'
+  ]
+};
+module.exports = API_LIST;
