@@ -12,17 +12,17 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-<div *ngIf= "isBotEnabled === 'true' && resourceService.frmelmnts.btn?.botTitle">
+<div *ngIf= "isBotEnabled === 'true' && resourceService.frmelmnts.btn?.botTitle && botObject['channel']">
   <lib-chat-window 
       [inputValues]="{
         'title': resourceService?.frmelmnts.btn.botTitle,
         'header': resourceService?.frmelmnts.btn.botTitle,
         'imageUrl': botObject['imageUrl'],
-        'chatbotUrl': baseUrl + botServiceURL,
+        'chatbotUrl': botObject['chatbotUrl'],
         'userId':botObject['userId'],
         'did': botObject['did'],
-        'channel': botObject['channel'],
-        'appId': botObject['appId']
+        'appId': botObject['appId'],
+        'channel':botObject['channel']
       }">
   </lib-chat-window>
 </div>
