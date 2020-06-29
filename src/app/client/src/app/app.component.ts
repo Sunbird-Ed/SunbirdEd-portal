@@ -360,7 +360,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;
-          // this.botObject['did'] = deviceId;
+          this.botObject['did'] = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
