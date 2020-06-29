@@ -28,6 +28,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
   }
+
   getGroupData() {
     this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupData = groupData;
