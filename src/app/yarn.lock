@@ -103,10 +103,10 @@
     lodash "^4.17.10"
     uuid "^3.3.2"
 
-"@project-sunbird/ext-framework-server@0.1.26":
-  version "0.1.26"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/ext-framework-server/-/ext-framework-server-0.1.26.tgz#cd1c1cedd69baf72c6556e4ad1860de540ce376d"
-  integrity sha512-lHDx0mrYURKXyvSbBCgpBuPao0YECUAK41LWbdz4MnnIZmkEdaAPhFBfwdKFwLwG7/TsDi/UxZZSbOXQs9vb6Q==
+"@project-sunbird/ext-framework-server@0.1.27":
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/ext-framework-server/-/ext-framework-server-0.1.27.tgz#8b30558959eb912c7f40b93a509dd1465fc52128"
+  integrity sha512-YgPUM0WleYYva2Mbi7dakeUYhh0+60JHiIeeDhzcNPgU8UZyK9qqseFpwYVLBcVmX074yqFqLmlX7hDdr2EC/w==
   dependencies:
     "@project-sunbird/telemetry-sdk" "^0.0.7"
     axios "^0.18.0"

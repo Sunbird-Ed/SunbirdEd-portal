@@ -220,7 +220,7 @@ function handleShutDowns() {
     timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
     onShutdown: cleanup,
     finally: () => console.log('Server gracefully shut down.'),
-    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+    development: false //process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
   });
 }
 
