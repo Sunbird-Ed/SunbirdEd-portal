@@ -72,7 +72,10 @@
       ],
       "@sunbird/test-util": [
         "app/testUtil/"
-      ]
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
+      ],
     },
     "module": "es2015",
     "types": [

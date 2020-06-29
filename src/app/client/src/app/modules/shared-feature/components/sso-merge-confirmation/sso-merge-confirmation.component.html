@@ -21,12 +21,12 @@
         <p class="">{{resourceService.messages?.imsg?.m0062}} {{resourceService.messages?.imsg?.m0141 | interpolate:'{instance}': instance}}</p>
     </div>
     <div class="d-flex mt-40">
-      <button class="sb-btn sb-btn-outline-secondary sb-btn-md width-100 mr-8 mb-auto"
+      <button class="sb-btn sb-btn-outline-primary sb-btn-md width-100 mr-8 mb-auto"
               appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
               [telemetryInteractEdata]="{id: 'sso-create-user', type: 'click', pageid: 'user-migrate'}"
                (click)="createNewUser()">{{resourceService.frmelmnts?.btn?.createNew}}
       </button>
-      <button class="sb-btn sb-btn-secondary sb-btn-md width-100 ml-8 mb-auto"
+      <button class="sb-btn sb-btn-primary sb-btn-md width-100 ml-8 mb-auto"
               appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
               [telemetryInteractEdata]="{id: 'sso-user-migrate', type: 'click', pageid: 'user-migrate'}"
               (click)="migrateUser()">{{resourceService.frmelmnts?.btn?.merge}}
