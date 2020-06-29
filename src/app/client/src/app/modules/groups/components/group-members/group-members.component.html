@@ -28,7 +28,7 @@
       <div *ngFor="let member of memberListToShow" style="position: relative;">
         <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
           [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu" [indexOfMember]="member?.indexOfMember"
-          [initial]="member?.initial" (menuClick)="getMenuData($event)">
+          [initial]="member?.initial" (menuClick)="getMenuData($event, member)">
         </sb-member-card>
         <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
           <div class="list" (click)="openModal('promoteAsAdmin')">
