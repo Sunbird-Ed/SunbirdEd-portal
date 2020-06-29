@@ -41,7 +41,15 @@ describe('MemberActionsComponent', () => {
     spyOn(component.actionConfirm, 'emit');
     spyOn(component, 'closeModal');
     component.action = 'dismiss';
-    component.member = { identifier: '123' };
+    component.member = {
+      identifier: '2',
+      initial: 'P',
+      title: 'Paul Walker',
+      isAdmin: false,
+      isMenu: true,
+      indexOfMember: 5,
+      isCreator: false
+    };
     component.performAction();
     expect(component.actionConfirm.emit).toHaveBeenCalled();
     expect(component.closeModal).toHaveBeenCalled();

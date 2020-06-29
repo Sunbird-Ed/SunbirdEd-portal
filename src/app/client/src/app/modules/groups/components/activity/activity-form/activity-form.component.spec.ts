@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityFormComponent } from './activity-form.component';
 import { ResourceService } from '@sunbird/shared';
+import { FormsModule } from '@angular/forms';
 
 describe('ActivityFormComponent', () => {
   let component: ActivityFormComponent;
@@ -20,6 +21,7 @@ describe('ActivityFormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityFormComponent],
+      imports: [FormsModule],
       providers: [
         { provide: ResourceService, useValue: resourceBundle }]
     })
