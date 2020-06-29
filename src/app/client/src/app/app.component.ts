@@ -184,6 +184,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['appId'] = this.userService.appId;
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
   }
+  
+  isBotdisplayforRoute () {
+    const url = this.router.url;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
 
   isLocationStatusRequired() {
     const url = location.href;
