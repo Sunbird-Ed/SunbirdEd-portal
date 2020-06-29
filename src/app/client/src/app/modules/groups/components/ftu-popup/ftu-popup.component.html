@@ -15,20 +15,20 @@ appBodyScroll (dismissed)="modal.deny()" #modal *ngIf="showModal">
 <div class="sb-bg-color-white p-32">
   <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
     <div ngxSlickItem class="item-help">
-      <h4 class="mb-8">Adding members to a group</h4>
-      <p class="mb-32">You will need your member’s SUNBIRD ID to add him/her to a group.</p>
+      <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
+      <p class="mb-32">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>
       <h6>Step 1:</h6>
-      <p class="fnormal mt-8 mb-32">Click on the profile icon on the Header</p>
+      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
       <img src="./assets/images/idimage_1.png" alt="">
     </div>
     <div ngxSlickItem  class="item-help">
       <h6>Step 2:</h6>
-      <p class="fnormal mt-8 mb-32">Select the profile menu</p>
+      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
         <img src="./assets/images/idimage_2.png" alt="">
       </div>
     <div ngxSlickItem class="item-help">
       <h6>Step 3:</h6>
-      <p class="fnormal mt-8 mb-32">The SUNBIRD ID is written just below the profile name.</p>
+      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.InstanceIdProfilename }}</p>
       <img src="./assets/images/idimage_3.png" alt="">
     </div>
   </ngx-slick>
