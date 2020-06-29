@@ -86,7 +86,6 @@ describe('SignUpComponent', () => {
     component.signUpForm = undefined;
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     expect(component.signUpForm.valid).toBeFalsy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
@@ -96,7 +95,6 @@ describe('SignUpComponent', () => {
   it('should show validation error message for name', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -111,7 +109,6 @@ describe('SignUpComponent', () => {
   it('should show validation error message for phone', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -126,7 +123,6 @@ describe('SignUpComponent', () => {
   it('should show pattern match error message for phone', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -213,7 +209,6 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password cannot be same as your username.');
   }));
   it('should call onEmailChange method', () => {
-    spyOn(component, 'onEmailChange');
      spyOn(component, 'enableSignUpSubmitButton');
     component.ngOnInit();
     const contactType = component.signUpForm.controls['contactType'];

@@ -30,6 +30,7 @@ const validateRecaptcha = async (req, res, next) => {
     responseData = parseJson(responseData);
     errType = '';
     if (responseData && responseData.success) {
+      // TODO: Refactor in release-3.1.0
       if (userExistsAPI.indexOf(req.route.path) > -1) {
         next();
       } else {

@@ -188,7 +188,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.onContactTypeValueChanges();
     this.enableSignUpSubmitButton();
-    // this.onPhoneChange();
   }
 
   onPasswordChange(passCtrl: FormControl): void {
@@ -221,12 +220,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           this.signUpForm.controls['phone'].setValue('');
           emailControl.setValidators([Validators.required, Validators.email]);
           phoneControl.clearValidators();
-          // this.onEmailChange();
         } else if (mode === 'phone') {
           this.signUpForm.controls['email'].setValue('');
           emailControl.clearValidators();
           phoneControl.setValidators([Validators.required, Validators.pattern('^\\d{10}$')]);
-          // this.onPhoneChange();
         }
         emailControl.updateValueAndValidity();
         phoneControl.updateValueAndValidity();
@@ -241,32 +238,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = true;
       }
     });
-  }
-
-  onPhoneChange() {
-    const phoneControl = this.signUpForm.get('phone');
-    let phoneValue = '';
-    phoneControl.valueChanges.subscribe(
-      (data: string) => {
-        if (phoneControl.status === 'VALID' && phoneValue !== phoneControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
-          // this.vaidateUserContact();
-          phoneValue = phoneControl.value;
-        }
-      });
-  }
-
-  onEmailChange() {
-    const emailControl = this.signUpForm.get('email');
-    let emailValue = '';
-    emailControl.valueChanges.subscribe(
-      (data: string) => {
-        if (emailControl.status === 'VALID' && emailValue !== emailControl.value) {
-          this.signUpForm.controls['uniqueContact'].setValue('');
-          // this.vaidateUserContact();
-          emailValue = emailControl.value;
-        }
-      });
   }
 
   vaidateUserContact(captchaResponse) {
