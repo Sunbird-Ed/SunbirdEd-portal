@@ -35,7 +35,7 @@ const setConnectionTimeout = (time) => {
 }
 module.exports = (app) => {
 
-  app.post('/auth/v1/refresh/token', setConnectionTimeout(120000), bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  app.post('/auth/v1/refresh/token', setConnectionTimeout(60000), bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
       logger.info({msg: '>>>> /auth/v1/refresh/token called'});
       try {
@@ -57,7 +57,7 @@ module.exports = (app) => {
         }
         let options = {
           forever: true,
-          timeout: 120000,
+          timeout: 60000,
           method: 'POST',
           url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
           form: {
@@ -115,7 +115,7 @@ const verifyAuthToken = async (req) => {
   let options = {
     method: 'GET',
     forever: true,
-    timeout: 120000,
+    timeout: 60000,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
