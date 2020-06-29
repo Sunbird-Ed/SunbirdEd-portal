@@ -32,7 +32,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupData = groupData;
     }, err => {
-      this.toasterService.error('');
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }
   addActivity() {

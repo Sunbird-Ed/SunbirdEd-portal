@@ -25,15 +25,23 @@ export class GroupHeaderComponent {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
-        this.closeModal();
+        this.showModal = false;
       }
      });
   }
 
+  isShowModal() {
+    this.showModal = !this.showModal;
+  }
+
   deleteGroup() {
-    this.groupService.deleteGroupById(_.get(this.groupData, 'identifier')).subscribe(data => {
-      this.goBack();
-    }, err => {
+    this.isShowModal();
+    setTimeout(() => {
+      this.groupService.deleteGroupById(_.get(this.groupData, 'identifier')).subscribe(data => {
+        this.toasterService.success(this.resourceService.messages.smsg.m002);
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m003);
+      });
       this.goBack();
     });
   }
@@ -44,10 +52,6 @@ export class GroupHeaderComponent {
 
   goBack() {
     this.navigationHelperService.goBack();
-  }
-
-  closeModal() {
-    this.showModal = false;
   }
 
   dropdownMenu() {
