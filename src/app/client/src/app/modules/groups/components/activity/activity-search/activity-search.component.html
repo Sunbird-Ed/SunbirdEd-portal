@@ -1,3 +1,60 @@
-<p>
-  activity-search works!
-</p>
+<div>
+  <app-back-button></app-back-button>
+  <div class="content-header">
+    <div class="ui container py-16">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <div class="flex-basis-1 mr-32">
+          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
+            <div>{{resourceService?.frmelmnts?.lbl?.addCourse}}</div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
+            <div class="sb-search-box large">
+              <div class="input-div relative">
+                <i aria-hidden="true" class="search icon"></i>
+                <input class="sb-search-input" type="text" [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
+              </div>
+              <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+            </div>
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="toggleFilter()">
+              <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg" width="16">Filter by
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-prominent-filter" *ngIf="showFilters">
+    <div class="ui container">
+      <div class="py-16"></div>
+    </div>
+  </div>
+  <div class="ui container">
+    <div class="content-grid mt-24">
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">
+            <span *ngIf="!queryParams?.key?.length">{{resourceService?.frmelmnts?.lbl?.activityRecommendation}}</span>
+            <span *ngIf="queryParams?.key?.length">
+              {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : searchResultCount}}&nbsp;"
+              {{queryParams?.key}}"</span>
+          </h4>
+        </div>
+      </div>
+
+      <div class="sb-card-grid" *ngIf="showLoader">
+        <div class="sb-grid--item" *ngFor="let i of numberOfSections">
+          <sb-library-card [isLoading]="true"></sb-library-card>
+        </div>
+      </div>
+
+
+      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
+        <div class="sb-card-grid--item" *ngFor="let content of contentList;">
+          <sb-course-card (cardClick)="playContent($event)" [course]="content" [section]="null"
+            [cardImg]="content?.appIcon || './assets/images/book.png'">
+          </sb-course-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
