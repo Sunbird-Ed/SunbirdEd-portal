@@ -8,8 +8,9 @@ const uuidv1 = require('uuid/v1');
 const {parseJson} = require('./utilityService');
 
 
-const validateRecaptcha = async (req, res) => {
+const validateRecaptcha = async (req, res, next) => {
   let errType;
+  const userExistsAPI = ['/learner/user/v1/exists/email/:emailId', '/learner/user/v1/exists/phone/:phoneNumber'];
   try {
     // Validating if request is valid or not
     if (!req.query.captchaResponse) {
@@ -29,11 +30,15 @@ const validateRecaptcha = async (req, res) => {
     responseData = parseJson(responseData);
     errType = '';
     if (responseData && responseData.success) {
-      res.status(httpSatusCode.OK).send({
-        'id': 'api.validate.recaptcha', 'ts': new Date(),
-        'params': {'resmsgid': uuidv1(), 'status': 'successful'},
-        'responseCode': 'OK', 'result': responseData
-      })
+      if (userExistsAPI.indexOf(req.route.path) > -1) {
+        next();
+      } else {
+        res.status(httpSatusCode.OK).send({
+          'id': 'api.validate.recaptcha', 'ts': new Date(),
+          'params': {'resmsgid': uuidv1(), 'status': 'successful'},
+          'responseCode': 'OK', 'result': responseData
+        })
+      }
     } else {
       logger.info({
         msg: 'googleService:validateRecaptcha success',

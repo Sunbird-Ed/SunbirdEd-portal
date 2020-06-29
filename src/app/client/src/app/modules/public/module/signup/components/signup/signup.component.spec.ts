@@ -314,7 +314,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
       'responseCode': 'OK', 'result': {'exists': false}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
   });
@@ -329,7 +329,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
       'responseCode': 'OK', 'result': {'exists': true}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('uniquePhone');
     expect(component.signUpForm.controls['uniqueContact'].value).toBe('');
   });
@@ -344,7 +344,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({
       'responseCode': '500', 'params': {'status': 500, 'type': 'INTERNAL_SERVER_ERROR'}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
   });
