@@ -36,22 +36,22 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }
-  addActivity() {
-    this.showModal = true;
+
+  toggleActivityModal(visibility = false) {
+    this.showModal = visibility;
   }
-  closeModal() {
-    this.showModal = false;
-  }
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+
   ActivitiesList() {
     this.showActivityList = true;
-    this.closeModal();
+    this.toggleActivityModal(false);
     this.HideAddActivity = false;
   }
   filterList() {
     this.showFilters = true;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

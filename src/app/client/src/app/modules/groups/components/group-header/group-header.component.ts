@@ -16,8 +16,7 @@ export class GroupHeaderComponent {
   @ViewChild('modal') modal;
   @Input() modalName: string;
   @Output() modalClosed = new EventEmitter();
-  @Input() pastMembersList;
-  @Input() groupData: string;
+  @Input() groupData: {};
   showModal = false;
   showEditModal: boolean;
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
@@ -30,12 +29,12 @@ export class GroupHeaderComponent {
      });
   }
 
-  isShowModal() {
-    this.showModal = !this.showModal;
+  toggleModal(visibility = false) {
+    this.showModal = visibility;
   }
 
   deleteGroup() {
-    this.isShowModal();
+    this.toggleModal(false);
     setTimeout(() => {
       this.groupService.deleteGroupById(_.get(this.groupData, 'identifier')).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);

@@ -23,7 +23,7 @@
             <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="editGroup()">{{resourceService?.frmelmnts?.lbl?.editGroup}}</button>
           </div>
           <div class="list">
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="isShowModal()">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}</button>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
 </div>
 
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="showModal = false;" #modal *ngIf="showModal">
+  appBodyScroll (dismissed)="toggleModal(false)" #modal *ngIf="showModal">
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
   </div>
@@ -48,7 +48,7 @@
   <!-- Delete Group modal -->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="showModal = false;">{{resourceService?.frmelmnts?.btn?.no}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 
 </sui-modal>

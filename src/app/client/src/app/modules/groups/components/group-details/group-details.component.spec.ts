@@ -18,8 +18,8 @@ describe('GroupDetailsComponent', () => {
   const fakeActivatedRoute = {};
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = 'browse';
   }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupDetailsComponent ],
