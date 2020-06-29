@@ -1,3 +1,51 @@
-<p>
-  activity-dashboard works!
-</p>
+<div class="sb-bg-color-gray-0 textbook-container mt-48">
+  <div class="ui container">
+    <div class="textbook py-16 d-flex flex-ai-center">
+      <div class="textbook__details d-flex flex-ai-center">
+        <img src="./assets/images/book.png" class="textbook__bookimg" width="48" alt="textbook">
+        <div class="ml-8 textbook__heading">
+          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
+          <div class="textbook__rating">
+            <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
+          </div>
+        </div>
+      </div>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">Add to Group</button>
+    </div>
+  </div>
+</div>
+
+ 
+      <div class="ui container mt-24">
+        <div class="status-container sb-bg-color-white flex-dc d-flex p-8 py-16 br-4" style="width:40%;">
+          <div class="mr-8 mb-8 fxsmall text-right">Last Updated:20-05-2020</div>
+        
+           <div class="px-8">
+            <div class="sb-search-box no-btn mb-16">
+              <div class="input-div relative">
+                  <i class="search icon"></i>
+                  <input class="sb-search-input" type="text" placeholder="Search within group" />
+              </div>
+              <button class="sb-btn sb-btn-normal" type="button">Search</button>
+          </div>
+           </div>  
+            <div class="d-flex flex-dc">
+           <!-- member card comes here -->
+            </div>
+            <div class="flex-dc flex-ai-jc-center text-center my-24">
+              <img height="176" width="210" src="./assets/images/no-member.png">
+            </div>
+            <div class="member-no-result p-24">
+              <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+                <img height="165" width="206" src="./assets/images/no-member.png">
+                <div class="mt-16 no-result-text">
+                  Sorry! there are no results to match your search. To continue your search
+                </div>
+                <div class="my-8 no-result-desc">
+                  <div>*check your spelling</div>
+                  <div>* type a similar but, different name</div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>

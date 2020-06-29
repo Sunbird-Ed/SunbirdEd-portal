@@ -13,7 +13,7 @@
     }
 }
 
-.kabab-menu {
+.kabab-menu{
     color: var(--primary-400);
     width: calculateRem(30px);
     height: calculateRem(30px);
@@ -21,15 +21,16 @@
     text-align: center;
     border-radius: 50%;
     padding-left: calculateRem(6px);
-    &:hover {
-        background: var(--gray-0);
-        cursor: pointer;
+    &:hover{
+      background: var(--gray-0);
+      cursor: pointer;
     }
-}
-.kabab-menu::after {
-    content: "\2807";
-    font-size: calculateRem(24px);
-}
+    ::after {
+      content: '\2807';
+      font-size: calculateRem(24px);
+    }
+  }
+  
 .kabab-menu-dropdown-content {
     position: absolute;
     border-radius: calculateRem(2px);
@@ -46,5 +47,8 @@
         align-items: center;
         cursor: pointer;
         font-size: calculateRem(14px);
+        :hover {
+            color: var(--primary-400);
+          }
     }
 }
