@@ -45,6 +45,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   telemetryPlayerPageImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   isUnitCompleted = false;
+  isFullScreenView = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -68,6 +69,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToQueryParam();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 
   goBack() {

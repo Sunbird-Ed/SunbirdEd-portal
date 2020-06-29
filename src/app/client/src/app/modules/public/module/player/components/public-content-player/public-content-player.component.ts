@@ -67,7 +67,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   showCloseButton = false;
   contentRatingModal = false;
   showLoader = true;
-
+  isFullScreenView = false;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -98,6 +98,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }
       this.setTelemetryData();
       this.getContent();
+    });
+
+    this.navigationHelperService.contentFullScreenEvent.subscribe((isFullScreen) => {
+      this.isFullScreenView = isFullScreen;
     });
 
   }
