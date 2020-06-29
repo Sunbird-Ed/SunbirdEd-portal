@@ -12,8 +12,8 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import * as _ from 'lodash-es';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
-import {UserService, FormService, SearchService, TncService} from '@sunbird/core';
-import { takeUntil } from 'rxjs/operators';
+import {UserService, FormService, SearchService, TncService, OtpService} from '@sunbird/core';
+import {takeUntil, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
 
 @Component({
@@ -56,12 +56,18 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   showTncPopup = false;
   tncLatestVersion: any;
   termsAndConditionLink: any;
+  isEmailVerified = false;
+  isPhoneVerified = false;
+  isPhoneVerificationRequired = false;
+  isEmailVerificationRequired = false;
+  otpData;
+  isOtpVerificationRequired = false;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
     public userService: UserService, public formService: FormService, public router: Router,
     public searchService: SearchService, private activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService,
+    public navigationhelperService: NavigationHelperService, public otpService: OtpService,
     public tncService: TncService, public utilService: UtilService) {
     this.sbFormBuilder = formBuilder;
   }
@@ -167,10 +173,128 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     if (this.teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(this.teacherObj.id); }
     if (this.schoolObj) { this.userDetailsForm.controls['school'].setValue(this.schoolObj.id); }
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
+    this.setFormData();
     this.getState();
     this.showLoader = false;
     this.onStateChange();
     this.enableSubmitButton();
+  }
+
+  setFormData() {
+    // TODO: handle fetching of data from API for update form
+    const email = this.userProfile.maskedEmail;
+    const phone = this.userProfile.maskedPhone;
+    const emailControl = this.userDetailsForm.controls['email'];
+    const phoneControl = this.userDetailsForm.controls['phone'];
+    if (email) {
+      emailControl.setValue(email);
+    }
+    if (phone) {
+      phoneControl.setValue(phone);
+    }
+    emailControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newEmailId) => {
+      if (email === newEmailId) {
+        this.isEmailVerified = false;
+        this.isEmailVerificationRequired = false;
+        this.userDetailsForm.removeControl('emailVerified');
+        return;
+      }
+      if (newEmailId && emailControl.status === 'VALID') {
+        this.userDetailsForm.addControl('emailVerified', new FormControl('', Validators.required));
+        this.userDetailsForm.controls.emailVerified.setValue('');
+        this.isEmailVerified = false;
+        this.isEmailVerificationRequired = true;
+      } else if (!newEmailId) {
+        this.isEmailVerified = false;
+        this.isEmailVerificationRequired = false;
+        this.userDetailsForm.removeControl('emailVerified');
+      }
+    });
+
+    phoneControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newPhoneId) => {
+      if (phone === newPhoneId) {
+        this.isPhoneVerified = false;
+        this.isPhoneVerificationRequired = false;
+        this.userDetailsForm.removeControl('phoneVerified');
+        return;
+      }
+      if (newPhoneId && phoneControl.status === 'VALID') {
+        this.userDetailsForm.addControl('phoneVerified', new FormControl('', Validators.required));
+        this.userDetailsForm.controls.phoneVerified.setValue('');
+        this.isPhoneVerified = false;
+        this.isPhoneVerificationRequired = true;
+      } else if (!newPhoneId) {
+        this.isPhoneVerified = false;
+        this.isPhoneVerificationRequired = false;
+        this.userDetailsForm.removeControl('phoneVerified');
+      }
+    });
+  }
+
+  validateUser(fieldType) {
+    this.generateOTP(fieldType);
+  }
+
+  generateOTP(fieldType) {
+    const request = {
+      request: {
+        key: fieldType === 'phone' ?
+          this.userDetailsForm.controls.phone.value.toString() : this.userDetailsForm.controls.email.value,
+        type: fieldType
+      }
+    };
+    this.otpService.generateOTP(request).subscribe((data: ServerResponse) => {
+        this.otpData = this.prepareOtpData(fieldType);
+        this.isOtpVerificationRequired = true;
+      },
+      (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      }
+    );
+  }
+
+  onVerificationSuccess(data) {
+    this.isOtpVerificationRequired = false;
+    this.getFieldType(data);
+  }
+
+  getFieldType(data) {
+    if (_.get(data, 'phone')) {
+      this.isPhoneVerified = true;
+      this.userDetailsForm.controls.phoneVerified.setValue(true);
+      this.isPhoneVerificationRequired = false;
+    } else {
+      this.isEmailVerified = true;
+      this.userDetailsForm.controls.emailVerified.setValue(true);
+      this.isEmailVerificationRequired = false;
+    }
+  }
+
+  onOtpPopupClose() {
+    this.isOtpVerificationRequired = false;
+  }
+
+  onOtpVerificationError(data) {
+    this.isOtpVerificationRequired = false;
+  }
+
+  prepareOtpData(fieldType) {
+    let otpData: any = {};
+    switch (fieldType) {
+      case 'phone':
+        otpData.instructions = this.resourceService.frmelmnts.instn.t0083;
+        otpData.retryMessage = this.resourceService.frmelmnts.lbl.unableToUpdateMobile;
+        otpData.wrongOtpMessage = this.resourceService.frmelmnts.lbl.wrongPhoneOTP;
+        break;
+      case 'email':
+        otpData.instructions = this.resourceService.frmelmnts.instn.t0084;
+        otpData.retryMessage = this.resourceService.frmelmnts.lbl.unableToUpdateEmail;
+        otpData.wrongOtpMessage = this.resourceService.frmelmnts.lbl.wrongEmailOTP;
+        break;
+    }
+    otpData.fieldType = fieldType;
+    otpData.value = this.userDetailsForm.controls[fieldType].value;
+    return otpData;
   }
 
   setValidations(data) {
@@ -188,6 +312,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           break;
         case 'pattern':
           returnValue.push(Validators.pattern(validationData.value));
+          break;
+        case 'email':
+          returnValue.push(Validators.email);
           break;
       }
     });
@@ -355,6 +482,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateProfile(data) {
+    console.log('Updationg of profile Data');
+    console.log(data);
+    return;
     this.profileService.updateProfile(data).subscribe(res => {
       if (this.formAction === 'update') {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
