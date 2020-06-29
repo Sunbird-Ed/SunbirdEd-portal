@@ -169,6 +169,7 @@ export interface IAuditEventInput {
     'id': string;
     'type': string;
     'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IAuditEventEData;
 }
