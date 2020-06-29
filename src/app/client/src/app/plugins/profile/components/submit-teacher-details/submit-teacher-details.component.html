@@ -63,7 +63,7 @@
             </div>
 
             <div class="twelve wide column p-0 mx-16"
-                 *ngIf="field.code === 'phone' && field.visible===true">
+                 *ngIf="(field.code === 'phone' ||  field.code === 'email') && field.visible===true">
               <div class="fields-selection p-0">
                 <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
                 <div class="sb-field field-focus icon input">
@@ -73,7 +73,7 @@
                          [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
                          formControlName="{{field.code}}" name="code">
 
-                  <span class="info-error-icon" *ngIf="isPhoneVerified">
+                  <span class="info-error-icon" *ngIf="validationType[field.code].isVerified">
                     <img src="../../../../../assets/images/checkbox-icon.svg" width="24px" height="24px">
                   </span>
 
@@ -86,39 +86,9 @@
                 </div>
               </div>
               <!-- validate button -->
-              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100" *ngIf="isPhoneVerificationRequired">
-                <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="validateUser('phone')">
-                  {{resourceService.frmelmnts?.lbl?.validate}}</button>
-              </div>
-            </div>
-
-
-            <div class="twelve wide column p-0 mx-16"
-                 *ngIf="field.code === 'email' && field.visible===true">
-              <div class="fields-selection p-0">
-                <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
-                <div class="sb-field field-focus icon input">
-                  <i class="icon" *ngIf="field.code === 'phone'">+91-</i>
-                  <input class="sb-form-control selection ui dropdown" type="{{field.inputType}}"
-                         placeholder="{{field.description}}"
-                         [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                         formControlName="{{field.code}}" name="code">
-
-                  <span class="info-error-icon" *ngIf="isEmailVerified">
-                    <img src="../../../../../assets/images/checkbox-icon.svg" width="24px" height="24px">
-                  </span>
-
-                  <div *ngFor="let validation of field.validation">
-                    <label class="font-weight-normal invalid-msg"
-                           *ngIf="validation.message && userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
-                      {{ validation.message}}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <!-- validate button -->
-              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100" *ngIf="isEmailVerificationRequired">
-                <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="validateUser('email')">
+              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100"
+                   *ngIf="validationType[field.code].isVerificationRequired">
+                <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="validateUser(field.code)">
                   {{resourceService.frmelmnts?.lbl?.validate}}</button>
               </div>
             </div>

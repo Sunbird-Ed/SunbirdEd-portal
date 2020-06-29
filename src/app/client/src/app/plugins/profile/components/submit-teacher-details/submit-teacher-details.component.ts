@@ -56,12 +56,19 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   showTncPopup = false;
   tncLatestVersion: any;
   termsAndConditionLink: any;
-  isEmailVerified = false;
-  isPhoneVerified = false;
-  isPhoneVerificationRequired = false;
-  isEmailVerificationRequired = false;
   otpData;
   isOtpVerificationRequired = false;
+  validationType = {
+    phone: {
+      isVerified: false,
+      isVerificationRequired: false
+    },
+    email: {
+      isVerified: false,
+      isVerificationRequired: false
+    }
+  };
+
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
@@ -184,51 +191,36 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     // TODO: handle fetching of data from API for update form
     const email = this.userProfile.maskedEmail;
     const phone = this.userProfile.maskedPhone;
-    const emailControl = this.userDetailsForm.controls['email'];
-    const phoneControl = this.userDetailsForm.controls['phone'];
     if (email) {
-      emailControl.setValue(email);
+      this.userDetailsForm.controls['email'].setValue(email);
     }
     if (phone) {
-      phoneControl.setValue(phone);
+      this.userDetailsForm.controls['phone'].setValue(phone);
     }
-    emailControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newEmailId) => {
-      if (email === newEmailId) {
-        this.isEmailVerified = false;
-        this.isEmailVerificationRequired = false;
-        this.userDetailsForm.removeControl('emailVerified');
-        return;
-      }
-      if (newEmailId && emailControl.status === 'VALID') {
-        this.userDetailsForm.addControl('emailVerified', new FormControl('', Validators.required));
-        this.userDetailsForm.controls.emailVerified.setValue('');
-        this.isEmailVerified = false;
-        this.isEmailVerificationRequired = true;
-      } else if (!newEmailId) {
-        this.isEmailVerified = false;
-        this.isEmailVerificationRequired = false;
-        this.userDetailsForm.removeControl('emailVerified');
-      }
-    });
-
-    phoneControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newPhoneId) => {
-      if (phone === newPhoneId) {
-        this.isPhoneVerified = false;
-        this.isPhoneVerificationRequired = false;
-        this.userDetailsForm.removeControl('phoneVerified');
-        return;
-      }
-      if (newPhoneId && phoneControl.status === 'VALID') {
-        this.userDetailsForm.addControl('phoneVerified', new FormControl('', Validators.required));
-        this.userDetailsForm.controls.phoneVerified.setValue('');
-        this.isPhoneVerified = false;
-        this.isPhoneVerificationRequired = true;
-      } else if (!newPhoneId) {
-        this.isPhoneVerified = false;
-        this.isPhoneVerificationRequired = false;
-        this.userDetailsForm.removeControl('phoneVerified');
-      }
-    });
+    const fieldType = ['email', 'phone'];
+    for (let index = 0; index < fieldType.length; index++) {
+      const key = fieldType[index];
+      const keyControl = this.userDetailsForm.controls[key];
+      const email = this.userProfile['masked' + key];
+      keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
+        if (email === newValue) {
+          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerificationRequired = false;
+          this.userDetailsForm.removeControl(key + 'Verified');
+          return;
+        }
+        if (newValue && keyControl.status === 'VALID') {
+          this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
+          this.userDetailsForm.controls[key + 'Verified'].setValue('');
+          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerificationRequired = true;
+        } else if (!newValue) {
+          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerificationRequired = false;
+          this.userDetailsForm.removeControl(key + 'Verified');
+        }
+      });
+    }
   }
 
   validateUser(fieldType) {
@@ -255,19 +247,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   onVerificationSuccess(data) {
     this.isOtpVerificationRequired = false;
-    this.getFieldType(data);
+    const fieldType = this.getFieldType(data);
+    this.validationType[fieldType].isVerified = true;
+    this.userDetailsForm.controls[fieldType + 'Verified'].setValue(true);
+    this.validationType[fieldType].isVerificationRequired = false;
   }
 
   getFieldType(data) {
-    if (_.get(data, 'phone')) {
-      this.isPhoneVerified = true;
-      this.userDetailsForm.controls.phoneVerified.setValue(true);
-      this.isPhoneVerificationRequired = false;
-    } else {
-      this.isEmailVerified = true;
-      this.userDetailsForm.controls.emailVerified.setValue(true);
-      this.isEmailVerificationRequired = false;
-    }
+    return _.get(data, 'phone') ? 'phone' : 'email';
   }
 
   onOtpPopupClose() {
@@ -292,7 +279,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         otpData.wrongOtpMessage = this.resourceService.frmelmnts.lbl.wrongEmailOTP;
         break;
     }
-    otpData.fieldType = fieldType;
+    otpData.type = fieldType;
     otpData.value = this.userDetailsForm.controls[fieldType].value;
     return otpData;
   }
