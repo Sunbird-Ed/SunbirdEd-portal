@@ -2,28 +2,28 @@
 
 <app-back-button></app-back-button>
 
-<div class="content-header">
+<div class="content-header" *ngIf="groupData">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="flex-basis-1 mr-32">
         <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
-          <div>Class FiveB Science</div>
+            <div>{{groupData.name}}</div>
         </div>
         <div class="d-flex flex-ai-center content-header__info">
-          <div>Created by Arka Mani</div>
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy}}</div>
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button">
           <img src="./assets/images/info-icon-blue.svg" width="20">
         </button>
-        <div class="kabab-menu" (click)="dropdownMenu()"></div>
+        <div class="kabab-menu" id="group-actions"  (click)="dropdownMenu()"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
           <div class="list">
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="editGroup()">Edit group details</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="editGroup()">{{resourceService?.frmelmnts?.lbl?.editGroup}}</button>
           </div>
           <div class="list">
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="deleteGroup()">Delete group</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}</button>
           </div>
         </div>
       </div>
@@ -36,56 +36,19 @@
   </div>
 </div>
 
-  <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showModal">
-  <div class="sb-modal-header" *ngIf="modalName === 'deleteGroup'">
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="toggleModal(false)" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
   </div>
   <div class="sb-modal-content">
-    <p *ngIf="modalName === 'deleteGroup'"> {{resourceService?.messages?.imsg?.m0082}}
+    <p > {{resourceService?.messages?.imsg?.m0082}}
       {{groupName}} ?</p>
-    <!-- show past members modal -->
-    <div class="font-weight-bold my-16" *ngIf="modalName === 'showPastMembers'">{{resourceService?.frmelmnts?.lbl?.pastMembersList}}</div>
-    <div class="members-list my-24" *ngIf="modalName === 'showPastMembers'" appClickOutside (clickOff)="closeModal()">
-    <div *ngFor="let member of pastMembersList">
-      <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu"
-      [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
-     </sb-member-card>
-    </div>
-    </div>
   </div>
   <!-- Delete Group modal -->
-  <div class="sb-modal-actions" *ngIf="modalName === 'deleteGroup'">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.no}}</button>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 
-</sui-modal>
-<!-- add create group form -->
-<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showEditModal">
-  <div class="sb-modal-header">Edit group details</div>
-  <div class="sb-modal-content o-y-visible">
-    <form class="sb-form">
-      <div class="sb-field mb-16">
-        <label>{{ resourceService.frmelmnts.lbl.groupName }}</label>
-        <input class="sb-form-control" type="text" placeholder="Class FiveB Science" formControlName="groupName">
-        <small class="mt-4 pull-right sb-color-grey fxsmall">150 Characters remaining</small>
-      </div>
-   
-      <div class="sb-field mb-16">
-        <label>Description</label>
-        <textarea class="sb-form-control" rows="5" type="text" placeholder="Enter a description to help members understand the purpose of the group" formControlName="groupDescription"></textarea>
-        <small class="mt-4 pull-right sb-color-grey fxsmall">150 Characters remaining</small>
-      </div>
-    </form>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary">
-      Submit
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Reset
-    </button>
-  </div>
 </sui-modal>
