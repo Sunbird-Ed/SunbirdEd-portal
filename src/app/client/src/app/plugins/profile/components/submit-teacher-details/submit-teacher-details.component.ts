@@ -482,9 +482,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateProfile(data) {
-    console.log('Updationg of profile Data');
-    console.log(data);
-    return;
     this.profileService.updateProfile(data).subscribe(res => {
       if (this.formAction === 'update') {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
