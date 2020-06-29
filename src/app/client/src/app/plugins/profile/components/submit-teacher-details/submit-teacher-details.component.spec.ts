@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import {
@@ -18,12 +18,11 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {CoreModule, FormService, SearchService, TncService, UserService} from '@sunbird/core';
+import {CoreModule, FormService, SearchService, TncService, UserService, OtpService} from '@sunbird/core';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, ActivatedRoute } from '@angular/router';
-import {SignUpComponentMockData} from "../../../../modules/public/module/signup/components/signup/signup.component.spec.data";
 
 describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
@@ -37,7 +36,7 @@ describe('SubmitTeacherDetailsComponent', () => {
           env: 'profile', pageid: 'teacher-declaration', type: 'view',
           uri: '/profile/teacher-declaration',
         }
-      }, queryParams: {}
+      }, queryParams: {formaction: 'submit'}
     }
   };
 
@@ -45,7 +44,8 @@ describe('SubmitTeacherDetailsComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
-        'm0004': 'Something went wrong, try later'
+        'm0004': 'Something went wrong, try later',
+        'm0051': 'm0051'
       },
       'stmsg': {
         'm0130': 'We are fetching districts',
@@ -65,7 +65,15 @@ describe('SubmitTeacherDetailsComponent', () => {
     },
     'frmelmnts': {
       'lbl': {
-        'resentOTP': 'OTP resent'
+        'resentOTP': 'OTP resent',
+        unableToUpdateEmail: 'unableToUpdateEmail',
+        wrongEmailOTP: 'wrongEmailOTP',
+        wrongPhoneOTP: 'wrongPhoneOTP',
+        unableToUpdateMobile: 'unableToUpdateMobile'
+      },
+      instn: {
+        t0084: 't0084',
+        t0083: 't0083',
       }
     }
   };
@@ -83,7 +91,7 @@ describe('SubmitTeacherDetailsComponent', () => {
         SharedModule.forRoot()],
       declarations: [SubmitTeacherDetailsComponent],
       providers: [{provide: ResourceService, useValue: resourceBundle}, UserService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}, TelemetryService,
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute}, TelemetryService, OtpService,
         ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService, FormService, SearchService,
         NavigationHelperService, DeviceDetectorService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -110,6 +118,8 @@ describe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('should call ng on init', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'impression');
@@ -282,4 +292,58 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.showAndHidePopup(false);
     expect(component.showTncPopup).toBe(false);
   });
+
+  it('should closed popup as otp verification failed', () => {
+    component.onOtpVerificationError({});
+    expect(component.isOtpVerificationRequired).toBe(false);
+  });
+
+  it('should closed popup as event fired', () => {
+    component.onOtpPopupClose();
+    expect(component.isOtpVerificationRequired).toBe(false);
+  });
+
+  it('should get proper field type phone', () => {
+    const fieldType = component.getFieldType({phone: '22'});
+    expect(fieldType).toBe('phone');
+  });
+
+  it('should get proper field type email', () => {
+    const fieldType = component.getFieldType({email: '22'});
+    expect(fieldType).toBe('email');
+  });
+
+  it('should set if verification success', () => {
+    component.userDetailsForm.addControl('emailVerified', new FormControl());
+    component.onVerificationSuccess({email: '22'});
+    expect(component.isOtpVerificationRequired).toBe(false);
+    expect(component.validationType.email.isVerified).toBe(true);
+  });
+
+  it('should validate user', () => {
+    const otpService = TestBed.get(OtpService);
+    spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
+    const emailControl = component.userDetailsForm.controls['email'];
+    emailControl.setValue('test@gmail.com');
+    component.userDetailsForm.addControl('emailVerified', new FormControl());
+    component.validateUser('email');
+    expect(component.isOtpVerificationRequired).toBe(true);
+    expect(component.otpData.instructions).toBe(resourceBundle.frmelmnts.instn.t0084);
+    expect(component.otpData.type).toBe('email');
+  });
+
+  it('should not validate user as otp generation failed', () => {
+    const otpService = TestBed.get(OtpService);
+    const toasterService = TestBed.get(ToasterService);
+
+    spyOn(toasterService, 'error');
+
+    spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockRes.successResponse));
+    const emailControl = component.userDetailsForm.controls['email'];
+    emailControl.setValue('test@gmail.com');
+    component.userDetailsForm.addControl('emailVerified', new FormControl());
+    component.validateUser('email');
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
+  });
+
 });
