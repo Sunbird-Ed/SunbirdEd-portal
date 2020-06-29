@@ -1,3 +1,18 @@
-<p>
-  activity-form works!
-</p>
+<div>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.selectActivity}}
+  </div>
+
+  <div class="sb-modal-content">
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16" *ngFor="let item of activityTypes">
+      <input type="radio" [id]="item?.name" name="group-activity" [value]="item" [(ngModel)]="selectedActivity">
+      <label for="item?.name">{{item?.title}}</label>
+    </div>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" type="submit" (click)="next()">
+      {{resourceService?.frmelmnts?.lbl?.next}}
+    </button>
+  </div>
+</div>

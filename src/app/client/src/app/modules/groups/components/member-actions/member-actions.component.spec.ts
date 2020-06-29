@@ -11,10 +11,10 @@ describe('MemberActionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MemberActionsComponent ],
+      declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -28,19 +28,30 @@ describe('MemberActionsComponent', () => {
   });
 
   it('should emit close event', () => {
-    spyOn(component.modalClosed, 'emit');
-    spyOn(component.modal, 'close');
+    component.modal = {
+      deny: jasmine.createSpy('deny')
+    };
+    spyOn(component.modalClose, 'emit');
     component.closeModal();
-    expect(component.modalClosed.emit).toHaveBeenCalled();
-    expect(component.modal.close).toHaveBeenCalled();
+    expect(component.modalClose.emit).toHaveBeenCalled();
+    expect(component.modal.deny).toHaveBeenCalled();
   });
 
   it('should emit handleMember event', () => {
-    spyOn(component.handleMember, 'emit');
+    spyOn(component.actionConfirm, 'emit');
     spyOn(component, 'closeModal');
-    component.member = {identifier: '123'};
-    component.removeMember('Dismiss');
-    expect(component.handleMember.emit).toHaveBeenCalledWith({data: {identifier: '123', modalName: 'Dismiss'}});
+    component.action = 'dismiss';
+    component.member = {
+      identifier: '2',
+      initial: 'P',
+      title: 'Paul Walker',
+      isAdmin: false,
+      isMenu: true,
+      indexOfMember: 5,
+      isCreator: false
+    };
+    component.performAction();
+    expect(component.actionConfirm.emit).toHaveBeenCalled();
     expect(component.closeModal).toHaveBeenCalled();
   });
 });
