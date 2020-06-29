@@ -8,7 +8,7 @@ import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 export class GroupHeaderComponent {
   showDeleteModal;
   showPastMemberModal;
-  dropdownContent: boolean;
+  dropdownContent = true;
   @ViewChild('modal') modal;
   @Input() modalName: string;
   @Output() modalClosed = new EventEmitter();
