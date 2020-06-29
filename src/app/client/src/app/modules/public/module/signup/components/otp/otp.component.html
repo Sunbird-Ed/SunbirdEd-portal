@@ -25,9 +25,9 @@
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
        
        <input type="button" appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-        class="sb-btn sb-btn-normal sb-btn-outline-secondary mr-8 w-50" tabindex="2"
+        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 w-50" tabindex="2"
        [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="Resend OTP"/>
        <input type="submit" appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-       class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-secondary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
+       class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
 </form>
