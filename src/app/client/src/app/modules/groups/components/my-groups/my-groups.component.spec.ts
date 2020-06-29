@@ -48,12 +48,16 @@ describe('MyGroupsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get all the groups list', () => {
-    const groupService = TestBed.get(GroupsService);
-    spyOn(groupService, 'getAllGroups').and.callFake(() => observableOf(mygroupsMockData.mockGroupList[0]));
+  it('should call getMyGroupList', () => {
+    spyOn(component, 'getMyGroupList');
     component.ngOnInit();
+    expect(component.getMyGroupList).toHaveBeenCalled();
+  });
+
+  it('should call getAllGroups list', () => {
+    spyOn(component.groupService, 'getAllGroups').and.callFake(() => observableOf(mygroupsMockData.mockGroupList[0]));
     component.getMyGroupList();
-    expect(component.groupList.length).toEqual(0);
+    expect(component.groupService.getAllGroups).toHaveBeenCalled();
   });
 
   it('should show create group modal', () => {
@@ -61,16 +65,10 @@ describe('MyGroupsComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
   });
 
-  it('should update group list when create group form submit', () => {
-    component.updateGroupList(mygroupsMockData.mockGroupList[0]);
-    expect(component.groupList.length).toEqual(1);
-  });
-
   it('should navigate to group detail page', () => {
-    const groupid = mygroupsMockData.mockGroupList[0].identifier;
     const router = TestBed.get(Router);
-    component.navigateToDetailPage(groupid);
-    expect(router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, groupid]);
+    component.navigateToDetailPage({data: {identifier: '123'}});
+    expect(router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, '123']);
   });
 
 });

@@ -11,7 +11,7 @@
           <sui-select-option *ngFor="let state of orgList" [value]="state"></sui-select-option>
         </sui-select>
         <button appTelemetryInteract [telemetryInteractEdata]="submitOrgInteractEdata"
-          [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-secondary':!disableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-secondary w-100"
+          [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary w-100"
           tabindex="0" (click)="handleOrgSelection($event)">{{ resourceService?.frmelmnts?.btn?.submit || 'Submit'}}</button>
       </div>
     </div>

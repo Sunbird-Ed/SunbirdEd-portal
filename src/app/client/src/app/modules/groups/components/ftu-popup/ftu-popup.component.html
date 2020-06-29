@@ -1,18 +1,11 @@
 <div class="sb-group-page-container" *ngIf="showWelcomePopup">
   <div class="sb-group-container sb-bg-color-white">
-    <a class="close" (click)="showWelcomePopup = false"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+    <a class="close" (click)="closeModal()"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
       <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
 
     <!-- below content comes from CC -->
     <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
     <img src="./assets/images/welcome-group-img.svg" class="sb-group-container__img" />
-    <p class="sb-group-container__description">{{ resourceService.frmelmnts.lbl.groupWelcomeMsg }}</p>
-    <!-- <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" (click)="redirectTologin()">{{ resourceService.frmelmnts.lbl.getStarted }}<span
-      class='arrow-icon pull-right'><i class="icon-svg icon-svg--xxs icon-back">
-        <svg class="icon icon-svg--white">
-          <use xlink:href="./assets/images/sprite.svg#arrow-long-right"></use>
-        </svg></i></span></button> -->
-         <!-- below content comes from CC -->
-
+    <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
   </div>
 </div>

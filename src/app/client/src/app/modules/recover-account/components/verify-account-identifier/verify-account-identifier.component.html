@@ -23,11 +23,11 @@
       </div>
     </div>
     <div class="d-flex flex-jc-space-between mt-32">
-      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-secondary" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
+      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-primary" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
         appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp"
         [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="handleResendOtp()"> {{resendOTPbtn}}</button>
-      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit"
+      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit"
         appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
         [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
