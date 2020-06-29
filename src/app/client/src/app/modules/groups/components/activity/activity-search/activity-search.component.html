@@ -11,7 +11,7 @@
             <div class="sb-search-box large">
               <div class="input-div relative">
                 <i aria-hidden="true" class="search icon"></i>
-                <input class="sb-search-input" type="text" placeholder="Type to search for content. e.g. ’Story’" />
+                <input class="sb-search-input" type="text" [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
               </div>
               <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
@@ -25,7 +25,7 @@
   </div>
   <div class="sb-prominent-filter" *ngIf="showFilters">
     <div class="ui container">
-      <div class="py-16">Filter section will come here</div>
+      <div class="py-16"></div>
     </div>
   </div>
   <div class="ui container">

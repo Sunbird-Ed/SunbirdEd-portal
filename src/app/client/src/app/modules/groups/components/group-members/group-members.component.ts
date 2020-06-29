@@ -13,6 +13,16 @@ export interface IGroupMemberConfig {
   showMemberMenu: boolean;
 }
 
+export interface IGroupMember {
+  identifier: string;
+  initial: string;
+  title: string;
+  isAdmin: boolean;
+  isMenu: boolean;
+  indexOfMember: number;
+  isCreator: boolean;
+}
+
 @Component({
   selector: 'app-group-members',
   templateUrl: './group-members.component.html',
@@ -26,10 +36,10 @@ export class GroupMembersComponent implements OnInit {
     showAddMemberButton: false,
     showMemberMenu: false
   };
-  @Input() members = [
+  @Input() members: IGroupMember[] = [
     { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
-    { identifier: '2', initial: 'P', title: 'Paul Walker', isMenu: true, indexOfMember: 5 },
-    { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7 }
+    { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
+    { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: true }
   ];
   showMenu = false;
   showModal = false;
@@ -73,7 +83,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   search(searchKey: string) {
-    if (searchKey.length > 2) {
+    if (searchKey.trim().length > 2) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
     } else {

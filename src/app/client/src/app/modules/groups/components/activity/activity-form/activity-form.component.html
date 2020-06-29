@@ -4,22 +4,14 @@
   </div>
 
   <div class="sb-modal-content">
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
-      <input type="radio" id="radio1" name="example" checked>
-      <label for="radio1">{{resourceService?.frmelmnts?.lbl?.courses}}</label>
-    </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
-      <input type="radio" id="radio2" name="example">
-      <label for="radio2">{{resourceService?.frmelmnts?.lbl?.textbooks}}</label>
-    </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-      <input type="radio" id="radio3" name="example">
-      <label for="radio3">Lesson plan</label>
+    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16" *ngFor="let item of activityTypes">
+      <input type="radio" [id]="item?.name" name="group-activity" [value]="item" [(ngModel)]="selectedActivity">
+      <label for="item?.name">{{item?.title}}</label>
     </div>
   </div>
 
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="next()">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" type="submit" (click)="next()">
       {{resourceService?.frmelmnts?.lbl?.next}}
     </button>
   </div>

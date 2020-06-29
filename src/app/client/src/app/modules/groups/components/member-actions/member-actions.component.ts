@@ -1,6 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, Input, EventEmitter, ViewChild, Output, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
+import { IGroupMember } from '../group-members/group-members.component';
 
 export interface IMemberActionData {
   title: string;
@@ -8,6 +9,7 @@ export interface IMemberActionData {
   buttonText: string;
   theme?: 'primary' | 'error';
 }
+
 @Component({
   selector: 'app-member-actions',
   templateUrl: './member-actions.component.html',
@@ -16,7 +18,7 @@ export interface IMemberActionData {
 export class MemberActionsComponent implements OnDestroy {
   @ViewChild('modal') modal;
   @Input() action: string;
-  @Input() member: any;
+  @Input() member: IGroupMember;
   @Output() modalClose = new EventEmitter<void>();
   @Output() actionConfirm = new EventEmitter<any>();
 
@@ -26,7 +28,7 @@ export class MemberActionsComponent implements OnDestroy {
 
   ngOnInit() {
     switch (this.action) {
-      case 'promote':
+      case 'promoteAsAdmin':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.btn.makeAdmin}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.makeAdmin, '{memberName}', this.member.title),
@@ -34,7 +36,7 @@ export class MemberActionsComponent implements OnDestroy {
           theme: 'primary'
         };
         break;
-      case 'remove':
+      case 'removeFromGroup':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.btn.removeMember}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.removeWarning, '{memberName}', this.member.title),
@@ -42,7 +44,7 @@ export class MemberActionsComponent implements OnDestroy {
           theme: 'error'
         };
         break;
-      case 'dismiss':
+      case 'dismissAsAdmin':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.btn.dismissAdmin}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.dismissWarning, '{memberName}', this.member.title),

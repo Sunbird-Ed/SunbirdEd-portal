@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FrameworkService, SearchService } from '@sunbird/core';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +24,8 @@ export class ActivitySearchComponent implements OnInit {
     public resourceService: ResourceService,
     public configService: ConfigService,
     private frameworkService: FrameworkService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit() {
@@ -68,6 +69,7 @@ export class ActivitySearchComponent implements OnInit {
       }, err => {
         this.showLoader = false;
         this.contentList = [];
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
   }
 
