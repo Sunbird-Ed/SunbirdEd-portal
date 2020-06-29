@@ -20,7 +20,7 @@
     align-items: center;
     .badge {
       display: inline-block;
-      background: #d4d3d3;
+      background: var(--rc-d4d3d3);
       color: var(--gray-800);
       text-align: center;
       padding: 0 0.75rem;
@@ -29,9 +29,9 @@
       line-height: 1.5rem;
       font-size: 1rem;
       font-weight: 400;
-      margin-left: 8px;
+      margin-left: calculateRem(8px);
       html[dir="rtl"] & {
-        margin-right: 8px;
+        margin-right: calculateRem(8px);
         margin-left: inherit;
       }
     }
