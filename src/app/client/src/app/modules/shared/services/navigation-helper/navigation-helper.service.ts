@@ -209,5 +209,4 @@ export class NavigationHelperService {
   emitFullScreenEvent(value) {
     this.contentFullScreenEvent.emit(value);
   }
-
 }
