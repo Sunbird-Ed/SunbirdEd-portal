@@ -14,7 +14,9 @@
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-        <img class="cursor-pointer mr-16" alt="info icon" src="./assets/images/info-icon-blue.svg">
+        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button">
+          <img src="./assets/images/info-icon-blue.svg" width="20">
+        </button>
         <div class="kabab-menu" (click)="dropdownMenu()"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
           <div class="list">
@@ -24,7 +26,6 @@
             <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="deleteGroup()">Delete group</button>
           </div>
         </div>
-       
       </div>
       <!-- <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8" (click)="deleteGroup()">
