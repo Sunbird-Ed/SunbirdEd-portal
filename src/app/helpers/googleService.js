@@ -31,6 +31,7 @@ const validateRecaptcha = async (req, res, next) => {
     errType = '';
     if (responseData && responseData.success) {
       // TODO: Refactor in release-3.1.0
+      // export as a function
       if (userExistsAPI.indexOf(req.route.path) > -1) {
         next();
       } else {
