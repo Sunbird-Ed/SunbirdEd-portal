@@ -11,7 +11,7 @@
             </sui-radio-button>
             <br>
         </div>
-        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit" 
+        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" 
             appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
             [telemetryInteractEdata]="{id: 'generate-otp', type: 'click', pageid: 'select-identifier', extra: { form: selectedAccountIdentifier} }"
             (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.lbl?.getOTP}}</button>

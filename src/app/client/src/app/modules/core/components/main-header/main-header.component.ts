@@ -105,6 +105,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  hideHeader = false;
   public unsubscribe = new Subject<void>();
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
@@ -233,6 +234,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       let currentRoute = this.activatedRoute.root;
       this.showAccountMergemodal = false; // to remove popup on browser back button click
       this.contributeTabActive = this.router.isActive('/contribute', true);
+      this.hideHeader = (_.includes(this.router.url, 'explore-groups') || _.includes(this.router.url, 'my-groups'));
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;

@@ -1,31 +1,73 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input, EventEmitter, ViewChild, Output} from '@angular/core';
+import { Component, Input, EventEmitter, ViewChild, Output, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
+import { IGroupMember } from '../group-members/group-members.component';
+
+export interface IMemberActionData {
+  title: string;
+  description: string;
+  buttonText: string;
+  theme?: 'primary' | 'error';
+}
 
 @Component({
   selector: 'app-member-actions',
   templateUrl: './member-actions.component.html',
   styleUrls: ['./member-actions.component.scss']
 })
-export class MemberActionsComponent {
+export class MemberActionsComponent implements OnDestroy {
   @ViewChild('modal') modal;
+  @Input() action: string;
+  @Input() member: IGroupMember;
+  @Output() modalClose = new EventEmitter<void>();
+  @Output() actionConfirm = new EventEmitter<any>();
 
-  @Input() modalName: string;
-  @Input() member: {};
-  @Output() modalClosed = new EventEmitter();
-  @Output() handleMember = new EventEmitter();
-  @Input() showModal;
-
+  memberActionData: IMemberActionData;
   constructor(public resourceService: ResourceService) {
-   }
-
-  closeModal() {
-    this.modal.close();
-    this.modalClosed.emit();
   }
 
-  removeMember(name) {
-      this.handleMember.emit({data: {identifier: _.get(this.member, 'identifier'), modalName: name}});
-      this.closeModal();
+  ngOnInit() {
+    switch (this.action) {
+      case 'promoteAsAdmin':
+        this.memberActionData = {
+          title: `${this.resourceService.frmelmnts.btn.makeAdmin}?`,
+          description: _.replace(this.resourceService.frmelmnts.lbl.makeAdmin, '{memberName}', this.member.title),
+          buttonText: this.resourceService.frmelmnts.btn.makeAdmin,
+          theme: 'primary'
+        };
+        break;
+      case 'removeFromGroup':
+        this.memberActionData = {
+          title: `${this.resourceService.frmelmnts.btn.removeMember}?`,
+          description: _.replace(this.resourceService.frmelmnts.lbl.removeWarning, '{memberName}', this.member.title),
+          buttonText: this.resourceService.frmelmnts.btn.removeMember,
+          theme: 'error'
+        };
+        break;
+      case 'dismissAsAdmin':
+        this.memberActionData = {
+          title: `${this.resourceService.frmelmnts.btn.dismissAdmin}?`,
+          description: _.replace(this.resourceService.frmelmnts.lbl.dismissWarning, '{memberName}', this.member.title),
+          buttonText: this.resourceService.frmelmnts.btn.dismissAdmin,
+          theme: 'primary'
+        };
+        break;
+    }
+  }
+
+  closeModal() {
+    this.modal.deny();
+    this.modalClose.emit();
+  }
+
+  performAction() {
+    this.actionConfirm.emit({ data: this.member, action: this.action });
+    this.closeModal();
+  }
+
+  ngOnDestroy() {
+    if (this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }

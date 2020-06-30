@@ -1,9 +1,12 @@
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
 import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
 import { map, mergeMap, filter, first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
 import { CsModule } from '@project-sunbird/client-services';
+import { IGroup } from '../../interfaces';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,10 @@ import { CsModule } from '@project-sunbird/client-services';
 export class GroupsService {
   private groupCservice: any;
   constructor(private channelService: ChannelService, private orgDetailsService: OrgDetailsService, private userService: UserService,
-    private frameworkService: FrameworkService) {
+    private frameworkService: FrameworkService, private csLibInitializerService: CsLibInitializerService) {
+      if (!CsModule.instance.isInitialised) {
+        this.csLibInitializerService.initializeCs();
+      }
       this.groupCservice = CsModule.instance.groupService;
     }
 
@@ -77,13 +83,23 @@ export class GroupsService {
     return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
   }
 
-  async createGroup(data: any) {
-    return await this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject).toPromise();
+  createGroup({groupName, groupDescription}: IGroup) {
+    return this.groupCservice.create(groupName, groupDescription);
   }
 
-  async getAllGroups() {
-    return await this.groupCservice.getAll().toPromise();
+  getAllGroups() {
+    return this.groupCservice.getAll();
   }
 
+  getGroupById(groupId: string) {
+    return this.groupCservice.getById(groupId);
+  }
 
+  deleteGroupById (groupId: string) {
+    return this.groupCservice.deleteById(groupId);
+  }
+
+  addMemberById(memberId: string, groupId: string) {
+    return this.groupCservice.addMemberById(memberId, groupId);
+  }
 }

@@ -43,7 +43,7 @@
       </div>
     </div>
     <re-captcha *ngIf="googleCaptchaSiteKey" #captchaRef="reCaptcha" (resolved)="$event && handleNext($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-    <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
+    <button class="sb-btn sb-btn-normal width-100 sb-btn-primary" [disabled]="disableFormSubmit" tabindex="0"
       appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
       [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
       (click)="googleCaptchaSiteKey ? captchaRef.execute() : handleNext()">
