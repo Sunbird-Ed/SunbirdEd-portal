@@ -3,7 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { FtuPopupComponent } from './ftu-popup.component';
-
+import { SlickModule } from 'ngx-slick';
+import { SuiModalModule } from 'ng2-semantic-ui';
 describe('FtuPopupComponent', () => {
   let component: FtuPopupComponent;
   let fixture: ComponentFixture<FtuPopupComponent>;
@@ -18,7 +19,7 @@ describe('FtuPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],
-      imports: [HttpClientModule, SharedModule.forRoot()],
+      imports: [HttpClientModule, SlickModule, SuiModalModule, SharedModule.forRoot()],
       providers: [ { provide: ResourceService, useValue: resourceBundle }]
     })
     .compileComponents();
