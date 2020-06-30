@@ -1,9 +1,9 @@
 @import './mixins/mixins';
 /* sb-field */
 $sb-field-margin-bottom: calculateRem(8px);
-$sb-field-disabled-background: $gray-0;
-$sb-field-disabled-border: $input-border-width solid $gray-0;
-$sb-field-disabled-opacity: 0.45;
+$sb-field-disabled-background: $gray-100;
+$sb-field-disabled-border: $input-border-width solid $gray-100;
+$sb-field-disabled-opacity: 1;
 
 /* sb-input */
 $sb-input-background-color: $white-color;
