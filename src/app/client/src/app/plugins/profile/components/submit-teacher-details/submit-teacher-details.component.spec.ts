@@ -282,4 +282,32 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.showAndHidePopup(false);
     expect(component.showTncPopup).toBe(false);
   });
+
+  it('should return add operation as form action is submit', () => {
+    component.formAction = 'submit';
+    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    expect(data).toBe('add');
+  });
+
+  it('should return add operation as form action is update and state changed', () => {
+    const userData = mockRes.userData.result.response;
+    const state = component.userDetailsForm.controls['state'];
+    state.setValue(mockRes.stateDetails);
+    component.formAction = 'update';
+    userData.externalIds = mockRes.externalId;
+    component.userProfile = userData;
+    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    expect(data).toBe('add');
+  });
+
+  it('should return edit operation as form action is update and value present in userprofile', () => {
+    const userData = mockRes.userData.result.response;
+    const state = component.userDetailsForm.controls['state'];
+    state.setValue(userData.userLocations[1]);
+    component.formAction = 'update';
+    userData.externalIds = mockRes.externalId;
+    component.userProfile = userData;
+    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    expect(data).toBe('edit');
+  });
 });

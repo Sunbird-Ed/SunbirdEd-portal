@@ -1,94 +1,29 @@
-<div *ngIf="HideAddActivity">
+<div>
   <app-group-header [groupData]="groupData"></app-group-header>
-<div class="ui container">
-<div class="sb-g mt-24">
-  <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
-    <div class="sb-pageSection">
-      <div class="sb-pageSection-header">
-        <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity"> {{ resourceService?.frmelmnts?.lbl?.Activities }}</h4>
-        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" (click)="toggleActivityModal(true)"><i class="plus icon"></i> {{ resourceService?.frmelmnts?.lbl?.AddActivity }}</button>
-      </div>
-    </div>
-    <app-add-activity></app-add-activity>
-  </div>
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
-      <app-group-members></app-group-members>
-    </div>
-</div>
-</div>
-</div>
-
-<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="toggleActivityModal(false)" #modal *ngIf="showModal">
-  <div class="sb-modal-header">
-    {{ resourceService?.frmelmnts?.lbl?.selectActivity }}
-  </div>
-  <div class="sb-modal-content">
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
-      <input type="radio" id="radio1" name="example" checked>
-      <label for="radio1">{{ resourceService?.frmelmnts?.lbl?.ActivityCourses }}</label>
-    </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16">
-      <input type="radio" id="radio2" name="example">
-      <label for="radio2">{{ resourceService?.frmelmnts?.lbl?.ActivityTextbooks }}</label>
-    </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-      <input type="radio" id="radio3" name="example">
-      <label for="radio3">{{ resourceService?.frmelmnts?.lbl?.ActivityLessonPlan }}</label>
-    </div>
-     
-  </div>
-  <!-- Delete Group modal -->
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="ActivitiesList()">
-      {{ resourceService?.frmelmnts?.lbl?.next }}
-    </button>
-  </div>
-
-</sui-modal>
-
-<div class="vinod" *ngIf="showActivityList">
-  <app-back-button></app-back-button>
-  <div class="content-header">
-    <div class="ui container py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-        <div class="flex-basis-1 mr-32">
-          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
-            <div>{{ resourceService?.frmelmnts?.lbl?.AddCourse }}</div>
-          </div>
-          <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
-            <div class="sb-search-box large">
-              <div class="input-div relative">
-                  <i class="search icon"></i>
-                  <input class="sb-search-input" type="text" placeholder="Type to search for content. e.g. ’Story’" />
-              </div>
-              <button class="sb-btn sb-btn-normal">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
-          </div>
-          <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="filterList()">
-            <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg" width="16">{{ resourceService?.frmelmnts?.lbl?.filterby }}
-          </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="sb-prominent-filter" *ngIf="showFilters">
-    <div class="ui container">
-      <div class="py-16">Filter section will come here</div>
-    </div>
-  </div>
   <div class="ui container">
-    <div class="mt-24">
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
-          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title"> {{ resourceService?.frmelmnts?.lbl?.RecommndationsBasedOnProfile }}</h4>
+    <div class="sb-g mt-24">
+      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+        <div class="sb-pageSection">
+          <div class="sb-pageSection-header">
+            <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity" (click)="toggleActivityModal(true)">
+              {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
+            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto"
+              (click)="toggleActivityModal(true)">
+              <i class="plus icon" aria-hidden="true"></i>
+              {{resourceService?.frmelmnts?.btn?.addActivity}}
+            </button>
+          </div>
         </div>
+        <app-add-activity></app-add-activity>
       </div>
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
-          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">{{ resourceService?.frmelmnts?.lbl?.ShowingActivityResults }}</h4>
-        </div>
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
+        <app-group-members [config]="config"></app-group-members>
       </div>
     </div>
-    </div>
+  </div>
 </div>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
+  <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
+</sui-modal>

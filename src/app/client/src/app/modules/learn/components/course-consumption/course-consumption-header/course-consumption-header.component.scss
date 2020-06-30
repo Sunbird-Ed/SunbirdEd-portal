@@ -5,7 +5,7 @@
         min-width: 0
     }
     .ui.progress.status.expired .bar {
-        background-color: #bdbdbd !important;
+        background-color: var(--rc-bdbdbd) !important;
     }
     .ui.progress .bar{
         height: calculateRem(6px) !important; 
