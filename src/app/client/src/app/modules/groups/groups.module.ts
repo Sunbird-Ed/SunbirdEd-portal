@@ -3,7 +3,7 @@ import { GroupsRoutingModule } from './groups-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
-import { SuiModule, SuiModalModule } from 'ng2-semantic-ui/dist';
+import { SuiModule, SuiModalModule, SuiRatingModule } from 'ng2-semantic-ui/dist';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, NoGroupResultComponent,
@@ -31,7 +31,8 @@ import { SlickModule } from 'ngx-slick';
     GroupsRoutingModule,
     CommonConsumptionModule,
     SlickModule,
-    SuiModalModule
+    SuiModalModule,
+    SuiRatingModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
