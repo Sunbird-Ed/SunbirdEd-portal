@@ -52,7 +52,6 @@ export class GroupHeaderComponent {
   goBack() {
     this.navigationHelperService.goBack();
   }
-
   dropdownMenu() {
     this.dropdownContent = !this.dropdownContent;
   }

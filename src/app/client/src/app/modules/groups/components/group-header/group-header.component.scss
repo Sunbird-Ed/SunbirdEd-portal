@@ -31,6 +31,7 @@
       }
     }
   }
+
 .kabab-menu{
   color: var(--primary-400);
   width: calculateRem(30px);
@@ -43,11 +44,12 @@
     background: var(--gray-0);
     cursor: pointer;
   }
+  ::after {
+    content: '\2807';
+    font-size: calculateRem(24px);
+  }
 }
-.kabab-menu::after{
-  content: '\2807';
-  font-size: calculateRem(24px);
-}
+
 .kabab-menu-dropdown-content {
   position: absolute;
   border-radius: calculateRem(2px);
@@ -63,6 +65,9 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    :hover {
+      color: var(--primary-400);
+    }
     &:last-child{
       .sb-btn-normal{
         color: var(--red-400);
