@@ -32,7 +32,7 @@
     top: calculateRem(9px);
 }
 .ui.card:hover{
-    box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 #d4d4d5, 0 0 0 calculateRem(1px) #d4d4d5;
+    box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 var(--rc-d4d4d5), 0 0 0 calculateRem(1px) var(--rc-d4d4d5);
 }
 .disable {
     visibility: hidden;
@@ -52,7 +52,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--black), 0.2);
     color: var(--white);
     width: 100%;
     margin: 0;

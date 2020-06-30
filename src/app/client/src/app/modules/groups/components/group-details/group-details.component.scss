@@ -29,9 +29,9 @@
         line-height: 1.5rem;
         font-size: 1rem;
         font-weight: 400;
-        margin-left:8px;
+        margin-left:calculateRem(8px);
         html[dir="rtl"] & {
-            margin-right:8px;
+            margin-right:calculateRem(8px);
             margin-left: inherit;
         }
     }

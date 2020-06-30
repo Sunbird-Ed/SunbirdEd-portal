@@ -1,9 +1,7 @@
-import { RouterTestingModule } from '@angular/router/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupMembersComponent } from './group-members.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
@@ -79,10 +77,13 @@ describe('GroupMembersComponent', () => {
 
   it('should call getMenuData', () => {
     component.showMenu = false;
+    const member = {
+      identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false
+    };
     const clickEvent = {
       stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
     };
-    component.getMenuData({ data: { name: 'delete' }, event: clickEvent });
+    component.getMenuData({ data: { name: 'delete' }, event: clickEvent }, member);
     expect(component.showMenu).toBe(true);
   });
 

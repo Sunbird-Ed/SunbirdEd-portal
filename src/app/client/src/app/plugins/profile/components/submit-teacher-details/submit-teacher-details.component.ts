@@ -418,6 +418,25 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return isStateChanged;
   }
 
+  getOperation(fieldType, provider, inputFieldValue) {
+    let operation;
+    if (this.formAction === 'submit' || this.formAction === 'update' && this.isStateChanged()) {
+      operation = 'add'
+    } else {
+      const externalIdObj = this.findExternalIdObj(fieldType, provider);
+      operation = externalIdObj ? inputFieldValue ? 'edit' : 'remove' : 'add';
+    }
+    return operation;
+  }
+
+  findExternalIdObj(fieldType, provider) {
+    const externalIds = _.get(this.userProfile, 'externalIds');
+    const externalIdObj = _.find(externalIds, function (externalId) {
+      return (externalId.idType === fieldType && externalId.provider === provider)
+    });
+    return externalIdObj && externalIdObj.id
+  }
+
   onSubmitForm() {
     this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
       takeUntil(this.unsubscribe))
@@ -428,34 +447,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
           if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
-          let operation = this.formAction === 'submit' ? 'add' : 'edit';
           let externalIds = [];
           if (this.formAction === 'update' && this.isStateChanged() || provider !== _.get(this.userProfile, 'externalIds[0].provider')) {
-            operation = 'add';
             const extIds = this.userProfile.externalIds || [];
             _.forEach(extIds, (externalId, index) => {
               extIds[index]['operation'] = 'remove';
             });
             externalIds = extIds.concat(externalIds);
           }
-          if (_.get(this.userDetailsForm, 'value.school')) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.school'),
-              operation, idType: 'declared-school-name', provider
-            });
-          }
-          if (_.get(this.userDetailsForm, 'value.udiseId')) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.udiseId'),
-              operation, idType: 'declared-school-udise-code', provider
-            });
-          }
-          if (_.get(this.userDetailsForm, 'value.teacherId')) {
-            externalIds.push({
-              id: _.get(this.userDetailsForm, 'value.teacherId'),
-              operation, idType: 'declared-ext-id', provider
-            });
-          }
+          const fields = new Map([['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
+          fields.forEach((fieldKey, formKey) => {
+            const id = _.get(this.userDetailsForm, formKey) || this.findExternalIdObj(fieldKey, provider);
+            if (id) {
+              externalIds.push({
+                id,
+                operation: this.getOperation(fieldKey, provider, _.get(this.userDetailsForm, formKey)),
+                idType: fieldKey,
+                provider
+              });
+            }
+          });
           const data = {
             userId: this.userService.userid,
             locationCodes,

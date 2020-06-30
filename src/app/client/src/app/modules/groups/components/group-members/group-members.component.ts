@@ -31,10 +31,10 @@ export interface IGroupMember {
 export class GroupMembersComponent implements OnInit {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
-    showMemberCount: false,
-    showSearchBox: false,
-    showAddMemberButton: false,
-    showMemberMenu: false
+    showMemberCount: true,
+    showSearchBox: true,
+    showAddMemberButton: true,
+    showMemberMenu: true
   };
   @Input() members: IGroupMember[] = [
     { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
@@ -76,9 +76,9 @@ export class GroupMembersComponent implements OnInit {
       });
   }
 
-  getMenuData(event) {
+  getMenuData(event, member) {
     this.showMenu = !this.showMenu;
-    this.selectedMember = event.data;
+    this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
 
