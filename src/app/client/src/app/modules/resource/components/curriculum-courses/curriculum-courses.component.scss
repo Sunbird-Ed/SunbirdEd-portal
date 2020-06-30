@@ -31,6 +31,6 @@
 .header-shadow {
     min-height: calculateRem(80px);
     background-color: var(--rc-FAFAFA);
-    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--black), 0.25);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
     z-index: 99;
   }

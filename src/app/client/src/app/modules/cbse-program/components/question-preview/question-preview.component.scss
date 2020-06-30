@@ -121,7 +121,7 @@ $sb-mobileDevice-videoScreen-border-radius: 5px;
             font-weight: inherit;
             font-size: calculateRem(14px);
             line-height: calculateRem(20px);
-            box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
+            box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
             border: calculateRem(0.5px) solid var(--gray-0);
             padding: calculateRem(16px);
             overflow: auto;
@@ -221,7 +221,7 @@ $sb-mobileDevice-videoScreen-border-radius: 5px;
         .mcq-grid .mcq-options .mcq-option {
             margin-bottom: calculateRem(16px);
             height: auto;
-            box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
+            box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
             background: var(--white);
             border-radius: calculateRem(8px);
             line-height: calculateRem(20px);

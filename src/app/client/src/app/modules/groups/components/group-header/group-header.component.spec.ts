@@ -12,7 +12,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MY_GROUPS } from '../routerLinks';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
-
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;
@@ -44,27 +43,22 @@ describe('GroupHeaderComponent', () => {
     })
     .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
   it('should make showModal TRUE', () => {
     component.toggleModal(true);
     expect(component.showModal).toBeTruthy();
   });
-
   it('should make showModal FALSE', () => {
     component.toggleModal(false);
     expect(component.showModal).toBeFalsy();
   });
-
   it('should call toggle modal and deleteGroupById', () => {
     component.groupData = {identifier: '1234'};
     spyOn(component, 'toggleModal');
@@ -76,16 +70,13 @@ describe('GroupHeaderComponent', () => {
       expect(component['groupService'].deleteGroupById).toHaveBeenCalledWith('1234');
     });
   });
-
   it ('should route to create-edit-group', () => {
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
   });
-
   it ('show call goBack', () => {
     spyOn(component['navigationHelperService'], 'goBack');
     component.goBack();
     expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
   });
 });
-

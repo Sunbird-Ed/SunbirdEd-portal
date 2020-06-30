@@ -1,49 +1,61 @@
-
 <app-back-button></app-back-button>
 
 
 <div class="ui container">
-<div class="sb-g mt-24">
-  <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
-    <div class="sb-bg-color-white p-24">
-    <div class="title mb-16 font-weight-bold">
-      Add new member
-    </div>
-    <div class="sb-field">
-      <div class="d-flex flex-ai-flex-start flex-jc-space-between flex-ai-center">
-      <div class="w-100 pr-8">
-        <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span>SUNBIRD ID</span><span class="font-weight-normal">What is SUNBIRD ID? 
-          <img class="cursor-pointer ml-4" alt="info icon" src="./assets/images/info-icon-blue.svg" width="18">
-        </span>
-      </label>
-        <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-        <i class="icon close icon-input-close"></i>
+  <div class="sb-g mt-24">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+      <div class="sb-bg-color-white p-24">
+        <div class="title mb-16 font-weight-bold">
+          Add new member
+        </div>
+        <div class="sb-field">
+          <div class="d-flex flex-ai-flex-start flex-jc-space-between flex-ai-center">
+            <div class="w-100 pr-8">
+              <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span>SUNBIRD
+                  ID</span><span class="font-weight-normal">What is SUNBIRD ID?
+                  <img class="cursor-pointer ml-4" alt="info icon" (click)="showModal=true"
+                    src="./assets/images/info-icon-blue.svg" width="18">
+                </span>
+              </label>
+              <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid"
+                  placeholder="Enter user ID">
+                <i class="icon close icon-input-close"></i>
+              </div>
+              <small class="message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
+            </div>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled mt-4">
+              Verify
+            </button>
+          </div>
+        </div>
+
+        <!-- Add to group button content -->
+        <div class="fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
+        <div class="flex-ai-jc-center add-member-content p-24">
+          <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying
+              please wait</span></div>
+        </div>
+        <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24">
+          <div class="add-member-text flex-basis-1">
+            <div *ngFor="let member of membersList">
+              <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config"
+                [indexOfMember]="member?.indexOfMember" [initial]="member?.initial" (menuClick)="getMenuData($event)">
+              </sb-member-card>
+            </div>
+          </div>
+          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal ml-16">
+            <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
+          </button>
+        </div>
       </div>
-        <small class="message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
-      </div>
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled mt-4">
-        Verify
-      </button>
     </div>
+
+
+
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
+      <app-group-members></app-group-members>
     </div>
-    
-    <!-- Add to group button content -->
-    <div class="fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
-    <div class="flex-ai-jc-center add-member-content p-24">
-      <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying please wait</span></div>
-    </div>
-    <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24">
-      <div class="add-member-text text-center">
-        Membername from CC
-      </div>
-      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal">
-        <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
-      </button>
-    </div>
-  </div>
-  </div>
-  <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
-    <app-group-members></app-group-members>
-  </div>
   </div>
 </div>
+
+<app-ftu-popup *ngIf="showModal" (close)="closeModal()"></app-ftu-popup>
