@@ -187,10 +187,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.enableSubmitButton();
   }
 
+  isExternalIdPresent(key) {
+    const data = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === key);
+    return data && data.id;
+  }
+
   setFormData() {
-    // TODO: handle fetching of data from API for update form
-    const email = this.userProfile.maskedEmail;
-    const phone = this.userProfile.maskedPhone;
+    const email = this.isExternalIdPresent('declared-email') || this.userProfile.maskedEmail;
+    const phone = this.isExternalIdPresent('declared-phone') || this.userProfile.maskedPhone;
     if (email) {
       this.userDetailsForm.controls['email'].setValue(email);
     }
@@ -216,7 +220,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           this.userDetailsForm.controls[key + 'Verified'].setValue('');
           this.validationType[key].isVerified = false;
           this.validationType[key].isVerificationRequired = true;
-        } else if (!newValue) {
+        } else {
           this.validationType[key].isVerified = false;
           this.validationType[key].isVerificationRequired = false;
           this.userDetailsForm.removeControl(key + 'Verified');
@@ -455,7 +459,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
             });
             externalIds = extIds.concat(externalIds);
           }
-          const fields = new Map([['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
+          const fields = new Map([['value.phone', 'declared-phone'],['value.email', 'declared-email'],
+            ['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
           fields.forEach((fieldKey, formKey) => {
             const id = _.get(this.userDetailsForm, formKey) || this.findExternalIdObj(fieldKey, provider);
             if (id) {
@@ -503,9 +508,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.telemetryService.audit({
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{id: 'teacher-self-declaration', type: 'FromPage',}]
+        cdata: [{id: 'teacher-self-declaration', type: 'FromPage'}]
       },
-      object: {id: 'data_sharing', type: 'TnC', ver: this.tncLatestVersion},
+      object: {id: 'data-sharing', type: 'TnC', ver: this.tncLatestVersion},
       edata: {state: 'Updated', props: [], prevstate: '', type: 'tnc-data-sharing'}
     });
   }

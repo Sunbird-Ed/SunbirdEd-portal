@@ -36,8 +36,7 @@
                 </div>
               </div>
               <div *ngIf="!showDistrictDivLoader">
-                <label class="font-weight-normal fnormal"
-                  *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)">{{field.label}}<span
+                <label class="font-weight-normal fnormal">{{field.label}}<span
                     *ngIf="field.required">*</span></label>
                 <div class="sb-field field-focus mb-8">
                   <sui-select [isSearchable]="false" class="selection"
