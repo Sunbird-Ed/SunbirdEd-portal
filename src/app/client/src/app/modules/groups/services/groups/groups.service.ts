@@ -1,5 +1,6 @@
+import { IGroupMember } from './../../interfaces/group';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
 import { map, mergeMap, filter, first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -13,6 +14,8 @@ import { IGroup } from '../../interfaces';
 })
 export class GroupsService {
   private groupCservice: any;
+  public membersData = new EventEmitter<IGroupMember[]>();
+
   constructor(private channelService: ChannelService, private orgDetailsService: OrgDetailsService, private userService: UserService,
     private frameworkService: FrameworkService, private csLibInitializerService: CsLibInitializerService) {
       if (!CsModule.instance.isInitialised) {
@@ -101,5 +104,9 @@ export class GroupsService {
 
   addMemberById(memberId: string, groupId: string) {
     return this.groupCservice.addMemberById(memberId, groupId);
+  }
+
+  emitMembersData(members: IGroupMember[]) {
+    this.membersData.emit(members);
   }
 }

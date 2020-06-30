@@ -10,40 +10,43 @@
       Add new member
     </div>
     <div class="sb-field">
-      <div class="d-flex flex-ai-flex-start flex-jc-space-between flex-ai-center">
+      <div class="d-flex flex-ai-flex-start flex-jc-space-between flex-ai-center flex-ai-end">
       <div class="w-100 pr-8">
         <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span>SUNBIRD ID</span><span class="font-weight-normal">What is SUNBIRD ID? 
           <img class="cursor-pointer ml-4" alt="info icon" src="./assets/images/info-icon-blue.svg" width="18">
         </span>
       </label>
-        <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
+        <div class="relative"><input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="Enter user ID" [(ngModel)]="memberId" (ngModelChange)="isInvalidUser=false;showUser=false;showLoad=false">
         <i class="icon close icon-input-close"></i>
       </div>
-        <small class="message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isInvalidUser">You have entered an invalid SUNBIRD ID</small>
       </div>
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled mt-4">
+      <button type="button" class="sb-btn sb-btn-normal mt-4" [disabled]="!memberId" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" (click)="verifyMember()">
         Verify
       </button>
     </div>
     </div>
     
     <!-- Add to group button content -->
-    <div class="fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
-    <div class="flex-ai-jc-center add-member-content p-24">
+    <div class="fs-1 my-4" *ngIf="showUser">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
+    <div class="flex-ai-jc-center add-member-content p-24" *ngIf="showLoad">
       <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying please wait</span></div>
     </div>
-    <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24">
+    <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24" *ngIf="showUser">
       <div class="add-member-text text-center">
-        Membername from CC
+        <sb-member-card [config]="config1"
+        [identifier]="member?.identifier" [initial]="member?.initial" [title]="member?.title" [isMenu]="member?.isMenu"
+        [isAdmin]="member?.isAdmin"
+         > </sb-member-card>
       </div>
-      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal">
+      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal" (click)="addMemberToGroup()">
         <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
       </button>
     </div>
   </div>
   </div>
   <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
-    <app-group-members></app-group-members>
+    <app-group-members [config]="config" [members]="existingMembers" ></app-group-members>
   </div>
   </div>
 </div>
