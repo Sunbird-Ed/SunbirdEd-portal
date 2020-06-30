@@ -269,7 +269,7 @@
 }
 // Overridden CSS
 .sb-btn-white {
-  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--black), 0.1), 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--black), 0.2);
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.1), 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.2);
   border: 0px solid var(--rc-dddddd);
 }
 .sb-pageSection-count {
