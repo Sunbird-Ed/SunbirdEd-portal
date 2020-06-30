@@ -17,25 +17,26 @@
                     src="./assets/images/info-icon-blue.svg" width="18">
                 </span>
               </label>
-              <div class="relative"><input type="id" name="id" class="sb-form-control is-invalid"
-                  placeholder="Enter user ID">
-                <i class="icon close icon-input-close m"></i>
+              <div class="d-flex flex-ai-center flex-jc-space-between id-content">
+                <div class="w-100 relative input-content"><input type="id" name="id" class="sb-form-control is-invalid"
+                    placeholder="Enter user ID">
+                  <i class="icon close icon-input-close m"></i>
+                </div>
+                <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled">Verify</button>
               </div>
-              <small class="message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
+              <small class=" message sb-color-error font-weight-bold">You have entered an invalid SUNBIRD ID</small>
             </div>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled mt-4">
-              Verify
-            </button>
           </div>
         </div>
 
         <!-- Add to group button content -->
-        <div class="text-left fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you proceed</div>
+        <div class="text-left fs-1 my-4">You have to check that the member's name and SUNBIRD ID match, before you
+          proceed</div>
         <div class="flex-ai-jc-center add-member-content p-24">
           <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>Verifying
               please wait</span></div>
         </div>
-        <div class="d-flex add-member-content p-24">
+        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-24">
           <div class="add-member-text flex-basis-1">
             <div *ngFor="let member of membersList">
               <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config"
@@ -43,9 +44,9 @@
               </sb-member-card>
             </div>
           </div>
-            <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal ml-16">
-              <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
-            </button>
+          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal">
+            <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group
+          </button>
         </div>
       </div>
     </div>
