@@ -2,7 +2,7 @@
 @import "mixins/mixins";
 // .ui {
 //   &.selection.bordered.dropdown {
-//     border: 1px solid rgba(34, 36, 38, 0.15);
+//     border: 1px solid rgba(var(--rc-rgba-gray-300), 0.15);
 //     border-radius: 5px;
 //   }
 //   &.icon.input {
