@@ -91,6 +91,10 @@
   &__info {
     color: var(--gray-800);
     font-size: calculateRem(14px);
+    @include respond-below(sm) {
+      flex-direction: column;
+      margin-top: calculateRem(8px) !important;
+    }
   }
 }
 .sb-pagesection-activity {
@@ -98,4 +102,20 @@
 }
 .sb-pageSection-activity-title {
   color: var(--primary-400);
+}
+
+@include respond-below(sm) {
+  .sb-filter-btn{
+    margin-top: calculateRem(16px);
+  }
+  .activity-search{
+    margin: 0 !important;
+  }
+}
+::ng-deep {
+  @include respond-below(sm){
+    html[dir='rtl'] .activity-search {
+      margin-left: 0 !important;
+    }
+  }
 }
