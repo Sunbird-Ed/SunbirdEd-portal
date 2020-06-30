@@ -354,7 +354,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     const emailControl = component.userDetailsForm.controls['email'];
     emailControl.setValue('test@gmail.com');
     component.userDetailsForm.addControl('emailVerified', new FormControl());
-    component.validateUser('email');
+    component.generateOTP('email');
     expect(component.isOtpVerificationRequired).toBe(true);
     expect(component.otpData.instructions).toBe(resourceBundle.frmelmnts.instn.t0084);
     expect(component.otpData.type).toBe('email');
@@ -363,15 +363,15 @@ describe('SubmitTeacherDetailsComponent', () => {
   it('should not validate user as otp generation failed', () => {
     const otpService = TestBed.get(OtpService);
     const toasterService = TestBed.get(ToasterService);
-
     spyOn(toasterService, 'error');
-
     spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockRes.successResponse));
     const emailControl = component.userDetailsForm.controls['email'];
     emailControl.setValue('test@gmail.com');
     component.userDetailsForm.addControl('emailVerified', new FormControl());
-    component.validateUser('email');
+    component.generateOTP('email');
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
   });
+  
+
 
 });
