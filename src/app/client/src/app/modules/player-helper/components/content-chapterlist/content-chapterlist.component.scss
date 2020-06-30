@@ -8,7 +8,7 @@
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--black), 0.1);
+      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       &--bg-white {
         background: var(--white);
       }
@@ -25,7 +25,7 @@
     .sbtoc-filter {
       height: calculateRem(48px);
       padding: calculateRem(8px) calculateRem(16px);
-      box-shadow: 0px calculateRem(2px) calculateRem(10px) calculateRem(-5px) rgba(var(--black), 0.25);
+      box-shadow: 0px calculateRem(2px) calculateRem(10px) calculateRem(-5px) rgba(var(--rc-rgba-black), 0.25);
       display: inline-flex;
       align-items: center;
       width: 100%;
@@ -79,7 +79,7 @@
       }
       &__panel {
         margin-bottom: calculateRem(8px);
-        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--black), 0.1);
+        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       }
       &__panel-header {
         background: var(--white);
@@ -109,7 +109,7 @@
     }
   
     &--detailed {
-      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--black), 0.1);
+      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       background: var(--white);
     }
   }
@@ -125,9 +125,9 @@
     }
     &__item {
       background: var(--white);
-      border: calculateRem(1px) solid var(--rc-dddddd);
-      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--blue), 0.1);
-      border: calculateRem(0.5px) solid rgba(var(--rc-2361ff), 0.5);
+      border: calculateRem(1px) solid #ddd;
+      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+      border: calculateRem(0.5px) solid rgba(var(--rc-rgba-primary), 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -218,7 +218,7 @@
       background-color: var(--gray-400);
     }
     &::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(var(--black), 0);
+      -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(var(--rc-rgba-black), 0);
       background-color: var(--gray-0);
     }
   }

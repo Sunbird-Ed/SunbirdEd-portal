@@ -24,7 +24,7 @@
   max-width: calculateRem(1008px);
   width: 100%;
   padding: calculateRem(40px);
-  box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
+  box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
   border-radius: calculateRem(8px);
   min-height: calculateRem(600px);
   background: var(--primary-100);

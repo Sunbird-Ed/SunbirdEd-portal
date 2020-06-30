@@ -11,7 +11,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(0,0,0,0.75);
+    background:rgba(var(--rc-rgba-black), 0.75);
     .sb-group-container {
       position:relative;
       display:flex;

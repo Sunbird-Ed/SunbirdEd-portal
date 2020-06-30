@@ -2,7 +2,7 @@
 @import "mixins/mixins";
 
 .sb-header-filter-bar {
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
   position: relative;
 }
 .state-medium-container {
