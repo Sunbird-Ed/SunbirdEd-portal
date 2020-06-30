@@ -25,7 +25,7 @@
       background: var(--gray-0);
       cursor: pointer;
     }
-    ::after {
+    &::after {
       content: '\2807';
       font-size: calculateRem(24px);
     }
@@ -51,4 +51,10 @@
             color: var(--primary-400);
           }
     }
+}
+::ng-deep {
+  html[dir='rtl'] .kabab-menu-dropdown-content {
+    right:auto;
+    left:0;
+  }
 }
