@@ -1,4 +1,4 @@
-<div class="status-container flex-dc d-flex p-8 py-16">
+<div class="flex-dc d-flex p-8 py-16 sb-bg-color-white br-4">
   <div class="title mb-16 font-weight-bold pl-8">
     {{resourceService?.frmelmnts?.lbl?.members}}
     <span *ngIf="config?.showMemberCount" class="badge">{{members?.length}}</span>
@@ -28,10 +28,10 @@
       <div *ngFor="let member of memberListToShow" style="position: relative;">
         <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
           [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu" [indexOfMember]="member?.indexOfMember"
-          [initial]="member?.initial" (menuClick)="getMenuData($event)">
+          [initial]="member?.initial" (menuClick)="getMenuData($event, member)">
         </sb-member-card>
         <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
-          <div class="list" (click)="openModal('promoteAsAdmin')">
+          <div class="list mb-8" (click)="openModal('promoteAsAdmin')">
             <span>{{resourceService?.frmelmnts?.btn?.makeAdmin}}</span>
           </div>
           <div class="list mb-8" (click)="openModal('dismissAsAdmin')">
@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center" *ngIf="!memberListToShow?.length">
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center my-24" *ngIf="!memberListToShow?.length">
       <img height="176" alt="" width="210" src="./assets/images/no-member.png">
     </div>
     <div class="member-no-result pt-32 hide">

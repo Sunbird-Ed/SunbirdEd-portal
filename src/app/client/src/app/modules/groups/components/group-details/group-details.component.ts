@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
-import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { GroupsService } from '../../services';
+import { IGroupMemberConfig } from '../group-members/group-members.component';
+import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS } from '../routerLinks';
 
 @Component({
   selector: 'app-group-details',
@@ -12,18 +14,30 @@ import { Subject } from 'rxjs';
   styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
+  @ViewChild('addActivityModal') addActivityModal;
   groupData;
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
-  HideAddActivity = true;
   showFilters = false;
+  config: IGroupMemberConfig = {
+    showMemberCount: true,
+    showSearchBox: true,
+    showAddMemberButton: true,
+    showMemberMenu: true
+  };
 
-  constructor(private activatedRoute: ActivatedRoute, private groupService: GroupsService,
-    public resourceService: ResourceService, private toasterService: ToasterService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private groupService: GroupsService,
+    private toasterService: ToasterService,
+    private router: Router,
+    public resourceService: ResourceService,
+  ) {
     this.groupService = groupService;
   }
+
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
@@ -41,17 +55,23 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  ActivitiesList() {
-    this.showActivityList = true;
-    this.toggleActivityModal(false);
-    this.HideAddActivity = false;
-  }
   filterList() {
     this.showFilters = true;
+  }
+
+  handleNextClick(event) {
+    this.toggleActivityModal(false);
+    this.addActivityModal.deny();
+    this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`]);
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    /* istanbul ignore else */
+    if (this.showModal && this.addActivityModal.deny) {
+      this.addActivityModal.deny();
+    }
   }
 }

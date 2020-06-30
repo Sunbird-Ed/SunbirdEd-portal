@@ -2,13 +2,13 @@
 @import "mixins/mixins";
 
 .ui.light-sea-green.button {
-  background: #2ca58d;
+  background: var(--rc-2ca58d);
   color: var(--white);
   height: calculateRem(38px) !important;
 }
 
 .ui.grey.button {
-  background: #9B9B9B;
+  background: var(--rc-9B9B9B);
   color: var(--white);
   height: calculateRem(38px) !important;
 }

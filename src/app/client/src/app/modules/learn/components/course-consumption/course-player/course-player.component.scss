@@ -59,7 +59,7 @@
 .header-shadow {
   min-height: calculateRem(80px);
   background-color: var(--rc-fafafa);
-  box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(0, 0, 0, 0.25);
+  box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--black), 0.25);
   z-index: 99;
 }
 .chapter-box {
