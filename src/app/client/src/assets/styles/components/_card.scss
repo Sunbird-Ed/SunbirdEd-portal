@@ -147,7 +147,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
       justify-content: center;
     }
     &.sb-card-hover-grey {
-      background: #999999f2;
+      background:  rgba(var(--rc-rgba-gray-300), 0.95);
       .sb-exclamation-icon, p {
         color: var(--white);
       }

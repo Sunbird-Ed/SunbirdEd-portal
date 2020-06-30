@@ -48,7 +48,7 @@
   background-color: var(--white) !important;
 }
 .bg-lightGray {
-  background-color: #fafafa !important;
+  background-color: var(--rc-FAFAFA) !important;
 }
 .bg-blue{
   background-color: $primary-color;
@@ -83,7 +83,7 @@
 .img-cover {
   border: calculateRem(1px) solid #bbb;
   border-radius: calculateRem(2px);
-  background-color: #fafafa;
+  background-color: var(--rc-FAFAFA);
   display: inline-flex;
   align-items: center;
   justify-content: center;

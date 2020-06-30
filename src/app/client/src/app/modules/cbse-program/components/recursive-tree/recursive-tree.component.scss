@@ -91,7 +91,7 @@
 //Common contribution card section
 .common-contribution-card {
   box-sizing: border-box;
-  border: calculateRem(0.5px) solid #7b86f463;
+  border: calculateRem(0.5px) solid  rgba(var(--rc-rgba-7b86f4), 0.39);
   border-radius: calulateRem(4px);
   background-color: var(--white);
   box-shadow: none;
