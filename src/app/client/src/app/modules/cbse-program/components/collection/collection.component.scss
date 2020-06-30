@@ -59,15 +59,15 @@
   &__pills-container {
     min-height: calculateRem(64px);
     .pill {
-      border: calculateRem(1px) solid  var(--success-color);
-      color:  var(--success-color);
+      border: calculateRem(1px) solid  var(--secondary-color);
+      color:  var(--secondary-color);
       cursor: pointer;
       &:hover {
-        background-color:  var(--success-color);
+        background-color:  var(--secondary-color);
         color: var(--white);
       }
       &.active {
-        background-color:  var(--success-color);
+        background-color:  var(--secondary-color);
         color: var(--white);
         cursor: pointer;
       }
