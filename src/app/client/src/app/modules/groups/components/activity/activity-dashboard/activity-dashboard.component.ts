@@ -49,7 +49,7 @@ export class ActivityDashboardComponent implements OnInit {
     setTimeout(() => {
       this.showLoader = false;
       this.activity = {
-        name: 'Class 5 English',
+        name: 'Social Science',
         identifier: 'do_123523212190',
         appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
         organisation: ['Pre-prod Custodian Organization'],
@@ -87,6 +87,6 @@ export class ActivityDashboardComponent implements OnInit {
           progress: '37'
         }
       ];
-    }, 10000);
+    }, 10);
   }
 }
