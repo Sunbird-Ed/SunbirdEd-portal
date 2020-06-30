@@ -20,7 +20,7 @@ i.icon.trash {
 
 .question-list {
     &__item {
-        border-bottom: calculateRem(1px) solid rgba(var(--blue), 0.09);
+        border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-primary), 0.09);
         label {
             font-weight: normal;
             font-size: calculateRem(12px);
@@ -39,12 +39,12 @@ i.icon.trash {
 }
 
 .ckeditor-container {
-    border-left: calculateRem(1px) solid rgba(var(--blue), 0.09);
+    border-left: calculateRem(1px) solid rgba(var(--rc-rgba-primary), 0.09);
 }
 
 .practical-header {
     height: calculateRem(98px);
-    background: rgba(var(--rc-2972a4), 0.05);
+    background: rgba(var(--rc-rgba-primary-300), 0.09);
     &__title {
         max-width: calculateRem(680px);
         overflow: hidden;
