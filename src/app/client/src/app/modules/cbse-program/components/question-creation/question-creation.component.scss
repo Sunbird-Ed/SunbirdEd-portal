@@ -29,10 +29,6 @@
     cursor: pointer;
 }
 
-// .resource-image {
-//     height: calculateRem(180px) !important;
-// }
-
 .asset_container {
     overflow-y: auto;
     overflow-x: hidden;
@@ -40,28 +36,6 @@
     max-height: calculateRem(300px) !important;
     padding: 5px;
 }
-
-// .insert-image-btn {
-//     position: absolute;
-//     z-index: 1;
-//     left: calculateRem(363px);
-//     background-color: transparent;
-//     padding: calculateRem(13px) !important;
-// }
-
-// .insert-image-btn>.icon {
-//     opacity: 1;
-// }
-
-// .insert-image-btn:active {
-//     background-color: transparent;
-// }
-
-// .submit-btn {
-//     margin-left: auto;
-//     padding-right: calculateRem(16px);
-//     margin-bottom: calculateRem(16px);
-// }
 
 .mcq-primary-box {
     width: 100%;
@@ -77,12 +51,6 @@
             border-bottom: calculateRem(1px) solid $primary-200;
         }
     }
-    // .box-body {
-    //     margin: 0.5px 1px;
-    //     .mcq-checkbox-answer {
-    //         border-top: 1px solid #c4c4c4;
-    //     }
-    // }
 }
 
 .ckeditor-tool {
@@ -144,18 +112,6 @@
         max-width: calculateRem(180px);
     }
 }
-
-// .sb-checkbox {
-//     label {
-//         font-weight: normal !important;
-//         color: var(--gray-400);
-//     }
-//     &.selected {
-//         label {
-//             color: var(--primary-color);
-//         }
-//     }
-// }
 
 :host ::ng-deep {
     .licence-form__content__fields {

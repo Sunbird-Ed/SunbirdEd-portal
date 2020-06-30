@@ -1,43 +1,6 @@
 @import 'variables';
 @import 'mixins/mixins';
 
-/* min-height: 300px;
- */
-// .custom-image img {
-//   border: calculateRem(1px) dotted;
-//   padding: calculateRem(7px);
-//   margin: calculateRem(6px);
-//   cursor: pointer;
-// }
-
-// .resource-image {
-//   height: calculateRem(180px) !important;
-// }
-
-// .asset_container {
-//   overflow-y: auto;
-//   overflow-x: hidden;
-//   min-height: calculateRem(300px) !important;
-//   max-height: calculateRem(300px) !important;
-//   padding: calculateRem(5px);
-// }
-
-// .insert-image-btn {
-//   position: absolute;
-//   z-index: 1;
-//   left: calculateRem(363px);
-//   background-color: transparent;
-//   padding: calculateRem(13px) !important;
-// }
-
-// .insert-image-btn>.icon {
-//   opacity: 1;
-// }
-
-// .insert-image-btn:active {
-//   background-color: transparent;
-// }
-
 .mcq-horizontal,
 .mcq-vertical,
 .mcq-grid {
