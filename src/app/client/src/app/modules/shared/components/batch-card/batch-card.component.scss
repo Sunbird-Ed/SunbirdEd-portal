@@ -13,7 +13,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--black), 0.2);
     color: var(--white);
     width: 100%;
     margin: 0;
@@ -48,7 +48,7 @@
 }
 
 .bcard-bg-image {
-    background-color: #BCBEC0;
+    background-color: var(--rc-BCBEC0);
     height: 100%;
 }
 .link.cards{

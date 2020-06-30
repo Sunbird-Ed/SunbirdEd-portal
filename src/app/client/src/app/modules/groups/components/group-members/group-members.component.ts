@@ -64,9 +64,9 @@ export class GroupMembersComponent implements OnInit {
       });
   }
 
-  getMenuData(event) {
+  getMenuData(event, member) {
     this.showMenu = !this.showMenu;
-    this.selectedMember = event.data;
+    this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
 

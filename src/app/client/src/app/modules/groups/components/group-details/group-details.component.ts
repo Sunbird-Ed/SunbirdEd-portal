@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
-import { IGroupMember } from '../../interfaces';
+import { takeUntil } from 'rxjs/operators';
+import { GroupsService } from '../../services';
+import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS } from '../routerLinks';
+import { IGroupMemberConfig } from '../../interfaces';
 
 @Component({
   selector: 'app-group-details',
@@ -13,38 +14,39 @@ import { IGroupMember } from '../../interfaces';
   styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
+  @ViewChild('addActivityModal') addActivityModal;
   groupData;
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
-  HideAddActivity = true;
   showFilters = false;
-  members: IGroupMember[] = [
-    { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
-  ];
+  config: IGroupMemberConfig = {
+    showMemberCount: true,
+    showSearchBox: true,
+    showAddMemberButton: true,
+    showMemberMenu: true
+  };
 
-  constructor(private activatedRoute: ActivatedRoute, private groupsService: GroupsService,
-    public resourceService: ResourceService, private toasterService: ToasterService,
-    private navigationHelperService: NavigationHelperService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private groupsService: GroupsService,
+    private toasterService: ToasterService,
+    private router: Router,
+    public resourceService: ResourceService,
+    private navigationHelperService: NavigationHelperService,
+  ) {
     this.groupsService = groupsService;
   }
+
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    // this.groupsService.membersData.subscribe(response => {
-    //   this.members = response;
-    // });
-
-    // if (!this.members) {
-      this.getGroupData();
-    // }
+    this.getGroupData();
   }
 
   getGroupData() {
     this.groupsService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      console.log('resposnsnee', groupData);
       this.groupData = groupData;
-      this.members = _.get(groupData, 'members');
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m002);
       this.navigationHelperService.goBack();
@@ -55,17 +57,23 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  ActivitiesList() {
-    this.showActivityList = true;
-    this.toggleActivityModal(false);
-    this.HideAddActivity = false;
-  }
   filterList() {
     this.showFilters = true;
+  }
+
+  handleNextClick(event) {
+    this.toggleActivityModal(false);
+    this.addActivityModal.deny();
+    this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`]);
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    /* istanbul ignore else */
+    if (this.showModal && this.addActivityModal.deny) {
+      this.addActivityModal.deny();
+    }
   }
 }

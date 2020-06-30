@@ -198,6 +198,15 @@
   }
 }
 
+// sb modal white
+.sb-modal-white {
+  .ui.modal>.close {
+    top: 0rem;
+    right: 0;
+    color: var(--primary-400);
+  }
+}
+
 // workspace modal spacing issue
 .sb-workspace-modal{
     .twelve.wide.column{

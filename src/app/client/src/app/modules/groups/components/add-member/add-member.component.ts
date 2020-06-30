@@ -38,6 +38,8 @@ export class AddMemberComponent implements OnInit {
   memberId: string;
   member: IGroupMember;
   groupId;
+  // config= {size: 'small', isBold:true, isSelectable:false, view:"horizontal"}
+
   constructor( private activatedRoute: ActivatedRoute, private groupService: GroupsService, private toasterService: ToasterService) {}
 
   ngOnInit() {
