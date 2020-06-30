@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-member.component.scss']
 })
 export class AddMemberComponent {
-  showModal = true;
+
   public  membersList = [
     {identifier: '1', initial: 'A', title: 'Abc', isAdmin: false,  isMenu: false, indexOfMember: 1}
   ];
