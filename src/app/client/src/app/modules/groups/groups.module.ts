@@ -2,8 +2,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { GroupsRoutingModule } from './groups-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
- import { SharedModule } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { SharedModule } from '@sunbird/shared';
+import { SuiModule, SuiModalModule, SuiRatingModule } from 'ng2-semantic-ui/dist';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, NoGroupResultComponent,
@@ -15,6 +15,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   imports: [
@@ -28,7 +29,10 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
     NgInviewModule,
     SharedFeatureModule,
     GroupsRoutingModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    SlickModule,
+    SuiModalModule,
+    SuiRatingModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,

@@ -1,5 +1,5 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-ftu-popup',
@@ -9,14 +9,29 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
   @Output() close = new EventEmitter();
-  constructor(public resourceService: ResourceService) { }
+  slideConfig1 = {
+    "slidesToShow": 1,
+    "slidesToScroll": 1,
+    "infinite": false,
+    "rtl": false,
+    "dots": true
+  };
+
+  showModal = true;
+  constructor(public resourceService: ResourceService, private elementRef: ElementRef) { }
 
   ngOnInit() {
+    
+   
   }
 
+  ngAfterViewInit() {
+    
+  }
   closeModal() {
     this.showWelcomePopup = false;
     this.close.emit(true);
   }
 
+  
 }
