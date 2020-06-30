@@ -2,7 +2,7 @@
 @import 'mixins/mixins';
 
 .questionTab.button {
-    border-bottom: calculateRem(1px) solid #cecece;
+    border-bottom: calculateRem(1px) solid var(--rc-cecece);
 }
 
 .questionsMenu {
@@ -27,7 +27,7 @@ i.icon.trash {
         }
         &.active,
         &:hover {
-            background: #F3F8FF;
+            background: var(--rc-F3F8FF);
         }
         &.active {
             label {
@@ -56,9 +56,9 @@ i.icon.trash {
             .sb-btn-file {
                 border-top: calculateRem(1px) solid var(--primary-200);
                 border-bottom: calculateRem(1px) solid var(--primary-200);
-                border-left: calculateRem(1px) solid #ddd;
-                border-right: calculateRem(1px) solid #ddd;
-                background: #E0F1FD;
+                border-left: calculateRem(1px) solid var(--rc-dddddd);
+                border-right: calculateRem(1px) solid var(--rc-dddddd);
+                background: var(--rc-E0F1FD);
                 color: var(--primary-400);
             }
             .sb-btn-submit {
@@ -86,9 +86,9 @@ i.icon.trash {
     }
     .characters-left {
         position: absolute;
-        bottom: $base-block-space;
-        right: $base-block-space;
-        color: $gray-400;
+        bottom: calculateRem(8px);
+        right: calculateRem(8px);
+        color: var(--gray-400);
         font-size: $font-size-xs;
     }
 }
@@ -116,6 +116,6 @@ i.icon.trash {
 
 .ckeditor-tool{
     &__answer{
-      border-bottom: calculateRem(0.5px) solid #e2e3e5;
+      border-bottom: calculateRem(0.5px) solid var(--rc-e2e3e5);
  }
 }

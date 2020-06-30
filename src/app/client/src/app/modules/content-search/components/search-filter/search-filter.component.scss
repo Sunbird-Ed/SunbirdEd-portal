@@ -8,16 +8,16 @@
 .state-medium-container {
   position: relative;
   z-index: 999;
-  height: 64px;
+  height: calculateRem(64px);
   &__dropdown {
-    padding: ($base-block-space * 2) 0;
+    padding: calculateRem(16px) 0;
     z-index: 1;
   }
 
   &__separator {
-    height: ($base-block-space * 3);
-    width: 1px;
-    background-color: $gray-200;
+    height: calculateRem(24px);
+    width: calculateRem(1px);
+    background-color: var(--gray-200);
     margin:0px calculateRem(16px) 0px calculateRem(16px);
     @include respond-below(sm){
       margin:0px calculateRem(8px) 0px calculateRem(8px);
@@ -27,7 +27,7 @@
   &__medium {
     overflow-x: auto;
     overflow-y: hidden;
-    height: 64px;
+    height:calculateRem(64px);
     @include respond-below(xs){
       flex:0 0 50%;
     }
@@ -39,7 +39,7 @@
 
 // state dropdown css
 .ui.selection.dropdown .menu > .item {
-  font-size: 12px;
+  font-size: calculateRem(12px);
   padding: 1em 1em !important;
 }
 
@@ -49,11 +49,11 @@
   align-items: center;
   border: none;
   background: none;
-  min-width: 100px;
+  min-width: calculateRem(100px);
   margin: 0;
 
   .medium-selection {
-    min-width: 120px;
+    min-width: calculateRem(120px);
   }
 
   &:hover {
@@ -94,7 +94,7 @@
 }
 .ui.default.dropdown:not(.button) > .text,
 .ui.dropdown:not(.button) > .default.text {
-  color: red;
+  color: var(--red-400);
 }
 
 :host ::ng-deep .dropdown:not(.button) > .default.text {
