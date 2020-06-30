@@ -94,7 +94,7 @@
   }
 }
 .menu-public-header{
-  border-top: calculateRem(2px) solid rgba(var(--rc-866A6A), 0.13);
+  border-top: calculateRem(2px) solid rgba(var(--rc-rgba-866a6a), 0.13);
 }
 
 
@@ -104,7 +104,7 @@
   align-content: space-between;
 
   .dial-section-column {
-    border-right:calculateRem(1px) solid rgba(var(--gray), 0.1);
+    border-right:calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.1);
     flex:50%;
     padding-left: 0;
     h1 {

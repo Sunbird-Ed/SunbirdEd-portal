@@ -4,7 +4,7 @@
   bottom: 0px;
   padding: calculateRem(32px) calculateRem(12px) 0 calculateRem(12px);
   background: var(--gray-800);
-  box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(0, 0, 0, 0.2);
+  box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(var(--rc-rgba-black), 0.2);
   max-width: calculateRem(250px);
   right: 0;
   left: 0;
@@ -122,7 +122,7 @@
 @include respond-below(sm) {
 
   .download-mobile-app {
-    box-shadow: 0 calculateRem(-5px) calculateRem(20px) calculateRem(5px) rgba(0, 0, 0, 0.2);
+    box-shadow: 0 calculateRem(-5px) calculateRem(20px) calculateRem(5px) rgba(var(--rc-rgba-black), 0.2);
     height: auto;
 
     .download-mobile-app-logo {

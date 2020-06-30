@@ -16,7 +16,7 @@
   }
 
   &__item {
-    color: rgba(255, 255, 255, .5);
+    color: rgba(var(--rc-rgba-black), 0.5);
     height: 100%;
     padding: $base-block-space*2 $base-block-space*3;
     font-size: calculateRem(14px);

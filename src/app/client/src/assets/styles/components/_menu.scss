@@ -1,7 +1,7 @@
 .sb-secondary-pointing-menu {
   margin-left: 0;
   margin-right: 0;
-  border-bottom: calculateRem(2px) solid rgba(34, 36, 38, 0.15);
+  border-bottom: calculateRem(2px) solid rgba(var(--rc-rgba-gray-300), 0.15);
   border-radius: 0;
   border: none;
   box-shadow: none;

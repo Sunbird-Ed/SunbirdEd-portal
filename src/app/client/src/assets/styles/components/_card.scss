@@ -6,7 +6,7 @@ $sb-card-hover-movement: calculateRem(3px);
 $sb-card-padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
 $sb-card-border-radius: calculateRem(4px);
 $sb-card-border: calculateRem(1px) solid #DEDEDE;
-$sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0, 0, 0, 0.16);
+$sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
 $sb-card-bg-color: var(--white);
 $sb-card-image-height: calculateRem(92px);
 $sb-card-image-width: calculateRem(70px);
@@ -138,7 +138,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     max-width: calculateRem(292px);
     width: 100%;
     height: 100%;
-    background-color: rgba(2, 79, 157, 0.85);
+    background-color: rgba(var(--rc-rgba-primary), 0.85);
     display: none;
     .sb-card-hover-content {
       display: flex;
@@ -147,7 +147,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
       justify-content: center;
     }
     &.sb-card-hover-grey {
-      background: rgba(153, 153, 153, .95);
+      background:  rgba(var(--rc-rgba-gray-300), 0.95);
       .sb-exclamation-icon, p {
         color: var(--white);
       }
@@ -227,7 +227,7 @@ app-card[lang="ur"] {
     }
     border-left: calculateRem(4px) solid $secondary-200;
     cursor: pointer;
-    box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
+    box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
 }
 // QR Card
@@ -254,7 +254,7 @@ app-card[lang="ur"] {
   }
   & > .sb-batch-card-content {
     padding: 0 1rem;
-    border-top: calculateRem(1px) solid rgba(34, 36, 38, 0.1);
+    border-top: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
   }
 }
 .sb-batch-card {

@@ -131,7 +131,7 @@
       &:hover,
       &.active {
         background-color: var(--primary-color);
-        box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) rgba(var(--blue), 0.3);
+        box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) rgba(var(--rc-rgba-primary), 0.3);
         cursor: pointer;
 
         span {
@@ -174,7 +174,7 @@
         border: 2px solid var(--primary-color);
         border-radius: calculateRem(4px);
         background-color: var(--white);
-        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--blue), 0.3);
+        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-primary), 0.3);
         cursor: pointer;
 
         .check-icon {

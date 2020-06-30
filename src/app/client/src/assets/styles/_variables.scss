@@ -134,10 +134,9 @@
   --rc-c4c4c4:#c4c4c4;
   --rc-d8d8d8:#d8d8d8;
   --rc-e9e5e5:#e9e5e5;
-  --rc-fafafa:#fafafa;
+  --rc-dddddd:#dddddd;
   --rc-7b86f4:#7b86f4;
   --rc-d0d0d0:#d0d0d0;
-  --rc-dddddd: #dddddd;
   --rc-5c8db7: #5c8db7;
   --rc-91aecc: #91aecc;
   --rc-f9f9f9: #f9f9f9;
@@ -150,8 +149,6 @@
   --rc-00BD7F:#00BD7F;
   --rc-9F9F9F:#9F9F9F;
   --rc-F3F8FF:#F3F8FF;
-  --rc-024a93:#024a93;
-  --rc-FF0000:#FF0000;
   --rc-80A7CE:#80A7CE;
   --rc-9b9b9b: #9b9b9b;
   --rc-2ca58d: #2ca58d;
@@ -163,8 +160,6 @@
   --rc-E0F1FD:#E0F1FD;
   --rc-C8D6EA:#C8D6EA;
   --rc-e2e3e5:#e2e3e5;
-  --rc-007AFF:#007AFF;
-  --rc-cccccc:#cccccc;
   --rc-BCBEC0:#BCBEC0;
   --rc-d4d4d5:#d4d4d5;
   --rc-bdbdbd:#bdbdbd;
@@ -178,6 +173,15 @@
   --rc-2f4272: #2f4272;
   --rc-e0e0e0: #e0e0e0;
   --rc-2361ff: #2361ff;
+  --rc-rgba-black: 0, 0, 0; // var(--black)
+  --rc-rgba-white: 255, 255, 255; // var(--white)
+  --rc-rgba-gray:51, 51, 51;  // var(--gray-300)
+  --rc-rgba-primary:2, 79, 157; // var(--primary-color)
+  --rc-rgba-primary-300:41, 114, 164;  //var(--primary-300)
+  --rc-rgba-gray-300:34, 36, 38; //var(--gray-100)
+  --rc-rgba-866a6a:134, 106, 106;
+  --rc-rgba-d0d0d0:208, 208, 208;
+  --rc-rgba-7b86f4:123, 134, 244;
 }
 
 // Variables

@@ -91,8 +91,8 @@
 //Common contribution card section
 .common-contribution-card {
   box-sizing: border-box;
-  border: calculateRem(0.5px) solid rgba(123, 134, 244, 0.39);
-  border-radius: calculateRem(4px);
+  border: calculateRem(0.5px) solid  rgba(var(--rc-rgba-7b86f4), 0.39);
+  border-radius: calulateRem(4px);
   background-color: var(--white);
   box-shadow: none;
 
@@ -134,7 +134,7 @@
     background: var(--white);
     transform: translateY(-3px);
     box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(123, 134, 244, 0.31);
-    border: calculateRem(0.5px) solid rgba(208, 208, 208, 0.48);
+    border: calculateRem(0.5px) solid rgba(var(--rc-rgba-gray), 0.48);
   }
 }
 

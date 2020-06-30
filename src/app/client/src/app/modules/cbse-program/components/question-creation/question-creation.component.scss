@@ -1,26 +1,26 @@
 @import 'variables';
 @import 'mixins/mixins';
 
-// .btn-group {
-//     text-align: right;
-//     margin-bottom: calculateRem(8px);
-// }
+.btn-group {
+    text-align: right;
+    margin-bottom: calculateRem(8px);
+}
 
-// .btn-group button:first-child {
-//     border-right: none;
-//     border-radius: 0;
-// }
+.btn-group button:first-child {
+    border-right: none;
+    border-radius: 0;
+}
 
-// .btn-group button:last-child {
-//     border-left: none;
-//     border-radius: 0;
-//     margin-right: 0;
-// }
+.btn-group button:last-child {
+    border-left: none;
+    border-radius: 0;
+    margin-right: 0;
+}
 
-// .btn-group button.active {
-//     background: var(--rc-024a93);
-//     color: var(--white);
-// }
+.btn-group button.active {
+    background: var(--primary-color);
+    color: var(--white);
+}
 
 .custom-image img {
     border: calculateRem(1px) dotted;
@@ -70,7 +70,7 @@
     .box-label {
         background-color: var(--rc-F3F8FF);
         color: $primary-color;
-        padding: ($base-block-space) ($base-block-space*2);
+        padding: calculateRem(8px) calculateRem(16px);
         border-top-left-radius: calculateRem(4px);
         border-top-right-radius: calculateRem(4px);
         &.with-border {
@@ -119,7 +119,7 @@
         .overlay-image {
             width: 100%;
             height: 100%;
-            background: rgba(var(--black), 0.3);
+            background: rgba(var(--rc-rgba-black), 0.3);
             position: absolute;
             left: 0;
             right: 0;
@@ -131,7 +131,7 @@
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
-            color: rgba(var(--white), .6);
+            color: rgba(var(--rc-rgba-white), 0.6);
             font-size: $base-block-space*4;
             cursor: pointer;
             height: auto;

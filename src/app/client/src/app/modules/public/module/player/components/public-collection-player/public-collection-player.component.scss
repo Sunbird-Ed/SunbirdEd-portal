@@ -42,7 +42,7 @@
     overflow-y: auto;
     max-height: calc(100vh - 265px);
     height: auto;
-    box-shadow: 0 0 .625rem 0 rgba(var(--black),.25)!important;
+    box-shadow: 0 0 .625rem 0 rgba(var(--rc-rgba-black), 0.25) !important;
 
     @include respond-below(sm) {
       height: auto;
