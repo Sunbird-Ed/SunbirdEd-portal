@@ -6,7 +6,7 @@
   .header-shadow {
     min-height: calculateRem(80px);
     background-color: var(--rc-fafafa);
-    box-shadow:  0 10px 10px -10px rgba(0, 0, 0, 0.25);
+    box-shadow:  0 10px 10px -10px rgba(var(--black), 0.25);
     z-index: 99;
     position: relative;
   }
@@ -32,8 +32,8 @@
     &__item {
       background: var(--white);
       border: calculateRem(1px) solid var(--rc-dddddd);
-      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(2, 79, 157, 0.1);
-      border: calculateRem(0.5px) solid rgba(47, 66, 114, 0.5);
+      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--blue), 0.1);
+      border: calculateRem(0.5px) solid rgba(var(--rc-2f4272), 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
