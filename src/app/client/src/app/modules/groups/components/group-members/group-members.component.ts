@@ -83,7 +83,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   search(searchKey: string) {
-    if (searchKey.trim().length > 2) {
+    if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
     } else {

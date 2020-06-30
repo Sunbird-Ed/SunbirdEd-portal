@@ -15,6 +15,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { ContentSearchModule } from '@sunbird/content-search';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
     NgInviewModule,
     SharedFeatureModule,
     GroupsRoutingModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    ContentSearchModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,

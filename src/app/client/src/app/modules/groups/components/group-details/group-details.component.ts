@@ -62,7 +62,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   handleNextClick(event) {
     this.toggleActivityModal(false);
     this.addActivityModal.deny();
-    this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`]);
+    this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`, 1]);
   }
 
   ngOnDestroy() {

@@ -20,8 +20,8 @@ const routes: Routes = [
   { path: CREATE_EDIT_GROUP, component: CreateEditGroupComponent },
   { path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent },
   { path: ADD_MEMBER_TO_GROUP, component: AddMemberComponent },
-  { path: ADD_ACTIVITY_TO_GROUP, component: ActivitySearchComponent },
-  { path: ACTIVITY_DETAILS, component: ActivityDashboardComponent },
+  { path: `${ADD_ACTIVITY_TO_GROUP}/:pageNumber`, component: ActivitySearchComponent },
+  { path: `${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent },
 ];
 
 

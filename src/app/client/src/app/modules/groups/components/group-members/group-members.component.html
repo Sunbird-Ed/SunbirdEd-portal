@@ -1,7 +1,7 @@
 <div class="status-container flex-dc d-flex p-8 py-16">
   <div class="title mb-16 font-weight-bold pl-8">
     {{resourceService?.frmelmnts?.lbl?.members}}
-    <span *ngIf="config?.showMemberCount" class="badge">{{members?.length}}</span>
+    <span *ngIf="config?.showMemberCount && !showSearchResults" class="badge">{{members?.length}}</span>
   </div>
 
   <div class="sb-library-cards">
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div *ngIf="config?.showAddMemberButton" (click)="addMember()">
+    <div *ngIf="config?.showAddMemberButton && !showSearchResults" (click)="addMember()">
       <div class="cursor-pointer mb-8 fnormal px-8">
         <img alt="admin" src="./assets/images/add-member-1.png" width="32">
         {{resourceService?.frmelmnts?.lbl?.addMember}}
@@ -43,18 +43,19 @@
         </div>
       </div>
     </div>
-    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center" *ngIf="!memberListToShow?.length">
+
+    <!--No Group member except admin-->
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center"
+      *ngIf="!memberListToShow?.length && !showSearchResults">
       <img height="176" alt="" width="210" src="./assets/images/no-member.png">
     </div>
-    <div class="member-no-result pt-32 hide">
+
+    <!--No search results -->
+    <div class="member-no-result pt-32" *ngIf="showSearchResults && !memberListToShow?.length">
       <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-        <img alt="no member" height="165" width="206" src="./assets/images/mygroups.svg">
+        <img alt="no member" height="165" width="206" src="./assets/images/group-search-empty.svg">
         <div class="mt-16 no-result-text">
-          Sorry! there are no results to match your search. To continue your search
-        </div>
-        <div class="my-8 no-result-desc">
-          <div>*check your spelling</div>
-          <div>* type a similar but, different name</div>
+          {{resourceService?.frmelmnts?.lbl?.noMatchingMember}}
         </div>
       </div>
     </div>
