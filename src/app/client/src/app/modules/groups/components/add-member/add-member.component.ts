@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class AddMemberComponent {
   constructor(public resourceService: ResourceService) {
   }
+  showModal = false;
   public  membersList = [
     {identifier: '1', initial: 'A', title: 'Abc', isAdmin: false,  isMenu: false, indexOfMember: 1}
   ];
