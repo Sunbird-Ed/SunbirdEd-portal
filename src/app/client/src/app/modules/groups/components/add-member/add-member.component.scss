@@ -5,13 +5,13 @@
 }
 .icon-input-close {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: calculateRem(4px);
+    right: calculateRem(4px);
     cursor: pointer;
     width: calculateRem(24px);
     height: calculateRem(24px);
     html[dir="rtl"] & {
-        left:8px;
+        left:calculateRem(8px);
         right:inherit;
     }
 }
@@ -35,13 +35,13 @@
         border-radius: 50%;
         border: calculateRem(6px) solid var(--white);
         background-color: var(--white);
-        box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--black), 0.1);
+        box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.1);
     }
     }
 }
 
 .textbook-container {
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
+    box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
     position: relative;
   }
   .textbook {

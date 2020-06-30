@@ -84,7 +84,7 @@
 
   .ui.toggle.checkbox .box:before,
   .ui.toggle.checkbox label:before {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(var(--rc-rgba-black), 0.2);
   }
 
   .ui.toggle.checkbox .box:after,

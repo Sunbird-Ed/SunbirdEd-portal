@@ -14,7 +14,7 @@
     margin-right: 0;
 }
 .btn-group button.active {
-    background: #024a93;
+    background: var(--primary-color);
     color: var(--white);
 }
 .question-status a {

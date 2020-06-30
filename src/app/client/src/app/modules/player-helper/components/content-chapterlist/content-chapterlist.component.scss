@@ -8,7 +8,7 @@
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       &--bg-white {
         background: var(--white);
       }
@@ -25,13 +25,13 @@
     .sbtoc-filter {
       height: calculateRem(48px);
       padding: calculateRem(8px) calculateRem(16px);
-      box-shadow: 0px calculateRem(2px) calculateRem(10px) calculateRem(-5px) rgba(0, 0, 0, 0.25);
+      box-shadow: 0px calculateRem(2px) calculateRem(10px) calculateRem(-5px) rgba(var(--rc-rgba-black), 0.25);
       display: inline-flex;
       align-items: center;
       width: 100%;
       overflow: hidden;
       overflow-x: auto;
-      border-bottom: calculateRem(1px) solid #e0e0e0;
+      border-bottom: calculateRem(1px) solid var(--rc-e0e0e0);
       // &::-webkit-scrollbar {
       //   height:0px;
       // }
@@ -79,7 +79,7 @@
       }
       &__panel {
         margin-bottom: calculateRem(8px);
-        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       }
       &__panel-header {
         background: var(--white);
@@ -99,7 +99,7 @@
         width: 100%;
       }
       &__panel-content {
-        border-top: calculateRem(1px) solid #e0e0e0;
+        border-top: calculateRem(1px) solid var(--rc-e0e0e0);
         background: var(--gray-0);
         min-height: auto;
         overflow: hidden;
@@ -109,14 +109,14 @@
     }
   
     &--detailed {
-      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.1);
       background: var(--white);
     }
   }
   
   //sbchapter css
   .sbchapter {
-    border-bottom: calculateRem(1px) solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     padding: calculateRem(16px);
     h4 {
       font-size: $font-size-xs;
@@ -125,9 +125,9 @@
     }
     &__item {
       background: var(--white);
-      border: calculateRem(1px) solid #ddd;
-      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(2, 79, 157, 0.1);
-      border: calculateRem(0.5px) solid rgba(35, 97, 255, 0.5);
+      border: calculateRem(1px) solid var(--rc-dddddd);
+      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+      border: calculateRem(0.5px) solid rgba(var(--rc-rgba-primary), 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -159,7 +159,7 @@
     }
   }
   .sbchapter-open {
-    border-bottom: calculateRem(1px) solid #e0e0e0;
+    border-bottom: calculateRem(1px) solid var(--rc-e0e0e0);
     padding-bottom: var(--base-block-space);
     &__title {
       //@extend .sbaccordion__panel-header__tilte;
@@ -218,7 +218,7 @@
       background-color: var(--gray-400);
     }
     &::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(0, 0, 0, 0);
+      -webkit-box-shadow: inset 0 0 calculateRem(6px) rgba(var(--rc-rgba-black), 0);
       background-color: var(--gray-0);
     }
   }

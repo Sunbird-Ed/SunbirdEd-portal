@@ -2,8 +2,8 @@
 @import "./mixins/mixins";
 
 .ui.popup::after {
-   background-color: #007AFF !important;
-   background:#007AFF !important
+   background-color: var(--rc-007AFF) !important;
+   background:var(--rc-007AFF) !important
 }
 .gray-shade {
    margin: calculateRem(10px) calculateRem(-16px) 0px calculateRem(-16px);
