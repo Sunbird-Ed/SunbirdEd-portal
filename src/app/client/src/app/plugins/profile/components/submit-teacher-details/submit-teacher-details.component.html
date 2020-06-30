@@ -88,7 +88,7 @@
               <!-- validate button -->
               <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100"
                    *ngIf="validationType[field.code].isVerificationRequired">
-                <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="validateUser(field.code)">
+                <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="generateOTP(field.code)">
                   {{resourceService.frmelmnts?.lbl?.validate}}</button>
               </div>
             </div>

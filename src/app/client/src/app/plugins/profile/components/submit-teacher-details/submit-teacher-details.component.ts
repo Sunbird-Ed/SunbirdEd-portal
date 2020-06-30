@@ -201,12 +201,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
       const keyControl = this.userDetailsForm.controls[key];
-      const email = this.userProfile['masked' + key];
+      const userFieldValue = this.userProfile['masked' + key];
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
-        if (email === newValue) {
+        newValue = newValue.trim();
+        if (userFieldValue === newValue) {
           this.validationType[key].isVerified = false;
           this.validationType[key].isVerificationRequired = false;
-          this.userDetailsForm.removeControl(key + 'Verified');
+          this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
+          this.userDetailsForm.controls[key + 'Verified'].setValue(true);
           return;
         }
         if (newValue && keyControl.status === 'VALID') {
@@ -223,10 +225,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  validateUser(fieldType) {
-    this.generateOTP(fieldType);
-  }
-
   generateOTP(fieldType) {
     const request = {
       request: {
@@ -237,7 +235,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     };
     this.otpService.generateOTP(request).subscribe((data: ServerResponse) => {
         this.otpData = this.prepareOtpData(fieldType);
-        this.isOtpVerificationRequired = true;
+        this.setOtpValidation(true);
       },
       (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
@@ -246,7 +244,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onVerificationSuccess(data) {
-    this.isOtpVerificationRequired = false;
+    this.setOtpValidation(false);
     const fieldType = this.getFieldType(data);
     this.validationType[fieldType].isVerified = true;
     this.userDetailsForm.controls[fieldType + 'Verified'].setValue(true);
@@ -258,11 +256,15 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onOtpPopupClose() {
-    this.isOtpVerificationRequired = false;
+    this.setOtpValidation(false);
+  }
+
+  setOtpValidation(valueToSet) {
+    this.isOtpVerificationRequired = valueToSet;
   }
 
   onOtpVerificationError(data) {
-    this.isOtpVerificationRequired = false;
+    this.setOtpValidation(false);
   }
 
   prepareOtpData(fieldType) {
