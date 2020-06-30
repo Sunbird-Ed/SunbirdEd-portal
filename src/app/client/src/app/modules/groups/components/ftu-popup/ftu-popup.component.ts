@@ -1,5 +1,5 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-ftu-popup',
@@ -7,11 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./ftu-popup.component.scss']
 })
 export class FtuPopupComponent implements OnInit {
-
-  showWelcomePopup = true;
+  @Input() showWelcomePopup;
+  @Output() close = new EventEmitter();
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
+  }
+
+  closeModal() {
+    this.showWelcomePopup = false;
+    this.close.emit(true);
   }
 
 }

@@ -2,12 +2,12 @@
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
-      Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
-      (Group discription here)</div>
+      {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
+     </div>
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
       (click)="showCreateFormModal()">
       <img src="./assets/images/Group-4.svg" width="24" height="24" class="mr-4">
-      {{ resourceService.frmelmnts.lbl.createGroup }}
+      {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
   </div>
 </div>
@@ -23,10 +23,10 @@
             [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject"
             type="button" (click)="showCreateFormModal()">
             <img src="./assets/images/Group-4.svg" width="24" class="mr-4" />
-            {{ resourceService.frmelmnts.lbl.createGroup }}
+            {{ resourceService?.frmelmnts?.lbl?.createGroup }}
           </button>
-          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button">
-            <img src="./assets/images/info-icon-blue.svg" width="20">
+          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup()">
+            <img src="./assets/images/info-icon-blue.svg" width="20" >
           </button>
         </div>
       </div>
@@ -35,20 +35,12 @@
 
   <div class="ui container mt-24">
     <div class="sb-card-grid">
-      
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList"
-        (click)="navigateToDetailPage(group.identifier)">
-        <div class="sbcard__main_area">
-          <div class="sbcard__img"><img src="./assets/images/noun_School.svg" alt="" title="" /></div>
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{group.name}}</h4>
-            <div class="sbcard__meta1"><span>{{group.subject}}</span><span
-                class="dot-divider"></span><span>{{group.gradeLevel}}</span>
-            </div>
-          </div>
-        </div>
+      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList">
+        <sb-group-card [group]= "group" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
     </div>
   </div>
 
 </div>
+
+<app-ftu-popup *ngIf="showModal" [showWelcomePopup]="showModal" (close)="closeModal()"></app-ftu-popup>

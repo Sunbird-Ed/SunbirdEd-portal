@@ -5,13 +5,13 @@
 }
 .icon-input-close {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: calculateRem(4px);
+    right: calculateRem(4px);
     cursor: pointer;
     width: calculateRem(24px);
     height: calculateRem(24px);
     html[dir="rtl"] & {
-        left:8px;
+        left:calculateRem(8px);
         right:inherit;
     }
 }
