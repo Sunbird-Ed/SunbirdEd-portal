@@ -32,11 +32,10 @@ export class ActivityListComponent {
 
   constructor(
     private configService: ConfigService,
-    public resourceService: ResourceService,
     private router: Router,
-    private activateRoute: ActivatedRoute
-  ) {
-  }
+    private activateRoute: ActivatedRoute,
+    public resourceService: ResourceService,
+  ) { }
 
   ngOnInit() {
     this.showLoader = true;
@@ -52,47 +51,45 @@ export class ActivityListComponent {
   }
 
   getActivities() {
-    setTimeout(() => {
-      this.showLoader = false;
-      this.activityList = [
-        {
-          name: 'Class 5 English',
-          identifier: 'do_123523212190',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
-          organisation: ['Pre-prod Custodian Organization'],
-          subject: 'Social Science'
-        }, {
-          name: 'India & Contemporary World II',
-          identifier: 'do_123523212112',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291521464536268819635/artifact/jess1cc_1575435434756.thumb.jpg',
-          organisation: ['Prod Custodian Organization'],
-          subject: 'Social Science'
-        }, {
-          name: 'Footprints without Feet - English Supplementary Reader',
-          identifier: 'do_1235232121343',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
-          organisation: ['Prod Custodian Organization'],
-          subject: 'Social Science'
-        }, {
-          name: 'Class 5 English',
-          identifier: 'do_1235232121565',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
-          organisation: ['Pre-prod Custodian Organization'],
-          subject: 'Social Science'
-        }, {
-          name: 'India & Contemporary World II',
-          identifier: 'do_123523212145462',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291521464536268819635/artifact/jess1cc_1575435434756.thumb.jpg',
-          organisation: ['Prod Custodian Organization'],
-          subject: 'Social Science'
-        }, {
-          name: 'Footprints without Feet - English Supplementary Reader',
-          identifier: 'do_123523212121232',
-          appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
-          organisation: ['Prod Custodian Organization'],
-          subject: 'Social Science'
-        }];
-    }, 1000);
+    this.showLoader = false;
+    this.activityList = [
+      {
+        name: 'Class 5 English',
+        identifier: 'do_123523212190',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
+        organisation: ['Pre-prod Custodian Organization'],
+        subject: 'Social Science'
+      }, {
+        name: 'India & Contemporary World II',
+        identifier: 'do_123523212112',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291521464536268819635/artifact/jess1cc_1575435434756.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science'
+      }, {
+        name: 'Footprints without Feet - English Supplementary Reader',
+        identifier: 'do_1235232121343',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science'
+      }, {
+        name: 'Class 5 English',
+        identifier: 'do_1235232121565',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
+        organisation: ['Pre-prod Custodian Organization'],
+        subject: 'Social Science'
+      }, {
+        name: 'India & Contemporary World II',
+        identifier: 'do_123523212145462',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291521464536268819635/artifact/jess1cc_1575435434756.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science'
+      }, {
+        name: 'Footprints without Feet - English Supplementary Reader',
+        identifier: 'do_123523212121232',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science'
+      }];
   }
 
   openActivity(event: any, activity: IActivity) {

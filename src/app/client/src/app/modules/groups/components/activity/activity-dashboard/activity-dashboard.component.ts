@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
 import { debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
+import { IGroup } from '../../../interfaces/group';
+import { GroupsService } from '../../../services';
 import { IActivity } from '../activity-list/activity-list.component';
 
 @Component({
@@ -16,13 +18,16 @@ export class ActivityDashboardComponent implements OnInit {
   queryParams;
   activityId: string;
   groupId: string;
+  groupData: IGroup;
   activity: IActivity;
   groupMembers = [];
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
   loaderMessage = this.resourceService.messages.fmsg.m0087;
   constructor(
     public resourceService: ResourceService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private groupService: GroupsService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit() {
@@ -32,7 +37,7 @@ export class ActivityDashboardComponent implements OnInit {
   private fetchActivityOnParamChange() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(debounceTime(5), // to sync params and queryParams events
-        delay(10), // to trigger pageexit telemetry event
+        delay(10), // to trigger page exit telemetry event
         tap(data => {
           this.showLoader = true;
           // TODO set telemetry here
@@ -48,12 +53,9 @@ export class ActivityDashboardComponent implements OnInit {
   }
 
   fetchActivity() {
-    // this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-    //   this.groupData = groupData;
-    // }, err => {
-    //   this.toasterService.error(this.resourceService.messages.emsg.m002);
-    // });
-    setTimeout(() => {
+    this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupData = groupData;
+
       this.showLoader = false;
       this.activity = {
         name: 'Social Science',
@@ -94,6 +96,9 @@ export class ActivityDashboardComponent implements OnInit {
           progress: '37'
         }
       ];
-    }, 10);
+
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+    });
   }
 }

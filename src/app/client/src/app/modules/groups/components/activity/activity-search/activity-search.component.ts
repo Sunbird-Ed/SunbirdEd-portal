@@ -106,6 +106,8 @@ export class ActivitySearchComponent implements OnInit {
   public getFilters(filters) {
     this.facets = filters.map(element => element.code);
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
+
+      /* istanbul ignore else */
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
       }
@@ -144,10 +146,13 @@ export class ActivitySearchComponent implements OnInit {
       filters: filters,
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
-      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
       facets: this.facets,
       params: this.configService.appConfig.Course.contentApiQueryParams
     };
+
+    if (_.get(this.queryParams, 'sort_by')) {
+      option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType }
+    }
 
     /* istanbul ignore else */
     if (_.get(this.queryParams, 'key')) {
@@ -178,6 +183,7 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   public navigateToPage(page: number): void {
+    /* istanbul ignore else */
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
     }
