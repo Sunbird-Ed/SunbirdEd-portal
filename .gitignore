@@ -18,4 +18,3 @@ mochawesome-report
 .idea
 /src/app/helpers/devConfig.js
 /.vscode/launch.json
-headlesschrome.0.0.0.mac.os.x.10.14.6.xml
