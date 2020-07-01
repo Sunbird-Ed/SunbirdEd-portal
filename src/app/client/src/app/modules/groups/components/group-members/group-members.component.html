@@ -1,7 +1,7 @@
 <div class="flex-dc d-flex p-8 py-16 sb-bg-color-white br-4">
   <div class="title mb-16 font-weight-bold pl-8">
     {{resourceService?.frmelmnts?.lbl?.members}}
-    <span *ngIf="config?.showMemberCount && !showSearchResults" class="badge">{{members?.length}}</span>
+    <span *ngIf="config?.showMemberCount" class="badge">{{members?.length}}</span>
   </div>
 
   <div class="sb-library-cards">
@@ -37,7 +37,7 @@
           <div class="list mb-8" (click)="openModal('dismissAsAdmin')">
             <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
           </div>
-          <div class="list" (click)="openModal('removeFromGroup')" style="color: red">
+          <div class="list sb-color-error" (click)="openModal('removeFromGroup')">
             <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
           </div>
         </div>

@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ConfigService } from '../../../../shared/services/config/config.service';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ResourceService } from '../../../../shared/services/resource/resource.service';
 import { ACTIVITY_DETAILS, MY_GROUPS } from '../../routerLinks';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 export interface IActivity {
   name: string;
@@ -19,6 +19,7 @@ export interface IActivity {
   styleUrls: ['./activity-list.component.scss']
 })
 export class ActivityListComponent {
+  @ViewChild('modal') modal;
   @Input() groupId;
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
@@ -26,12 +27,14 @@ export class ActivityListComponent {
   activityList = [];
   showMenu = false;
   selectedActivity: IActivity;
+  showModal = false;
   unsubscribe$ = new Subject<void>();
 
   constructor(
     private configService: ConfigService,
     public resourceService: ResourceService,
-    private router: Router
+    private router: Router,
+    private activateRoute: ActivatedRoute
   ) {
   }
 
@@ -94,7 +97,7 @@ export class ActivityListComponent {
 
   openActivity(event: any, activity: IActivity) {
     // TODO add telemetry here
-    this.router.navigate([`${MY_GROUPS}/${ACTIVITY_DETAILS}`, activity.identifier]);
+    this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], { relativeTo: this.activateRoute });
   }
 
   getMenuData(event, member) {
@@ -103,15 +106,24 @@ export class ActivityListComponent {
     event.event.stopImmediatePropagation();
   }
 
-  performAction(action: string) {
-    // TODO add telemetry here
-    if (action === 'removeActivity') {
-      this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
-    }
+
+  toggleModal(show = false) {
+    this.showModal = show;
+  }
+
+  removeActivity() {
+    this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
+    this.toggleModal();
+
+    // TODO: add telemetry here
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    if (this.showModal && this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }

@@ -15,6 +15,7 @@ export class ActivityDashboardComponent implements OnInit {
   showLoader = false;
   queryParams;
   activityId: string;
+  groupId: string;
   activity: IActivity;
   groupMembers = [];
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
@@ -36,16 +37,22 @@ export class ActivityDashboardComponent implements OnInit {
           this.showLoader = true;
           // TODO set telemetry here
         }),
-        map((result) => ({ params: { activityId: result[0].activityId }, queryParams: result[1] })),
+        map((result) => ({ params: { groupId: result[0].groupId, activityId: result[0].activityId }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
       .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
+        this.groupId = params.groupId;
         this.activityId = params.activityId;
         this.fetchActivity();
       });
   }
 
   fetchActivity() {
+    // this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    //   this.groupData = groupData;
+    // }, err => {
+    //   this.toasterService.error(this.resourceService.messages.emsg.m002);
+    // });
     setTimeout(() => {
       this.showLoader = false;
       this.activity = {

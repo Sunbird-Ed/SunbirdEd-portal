@@ -31,10 +31,10 @@ export interface IGroupMember {
 export class GroupMembersComponent implements OnInit {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
-    showMemberCount: true,
-    showSearchBox: true,
-    showAddMemberButton: true,
-    showMemberMenu: true
+    showMemberCount: false,
+    showSearchBox: false,
+    showAddMemberButton: false,
+    showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [
     { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
