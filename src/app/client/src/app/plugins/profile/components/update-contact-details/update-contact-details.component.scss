@@ -2,7 +2,7 @@
 @import "components/form";
 .ui.grey.button {
     background: var(--gray-200);
-    color: $white-color;
+    color: var(--white);
     pointer-events: none !important;
     cursor: not-allowed !important; 
     height: 38px !important;
@@ -10,15 +10,15 @@
 }
 
 .ui.dodger-blue.button {
-    background: $primary-color;
-    color: $white-color;
+    background: var(--primary-color);
+    color: var(--white);
     font-size: 1rem;
     height: 38px !important;
 }
 
 .ui.basic.error.label {
     background: none !important;
-    color: $danger-color !important;
+    color: var(--red-100) !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
