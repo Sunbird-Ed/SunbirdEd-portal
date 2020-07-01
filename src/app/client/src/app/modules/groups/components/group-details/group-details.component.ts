@@ -5,8 +5,9 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig } from '../group-members/group-members.component';
+
 import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS } from '../routerLinks';
+import { IGroupMemberConfig } from '../../interfaces';
 
 @Component({
   selector: 'app-group-details',

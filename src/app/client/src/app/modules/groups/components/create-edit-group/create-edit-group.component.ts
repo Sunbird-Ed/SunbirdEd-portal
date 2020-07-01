@@ -29,10 +29,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   private initializeForm() {
     this.groupForm = this.fb.group({
-      groupName: ['', [
+      name: ['', [
         Validators.required,
       ]],
-      groupDescription: ['', [
+      description: ['', [
       ]],
       groupToc: ['', [Validators.requiredTrue]]
     });
@@ -64,6 +64,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   updateForm() {}
+
+  reset() {}
 
   closeModal() {
     this.close();

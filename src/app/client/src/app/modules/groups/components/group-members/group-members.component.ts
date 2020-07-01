@@ -5,23 +5,9 @@ import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from './../routerLinks';
+import { IGroupMemberConfig, IGroupMember } from '../../interfaces';
 
-export interface IGroupMemberConfig {
-  showMemberCount: boolean;
-  showSearchBox: boolean;
-  showAddMemberButton: boolean;
-  showMemberMenu: boolean;
-}
 
-export interface IGroupMember {
-  identifier: string;
-  initial: string;
-  title: string;
-  isAdmin: boolean;
-  isMenu: boolean;
-  indexOfMember: number;
-  isCreator: boolean;
-}
 
 @Component({
   selector: 'app-group-members',

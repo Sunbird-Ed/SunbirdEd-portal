@@ -1,14 +1,22 @@
 export interface IGroup {
-    groupName: string;
-    groupDescription?: string;
+    name: string;
+    description?: string;
 }
 
-export interface IGroupMember {
-    title: string;
+export interface IGroupMemberConfig {
+    showMemberCount: boolean;
+    showSearchBox: boolean;
+    showAddMemberButton: boolean;
+    showMemberMenu: boolean;
+  }
+
+  export interface IGroupMember {
     identifier: string;
-    indexOfMember: number;
-    isMenu: boolean;
     initial: string;
+    title: string;
     isAdmin: boolean;
-}
+    isMenu: boolean;
+    indexOfMember: number;
+    isCreator: boolean;
+  }
 

@@ -37,4 +37,10 @@ describe('FtuPopupComponent', () => {
     component.closeModal();
     expect(component.close.emit).toHaveBeenCalledWith(true);
   });
+
+  it('should emit close event', () => {
+    spyOn(component.close, 'emit');
+    component.closeMemberPopup();
+    expect(component.close.emit).toHaveBeenCalledWith(true);
+  });
 });

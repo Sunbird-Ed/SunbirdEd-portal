@@ -30,7 +30,7 @@ export class FtuPopupComponent implements OnInit {
 
   closeMemberPopup() {
     this.showMemberPopup = false;
-    this.close.emit();
+    this.close.emit(true);
   }
 
 }

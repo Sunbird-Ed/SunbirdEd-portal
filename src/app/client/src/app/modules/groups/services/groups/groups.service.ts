@@ -19,8 +19,8 @@ export class GroupsService {
       this.groupCservice = CsModule.instance.groupService;
   }
 
-  createGroup({groupName, groupDescription}: IGroup) {
-    return this.groupCservice.create(groupName, groupDescription);
+  createGroup({name, description}: IGroup) {
+    return this.groupCservice.create(name, description);
   }
 
   getAllGroups() {
