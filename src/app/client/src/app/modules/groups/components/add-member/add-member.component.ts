@@ -11,6 +11,7 @@ export class AddMemberComponent implements OnInit {
   }
   showModal = false;
   instance: string;
+  member: {};
   public  membersList = [
     {identifier: '1', initial: 'A', title: 'Abc', isAdmin: false,  isMenu: false, indexOfMember: 1}
   ];
