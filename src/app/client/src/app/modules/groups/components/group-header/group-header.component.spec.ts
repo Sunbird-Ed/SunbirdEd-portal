@@ -1,4 +1,4 @@
-import { CREATE_EDIT_GROUP } from './../routerLinks';
+import { CREATE_GROUP } from './../routerLinks';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -72,7 +72,7 @@ describe('GroupHeaderComponent', () => {
   });
   it ('should route to create-edit-group', () => {
     component.editGroup();
-    expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_GROUP}`]);
   });
   it ('show call goBack', () => {
     spyOn(component['navigationHelperService'], 'goBack');

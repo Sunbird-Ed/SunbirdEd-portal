@@ -18,6 +18,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   public selectedOption: any = {};
   private unsubscribe: Subscription;
   public editMode: boolean;
+  groupId;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService) { }
@@ -35,6 +36,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       ]],
       groupToc: ['', [Validators.requiredTrue]]
     });
+  }
+
+  isFieldValid(field: string) {
+    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
   onSubmitForm() {
@@ -58,6 +63,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateForm() {}
+
   closeModal() {
     this.close();
     this.navigationHelperService.goBack();
@@ -67,10 +74,6 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (this.createGroupModal && this.createGroupModal.deny) {
       this.createGroupModal.deny();
     }
-  }
-
-  isFieldValid(field: string) {
-    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
   ngOnDestroy() {
