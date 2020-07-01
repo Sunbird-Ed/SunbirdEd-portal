@@ -51,6 +51,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
+  phoneObj: { idType: string, provider: string, id: string };
+  emailObj: { idType: string, provider: string, id: string };
   teacherObj: { idType: string, provider: string, id: string };
   schoolObj: { idType: string, provider: string, id: string };
   instance: string;
@@ -75,6 +77,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
         this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
         this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
+        this.phoneObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-phone');
+        this.emailObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-email');
         this.getOrgDetails();
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
