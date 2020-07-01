@@ -3,7 +3,7 @@
 
 const argv = require('minimist')(process.argv.slice(2))
 const tags = (argv.tags !== true) && argv.tags
-process.env.CHROME_BIN = require('puppeteer').executablePath()
+// process.env.CHROME_BIN = require('puppeteer').executablePath()
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -30,7 +30,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
-    preprocessors: ['sourcemap'],
+    // preprocessors: ['sourcemap'],
     reporters: ['mocha'],
     mochaReporter: {
       symbols: {
@@ -44,10 +44,10 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['HeadlessChrome'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
-      HeadlessChrome: {
-        base: 'ChromeHeadless',
+      ChromeHeadless: {
+        base: 'Chrome',
         flags: [
           '--no-sandbox',
           '--headless',
