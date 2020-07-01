@@ -10,10 +10,13 @@ module.exports = function (config) {
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
+      require('karma-coverage'),
       require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-sourcemap-loader'),
+      require('source-map-loader')
     ],
     browserNoActivityTimeout: 100000,
     client: {
@@ -27,7 +30,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
-    
+    preprocessors: ['sourcemap'],
     reporters: ['mocha'],
     mochaReporter: {
       symbols: {
@@ -35,7 +38,7 @@ module.exports = function (config) {
         info: '#',
         warning: '!',
         error: 'x'
-      }
+        }
     },
     port: 9876,
     colors: true,
