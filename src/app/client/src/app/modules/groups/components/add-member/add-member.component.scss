@@ -1,32 +1,47 @@
 @import "mixins/mixins";
 
-.title{
-    color:var(--gray-800);
-}
-.icon-input-close {
+
+:host ::ng-deep {
+  .title {
+    color: var(--gray-800);
+  }
+
+  .icon-input-close {
     position: absolute;
     top: calculateRem(4px);
     right: calculateRem(4px);
     cursor: pointer;
     width: calculateRem(24px);
     height: calculateRem(24px);
-    html[dir="rtl"] & {
-        left:calculateRem(8px);
-        right:inherit;
-    }
-}
-.sb-field{
-    .message{
-        font-size: calculateRem(10px);
-    }
-}
 
-.add-member-content{
+    html[dir="rtl"] & {
+      left: calculateRem(8px);
+      right: inherit;
+    }
+  }
+
+  .add-member-content {
     width: 100%;
     background: var(--rc-E5EDF5);
-    .add-member-text{
-      
-      .oval{
+    flex-direction: row;
+
+    @include respond-below(sm) {
+      flex-direction: column;
+    }
+
+    .add-member-text {
+      margin: calculateRem(8px) calculateRem(24px) calculateRem(8px) 0px;
+
+      html[dir="rtl"] & {
+        margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(24px);
+      }
+
+      @include respond-below(sm) {
+        align-self: self-start;
+        margin:0px;
+      }
+
+      .oval {
         height: calculateRem(36px);
         width: calculateRem(36px);
         justify-content: center;
@@ -36,32 +51,70 @@
         border: calculateRem(6px) solid var(--white);
         background-color: var(--white);
         box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.1);
+      }
     }
-    }
-}
+  }
 
-.textbook-container {
+  .textbook-container {
     box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
     position: relative;
   }
+
   .textbook {
     &__details {
       flex: 1;
       min-width: 0;
     }
+
     &__bookimg {
       width: calculateRem(48px);
       height: calculateRem(48px);
     }
+
     &__heading {
       min-width: 0;
+
       .textbook__title {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
     }
+
     &__addbtn {
       white-space: nowrap;
     }
   }
+
+  .sb-field {
+    .message {
+      font-size: calculateRem(10px);
+      display: flex;
+
+      @include respond-below(sm) {
+        margin: 0.5rem 0;
+      }
+    }
+
+    .id-content {
+      flex-direction: row;
+
+      @include respond-below(sm) {
+        flex-direction: column;
+      }
+
+      .input-content {
+        margin: calculateRem(8px) calculateRem(24px) calculateRem(8px) 0px;
+
+        @include respond-below(sm) {
+          margin: 8px 24px;
+        }
+
+        html[dir="rtl"] & {
+          margin: calculateRem(8px) 0 calculateRem(8px) calculateRem(24px);
+        }
+      }
+    }
+  }
+
+}
