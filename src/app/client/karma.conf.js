@@ -13,6 +13,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-sonarqube-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     browserNoActivityTimeout: 100000,
@@ -27,8 +28,17 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
-    
-    reporters: ['mocha'],
+    sonarqubeReporter: {
+      basePath: 'src/app/client/src',
+      outputFolder: 'reports',
+      filePattern: '**/*spec.ts',
+      encoding: 'utf-8',
+      legacyMode: false,
+      reportName: (metadata) => {
+        return metadata.concat('xml').join('.');
+      }
+    },
+    reporters: ['mocha', 'sonarqube'],
     mochaReporter: {
       symbols: {
         success: '+',
