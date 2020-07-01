@@ -211,7 +211,7 @@ function handleShutDowns() {
 
   const cleanup = signal => new Promise(async (resolve, reject) => { // close db connections
     await frameworkAPI.closeCassandraConnections();
-    console.log(`Closed db connection after ${signal} signal.`);
+    logger.info({ msg: `Closed db connection after ${signal} signal.` })
     resolve();
   });
 
@@ -219,7 +219,7 @@ function handleShutDowns() {
     signals: 'SIGINT SIGTERM',
     timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
     onShutdown: cleanup,
-    finally: () => console.log('Server gracefully shut down.'),
+    finally: () => logger.info({ msg: 'Server gracefully shut down.'}),
     development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
   });
 }
