@@ -34,6 +34,7 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
+    forever: true,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
