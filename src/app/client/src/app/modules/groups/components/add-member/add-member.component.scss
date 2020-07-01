@@ -30,10 +30,10 @@
     }
 
     .add-member-text {
-      margin: 8px 24px 8px 0px;
+      margin: calculateRem(8px) calculateRem(24px) calculateRem(8px) 0px;
 
       html[dir="rtl"] & {
-        margin: 8px 0px 8px 24px;
+        margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(24px);
       }
 
       @include respond-below(sm) {
@@ -104,14 +104,14 @@
       }
 
       .input-content {
-        margin: 8px 24px 8px 0px;
+        margin: calculateRem(8px) calculateRem(24px) calculateRem(8px) 0px;
 
         @include respond-below(sm) {
           margin: 8px 24px;
         }
 
         html[dir="rtl"] & {
-          margin: 8px 0px 8px 24px;
+          margin: calculateRem(8px) 0 calculateRem(8px) calculateRem(24px);
         }
       }
     }
