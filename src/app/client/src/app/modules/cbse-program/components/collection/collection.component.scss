@@ -14,8 +14,8 @@
   }
   &__separator {
     border-left: calculateRem(1px) solid var(--gray-200);
-    height: ($base-block-space * 3);
-    margin: auto $base-block-space*2;
+    height: calculateRem(24px);
+    margin: auto calculateRem(16px);
   }
   &__medium {
     overflow-x: auto;
@@ -59,15 +59,15 @@
   &__pills-container {
     min-height: calculateRem(64px);
     .pill {
-      border: calculateRem(1px) solid var(--green);
-      color: var(--green);
+      border: calculateRem(1px) solid  var(--secondary-color);
+      color:  var(--secondary-color);
       cursor: pointer;
       &:hover {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
       }
       &.active {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
         cursor: pointer;
       }
@@ -76,15 +76,15 @@
   &__sb-pills-content {
     display: inline-flex;
     align-items: center;
-    padding: ($base-block-space * 2) 0;
+    padding: calculateRem(16px) 0;
     .pill {
       background-color: var(--white);
       white-space: nowrap;
       -webkit-appearance: none;
       text-overflow: ellipsis;
-      min-height: ($base-block-space * 4);
-      margin: 0px ($base-block-space/2) 0px ($base-block-space/2);
-      padding: ($base-block-space / 2) ($base-block-space);
+      min-height: calculateRem(32px);
+      margin: 0px calculateRem(4px) 0px calculateRem(4px);
+      padding: calculateRem(4px) calculateRem(8px);
       border-radius: calculateRem(2px);
       text-transform: capitalize;
       text-decoration: none;
@@ -101,26 +101,26 @@
 }
 // State Selection and Board Medium Selection CSS ends here
 .sb-class {
-  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--black), 0.2);
+  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
   background-color: var(--gray-0);
   &__pills-container {
-    padding: $base-block-space 0;
+    padding: calculateRem(8px) 0;
   }
   &__pill {
     background-color: var(--white);
     white-space: nowrap;
     -webkit-appearance: none;
     text-overflow: ellipsis;
-    margin-right: $base-block-space;
+    margin-right: calculateRem(8px);
     text-transform: capitalize;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
-    border-radius: ($base-block-space * 2);
-    padding: ($base-block-space / 2) ($base-block-space * 2);
+    border-radius: calculateRem(16px);
+    padding: calculateRem(4px) calculateRem(16px);
     color: var(--primary-400);
-    min-height: ($base-block-space * 4);
+    min-height: calculateRem(32px);
     font-size:calculateRem(14px);
     cursor: pointer;
     &:hover {
@@ -146,7 +146,7 @@
   max-width: 100%;
   border-radius: calculateRem(2px);
   background-color:var(--white);
-  // box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+  // box-shadow: 0 2px 7px 0 rgba(var(--rc-rgba-black), 0.16);
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -157,11 +157,11 @@
   }
   &:hover {
     transform: translate(0,-3px);
-    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--black),.16);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   }
   @include respond-above(sm) {
     border-radius: calculateRem(2px);
-    // box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+    // box-shadow: 0 2px 7px 0 rgba(var(--rc-rgba-black), 0.16);
     border-bottom: 0px solid $gray-0;
   }
   &__main_area {
@@ -207,7 +207,7 @@
   &__moreinfo {
     border-top: calculateRem(1px) solid var(--rc-e9e5e5);
     border-radius: 0 0 calculateRem(2px) calculateRem(2px);
-    background-color: var(--rc-fafafa);
+    background-color: var(--rc-FAFAFA);
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -269,7 +269,7 @@
 }
 // Overridden CSS
 .sb-btn-white {
-  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--black), 0.1), 0 3px 4px 0 rgba(var(--black), 0.2);
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.1), 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.2);
   border: 0px solid var(--rc-dddddd);
 }
 .sb-pageSection-count {

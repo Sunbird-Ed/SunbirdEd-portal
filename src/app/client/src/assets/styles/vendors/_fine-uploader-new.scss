@@ -30,7 +30,7 @@
 .qq-upload-delete
 {
     background-color: #e65c47;
-    color: #FAFAFA;
+    color: var(--rc-FAFAFA);
     border-color: #dc523d;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
 }
@@ -55,7 +55,7 @@
 }
 .qq-upload-pause, .qq-upload-continue {
     background-color: #00ABC7;
-    color: #FAFAFA;
+    color: var(--rc-FAFAFA);
     border-color: #2dadc2;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
 }
