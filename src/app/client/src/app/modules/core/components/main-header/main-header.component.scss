@@ -35,8 +35,8 @@
         position: relative;
         .icon-close {
             position: absolute;
-            top: $base-block-space*2;
-            left: $base-block-space*2;
+            top: calculateRem(16px);
+            left: calculateRem(16px);
             cursor: pointer;
         }
         &__desc{
@@ -49,15 +49,15 @@
             padding-left: 0;
             .list-item {
                 margin: 0 0 0 0;
-                padding: $base-block-space*2 $base-block-space*2.5;
+                padding:calculateRem(16px) calculateRem(20px);
                 cursor: pointer;
                 display: flex;
                 align-items: center;
                 color: var(--primary-color);
                 img {
-                    width: $base-block-space*3;
-                    height: $base-block-space*3;
-                    margin-right: $base-block-space;
+                    width: calculateRem(24px);
+                    height: calculateRem(24px);
+                    margin-right: calculateRem(8px);
                 }
                 &:hover, &.active {
                     background-color: var(--primary-100);
@@ -73,8 +73,8 @@
     text-align: center;
     cursor: pointer;
     &__icon {
-        width: $base-block-space*4;
-        height: $base-block-space*4;
+        width: calculateRem(32px);
+        height: calculateRem(32px);
         display: inline-block;
         img {
             max-width: 100%;
@@ -87,12 +87,12 @@
     &--horizontal {
         display: flex;
         align-items: center;
-        padding: calculateRem(4px) $base-block-space*2;
-        background-color: #bfe1cf;
+        padding: calculateRem(4px) calculateRem(16px);
+        background-color: var(--rc-bfe1cf);
 
         .add-user__label {
             margin-top: 0;
-            margin-left: $base-block-space;
+            margin-left: calculateRem(8px);
         }
     }
 }
@@ -101,8 +101,8 @@
     text-align: center;
     cursor: pointer;
     &__btn {
-        width: $base-block-space*4;
-        height: $base-block-space*4;
+        width: calculateRem(32px);
+        height: calculateRem(32px);
         background: var(--white);
         display: inline-flex;
         align-items: center;
@@ -115,26 +115,26 @@
     }
     &__label {
         font-size: $font-size-base;
-        margin-top: $base-block-space;
+        margin-top: calculateRem(8px);
     }
 }
 
 .my-avatar /deep/ .avatar-content {
-    background-color : red !important;
+    background-color :var(--red-400) !important;
 }
 
 @include respond-below(sm) {
     .profile__info {
-        padding: $base-block-space*2;
+        padding: calculateRem(16px);
 
         .icon-close {
-            right: $base-block-space*2;
+            right: calculateRem(16px);
             left: unset;
             z-index: 9999;
         }
         .user {
             flex-wrap: wrap;
-            margin-bottom: $base-block-space !important;
+            margin-bottom: calculateRem(8px) !important;
             &__name {
                 width: 100%;
                 margin-left: 0 !important;
@@ -142,7 +142,7 @@
         }
 
         &__desc {
-            margin-bottom: 8px !important;
+            margin-bottom: calculateRem(8px) !important;
         }
     }
 }
@@ -221,7 +221,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background-color: white;
+        background-color: var(--white);
         box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.1);
         font-weight: bold;
     }

@@ -86,9 +86,9 @@ i.icon.trash {
     }
     .characters-left {
         position: absolute;
-        bottom: $base-block-space;
-        right: $base-block-space;
-        color: $gray-400;
+        bottom: calculateRem(8px);
+        right: calculateRem(8px);
+        color: var(--gray-400);
         font-size: $font-size-xs;
     }
 }
