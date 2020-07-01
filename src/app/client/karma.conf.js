@@ -44,10 +44,10 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
+    browsers: ['HeadlessChrome'],
     customLaunchers: {
-      ChromeHeadless: {
-        base: 'Chrome',
+      HeadlessChrome: {
+        base: 'ChromeHeadless',
         flags: [
           '--no-sandbox',
           '--headless',
@@ -56,7 +56,8 @@ module.exports = function (config) {
           '--remote-debugging-port=9222',
           '--proxy-server=direct://',
           '--proxy-bypass-list=*',
-          '--max_old_space_size=8096'
+          '--max_old_space_size=8096',
+          '--js-flags=--max-old-space-size=8096'
         ]
       }
     },
