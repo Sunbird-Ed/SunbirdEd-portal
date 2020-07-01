@@ -18,7 +18,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   public selectedOption: any = {};
   private unsubscribe: Subscription;
   public editMode: boolean;
-  groupId;
+  showUpdateForm = false;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService) { }
