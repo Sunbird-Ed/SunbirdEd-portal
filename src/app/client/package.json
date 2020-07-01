@@ -131,6 +131,7 @@
     "md5": "2.2.1",
     "minimist": "^1.2.5",
     "protractor": "^5.4.4",
+    "puppeteer": "^4.0.1",
     "source-map-loader": "^1.0.1",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",

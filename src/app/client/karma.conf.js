@@ -3,7 +3,7 @@
 
 const argv = require('minimist')(process.argv.slice(2))
 const tags = (argv.tags !== true) && argv.tags
-
+process.env.CHROME_BIN = require('puppeteer').executablePath()
 module.exports = function (config) {
   config.set({
     basePath: '',
