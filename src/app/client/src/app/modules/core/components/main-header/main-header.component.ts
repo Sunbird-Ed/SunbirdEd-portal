@@ -22,6 +22,7 @@ import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunb
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
 import {Subject, zip} from 'rxjs';
+import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 declare var jQuery: any;
 
@@ -106,6 +107,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   contributeMenuEdata: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
+  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
@@ -465,4 +467,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
     return showLanguageChangeDropdown;
   }
+
+  navigateToGroups() {
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+  }
+  
 }

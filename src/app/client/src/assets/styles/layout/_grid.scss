@@ -114,5 +114,7 @@ $columns: 12;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
   grid-gap: 1rem;
-  grid-row-gap: 1.5rem;
+  @include respond-above(sm) {
+    grid-row-gap: 1.5rem;
+  }
 }
