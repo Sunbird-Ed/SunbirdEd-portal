@@ -34,8 +34,8 @@
         }
       }
       &.active {
-        background: #BFE1CF;
-        border: calculateRem(1px) solid var(--green);
+        background: var(--rc-bfe1cf);
+        border: calculateRem(1px) solid var(--secondary-color);
         cursor: pointer;
         .checkbox-img {
           position: absolute;
@@ -44,7 +44,7 @@
           display: inline;
           width: calculateRem(20px);
           height: calculateRem(20px);
-          background-color: #009D53;
+          background-color: var(--rc-009D53);
           -webkit-mask-image: url(assets/images/checkbox-icon.svg);
           mask-image: url(assets/images/checkbox-icon.svg);
           -webkit-mask-size: contain;

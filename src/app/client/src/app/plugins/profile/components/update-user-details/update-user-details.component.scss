@@ -2,7 +2,7 @@
 
 .ui.basic.error.label {
     background: none !important;
-    color: $danger-color !important;
+    color: var(--red-100) !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;

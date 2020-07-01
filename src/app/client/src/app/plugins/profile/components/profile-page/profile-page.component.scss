@@ -7,21 +7,21 @@
 
   /* colors */
   .color-2 {
-    color: #007aff !important;
+    color: var(--rc-007aff)!important;
   }
   /* profile page color palate */
 
   .profile-bg-c-1 {
-    background: #fff !important;
+    background: var(--white) !important;
   }
   .profile-bg-c-2 {
     background: var(--rc-FAFAFA) !important;
   }
   .profile-bg-c-3 {
-    background: #196DAB !important;
+    background: var(--rc-196DAB)!important;
   }
   .profile-bg-c-4 {
-    background: #E0EFFF !important;
+    background: var(--rc-E0EFFF) !important;
   }
 
 
@@ -42,7 +42,7 @@
   
   .profile-label-container {
     .ui.basic.label:hover {
-      border: 1px solid #fdfdfd !important;
+      border: 1px solid var(--rc-fdfdfd) !important;
     }
   }
 
@@ -61,18 +61,18 @@
 .right-aligned-button  {
   ::ng-deep {
     .ui.inline.dropdown>.text {
-      color: #fff;
+      color: var(--white);
       padding-right: 5px;
       font-weight: 400;
       }
       .ui.inline.dropdown .dropdown.icon{
-        color: #fff;
+        color: var(--white);
       }
   }
 };
 
 .ui.primary.admin-button {
-  background: #007aff !important;
+  background: var(--rc-007aff)!important;
 }
 
 .line-height-24 {
@@ -80,16 +80,16 @@
 }
 
 .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
-  border: 1px solid $primary-color !important;
+  border: 1px solid var(--primary-color) !important;
   border-radius: 18.5px;
   font-size: 1.16rem;
   padding: 11px 27px;
   padding-right: 80px;
-  color: #9b9b9b;
+  color: var(--rc-9b9b9b);
 }
 
 .text-warm-grey {
-  color:#9b9b9b;
+  color:var(--rc-9b9b9b);
 }
 
 .name-info {
@@ -167,7 +167,7 @@ display: inline-block;
   border-radius: 18.5px;
   font-size: 1.16rem;
   padding: 8px 16px;
-  color: #9b9b9b;
+  color: var(--rc-9b9b9b);
   .icon {
     margin: 0;
   }
@@ -177,7 +177,7 @@ display: inline-block;
   border-radius: 18.5px;
   font-size: 1.16rem;
   padding: 8px 16px;
-  color: $primary-color;
+  color: var(--primary-color);
   &:hover {
     border:0;
   }
@@ -187,7 +187,7 @@ display: inline-block;
 }
 
 .ui.label > .recovery-img{
-  background-color: #9b9b9b;
+  background-color: var(--rc-9b9b9b);
  -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
  -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
  mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
@@ -210,7 +210,7 @@ display: inline-block;
 }
 
 .my-avatar.verified /deep/ .avatar-content {
-  border: 1px solid #008840 !important;
+  border: 1px solid var(--secondary-color) !important;
 }
  
  @include respond-below(sm) {
