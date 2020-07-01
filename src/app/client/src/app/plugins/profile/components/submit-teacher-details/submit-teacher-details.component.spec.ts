@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
@@ -348,7 +348,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.validationType.email.isVerified).toBe(true);
   });
 
-  it('should validate user', () => {
+  it('should generate otp for email', () => {
     const otpService = TestBed.get(OtpService);
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
     const emailControl = component.userDetailsForm.controls['email'];
@@ -358,6 +358,18 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.isOtpVerificationRequired).toBe(true);
     expect(component.otpData.instructions).toBe(resourceBundle.frmelmnts.instn.t0084);
     expect(component.otpData.type).toBe('email');
+  });
+
+  it('should generate otp for phone', () => {
+    const otpService = TestBed.get(OtpService);
+    spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
+    const phoneControl = component.userDetailsForm.controls['phone'];
+    phoneControl.setValue('9595698965');
+    component.userDetailsForm.addControl('phoneVerified', new FormControl());
+    component.generateOTP('phone');
+    expect(component.isOtpVerificationRequired).toBe(true);
+    expect(component.otpData.instructions).toBe(resourceBundle.frmelmnts.instn.t0083);
+    expect(component.otpData.type).toBe('phone');
   });
 
   it('should not validate user as otp generation failed', () => {
@@ -371,7 +383,98 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.generateOTP('email');
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
   });
-  
+
+
+  it('should set validators for email', () => {
+    const tncService = TestBed.get(TncService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    component.userProfile = mockRes.userData.result.response;
+    component.ngOnInit();
+    component.setValidators('email');
+    const emailControl = component.userDetailsForm.controls.emailVerified;
+    expect(emailControl.value).toBe(true);
+  });
+
+  it('should set validators for phone', () => {
+    const tncService = TestBed.get(TncService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    component.userProfile = mockRes.userData.result.response;
+    component.ngOnInit();
+    component.setValidators('phone');
+    const emailControl = component.userDetailsForm.controls.phoneVerified;
+    expect(emailControl.value).toBe(true);
+  });
+
+  it('should get proper external ID data for email', () => {
+    const userData = mockRes.userData.result.response;
+    userData.externalIds = mockRes.externalId;
+    component.userProfile = userData;
+    const data = component.getExternalIdObject('declared-email');
+    expect(data.id).toBe('asd@yopmail.com');
+  });
+
+  it('should not get external ID for email as data not present', () => {
+    const data = component.getExternalId('declared-email');
+    expect(data).toBe(undefined);
+  });
+
+  it('should set form data and pre-populate email from userprofile', () => {
+    const tncService = TestBed.get(TncService);
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
+    component.ngOnInit();
+    const emailControl = component.userDetailsForm.controls.email;
+    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.validationType.email.isVerified).toBe(true);
+    expect(emailControl.value).toBe('asd@yopmail.com');
+  });
+
+  it('should as for verification as user changed email', fakeAsync(() => {
+    const tncService = TestBed.get(TncService);
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
+    component.ngOnInit();
+    const emailControl = component.userDetailsForm.controls.email;
+    emailControl.setValue('differentmailid@yopmail.com');
+    tick(500);
+    fixture.detectChanges();
+    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.validationType.email.isVerificationRequired).toBe(true);
+    expect(component.validationType.email.isVerified).toBe(false);
+  }));
+
+  it('should as not ask for verification as form not correct', fakeAsync(() => {
+    const tncService = TestBed.get(TncService);
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
+    component.ngOnInit();
+    const emailControl = component.userDetailsForm.controls.email;
+    emailControl.setValue('asd');
+    tick(500);
+    fixture.detectChanges();
+    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.validationType.email.isVerificationRequired).toBe(false);
+    expect(component.validationType.email.isVerified).toBe(false);
+  }));
 
 
 });

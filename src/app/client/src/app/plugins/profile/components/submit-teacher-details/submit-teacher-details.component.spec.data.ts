@@ -429,7 +429,12 @@ export const mockRes = {
           'idType': 'declared-email',
           'provider': 'ROOT_ORG',
           'id': 'asd@yopmail.com'
-        }],
+        },
+          {
+            'idType': 'declared-state',
+            'provider': 'ROOT_ORG',
+            'id': '29'
+          }],
         'registryId': null,
         'roleList': [{
           'name': 'Content Curation',
@@ -653,14 +658,18 @@ export const mockRes = {
   },
   externalId: [
     {
-      "idType": "declared-ext-id",
-      "provider": "tp",
-      "id": "p"
+      'idType': 'declared-ext-id',
+      'provider': 'tp',
+      'id': 'p'
     },
     {
-      "idType": "declared-school-name",
-      "provider": "tp",
-      "id": "2222"
+      'idType': 'declared-school-name',
+      'provider': 'tp',
+      'id': '2222'
+    }, {
+      'idType': 'declared-state',
+      'provider': 'tp',
+      'id': '29'
     }
   ],
   stateDetails: {

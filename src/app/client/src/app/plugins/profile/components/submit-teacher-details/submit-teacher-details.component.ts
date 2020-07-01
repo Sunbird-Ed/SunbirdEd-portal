@@ -203,21 +203,15 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   setFormData() {
-    this.prepopulatedValue.email = this.getExternalId('declared-email') || this.userProfile.maskedEmail;
-    this.prepopulatedValue.phone = this.getExternalId('declared-phone') || this.userProfile.maskedPhone;
-    if (this.prepopulatedValue.email) {
-      this.userDetailsForm.controls['email'].setValue(this.prepopulatedValue.email);
-      this.setValidators('email');
-      this.validationType.email.isVerified = true;
-    }
-    if (this.prepopulatedValue.phone) {
-      this.userDetailsForm.controls['phone'].setValue(this.prepopulatedValue.phone);
-      this.setValidators('phone');
-      this.validationType.phone.isVerified = true;
-    }
     const fieldType = ['email', 'phone'];
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
+      this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
+      if (this.prepopulatedValue[key]) {
+        this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
+        this.setValidators(key);
+        this.validationType[key].isVerified = true;
+      }
       const keyControl = this.userDetailsForm.controls[key];
       const userFieldValue = this.prepopulatedValue[key];
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
