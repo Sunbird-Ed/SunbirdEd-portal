@@ -4,11 +4,11 @@
 
 
 .sb-add-user-btn{
-  background: #BFE1CF;
-  color: #008840;
+  background: var(--rc-bfe1cf);
+  color: var(--secondary-color);
 }
 
 .member-list-container {
-    max-height: 320px;
+    max-height: calculateRem(320px);
     overflow-y: auto;
 }
