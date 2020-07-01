@@ -248,7 +248,7 @@ $sb-mobileDevice-videoScreen-border-radius: 5px;
             right: calculateRem(4px);
             z-index: 999;
             cursor: pointer;
-            background: #024a93;
+            background: var(--rc-024a93);
             color: var(--white);
             width: calculateRem(20px);
             height: calculateRem(20px);
@@ -296,10 +296,10 @@ $sb-mobileDevice-videoScreen-border-radius: 5px;
         //   overflow-y: auto;
         // }
         .mcq-checkbox-answer {
-            background: var( --gray-0);
+            background: var(--gray-0);
             padding: calculateRem(16px);
             display: flex;
-            border: calculateRem(1px) solid #c4c4c4;
+            border: calculateRem(1px) solid var(--rc-c4c4c4);
             border-top: none;
             label {
                 font-weight: 700;

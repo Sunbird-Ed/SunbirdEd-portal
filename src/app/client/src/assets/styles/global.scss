@@ -248,7 +248,7 @@ app-workspace {
 }
 
 .bs-2 {
-  box-shadow: 0 0 20px 0 rgba(var(--rc-rgba-black), 0.29) !important;
+  box-shadow: 0 0 calculateRem(20px) 0 rgba(var(--rc-rgba-black), 0.29) !important;
 }
 
 .toc-box-shadow {

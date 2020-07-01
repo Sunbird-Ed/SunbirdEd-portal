@@ -146,11 +146,13 @@ $sb-selection-line-height: calculateRem(18px);
   &.is-invalid:hover,
   &.is-invalid:focus {
     border: $sb-input-border-error;
+    padding: 0.25rem 0.5rem;
   }
   &.is-valid,
   &.is-valid:hover,
   &.is-valid:focus {
     border: $sb-input-border-success;
+    padding: 0.25rem 0.5rem;
   }
 }
 
