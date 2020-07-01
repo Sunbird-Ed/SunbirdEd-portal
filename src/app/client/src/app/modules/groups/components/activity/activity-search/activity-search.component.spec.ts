@@ -10,6 +10,7 @@ import { of, throwError, BehaviorSubject } from 'rxjs';
 import { ActivitySearchComponent } from './activity-search.component';
 import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
@@ -53,6 +54,7 @@ describe('ActivitySearchComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitySearchComponent],

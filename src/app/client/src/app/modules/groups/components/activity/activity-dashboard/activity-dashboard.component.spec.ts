@@ -8,6 +8,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { of, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -43,6 +44,7 @@ describe('ActivityDashboardComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityDashboardComponent],
