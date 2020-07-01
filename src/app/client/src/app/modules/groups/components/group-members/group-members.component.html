@@ -1,12 +1,12 @@
 <div class="flex-dc d-flex p-8 py-16 sb-bg-color-white br-4">
-  <div class="title mb-16 font-weight-bold pl-8">
+  <div class="title mb-16 font-weight-bold px-8">
     {{resourceService?.frmelmnts?.lbl?.members}}
     <span *ngIf="config?.showMemberCount" class="badge">{{members?.length}}</span>
   </div>
 
   <div class="sb-library-cards">
     <div class="px-8" *ngIf="config?.showSearchBox">
-      <div class="sb-search-box small no-btn mb-16">
+      <div class="sb-search-box no-btn mb-16">
         <div class="input-div relative">
           <i class="search icon" aria-hidden="true"></i>
           <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"

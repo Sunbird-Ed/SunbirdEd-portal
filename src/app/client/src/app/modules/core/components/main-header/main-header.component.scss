@@ -120,7 +120,7 @@
 }
 
 .my-avatar /deep/ .avatar-content {
-    background-color :var(--red-400) !important;
+    background-color :var(--red) !important;
 }
 
 @include respond-below(sm) {
@@ -233,3 +233,28 @@
     }
 
 }
+
+
+.group__type {
+    margin-left: 1.5rem;
+    background: var(--red-100);
+    position: relative;
+    height: 1.25rem;
+    padding: 0 .25rem 0 0.5rem;
+    color: var(--white);
+    margin-right: -.5rem;
+    font-size: .6875rem;
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+  }
+  .group__type:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-width: .625rem .3125rem;
+    border-style: solid;
+    border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+    position: absolute;
+    right: -.625rem;
+  }
