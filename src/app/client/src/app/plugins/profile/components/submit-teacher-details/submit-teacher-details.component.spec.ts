@@ -409,12 +409,14 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(emailControl.value).toBe(true);
   });
 
-  it('should get proper external ID data for email', () => {
+  it('should get proper external ID data for state', () => {
     const userData = mockRes.userData.result.response;
+    const userService = TestBed.get(UserService);
     userData.externalIds = mockRes.externalId;
     component.userProfile = userData;
-    const data = component.getExternalIdObject('declared-email');
-    expect(data.id).toBe('asd@yopmail.com');
+    userService._userData$.next({err: null, userProfile: userData});
+    const data = component.getExternalIdObject('declared-state');
+    expect(data.id).toBe('29');
   });
 
   it('should not get external ID for email as data not present', () => {
@@ -422,7 +424,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(data).toBe(undefined);
   });
 
-  it('should set form data and pre-populate email from userprofile', () => {
+  it('should set form data and user profile email from userprofile', () => {
     const tncService = TestBed.get(TncService);
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
@@ -432,13 +434,16 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(telemetryService, 'impression');
     userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
     component.ngOnInit();
+    component.userProfile = mockRes.userData.result.response;
+    userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
+    fixture.detectChanges();
     const emailControl = component.userDetailsForm.controls.email;
-    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
     expect(component.validationType.email.isVerified).toBe(true);
-    expect(emailControl.value).toBe('asd@yopmail.com');
+    expect(emailControl.value).toBe('so******@techjoomla.com');
   });
 
-  it('should as for verification as user changed email', fakeAsync(() => {
+  it('should ask for verification as user changed email', fakeAsync(() => {
     const tncService = TestBed.get(TncService);
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
@@ -452,7 +457,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     emailControl.setValue('differentmailid@yopmail.com');
     tick(500);
     fixture.detectChanges();
-    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
     expect(component.validationType.email.isVerificationRequired).toBe(true);
     expect(component.validationType.email.isVerified).toBe(false);
   }));
@@ -471,7 +476,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     emailControl.setValue('asd');
     tick(500);
     fixture.detectChanges();
-    expect(component.prepopulatedValue.email).toBe('asd@yopmail.com');
+    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
     expect(component.validationType.email.isVerificationRequired).toBe(false);
     expect(component.validationType.email.isVerified).toBe(false);
   }));
