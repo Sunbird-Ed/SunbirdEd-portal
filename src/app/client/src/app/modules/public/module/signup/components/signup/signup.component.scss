@@ -201,10 +201,10 @@ input[type=number]::-webkit-inner-spin-button {
     width: calculateRem(12px);
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #c2c2c2;
+    background-color: var(--rc-c2c2c2);
   }
   &::-webkit-scrollbar-track {
-    background-color: #e5e5e5;
+    background-color: var(--rc-e5e5e5);
   }
 }
 @include respond-below(sm) {

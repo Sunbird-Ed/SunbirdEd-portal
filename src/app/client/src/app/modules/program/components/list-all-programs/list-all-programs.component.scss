@@ -67,7 +67,7 @@
   
     }
     &__moreinfo {
-      border-top: calculateRem(1px) solid #e9e5e5;
+      border-top: calculateRem(1px) solid var(--rc-e9e5e5);
       border-radius: 0 0 calculateRem(2px) calculateRem(2px);
       background-color: var(--rc-FAFAFA);
       display: flex;
