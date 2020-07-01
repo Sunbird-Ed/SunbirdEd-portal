@@ -64,7 +64,7 @@
   (dismissed)="closeModal()"
   *ngIf="showUpdateForm"
   >
-  <div class="sb-modal-header">Edit group details</div>
+  <div class="sb-modal-header">{{resourceService?.frmelmnts?.lbl?.editGroup}}</div>
   <div class="sb-modal-content o-y-visible">
     <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
@@ -88,12 +88,12 @@
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
     [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
     (click)="groupForm.reset()">
-      Reset
+      {{resourceService?.frmelmnts?.btn?.reset}}
     </button>
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
     [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
     (click)="updateForm()">
-      Submit
+      {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>
 </sui-modal>

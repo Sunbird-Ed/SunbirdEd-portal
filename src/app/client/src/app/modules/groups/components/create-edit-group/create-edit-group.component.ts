@@ -50,9 +50,6 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       ]],
       groupToc: [_.isEmpty(this.groupDetails) ? false : true, [Validators.requiredTrue]]
     });
-
-
-    console.log('groupFormgroupFormgroupForm', this.groupDetails, this.groupForm);
   }
 
   isFieldValid(field: string) {
@@ -86,7 +83,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (this.groupForm.valid) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
       this.groupService.updateGroup(this.groupId, updatedForm).subscribe(group => {
-          this.toasterService.success('Group Updated successfully');
+          this.toasterService.success(this.resourceService.messages.smsg.m003);
           this.closeModal();
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m001);
