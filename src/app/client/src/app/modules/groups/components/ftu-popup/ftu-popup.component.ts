@@ -8,30 +8,28 @@ import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@ang
 })
 export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
+  @Input() showMemberPopup;
   @Output() close = new EventEmitter();
   slideConfig1 = {
-    "slidesToShow": 1,
-    "slidesToScroll": 1,
-    "infinite": false,
-    "rtl": false,
-    "dots": true
+    'slidesToShow': 1,
+    'slidesToScroll': 1,
+    'infinite': false,
+    'rtl': false,
+    'dots': true
   };
 
-  showModal = true;
   constructor(public resourceService: ResourceService, private elementRef: ElementRef) { }
 
-  ngOnInit() {
-    
-   
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit() {
-    
-  }
-  closeModal() {
+  closeModal(modalName) {
     this.showWelcomePopup = false;
-    this.close.emit(true);
+    this.close.emit();
   }
 
-  
+  closeMemberPopup(modalName) {
+    this.showMemberPopup = false;
+    this.close.emit();
+  }
+
 }

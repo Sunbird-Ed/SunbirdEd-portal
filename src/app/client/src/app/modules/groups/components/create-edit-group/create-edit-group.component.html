@@ -11,22 +11,23 @@
   appBodyScroll 
   #createGroupModal 
   (dismissed)="closeModal()"
+  *ngIf="showCreateForm"
   >
   <div class="sb-modal-header">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
   <div class="sb-modal-content o-y-visible">
     <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
-        <label>{{ resourceService?.frmelmnts?.lbl?.groupName }}</label>
-        <input class="sb-form-control" type="text" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="groupName" [ngClass]="{'is-invalid' : isFieldValid('groupName')}" maxlength="50">
-        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.groupName?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
-        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('groupName')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
+        <label>{{ resourceService?.frmelmnts?.lbl?.groupName }} <span class="sb-color-warning">*</span></label>
+        <input class="sb-form-control" type="text" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name" [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
+        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.name?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('name')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
       </div>
       <div class="sb-field mb-16">
         <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
-        <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="groupDescription" [ngClass]="{'is-invalid' : isFieldValid('groupDescription')}" maxlength="150"
-        placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription }}"
+        <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"
         ></textarea>
-        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.groupDescription?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.description?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
       </div>
       <div class="sb-field mt-24 mb-8">
       <label class="d-flex flex-ai-center">
@@ -46,6 +47,53 @@
     (click)="onSubmitForm()">
      <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
+    </button>
+  </div>
+</sui-modal>
+
+
+
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="true" 
+  [transitionDuration]="0"
+  [size]="'small'" 
+  class="sb-modal" 
+  appBodyScroll 
+  #updateGroupModal 
+  (dismissed)="closeModal()"
+  *ngIf="showUpdateForm"
+  >
+  <div class="sb-modal-header">Edit group details</div>
+  <div class="sb-modal-content o-y-visible">
+    <form class="sb-form" [formGroup]="groupForm">
+      <div class="sb-field mb-16">
+        <label>{{ resourceService?.frmelmnts?.lbl?.groupName }} <span class="sb-color-warning">*</span> </label>
+        <input class="sb-form-control" type="text" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name" [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
+        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.name?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('name')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
+      </div>
+      <div class="sb-field mb-16">
+        <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
+        <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"
+        ></textarea>
+        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.description?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+      </div>
+    </form>
+  
+
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
+    [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+    (click)="groupForm.reset()">
+      Reset
+    </button>
+    <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
+    [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+    (click)="updateForm()">
+      Submit
     </button>
   </div>
 </sui-modal>

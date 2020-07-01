@@ -1,3 +1,4 @@
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -11,7 +12,6 @@ import { ConfigService, ResourceService, ToasterService, NavigationHelperService
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
-import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -300,7 +300,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = this.activeContent.mimeType;
-    this.courseProgress = CsCourseProgressCalculator.calculate(playerSummary, contentMimeType);
+    this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     return this.courseProgress;
   }
 

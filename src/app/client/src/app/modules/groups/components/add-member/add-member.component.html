@@ -37,11 +37,9 @@
         </div>
         <div class="flex-ai-jc-center flex-jc-space-between flex-dr add-member-content p-24" *ngIf="showUser">
           <div class="add-member-text flex-basis-1">
-            <div *ngFor="let member of membersList">
               <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config1"
                 [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
               </sb-member-card>
-            </div>
           </div>
           <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-normal ml-16" (click)="addMemberToGroup()">
             <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> Add to group

@@ -1,4 +1,4 @@
-import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_EDIT_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS } from './components/routerLinks';
+import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, EDIT_GROUP } from './components/routerLinks';
 import {
   MyGroupsComponent, AddMemberComponent, GroupDetailsComponent,
   CreateEditGroupComponent, ActivitySearchComponent, ActivityDashboardComponent
@@ -16,8 +16,8 @@ const routes: Routes = [
       baseUrl: MY_GROUPS
     }
   },
-
-  { path: CREATE_EDIT_GROUP, component: CreateEditGroupComponent },
+  { path: CREATE_GROUP, component: CreateEditGroupComponent },
+  { path: EDIT_GROUP, component: CreateEditGroupComponent },
   { path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent },
   { path: ADD_MEMBER_TO_GROUP, component: AddMemberComponent },
   { path: ADD_ACTIVITY_TO_GROUP, component: ActivitySearchComponent },

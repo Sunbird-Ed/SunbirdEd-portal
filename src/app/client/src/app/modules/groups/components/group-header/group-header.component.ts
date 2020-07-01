@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_EDIT_GROUP } from '../routerLinks';
+import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from './../routerLinks';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 @Component({
@@ -36,7 +36,7 @@ export class GroupHeaderComponent {
   deleteGroup() {
     this.toggleModal(false);
     setTimeout(() => {
-      this.groupService.deleteGroupById(_.get(this.groupData, 'identifier')).subscribe(data => {
+      this.groupService.deleteGroupById(_.get(this.groupData, 'id')).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m003);
@@ -46,7 +46,7 @@ export class GroupHeaderComponent {
   }
 
   editGroup() {
-    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), CREATE_GROUP]);
   }
 
   goBack() {

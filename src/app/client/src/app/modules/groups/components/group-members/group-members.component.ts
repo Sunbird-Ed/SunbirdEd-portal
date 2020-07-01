@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -15,14 +15,9 @@ import { GroupsService } from '../../services';
   templateUrl: './group-members.component.html',
   styleUrls: ['./group-members.component.scss']
 })
-export class GroupMembersComponent implements OnInit {
+export class GroupMembersComponent implements OnInit, OnDestroy {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
-  @Input() config: IGroupMemberConfig = {
-    showMemberCount: true,
-    showSearchBox: true,
-    showAddMemberButton: true,
-    showMemberMenu: true
-  };
+  @Input() config: IGroupMemberConfig;
   @Input() members: IGroupMember[] = [];
   showMenu = false;
   showModal = false;
@@ -39,18 +34,13 @@ export class GroupMembersComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
-    private cdr: ChangeDetectorRef,
     private groupsService: GroupsService
   ) { }
 
   ngOnInit() {
     this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-
-    /* istanbul ignore else */
-    if (!this.config.showMemberMenu) {
-      this.memberListToShow.forEach(item => item.isMenu = false);
-    }
+    this.showMemberMenu();
 
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
@@ -61,7 +51,12 @@ export class GroupMembersComponent implements OnInit {
       });
       this.groupsService.membersData.subscribe(response => {
         this.memberListToShow = response;
+        this.showMemberMenu();
       });
+  }
+
+  showMemberMenu() {
+      this.memberListToShow.forEach(item => item.isMenu = item.isCreator ? false : this.config.showMemberMenu);
   }
 
   getMenuData(event, member) {

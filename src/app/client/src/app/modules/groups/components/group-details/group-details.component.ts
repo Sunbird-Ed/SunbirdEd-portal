@@ -21,12 +21,14 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
+  showMemberPopup = true;
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
     showAddMemberButton: true,
     showMemberMenu: true
   };
+  members;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -40,8 +42,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.showMemberPopup = !localStorage.getItem('groups_members');
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
+    this.members = this.groupsService.groupMembers;
   }
 
   getGroupData() {
@@ -65,6 +69,11 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.toggleActivityModal(false);
     this.addActivityModal.deny();
     this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`]);
+  }
+
+  closeModal() {
+    this.showMemberPopup = false;
+    localStorage.setItem('groups_members', 'members');
   }
 
   ngOnDestroy() {

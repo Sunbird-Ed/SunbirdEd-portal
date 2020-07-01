@@ -1,9 +1,10 @@
-import { GROUP_DETAILS, MY_GROUPS, CREATE_EDIT_GROUP } from './../routerLinks';
+import { GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import { existingMembersList } from '../add-member/add-member.component.spec.data';
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
@@ -13,6 +14,9 @@ export class MyGroupsComponent implements OnInit {
   showGroupCreateForm = false;
   public groupList = [];
   public showModal = false;
+  currentUser = existingMembersList[0];
+  showForm = false;
+
   constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {
   }
 
@@ -22,17 +26,20 @@ export class MyGroupsComponent implements OnInit {
   }
 
   async getMyGroupList() {
-    this.groupService.getAllGroups().subscribe(data => {
+    const request = {filters: {memberId: this.currentUser.identifier}, sort_by: 'desc', limit: 30, offset: 5 };
+    this.groupService.getUserGroups(request).subscribe(data => {
+      this.groupService.groupData = data;
       this.groupList = data;
     });
   }
 
   public showCreateFormModal() {
-    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    this.showForm = true;
+    this.router.navigate([`${MY_GROUPS}/${CREATE_GROUP}`]);
   }
 
   public navigateToDetailPage(event) {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.identifier')]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
   }
 
   showFtuPopup() {
