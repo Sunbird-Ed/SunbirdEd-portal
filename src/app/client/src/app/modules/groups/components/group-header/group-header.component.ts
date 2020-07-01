@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from '../routerLinks';
 import { GroupsService } from '../../services';
@@ -20,7 +20,6 @@ export class GroupHeaderComponent {
   showModal = false;
   showEditModal: boolean;
   name = 'you';
-
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService) {
     this.renderer.listen('window', 'click', (e: Event) => {

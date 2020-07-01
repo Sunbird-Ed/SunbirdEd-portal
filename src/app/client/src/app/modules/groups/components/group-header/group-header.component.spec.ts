@@ -73,16 +73,16 @@ describe('GroupHeaderComponent', () => {
     });
   });
 
+  it ('show call goBack', () => {
+    spyOn(component['navigationHelperService'], 'goBack');
+    component.goBack();
+    expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
+  });
+
   it ('should route to create-edit-group', () => {
     component.groupData = {identifier: '1234'};
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
     _.get(component.groupData, 'identifier'), CREATE_GROUP]);
-  });
-
-  it ('show call goBack', () => {
-    spyOn(component['navigationHelperService'], 'goBack');
-    component.goBack();
-    expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
   });
 });

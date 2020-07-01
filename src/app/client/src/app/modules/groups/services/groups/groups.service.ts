@@ -1,6 +1,5 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash-es';
 import { CsModule } from '@project-sunbird/client-services';
 import { IGroup } from '../../interfaces';
 
