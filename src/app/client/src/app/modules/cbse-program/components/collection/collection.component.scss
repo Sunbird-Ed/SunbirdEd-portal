@@ -14,8 +14,8 @@
   }
   &__separator {
     border-left: calculateRem(1px) solid var(--gray-200);
-    height: ($base-block-space * 3);
-    margin: auto $base-block-space*2;
+    height: calculateRem(24px);
+    margin: auto calculateRem(16px);
   }
   &__medium {
     overflow-x: auto;
@@ -59,15 +59,15 @@
   &__pills-container {
     min-height: calculateRem(64px);
     .pill {
-      border: calculateRem(1px) solid var(--green);
-      color: var(--green);
+      border: calculateRem(1px) solid  var(--secondary-color);
+      color:  var(--secondary-color);
       cursor: pointer;
       &:hover {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
       }
       &.active {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
         cursor: pointer;
       }
@@ -76,15 +76,15 @@
   &__sb-pills-content {
     display: inline-flex;
     align-items: center;
-    padding: ($base-block-space * 2) 0;
+    padding: calculateRem(16px) 0;
     .pill {
       background-color: var(--white);
       white-space: nowrap;
       -webkit-appearance: none;
       text-overflow: ellipsis;
-      min-height: ($base-block-space * 4);
-      margin: 0px ($base-block-space/2) 0px ($base-block-space/2);
-      padding: ($base-block-space / 2) ($base-block-space);
+      min-height: calculateRem(32px);
+      margin: 0px calculateRem(4px) 0px calculateRem(4px);
+      padding: calculateRem(4px) calculateRem(8px);
       border-radius: calculateRem(2px);
       text-transform: capitalize;
       text-decoration: none;
@@ -104,23 +104,23 @@
   box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
   background-color: var(--gray-0);
   &__pills-container {
-    padding: $base-block-space 0;
+    padding: calculateRem(8px) 0;
   }
   &__pill {
     background-color: var(--white);
     white-space: nowrap;
     -webkit-appearance: none;
     text-overflow: ellipsis;
-    margin-right: $base-block-space;
+    margin-right: calculateRem(8px);
     text-transform: capitalize;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
-    border-radius: ($base-block-space * 2);
-    padding: ($base-block-space / 2) ($base-block-space * 2);
+    border-radius: calculateRem(16px);
+    padding: calculateRem(4px) calculateRem(16px);
     color: var(--primary-400);
-    min-height: ($base-block-space * 4);
+    min-height: calculateRem(32px);
     font-size:calculateRem(14px);
     cursor: pointer;
     &:hover {

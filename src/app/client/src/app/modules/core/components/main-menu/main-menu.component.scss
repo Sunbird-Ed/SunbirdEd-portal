@@ -2,31 +2,31 @@
 @import "mixins/mixins";
 
 .divider {
-  color: $gray-100;
+  color: var(--gray-100);
 
   &:hover {
-    color: $gray-100;
+    color: var(--gray-100);
   }
 }
 
 .close {
   font-size: $h4-font-size;
-  color: $primary-color;
+  color: var(--primary-color);
 }
 
 .ui.menu {
   &.text {
     .item {
       // padding: $base-block-space $base-block-space*3 $base-block-space 0;
-      color: $gray-400;
+      color: var(--gray-400);
       &:hover {
-        color: $primary-color;
+        color: var(--primary-color);
         outline: none;
       }
 
       &.active {
         font-weight: bold;
-        color: $primary-color;
+        color: var(--primary-color);
 
         &:hover,
         &:focus {
@@ -37,7 +37,7 @@
   }
   &.vertical {
     .active.item {
-      color: $primary-color;
+      color: var(--primary-color);
       font-weight: $font-weight-bold;
       background: none;
     }
@@ -49,9 +49,9 @@
   bottom: 0;
   width: 100%;
   font-weight: $font-weight-bold !important;
-  color: $primary-color !important;
-  background-color: $white-color;
-  border-top: calculateRem(1px) solid $gray-100 !important;
+  color: var(--primary-color) !important;
+  background-color: var(--white);
+  border-top: calculateRem(1px) solid var(--gray-100) !important;
 }
 
 .group__type {
