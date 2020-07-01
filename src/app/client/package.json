@@ -13,7 +13,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
-    "test-coverage": "ng test src --code-coverage=true --watch=false --sourceMap=false",
+    "test-coverage": "ng test src --code-coverage=true --watch=false --sourceMap=true",
     "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
     "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json"
@@ -47,7 +47,7 @@
     "@ckeditor/ckeditor5-ui": "^11.2.0",
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
     "@project-sunbird/client-services": "3.0.8",
-    "@project-sunbird/common-consumption": "^3.0.23",
+    "@project-sunbird/common-consumption": "^3.1.2",
     "@project-sunbird/telemetry-sdk": "^0.0.25",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@types/jquery": "3.3.31",
