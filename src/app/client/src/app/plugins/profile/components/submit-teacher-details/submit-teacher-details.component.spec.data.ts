@@ -425,6 +425,10 @@ export const mockRes = {
           'idType': 'declared-school-udise-code',
           'provider': 'ROOT_ORG',
           'id': '09876543453'
+        },{
+          'idType': 'declared-email',
+          'provider': 'ROOT_ORG',
+          'id': 'asd@yopmail.com'
         }],
         'registryId': null,
         'roleList': [{

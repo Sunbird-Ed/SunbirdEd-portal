@@ -58,6 +58,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   termsAndConditionLink: any;
   otpData;
   isOtpVerificationRequired = false;
+  prepopulatedValue = {email: '', phone: ''};
   validationType = {
     phone: {
       isVerified: false,
@@ -187,32 +188,44 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.enableSubmitButton();
   }
 
-  isExternalIdPresent(key) {
-    const data = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === key);
+  getExternalIdObject(key) {
+    return _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === key);
+  }
+
+  getExternalId(key) {
+    const data = this.getExternalIdObject(key);
     return data && data.id;
   }
 
+  setValidators(key) {
+    this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
+    this.userDetailsForm.controls[key + 'Verified'].setValue(true);
+  }
+
   setFormData() {
-    const email = this.isExternalIdPresent('declared-email') || this.userProfile.maskedEmail;
-    const phone = this.isExternalIdPresent('declared-phone') || this.userProfile.maskedPhone;
-    if (email) {
-      this.userDetailsForm.controls['email'].setValue(email);
+    this.prepopulatedValue.email = this.getExternalId('declared-email') || this.userProfile.maskedEmail;
+    this.prepopulatedValue.phone = this.getExternalId('declared-phone') || this.userProfile.maskedPhone;
+    if (this.prepopulatedValue.email) {
+      this.userDetailsForm.controls['email'].setValue(this.prepopulatedValue.email);
+      this.setValidators('email');
+      this.validationType.email.isVerified = true;
     }
-    if (phone) {
-      this.userDetailsForm.controls['phone'].setValue(phone);
+    if (this.prepopulatedValue.phone) {
+      this.userDetailsForm.controls['phone'].setValue(this.prepopulatedValue.phone);
+      this.setValidators('phone');
+      this.validationType.phone.isVerified = true;
     }
     const fieldType = ['email', 'phone'];
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
       const keyControl = this.userDetailsForm.controls[key];
-      const userFieldValue = this.userProfile['masked' + key];
+      const userFieldValue = this.prepopulatedValue[key];
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
         if (userFieldValue === newValue) {
-          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerified = true;
           this.validationType[key].isVerificationRequired = false;
-          this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
-          this.userDetailsForm.controls[key + 'Verified'].setValue(true);
+          this.setValidators(key);
           return;
         }
         if (newValue && keyControl.status === 'VALID') {
@@ -272,7 +285,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   prepareOtpData(fieldType) {
-    let otpData: any = {};
+    const otpData: any = {};
     switch (fieldType) {
       case 'phone':
         otpData.instructions = this.resourceService.frmelmnts.instn.t0083;
@@ -318,7 +331,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const requestData = { 'filters': { 'type': 'state' } };
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allStates = res.result.response;
-      const location = _.find(this.userProfile.userLocations, (locations) => {
+      const declaredState = this.getExternalIdObject('declared-state');
+      if (declaredState) {
+        declaredState.code = declaredState.id;
+      }
+      const location = declaredState || _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'state';
       });
       let locationExist: any;
@@ -370,7 +387,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allDistricts = res.result.response;
       this.showDistrictDivLoader = false;
-      const location = _.find(this.userProfile.userLocations, (locations) => {
+      const declaredDistrict = this.getExternalIdObject('declared-district');
+      if (declaredDistrict) {
+        declaredDistrict.code = declaredDistrict.id;
+      }
+      const location = declaredDistrict || _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'district';
       });
       let locationExist: any;
@@ -412,20 +433,20 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.showSuccessModal = false;
     this.router.navigate(['/profile']);
   }
+
   isStateChanged() {
     let isStateChanged = false;
-    _.forEach(_.get(this.userProfile, 'userLocations'), (location) => {
-      if (location.type === 'state' && location.code !== _.get(this.userDetailsForm, 'value.state.code')) {
-        isStateChanged = true;
-      }
-    });
+    const stateData = this.getExternalIdObject('declared-state');
+    if (stateData && stateData.id !== _.get(this.userDetailsForm, 'value.state.code')) {
+      isStateChanged = true;
+    }
     return isStateChanged;
   }
 
   getOperation(fieldType, provider, inputFieldValue) {
     let operation;
     if (this.formAction === 'submit' || this.formAction === 'update' && this.isStateChanged()) {
-      operation = 'add'
+      operation = 'add';
     } else {
       const externalIdObj = this.findExternalIdObj(fieldType, provider);
       operation = externalIdObj ? inputFieldValue ? 'edit' : 'remove' : 'add';
@@ -435,10 +456,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   findExternalIdObj(fieldType, provider) {
     const externalIds = _.get(this.userProfile, 'externalIds');
-    const externalIdObj = _.find(externalIds, function (externalId) {
-      return (externalId.idType === fieldType && externalId.provider === provider)
+    const externalIdObj = _.find(externalIds, (externalId) => {
+      return (externalId.idType === fieldType && externalId.provider === provider);
     });
-    return externalIdObj && externalIdObj.id
+    return externalIdObj && externalIdObj.id;
   }
 
   onSubmitForm() {
@@ -447,9 +468,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       .subscribe(
         (orgData: any) => {
           this.enableSubmitBtn = false;
-          const locationCodes = [];
-          if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
-          if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
           let externalIds = [];
           if (this.formAction === 'update' && this.isStateChanged() || provider !== _.get(this.userProfile, 'externalIds[0].provider')) {
@@ -459,8 +477,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
             });
             externalIds = extIds.concat(externalIds);
           }
-          const fields = new Map([['value.phone', 'declared-phone'],['value.email', 'declared-email'],
-            ['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
+          const fields = new Map([['value.phone', 'declared-phone'], ['value.email', 'declared-email'], ['value.school', 'declared-school-name'],
+            ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id'],
+            ['value.state.code', 'declared-state'], ['value.district', 'declared-district']]);
           fields.forEach((fieldKey, formKey) => {
             const id = _.get(this.userDetailsForm, formKey) || this.findExternalIdObj(fieldKey, provider);
             if (id) {
@@ -474,7 +493,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           });
           const data = {
             userId: this.userService.userid,
-            locationCodes,
             externalIds
           };
           this.updateProfile(data);
