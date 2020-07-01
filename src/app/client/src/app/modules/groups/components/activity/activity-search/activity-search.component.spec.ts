@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
-import { SharedModule, ConfigService } from '@sunbird/shared';
+import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
@@ -15,6 +15,17 @@ describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
   let fixture: ComponentFixture<ActivitySearchComponent>;
   let formService, sendFormApi;
+
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {
+        'm0051': 'Something went wrong, try again later',
+      }
+    },
+    'frmelmnts': {
+      'lbl': {}
+    }
+  };
 
   const frameWorkServiceStub = {
     initialize() {
@@ -47,6 +58,7 @@ describe('ActivitySearchComponent', () => {
       declarations: [ActivitySearchComponent],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       providers: [
+        { provide: ResourceService, useValue: resourceBundle },
         { provide: FrameworkService, useValue: frameWorkServiceStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub }
@@ -106,18 +118,18 @@ describe('ActivitySearchComponent', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.returnValue(of({ result: { content: [] } }));
+    spyOn(searchService, 'courseSearch').and.returnValue(of({ result: { content: [] } }));
     component['fetchContents']();
-    expect(component.showLoader).toBe(true);
+    expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
   });
 
   it('should fetch Contents on error', () => {
     component.showLoader = true;
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
+    spyOn(searchService, 'courseSearch').and.returnValue(throwError({}));
     component['fetchContents']();
-    expect(component.showLoader).toBe(true);
+    expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
   });
 
