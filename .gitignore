@@ -18,3 +18,4 @@ mochawesome-report
 .idea
 /src/app/helpers/devConfig.js
 /.vscode/launch.json
+
