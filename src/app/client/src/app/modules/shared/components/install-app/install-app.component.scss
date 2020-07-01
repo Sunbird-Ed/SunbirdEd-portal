@@ -42,7 +42,7 @@
   min-width: calculateRem(170px);
 }
 .text-lightGray{
-  color: #979797 !important;
+  color: var(--rc-979797) !important;
 }
 .bg-white {
   background-color: var(--white) !important;
@@ -57,7 +57,7 @@
   box-shadow: 0 calculateRem(1px) calculateRem(2px) 0 rgba(var(--rc-rgba-black), 0.54) !important;
 }
 .border-1 {
-  border-bottom: calculateRem(1px) solid #eee;
+  border-bottom: calculateRem(1px) solid var(--rc-eee);
 }
 .ui.basic.button,
 .ui.basic.buttons .button {
@@ -81,7 +81,7 @@
   opacity: 0.9;
 }
 .img-cover {
-  border: calculateRem(1px) solid #bbb;
+  border: calculateRem(1px) solid var(--rc-bbb);
   border-radius: calculateRem(2px);
   background-color: var(--rc-FAFAFA);
   display: inline-flex;
