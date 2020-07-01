@@ -44,10 +44,10 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
+    browsers: ['HeadlessChrome'],
     customLaunchers: {
-      ChromeHeadless: {
-        base: 'Chrome',
+      HeadlessChrome: {
+        base: 'ChromeHeadless',
         flags: [
           '--no-sandbox',
           '--headless',
