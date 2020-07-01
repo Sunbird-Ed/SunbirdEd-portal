@@ -17,7 +17,7 @@ $sb-certificatePage-field-width: 215px;
 $sb-certificatePage-field-margin: 0 auto 36px auto;
 $sb-certificatePage-input-height: 30px;
 $sb-certificatePage-input-width: 215px;
-$sb-certificatePage-input-background: linear-gradient(to left,#333333 70%, rgba(255, 255, 255, 0) 0%);
+$sb-certificatePage-input-background: linear-gradient(to left,#333333 70%, rgba(var(--rc-rgba-white), 0) 0%);
 $sb-certificatePage-input-background-size: 35px 1px;
 $sb-certificatePage-input-font-size: 16px;
 $sb-certificatePage-input-letter-spacing: 24px;
@@ -34,7 +34,7 @@ $sb-certificatePage-holder-name-line-height: 30px;
 $sb-certificatePage-holder-name-color: #333;
 $sb-certificatePage-holder-name-margin: 8px 0 24px 0;
 $sb-certificatePage-holder-margin: 0 0 14px 0;
-$sb-certificatePage-overlay-background: rgba(255, 255, 255, 0.5);
+$sb-certificatePage-overlay-background: rgba(var(--rc-rgba-white), 0.5);
 $sb-certificatePage-loader-img-height: 30px;
 $sb-certificatePage-loader-img-width: 30px;
 
