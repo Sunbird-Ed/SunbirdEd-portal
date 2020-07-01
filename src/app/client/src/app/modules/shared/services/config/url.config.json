@@ -162,6 +162,7 @@
     "ADMIN": {
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
+      "ORG_EXT_SEARCH": "org/v1/ext/search",
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
