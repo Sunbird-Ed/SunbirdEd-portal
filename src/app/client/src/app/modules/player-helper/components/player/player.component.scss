@@ -1,3 +1,7 @@
+@import "variables";
+@import "mixins/mixins";
+@import 'components/video';
+
 .player-thumbnail {
     width: 100%;
     cursor: pointer;
@@ -33,3 +37,55 @@
     right: 16px;
     top: 16px;
   }
+
+  .content-full-video{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calculateRem(50px);
+    line-height: calculateRem(50px);
+    z-index: 999999;
+    align-items: center;
+    .video-close-btn{
+        position: fixed;
+        right: calculateRem(32px);
+        left: auto;
+        cursor: pointer;
+        background: var(--black);
+        height: calculateRem(32px);
+        width: calculateRem(32px);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg{
+            width: calculateRem(16px);
+            height: calculateRem(16px);
+        }
+        html[dir="rtl"] & {
+            left: calculateRem(32px);
+            right: auto;
+        }
+    }
+}
+
+.player-fullscreen {
+    position:fixed;
+    top:calculateRem(50px);
+    left:0;
+    bottom:0; 
+    right:0;
+    border:none; 
+    margin:0;
+    padding:0; 
+    overflow:hidden; 
+    z-index:9999;
+    height: calc(100% - 50px) !important;
+} 
+
+.contentViewerIframeShadow {
+  width: 100%;
+  border: 0;
+  height: 100%;
+} 

@@ -112,7 +112,7 @@ export class SearchService {
    */
   getOrganisationDetails(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
@@ -136,7 +136,7 @@ export class SearchService {
   */
   getSubOrganisationDetails(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
@@ -202,7 +202,7 @@ export class SearchService {
   */
   orgSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: requestParam.filters,
