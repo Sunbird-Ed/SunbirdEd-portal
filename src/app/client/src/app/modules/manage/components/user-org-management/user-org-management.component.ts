@@ -67,6 +67,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public resourceService: ResourceService;
   public telemetryImpression: IImpressionEventInput;
   public geoViewInteractEdata: IInteractEventEdata;
+  public userDeclaredDetailsEdata: IInteractEventEdata;
   public geoDownloadInteractEdata: IInteractEventEdata;
   public userViewInteractEdata: IInteractEventEdata;
   public userDownloadInteractEdata: IInteractEventEdata;
@@ -150,6 +151,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
       this.geoViewInteractEdata = {
         id: 'geo-details',
         type: 'view',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.userDeclaredDetailsEdata = {
+        id: 'user-declared-details',
+        type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
       this.geoDownloadInteractEdata = {
