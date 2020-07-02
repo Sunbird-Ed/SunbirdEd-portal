@@ -32,6 +32,7 @@ describe('GroupDetailsComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupDetailsComponent],

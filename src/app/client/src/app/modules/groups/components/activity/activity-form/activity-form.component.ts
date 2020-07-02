@@ -11,9 +11,15 @@ export class ActivityFormComponent implements OnInit {
   @Output() nextClick = new EventEmitter<{ activityType: string }>();
 
   activityTypes = [
-    { name: 'course', title: this.resourceService.frmelmnts.lbl.courses },
-    { name: 'textbooks', title: this.resourceService.frmelmnts.lbl.textbooks },
-    { name: 'lessonPlan', title: this.resourceService.frmelmnts.lbl.lessonPlan }
+    {
+      name: 'course',
+      title: this.resourceService.frmelmnts.lbl.courses,
+      disabled: false
+    }, {
+      name: 'textbooks',
+      title: `${this.resourceService.frmelmnts.lbl.textbooks} (${this.resourceService.frmelmnts.lbl.comingSoon})`,
+      disabled: true
+    },
   ];
 
   selectedActivity: any;
