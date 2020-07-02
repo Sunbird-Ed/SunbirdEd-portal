@@ -187,4 +187,31 @@ describe('UserOrgManagementComponent', () => {
     expect(window.open).toHaveBeenCalledWith('a', '_blank');
   });
 
+  it('should fetch submit teacher details csv', () => {
+    const manageService = TestBed.get(ManageService);
+    const userService = TestBed.get(UserService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {signedUrl: 'signedUrl'}
+    }));
+    spyOn(window, 'open');
+    component.slug = 'sunbird';
+    component.userJSON = 'user';
+    userService._userData$.next({err: null, userProfile: {rootOrg: {channel: 'MOCKCHANNEL'}}});
+    component.fetchDeclaredUserDetails();
+    expect(component.userDeclaredDetailsUrl).toBe('signedUrl');
+  });
+
+  it('should download file', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {
+        signedUrl: 'a'
+      }
+    }));
+    spyOn(window, 'open');
+    component.downloadFile('user.csv');
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith('user.csv', '_blank');
+  });
+
 });
