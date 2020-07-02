@@ -12,27 +12,27 @@
 
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" class="sb-modal-white"
 appBodyScroll (dismissed)="modal.deny()" #modal *ngIf="showModal">
-<div class="sb-bg-color-white p-32 sb-modal-content" style="min-height:480px;">
-  <h4 class="mb-8">Where can I see the SUNBIRD ID</h4>
-  <p class="mb-16">Use the following instructions to guide members to identify their unique SUNBIRD ID.</p>
+<div class="sb-bg-color-white p-32 sb-modal-content" style="min-height:460px;">
+  <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
+  <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>
   <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
     <div ngxSlickItem class="item-help">
       <div class="sb-g">
         <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
-      <h6>Step 1:</h6>
-      <p class="fnormal mt-8 mb-16">Click on the profile icon on the Header</p>
-      <img src="./assets/images/step_1.png" alt="">
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+      <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
         </div>
         <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
-      <h6>Step 2:</h6>
-      <p class="fnormal mt-8 mb-16">Select the Profile menu</p>
-      <img src="./assets/images/step_2.png" alt="Select the Profile menu">
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+      <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
         </div>
       </div>
     </div>
     <div ngxSlickItem  class="item-help">
-      <h6>Step 3:</h6>
-      <p class="fnormal mt-8 mb-16">See the SUNBIRD ID here</p>
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere }}</p>
         <img src="./assets/images/step_3.png" alt="">
       </div>
   </ngx-slick>
