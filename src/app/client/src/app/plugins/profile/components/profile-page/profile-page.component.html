@@ -71,7 +71,7 @@
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="navigate('/profile/teacher-declaration','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj" (click)="navigate('/profile/teacher-declaration','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
@@ -159,7 +159,7 @@
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
     <!-- User info computer view starts-->
     <div class="ui container">
-      <div class="d-flex flex-jc-center flex-ai-center flex-dc">
+      <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
@@ -222,15 +222,16 @@
   </section>
 
   <!-- 4 section start teacher profile-->
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="udiseObj || teacherObj || schoolObj">
-    <div class="flex-ai-jc-center flex-dc text-center school-id-section">
-      <div *ngIf="udiseObj">
-        <div class="fnormal white-space-nowrap">Phone Number:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">+91 987654321</div>
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3"
+           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj">
+  <div class="flex-ai-jc-center flex-dc text-center school-id-section">
+      <div *ngIf="phoneObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.phoneNumber}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">+91 {{phoneObj?.id}}</div>
       </div>
-      <div *ngIf="teacherObj">
-        <div class="fnormal white-space-nowrap">Email ID:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">state.govt.teacher@gmail.com</div>
+      <div *ngIf="emailObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.emailId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{emailObj?.id}}</div>
       </div>
       <div *ngIf="schoolObj">
         <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</div>
