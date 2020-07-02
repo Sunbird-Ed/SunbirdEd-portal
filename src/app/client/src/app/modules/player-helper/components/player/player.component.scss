@@ -81,4 +81,11 @@
     padding:0; 
     overflow:hidden; 
     z-index:9999;
+    height: calc(100% - 50px) !important;
+} 
+
+.contentViewerIframeShadow {
+  width: 100%;
+  border: 0;
+  height: 100%;
 } 
