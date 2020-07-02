@@ -96,8 +96,7 @@
 
           <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='input' && field.visible===true">
             <div class="fields-selection p-0">
-              <label class="font-weight-normal fnormal"
-                *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)">{{field.label}}<span
+              <label class="font-weight-normal fnormal">{{field.label}}<span
                   *ngIf="field.required">*</span></label>
               <div class="sb-field field-focus mb-8">
                 <input class="sb-form-control selection ui dropdown"
