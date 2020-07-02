@@ -12,8 +12,7 @@ export class ActivityFormComponent implements OnInit {
 
   activityTypes = [
     { name: 'course', title: this.resourceService.frmelmnts.lbl.courses },
-    { name: 'textbooks', title: this.resourceService.frmelmnts.lbl.textbooks },
-    { name: 'lessonPlan', title: this.resourceService.frmelmnts.lbl.lessonPlan }
+    { name: 'textbooks', title: `${this.resourceService.frmelmnts.lbl.textbooks}&nbsp;(${this.resourceService.frmelmnts.lbl.comingSoon})` },
   ];
 
   selectedActivity: any;
