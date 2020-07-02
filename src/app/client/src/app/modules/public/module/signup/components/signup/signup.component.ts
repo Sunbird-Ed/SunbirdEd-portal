@@ -310,16 +310,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.vaidateUserContact(captchaResponse);
         this.formInputType = undefined;
       } else {
-  
-  
         this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
-    
           if (_.get(data, 'result.success')) {
             this.telemetryLogEvents('validate-recaptcha', true);
             this.onSubmitSignUpForm();
           }
         }, (error) => {
-    
           const telemetryErrorData = {
             env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
             errorType: 'SYSTEM', pageid: 'signup',
@@ -351,12 +347,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
-  
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
       },
       (err) => {
-  
         const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
           (_.get(err, 'error.params.status') &&
             err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
