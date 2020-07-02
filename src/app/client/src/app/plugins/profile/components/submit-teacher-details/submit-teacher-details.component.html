@@ -74,11 +74,11 @@
 
                          <!-- success icon -->
                   <div class="information-icon" *ngIf="validationType[field.code].isVerified">
-                    <img src="../../../../../assets/images/checkbox-icon.svg" width="20px"> </div>
+                    <img src="./assets/images/checkbox-icon.svg" width="20px"> </div>
 
                     <!-- error icon -->
                     <!-- <div class="information-icon" *ngIf="validationType[field.code].isVerified">
-                      <img src="../../../../../assets/images/info.svg" width="20px"> </div> -->
+                      <img src="./assets/images/warning-icon.svg" width="20px"> </div> -->
 
                   <div *ngFor="let validation of field.validation">
                     <label class="font-weight-normal invalid-msg"
@@ -89,8 +89,7 @@
                 </div>
               </div>
               <!-- validate button -->
-              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100" >
-                   <!-- *ngIf="validationType[field.code].isVerificationRequired" -->
+              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100" *ngIf="validationType[field.code].isVerificationRequired">
                 <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="generateOTP(field.code)">
                   {{resourceService.frmelmnts?.lbl?.validate}}</button>
               </div>
