@@ -295,6 +295,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  submitSignupForm() {
+    console.log('0. submit method called at 0'); // TODO: log!
+    this.resetGoogleCaptcha();
+    this.captchaRef.execute();
+  }
+
   resolved(captchaResponse: string) {
     console.log('1. captcha callback from google received'); // TODO: log!
     if (captchaResponse) {
