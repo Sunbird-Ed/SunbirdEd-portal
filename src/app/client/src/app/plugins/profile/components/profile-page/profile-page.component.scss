@@ -253,3 +253,24 @@ display: inline-block;
 .no-text-transform {
   text-transform: unset;
 }
+
+.sb-certificate-trained {
+  border: calculateRem(0.5px) solid var(--gray-100);
+  border-radius: calculateRem(4px);
+  background-color: var(--white);
+  margin: 0 auto;
+
+  .sb-ct-list {
+    padding: calculateRem(16px);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @include respond-below(md) {
+      position: relative;
+      padding-right: calculateRem(8px);
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+  }
+}
