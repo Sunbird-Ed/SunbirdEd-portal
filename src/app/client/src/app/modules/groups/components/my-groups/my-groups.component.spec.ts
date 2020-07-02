@@ -55,9 +55,9 @@ describe('MyGroupsComponent', () => {
   });
 
   it('should call getAllGroups list', () => {
-    spyOn(component.groupService, 'getAllGroups').and.callFake(() => observableOf(mygroupsMockData.mockGroupList[0]));
+    spyOn(component.groupService, 'searchUserGroups').and.callFake(() => observableOf(mygroupsMockData.mockGroupList[0]));
     component.getMyGroupList();
-    expect(component.groupService.getAllGroups).toHaveBeenCalled();
+    expect(component.groupService.searchUserGroups).toHaveBeenCalled();
   });
 
   it('should show create group modal', () => {

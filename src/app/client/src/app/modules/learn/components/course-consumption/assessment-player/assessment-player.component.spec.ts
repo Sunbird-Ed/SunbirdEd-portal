@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
 import { NavigationHelperService, ResourceService, SharedModule, ToasterService,
@@ -50,7 +50,7 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService, CsCourseProgressCalculator,
+        UserService, CsContentProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService
