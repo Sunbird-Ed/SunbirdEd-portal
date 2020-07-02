@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 
-import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS } from '../routerLinks';
+import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS, COURSES } from '../routerLinks';
 import { IGroupMemberConfig } from '../../interfaces';
 
 @Component({
@@ -65,7 +65,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   handleNextClick(event) {
     this.toggleActivityModal(false);
     this.addActivityModal.deny();
-    this.router.navigate([`${MY_GROUPS}/${ADD_ACTIVITY_TO_GROUP}`]);
+    this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
   }
 
   closeModal() {
