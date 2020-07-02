@@ -11,6 +11,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
@@ -45,10 +46,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   playerOverlayImage: string;
+  isFullScreenView = false;
+  public unsubscribe = new Subject<void>();
+
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeContentFullScreen();
+  }
+
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
@@ -106,6 +116,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.showPlayIcon = false;
     }
     this.setTelemetryData();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+      this.loadPlayer();
+    });
   }
   /**
    * loadPlayer method will be called
@@ -222,7 +237,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
+      this.contentRatingModal = !this.isFullScreenView;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
@@ -294,9 +309,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     };
   }
 
+  closeContentFullScreen() {
+    this.navigationHelperService.emitFullScreenEvent(false);
+    this.loadPlayer();
+  }
+
   ngOnDestroy() {
     if (this.contentIframe.nativeElement) {
       this.contentIframe.nativeElement.remove();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

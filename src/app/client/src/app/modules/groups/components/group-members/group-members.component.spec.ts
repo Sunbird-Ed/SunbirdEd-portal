@@ -9,6 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('GroupMembersComponent', () => {
   let component: GroupMembersComponent;
@@ -37,6 +38,7 @@ describe('GroupMembersComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupMembersComponent],

@@ -35,7 +35,7 @@
     .slick-prev,
     .slick-next {
       top: inherit;
-      bottom: calculateRem(-48px);
+      bottom: calculateRem(-53px);
       font-size: calculateRem(14px);
       display: flex;
       align-items: center;
@@ -71,26 +71,18 @@
     }
 
     .slick-prev:before {
-      margin-right: calculateRem(8px);
-
-      html[dir='rtl'] & {
-        margin-left: calculateRem(8px);
-        margin-right: inherit;
-      }
+    
     }
 
     .slick-next:before {
-      margin-left: calculateRem(8px);
-
-      html[dir='rtl'] & {
-        margin-right: calculateRem(8px);
-        margin-left: inherit;
-      }
+     
     }
+
 
   }
 
 }
+
 
 .item-help {
   h4 {
@@ -115,3 +107,6 @@
     line-height: calculateRem(24px);
   }
 }
+
+
+
