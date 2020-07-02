@@ -17,7 +17,7 @@
 
     &.search-header-withbg {
       background: var(--gray-0);
-      border: 1px solid var(--gray-100);
+      border: calculateRem(1px) solid var(--gray-100);
       border-bottom: none;
       border-radius: calculateRem(4px) calculateRem(4px) 0 0;
     }
@@ -54,8 +54,7 @@
 .sb-table {
   width: 100%;
   background: var(--white-color);
-  border: 1px solid var(--gray-100);
-  // border-bottom: none;
+  border: calculateRem(1px) solid var(--gray-100);
   box-shadow: none;
   border-radius: calculateRem(4px) calculateRem(4px) 0 0;
   text-align: left;
@@ -135,7 +134,7 @@
     background-color: rgba(var(--rc-rgba-gray), 0.6);
     position: relative;
     height: calculateRem(40px);
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: calculateRem(1px) solid var(--gray-100);
   }
 
   /* Heading with background for course-dashboard */
@@ -167,7 +166,7 @@
       padding: calculateRem(16px);
       color: var(--gray);
       height: calculateRem(56px);
-      border-bottom: 1px solid var(--gray-100);
+      border-bottom: calculateRem(1px) solid var(--gray-100);
     }
 
     tr:last-child {

@@ -5,23 +5,9 @@ import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from './../routerLinks';
+import { IGroupMemberConfig, IGroupMember } from '../../interfaces';
 
-export interface IGroupMemberConfig {
-  showMemberCount: boolean;
-  showSearchBox: boolean;
-  showAddMemberButton: boolean;
-  showMemberMenu: boolean;
-}
 
-export interface IGroupMember {
-  identifier: string;
-  initial: string;
-  title: string;
-  isAdmin: boolean;
-  isMenu: boolean;
-  indexOfMember: number;
-  isCreator: boolean;
-}
 
 @Component({
   selector: 'app-group-members',
@@ -31,10 +17,10 @@ export interface IGroupMember {
 export class GroupMembersComponent implements OnInit {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
-    showMemberCount: true,
-    showSearchBox: true,
-    showAddMemberButton: true,
-    showMemberMenu: true
+    showMemberCount: false,
+    showSearchBox: false,
+    showAddMemberButton: false,
+    showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [
     { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
@@ -83,7 +69,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   search(searchKey: string) {
-    if (searchKey.trim().length > 2) {
+    if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
     } else {

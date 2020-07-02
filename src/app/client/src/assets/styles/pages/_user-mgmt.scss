@@ -1,7 +1,7 @@
 /* user create and choose user page UI styles */
 
 .user-profile-box {
-  margin: 32px auto;
+  margin: calculateRem(32px) auto;
   max-width: 480px;
   width: calc(100% - 32px);
   background: var(--white);

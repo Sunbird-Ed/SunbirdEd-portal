@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_EDIT_GROUP } from '../routerLinks';
+import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from '../routerLinks';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 @Component({
@@ -19,6 +19,7 @@ export class GroupHeaderComponent {
   @Input() groupData: {};
   showModal = false;
   showEditModal: boolean;
+  name = 'you';
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService) {
     this.renderer.listen('window', 'click', (e: Event) => {
@@ -46,7 +47,7 @@ export class GroupHeaderComponent {
   }
 
   editGroup() {
-    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'identifier'), CREATE_GROUP]);
   }
 
   goBack() {

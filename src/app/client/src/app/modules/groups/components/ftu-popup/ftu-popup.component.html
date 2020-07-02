@@ -6,12 +6,12 @@
     <!-- below content comes from CC -->
     <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
     <img src="./assets/images/welcome-group-img.svg" class="sb-group-container__img" />
-    <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
+    <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsgLogin }}</p>
   </div>
 </div>
 
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" class="sb-modal-white"
-appBodyScroll (dismissed)="modal.deny()" #modal *ngIf="showModal">
+appBodyScroll (dismissed)="modal.deny()" #modal *ngIf="showMemberPopup">
 <div class="sb-bg-color-white p-32 sb-modal-content" style="min-height:460px;">
   <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
   <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>
