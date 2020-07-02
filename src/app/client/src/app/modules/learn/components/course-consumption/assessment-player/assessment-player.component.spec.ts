@@ -308,17 +308,17 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculate method to get the courseProgress', () => {
     const playerSummury = assessmentPlayerMockData.playerSummuryData;
     const mimeType = 'application/vnd.ekstep.ecml-archive';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
-    expect(CsCourseProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
+    expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
     expect(component.courseProgress).toEqual(100);
   });
 
   it('should not call calculate method if the contentType is selfAssess', () => {
     component.activeContent = assessmentPlayerMockData.activeContent;
     component.activeContent.contentType = 'SelfAssess';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
