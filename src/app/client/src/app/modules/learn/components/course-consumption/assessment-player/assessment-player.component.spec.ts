@@ -308,7 +308,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculate method to get the courseProgress', () => {
     const playerSummury = assessmentPlayerMockData.playerSummuryData;
     const mimeType = 'application/vnd.ekstep.ecml-archive';
-    spyOn<any>(, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
@@ -352,7 +352,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
     expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
-  
+
   it('should call logAuditEvent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.activeContent = assessmentPlayerMockData.activeContent;
