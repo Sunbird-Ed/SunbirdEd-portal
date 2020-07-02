@@ -9,7 +9,7 @@
         line-height: normal;
         font-weight: 600;
     }
-    .sb-multi-rows:nth-child(even){
+    .sb-multi-rows:nth-child(odd){
         background: var(--white);
         border-top: calculateRem(1px) solid var(--rc-dddddd);
         border-bottom: calculateRem(1px) solid var(--rc-dddddd);

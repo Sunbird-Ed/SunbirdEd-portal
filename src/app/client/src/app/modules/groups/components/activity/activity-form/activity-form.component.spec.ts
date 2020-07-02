@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivityFormComponent } from './activity-form.component';
 import { ResourceService } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ActivityFormComponent', () => {
   let component: ActivityFormComponent;
@@ -18,6 +19,7 @@ describe('ActivityFormComponent', () => {
       'lbl': {}
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityFormComponent],

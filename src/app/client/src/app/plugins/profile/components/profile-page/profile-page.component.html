@@ -71,8 +71,11 @@
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj" (click)="navigate('/profile/teacher-declaration','submit')" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-          {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
+                [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
+                *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj && !stateObj && !districtObj"
+                (click)="navigate('/profile/teacher-declaration','submit')"
+                class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
 
@@ -223,8 +226,16 @@
 
   <!-- 4 section start teacher profile-->
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3"
-           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj">
+           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj || stateObj || districtObj">
   <div class="flex-ai-jc-center flex-dc text-center school-id-section">
+    <div *ngIf="stateObj">
+      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.state}}:</div>
+      <div class="fnormal font-w-bold mt-4 mb-8"> {{stateObj?.id}}</div>
+    </div>
+    <div *ngIf="districtObj">
+      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.district}}:</div>
+      <div class="fnormal font-w-bold mt-4 mb-8"> {{districtObj?.id}}</div>
+    </div>
       <div *ngIf="phoneObj">
         <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.phoneNumber}}:</div>
         <div class="fnormal font-w-bold mt-4 mb-8">+91 {{phoneObj?.id}}</div>
