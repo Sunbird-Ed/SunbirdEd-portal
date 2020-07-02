@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash-es';
 import { CoreModule, UserService} from '@sunbird/core';
-import { of as observableOf, of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { CacheService } from 'ng2-cache-service';
 import { TelemetryService } from '@sunbird/telemetry';
 import { GroupsService } from '../../services';
@@ -76,15 +76,15 @@ describe('CreateEditGroupComponent', () => {
 
   it('should initialize form', () => {
     component['initializeForm']();
-    expect(component.groupForm.get('groupName').valid).toBeFalsy();
-    expect(component.groupForm.get('groupDescription').valid).toBeTruthy();
+    expect(component.groupForm.get('name').valid).toBeFalsy();
+    expect(component.groupForm.get('description').valid).toBeTruthy();
     expect(component.groupForm.get('groupToc').valid).toBeFalsy();
   });
 
   it('should call closeModal on group creation', () => {
     component.groupForm = formBuilder.group({
-      groupName: ['ABCD'],
-      groupDescription: [''],
+      name: ['ABCD'],
+      description: [''],
       groupToc: [true]
     });
     spyOn(component.submitForm, 'emit');
@@ -94,6 +94,23 @@ describe('CreateEditGroupComponent', () => {
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {
       expect(component.submitForm.emit).toHaveBeenCalledWith(group);
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m001);
+    });
+  });
+
+  it('should throw error on group creation', () => {
+    component.groupForm = formBuilder.group({
+      name: ['ABCD'],
+      description: [''],
+      groupToc: [true]
+    });
+    spyOn(component.submitForm, 'emit');
+    spyOn(component.groupService, 'createGroup').and.returnValue(throwError ({err: ''}));
+    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'closeModal');
+    component.onSubmitForm();
+    component.groupService.createGroup(component.groupForm.value).subscribe(group => {}, (err) => {
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m001);
+      expect(component.closeModal).toHaveBeenCalled();
     });
   });
 });

@@ -15,6 +15,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { SlickModule } from 'ngx-slick';
     SharedFeatureModule,
     GroupsRoutingModule,
     CommonConsumptionModule,
+    ContentSearchModule,
     SlickModule,
     SuiModalModule,
     SuiRatingModule

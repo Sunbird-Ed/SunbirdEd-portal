@@ -1,4 +1,4 @@
-import { MY_GROUPS, GROUP_DETAILS, CREATE_EDIT_GROUP } from './../routerLinks';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../routerLinks';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -62,7 +62,7 @@ describe('MyGroupsComponent', () => {
 
   it('should show create group modal', () => {
     component.showCreateFormModal();
-    expect(component.router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    expect(component.router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${CREATE_GROUP}`]);
   });
 
   it('should navigate to group detail page', () => {
