@@ -1,51 +1,67 @@
-<div class="sb-bg-color-gray-0 textbook-container mt-48">
-  <div class="ui container">
-    <div class="textbook py-16 d-flex flex-ai-center">
-      <div class="textbook__details d-flex flex-ai-center">
-        <img src="./assets/images/book.png" class="textbook__bookimg" width="48" alt="textbook">
-        <div class="ml-8 textbook__heading">
-          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
-          <div class="textbook__rating">
-            <!-- <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating> -->
+<app-back-button></app-back-button>
+<div class="ui container py-16" *ngIf="showLoader">
+  <app-loader [data]='loaderMessage'></app-loader>
+</div>
+<div *ngIf="!showLoader">
+  <div class="content-header">
+    <div class="ui container py-16">
+      <div class="content-header__content">
+        <div class="d-flex flex-basis-1 mr-32 min-w-0">
+          <div class="content-header__img mr-8">
+            <img [src]="activity?.appIcon || './assets/images/book.png'" alt="" width="48" /></div>
+          <div class="d-flex flex-dc">
+            <div class="content-header__title font-weight-bold ellipsis text-left">{{activity?.name | uppercase}}</div>
+            <div class="d-flex flex-ai-center content-header__info mt-4">
+              <span>{{activity?.subject}}</span>
+              <span class="dot-divider"></span>
+              <span>15/25&nbsp;{{resourceService?.frmelmnts?.lbl?.started}}</span>
+            </div>
           </div>
         </div>
+        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons hide">
+          <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
+          <div class="kabab-menu"></div>
+        </div>
       </div>
-      <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{ resourceService?.frmelmnts?.lbl?.AddtoGroup }}</button>
     </div>
   </div>
-</div>
 
- 
-      <div class="ui container mt-24">
-        <div class="status-container sb-bg-color-white flex-dc d-flex p-8 py-16 br-4" style="width:40%;">
-          <div class="mr-8 mb-8 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}</div>
-        
-           <div class="px-8">
-            <div class="sb-search-box no-btn mb-16">
-              <div class="input-div relative">
-                  <i class="search icon"></i>
-                  <input class="sb-search-input" type="text" placeholder="{{ resourceService?.frmelmnts?.lbl?.searchInGroup }}" />
-              </div>
-              <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
+  <div class="ui container mt-24">
+    <div class="status-container sb-bg-color-white flex-dc d-flex p-8 py-16 br-4" style="width:40%;">
+      <div class="mr-8 mb-8 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: 26 Feb, 2020</div>
+
+      <div class="px-8">
+        <div class="sb-search-box no-btn mb-16">
+          <div class="input-div relative">
+            <i class="search icon" aria-hidden="true"></i>
+            <input class="sb-search-input" type="text"
+              [placeholder]="resourceService?.frmelmnts?.lbl?.searchForGroupMember" />
           </div>
-           </div>  
-            <div class="d-flex flex-dc">
-           <!-- member card comes here -->
-            </div>
-            <div class="flex-dc flex-ai-jc-center text-center my-24">
-              <img height="176" width="210" src="./assets/images/no-member.png">
-            </div>
-            <div class="member-no-result p-24">
-              <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-                <img height="165" width="206" src="./assets/images/no-member.png">
-                <div class="mt-16 no-result-text">
-                  {{ resourceService?.frmelmnts?.lbl?.NoSerchGroupMemberResults }}
-                </div>
-                <div class="my-8 no-result-desc">
-                  <div>{{ resourceService?.frmelmnts?.lbl?.checkYourSpelling }}</div>
-                  <div>{{ resourceService?.frmelmnts?.lbl?.similarButDiffName }}</div>
-                </div>
-              </div>
-            </div>
+          <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
       </div>
+      <div class="d-flex flex-dc">
+        <div *ngFor="let member of groupMembers" class="relative">
+          <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
+            [progressDisplay]="member?.progress" [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
+          </sb-member-card>
+        </div>
+      </div>
+
+
+      <div class="member-no-result p-24 hide">
+        <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+          <img height="165" width="206" src="./assets/images/no-member.png" alt="">
+          <div class="mt-16 no-result-text">
+            {{ resourceService?.frmelmnts?.lbl?.NoSerchGroupMemberResults }}
+          </div>
+          <div class="my-8 no-result-desc">
+            <div>{{ resourceService?.frmelmnts?.lbl?.checkYourSpelling }}</div>
+            <div>{{ resourceService?.frmelmnts?.lbl?.similarButDiffName }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
