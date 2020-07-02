@@ -13,7 +13,7 @@
 <sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal-white"
 appBodyScroll (dismissed)="closeModal('members')" #modal *ngIf="showMemberPopup">
 <div class="sb-bg-color-white p-32">
-  <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
+  <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig">
     <div ngxSlickItem class="item-help">
       <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
       <p class="mb-32">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>

@@ -10,7 +10,7 @@ export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
   @Input() showMemberPopup;
   @Output() close = new EventEmitter();
-  slideConfig1 = {
+  slideConfig = {
     'slidesToShow': 1,
     'slidesToScroll': 1,
     'infinite': false,

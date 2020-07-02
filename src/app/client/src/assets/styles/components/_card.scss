@@ -5,7 +5,7 @@ $sb-card-progressbar-height: calculateRem(4px);
 $sb-card-hover-movement: calculateRem(3px);
 $sb-card-padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
 $sb-card-border-radius: calculateRem(4px);
-$sb-card-border: calculateRem(1px) solid #DEDEDE;
+$sb-card-border: calculateRem(1px) solid var(--rc-dedede);
 $sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
 $sb-card-bg-color: var(--white);
 $sb-card-image-height: calculateRem(92px);

@@ -104,6 +104,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     this.navigationHelperService.goBack();
   }
 
+  reset() {}
 
   close() {
     if (this.createGroupModal && this.createGroupModal.deny) {
