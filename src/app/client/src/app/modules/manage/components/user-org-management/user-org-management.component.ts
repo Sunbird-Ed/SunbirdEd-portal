@@ -60,6 +60,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public geoTableHeader;
   public geoTabledata = [];
   public userTableId = 'ValidatedUserDetailsTable';
+  public userDeclaredDetailsUrl;
   public userTableHeader;
   public userTabledata = [];
   public activatedRoute: ActivatedRoute;
@@ -102,6 +103,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
+        this.fetchDeclaredUserDetails();
         this.slug = await _.get(this.userService, 'userProfile.rootOrg.slug');
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
           this.getUserJSON();
@@ -112,6 +114,24 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         this.getUserDetail();
       }
     });
+  }
+
+  downloadFile(path) {
+    window.open(path, '_blank');
+  }
+
+  fetchDeclaredUserDetails() {
+    let channelName = _.get(this.userProfile, 'rootOrg.channel');
+    if (channelName) {
+      channelName = channelName.toLowerCase() + '.csv';
+      this.manageService.getData('declared_user_detail', channelName).subscribe(response => {
+          const url = (_.get(response, 'result.signedUrl'));
+          if (url) {
+            this.userDeclaredDetailsUrl = url;
+          }
+        }
+      );
+    }
   }
 
   ngAfterViewInit() {

@@ -1,8 +1,14 @@
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows">
     <div class="d-flex flex-ai-center ui container">
-      <h4 class="sb-manage-section-title py-16 m-0">Self declared User Details</h4>
-      <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24">Download</button>
+      <h4 class="sb-manage-section-title py-16 m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
+      <button [disabled]="!userDeclaredDetailsUrl"
+              [ngClass]="{'sb-btn-disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
+              type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
+              (click)="downloadFile(userDeclaredDetailsUrl)">
+        {{resourceService.frmelmnts?.btn?.download}}
+      </button>
+      <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span>
     </div>
   </div>
 
