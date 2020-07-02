@@ -17,14 +17,14 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-
+import { RecaptchaComponent } from "ng-recaptcha";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('captchaRef') captchaRef: any;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -296,17 +296,22 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resolved(captchaResponse: string) {
+    console.log('1. captcha callback from google received'); // TODO: log!
     if (captchaResponse) {
       if (this.formInputType) {
         this.vaidateUserContact(captchaResponse);
         this.formInputType = undefined;
       } else {
+        console.log('2. captcha response received');
+        console.log('3. called portal backend for verification');
         this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+          console.log('4. called portal backend response ', data);
           if (_.get(data, 'result.success')) {
             this.telemetryLogEvents('validate-recaptcha', true);
             this.onSubmitSignUpForm();
           }
         }, (error) => {
+          console.log('5. verification from portal backend failed ', error); // TODO: log!
           const telemetryErrorData = {
             env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
             errorType: 'SYSTEM', pageid: 'signup',
@@ -321,11 +326,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmitSignUpForm() {
+    console.log('6. submit form method called'); // TODO: log!
     this.disableSubmitBtn = true;
     this.generateOTP();
   }
 
   generateOTP() {
+    console.log('7. otp method called'); // TODO: log!
     const request = {
       'request': {
         'key': this.signUpForm.controls.contactType.value === 'phone' ?
@@ -338,10 +345,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
+        console.log('8. otp api called, response ', data); // TODO: log!
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
       },
       (err) => {
+        console.log('9. otp generate failed ', err); // TODO: log!
         const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
           (_.get(err, 'error.params.status') &&
             err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
