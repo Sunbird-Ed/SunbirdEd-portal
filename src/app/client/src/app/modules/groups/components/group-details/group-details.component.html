@@ -27,3 +27,5 @@
   appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
   <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
 </sui-modal>
+
+<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="closeModal()"></app-ftu-popup>
