@@ -21,7 +21,8 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -186,6 +187,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
     this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
+  }
+  
+  isBotdisplayforRoute () {
+    const url = this.router.url;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
   isLocationStatusRequired() {

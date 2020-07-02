@@ -279,7 +279,7 @@ export class UserService {
    */
   private getOrganizationDetails(organisationIds) {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
