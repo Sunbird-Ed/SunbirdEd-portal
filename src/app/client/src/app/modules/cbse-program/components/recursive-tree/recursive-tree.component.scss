@@ -2,7 +2,7 @@
 @import 'mixins/mixins';
 
 .sb-table .sb-table-body td {
-  padding: calulateRem(16px) calulateRem(24px);
+  padding: calculateRem(16px) calculateRem(24px);
   text-align: center;
   &:first-child {
       text-align: left;
@@ -42,7 +42,7 @@
   }
 
   .item-name {
-    padding: calulateRem(24px) calulateRem(16px) calulateRem(24px) calulateRem(40px);
+    padding: calculateRem(24px) calculateRem(16px) calculateRem(24px) calculateRem(40px);
     flex: 2;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -83,7 +83,7 @@
 [dir="rtl"] {
   .chapter-lists {
     .item-name {
-      padding: calulateRem(40px) calulateRem(24px) calulateRem(16px) calulateRem(24px);
+      padding: calculateRem(40px) calculateRem(24px) calculateRem(16px) calculateRem(24px);
     }
   }
 }
@@ -106,18 +106,18 @@
       font-size: 0.75rem;
       color: var(--gray);
       vertical-align: middle;
-      line-height: calulateRem(16px);
+      line-height: calculateRem(16px);
     }
 
     .icon {
       display: none;
-      height: calulateRem(18px);
+      height: calculateRem(18px);
       position: absolute;
-      right: calulateRem(8px);
-      top: calulateRem(8px);
+      right: calculateRem(8px);
+      top: calculateRem(8px);
       margin: 0;
-      width: calulateRem(18px);
-      font-size: calulateRem(18px);
+      width: calculateRem(18px);
+      font-size: calculateRem(18px);
       color: var(--secondary-200);
     }
 
@@ -139,20 +139,20 @@
 }
 
 .ui.error.reject {
-  background-color: #F5F9FC;
+  background-color: var(--rc-F5F9FC);
   color: var(--gray);
   border: calculateRem(1px) dashed var(--primary-200);
   box-shadow: none !important;
 
   li {
     font-size: 0.75rem;
-    line-height: calulateRem(20px);
+    line-height: calculateRem(20px);
   }
 }
 
 //Meta Data
 .sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-  padding-right: calulateRem(24px);
+  padding-right: calculateRem(24px);
   flex-basis: auto;
   margin: 0;
 
@@ -161,9 +161,9 @@
   }
 
   dt {
-    font-size: calulateRem(24px);
+    font-size: calculateRem(24px);
     color: var(--gray-800);
-    margin-bottom: calulateRem(8px);
+    margin-bottom: calculateRem(8px);
   }
 
   &.active {

@@ -3,7 +3,7 @@
 
 .sb-explore-qr-page-cover {
   //background: $var(--white);
-  padding: ($base-block-space * 4) 0 0 0;
+  padding: calculateRem(32px) 0 0 0;
   min-height: calc(100vh - 230px);
 }
 
@@ -108,10 +108,10 @@
     flex:50%;
     padding-left: 0;
     h1 {
-      color: $gray-800;	font-size: $font-size-md;	
+      color: var(--gray-800);	font-size: $font-size-md;	
     }
     p {
-      color: $gray-800;font-size: $font-size-normal;
+      color: var(--gray-800);font-size: $font-size-normal;
     }
   }
   .dial-scan-column {

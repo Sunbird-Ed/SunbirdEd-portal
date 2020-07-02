@@ -248,7 +248,7 @@ app-workspace {
 }
 
 .bs-2 {
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.29) !important;
+  box-shadow: 0 0 calculateRem(20px) 0 rgba(var(--rc-rgba-black), 0.29) !important;
 }
 
 .toc-box-shadow {
@@ -259,6 +259,7 @@ app-workspace {
 
 .footer-fix {
   padding-bottom: calculateRem(160px);
+  background-color: var(--rc-E5EDF5);
 
   @include respond-above(sm) {
     padding-bottom: calculateRem(60px);
@@ -288,4 +289,3 @@ app-workspace {
 .fields-selection label {
   line-height: normal;
 }
-

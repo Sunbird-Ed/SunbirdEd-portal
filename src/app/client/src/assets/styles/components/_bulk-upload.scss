@@ -12,7 +12,7 @@
       }
     }
     .sb-bulk-upload-details-report-info {
-      border-bottom: calculateRem(1px) solid #ddd;
+      border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   
       .sb-bulk-upload-file {
         flex-basis: 70%;
@@ -106,7 +106,7 @@
           line-height: calculateRem(20px);
           margin-bottom: calculateRem(4px);
           padding-bottom: calculateRem(4px);
-          border-bottom: calculateRem(1px) solid #ddd;
+          border-bottom: calculateRem(1px) solid var(--rc-dddddd);
           &:last-child {
             margin: 0;
           }
