@@ -3,20 +3,17 @@
 
 const argv = require('minimist')(process.argv.slice(2))
 const tags = (argv.tags !== true) && argv.tags
-// process.env.CHROME_BIN = require('puppeteer').executablePath()
+
 module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
-      require('karma-coverage'),
       require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma'),
-      require('karma-sourcemap-loader'),
-      require('source-map-loader')
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
     browserNoActivityTimeout: 100000,
     client: {
@@ -30,7 +27,7 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
-    // preprocessors: ['sourcemap'],
+    
     reporters: ['mocha'],
     mochaReporter: {
       symbols: {
@@ -38,16 +35,16 @@ module.exports = function (config) {
         info: '#',
         warning: '!',
         error: 'x'
-        }
+      }
     },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['HeadlessChrome'],
+    browsers: ['ChromeHeadless'],
     customLaunchers: {
-      HeadlessChrome: {
-        base: 'ChromeHeadless',
+      ChromeHeadless: {
+        base: 'Chrome',
         flags: [
           '--no-sandbox',
           '--headless',
@@ -56,10 +53,7 @@ module.exports = function (config) {
           '--remote-debugging-port=9222',
           '--proxy-server=direct://',
           '--proxy-bypass-list=*',
-          '--max_old_space_size=8096',
-          '--js-flags=--max-old-space-size=8096',
-          '--disable-dev-shm-usage',
-          '--disable-software-rasterizer',
+          '--max_old_space_size=4096'
         ]
       }
     },
