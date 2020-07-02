@@ -71,7 +71,7 @@
 }
 
 .border-1 {
-  border-bottom: calculateRem(1px) solid var(--rc-eee);
+  border-bottom: calculateRem(1px) solid var(--rc-eeeeee);
 }
 
 .ui.basic.button,
@@ -101,7 +101,7 @@
 }
 
 .img-cover {
-  border: calculateRem(1px) solid var(--rc-bbb);
+  border: calculateRem(1px) solid var(--rc-bbbbbb);
   border-radius: calculateRem(2px);
   background-color: var(--rc-FAFAFA);
   display: inline-flex;

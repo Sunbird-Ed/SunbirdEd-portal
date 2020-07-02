@@ -9,12 +9,17 @@ import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@ang
 export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
   @Output() close = new EventEmitter();
-  slideConfig = {
-    'slidesToShow': 1,
-    'slidesToScroll': 1,
-    'infinite': false,
-    'rtl': false,
-    'dots': true
+  slideConfig1 = {
+    "lazyLoad": 'progressive',
+    "slidesToShow": 1,
+    "infinite": false,
+    "rtl": false,
+    "dots": true,
+    "adaptiveHeight": true,
+    "fade": true,
+    "cssEase": 'linear',
+    "autoplay": true,
+    "autoplaySpeed": 2000
   };
 
   @Input()showMemberPopup;
