@@ -114,4 +114,10 @@ describe('GroupDetailsComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
     expect(component.addActivityModal.deny).toHaveBeenCalled();
   });
+
+  it('should make showMemberPopUp as false', () => {
+    component.closeModal();
+    expect(component.showMemberPopup).toBeFalsy();
+  });
+
 });
