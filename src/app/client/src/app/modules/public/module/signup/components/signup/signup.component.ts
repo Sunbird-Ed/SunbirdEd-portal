@@ -17,14 +17,14 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-
+import { RecaptchaComponent } from "ng-recaptcha";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('captchaRef') captchaRef: any;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;
@@ -293,6 +293,15 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
        this.signUpForm.controls['uniqueContact'].setValue('');
       this.captchaRef.execute();
     }
+  }
+
+  /**
+   * @description - Intermediate function to get captcha token and submit sign up form
+   * @since - release-3.0.3
+   */
+  submitSignupForm() {
+    this.resetGoogleCaptcha();
+    this.captchaRef.execute();
   }
 
   resolved(captchaResponse: string) {
