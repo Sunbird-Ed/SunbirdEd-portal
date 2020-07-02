@@ -9,7 +9,6 @@
       <app-loader></app-loader>
     </div>
     <div *ngIf="!showLoader">
-      <p class="fnormal">{{resourceService?.frmelmnts?.lbl?.stateValidationDetails}}</p>
       <form class="sb-form mt-24 mb-16" [formGroup]="userDetailsForm">
         <div class="ui stackable grid" *ngFor="let field of formData">
 
