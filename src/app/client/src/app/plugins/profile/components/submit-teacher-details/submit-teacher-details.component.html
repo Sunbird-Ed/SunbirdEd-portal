@@ -4,7 +4,7 @@
     <span *ngIf="formAction === 'update'">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</span>
   </div>
 
-  <div class="p-32">
+  <div class="py-16 px-32">
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
@@ -66,15 +66,19 @@
               <div class="fields-selection p-0">
                 <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
                 <div class="sb-field field-focus icon input">
-                  <i class="icon" *ngIf="field.code === 'phone'">+91-</i>
-                  <input class="sb-form-control selection ui dropdown" type="{{field.inputType}}"
+                  <span class="icon phone-code" *ngIf="field.code === 'phone'">+91-</span>
+                  <input class="sb-form-control selection ui dropdown " type="{{field.inputType}}"
                          placeholder="{{field.description}}"
-                         [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
+                         [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'phone'}"
                          formControlName="{{field.code}}" name="code">
 
-                  <span class="info-error-icon" *ngIf="validationType[field.code].isVerified">
-                    <img src="../../../../../assets/images/checkbox-icon.svg" width="24px" height="24px">
-                  </span>
+                         <!-- success icon -->
+                  <div class="information-icon" *ngIf="validationType[field.code].isVerified">
+                    <img src="./assets/images/checkbox-icon.svg" width="20px"> </div>
+
+                    <!-- error icon -->
+                    <!-- <div class="information-icon" *ngIf="validationType[field.code].isVerified">
+                      <img src="./assets/images/warning-icon.svg" width="20px"> </div> -->
 
                   <div *ngFor="let validation of field.validation">
                     <label class="font-weight-normal invalid-msg"
@@ -85,8 +89,7 @@
                 </div>
               </div>
               <!-- validate button -->
-              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100"
-                   *ngIf="validationType[field.code].isVerificationRequired">
+              <div class="d-flex flex-dc flex-jc-center flex-ai-center w-100" *ngIf="validationType[field.code].isVerificationRequired">
                 <button class="sb-btn sb-btn-secondary sb-btn-normal sb-btn-border" (click)="generateOTP(field.code)">
                   {{resourceService.frmelmnts?.lbl?.validate}}</button>
               </div>
@@ -165,7 +168,7 @@
   </app-tnc-popup>
 
   <sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true"
-             [transitionDuration]="0" [size]="'small'" class="sb-modal sb-success"
+             [transitionDuration]="0" [size]="'small'" class="sb-modal sb-modal-white sb-success"
              appBodyScroll (dismissed)="onOtpPopupClose()" #modal>
 
     <app-otp-popup *ngIf="isOtpVerificationRequired"

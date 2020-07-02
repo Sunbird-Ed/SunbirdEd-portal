@@ -183,3 +183,44 @@
       line-height: calculateRem(20px);
     }
   }
+  .sb-chapterlist-modal {
+
+    .sb-checkbox label,
+    .sb-radio-btn-checkbox label {
+      padding-left: 0;
+      padding-right: calculateRem(24px);
+      margin-bottom: 0;
+      &:before {
+        left: unset;
+        right: 0;
+      }
+  
+      &:after {
+        left: unset;
+        right: calculateRem(4px);
+      }
+    }
+  
+    .sb-checkbox label:before {
+      left: unset;
+      right: 0;
+    }
+  
+    .chapter-lists--item {
+      .sb-radio-btn-checkbox label {
+        &::before,
+        &::after {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+  
+        &::before {
+          right: calculateRem(16px);
+        }
+  
+        &::after {
+          right: calculateRem(20px);
+        }
+      }
+    }
+  }
