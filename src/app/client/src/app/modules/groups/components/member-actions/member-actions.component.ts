@@ -1,7 +1,8 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, Input, EventEmitter, ViewChild, Output, OnDestroy } from '@angular/core';
+import { Component, Input, EventEmitter, ViewChild, Output, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
-import { IGroupMember } from '../group-members/group-members.component';
+import { IGroupMember } from '../../interfaces';
+
 
 export interface IMemberActionData {
   title: string;
@@ -15,7 +16,7 @@ export interface IMemberActionData {
   templateUrl: './member-actions.component.html',
   styleUrls: ['./member-actions.component.scss']
 })
-export class MemberActionsComponent implements OnDestroy {
+export class MemberActionsComponent implements OnDestroy, OnInit {
   @ViewChild('modal') modal;
   @Input() action: string;
   @Input() member: IGroupMember;

@@ -24,58 +24,38 @@ describe('GroupsService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should not be custodian user', () => {
-    const service = TestBed.get(GroupsService);
-    const userService = TestBed.get(UserService);
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    userService._userProfile = groupServiceMockData.userMockData;
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() => observableOf(groupServiceMockData.custodianOrg));
-    service.isCustodianOrgUser().subscribe(
-      apiResponse => {
-        expect(apiResponse).toBeFalsy();
-      }
-    );
-  });
-
-  it('should be custodian user', () => {
-    const service = TestBed.get(GroupsService);
-    const userService = TestBed.get(UserService);
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    userService._userProfile = groupServiceMockData.userMockData;
-    userService._userProfile.rootOrg.rootOrgId = '0126632859575746566';
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() => observableOf(groupServiceMockData.custodianOrg));
-    service.isCustodianOrgUser().subscribe(
-      apiResponse => {
-        expect(apiResponse).toBeTruthy();
-      }
-    );
-  });
-
-  it('should get custodian org data', () => {
-    const service = TestBed.get(GroupsService);
-    const userService = TestBed.get(UserService);
-    const channelService = TestBed.get(ChannelService);
-    userService._userProfile = groupServiceMockData.userMockData;
-    spyOn(channelService, 'getFrameWork').and.callFake(() => observableOf(groupServiceMockData.custOrgFrameworks1));
-    service.getCustodianOrgData();
-    expect(channelService.getFrameWork).toHaveBeenCalled();
-  });
-
-  it('should get filtered field data', () => {
-    const service = TestBed.get(GroupsService);
-    const frameworkService = TestBed.get(FrameworkService);
-    spyOn(frameworkService, 'initialize').and.callThrough();
-    spyOn(frameworkService, 'frameworkData$').and.callFake(() => observableOf(groupServiceMockData.frameworkDetails));
-    spyOn(service, 'filterFrameworkCategories').and.callThrough();
-    spyOn(service, 'filterFrameworkCategoryTerms').and.callThrough();
-    service.getFilteredFieldData();
-    expect(frameworkService.initialize).toHaveBeenCalled();
-  });
-
   it('should get all group list', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service.groupCservice, 'getAll').and.callThrough();
     service.getAllGroups();
+  });
+
+  it ('should call groupCs create', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['groupCservice'], 'create');
+    service.createGroup({name: 'BAC', description: 'NEW GROUPS'});
+    expect(service['groupCservice'].create).toHaveBeenCalled();
+  });
+
+  it ('should call groupCs create', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['groupCservice'], 'getById');
+    service.getGroupById('123');
+    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123');
+  });
+
+  it ('should call groupCs create', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['groupCservice'], 'deleteById');
+    service.deleteGroupById('123');
+    expect(service['groupCservice'].deleteById).toHaveBeenCalledWith('123');
+  });
+
+  it ('should call groupCs create', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['groupCservice'], 'addMemberById');
+    service.addMemberById('member1', '123');
+    expect(service['groupCservice'].addMemberById).toHaveBeenCalledWith('member1', '123');
   });
 
 });

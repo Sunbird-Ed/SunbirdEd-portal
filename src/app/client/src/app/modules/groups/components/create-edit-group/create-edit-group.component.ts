@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
@@ -18,6 +17,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   public selectedOption: any = {};
   private unsubscribe: Subscription;
   public editMode: boolean;
+  showUpdateForm = false;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService) { }
@@ -28,13 +28,17 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   private initializeForm() {
     this.groupForm = this.fb.group({
-      groupName: ['', [
+      name: ['', [
         Validators.required,
       ]],
-      groupDescription: ['', [
+      description: ['', [
       ]],
       groupToc: ['', [Validators.requiredTrue]]
     });
+  }
+
+  isFieldValid(field: string) {
+    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
   onSubmitForm() {
@@ -58,6 +62,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateForm() {}
+
+  reset() {}
+
   closeModal() {
     this.close();
     this.navigationHelperService.goBack();
@@ -67,10 +75,6 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (this.createGroupModal && this.createGroupModal.deny) {
       this.createGroupModal.deny();
     }
-  }
-
-  isFieldValid(field: string) {
-    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
   ngOnDestroy() {

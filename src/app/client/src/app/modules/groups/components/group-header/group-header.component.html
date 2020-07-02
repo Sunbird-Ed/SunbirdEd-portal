@@ -1,5 +1,3 @@
-<!--  add back button, group name, edit , show past members and delete -->
-
 <app-back-button></app-back-button>
 
 <div class="content-header" *ngIf="groupData">
@@ -10,7 +8,7 @@
             <div>{{groupData.name}}</div>
         </div>
         <div class="d-flex flex-ai-center content-header__info">
-          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy}}</div>
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': name}}</div>
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
@@ -27,11 +25,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-        <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8" (click)="deleteGroup()">
-          <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> {{resourceService?.frmelmnts?.btn?.delete}}</button>
-        <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" />{{resourceService?.frmelmnts?.btn?.edit}}</button>
-      </div> -->
     </div>
   </div>
 </div>
@@ -45,7 +38,6 @@
     <p > {{resourceService?.messages?.imsg?.m0082}}
       {{groupName}} ?</p>
   </div>
-  <!-- Delete Group modal -->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
     <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
