@@ -47,15 +47,6 @@ const app = express()
 
 app.use(cookieParser())
 app.use(helmet())
-<<<<<<< HEAD
-app.use(session({
-  secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
-  resave: false,
-  saveUninitialized: false,
-  store: memoryStore
-}))
-app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
-=======
 
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
@@ -68,7 +59,6 @@ app.all([
     saveUninitialized: false,
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
->>>>>>> upstream/release-3.1.0
 
 app.all('/logoff', endSession, (req, res) => {
   logDebug(req, {}, '/logoff called');

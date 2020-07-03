@@ -128,12 +128,8 @@ let PERMISSIONS_HELPER = {
     }
   },
 
-<<<<<<< HEAD
-  getCurrentUserRoles: function (reqObj, callback, userIdentifier) {
-    logDebug(reqObj, {}, 'getCurrentUserRoles() is called')
-=======
   getCurrentUserRoles: function (reqObj, callback, userIdentifier, isManagedUser) {
->>>>>>> upstream/release-3.1.0
+    logDebug(reqObj, {}, 'getCurrentUserRoles() is called')
     var userId = userIdentifier || reqObj.session.userId;
     var url = learnerURL + 'user/v1/read/' + userId;
     if (isManagedUser) {
