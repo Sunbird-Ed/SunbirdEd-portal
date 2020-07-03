@@ -116,7 +116,7 @@ const respond403 = (req, res) => {
       msgid: null,
       status: 'failed',
       err: 'FORBIDDEN_ERROR',
-      errmsg: 'Forbidden: Access is denied'
+      errmsg: 'Forbidden: API WHITELIST Access is denied'
     },
     responseCode: 'FORBIDDEN',
     result: {}

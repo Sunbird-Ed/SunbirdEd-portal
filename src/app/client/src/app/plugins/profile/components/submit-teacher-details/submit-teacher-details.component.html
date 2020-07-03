@@ -157,8 +157,10 @@
     <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="closeSuccessModal()">
-      {{resourceService?.frmelmnts?.btn?.ok}}
+    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
+            [telemetryInteractEdata]="submitDetailsInteractEdata"
+            (click)="closeSuccessModal()">
+    {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
 </sui-modal>
