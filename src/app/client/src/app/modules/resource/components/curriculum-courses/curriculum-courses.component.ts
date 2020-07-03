@@ -96,7 +96,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.mergedCourseList = _.orderBy(unorderedList, ['isEnrolledCourse', 'courseName'], ['desc', 'asc']);
+    this.mergedCourseList = _.orderBy(unorderedList, ['isEnrolledCourse', course => _.toLower(course.courseName)], ['desc', 'asc']);
   }
 
   ngOnDestroy() {
