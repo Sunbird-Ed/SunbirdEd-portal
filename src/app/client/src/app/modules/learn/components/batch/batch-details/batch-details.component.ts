@@ -1,7 +1,7 @@
 
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, first, share } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { CourseBatchService, CourseProgressService } from './../../../services';
+import { CourseBatchService, CourseProgressService, CourseConsumptionService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
@@ -10,10 +10,13 @@ import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as dayjs from 'dayjs';
+
 @Component({
   selector: 'app-batch-details',
-  templateUrl: './batch-details.component.html'
+  templateUrl: './batch-details.component.html',
+  styleUrls: ['batch-details.component.scss']
 })
+
 export class BatchDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   batchStatus: Number;
@@ -35,6 +38,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showError = false;
   userNames = {};
   showBatchList = false;
+  showBatchPopup = false;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
@@ -42,11 +46,16 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
   isUnenrollbtnDisabled = false;
+  allBatchList = [];
+  showAllBatchList = false;
+  showAllBatchError = false;
+  showJoinModal = false;
   @Output() allBatchDetails = new EventEmitter();
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
-    public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService) {
+    public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService,
+    public courseConsumptionService: CourseConsumptionService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -71,6 +80,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.courseConsumptionService.showJoinCourseModal
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        this.showJoinModal = data;
+      });
+
     this.courseInteractObject = {
       id: this.courseHierarchy.identifier,
       type: 'Course',
@@ -151,6 +166,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe))
         .subscribe((data: ServerResponse) => {
           this.allBatchDetails.emit(_.get(data, 'result.response'));
+          this.getJoinCourseBatchDetails();
           if (data.result.response.content && data.result.response.content.length > 0) {
             this.batchList = data.result.response.content;
             this.fetchUserDetails();
@@ -164,6 +180,36 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         });
      }
   }
+
+  getJoinCourseBatchDetails() {
+    this.showAllBatchList = false;
+    this.showAllBatchError = false;
+    this.allBatchList = [];
+    const searchParams: any = {
+      filters: {
+        courseId: this.courseId,
+        enrollmentType: 'open'
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    const searchParamsOne = _.cloneDeep(searchParams);
+    const searchParamsTwo = _.cloneDeep(searchParams);
+      searchParamsOne.filters.status = this.statusOptions[0].value.toString();
+      searchParamsTwo.filters.status = this.statusOptions[1].value.toString();
+      combineLatest(
+        this.courseBatchService.getAllBatchDetails(searchParamsOne),
+        this.courseBatchService.getAllBatchDetails(searchParamsTwo),
+      ).pipe(takeUntil(this.unsubscribe))
+        .subscribe((data) => {
+          this.allBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.showAllBatchList = true;
+        }, (err) => {
+          this.showAllBatchError = true;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        });
+  }
+
   getEnrolledCourseBatchDetails() {
     if (this.enrolledBatchInfo.participant) {
       const participant = [];

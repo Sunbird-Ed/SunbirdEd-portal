@@ -1,7 +1,7 @@
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -51,14 +51,18 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   batchEndDate: any;
   public interval: any;
   telemetryCdata: Array<{}>;
+  enableProgress = false;
+  @Output() showBatchDetailsModal = new EventEmitter();
 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
-    private telemetryService: TelemetryService) {
+    private telemetryService: TelemetryService) { }
 
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {

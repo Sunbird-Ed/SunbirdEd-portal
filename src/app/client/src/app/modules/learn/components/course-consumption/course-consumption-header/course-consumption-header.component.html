@@ -85,3 +85,90 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
+
+
+
+
+
+
+
+
+<!-- Back Button Previous Module & Next Module button -->
+<div class="sb-bg-color-white relative position back-btn-container">
+  <div class="ui container">
+    <div class="py-8 d-flex flex-ai-center">
+      <!-- /* Back button */ -->
+      <button class="sb-btn sb-btn-link-primary sb-btn-normal back-btn mr-auto"><i
+          class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="./assets/images/libdemo/sprite.svg#arrow-long-left"></use>
+          </svg></i>&nbsp;Back
+      </button>
+      <!-- Back button -->
+      <div class="d-flex flex-ai-center">
+        <!-- Previous module button -->
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn">
+          <i class="chevron left icon mr-4"></i>Prev Module
+        </button>
+        <!-- Previous Module button -->
+        <div class="modulebtn-divider"></div>
+        <!-- Next Module button -->
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn">
+          Next Module<i class="chevron right icon ml-4"></i>
+        </button>
+        <!-- Next Module button -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Textbook details with continue playing and join course button -->
+<div class="textbook-container">
+  <div class="ui container">
+    <div class="textbook py-16 sb-g">
+      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+        <!-- Textbook details -->
+        <div class="textbook__details d-flex flex-ai-center">
+          <!-- Textbook image -->
+          <img src="{{courseHierarchy?.appIcon}}" class="textbook__bookimg" alt="textbook" width="56px">
+          <div class="ml-8 textbook__heading">
+            <!-- Textbook title -->
+            <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
+            </h5>
+            <!-- Textbook Rating with share icon -->
+            <div class="textbook__rating mt-4">
+              <sui-rating class="star mini" [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+              <div class="d-inline-flex flex-ai-center ml-8 cursor-pointer" (click)="enableProgress=!enableProgress">
+                <i class="icon-svg icon-svg--xs icon-share mx-4"><svg class="icon icon-svg--primary">
+                    <use xlink:href="./assets/images/libdemo/sprite.svg#share"></use>
+                  </svg></i>
+                <span class="fsmall sb-color-primary font-weight-bold">{{resourceService?.frmelmnts?.lbl?.share}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Module Progress bar with join course and continue learning button -->
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3" style="align-self: center;">
+        <!-- Module Progress bar -->
+        <div class="certified-course__progress" *ngIf="enableProgress">
+          <div class="fsmall">Module Progress</div>
+          <div class="sb-color-primary fnormal font-weight-bold mt-4">8/9 Completed</div>
+          <sui-progress [value]="8" [maximum]="9" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+        </div>
+        <!-- join course & continue learning buttons -->
+        
+        <div class="certified-course__btn" *ngIf="!enableProgress">
+          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+          (click)="showJoinModal(true);">Join Course</button>
+          <!-- <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
+            (click)="showSmallModal = !showSmallModal"><i class="icon-svg icon-svg--xxs icon-share mr-8"><svg
+                class="icon icon-svg--white">
+                <use xlink:href="./assets/images/libdemo/sprite.svg#play"></use>
+              </svg></i>Continue Learning</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-batch-details-popup *ngIf="showJoinModal" [courseId]="courseId" (showJoinModal)="showJoinModal = $event" ></app-batch-details-popup> -->
+

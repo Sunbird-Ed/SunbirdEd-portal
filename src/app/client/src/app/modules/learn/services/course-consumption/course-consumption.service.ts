@@ -17,6 +17,7 @@ export class CourseConsumptionService {
   updateContentConsumedStatus = new EventEmitter<any>();
   launchPlayer = new EventEmitter<any>();
   updateContentState = new EventEmitter<any>();
+  showJoinCourseModal = new EventEmitter<any>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService) { }

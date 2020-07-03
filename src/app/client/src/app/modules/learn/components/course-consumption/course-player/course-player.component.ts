@@ -64,6 +64,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   @ViewChild('joinTrainingModal') joinTrainingModal;
+  showJoinModal = false;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
