@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
-const {utils} = require('./utilityService');
+const {utils, logInfo, logDebug, logErr} = require('./utilityService');
 const logger = require('sb_logger_util_v2');
 
 // Copy client url.config.json here
@@ -124,6 +124,7 @@ const allowedUrls = function() {
 
 const isWhitelistUrl = function() {
     return function (req, res, next) {
+        logDebug(req, {}, ' isWhitelistUrl() called');
         var reqUrl = req.originalUrl.replace('/learner/', '');
         // var reqUrl = req.originalUrl;
         var validUrl = false;
@@ -131,11 +132,12 @@ const isWhitelistUrl = function() {
             validUrl = result;
         });
         if(validUrl) {
+            logInfo(req, {}, 'XXXX valid URL request');
             console.log(':) valid URL' + req.originalUrl);
             next();
         }
         else {
-            logger.error({msg: 'XXXX Invalid URL request', url: req.originalUrl});
+            logErr(req, {error: 'UNAUTHORIZED_ERROR' }, 'XXXX Invalid URL request');
             res.status(401)
             res.send({
               'id': 'api.error',

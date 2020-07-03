@@ -3,7 +3,7 @@
  * @description :: Responsible for check content service health
  * @author      :: Rajath V B
  */
-
+const {logInfo, logDebug, logErr} = require('./utilityService');
 var async = require('async')
 var request = require('request')
 var uuidv1 = require('uuid/v1')
@@ -35,6 +35,7 @@ var hcMessages = {
 }
 // Function return to get health check object
 function getHealthCheckObj (name, healthy, err, errMsg) {
+  logDebug({}, err, `called getHealthCheckObj() with name: ${name}, healthy: ${healthy}, errMsg: ${errMsg}` )
   return {
     name: name,
     healthy: healthy,
@@ -45,6 +46,7 @@ function getHealthCheckObj (name, healthy, err, errMsg) {
 
 // Function help to get health check response
 function getHealthCheckResp (rsp, healthy, checksArrayObj) {
+  logDebug({}, {}, `getHealthCheckResp() is called with rsp: ${JSON.stringify(rsp)}, healthy: ${healthy}, checksArrayObj:${checksArrayObj} `);
   rsp.result = {}
   rsp.result.name = hcMessages.NAME
   rsp.result.version = hcMessages.API_VERSION
@@ -54,6 +56,8 @@ function getHealthCheckResp (rsp, healthy, checksArrayObj) {
 }
 
 function createAndValidateRequestBody (req, res, next) {
+
+  logDebug(req, {}, `createAndValidateRequestBody() is called`);
   req.body = req.body || {}
   req.body.ts = new Date()
   req.body.url = req.url
@@ -71,9 +75,11 @@ function createAndValidateRequestBody (req, res, next) {
     method: req.originalMethod
   }
   req.rspObj = rspObj
+  logInfo(req, {}, `added rspObj: ${JSON.stringify(rspObj)} to req`);
   next()
 }
 function successResponse (data) {
+  logDebug({}, {}, `successResponse() is called with ${data}`)
   var response = {}
   response.id = data.apiId
   response.ver = data.apiVersion
@@ -255,6 +261,7 @@ function checkSunbirdPortalHealth (req, response) {
  */
 function checkDependantServiceHealth (dependancyServices) {
   return function (req, res, next) {
+    logDebug(req, {}, ' checkDependantServiceHealth() called');
     if (envHelper.sunbird_portal_health_check_enabled === 'false') {
       next()
     } else {
@@ -270,6 +277,7 @@ function checkDependantServiceHealth (dependancyServices) {
       });
 
       if (dependancyServices.length !== heathyServiceCount) {
+        logErr(req, {error: 'SERVICE_UNAVAILABLE'}, 'error in checkDependantServiceHealth()')
         res.status(503)
         res.send({
           'id': 'api.error',

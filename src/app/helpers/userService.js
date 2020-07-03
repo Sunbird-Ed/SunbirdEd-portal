@@ -16,22 +16,18 @@ const _ = require('lodash');
 const {acceptTermsAndCondition} = require('./userHelper');
 const httpSatusCode = require('http-status-codes');
 const logger = require('sb_logger_util_v2');
-const {delay} = require('../helpers/utilityService');
+const {delay, logInfo, logDebug, logErr} = require('../helpers/utilityService');
 const uuidv1 = require('uuid/v1');
 const {parseJson} = require('./utilityService');
 
 const handleError = (error) => {
-  logger.error({
-    msg: 'userService: handleError',
-    error: error,
-    params: _.get(error, 'error.params'),
-    message: _.get(error, 'message')
-  });
+  logErr({}, error, `Error: ${ _.get(error, 'message')}`);
   if (_.get(error, 'error.params')) {
     throw error.error.params;
   } else if (error instanceof Error) {
     throw error.message;
   } else {
+    logErr({}, error, `Throwing Error: unhandled exception while accepting tnc'`);
     throw 'unhandled exception while accepting tnc';
   }
 };
@@ -54,7 +50,7 @@ const acceptTncAndGenerateToken = async (identifier, tncVersionAccepted) => {
     accessToken = _.get(grant, 'access_token.token');
     logger.info({msg: 'token generated', token: accessToken});
     const tncResponse = await acceptTermsAndCondition(tncRequest, accessToken).catch(handleError);
-    logger.info({
+    logInfo({}, {}, {
       msg: 'userService: tnc accepted successfully',
       additionalInfo: {
         errType: errorType,
@@ -64,27 +60,20 @@ const acceptTncAndGenerateToken = async (identifier, tncVersionAccepted) => {
     });
     return tncResponse;
   } catch (e) {
-    logger.info({
-      msg: 'userService: tnc failed',
-      additionalInfo: {
-        errType: errorType,
-        accessToken: accessToken,
-        error: e
-      }
-    });
+    logErr({}, e, `Error: userService: tnc failed ${errorType, accessToken, e}`);
     handleError(e);
   }
 };
 
 
 const acceptTnc = async (req, res) => {
+  logDebug(req, {}, `acceptTnc() is called`);
   const identifier = _.get(req, 'body.request.identifier');
   const tncVersionAccepted = _.get(req, 'body.request.version');
   if (!identifier || !tncVersionAccepted) {
-    logger.error({
-      msg: 'Userservice: acceptTnc, missing mandatory parameters', additionalInfo:
-        {identifier: identifier, tncVersionAccepted: tncVersionAccepted}
-    });
+    logErr(req, {err: "mandatory parameters missing"}, `Userservice: acceptTnc, missing mandatory parameters additionalInfo: ${additionalInfo},
+    identifier: ${identifier}, tncVersionAccepted: ${tncVersionAccepted}
+    `)
     res.status(httpSatusCode.BAD_REQUEST).send({
       id: "api.user.tnc.accept",
       params: {
@@ -97,6 +86,7 @@ const acceptTnc = async (req, res) => {
   }
 
   try {
+    logInfo(req, {}, `acceptTncAndGenerateToken() is called with identifier:${identifier}, tncVersionAccepted: ${tncVersionAccepted}`)
     await acceptTncAndGenerateToken(identifier, tncVersionAccepted);
     res.status(httpSatusCode.OK).send({
       id: "api.user.tnc.accept",
@@ -109,7 +99,7 @@ const acceptTnc = async (req, res) => {
       result: {response: "Success"}
     });
   } catch (e) {
-    logger.error({
+    logErr(req, e, {
       msg: 'Userservice: acceptTnc, accept tnc failed',
       additionalInfo: {
         identifier: identifier, tncVersionAccepted: tncVersionAccepted,
@@ -131,6 +121,7 @@ const acceptTnc = async (req, res) => {
 };
 
 const switchUser = async (req, res) => {
+  logDebug(req, {}, 'switchUser() is called');
   let isManagedUser;
   if (!req.params.userId || !req.query.isManagedUser) {
     logger.info({msg: 'switch user rejected missing userID'});
@@ -143,11 +134,15 @@ const switchUser = async (req, res) => {
     {id: 'initiator-id', type: initiatorUserData.session.userId},
     {id: 'managed-user-id', type: req.params.userId}
   ];
+  
   if (req.query.isManagedUser) {
     isManagedUser = parseJson(req.query.isManagedUser);
   }
   getCurrentUserRoles(req, function (error, data) {
+    logDebug(req, {}, 'getCurrentUserRoles() is calling from switchUser()');
+
     if (error) {
+      logErr(req, error, 'Got error from getCurrentUserRoles()');
       res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
     } else {
       telemetryHelper.logSessionEnd(initiatorUserData, cdata);
@@ -157,8 +152,10 @@ const switchUser = async (req, res) => {
       }
       req.session.save(function (error) {
         if (error) {
+          logErr(req, error, 'Got error from getCurrentUserRoles()');
           res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
         } else {
+          logInfo(req, {}, 'User Switched Successfully');
           telemetryHelper.logSessionStart(req, cdata);
           res.status(httpSatusCode.OK).send({
             id: "api.user.switch",

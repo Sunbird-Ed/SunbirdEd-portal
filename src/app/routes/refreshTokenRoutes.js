@@ -6,7 +6,7 @@ const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const logger = require('sb_logger_util_v2')
-const { logError } = require('../helpers/utilityService');
+const { logError, logErr, logInfo, logDebug } = require('../helpers/utilityService');
 
 const keyClockMobileClients = {
 }
@@ -37,22 +37,22 @@ module.exports = (app) => {
 
   app.post('/auth/v1/refresh/token', setConnectionTimeout(60000), bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
-      logger.info({msg: '>>>> /auth/v1/refresh/token called'});
+      logInfo(req, {}, '>>>> /auth/v1/refresh/token called');
       try {
        let refreshToken = req.body.refresh_token;
 
         if(!refreshToken){
-          logger.error({'msg': '[Portal]: refreshToken is not present - ' + refreshToken});
+          logErr(req, {error: 'REFRESH_TOKEN_REQUIRED'}, `[Portal]: refreshToken is not present -  + ${refreshToken}`);
           throw { error: 'REFRESH_TOKEN_REQUIRED', message: "refresh_token is required", statusCode: 400 }
         }
         const jwtPayload = jwt.decode(refreshToken, {complete: true});
         if(!jwtPayload || !jwtPayload.payload){
-          logger.error({'msg': '[Portal]: JWT payload is not valid - ' + refreshToken});
+          logErr(req, {error: 'INVALID_REFRESH_TOKEN'}, `[Portal]: JWT payload is not valid -  + ${refreshToken}`);
           throw { error: 'INVALID_REFRESH_TOKEN', message: "refresh_token is invalid", statusCode: 400 }
         }
         const clientDetails = keyClockMobileClients[jwtPayload.payload.aud]
         if(!clientDetails){
-          logger.error({'msg': '[Portal]: jwtPayload.payload.aud is not valid - ' + jwtPayload.payload});
+          logErr(req, {error: 'INVALID_CLIENT'}, `[Portal]: jwtPayload.payload.aud is not valid -  + ${refreshToken.payload}`);
           throw { error: 'INVALID_CLIENT', message: "client not supported", statusCode: 400 }
         }
         let options = {
@@ -95,15 +95,12 @@ module.exports = (app) => {
           'responseCode': error.error || 'UNHANDLED_EXCEPTION',
           'result': {}
         })
-        logger.info({msg: '<<<<< /auth/v1/refresh/token'});
+        logErr(req, error, {msg: '<<<<< /auth/v1/refresh/token'});
       }
   })
 }
 const handleError = (error) => {
-  logger.error({
-    msg: 'refresh token api error',
-    error: JSON.stringify(error.error)
-  });
+  logErr({}, error, 'refresh token api error');
   const errorRes = JSON.parse(error.error)
   throw {
     statusCode: error.statusCode,
@@ -112,6 +109,7 @@ const handleError = (error) => {
   }
 }
 const verifyAuthToken = async (req) => {
+  logDebug(req, {}, 'verifyAuthToken() is called')
   let options = {
     method: 'GET',
     forever: true,

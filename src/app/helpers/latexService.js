@@ -7,6 +7,7 @@ const RegisterHTMLHandler = require("mathjax-full/js/handlers/html");
 const AllPackages = require("mathjax-full/js/input/tex/AllPackages");
 const svg2img = require("svg2img");
 const fs = require('fs');
+const { logInfo, logDebug, logErr } = require('./utilityService');
 
 const adaptor = new LiteAdaptor.LiteAdaptor();
 RegisterHTMLHandler.RegisterHTMLHandler(adaptor);
@@ -18,6 +19,7 @@ const html = mathjax.mathjax.document("", {
 
 
 function tex2svg(equation, color) {
+    logDebug({}, {}, `tex2svg() is called with ${equation, color}`)
     const svg = adaptor
         .innerHTML(html.convert(equation, { display: true }))
         .replace(/fill="currentColor"/, `fill="${color}"`);
@@ -28,6 +30,7 @@ function tex2svg(equation, color) {
 }
 
 function svg2png(svgString) {
+    logDebug({}, {}, `svg2png() is called with ${svgString}`)
     return new Promise(function (resolve, reject) {
       var dims = svgString
           .match(/width="([\d.]+)ex" height="([\d.]+)ex"/)
@@ -47,16 +50,19 @@ function svg2png(svgString) {
 }
 
 function png2base64(pngString) {
+    logDebug({}, {}, `png2base64() is called with ${pngString}`)
     var base64Image = new Buffer(pngString, 'binary').toString('base64');
     return 'data:image/png;base64,'+base64Image;
 }
 
 async function convert(req, res) {
+    logDebug(req, {}, 'convert() is called');
     let equation = req.query.equation;
     if (!equation) {
         equation = req.body.equation;
     }
     if (!equation) {
+        logErr(req, {}, `Error in convert(): bad request ${equation}`)
         res.status(400).send('Bad Request');
     } else {
         let color = "black";
@@ -67,7 +73,9 @@ async function convert(req, res) {
         res.setHeader("cache-control", "s-maxage=604800, maxage=604800");
         // render equation
         if (isPNG) {
+            logInfo(req, {}, `calling svg2png() from convert()`)
             imageData = await svg2png(svgString);
+            logInfo(req, {}, `calling png2base64() from convert()`)
             const base64Image = await png2base64(imageData);
             res.contentType("application/json");
             imageData = { 'data': base64Image };

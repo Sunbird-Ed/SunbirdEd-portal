@@ -35,12 +35,13 @@ let keycloak = getKeyCloakClient({
   'public-client': true
 })
 const logLevel = envHelper.sunbird_portal_log_level;
+const { logInfo, logDebug, logErr } = require('./helpers/utilityService');
 
 logger.init({
   logLevel
 })
 
-logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
+logDebug({}, {}, { msg: `logger initialized with LEVEL= ${logLevel}` })
 
 const app = express()
 
@@ -60,10 +61,12 @@ app.all([
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.all('/logoff', endSession, (req, res) => {
+  logDebug(req, {}, '/logoff called');
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
 app.all('/sessionExpired', endSession, (req, res) => {
+  logDebug(req, {}, '/sessionExpired called');
   const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
   const logoutUrl = keycloak.logoutUrl(redirectUri);
   delete req.session.userId;
@@ -132,6 +135,7 @@ require('./proxy/localProxy.js')(app) // Local proxy for content and learner ser
 app.all('/v1/user/session/create', (req, res) => trampolineServiceHelper.handleRequest(req, res, keycloak))
 
 app.get('/v1/user/session/start/:deviceId', (req, res) => {
+  logDebug(req, {}, '/v1/user/session/start/:deviceId called');
   if (req.session.logSession === false) {
     req.session.deviceId = req.params.deviceId
     telemetryHelper.logSessionStart(req)
@@ -213,6 +217,7 @@ telemetry.init({
 
 process.on('unhandledRejection', (reason, p) => console.log('Unhandled Rejection', p, reason));
 process.on('uncaughtException', (err) => {
+  logErr({}, err, 'Uncaught exception from process');
   console.log('Uncaught Exception', err)
   process.exit(1);
 });

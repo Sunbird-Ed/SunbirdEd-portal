@@ -8,6 +8,7 @@ const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
 const logger = require('sb_logger_util_v2');
+const { logErr, logDebug, logInfo} = require('./utilityService');
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
     'course/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
@@ -89,6 +90,7 @@ let PERMISSIONS_HELPER = {
   },
 
   setUserSessionData (reqObj, body) {
+    logDebug(reqObj, {}, 'getCurrentUserRoles() is called');
     try {
       if (body.responseCode === 'OK') {
         reqObj.session.userId = body.result.response.identifier;
@@ -121,12 +123,13 @@ let PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
-      logger.error({msg: 'error while saving user session data', err: e})
+      logErr(reqObj, e, 'error while saving user session data')
       console.log(e)
     }
   },
 
   getCurrentUserRoles: function (reqObj, callback, userIdentifier, isManagedUser) {
+    logDebug(reqObj, {}, 'getCurrentUserRoles() is called')
     var userId = userIdentifier || reqObj.session.userId;
     var url = learnerURL + 'user/v1/read/' + userId;
     if (isManagedUser) {
@@ -159,11 +162,12 @@ let PERMISSIONS_HELPER = {
       reqObj.session.roles = [];
       reqObj.session.orgs = [];
       if (error) {
-        logger.error({msg: 'error while user/v1/read', error});
+        logErr(req, error, 'error while user/v1/read');
         callback(error, null)
       } else if (!error && body) {
+        logInfo(reqObj, {}, 'setUserSessionData() is calling from getCurrentUserRoles()')
         module.exports.setUserSessionData(reqObj, body);
-        logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
+        logInfo(reqObj, {}, `getCurrentUserRoles session obj`);
         reqObj.session.save(function (error) {
           if (error) {
             callback(error, null)
@@ -172,13 +176,14 @@ let PERMISSIONS_HELPER = {
           }
         });
       } else {
-        logger.error({msg: 'error while user/v1/read', error});
+        logErr(req, error, 'error while user/v1/read');
         callback(error, null)
       }
     })
   },
   checkPermission: function () {
     return function (req, res, next) {
+      logDebug(req, {}, 'checkPermission() called');
       if (enablePermissionCheck && req.session['roles'] && req.session['roles'].length) {
         var roles = module.exports.checkURLMatch(req.originalUrl)
         if (_.isArray(roles)) {
@@ -211,6 +216,7 @@ let PERMISSIONS_HELPER = {
     }
   },
   checkURLMatch: function (url) {
+    logDebug({}, {}, `checkURLMatch() is called for ${url}`);
     var roles = []
     _.forEach(module.exports.ROLES_URLS, function (value, key) {
       if (url.indexOf(key) > -1) {

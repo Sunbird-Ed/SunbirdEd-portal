@@ -16,7 +16,7 @@ module.exports = (app) => {
    * User initiated merge process is redirected to following url
    */
   app.get('/user/session/save', (req, res) => {
-    logger.info({msg: '/user/session/save called'});
+    logInfo(req, {}, '/user/session/save called');
     if (!_.get(req, 'kauth.grant.access_token.token')) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
@@ -38,14 +38,12 @@ module.exports = (app) => {
         }
       });
       if (result) {
-        logger.error({
+        logErr(req, result, {
           msg: 'user/session/save failed to save user session',
-          error: JSON.stringify(result),
           additionalInfo: {
             userId: _.get(req, 'session.userId'),
             redirectUri: req.query.redirectUri
-          }
-        });
+          }});
         res.status(500).send({
           "id": "api.user-session.save",
           "responseCode": "INTERNAL_SERVER_ERROR",
@@ -54,9 +52,9 @@ module.exports = (app) => {
           }
         });
       } else {
-        logger.debug({
+        logInfo(req, {}, {
           msg: 'user/session/save user session saved successfully',
-          error: JSON.stringify(result),
+          result: JSON.stringify(result),
           additionalInfo: {
             userId: _.get(req, 'session.userId'),
             redirectUri: req.query.redirectUri
@@ -83,9 +81,9 @@ module.exports = (app) => {
    * Successful login for account merge redirects to below url
    */
   app.all('/merge/account/u2/login/callback', async (req, res) => {
-    logger.info({msg: '/merge/account/u2/login/callback called'});
-    logger.info({msg: 'session id login callback ' + req.session.id});
-    logger.info({msg: 'redirect url was initiated ' + JSON.stringify(req.session)});
+    logInfo(req, {}, '/merge/account/u2/login/callback called');
+    logInfo(req, {}, `session id login callback  + ${req.session.id}`);
+    logInfo(req, {}, `redirect url was initiated  + ${JSON.stringify(req.session)}`);
     if (!req.session.mergeAccountInfo) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
@@ -99,30 +97,16 @@ module.exports = (app) => {
     if (!u2Token) {
       // since google sign is not in progress generate auth token from keycloak
       u2Token = await generateAuthToken(req.query.code, redirectUrl).catch(err => {
-        logger.error({
-          msg: 'error in verifyAuthToken',
-          error: JSON.stringify(err.error)
-        });
-        logger.error({
-          msg: 'error details',
-          error: err.statusCode + err.message
-        });
+        logErr(req, err, 'error in generateAuthToken');
       });
       u2Token = parseJson(u2Token);
       u2Token = u2Token.access_token;
     }
-    logger.info({msg: 'target account logged in: getting access token ' + u2Token});
+    logInfo(req, {}, `target account logged in: getting access token  + ${u2Token}`);
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/logout?redirect_uri=`;
     const mergeResponse = await initiateAccountMerge(_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails'),
       u2Token).catch(err => {
-        logger.error({
-          msg: 'error in initiateAccountMerge',
-          error: JSON.stringify(err)
-        });
-        logger.error({
-          msg: 'error detals',
-          error: err.statusCode + err.message
-        });
+      logErr(req, err, 'error in initiateAccountMerge');
       let query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       if (_.get(err, 'error.params.status') === 'ACCOUNT_NOT_FOUND') {
         query = query + '&error_type=account_not_found';
@@ -132,9 +116,9 @@ module.exports = (app) => {
       res.redirect(url + redirectUri);
     });
     if (_.get(mergeResponse, 'result.result.status') === 'SUCCESS' && mergeResponse.responseCode === 'OK') {
-      logger.info({msg: 'mergeResponse coming from backend' + JSON.stringify(mergeResponse)});
+      logInfo(req, {}, `mergeResponse coming from backend + ${JSON.stringify(mergeResponse)}`);
       const query = '?status=success&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
-      logger.info({msg: 'after final success' + query});
+      logInfo(req,{}, `after final success + ${query}`);
       const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       delete req.session.mergeAccountInfo;
       res.redirect(url + redirectUri);

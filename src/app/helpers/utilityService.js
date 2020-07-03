@@ -116,6 +116,31 @@ const logError = (req, err, msg) => {
   });
 }
 
+const logInfo = (req, err, msg) => {
+  logger.info(getLogObj(req, err, msg));
+}
+
+const logErr = (req, err, msg) => {
+  logger.error( getLogObj(req, err, msg))
+}
+
+const logDebug = (req, err, msg) => {
+  logger.debug(getLogObj(req, err, msg))
+}
+
+const getLogObj = (req, err, msg) => {
+  const logObj =  {
+    did: _.get(req, 'headers.x-device-id'),
+    ts: _.get(req, 'headers.ts'),
+    url: _.get(req, 'originalUrl'),
+    uid: _.get(req, 'headers.x-msgid'),
+    sid: _.get(req, 'sessionID'),
+    msg: msg ? msg : 'Unavailable',
+    error: JSON.stringify(err) ? JSON.stringify(err) : 'Unavailable'
+  }
+  return logObj;
+}
+
 module.exports = { parseJson, delay, isDate, 
   isValidAndNotEmptyString, isDateExpired, 
-  decodeNChkTime, logError};
+  decodeNChkTime, logError, logInfo, logDebug, logErr};

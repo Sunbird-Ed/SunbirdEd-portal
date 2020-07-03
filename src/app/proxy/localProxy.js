@@ -5,6 +5,7 @@ const contentBaseUrl = envHelper.CONTENT_SERVICE_UPSTREAM_URL
 const csLocalProxyURI = '/localproxy/content/'
 const lsLocalProxyURI = '/localproxy/learner/'
 const reqDataLimitOfContentUpload = '30mb'
+const { logInfo, logDebug, logErr } = require('./../helpers/utilityService');
 
 /**
  * [contentServiceApi these are the content service api map]
@@ -82,6 +83,7 @@ var learnerServiceApi = {
  * @return {[Function]}            [description]
  */
 var getRedirectUrl = function (requestUrl, urlMap, cb) {
+  logDebug({}, {}, `getRedirectUrl() is called with ${requestUrl, urlMap}`);
   var uriArray = ''
   if (urlMap[requestUrl]) {
     cb(requestUrl, urlMap[requestUrl])
@@ -107,6 +109,8 @@ var getRedirectUrl = function (requestUrl, urlMap, cb) {
 module.exports = function (app) {
   app.all(csLocalProxyURI + '*', function (req, res, next) {
     var urlAfterBU = req.url.split(csLocalProxyURI)[1]
+    logDebug(req, {}, `localProxy: ${csLocalProxyURI}`);
+    logInfo(req, {}, `getRedirectUrl() is calling from localProxy: ${csLocalProxyURI}`);
     getRedirectUrl(urlAfterBU, contentServiceApi, function (actualUrl, redirectUrl) {
       req.url = req.url.replace(actualUrl, redirectUrl)
       next()
@@ -116,6 +120,7 @@ module.exports = function (app) {
   app.all(csLocalProxyURI + '*', proxy(contentBaseUrl, {
     limit: reqDataLimitOfContentUpload,
     proxyReqPathResolver: function (req) {
+      logDebug(req, {}, `${csLocalProxyURI}*, ${contentBaseUrl} is called()`)
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
       if (query) {
@@ -127,6 +132,9 @@ module.exports = function (app) {
   }))
 
   app.all(lsLocalProxyURI + '*', function (req, res, next) {
+    logDebug(req, {}, `localProxy: ${lsLocalProxyURI}`);
+    logInfo(req, {}, `getRedirectUrl() is calling from localProxy: ${lsLocalProxyURI}`);
+
     var urlAfterBU = req.url.split(lsLocalProxyURI)[1]
     getRedirectUrl(urlAfterBU, learnerServiceApi, function (actualUrl, redirectUrl) {
       req.url = req.url.replace(actualUrl, redirectUrl)
@@ -136,6 +144,7 @@ module.exports = function (app) {
 
   app.all(lsLocalProxyURI + '*', proxy(learnerBaseUrl, {
     proxyReqPathResolver: function (req) {
+      logDebug(req, {}, `${lsLocalProxyURI}*, ${learnerBaseUrl} is called()`)
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
       if (query) {

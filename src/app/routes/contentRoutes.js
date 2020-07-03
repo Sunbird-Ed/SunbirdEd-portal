@@ -9,6 +9,7 @@ const healthService = require('../helpers/healthCheckService.js')
 const _ = require('lodash')
 const logger = require('sb_logger_util_v2')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const { logInfo, logErr, logDebug } = require('./../helpers/utilityService');
 
 module.exports = (app) => {
     // Generate telemetry fot proxy service
@@ -25,13 +26,13 @@ module.exports = (app) => {
                 return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
+                logDebug(req, {}, '/content/course/v1/search called');
                 try {
-                    logger.info({msg: '/content/course/v1/search called'});
                     const data = JSON.parse(proxyResData.toString('utf8'));
                     if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                     else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
                 } catch (err) {
-                    logger.error({msg: 'content api user res decorator json parse error', proxyResData});
+                    logErr(req, err, {msg: 'content api user res decorator json parse error', proxyResData});
                     return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
                 }
             }
@@ -55,13 +56,13 @@ module.exports = (app) => {
                 }
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
+                logDebug(req, {}, {msg: '/content/* called'});
                 try {
-                    logger.info({msg: '/content/* called'});
                     const data = JSON.parse(proxyResData.toString('utf8'));
                     if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                     else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
                 } catch (err) {
-                    logger.error({msg: 'content api user res decorator json parse error', proxyResData});
+                    logErr(req, err, {msg: 'content api user res decorator json parse error', proxyResData});
                     return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
                 }
             }
