@@ -77,6 +77,8 @@ describe('CollectionPlayerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.cancelInteractEdata).toBeUndefined();
+    expect(component.createCourseInteractEdata).toBeUndefined();
     expect(component.showPlayer).toBeFalsy();
     // expect(component.serviceUnavailable).toBeFalsy();
     expect(component.loaderMessage).toEqual({
