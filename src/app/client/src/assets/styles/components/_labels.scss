@@ -180,7 +180,7 @@ $sb-label-status-indicator-error-background: $tertiary-color;
 }
 .badge {
     display: inline-block;
-    background: #d4d3d3;
+    background: var(--rc-d4d3d3);
     color: var(--gray-800);
     text-align: center;
     padding: 0 .75rem;

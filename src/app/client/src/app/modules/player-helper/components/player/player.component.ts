@@ -10,13 +10,15 @@ import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService } from '../../../core/services';
+import { OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
+export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -44,10 +46,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   playerOverlayImage: string;
+  isFullScreenView = false;
+  public unsubscribe = new Subject<void>();
+
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeContentFullScreen();
+  }
+
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
@@ -105,6 +116,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       this.showPlayIcon = false;
     }
     this.setTelemetryData();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+      this.loadPlayer();
+    });
   }
   /**
    * loadPlayer method will be called
@@ -221,7 +237,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
+      this.contentRatingModal = !this.isFullScreenView;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
@@ -291,5 +307,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       type: 'click',
       pageid: this.pageId
     };
+  }
+
+  closeContentFullScreen() {
+    this.navigationHelperService.emitFullScreenEvent(false);
+    this.loadPlayer();
+  }
+
+  ngOnDestroy() {
+    if (this.contentIframe.nativeElement) {
+      this.contentIframe.nativeElement.remove();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

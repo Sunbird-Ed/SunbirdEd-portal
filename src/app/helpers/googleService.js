@@ -7,9 +7,14 @@ const uuidv1 = require('uuid/v1');
 const {parseJson, logInfo, logDebug, logErr} = require('./utilityService');
 
 
+<<<<<<< HEAD
 const validateRecaptcha = async (req, res) => {
   logDebug(req, {}, 'validateRecaptcha() is called');
+=======
+const validateRecaptcha = async (req, res, next) => {
+>>>>>>> upstream/release-3.1.0
   let errType;
+  const userExistsAPI = ['/learner/user/v1/exists/email/:emailId', '/learner/user/v1/exists/phone/:phoneNumber'];
   try {
     // Validating if request is valid or not
     if (!req.query.captchaResponse) {
@@ -30,12 +35,26 @@ const validateRecaptcha = async (req, res) => {
     responseData = parseJson(responseData);
     errType = '';
     if (responseData && responseData.success) {
+<<<<<<< HEAD
       logInfo(req, {}, `recaptcha is validated`);
       res.status(httpSatusCode.OK).send({
         'id': 'api.validate.recaptcha', 'ts': new Date(),
         'params': {'resmsgid': uuidv1(), 'status': 'successful'},
         'responseCode': 'OK', 'result': responseData
       })
+=======
+      // TODO: Refactor in release-3.1.0
+      // export as a function
+      if (userExistsAPI.indexOf(req.route.path) > -1) {
+        next();
+      } else {
+        res.status(httpSatusCode.OK).send({
+          'id': 'api.validate.recaptcha', 'ts': new Date(),
+          'params': {'resmsgid': uuidv1(), 'status': 'successful'},
+          'responseCode': 'OK', 'result': responseData
+        })
+      }
+>>>>>>> upstream/release-3.1.0
     } else {
       logErr(req, {}, `googleService:validateRecaptcha throwing error of CAPTCHA_VALIDATING_FAILED ${responseData}`)
       throw new Error('CAPTCHA_VALIDATING_FAILED');

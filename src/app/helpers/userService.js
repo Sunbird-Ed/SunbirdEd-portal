@@ -18,6 +18,7 @@ const httpSatusCode = require('http-status-codes');
 const logger = require('sb_logger_util_v2');
 const {delay, logInfo, logDebug, logErr} = require('../helpers/utilityService');
 const uuidv1 = require('uuid/v1');
+const {parseJson} = require('./utilityService');
 
 const handleError = (error) => {
   logErr({}, error, `Error: ${ _.get(error, 'message')}`);
@@ -121,8 +122,9 @@ const acceptTnc = async (req, res) => {
 
 const switchUser = async (req, res) => {
   logDebug(req, {}, 'switchUser() is called');
-  if (!req.params.userId) {
-    logInfo(req, {}, 'switch user rejected missing userID');
+  let isManagedUser;
+  if (!req.params.userId || !req.query.isManagedUser) {
+    logger.info({msg: 'switch user rejected missing userID'});
     res.status(httpSatusCode.BAD_REQUEST).send(errorResponse);
   }
   const initiatorUserData = {
@@ -132,14 +134,22 @@ const switchUser = async (req, res) => {
     {id: 'initiator-id', type: initiatorUserData.session.userId},
     {id: 'managed-user-id', type: req.params.userId}
   ];
-  logInfo(req, {}, 'getCurrentUserRoles() is calling from switchUser()');
+  
+  if (req.query.isManagedUser) {
+    isManagedUser = parseJson(req.query.isManagedUser);
+  }
   getCurrentUserRoles(req, function (error, data) {
+    logDebug(req, {}, 'getCurrentUserRoles() is calling from switchUser()');
+
     if (error) {
       logErr(req, error, 'Got error from getCurrentUserRoles()');
       res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
     } else {
       telemetryHelper.logSessionEnd(initiatorUserData, cdata);
       req.session.userSid = uuidv1();
+      if (!isManagedUser) {
+        delete req.session.managedToken;
+      }
       req.session.save(function (error) {
         if (error) {
           logErr(req, error, 'Got error from getCurrentUserRoles()');
@@ -164,7 +174,7 @@ const switchUser = async (req, res) => {
         }
       });
     }
-  }, req.params.userId);
+  }, req.params.userId, isManagedUser);
 };
 
 const errorResponse = {

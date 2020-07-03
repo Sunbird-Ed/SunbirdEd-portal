@@ -10,14 +10,15 @@ import { SearchService, UserService, FrameworkService, FormService } from '@sunb
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html'
+  templateUrl: './data-driven.component.html',
+  styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('formData') formData: DefaultTemplateComponent;
@@ -104,6 +105,14 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  public showFrameworkSelection: boolean;
+
+  public frameworkCardData = [];
+
+  public selectedCard: any;
+
+  public enableCreateButton = false;
+
   public unsubscribe = new Subject<void>();
   constructor(
     public searchService: SearchService,
@@ -119,7 +128,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     formService: FormService,
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService,
-    public browserCacheTtlService: BrowserCacheTtlService
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public telemetryService: TelemetryService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -141,12 +151,14 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.showFrameworkSelection = _.get(queryParams, 'showFrameworkSelection');
+    });
     this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
       this.checkForPreviousRouteForRedirect();
-      if (_.lowerCase(this.contentType) === 'course') {
-        this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-          this.framework = data;
-          this.fetchFrameworkMetaData();
+      if (this.showFrameworkSelection) {
+        this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.setFrameworkData(data);
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
@@ -156,7 +168,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
        */
         this.fetchFrameworkMetaData();
       }
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -298,6 +310,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
+    this.logTelemetry(content.identifier);
   }
 
   /**
@@ -329,5 +342,81 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {} channelData
+   * @description - It sets the card data and its associated framework
+   */
+  setFrameworkData(channelData) {
+    this.frameworkCardData = [{
+      title: 'Academic',
+      description: `Create courses for concepts from the syllabus, across grades and subjects, for example; for fractions, photosynthesis, reading comprehension, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultFramework')
+    },
+    {
+      title: 'Non Academic',
+      description: `Create course that help develop a learner's professional skills, for example; for classroom management, pedagogy, ICT, Leadership, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
+    }
+    ];
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {} cardData
+   * @description - 1. It selects a card from the framework selection popup
+   *                shown while creating any resource (only course as of now)
+   *                2. It also logs interact telemetry on card click.
+   */
+  selectFramework(cardData) {
+    this.enableCreateButton = true;
+    this.selectedCard = cardData;
+    this.framework = _.get(cardData, 'framework');
+    const telemetryInteractData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: _.get(cardData, 'title'),
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      }
+    };
+    this.telemetryService.interact(telemetryInteractData);
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {string} contentId
+   * @description - it triggers an interact event when Start creating button is clicked.
+   */
+  logTelemetry(contentId) {
+    const telemetryData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + this.contentType,
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: contentId,
+        type: this.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }

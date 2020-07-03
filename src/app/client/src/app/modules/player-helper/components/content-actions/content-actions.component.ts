@@ -1,10 +1,11 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-content-actions',
@@ -36,10 +37,20 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public resourceService: ResourceService,
     public toasterService: ToasterService,
     public contentUtilsServiceService: ContentUtilsServiceService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    private navigationHelperService: NavigationHelperService,
+    private deviceDetectorService: DeviceDetectorService
   ) { }
 
   ngOnInit() {
+    this.activatedRoute.params.subscribe((params) => {
+      this.collectionId = params.collectionId;
+    });
+    this.actionButtons = _.cloneDeep(actionButtons);
+    _.find(this.actionButtons, (button) => {
+      button.disabled = (button.label === 'Fullscreen') ? (this.deviceDetectorService.isMobile() ||
+        this.deviceDetectorService.isTablet()) : button.disabled;
+    });
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
@@ -61,12 +72,18 @@ export class ContentActionsComponent implements OnInit, OnChanges {
             type: _.get(content, 'contentType'),
           };
           this.setTelemetryShareData(param);
-          this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
           this.logTelemetry('share-content', content);
           break;
         case 'PRINT':
           this.printPdf(content);
           this.logTelemetry('print-content', content);
+          break;
+        case 'FULLSCREEN':
+          this.navigationHelperService.emitFullScreenEvent(true);
+          this.logTelemetry('fullscreen-content', content);
           break;
       }
     }

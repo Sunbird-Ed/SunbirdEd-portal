@@ -1,5 +1,5 @@
 
-   
+
 <div [appTelemetryImpression]="telemetryImpression">
   <div class="ui container py-16" *ngIf="showLoader">
     <app-loader></app-loader>
@@ -16,11 +16,11 @@
             <div class="sb-field field-focus mb-8">
               <input [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}" class="sb-form-control" formControlName="{{field.code}}" type="text" name="{{field.code}}"
                 placeholder="{{field.description}}">
-                <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)" class="font-weight-normal">{{field.name}}<span>*</span></label>
+                <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)" class="font-weight-normal">{{field.name}}<span class="sb-color-warning">*</span></label>
                 <label *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors" class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>            
             </div>
           </div>
-          <p class="fsmall my-8 text-left lineHeight-normal">{{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
+          <p class="fsmall my-8 text-left line-height-normal">{{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
         </div>
       </div>
     </form>
@@ -36,6 +36,3 @@
     </div>
 </div>
 
-<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
-      *ngIf="showTncPopup">
-    </app-tnc-popup>

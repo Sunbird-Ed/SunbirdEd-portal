@@ -41,6 +41,6 @@ export class CsLibInitializerService {
   }
   initializeCs() {
     this.userService.userData$.pipe(first())
-    .subscribe(this._initializeCs);
+    .subscribe(() => this._initializeCs());
   }
 }

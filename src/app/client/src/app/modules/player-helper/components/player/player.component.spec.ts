@@ -4,7 +4,7 @@ import { PlayerComponent } from './player.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UserService } from '../../../core/services';
 
@@ -56,9 +56,14 @@ describe('PlayerComponent', () => {
     fixture = TestBed.createComponent(PlayerComponent);
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
-    component.contentIframe = { nativeElement: { contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } } } };
     userService = TestBed.get(UserService);
     userService._authenticated = false;
+    component.contentIframe = {
+      nativeElement: {
+        contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
+        remove: jasmine.createSpy()
+      }
+    };
   });
 
   it('should emit "START"', fakeAsync(() => {
@@ -92,17 +97,17 @@ describe('PlayerComponent', () => {
     expect(contentProgressEvent).toBeDefined();
     expect(component.contentRatingModal).toBeTruthy();
   });
-  it('should call ngOnChange ',  () => {
+  it('should call ngOnChange ', () => {
     component.playerConfig = playerConfig;
     component.ngOnChanges({});
     expect(component.contentRatingModal).toBeFalsy();
-   });
+  });
 
-   describe('should rotate player', () => {
+  describe('should rotate player', () => {
     let mockDomElement;
     beforeEach(() => {
-        mockDomElement = document.createElement('div');
-        mockDomElement.setAttribute('id', 'playerFullscreen');
+      mockDomElement = document.createElement('div');
+      mockDomElement.setAttribute('id', 'playerFullscreen');
     });
 
     it('should rotate player for a default chrome browser', fakeAsync(() => {
@@ -115,7 +120,7 @@ describe('PlayerComponent', () => {
 
     it('should rotate player for mozilla browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
-      mockDomElement.mozRequestFullScreen = () => {};
+      mockDomElement.mozRequestFullScreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -126,7 +131,7 @@ describe('PlayerComponent', () => {
     it('should rotate player for webkit browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
-      mockDomElement.webkitRequestFullscreen = () => {};
+      mockDomElement.webkitRequestFullscreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -138,7 +143,7 @@ describe('PlayerComponent', () => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
       mockDomElement.webkitRequestFullscreen = undefined;
-      mockDomElement.msRequestFullscreen = () => {};
+      mockDomElement.msRequestFullscreen = () => { };
       spyOn(document, 'querySelector').and.returnValue(mockDomElement);
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
@@ -156,7 +161,7 @@ describe('PlayerComponent', () => {
 
     it('should close player fullscreen for mozilla browser', () => {
       document['exitFullscreen'] = undefined;
-      document['mozCancelFullScreen'] = () => {};
+      document['mozCancelFullScreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -165,7 +170,7 @@ describe('PlayerComponent', () => {
     it('should close player fullscreen for webkit browser ', () => {
       document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
-      document['webkitExitFullscreen'] = () => {};
+      document['webkitExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -175,7 +180,7 @@ describe('PlayerComponent', () => {
       document['exitFullscreen'] = undefined;
       document['mozCancelFullScreen'] = undefined;
       document['webkitExitFullscreen'] = undefined;
-      document['msExitFullscreen'] = () => {};
+      document['msExitFullscreen'] = () => { };
       component.isSingleContent = true;
       component.closeFullscreen();
       expect(component.showPlayIcon).toBe(true);
@@ -195,6 +200,45 @@ describe('PlayerComponent', () => {
     component.closeFullscreen();
     expect(component.showPlayIcon).toBe(true);
   });
+
+  it('should remove Iframe element on destroy', () => {
+    component.contentIframe = {
+      nativeElement: {
+        remove: jasmine.createSpy()
+      }
+    };
+    component.ngOnDestroy();
+    expect(component.contentIframe.nativeElement.remove).toHaveBeenCalled();
+  });
+
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    expect(component.isFullScreenView).toBeFalsy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    component.ngOnInit();
+    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(component.isFullScreenView).toBeTruthy();
+    });
+  });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    expect(component.isFullScreenView).toBeTruthy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    component.ngOnInit();
+    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeFalsy();
+      expect(component.isFullScreenView).toBeFalsy();
+    });
+  });
+
+  it('should call emitFullScreenEvent', () => {
+    spyOn(component.navigationHelperService, 'emitFullScreenEvent');
+    component.closeContentFullScreen();
+    expect(component.navigationHelperService.emitFullScreenEvent).toHaveBeenCalledWith(false);
+  });
+
 
 });
 

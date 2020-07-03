@@ -1,29 +1,46 @@
-<!--  add back button, group name, edit , show past members and delete -->
+<app-back-button></app-back-button>
 
-<div class="sb-bg-color-white">
-    <div class="ui container py-8">
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i> Back</button>
-    </div>
-  </div>
-  
-  <div class="content-header">
-    <div class="ui container py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-        <div class="flex-basis-1 mr-32">
-          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
-            <div>Group Name 123</div>
-          </div>
+<div class="content-header" *ngIf="groupData">
+  <div class="ui container py-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="flex-basis-1 mr-32">
+        <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
+            <div>{{groupData.name}}</div>
         </div>
-        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-          <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8">
-            <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> Delete</button>
-          <button type="button" class="sb-btn sb-btn-outline-primary sb-left-icon-btn sb-btn-normal mr-8 flex-ai-jc-center">
-          <img src="./assets/images/icon_members.svg" class="mr-4" width="16" /> Show Past members</button>
-          <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" /> Edit</button>
+        <div class="d-flex flex-ai-center content-header__info">
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': name}}</div>
+        </div>
+      </div>
+      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button">
+          <img src="./assets/images/info-icon-blue.svg" width="20">
+        </button>
+        <div class="kabab-menu" id="group-actions"  (click)="dropdownMenu()"></div>
+        <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
+          <div class="list">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="editGroup()">{{resourceService?.frmelmnts?.lbl?.editGroup}}</button>
+          </div>
+          <div class="list">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0" (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="toggleModal(false)" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
+  </div>
+  <div class="sb-modal-content">
+    <p > {{resourceService?.messages?.imsg?.m0082}}
+      {{groupName}} ?</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
+  </div>
+
+</sui-modal>

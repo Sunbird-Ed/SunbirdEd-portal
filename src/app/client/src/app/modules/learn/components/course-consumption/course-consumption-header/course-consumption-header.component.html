@@ -83,5 +83,5 @@
   </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-  (close)="sharelinkModal = false">
+  (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>

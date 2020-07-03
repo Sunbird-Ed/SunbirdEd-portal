@@ -1,45 +1,57 @@
-<!-- add add-member screen -->
+<app-back-button></app-back-button>
 
-<div>
-  <!-- Add member with profile images content -->
-  <!-- <app-create-group></app-create-group> -->
-</div>
 
-<!-- Add member with verify button content -->
-<div>
-  <div class="title my-16 font-weight-bold">
-    Add Member
-  </div>
-  <div class="sb-field">
-    <label for="id">User ID</label>
-    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-    <small class="message sb-color-error font-weight-bold">Invalid user ID</small>
-  </div>
-  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-    Verify
-  </button>
-</div>
+<div class="ui container">
+  <div class="sb-g mt-24">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+      <div class="sb-bg-color-white p-24">
+        <div class="title mb-16 text-left font-weight-bold">
+          {{resourceService?.frmelmnts?.lbl?.addNewMember}}
+        </div>
+        <div class="sb-field instance-id-verify">
+          <div class="d-flex flex-jc-space-between flex-ai-center">
+            <div class="w-100">
+              <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span><span class="text-right font-weight-normal ml-16">{{resourceService?.frmelmnts?.lbl?.whatInstanceId  | interpolate:'{instance}': instance}}
+                  <img class="cursor-pointer ml-4" alt="info icon" (click)="showModal=true"
+                    src="./assets/images/info-icon-blue.svg" width="18">
+                </span>
+              </label>
+              <div class="d-flex flex-jc-space-between flex-dc">
+                <div class="w-100 relative">
+                  <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
+                  <i class="icon close icon-input-close"></i>
+                </div>
+                <small class="message sb-color-error font-weight-bold mt-8">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
+              </div>
+            </div>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled" disabled>{{resourceService?.frmelmnts?.btn?.verify}}</button>
+          </div>
+        </div>
 
-<!-- Add to group button content -->
-<div>
-  <div class="title my-16 font-weight-bold">
-    Add new Member
-  </div>
-  <div class="sb-field">
-    <label for="id">User ID</label>
-    <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-    <small class="message sb-color-error font-weight-bold hide">Invalid user ID</small>
-  </div>
-  <div class="d-flex flex-jc-center flex-ai-center add-member-content py-24">
-    <div class="add-member-text text-center">
-      <div class="oval">A</div>
-      <div class="fs-1 mt-4 font-weight-bold">Gupta</div>
+        <!-- Add to group button content -->
+        <div class="text-left fnormal my-4">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
+        <div class="flex-ai-jc-center add-member-content p-24">
+          <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
+        </div>
+        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-24">
+          <div class="add-member-text flex-basis-1">
+              <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config"
+                [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
+              </sb-member-card>
+          </div>
+          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal">
+            <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+          </button>
+        </div>
+      </div>
     </div>
 
+
+
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+      <app-group-members></app-group-members>
+    </div>
   </div>
-  <!-- <div class="fs-1 mt-4">Do you want to add <span class="font-weight-bold">Arvind Gupta</span> as a member?</div> -->
-  <div class="fs-1 mt-4">See that the user ID matches the user name before you proceed</div>
-  <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-md mt-16 w-100">
-    <img src="./assets/images/ic_person_add.svg" width="24px" height="24px" class="mr-4"> Add to group
-  </button>
 </div>
+
+<app-ftu-popup *ngIf="showModal" (close)="closeModal()"></app-ftu-popup>

@@ -27,10 +27,15 @@ if(envHelper.KEYCLOAK_ANDROID_CLIENT.clientId){
     client_id: envHelper.KEYCLOAK_ANDROID_CLIENT.clientId
   }
 }
-
+const setConnectionTimeout = (time) => {
+  return (req, res, next) => {
+    req.connection.setTimeout(time);
+    next();
+  };
+}
 module.exports = (app) => {
 
-  app.post('/auth/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
+  app.post('/auth/v1/refresh/token', setConnectionTimeout(60000), bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
       logInfo(req, {}, '>>>> /auth/v1/refresh/token called');
       try {
@@ -51,6 +56,8 @@ module.exports = (app) => {
           throw { error: 'INVALID_CLIENT', message: "client not supported", statusCode: 400 }
         }
         let options = {
+          forever: true,
+          timeout: 60000,
           method: 'POST',
           url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
           form: {
@@ -74,7 +81,7 @@ module.exports = (app) => {
           'result': typeof tokenResponse === 'string' ? JSON.parse(tokenResponse) : tokenResponse
         })
       } catch(error) {
-        logErr(req, error, "Refresh Token failed");
+        logError(req, error, "Refresh Token failed");
         res.status(error.statusCode || 500).json({
           'id': 'api.refresh.token',
           'ver': '1.0',
@@ -105,6 +112,8 @@ const verifyAuthToken = async (req) => {
   logDebug(req, {}, 'verifyAuthToken() is called')
   let options = {
     method: 'GET',
+    forever: true,
+    timeout: 60000,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {

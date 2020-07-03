@@ -1,0 +1,71 @@
+@import 'variables';
+@import "mixins/mixins";
+// In workspace, course card modal 
+.sb-modal.sb-course-modal .sb-modal-content {
+  .sbgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
+    grid-gap: 1.5rem;
+    grid-row-gap: 1.5rem;
+    .sb-education-card {
+      padding: calculateRem(16px);
+      border: calculateRem(1px) solid var(--gray-100);
+      border-radius: calculateRem(4px);
+      position: relative;
+      &:hover {
+        cursor: pointer;
+        border: calculateRem(1px) solid var(--gray-200);
+        .checkbox-img {
+          position: absolute;
+          top: calculateRem(8px);
+          right: calculateRem(8px);
+          display: inline;
+          width: calculateRem(20px);
+          height: calculateRem(20px);
+          background: var(--gray-200);
+          -webkit-mask-image: url(assets/images/checkbox-icon.svg);
+          mask-image: url(assets/images/checkbox-icon.svg);
+          -webkit-mask-size: contain;
+          -webkit-mask-position: 50% 50%;
+          -webkit-mask-repeat: no-repeat;
+          mask-size: contain;
+          mask-position: 50% 50%;
+          mask-repeat: no-repeat;
+        }
+      }
+      &.active {
+        background: var(--rc-bfe1cf);
+        border: calculateRem(1px) solid var(--secondary-color);
+        cursor: pointer;
+        .checkbox-img {
+          position: absolute;
+          top: calculateRem(8px);
+          right: calculateRem(8px);
+          display: inline;
+          width: calculateRem(20px);
+          height: calculateRem(20px);
+          background-color: var(--rc-009D53);
+          -webkit-mask-image: url(assets/images/checkbox-icon.svg);
+          mask-image: url(assets/images/checkbox-icon.svg);
+          -webkit-mask-size: contain;
+          -webkit-mask-position: 50% 50%;
+          -webkit-mask-repeat: no-repeat;
+          mask-size: contain;
+          mask-position: 50% 50%;
+          mask-repeat: no-repeat;
+        }
+      }
+      .checkbox-img {
+        display: none;
+      }
+      &__title {
+        color: var(--black);
+        font-weight: bold;
+      }
+      &__text {
+        font-size: calculateRem(12px);
+        color: var(--gray-400);
+      }
+    }
+  }
+}

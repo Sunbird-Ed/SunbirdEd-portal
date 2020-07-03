@@ -37,7 +37,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public sharelinkModal: boolean;
   public mimeType: string;
   public queryParams: any;
-  public collectionData: object;
+  public collectionData: any;
 
   public showPlayer: Boolean = false;
 
@@ -364,18 +364,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
           this.dialCode = queryParams.dialCode;
-          if (this.contentId) {
-            const content = this.findContentById(data, this.contentId);
-            this.playerContent = _.get(content, 'model');
-            if (content) {
-              this.objectRollUp = this.contentUtilsService.getContentRollup(content);
-              this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
-            } else {
-              // show toaster error
-            }
-          } else {
-            this.closeContentPlayer();
-          }
         });
         this.parseChildContent(this.collectionTreeNodes);
       }, (error) => {
@@ -401,6 +389,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   closeCollectionPlayer() {
     if (this.isMobile) {
       this.isMobile = false;
+      this.activeContent = null;
     } else {
       if (this.dialCode) {
         sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
@@ -431,6 +420,26 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     if ( deviceInfo.device === 'android' || deviceInfo.os === 'android') {
       this.showFooter = true;
+    }
+  }
+
+  callinitPlayer (event) {
+    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
+      this.isContentPresent = true;
+      if (this.contentId) {
+        const data = this.setActiveContent(this.contentId);
+        if (data) {
+          event.data = data;
+          const navigationExtras: NavigationExtras = {
+            relativeTo: this.route,
+            queryParams: { contentType: this.contentType }
+          };
+          this.router.navigate([], navigationExtras);
+        }
+      }
+      this.activeContent = event.data;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
+      this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
   }
 
@@ -485,13 +494,48 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
     }
   }
-  callinitPlayer (event) {
-    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
-      this.isContentPresent = true;
-      this.activeContent = event.data;
-      this.objectRollUp = this.getContentRollUp(event.rollup);
-      this.initPlayer(_.get(this.activeContent, 'identifier'));
+
+  /**
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the content object
+  * @since release-3.1.0
+  */
+  setActiveContent(id: string) {
+    if (this.collectionData && this.collectionData.children) {
+      const flattenDeepContents = this.flattenDeep(this.collectionData.children);
+      return this.findContent(flattenDeepContents, id);
     }
+  }
+
+  /**
+  * @param  {array} contents - Accepts contents hierarchy
+  * @returns object
+  * @description Function to get all childrens
+  * @since release-3.1.0
+  */
+  private flattenDeep(contents) {
+    if (contents) {
+      return contents.reduce((acc, val) => {
+        if (val.children) {
+          acc.push(val);
+          return acc.concat(this.flattenDeep(val.children));
+        } else {
+          return acc.concat(val);
+        }
+      }, []);
+    }
+  }
+
+  /**
+  * @param  {object} contents - Accepts contents flatten object
+  * @param  {String} id - Accepts content id
+  * @returns object
+  * @description Function to get the contents object which matches the content id
+  * @since release-3.1.0
+  */
+  private findContent(contents, id: string) {
+    return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection' && content.identifier === id);
   }
   setTelemetryInteractData() {
     this.tocTelemetryInteractEdata = {

@@ -1,12 +1,12 @@
 <sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
   <div [appTelemetryImpression]="telemetryImpression" class="signup-background">
     <div class="fullpage-background-image">
-      <div *ngIf="!showOtpComp">
-      
         <div class="container-wrapper">
-          <div class="d-flex flex-jc-center mb-24">
-            <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
-          </div>
+         
+          <div *ngIf="!showOtpComp">
+            <div class="d-flex flex-jc-center mb-24">
+              <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
+            </div>
           <p class="text-center mb-24">{{resourceService?.frmelmnts?.lbl?.mobileEmailInfoText |  interpolate:'{instance}': resourceService.instance}}</p>
           <form class="sb-form borderd" #contactDetailsForm="ngForm">
             <div class="inline fields d-flex flex-w-wrap mb-8" id="Mandatory">
@@ -50,12 +50,12 @@
             </div>
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
-                      class="sb-btn sb-btn-normal sb-btn-secondary mt-24 w-100" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
+                      class="sb-btn sb-btn-normal sb-btn-primary mt-24 w-100" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
             </div>
           </form>
         </div>
-      </div>
-      <div *ngIf="showOtpComp">
+
+   <div *ngIf="showOtpComp">
         <app-otp-popup [otpData]="otpData"
                        [redirectToLogin]="true" (verificationSuccess)="handleOtpValidationSuccess($event)"
                        (redirectToParent)="handleOtpValidationFailed($event)">
@@ -68,6 +68,8 @@
                                     [tncVersionAccepted]="tncLatestVersion">
         </app-sso-merge-confirmation>
       </div>
+      </div>
+   
     </div>
   </div>
   <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp *ngIf="showTncPopup">

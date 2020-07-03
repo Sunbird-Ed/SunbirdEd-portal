@@ -47,6 +47,7 @@ const app = express()
 
 app.use(cookieParser())
 app.use(helmet())
+<<<<<<< HEAD
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
   resave: false,
@@ -54,6 +55,20 @@ app.use(session({
   store: memoryStore
 }))
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
+=======
+
+app.all([
+  '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
+  '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
+  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', 
+],
+  session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    saveUninitialized: false,
+    store: memoryStore
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
+>>>>>>> upstream/release-3.1.0
 
 app.all('/logoff', endSession, (req, res) => {
   logDebug(req, {}, '/logoff called');
@@ -68,6 +83,13 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() });
   res.redirect(logoutUrl);
 })
+
+app.get('/endSession', endSession, (req, res) => {
+  delete req.session.userId;
+  res.cookie('connect.sid', '', { expires: new Date() });
+  res.status(200)
+  res.end()
+});
 
 // device routes
 require('./routes/deviceRoutes.js')(app);

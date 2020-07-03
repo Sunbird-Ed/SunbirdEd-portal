@@ -39,9 +39,9 @@ module.exports = (app) => {
         }))
 
     app.all('/content/*',
-        isAPIWhitelisted.isAllowed(),
-        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
-        proxyUtils.verifyToken(),
+    healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
+    proxyUtils.verifyToken(),
+    isAPIWhitelisted.isAllowed(),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,
