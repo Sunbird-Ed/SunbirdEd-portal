@@ -33,6 +33,7 @@ export class AddMemberComponent implements OnInit {
   constructor( private activatedRoute: ActivatedRoute, private groupService: GroupsService, private toasterService: ToasterService) {}
 
   ngOnInit() {
+    this.showMemberPopup = !localStorage.getItem('groups_members');
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
   }
 
@@ -62,5 +63,13 @@ export class AddMemberComponent implements OnInit {
       });
     }
 
+  }
+
+  isMemberPopup(visibility: boolean = false) {
+    this.showMemberPopup = visibility;
+  }
+  closeModal() {
+    this.isMemberPopup(false);
+    localStorage.setItem('groups_members', 'members');
   }
 }
