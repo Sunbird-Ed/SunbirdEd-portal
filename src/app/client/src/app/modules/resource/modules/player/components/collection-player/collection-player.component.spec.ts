@@ -181,4 +181,23 @@ describe('CollectionPlayerComponent', () => {
     component.selectAllItem();
     expect(component.selectAll).toBe(true);
   });
+
+  it('should set the flag to show no content message', () => {
+    const event = {message: 'No Content Available'};
+    component.showNoContent(event);
+    expect(component.isContentPresent).toBe(false);
+  });
+
+  it('should set activeFilters value', () => {
+    const event = { data: { value: [ 'video/mp4', 'video/x-youtube', 'video/webm' ]}};
+    component.selectedFilter(event);
+    expect(component.activeMimeTypeFilter).toEqual([ 'video/mp4', 'video/x-youtube', 'video/webm' ]);
+  });
+
+  it('should close player and redirect to resource page', () => {
+    const navigateHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigateHelperService, 'navigateToPreviousUrl').and.stub();
+    component.closeCollectionPlayer();
+    expect(navigateHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/resources');
+  });
 });
