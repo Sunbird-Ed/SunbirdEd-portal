@@ -1,14 +1,18 @@
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
-  <div class="sb-multi-rows">
+  <div class="sb-multi-rows py-16">
     <div class="d-flex flex-ai-center ui container">
-      <h4 class="sb-manage-section-title py-16 m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
+      <h4 class="sb-manage-section-title m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
       <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
-              [ngClass]="{'sb-btn-disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
+              [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
               type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
               (click)="downloadFile(userDeclaredDetailsUrl)">
         {{resourceService.frmelmnts?.btn?.download}}
       </button>
-      <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span>
+      <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
+      <div class="d-flex" *ngIf="!userDeclaredDetailsUrl">
+        <img src="./assets/images/icon-info.svg" height="16px" class="m-8">
+        <label class="no-data-label font-weight-normal">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+      </div>
     </div>
   </div>
 
