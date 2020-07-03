@@ -1,3 +1,4 @@
+import { IGroupUpdate } from './../../interfaces/group';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -17,6 +18,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { GroupsService } from '../../services';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
+import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 
 describe('CreateEditGroupComponent', () => {
   let component: CreateEditGroupComponent;
@@ -25,8 +27,8 @@ describe('CreateEditGroupComponent', () => {
   const formBuilder: FormBuilder = new FormBuilder();
   const resourceBundle = {
     'messages': {
-      'emsg': {'m0005': '', m001: ''},
-      smsg: {m001: ''}
+      'emsg': {m005: '', m001: '', },
+      smsg: {m001: '', m003: ''}
     },
     frmelmnts: {
       lbl: {
@@ -65,6 +67,11 @@ describe('CreateEditGroupComponent', () => {
     fixture = TestBed.createComponent(CreateEditGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.groupForm = formBuilder.group({
+      name: ['ABCD'],
+      description: [''],
+      groupToc: [true]
+    });
   });
 
   it('should create', () => {
@@ -87,12 +94,10 @@ describe('CreateEditGroupComponent', () => {
       description: [''],
       groupToc: [true]
     });
-    spyOn(component.submitForm, 'emit');
     spyOn(component.groupService, 'createGroup').and.returnValue(of ({identifier: '1234', name: 'ABCD'}));
     spyOn(component['toasterService'], 'success');
     component.onSubmitForm();
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {
-      expect(component.submitForm.emit).toHaveBeenCalledWith(group);
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m001);
     });
   });
@@ -103,7 +108,6 @@ describe('CreateEditGroupComponent', () => {
       description: [''],
       groupToc: [true]
     });
-    spyOn(component.submitForm, 'emit');
     spyOn(component.groupService, 'createGroup').and.returnValue(throwError ({err: ''}));
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'closeModal');
@@ -112,5 +116,43 @@ describe('CreateEditGroupComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m001);
       expect(component.closeModal).toHaveBeenCalled();
     });
+  });
+
+  it('should call closeModal on group updation', () => {
+    expect(component.groupForm.value.name).toEqual('ABCD');
+    component.groupForm = formBuilder.group({
+      name: ['ACD'],
+      description: [''],
+      groupToc: [true]
+    });
+    spyOn(component.groupService, 'updateGroup').and.returnValue(of ({}));
+    spyOn(component['toasterService'], 'success');
+    component.updateGroup();
+    component.groupService.updateGroup('123', {name: 'ACD', status: GroupEntityStatus.ACTIVE}).subscribe(group => {
+      expect(component.groupForm.value.name).toEqual('ACD');
+      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m001);
+    });
+  });
+
+  it('should throw error on group updation', () => {
+    expect(component.groupForm.value.name).toEqual('ABCD');
+    component.groupForm = formBuilder.group({
+      name: ['ACD'],
+      description: [''],
+      groupToc: [true]
+    });
+    spyOn(component.groupService, 'updateGroup').and.returnValue(throwError ({}));
+    spyOn(component['toasterService'], 'error');
+    component.updateGroup();
+    component.groupService.updateGroup('123', {name: 'ACD', status: GroupEntityStatus.ACTIVE}).subscribe(group => {}, err => {
+      expect(component.groupForm.value.name).not.toEqual('ACD');
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m005);
+    });
+  });
+
+  it('should reset form', () => {
+    spyOn(component.groupForm, 'reset');
+    component.reset();
+    expect(component.groupForm.reset).toHaveBeenCalled();
   });
 });
