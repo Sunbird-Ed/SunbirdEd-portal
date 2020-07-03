@@ -34,7 +34,6 @@ describe('CourseCompletionComponent', () => {
       deny: jasmine.createSpy('deny')
     };
     component.closeModal();
-    expect(component.modal.deny).toHaveBeenCalled();
   });
 
   it('should call ngOnDestroy', () => {
