@@ -45,6 +45,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   formData;
   showLoader = true;
   submitInteractEdata: IInteractEventEdata;
+  submitDetailsInteractEdata: IInteractEventEdata;
   cancelInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   pageId = 'profile-read';
@@ -143,6 +144,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.pageId
     };
+    this.submitDetailsInteractEdata = {
+      id: `teacher-details-submit-success`,
+      type: 'click',
+      pageid: this.pageId
+    };
   }
 
   setFormDetails() {
@@ -206,7 +212,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const fieldType = ['email', 'phone'];
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
-      this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
+      if (this.formAction === 'update') {
+        this.prepopulatedValue[key] = this.getExternalId('declared-' + key)
+      } else {
+        this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
+      }
       if (this.prepopulatedValue[key]) {
         this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
         this.setValidators(key);
@@ -236,7 +246,23 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  generateTelemetry(fieldType) {
+    const interactData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: `validate-${fieldType}-${this.formAction}-teacher-details`,
+        type: 'click',
+        pageid: this.pageId
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
   generateOTP(fieldType) {
+    this.generateTelemetry(fieldType);
     const request = {
       request: {
         key: fieldType === 'phone' ?
