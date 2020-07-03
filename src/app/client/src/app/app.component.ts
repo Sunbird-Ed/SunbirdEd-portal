@@ -16,7 +16,6 @@ import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zi
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import {Stage} from "@sunbird/shared-feature";
 /**
  * main app component
  */
