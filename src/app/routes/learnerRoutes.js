@@ -127,7 +127,7 @@ module.exports = function (app) {
     checkForValidUser()
   )
 
-  app.all('/learner/*',
+  app.all('/learner/*', bodyParser.json(),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     // To be removed from release-3.2.0
     // whitelistUrls.isWhitelistUrl(),
