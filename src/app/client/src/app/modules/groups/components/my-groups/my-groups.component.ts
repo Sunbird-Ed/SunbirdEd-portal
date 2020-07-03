@@ -1,3 +1,5 @@
+import { UserService } from '@sunbird/core';
+import { IGroupSearchRequest, IGroupCard } from './../../interfaces';
 import { GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
@@ -12,12 +14,10 @@ import { existingMembersList } from '../add-member/add-member.component.spec.dat
 })
 export class MyGroupsComponent implements OnInit {
   showGroupCreateForm = false;
-  public groupList = [];
+  public groupList: IGroupCard[] = [];
   public showModal = false;
-  currentUser = existingMembersList[0];
-  showForm = false;
-
-  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService) {
+  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService,
+    private userService: UserService) {
   }
 
   ngOnInit() {
@@ -25,11 +25,18 @@ export class MyGroupsComponent implements OnInit {
     this.getMyGroupList();
   }
 
-  async getMyGroupList() {
-    const request = {filters: {memberId: this.currentUser.identifier}, sort_by: 'desc', limit: 30, offset: 5 };
-    this.groupService.getUserGroups(request).subscribe(data => {
-      this.groupService.groupData = data;
-      this.groupList = data;
+  getMyGroupList() {
+    const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
+    this.groupService.searchUserGroups(request).subscribe(groups => {
+      _.forEach(groups, (group) => {
+        if (group) {
+          group.isAdmin = (group.createdBy === this.userService.userid);
+          group.initial = group.name[0];
+          this.groupList.push(group);
+        }
+      });
+    }, (err) => {
+      this.groupList = [];
     });
   }
 

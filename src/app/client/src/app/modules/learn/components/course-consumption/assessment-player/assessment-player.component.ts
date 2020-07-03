@@ -12,6 +12,7 @@ import { ConfigService, ResourceService, ToasterService, NavigationHelperService
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
 

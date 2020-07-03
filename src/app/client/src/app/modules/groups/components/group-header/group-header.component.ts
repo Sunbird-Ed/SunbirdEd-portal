@@ -1,5 +1,6 @@
+import { UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
-import { Component, ViewChild, Input, EventEmitter, Output, Renderer2 } from '@angular/core';
+import { Component, ViewChild, Input, EventEmitter, Output, Renderer2, OnInit } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from './../routerLinks';
 import { GroupsService } from '../../services';
@@ -9,7 +10,7 @@ import * as _ from 'lodash-es';
   templateUrl: './group-header.component.html',
   styleUrls: ['./group-header.component.scss']
 })
-export class GroupHeaderComponent {
+export class GroupHeaderComponent implements OnInit {
   showDeleteModal;
   showPastMemberModal;
   dropdownContent = true;
@@ -19,7 +20,8 @@ export class GroupHeaderComponent {
   @Input() groupData: {};
   showModal = false;
   showEditModal: boolean;
-  name = 'you';
+  creator: string;
+  showMemberPopup = false;
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService) {
     this.renderer.listen('window', 'click', (e: Event) => {
@@ -28,6 +30,10 @@ export class GroupHeaderComponent {
         this.showModal = false;
       }
      });
+  }
+
+  ngOnInit () {
+    this.creator = this.groupData['isAdmin'] ? 'You' : _.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}).name;
   }
 
   toggleModal(visibility = false) {
@@ -55,5 +61,9 @@ export class GroupHeaderComponent {
   }
   dropdownMenu() {
     this.dropdownContent = !this.dropdownContent;
+  }
+
+  isMemberPopup(visibility: boolean = false) {
+    this.showMemberPopup = visibility;
   }
 }

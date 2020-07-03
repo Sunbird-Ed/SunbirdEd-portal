@@ -3,6 +3,7 @@ import { CsLibInitializerService } from './../../../../service/CsLibInitializer/
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { CsModule } from '@project-sunbird/client-services';
+import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
 
 
 
@@ -11,9 +12,7 @@ import { CsModule } from '@project-sunbird/client-services';
 })
 export class GroupsService {
   private groupCservice: any;
-  public membersData = new EventEmitter<IGroupMember[]>();
   private _groupData;
-  private _members;
   constructor(private csLibInitializerService: CsLibInitializerService) {
       if (!CsModule.instance.isInitialised) {
         this.csLibInitializerService.initializeCs();
@@ -21,43 +20,33 @@ export class GroupsService {
       this.groupCservice = CsModule.instance.groupService;
     }
 
-  createGroup(groupData) {
+  createGroup(groupData: IGroup) {
     return this.groupCservice.create(groupData);
   }
 
-  getUserGroups(filters) {
-    return this.groupCservice.search(filters);
+  updateGroup(groupId: string, updateRequest: IGroupUpdate) {
+    return this.groupCservice.updateById(groupId, updateRequest);
   }
 
-  getGroupById(groupId: string) {
-    return this.groupCservice.getById(groupId);
+  searchUserGroups(request: IGroupSearchRequest) {
+    return this.groupCservice.search(request);
+  }
+
+  getGroupById(groupId: string, includeMembers?: boolean) {
+    return this.groupCservice.getById(groupId, {includeMembers});
   }
 
   deleteGroupById (groupId: string) {
     return this.groupCservice.deleteById(groupId);
   }
 
-  addMemberById( groupId: string, members) {
-    return this.groupCservice.addMembers(groupId, {members: members});
-  }
+  // addMemberById(memberId: string, groupId: string) {
+  //   return this.groupCservice.addMemberById(memberId, groupId);
+  // }
 
-  updateGroup(groupId: string, groupData: {}) {
-    return this.groupCservice.updateById(groupId, groupData);
+  set groupData(list) {
+    this._groupData = list;
   }
-
-  emitMembersData(members: IGroupMember[]) {
-    this._members = members;
-    this.membersData.emit(members);
-  }
-
-  set groupData(groupData) {
-    this._groupData = groupData;
-  }
-
-  get groupMembers() {
-    return this._members;
-  }
-
   get groupData() {
     return this._groupData;
   }

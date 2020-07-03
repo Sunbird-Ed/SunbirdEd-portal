@@ -8,11 +8,11 @@
             <div>{{groupData.name}}</div>
         </div>
         <div class="d-flex flex-ai-center content-header__info">
-          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': name}}</div>
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': creator}}</div>
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button">
+        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="isMemberPopup(true)">
           <img src="./assets/images/info-icon-blue.svg" width="20">
         </button>
         <div class="kabab-menu" id="group-actions"  (click)="dropdownMenu()"></div>
@@ -42,5 +42,6 @@
     <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
     <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
-
 </sui-modal>
+
+<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="closeModal()"></app-ftu-popup>

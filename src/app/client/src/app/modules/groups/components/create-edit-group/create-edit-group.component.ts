@@ -1,12 +1,11 @@
-import { IGroupMember } from './../../interfaces/group';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
+import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
-import { existingMembersList } from '../add-member/add-member.component.spec.data';
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',
@@ -14,20 +13,13 @@ import { existingMembersList } from '../add-member/add-member.component.spec.dat
 })
 export class CreateEditGroupComponent implements OnInit, OnDestroy {
   @ViewChild('createGroupModal') createGroupModal;
-  @ViewChild('updateGroupModal') updateGroupModal;
-  @Output() closeEvent = new EventEmitter<any>();
-  @Output() submitForm = new EventEmitter<any>();
   groupForm: FormGroup;
   public formFieldOptions = [];
   public selectedOption: any = {};
   private unsubscribe: Subscription;
-  public editMode: boolean;
-  showCreateForm = false;
-  showUpdateForm = false;
-  groupId;
-  currentUser: IGroupMember = existingMembersList[0];
-
   groupDetails;
+  groupId: string;
+  url = document.location.origin;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService,
@@ -35,9 +27,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    this.showUpdateForm = !_.isEmpty(this.groupId);
-    this.showCreateForm = !this.showUpdateForm;
-    this.groupDetails = _.find(this.groupService.groupData, {id: this.groupId});
+    this.groupDetails = this.groupService.groupData;
     this.initializeForm();
   }
 
@@ -48,23 +38,22 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       ]],
       description: [_.get(this.groupDetails, 'description') || '', [
       ]],
-      groupToc: [_.isEmpty(this.groupDetails) ? false : true, [Validators.requiredTrue]]
+      groupToc: [!_.isEmpty(this.groupDetails), [Validators.requiredTrue]]
     });
   }
 
   isFieldValid(field: string) {
+    if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
   onSubmitForm() {
     if (this.groupForm.valid) {
-      const request = _.omit(this.groupForm.value, 'groupToc');
-      request.members = [
-        { memberId: this.currentUser.identifier, role: 'admin'}
-      ];
+      const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
       this.groupService.createGroup(request).subscribe(group => {
-        this.groupService.emitMembersData([this.currentUser]);
-        this.toasterService.success(this.resourceService.messages.smsg.m001);
+        if (group) {
+          this.toasterService.success(this.resourceService.messages.smsg.m001);
+        }
         this.closeModal();
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m001);
@@ -79,24 +68,29 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateForm() {
+  updateGroup() {
     if (this.groupForm.valid) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
+      updatedForm.status = _.get(this.groupDetails, 'status');
       this.groupService.updateGroup(this.groupId, updatedForm).subscribe(group => {
           this.toasterService.success(this.resourceService.messages.smsg.m003);
           this.closeModal();
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m001);
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
+          control.patchValue({name: '', description: ''});
           control.markAsTouched({ onlySelf: true });
         });
+        this.toasterService.error(this.resourceService.messages.emsg.m005);
         this.closeModal();
       });
     } else {
       this.closeModal();
     }
+  }
 
+  reset() {
+    this.groupForm.reset();
   }
 
   closeModal() {
