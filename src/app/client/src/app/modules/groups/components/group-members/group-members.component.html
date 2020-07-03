@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div *ngIf="config?.showAddMemberButton" (click)="addMember()">
+    <div *ngIf="config?.showAddMemberButton && !showSearchResults" (click)="addMember()">
       <div class="cursor-pointer mb-8 fnormal px-8">
         <img alt="admin" src="./assets/images/add-member-1.png" width="32">
         {{resourceService?.frmelmnts?.lbl?.addMember}}
@@ -37,24 +37,29 @@
           <div class="list mb-8" (click)="openModal('dismissAsAdmin')">
             <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
           </div>
-          <div class="list" (click)="openModal('removeFromGroup')" style="color: red">
+          <div class="list sb-color-error" (click)="openModal('removeFromGroup')">
             <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
           </div>
         </div>
       </div>
     </div>
-    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center my-24" *ngIf="!memberListToShow?.length">
+
+    <!--No Group member except admin-->
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center my-24"
+      *ngIf="!memberListToShow?.length && !showSearchResults">
       <img height="176" alt="" width="210" src="./assets/images/no-member.png">
     </div>
-    <div class="member-no-result pt-32 hide">
+
+    <!--No search results -->
+    <div class="member-no-result pt-32" *ngIf="showSearchResults && !memberListToShow?.length">
       <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-        <img alt="no member" height="165" width="206" src="./assets/images/mygroups.svg">
+        <img alt="no member" height="165" width="206" src="./assets/images/group-search-empty.svg">
         <div class="mt-16 no-result-text">
-          Sorry! there are no results to match your search. To continue your search
+          {{resourceService?.frmelmnts?.btn?.NoSerchGroupMemberResults}}
         </div>
         <div class="my-8 no-result-desc">
-          <div>*check your spelling</div>
-          <div>* type a similar but, different name</div>
+          <div>{{resourceService?.frmelmnts?.btn?.checkYourSpelling}}</div>
+          <div>{{resourceService?.frmelmnts?.btn?.similarButDiffName}}</div>
         </div>
       </div>
     </div>

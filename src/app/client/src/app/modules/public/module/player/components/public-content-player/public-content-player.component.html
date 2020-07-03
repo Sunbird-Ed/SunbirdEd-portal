@@ -11,8 +11,7 @@
       </button>
     </div>
   </div>
-
-  <div class="cc-player__content-header d-flex flex-ai-center relative position"
+  <div class="cc-player__content-header d-flex flex-ai-center relative position" [ngClass]="{'header-block': isFullScreenView}"
     *ngIf="contentData">
     <div class="ui container">
       <div class="header-info flex-basis-1">

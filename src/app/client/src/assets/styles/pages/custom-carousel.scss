@@ -1,10 +1,6 @@
 ::ng-deep {
   .modal-custom-carousel {
-
-    //   max-width:720px;
-    //   width:calc(100% - 32px);
     .slick-slide {
-    //   height: 600px;
       overflow: hidden;
       overflow-y: auto;
 
@@ -14,14 +10,14 @@
     }
 
     .slick-dots {
-        bottom: -32px;
+        bottom: calculateRem(-32px);
         li {
-            height: 8px;
-            width: 8px;
+            height: calculateRem(8px);
+            width: calculateRem(8px);
             button {
                 background: var(--gray-100) !important;
-                width: 8px;
-                height: 8px;
+                width: calculateRem(8px);
+                height: calculateRem(8px);
                 border-radius: 50%;
               }
         }
@@ -39,8 +35,8 @@
     .slick-prev,
     .slick-next {
       top: inherit;
-      bottom: -48px;
-      font-size: 14px;
+      bottom: calculateRem(-53px);
+      font-size: calculateRem(14px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -49,7 +45,7 @@
     }
 
     .slick-next {
-      right: 12px;
+      right: calculateRem(12px);
       display: flex;
       flex-direction: row-reverse;
 
@@ -67,34 +63,26 @@
     .slick-next:before {
       background: none;
       box-shadow: none;
-      font-size: 20px;
-      line-height: 24px;
-      height: 24px;
-      width: 24px;
+      font-size: calculateRem(20px);
+      line-height: calculateRem(24px);
+      height: calculateRem(24px);
+      width: calculateRem(24px);
       color: var(--primary-400);
     }
 
     .slick-prev:before {
-      margin-right: 8px;
-
-      html[dir='rtl'] & {
-        margin-left: 8px;
-        margin-right: inherit;
-      }
+    
     }
 
     .slick-next:before {
-      margin-left: 8px;
-
-      html[dir='rtl'] & {
-        margin-right: 8px;
-        margin-left: inherit;
-      }
+     
     }
+
 
   }
 
 }
+
 
 .item-help {
   h4 {
@@ -119,3 +107,6 @@
     line-height: calculateRem(24px);
   }
 }
+
+
+

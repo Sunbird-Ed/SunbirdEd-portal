@@ -1,4 +1,4 @@
-import { GROUP_DETAILS, MY_GROUPS, CREATE_EDIT_GROUP } from './../routerLinks';
+import { GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService } from '@sunbird/shared';
@@ -28,7 +28,7 @@ export class MyGroupsComponent implements OnInit {
   }
 
   public showCreateFormModal() {
-    this.router.navigate([`${MY_GROUPS}/${CREATE_EDIT_GROUP}`]);
+    this.router.navigate([`${MY_GROUPS}/${CREATE_GROUP}`]);
   }
 
   public navigateToDetailPage(event) {

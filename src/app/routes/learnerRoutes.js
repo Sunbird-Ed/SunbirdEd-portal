@@ -11,6 +11,8 @@ const logger = require('sb_logger_util_v2')
 const whitelistUrls = require('../helpers/whitellistUrls.js')
 const {decrypt} = require('../helpers/crypto');
 const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
+const googleService = require('../helpers/googleService')
 
 const _ = require('lodash');
 
@@ -43,6 +45,15 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     proxyManagedUserRequest()
   )
+
+  app.get('/learner/user/v1/exists/email/:emailId',
+    googleService.validateRecaptcha
+  );
+
+  app.get('/learner/user/v1/exists/phone/:phoneNumber',
+    googleService.validateRecaptcha
+  );
+
   // Generate telemetry fot proxy service
   app.all('/learner/*', telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy)
@@ -118,7 +129,9 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
-    whitelistUrls.isWhitelistUrl(),
+    // To be removed from release-3.2.0
+    // whitelistUrls.isWhitelistUrl(),
+    isAPIWhitelisted.isAllowed(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,

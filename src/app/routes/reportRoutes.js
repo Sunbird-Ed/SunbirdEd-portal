@@ -72,7 +72,7 @@ module.exports = function (app) {
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
-            'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail']),
+            'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail','declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
         reportHelper.azureBlobStream());
 }

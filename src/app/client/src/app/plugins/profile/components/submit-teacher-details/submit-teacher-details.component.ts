@@ -12,8 +12,8 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import * as _ from 'lodash-es';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
-import {UserService, FormService, SearchService, TncService} from '@sunbird/core';
-import { takeUntil } from 'rxjs/operators';
+import {UserService, FormService, SearchService, TncService, OtpService} from '@sunbird/core';
+import {takeUntil, distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
 
 @Component({
@@ -56,12 +56,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   showTncPopup = false;
   tncLatestVersion: any;
   termsAndConditionLink: any;
+  otpData;
+  isOtpVerificationRequired = false;
+  prepopulatedValue = {email: '', phone: ''};
+  validationType = {
+    phone: {
+      isVerified: false,
+      isVerificationRequired: false
+    },
+    email: {
+      isVerified: false,
+      isVerificationRequired: false
+    }
+  };
+
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
     public userService: UserService, public formService: FormService, public router: Router,
     public searchService: SearchService, private activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService,
+    public navigationhelperService: NavigationHelperService, public otpService: OtpService,
     public tncService: TncService, public utilService: UtilService) {
     this.sbFormBuilder = formBuilder;
   }
@@ -167,10 +181,120 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     if (this.teacherObj) { this.userDetailsForm.controls['teacherId'].setValue(this.teacherObj.id); }
     if (this.schoolObj) { this.userDetailsForm.controls['school'].setValue(this.schoolObj.id); }
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
+    this.setFormData();
     this.getState();
     this.showLoader = false;
     this.onStateChange();
     this.enableSubmitButton();
+  }
+
+  getExternalIdObject(key) {
+    return _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === key);
+  }
+
+  getExternalId(key) {
+    const data = this.getExternalIdObject(key);
+    return data && data.id;
+  }
+
+  setValidators(key) {
+    this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
+    this.userDetailsForm.controls[key + 'Verified'].setValue(true);
+  }
+
+  setFormData() {
+    const fieldType = ['email', 'phone'];
+    for (let index = 0; index < fieldType.length; index++) {
+      const key = fieldType[index];
+      this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
+      if (this.prepopulatedValue[key]) {
+        this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
+        this.setValidators(key);
+        this.validationType[key].isVerified = true;
+      }
+      const keyControl = this.userDetailsForm.controls[key];
+      const userFieldValue = this.prepopulatedValue[key];
+      keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
+        newValue = newValue.trim();
+        if (userFieldValue === newValue) {
+          this.validationType[key].isVerified = true;
+          this.validationType[key].isVerificationRequired = false;
+          this.setValidators(key);
+          return;
+        }
+        if (newValue && keyControl.status === 'VALID') {
+          this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
+          this.userDetailsForm.controls[key + 'Verified'].setValue('');
+          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerificationRequired = true;
+        } else {
+          this.validationType[key].isVerified = false;
+          this.validationType[key].isVerificationRequired = false;
+          this.userDetailsForm.removeControl(key + 'Verified');
+        }
+      });
+    }
+  }
+
+  generateOTP(fieldType) {
+    const request = {
+      request: {
+        key: fieldType === 'phone' ?
+          this.userDetailsForm.controls.phone.value.toString() : this.userDetailsForm.controls.email.value,
+        type: fieldType
+      }
+    };
+    this.otpService.generateOTP(request).subscribe((data: ServerResponse) => {
+        this.otpData = this.prepareOtpData(fieldType);
+        this.setOtpValidation(true);
+      },
+      (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      }
+    );
+  }
+
+  onVerificationSuccess(data) {
+    this.setOtpValidation(false);
+    const fieldType = this.getFieldType(data);
+    this.validationType[fieldType].isVerified = true;
+    this.userDetailsForm.controls[fieldType + 'Verified'].setValue(true);
+    this.validationType[fieldType].isVerificationRequired = false;
+  }
+
+  getFieldType(data) {
+    return _.get(data, 'phone') ? 'phone' : 'email';
+  }
+
+  onOtpPopupClose() {
+    this.setOtpValidation(false);
+  }
+
+  setOtpValidation(valueToSet) {
+    this.isOtpVerificationRequired = valueToSet;
+  }
+
+  onOtpVerificationError(data) {
+    this.setOtpValidation(false);
+  }
+
+  prepareOtpData(fieldType) {
+    const otpData: any = {};
+    switch (fieldType) {
+      case 'phone':
+        otpData.instructions = this.resourceService.frmelmnts.instn.t0083;
+        otpData.retryMessage = this.resourceService.frmelmnts.lbl.unableToUpdateMobile;
+        otpData.wrongOtpMessage = this.resourceService.frmelmnts.lbl.wrongPhoneOTP;
+        break;
+      case 'email':
+        otpData.instructions = this.resourceService.frmelmnts.instn.t0084;
+        otpData.retryMessage = this.resourceService.frmelmnts.lbl.unableToUpdateEmail;
+        otpData.wrongOtpMessage = this.resourceService.frmelmnts.lbl.wrongEmailOTP;
+        break;
+    }
+    otpData.type = fieldType;
+    otpData.value = this.userDetailsForm.controls[fieldType].value;
+    return otpData;
   }
 
   setValidations(data) {
@@ -189,6 +313,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         case 'pattern':
           returnValue.push(Validators.pattern(validationData.value));
           break;
+        case 'email':
+          returnValue.push(Validators.email);
+          break;
       }
     });
     return returnValue;
@@ -198,7 +325,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const requestData = { 'filters': { 'type': 'state' } };
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allStates = res.result.response;
-      const location = _.find(this.userProfile.userLocations, (locations) => {
+      const declaredState = this.getExternalIdObject('declared-state');
+      if (declaredState) {
+        declaredState.code = declaredState.id;
+      }
+      const location = declaredState || _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'state';
       });
       let locationExist: any;
@@ -250,7 +381,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.profileService.getUserLocation(requestData).subscribe(res => {
       this.allDistricts = res.result.response;
       this.showDistrictDivLoader = false;
-      const location = _.find(this.userProfile.userLocations, (locations) => {
+      const declaredDistrict = this.getExternalIdObject('declared-district');
+      if (declaredDistrict) {
+        declaredDistrict.code = declaredDistrict.id;
+      }
+      const location = declaredDistrict || _.find(this.userProfile.userLocations, (locations) => {
         return locations.type === 'district';
       });
       let locationExist: any;
@@ -292,20 +427,20 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.showSuccessModal = false;
     this.router.navigate(['/profile']);
   }
+
   isStateChanged() {
     let isStateChanged = false;
-    _.forEach(_.get(this.userProfile, 'userLocations'), (location) => {
-      if (location.type === 'state' && location.code !== _.get(this.userDetailsForm, 'value.state.code')) {
-        isStateChanged = true;
-      }
-    });
+    const stateData = this.getExternalIdObject('declared-state');
+    if (stateData && stateData.id !== _.get(this.userDetailsForm, 'value.state.code')) {
+      isStateChanged = true;
+    }
     return isStateChanged;
   }
 
   getOperation(fieldType, provider, inputFieldValue) {
     let operation;
     if (this.formAction === 'submit' || this.formAction === 'update' && this.isStateChanged()) {
-      operation = 'add'
+      operation = 'add';
     } else {
       const externalIdObj = this.findExternalIdObj(fieldType, provider);
       operation = externalIdObj ? inputFieldValue ? 'edit' : 'remove' : 'add';
@@ -315,10 +450,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   findExternalIdObj(fieldType, provider) {
     const externalIds = _.get(this.userProfile, 'externalIds');
-    const externalIdObj = _.find(externalIds, function (externalId) {
-      return (externalId.idType === fieldType && externalId.provider === provider)
+    const externalIdObj = _.find(externalIds, (externalId) => {
+      return (externalId.idType === fieldType && externalId.provider === provider);
     });
-    return externalIdObj && externalIdObj.id
+    return externalIdObj && externalIdObj.id;
   }
 
   onSubmitForm() {
@@ -327,9 +462,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       .subscribe(
         (orgData: any) => {
           this.enableSubmitBtn = false;
-          const locationCodes = [];
-          if (_.get(this.userDetailsForm, 'value.state.code')) { locationCodes.push(_.get(this.userDetailsForm, 'value.state.code')); }
-          if (_.get(this.userDetailsForm, 'value.district')) { locationCodes.push(_.get(this.userDetailsForm, 'value.district')); }
           const provider = _.get(orgData, 'result.response.content[0].channel');
           let externalIds = [];
           if (this.formAction === 'update' && this.isStateChanged() || provider !== _.get(this.userProfile, 'externalIds[0].provider')) {
@@ -339,7 +471,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
             });
             externalIds = extIds.concat(externalIds);
           }
-          const fields = new Map([['value.school', 'declared-school-name'], ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id']]);
+          const fields = new Map([['value.phone', 'declared-phone'], ['value.email', 'declared-email'], ['value.school', 'declared-school-name'],
+            ['value.udiseId', 'declared-school-udise-code'], ['value.teacherId', 'declared-ext-id'],
+            ['value.state.code', 'declared-state'], ['value.district', 'declared-district']]);
           fields.forEach((fieldKey, formKey) => {
             const id = _.get(this.userDetailsForm, formKey) || this.findExternalIdObj(fieldKey, provider);
             if (id) {
@@ -353,7 +487,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           });
           const data = {
             userId: this.userService.userid,
-            locationCodes,
             externalIds
           };
           this.updateProfile(data);
@@ -387,9 +520,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.telemetryService.audit({
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{id: 'teacher-self-declaration', type: 'FromPage',}]
+        cdata: [{id: 'teacher-self-declaration', type: 'FromPage'}]
       },
-      object: {id: 'data_sharing', type: 'TnC', ver: this.tncLatestVersion},
+      object: {id: 'data-sharing', type: 'TnC', ver: this.tncLatestVersion},
       edata: {state: 'Updated', props: [], prevstate: '', type: 'tnc-data-sharing'}
     });
   }

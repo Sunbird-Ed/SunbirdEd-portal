@@ -635,10 +635,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/telemetry-sdk@^0.0.25":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.25.tgz#78d0a2ea4507bca99311c790a79b3fdc26dfa851"
-  integrity sha512-dR9MgYqQeDV63UR4km09wGOxbwzvULyEcG1f3SeV4iESNsIhi/l2Hwya0TwLPa4sb/sTQkq8CGODDZam1WXspA==
+"@project-sunbird/telemetry-sdk@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
+  integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
   dependencies:
     grunt-karma "^0.12.2"
     karma "^3.0.0"
@@ -11077,10 +11077,10 @@ stylus@0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-sunbird-chatbot-client@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.1.tgz#94d4fb02f103fd4d4daf5e163565c322112c871b"
-  integrity sha512-n7or0FayZvKFFkk4Qk9yINuGRNWtW9Ij9xGaOmhtePDFX0rBZC0WPInqD3MyJpKjUvSxh+HmksWmnji/Y2/utg==
+sunbird-chatbot-client@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.2.tgz#b6a4babe28ac82519471d55978bfd2fe15317d5b"
+  integrity sha512-JiQuiPC3wO+SotrDPKZ1/Z/FMVNodJGBIaNdO0dJoej4um6xmhX4Cqv/LsRK0KPHGAOP8ZGoJhRm/VS4ryubNg==
   dependencies:
     tslib "^1.9.0"
 

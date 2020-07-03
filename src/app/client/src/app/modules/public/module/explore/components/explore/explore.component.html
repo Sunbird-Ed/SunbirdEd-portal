@@ -15,7 +15,7 @@
   </div>
   <div class="ui container mt-24 sb-library-cards">
       <h4 class="sb-categories-title mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
-      <div *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
+      <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid 
           [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"

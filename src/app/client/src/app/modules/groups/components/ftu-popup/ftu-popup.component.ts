@@ -10,28 +10,32 @@ export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
   @Output() close = new EventEmitter();
   slideConfig1 = {
+    "lazyLoad": 'progressive',
     "slidesToShow": 1,
-    "slidesToScroll": 1,
     "infinite": false,
     "rtl": false,
-    "dots": true
+    "dots": true,
+    "adaptiveHeight": true,
+    "fade": true,
+    "cssEase": 'linear',
+    "autoplay": true,
+    "autoplaySpeed": 2000
   };
 
-  showModal = true;
+  @Input()showMemberPopup;
   constructor(public resourceService: ResourceService, private elementRef: ElementRef) { }
 
-  ngOnInit() {
-    
-   
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit() {
-    
-  }
+
   closeModal() {
     this.showWelcomePopup = false;
     this.close.emit(true);
   }
 
-  
+  closeMemberPopup() {
+    this.showMemberPopup = false;
+    this.close.emit(true);
+  }
+
 }
