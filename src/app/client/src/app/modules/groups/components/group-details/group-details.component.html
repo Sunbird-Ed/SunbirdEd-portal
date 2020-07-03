@@ -17,7 +17,7 @@
         <!-- <app-add-activity></app-add-activity> -->
         <app-activity-list></app-activity-list>
       </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-bg-color-white">
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
         <app-group-members [config]="config"></app-group-members>
       </div>
     </div>
@@ -28,5 +28,3 @@
   appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
   <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
 </sui-modal>
-
-<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="closeModal()"></app-ftu-popup>

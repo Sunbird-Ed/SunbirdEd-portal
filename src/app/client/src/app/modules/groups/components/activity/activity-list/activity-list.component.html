@@ -1,5 +1,3 @@
-<div class="ui container">
-  <div class="content-grid mt-24">
 
     <!--Show loader-->
     <div class="sb-card-grid" *ngIf="showLoader">
@@ -26,8 +24,6 @@
 
     <!-- No Activity -->
     <app-add-activity *ngIf="!showLoader && !activityList?.length"></app-add-activity>
-  </div>
-</div>
 
 <!-- Remove Activity from the group -->
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"

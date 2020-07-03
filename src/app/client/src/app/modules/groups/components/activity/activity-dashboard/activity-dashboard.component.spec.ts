@@ -95,4 +95,25 @@ describe('ActivityDashboardComponent', () => {
     expect(component.activity).toBeDefined();
     expect(component.groupMembers).toBeDefined();
   });
+
+  it('should call search', () => {
+    component.showSearchResults = false;
+    const members = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+    ];
+    component.groupMembers = members;
+    component.memberListToShow = [];
+    component.search('Joh');
+    expect(component.showSearchResults).toBe(true);
+  });
+
+  it('should reset the list to membersList when no search key present', () => {
+    component.showSearchResults = true;
+    const members = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+    ];
+    component.groupMembers = members;
+    component.search('');
+    expect(component.showSearchResults).toBe(false);
+  });
 });
