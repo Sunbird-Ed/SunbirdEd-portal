@@ -60,9 +60,11 @@ describe('CopyContentService', () => {
       data: params,
       url: 'course/v1/create'
     };
+    spyOn(service, 'openCollectionEditor').and.stub();
     spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.copyContentSuccess));
-    service.copyAsCourse(contentData);
-    expect(contentService.post).toHaveBeenCalledWith(option);
+    service.copyAsCourse(contentData).subscribe( (response) => {
+      expect(service['openCollectionEditor']).toHaveBeenCalledWith('NCFCOPY', 'do_11302157861002444811');
+    });
   }));
 
   it('should open collection editor when a textbook is copied as a course', inject([], () => {
