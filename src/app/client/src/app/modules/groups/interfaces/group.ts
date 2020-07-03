@@ -62,30 +62,3 @@ export interface IGroupMember {
   indexOfMember: number;
   isCreator: boolean;
 }
-export interface GroupMember {
-  memberId: string;
-  name: string;
-  role: GroupMemberRole;
-  status: GroupEntityStatus;
-  addedBy: string;
-  addedOn: string;
-  removedBy: string;
-  removedOn: string;
-  updatedBy: string;
-  updatedOn: string;
-}
-// export interface GroupActivity {
-// }
-export interface Group {
-  name: string;
-  description: string;
-  id: string;
-  status: GroupEntityStatus;
-  joinStrategy: GroupJoinStrategy;
-  createdOn: string;
-  createdBy: string;
-  updatedOn: string;
-  updatedBy: string;
-  // activities: GroupActivity[];
-  members?: GroupMember[];
-}

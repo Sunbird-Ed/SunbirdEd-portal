@@ -28,12 +28,12 @@ export class AddMemberComponent implements OnInit {
   existingMembers = existingMembersList;
   memberId: string;
   member: IGroupMember;
+  showMemberPopup = false;
   groupId;
 
   constructor( private activatedRoute: ActivatedRoute, private groupService: GroupsService, private toasterService: ToasterService) {}
 
   ngOnInit() {
-    this.showMemberPopup = !localStorage.getItem('groups_members');
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
   }
 
@@ -56,7 +56,6 @@ export class AddMemberComponent implements OnInit {
       const member = [{memberId: this.member.identifier, role: 'member'}];
       this.groupService.addMemberById(this.groupId, member).subscribe(response => {
         this.existingMembers.push(this.member);
-        this.groupService.emitMembersData(this.existingMembers);
         this.toasterService.success(` member was added successfully`);
       }, err => {
           this.toasterService.error('Unable to add member to group.Please try again later...');
@@ -67,9 +66,5 @@ export class AddMemberComponent implements OnInit {
 
   isMemberPopup(visibility: boolean = false) {
     this.showMemberPopup = visibility;
-  }
-  closeModal() {
-    this.isMemberPopup(false);
-    localStorage.setItem('groups_members', 'members');
   }
 }

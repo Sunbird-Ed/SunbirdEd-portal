@@ -41,7 +41,6 @@ export class MyGroupsComponent implements OnInit {
   }
 
   public showCreateFormModal() {
-    this.showForm = true;
     this.router.navigate([`${MY_GROUPS}/${CREATE_GROUP}`]);
   }
 

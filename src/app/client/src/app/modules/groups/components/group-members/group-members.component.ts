@@ -58,10 +58,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
           this.showMenu = false;
         }
       });
-      this.groupsService.membersData.subscribe(response => {
-        this.memberListToShow = response;
-        this.showMemberMenu();
-      });
+      // this.groupsService.membersData.subscribe(response => {
+      //   this.memberListToShow = response;
+      //   this.showMemberMenu();
+      // });
   }
 
   showMemberMenu() {

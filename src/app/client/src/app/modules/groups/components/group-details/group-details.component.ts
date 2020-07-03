@@ -45,12 +45,11 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
-    this.members = this.groupsService.groupMembers;
   }
 
   getGroupData() {
-    this.groupService.getGroupById(this.groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      this.groupService.groupData = groupData;
+    this.groupsService.getGroupById(this.groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupsService.groupData = groupData;
       this.groupData = groupData;
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m002);

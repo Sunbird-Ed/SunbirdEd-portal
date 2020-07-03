@@ -2,7 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
 import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
@@ -98,14 +98,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     this.navigationHelperService.goBack();
   }
 
-  reset() {}
 
   close() {
     if (this.createGroupModal && this.createGroupModal.deny) {
       this.createGroupModal.deny();
-    }
-    if (this.updateGroupModal && this.updateGroupModal.deny) {
-      this.updateGroupModal.deny();
     }
   }
 
