@@ -315,7 +315,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
-    if (this.contentIframe.nativeElement) {
+    if (_.get(this.contentIframe, 'nativeElement')) {
       this.contentIframe.nativeElement.remove();
     }
     this.unsubscribe.next();
