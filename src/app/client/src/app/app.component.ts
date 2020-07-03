@@ -234,7 +234,14 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.showUserTypePopup = !localStorage.getItem('userType');
+      this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
+        if (data && !data.err) {
+          const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+          if (_.get(orgDetailsFromSlug, 'slug') === this.tenantService.slugForIgot) {
+            this.showUserTypePopup = !localStorage.getItem('userType');
+          }
+        }
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
       this.showUserTypePopup = false;
