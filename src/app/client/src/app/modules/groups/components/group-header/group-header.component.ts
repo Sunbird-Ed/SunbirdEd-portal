@@ -21,6 +21,7 @@ export class GroupHeaderComponent implements OnInit {
   showModal = false;
   showEditModal: boolean;
   creator: string;
+  showMemberPopup = true;
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
     private userService: UserService) {
@@ -33,19 +34,8 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   ngOnInit () {
-    this.getCreatorName() ;
-  }
-
-  getCreatorName() {
-    if (this.userService.userid === _.get(this.groupData, 'createdBy')) {
-      this.creator = 'You';
-    } else {
-      this.userService.getUserData(_.get(this.groupData, 'createdBy')).subscribe(user => {
-        this.creator = _.get(user, 'result.response.userName');
-      }, err => {
-        this.creator = 'creator';
-      });
-    }
+    this.showMemberPopup = !localStorage.getItem('groups_members');
+    this.creator = !this.groupData['isAdmin'] ? 'You' : _.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}).name;
   }
 
   toggleModal(visibility = false) {
@@ -73,5 +63,14 @@ export class GroupHeaderComponent implements OnInit {
   }
   dropdownMenu() {
     this.dropdownContent = !this.dropdownContent;
+  }
+
+  isMemberPopup(visibility: boolean = false) {
+    this.showMemberPopup = visibility;
+  }
+
+  closeModal() {
+    this.isMemberPopup(false);
+    localStorage.setItem('groups_members', 'members');
   }
 }

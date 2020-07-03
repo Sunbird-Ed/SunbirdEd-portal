@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { IGroup, IGroupId } from '../../interfaces';
+import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-edit-group',
@@ -20,7 +20,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   public selectedOption: any = {};
   private unsubscribe: Subscription;
   groupDetails;
-  groupId: IGroupId;
+  groupId: string;
   url = document.location.origin;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
@@ -29,7 +29,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    this.groupDetails = _.find(this.groupService.groups, {id: this.groupId});
+    this.groupDetails = this.groupService.groupData;
     this.initializeForm();
   }
 
@@ -45,9 +45,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   isFieldValid(field: string) {
-
+    console.log('fieldlldl', field);
     if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
-
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 

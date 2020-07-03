@@ -1,5 +1,5 @@
 import { UserService } from '@sunbird/core';
-import { IGroupSearchRequest, IGroupCard, IGroup } from './../../interfaces';
+import { IGroupSearchRequest, IGroupCard } from './../../interfaces';
 import { GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../services';
@@ -26,20 +26,17 @@ export class MyGroupsComponent implements OnInit {
 
   getMyGroupList() {
     const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
-    this.groupService.searchUserGroups(request).subscribe(data => {
-      this.addGroupPropertiesForCC(data);
+    this.groupService.searchUserGroups(request).subscribe(groups => {
+      _.forEach(groups, (group) => {
+        if (group) {
+          group.isAdmin = (group.createdBy === this.userService.userid);
+          group.initial = group.name[0];
+          this.groupList.push(group);
+        }
+      });
+    }, (err) => {
+      this.groupList = [];
     });
-  }
-
-  addGroupPropertiesForCC(groups) {
-    _.forEach(groups, (group) => {
-      if (group) {
-        group.isAdmin = group.createdBy === this.userService.userid;
-        group.initial = group.name[0];
-        this.groupList.push(group);
-      }
-    });
-    this.groupService.groups = this.groupList;
   }
 
   public showCreateFormModal() {

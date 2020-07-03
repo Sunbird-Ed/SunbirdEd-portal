@@ -6,7 +6,7 @@ import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsSe
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { groupServiceMockData } from './groups.service.spec.data';
-import { of as observableOf, of } from 'rxjs';
+import { of } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 

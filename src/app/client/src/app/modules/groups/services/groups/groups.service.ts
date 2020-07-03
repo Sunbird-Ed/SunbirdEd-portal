@@ -1,7 +1,7 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { IGroup, IGroupId, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
+import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
 
 
 
@@ -10,7 +10,7 @@ import { IGroup, IGroupId, IGroupSearchRequest, IGroupUpdate } from '../../inter
 })
 export class GroupsService {
   private groupCservice: any;
-  private _groupsList;
+  private _groupData;
   constructor(private csLibInitializerService: CsLibInitializerService) {
       if (!CsModule.instance.isInitialised) {
         this.csLibInitializerService.initializeCs();
@@ -22,7 +22,7 @@ export class GroupsService {
     return this.groupCservice.create(groupData);
   }
 
-  updateGroup(groupId: IGroupId, updateRequest: IGroupUpdate) {
+  updateGroup(groupId: string, updateRequest: IGroupUpdate) {
     return this.groupCservice.updateById(groupId, updateRequest);
   }
 
@@ -30,8 +30,8 @@ export class GroupsService {
     return this.groupCservice.search(request);
   }
 
-  getGroupById(groupId: string) {
-    return this.groupCservice.getById(groupId);
+  getGroupById(groupId: string, includeMembers?: boolean) {
+    return this.groupCservice.getById(groupId, {includeMembers});
   }
 
   deleteGroupById (groupId: string) {
@@ -42,10 +42,10 @@ export class GroupsService {
     return this.groupCservice.addMemberById(memberId, groupId);
   }
 
-  set groups(list) {
-    this._groupsList = list;
+  set groupData(list) {
+    this._groupData = list;
   }
-  get groups() {
-    return this._groupsList;
+  get groupData() {
+    return this._groupData;
   }
 }

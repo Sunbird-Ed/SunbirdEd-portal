@@ -80,9 +80,9 @@ describe('GroupHeaderComponent', () => {
   });
 
   it ('should route to create-edit-group', () => {
-    component.groupData = {identifier: '1234'};
+    component.groupData = {id: '1234'};
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
-    _.get(component.groupData, 'identifier'), CREATE_GROUP]);
+    _.get(component.groupData, 'id'), CREATE_GROUP]);
   });
 });
