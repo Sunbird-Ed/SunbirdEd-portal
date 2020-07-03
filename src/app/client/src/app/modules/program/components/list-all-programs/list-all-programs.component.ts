@@ -85,7 +85,7 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
    */
   private getOrgDetails(rootOrgId): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {

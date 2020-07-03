@@ -1,16 +1,28 @@
-import { ProfileService } from '../../services';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService, CertRegService } from '@sunbird/core';
+import {ProfileService} from '../../services';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
-  ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService,
-  NavigationHelperService
+  CertRegService,
+  CoursesService,
+  OrgDetailsService,
+  PlayerService,
+  SearchService,
+  UserService
+} from '@sunbird/core';
+import {
+  ConfigService,
+  IUserData,
+  NavigationHelperService,
+  ResourceService,
+  ServerResponse,
+  ToasterService,
+  UtilService
 } from '@sunbird/shared';
-import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import {Subscription} from 'rxjs';
+import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService} from '@sunbird/telemetry';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CacheService} from 'ng2-cache-service';
+
 @Component({
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
@@ -54,6 +66,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   phoneObj: { idType: string, provider: string, id: string };
   emailObj: { idType: string, provider: string, id: string };
   teacherObj: { idType: string, provider: string, id: string };
+  stateObj;
+  districtObj;
+  externalIds: {};
   schoolObj: { idType: string, provider: string, id: string };
   instance: string;
 
@@ -71,6 +86,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        this.populateLocationDetails();
         this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
         this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
@@ -86,6 +102,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+  }
+
+  populateLocationDetails() {
+    const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
+    fields.forEach((fieldKey, userProfileKey) => {
+      const externalIdData = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === fieldKey);
+      if (externalIdData) {
+        const requestData = {'filters': {'code': externalIdData && externalIdData.id}};
+        this.profileService.getUserLocation(requestData).subscribe(res => {
+          if (_.get(res, 'result.response[0].name')) {
+            this[userProfileKey] = {
+              id: _.get(res, 'result.response[0].name')
+            };
+          }
+        }, err => {
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0016'));
+        });
+      }
+    });
   }
 
   getOrgDetails() {

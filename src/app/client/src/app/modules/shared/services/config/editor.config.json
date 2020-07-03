@@ -1091,6 +1091,22 @@
                 },
                 "showEndPage": false
             }
-        }
+        },
+        "contentState": [
+            "upForReview",
+            "review",
+            "published",
+            "limitedPublish",
+            "flagreviewer",
+            "collaborating-on"
+        ],
+        "contentStatus": [
+            "Review",
+            "Draft",
+            "Live",
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
+        ]
     }
 }

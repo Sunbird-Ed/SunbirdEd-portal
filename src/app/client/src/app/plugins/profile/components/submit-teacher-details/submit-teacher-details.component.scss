@@ -36,10 +36,21 @@
       text-transform: none;
     }
     
-    .information-icon {
+    .success-icon {
       position: absolute;
       right: calculateRem(8px);
       bottom: calculateRem(6px);
+  
+      html[dir="rtl"] & {
+        left: calculateRem(8px);
+         right:0px;
+      }
+    } 
+
+    .warning-icon {
+      position: absolute;
+      right: calculateRem(8px);
+      bottom: calculateRem(35px);
   
       html[dir="rtl"] & {
         left: calculateRem(8px);

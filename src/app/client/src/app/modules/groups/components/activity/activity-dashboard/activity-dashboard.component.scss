@@ -1,115 +1,154 @@
-@import './mixins/mixins';
+@import "variables";
+@import "mixins/mixins";
 
-.devided-line{
-    border-bottom: calculateRem(0.5px) solid var(--gray-100);
-}
-.member-no-result{
-    .no-result-text{
-        font-size: calculateRem(14px);
+.content-header {
+  background: #fafafa;
+  min-height: calculateRem(14px);
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @include respond-below(sm) {
+      display: block;
     }
-    .no-result-desc{
-        font-size: calculateRem(12px);
-        color: var(--gray-200);
+  }
+  &__img {
+    width: 48px;
+    height: 48px;
+    overflow: hidden;display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width:100%;
     }
+  }
+  &__title {
+    color: var(--primary-400);
+    font-size: calculateRem(18px);
+  }
+  &__info {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
+  }
+  .dot-divider {
+    width: ($base-block-space / 2);
+    height: ($base-block-space / 2);
+    border-radius: 100%;
+    background-color: var(--gray-800);
+    display: inline-block;
+    margin: 0px $base-block-space;
+  }
 }
 
-
+.devided-line {
+  border-bottom: calculateRem(0.5px) solid var(--gray-100);
+}
+.member-no-result {
+  .no-result-text {
+    font-size: calculateRem(14px);
+  }
+  .no-result-desc {
+    font-size: calculateRem(12px);
+    color: var(--gray-200);
+  }
+}
 
 // percentage circle loader
 .progress-circle {
-    height: 32px;
-    width: 32px;
-    position: relative;
+  height: 32px;
+  width: 32px;
+  position: relative;
+  span {
+    position: absolute;
+    font-size: calculateRem(8px);
+    font-weight: bold;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &__svg {
+    border-radius: 50%;
+    height: 100%;
+    transform: scaleX(-1) rotate(-90deg);
+    width: 100%;
+  }
+  &__stroke {
+    fill: none;
+    stroke-width: calculateRem(8px);
+    &:nth-child(1) {
+      stroke: var(--secondary-200);
+    }
+    &:nth-child(2) {
+      stroke: var(--gray-100);
+      stroke-dasharray: 314.1592%;
+    }
+  }
+  &--xs,
+  &--sm {
     span {
-      position: absolute;
-      font-size: calculateRem(8px);
-      font-weight: bold;
-      margin: 0 auto;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      display: none;
     }
-    &__svg {
-      border-radius: 50%;
-      height: 100%;
-      transform: scaleX(-1) rotate(-90deg);
-      width: 100%;
+  }
+  &--xs {
+    height: calculateRem(16px);
+    width: calculateRem(16px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(4px);
     }
-    &__stroke {
-      fill: none;
-      stroke-width: calculateRem(8px);
-      &:nth-child(1) {
-        stroke: var(--secondary-200);
-      }
-      &:nth-child(2) {
-        stroke: var(--gray-100);
-        stroke-dasharray: 314.1592%;
-      }
+  }
+  &--sm {
+    height: calculateRem(24px);
+    width: calculateRem(24px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(6px);
     }
-    &--xs, &--sm {
-      span {
-        display: none;
-      }
+  }
+  &--md {
+    height: calculateRem(40px);
+    width: calculateRem(40px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(12px);
     }
-    &--xs {
-      height: calculateRem(16px);
-      width: calculateRem(16px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(4px);
-      }
+    span {
+      font-size: calculateRem(10px);
     }
-    &--sm {
-      height: calculateRem(24px);
-      width: calculateRem(24px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(6px);
-      }
+  }
+  &--lg {
+    height: calculateRem(56px);
+    width: calculateRem(56px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(16px);
     }
-    &--md {
-      height: calculateRem(40px);
-      width: calculateRem(40px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(12px);
-      }
-      span {
-        font-size: calculateRem(10px);
-      }
+    span {
+      font-size: calculateRem(14px);
     }
-    &--lg {
-      height: calculateRem(56px);
-      width: calculateRem(56px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(16px);
-      }
-      span {
-        font-size: calculateRem(14px);
-      }
+  }
+  &--xl {
+    height: calculateRem(72px);
+    width: calculateRem(72px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(20px);
     }
-    &--xl {
-      height: calculateRem(72px);
-      width: calculateRem(72px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(20px);
-      }
-      span {
-        font-size: calculateRem(18px);
-      }
+    span {
+      font-size: calculateRem(18px);
     }
-    &--xxl {
-      height: calculateRem(88px);
-      width: calculateRem(88px);
-      .progress-circle__stroke {
-        stroke-width: calculateRem(24px);
-      }
-      span {
-        font-size: calculateRem(20px);
-      }
+  }
+  &--xxl {
+    height: calculateRem(88px);
+    width: calculateRem(88px);
+    .progress-circle__stroke {
+      stroke-width: calculateRem(24px);
     }
-    @for $i from 0 to 100 {
-      &[data-percentage="#{$i}"] {
-        .progress-circle__stroke:nth-child(2) {
-          stroke-dashoffset: calc(314.1592% * (#{$i} / 100));
-        }
+    span {
+      font-size: calculateRem(20px);
+    }
+  }
+  @for $i from 0 to 100 {
+    &[data-percentage="#{$i}"] {
+      .progress-circle__stroke:nth-child(2) {
+        stroke-dashoffset: calc(314.1592% * (#{$i} / 100));
       }
     }
   }
+}

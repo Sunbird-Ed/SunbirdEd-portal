@@ -17,8 +17,22 @@ import { GroupsService } from '../../services';
 })
 export class GroupMembersComponent implements OnInit, OnDestroy {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
+<<<<<<< HEAD
   @Input() config: IGroupMemberConfig;
   @Input() members: IGroupMember[] = [];
+=======
+  @Input() config: IGroupMemberConfig = {
+    showMemberCount: false,
+    showSearchBox: false,
+    showAddMemberButton: false,
+    showMemberMenu: false
+  };
+  @Input() members: IGroupMember[] = [
+    { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
+    { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
+    { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: true }
+  ];
+>>>>>>> upstream/release-3.1.0
   showMenu = false;
   showModal = false;
   showSearchResults = false;
@@ -66,7 +80,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   search(searchKey: string) {
-    if (searchKey.trim().length > 2) {
+    if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
     } else {

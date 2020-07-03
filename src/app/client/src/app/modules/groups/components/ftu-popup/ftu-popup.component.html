@@ -10,27 +10,31 @@
   </div>
 </div>
 
-<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal-white"
-appBodyScroll (dismissed)="closeModal('members')" #modal *ngIf="showMemberPopup">
-<div class="sb-bg-color-white p-32">
-  <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig">
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" class="sb-modal-white"
+appBodyScroll (dismissed)="modal.deny()" #modal *ngIf="showMemberPopup">
+<div class="sb-bg-color-white p-32 sb-modal-content" style="min-height:460px;">
+  <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
+  <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>
+  <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
     <div ngxSlickItem class="item-help">
-      <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup }}</h4>
-      <p class="mb-32">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId }}</p>
-      <h6>Step 1:</h6>
-      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
-      <img src="./assets/images/idimage_1.png" alt="">
+      <div class="sb-g">
+        <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+      <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
+        </div>
+        <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+      <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
+        </div>
+      </div>
     </div>
     <div ngxSlickItem  class="item-help">
-      <h6>Step 2:</h6>
-      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
-        <img src="./assets/images/idimage_2.png" alt="">
+      <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
+      <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere }}</p>
+        <img src="./assets/images/step_3.png" alt="">
       </div>
-    <div ngxSlickItem class="item-help">
-      <h6>Step 3:</h6>
-      <p class="fnormal mt-8 mb-32">{{ resourceService?.frmelmnts?.lbl?.InstanceIdProfilename }}</p>
-      <img src="./assets/images/idimage_3.png" alt="">
-    </div>
   </ngx-slick>
   
 

@@ -49,6 +49,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   shareLinkModal: boolean;
   isUnitCompleted = false;
+  isFullScreenView = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -73,6 +74,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToQueryParam();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 
   goBack() {
@@ -441,7 +446,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       'object': {
         'id': this.batchId,
         'type': this.activatedRoute.snapshot.data.telemetry.object.type,
-        'ver': this.activatedRoute.snapshot.data.telemetry.object.ver
+        'ver': this.activatedRoute.snapshot.data.telemetry.object.ver,
+        'rollup': { l1: this.courseId }
       },
       'edata': {
         props: ['courseId', 'userId', 'batchId'],
