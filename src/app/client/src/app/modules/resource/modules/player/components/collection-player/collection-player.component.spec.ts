@@ -157,6 +157,7 @@ describe('CollectionPlayerComponent', () => {
     spyOn(component, 'clearSelection').and.stub();
     spyOn(copyContentService, 'copyAsCourse').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed));
     component.createCourse();
+    expect(component.clearSelection).toHaveBeenCalled();
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
   });
@@ -199,5 +200,27 @@ describe('CollectionPlayerComponent', () => {
     spyOn(navigateHelperService, 'navigateToPreviousUrl').and.stub();
     component.closeCollectionPlayer();
     expect(navigateHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/resources');
+  });
+
+  it('should copy a textbook', () => {
+    const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
+    const copyContentService = TestBed.get(CopyContentService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success').and.stub();
+    spyOn(copyContentService, 'copyContent').and.returnValue(observableOf(CollectionHierarchyGetMockResponse.copyContentSuccess));
+    component.copyContent(contentData);
+    expect(component.showCopyLoader).toBeFalsy();
+    expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0042);
+  });
+
+  it('should not copy a textbook if api fails', () => {
+    const contentData = CollectionHierarchyGetMockResponse.copyCourseContentData;
+    const copyContentService = TestBed.get(CopyContentService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    spyOn(copyContentService, 'copyContent').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed))
+    component.copyContent(contentData);
+    expect(component.showCopyLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
   });
 });
