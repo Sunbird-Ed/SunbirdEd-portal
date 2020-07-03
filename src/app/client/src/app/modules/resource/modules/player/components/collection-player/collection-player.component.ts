@@ -1,8 +1,7 @@
-
 import { mergeMap, filter, map, catchError } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService } from '@sunbird/core';
-import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
@@ -601,3 +600,4 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 }
+
