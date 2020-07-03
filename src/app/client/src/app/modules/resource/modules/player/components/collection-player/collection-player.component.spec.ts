@@ -77,8 +77,6 @@ describe('CollectionPlayerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.cancelInteractEdata).toBeUndefined();
-    expect(component.createCourseInteractEdata).toBeUndefined();
     expect(component.showPlayer).toBeFalsy();
     // expect(component.serviceUnavailable).toBeFalsy();
     expect(component.loaderMessage).toEqual({
@@ -224,5 +222,23 @@ describe('CollectionPlayerComponent', () => {
     component.copyContent(contentData);
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
+  });
+
+  it('Verify telemetry interact event for cancel button', () => {
+    component.cancelInteractEdata = {
+        id: 'cancel-button',
+        type: 'click',
+        pageid: 'collection-player'
+      };
+    expect(component.cancelInteractEdata).toBeDefined();
+  });
+
+  it('Verify telemetry interact event for cancel button', () => {
+    component.createCourseInteractEdata = {
+      id: 'create-course-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    expect(component.createCourseInteractEdata).toBeDefined();
   });
 });
