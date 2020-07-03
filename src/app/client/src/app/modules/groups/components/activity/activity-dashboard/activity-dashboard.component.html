@@ -34,14 +34,14 @@
         <div class="sb-search-box no-btn mb-16">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
-            <input class="sb-search-input" type="text"
+            <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
               [placeholder]="resourceService?.frmelmnts?.lbl?.searchForGroupMember" />
           </div>
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
       </div>
       <div class="d-flex flex-dc">
-        <div *ngFor="let member of groupMembers" class="relative">
+        <div *ngFor="let member of memberListToShow" class="relative">
           <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
             [progressDisplay]="member?.progress" [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
           </sb-member-card>

@@ -6,6 +6,7 @@ import { debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
 import { IGroup } from '../../../interfaces/group';
 import { GroupsService } from '../../../services';
 import { IActivity } from '../activity-list/activity-list.component';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -21,6 +22,8 @@ export class ActivityDashboardComponent implements OnInit {
   groupData: IGroup;
   activity: IActivity;
   groupMembers = [];
+  memberListToShow = [];
+  showSearchResults = false;
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
   loaderMessage = this.resourceService.messages.fmsg.m0087;
   constructor(
@@ -97,8 +100,21 @@ export class ActivityDashboardComponent implements OnInit {
         }
       ];
 
+      this.groupMembers = _.orderBy(this.groupMembers, ['title'], ['asc']);
+      this.memberListToShow = _.cloneDeep(this.groupMembers);
+
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
+  }
+
+  search(searchKey: string) {
+    if (searchKey.trim().length) {
+      this.showSearchResults = true;
+      this.memberListToShow = this.groupMembers.filter(item => _.toLower(item.title).includes(searchKey));
+    } else {
+      this.showSearchResults = false;
+      this.memberListToShow = _.cloneDeep(this.groupMembers);
+    }
   }
 }
