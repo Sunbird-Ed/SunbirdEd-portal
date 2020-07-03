@@ -193,7 +193,7 @@ function getLocals(req) {
 }
 
 const indexPage = (loggedInRoute) => {
-  logDebug(req, {}, 'indexPage() called');
+  logDebug({}, {}, 'indexPage() called');
   return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
