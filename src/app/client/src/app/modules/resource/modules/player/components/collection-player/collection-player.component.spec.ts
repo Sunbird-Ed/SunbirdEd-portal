@@ -69,6 +69,16 @@ describe('CollectionPlayerComponent', () => {
     fixture = TestBed.createComponent(CollectionPlayerComponent);
     component = fixture.componentInstance;
     component.queryParams = { contentId: 'domain_44689'};
+    component.cancelInteractEdata = {
+      id: 'cancel-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    component.createCourseInteractEdata = {
+      id: 'create-course-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
   });
 
   afterEach(() => {
@@ -222,23 +232,5 @@ describe('CollectionPlayerComponent', () => {
     component.copyContent(contentData);
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
-  });
-
-  it('Verify telemetry interact event for cancel button', () => {
-    component.cancelInteractEdata = {
-        id: 'cancel-button',
-        type: 'click',
-        pageid: 'collection-player'
-      };
-    expect(component.cancelInteractEdata).toBeDefined();
-  });
-
-  it('Verify telemetry interact event for cancel button', () => {
-    component.createCourseInteractEdata = {
-      id: 'create-course-button',
-      type: 'click',
-      pageid: 'collection-player'
-    };
-    expect(component.createCourseInteractEdata).toBeDefined();
   });
 });
