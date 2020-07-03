@@ -101,10 +101,11 @@
   <div class="ui container">
     <div class="py-8 d-flex flex-ai-center">
       <!-- /* Back button */ -->
-      <button class="sb-btn sb-btn-link-primary sb-btn-normal back-btn mr-auto"><i
-          class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="./assets/images/libdemo/sprite.svg#arrow-long-left"></use>
-          </svg></i>&nbsp;Back
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        {{resourceService?.frmelmnts?.btn?.back}}
       </button>
       <!-- Back button -->
       <div class="d-flex flex-ai-center">
@@ -131,7 +132,9 @@
         <!-- Textbook details -->
         <div class="textbook__details d-flex flex-ai-center">
           <!-- Textbook image -->
-          <img src="{{courseHierarchy?.appIcon}}" class="textbook__bookimg" alt="textbook" width="56px">
+          <div class="textbook__bookimg">
+            <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+          </div>
           <div class="ml-8 textbook__heading">
             <!-- Textbook title -->
             <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
@@ -140,28 +143,26 @@
             <div class="textbook__rating mt-4">
 
               <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
-              [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+                [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
 
-              <div class="d-inline-flex flex-ai-center ml-8 cursor-pointer" (click)="onShareLink();sharelinkModal=true;">
-                <i class="icon-svg icon-svg--xs icon-share mx-4"><svg class="icon icon-svg--primary">
-                    <use xlink:href="./assets/images/libdemo/sprite.svg#share"></use>
-                  </svg></i>
-                <span class="fsmall sb-color-primary font-weight-bold">{{resourceService?.frmelmnts?.lbl?.share}}</span>
-              </div>              
-           
-            <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
-              appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-              [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
-              [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
-              class="d-inline-block" title="{{resourceService?.frmelmnts?.lbl?.copy}}">
-              <a class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
+              <button (click)="onShareLink();sharelinkModal=true;"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8">
+                <i class="blue share alternate icon"></i>
+                {{resourceService?.frmelmnts?.lbl?.share}}
+              </button>
+
+              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8"
+                *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
+                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
+                title="{{resourceService?.frmelmnts?.lbl?.copy}}">
                 <i class="blue clone outline icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
-              </a>
-            </span>
-            <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
-              {{resourceService?.messages?.imsg?.m0001}}</h6>
+              </button>
+              <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
+                {{resourceService?.messages?.imsg?.m0001}}</h6>
 
             </div>
 
@@ -192,7 +193,7 @@
         </div>
       </div>
       <!-- Module Progress bar with join course and continue learning button -->
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3" style="align-self: center;">
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course" style="align-self: center;">
         <!-- Module Progress bar -->
         <div class="certified-course__progress" *ngIf="enableProgress">
           <div class="fsmall">Module Progress</div>
@@ -200,10 +201,10 @@
           <sui-progress [value]="8" [maximum]="9" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
         </div>
         <!-- join course & continue learning buttons -->
-        
+
         <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-          (click)="showJoinModal(true);">Join Course</button>
+            (click)="showJoinModal(true);">Join Course</button>
           <!-- <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
             (click)="showSmallModal = !showSmallModal"><i class="icon-svg icon-svg--xxs icon-share mr-8"><svg
                 class="icon icon-svg--white">
@@ -214,4 +215,3 @@
     </div>
   </div>
 </div>
-
