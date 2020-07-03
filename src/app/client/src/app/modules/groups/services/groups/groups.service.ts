@@ -38,9 +38,9 @@ export class GroupsService {
     return this.groupCservice.deleteById(groupId);
   }
 
-  addMemberById(memberId: string, groupId: string) {
-    return this.groupCservice.addMemberById(memberId, groupId);
-  }
+  // addMemberById(memberId: string, groupId: string) {
+  //   return this.groupCservice.addMemberById(memberId, groupId);
+  // }
 
   set groupData(list) {
     this._groupData = list;

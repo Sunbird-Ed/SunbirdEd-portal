@@ -24,38 +24,46 @@ describe('GroupsService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should get all group list', () => {
-    const service = TestBed.get(GroupsService);
-    spyOn(service.groupCservice, 'getAll').and.callThrough();
-    service.getAllGroups();
-  });
-
   it ('should call groupCs create', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'create');
     service.createGroup({name: 'BAC', description: 'NEW GROUPS'});
-    expect(service['groupCservice'].create).toHaveBeenCalled();
+    expect(service['groupCservice'].create).toHaveBeenCalledWith({name: 'BAC', description: 'NEW GROUPS'});
   });
 
-  it ('should call groupCs create', () => {
+  it('should get all group list', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'search').and.callThrough();
+    service.searchUserGroups({filters: {userId: '123'}});
+    expect(service['groupCservice'].search).toHaveBeenCalledWith({filters: {userId: '123'}});
+  });
+
+  it ('should call groupCs getById', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'getById');
-    service.getGroupById('123');
-    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123');
+    service.getGroupById('123', true);
+    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123', {includeMembers: true});
   });
 
-  it ('should call groupCs create', () => {
+  it ('should call groupCs deleteById', () => {
     const service = TestBed.get(GroupsService);
-    spyOn(service['groupCservice'], 'deleteById');
+    spyOn(service['groupCservice'], 'deleteById').and.callThrough();
     service.deleteGroupById('123');
     expect(service['groupCservice'].deleteById).toHaveBeenCalledWith('123');
   });
 
-  it ('should call groupCs create', () => {
+  it ('should call groupCs updateById', () => {
     const service = TestBed.get(GroupsService);
-    spyOn(service['groupCservice'], 'addMemberById');
-    service.addMemberById('member1', '123');
-    expect(service['groupCservice'].addMemberById).toHaveBeenCalledWith('member1', '123');
+    spyOn(service['groupCservice'], 'updateById');
+    service.updateGroup('123', {name: 'abcd'});
+    expect(service['groupCservice'].updateById).toHaveBeenCalledWith('123', {name: 'abcd'});
+  });
+
+
+  it ('should set group', () => {
+    const service = TestBed.get(GroupsService);
+    service.groupData = {name: 'Test', description: 'Test groups description'};
+    expect(service['_groupData']).toEqual({name: 'Test', description: 'Test groups description'});
   });
 
 });

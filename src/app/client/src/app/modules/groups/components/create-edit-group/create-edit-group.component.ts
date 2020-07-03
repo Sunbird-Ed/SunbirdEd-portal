@@ -13,8 +13,6 @@ import * as _ from 'lodash-es';
 })
 export class CreateEditGroupComponent implements OnInit, OnDestroy {
   @ViewChild('createGroupModal') createGroupModal;
-  @Output() closeEvent = new EventEmitter<any>();
-  @Output() submitForm = new EventEmitter<any>();
   groupForm: FormGroup;
   public formFieldOptions = [];
   public selectedOption: any = {};
@@ -45,7 +43,6 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   isFieldValid(field: string) {
-    console.log('fieldlldl', field);
     if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
@@ -56,7 +53,6 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       this.groupService.createGroup(request).subscribe(group => {
         if (group) {
           this.toasterService.success(this.resourceService.messages.smsg.m001);
-          this.submitForm.emit(group);
         }
         this.closeModal();
       }, err => {
@@ -80,11 +76,12 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
           this.toasterService.success(this.resourceService.messages.smsg.m003);
           this.closeModal();
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m005);
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
+          control.patchValue({name: '', description: ''});
           control.markAsTouched({ onlySelf: true });
         });
+        this.toasterService.error(this.resourceService.messages.emsg.m005);
         this.closeModal();
       });
     } else {
