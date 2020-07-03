@@ -203,7 +203,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       ).pipe(takeUntil(this.unsubscribe))
         .subscribe((data) => {
           this.allBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
-          this.showAllBatchList = true;
+          if (_.isEmpty(this.allBatchList)) {
+            this.showAllBatchError = true;
+          } else {
+            this.showAllBatchList = true;
+          }
         }, (err) => {
           this.showAllBatchError = true;
           this.toasterService.error(this.resourceService.messages.fmsg.m0004);

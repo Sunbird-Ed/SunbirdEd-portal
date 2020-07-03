@@ -69,6 +69,7 @@
     <div class="sb-modal-content" *ngIf="showAllBatchList">
         <div class="join-batch">
             <div class="join-batch__heading">
+                {{showError}}
                 <span>Available batches</span>
                 <span>Created by</span>
             </div>
@@ -114,7 +115,7 @@
                                 <div class="sb-color-primary fmedium font-weight-bold"><i
                                         class="calendar outline icon"></i> {{batch.startDate | dateFormat}}
                                     <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
-                                <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal"
+                                <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal ml-auto"
                                     appTelemetryInteract [telemetryInteractEdata]="updateBatchIntractEdata"
                                     [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"
                                     (click)="batchUpdate(batch)">

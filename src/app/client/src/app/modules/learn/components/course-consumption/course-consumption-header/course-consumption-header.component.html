@@ -1,7 +1,7 @@
 <div class="courseStructureHeader sb-bg-white">
-  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+  <!-- <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
     <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
-  </div>
+  </div> -->
   <div class="ui container sb-bg-white">
     <div class="ui padded grid">
       <div class="row">
@@ -66,6 +66,9 @@
   </div>
 </div>
 <div *ngIf="enrolledCourse" class="sb-bg-white">
+  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+    <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+  </div>
   <div class="ui container">
     <div class="ui stackable padded grid" *ngIf="getBatchStatus() && batchEndDate">
       <div class="twelve wide column p-0 py-16">
@@ -135,14 +138,56 @@
             </h5>
             <!-- Textbook Rating with share icon -->
             <div class="textbook__rating mt-4">
-              <sui-rating class="star mini" [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
-              <div class="d-inline-flex flex-ai-center ml-8 cursor-pointer" (click)="enableProgress=!enableProgress">
+
+              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
+              [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+
+
+              <div class="d-inline-flex flex-ai-center ml-8 cursor-pointer" (click)="onShareLink();sharelinkModal=true;">
                 <i class="icon-svg icon-svg--xs icon-share mx-4"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/libdemo/sprite.svg#share"></use>
                   </svg></i>
                 <span class="fsmall sb-color-primary font-weight-bold">{{resourceService?.frmelmnts?.lbl?.share}}</span>
-              </div>
+              </div>              
+           
+            <span *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+              appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
+              [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
+              class="d-inline-block" title="{{resourceService?.frmelmnts?.lbl?.copy}}">
+              <a class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
+                <i class="blue clone outline icon"></i>
+                {{resourceService?.frmelmnts?.lbl?.copy}}
+              </a>
+            </span>
+            <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
+              {{resourceService?.messages?.imsg?.m0001}}</h6>
+
             </div>
+
+
+            <div class="ml-auto text-right mt-8">
+              <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
+                class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()"
+                *ngIf="permissionService?.permissionAvailable && !enrolledCourse" appPermission
+                [permission]="dashboardPermission">
+                {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+              </button>
+              <!-- <div *ngIf="enrolledCourse">
+                <p class="mb-8">
+                  {{resourceService?.messages?.stmsg?.m0108}} {{ progress }}%
+                </p>
+                <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata"
+                  [telemetryInteractObject]="courseInteractObject" class="sb-btn sb-btn-primary sb-btn-normal"
+                  [disabled]="showResumeCourse" (click)="resumeCourse(true)">
+                  {{resourceService?.frmelmnts?.btn?.resumecourse}}
+                  <i class="caret right icon"></i>
+                </button>
+              </div> -->
+            </div>
+
+
           </div>
         </div>
       </div>
@@ -156,7 +201,7 @@
         </div>
         <!-- join course & continue learning buttons -->
         
-        <div class="certified-course__btn" *ngIf="!enableProgress">
+        <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
           (click)="showJoinModal(true);">Join Course</button>
           <!-- <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
@@ -169,6 +214,4 @@
     </div>
   </div>
 </div>
-
-<!-- <app-batch-details-popup *ngIf="showJoinModal" [courseId]="courseId" (showJoinModal)="showJoinModal = $event" ></app-batch-details-popup> -->
 
