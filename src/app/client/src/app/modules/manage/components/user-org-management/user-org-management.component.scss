@@ -14,6 +14,9 @@
         border-top: calculateRem(1px) solid var(--rc-dddddd);
         border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     }
+    .no-data-label{
+     margin-top: calculateRem(6px);
+    }
     .sb-upload-file{
         position: relative;
         overflow: hidden;
