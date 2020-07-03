@@ -32,7 +32,9 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'npm run test-coverage'
+      - store_artifacts:
+          path: coverage
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
