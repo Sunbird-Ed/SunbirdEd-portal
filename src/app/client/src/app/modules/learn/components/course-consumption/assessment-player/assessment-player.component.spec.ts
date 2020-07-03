@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
 import { NavigationHelperService, ResourceService, SharedModule, ToasterService,
@@ -50,7 +50,7 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService, CsCourseProgressCalculator,
+        UserService, CsContentProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService
@@ -308,17 +308,17 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculate method to get the courseProgress', () => {
     const playerSummury = assessmentPlayerMockData.playerSummuryData;
     const mimeType = 'application/vnd.ekstep.ecml-archive';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
-    expect(CsCourseProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
+    expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
     expect(component.courseProgress).toEqual(100);
   });
 
   it('should not call calculate method if the contentType is selfAssess', () => {
     component.activeContent = assessmentPlayerMockData.activeContent;
     component.activeContent.contentType = 'SelfAssess';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
@@ -352,7 +352,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
     expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
-  
+
   it('should call logAuditEvent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.activeContent = assessmentPlayerMockData.activeContent;

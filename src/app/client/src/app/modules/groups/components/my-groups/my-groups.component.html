@@ -36,7 +36,7 @@
   <div class="ui container mt-24">
     <div class="sb-card-grid">
       <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList">
-        <sb-group-card [group]= "group" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
+        <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
     </div>
   </div>

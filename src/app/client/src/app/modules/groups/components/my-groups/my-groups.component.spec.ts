@@ -9,14 +9,14 @@ import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { GroupsService } from '../../services';
-import { of as observableOf, of } from 'rxjs';
-import { mygroupsMockData } from './my-groups.component.spec.data';
+import { of, throwError } from 'rxjs';
+import { mockGroupList } from './my-groups.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
   const fakeActivatedRoute = {
-    'params': observableOf({}),
+    'params': of ({}),
     snapshot: {
         data: {
             telemetry: {
@@ -42,6 +42,8 @@ describe('MyGroupsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MyGroupsComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
+    component['userService']['_userid'] = '123';
   });
 
   it('should create', () => {
@@ -54,10 +56,20 @@ describe('MyGroupsComponent', () => {
     expect(component.getMyGroupList).toHaveBeenCalled();
   });
 
-  it('should call getAllGroups list', () => {
-    spyOn(component.groupService, 'getAllGroups').and.callFake(() => observableOf(mygroupsMockData.mockGroupList[0]));
+  it('should call searchUserGroups', () => {
+    spyOn(component.groupService, 'searchUserGroups').and.callFake(() => of (mockGroupList));
     component.getMyGroupList();
-    expect(component.groupService.getAllGroups).toHaveBeenCalled();
+    component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {
+      expect(component.groupList[0].isAdmin).toBeTruthy();
+    });
+  });
+
+  it('should throw error when searchUserGroups() is called', () => {
+    spyOn(component.groupService, 'searchUserGroups').and.callFake(() => throwError ({}));
+    component.getMyGroupList();
+    component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {}, err => {
+      expect(component.groupList).toEqual([]);
+    });
   });
 
   it('should show create group modal', () => {
@@ -67,8 +79,13 @@ describe('MyGroupsComponent', () => {
 
   it('should navigate to group detail page', () => {
     const router = TestBed.get(Router);
-    component.navigateToDetailPage({data: {identifier: '123'}});
+    component.navigateToDetailPage({data: {id: '123'}});
     expect(router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, '123']);
+  });
+
+  it('should close closeModal', () => {
+    component.closeModal();
+    expect(component.showModal).toBeFalsy();
   });
 
 });
