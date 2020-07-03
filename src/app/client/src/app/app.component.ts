@@ -12,10 +12,11 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } from 'rxjs';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import {Stage} from "@sunbird/shared-feature";
 /**
  * main app component
  */
@@ -234,14 +235,14 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
-        if (data && !data.err) {
+      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+        if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
-          if (_.get(orgDetailsFromSlug, 'slug') === this.tenantService.slugForIgot) {
+          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
             this.showUserTypePopup = !localStorage.getItem('userType');
           }
         }
-      });
+      })
     }, (err) => {
       this.isLocationConfirmed = true;
       this.showUserTypePopup = false;
