@@ -41,6 +41,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() telemetryObject: {};
   @Input() pageId: string;
   @Output() closePlayerEvent = new EventEmitter<any>();
+  @Output() ratingPopupClose = new EventEmitter<any>();
   isMobileOrTab: boolean;
   showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
@@ -312,6 +313,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   closeContentFullScreen() {
     this.navigationHelperService.emitFullScreenEvent(false);
     this.loadPlayer();
+  }
+
+  closeModal() {
+    this.ratingPopupClose.emit({});
   }
 
   ngOnDestroy() {

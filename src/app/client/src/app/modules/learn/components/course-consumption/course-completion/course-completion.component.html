@@ -1,5 +1,6 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="closeModal()" #modal>
+  <i class="close icon" aria-hidden="true" (click)="modal.deny()"></i>
   <div class="course-complete sb-bg-white p-32">
     <div class="course-complete-content">
       <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>

@@ -17,6 +17,8 @@
   font-size: calculateRem(12px);
 }
 
-.sb-modal .ui.modal > .close {
-  color: black;
+::ng-deep {
+  .sb-modal .ui.modal > .close {
+    color: black;
+  }
 }
