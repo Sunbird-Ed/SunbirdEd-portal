@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import { TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course-completion',
@@ -10,13 +12,34 @@ import * as _ from 'lodash-es';
 export class CourseCompletionComponent implements OnDestroy {
 
   @ViewChild('modal') modal;
-  constructor(public resourceService: ResourceService) { }
+  constructor(
+    public resourceService: ResourceService,
+    private telemetryService: TelemetryService,
+    private activatedRoute: ActivatedRoute
+    ) { }
 
   closeModal() {
     /* istanbul ignore else */
     if (_.get(this.modal.deny)) {
       this.modal.deny();
     }
+
+    this.logInteractTelemetry();
+  }
+
+  logInteractTelemetry() {
+    const interactData: IInteractEventInput = {
+      context: {
+        cdata: [{ id: 'course-completion', type: 'Feature' }],
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'close-course-completion-modal',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   ngOnDestroy() {
