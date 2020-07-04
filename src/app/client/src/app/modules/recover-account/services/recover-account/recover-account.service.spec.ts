@@ -73,7 +73,7 @@ describe('RecoverAccountService', () => {
       };
       spyOn(learnerService, 'post').and.returnValue(observableOf({}));
       certificateService.fuzzyUserSearch(params);
-      const options = { url: 'user/v1/fuzzy/search', data: params };
+      const options = { url: 'user/v1/fuzzy/search?captchaResponse=undefined', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 });
