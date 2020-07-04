@@ -69,7 +69,6 @@
     <div class="sb-modal-content" *ngIf="showAllBatchList">
         <div class="join-batch">
             <div class="join-batch__heading">
-                {{showError}}
                 <span>Available batches</span>
                 <span>Created by</span>
             </div>
@@ -135,6 +134,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="content my-15" *ngIf="batchList.length <= 0">
+                        <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+                    </div>
                 </div>
                 <div *ngIf="showError">
                     <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
@@ -143,8 +145,7 @@
                     <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
                         [telemetryInteractObject]="courseInteractObject" (click)="createBatch()"
                         *ngIf="showCreateBatch()" appTelemetryInteract
-                        [telemetryInteractEdata]="createBatchIntractEdata"><i
-                            class="add icon"></i>{{resourceService.frmelmnts.lbl.createbatch}}</button>
+                        [telemetryInteractEdata]="createBatchIntractEdata">{{resourceService.frmelmnts.lbl.createbatch}}</button>
                 </div>
             </div>
         </div>

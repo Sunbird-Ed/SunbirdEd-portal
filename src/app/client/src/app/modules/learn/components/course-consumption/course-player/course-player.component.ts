@@ -63,6 +63,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   shareLinkModal = false;
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
+  progress = 0;
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   constructor(
@@ -174,7 +175,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
-      .subscribe(courseProgressData => this.courseProgressData = courseProgressData);
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+      });
   }
 
   private parseChildContent() {

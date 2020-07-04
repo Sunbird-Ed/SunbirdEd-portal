@@ -35,10 +35,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showCopyLoader = false;
   onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
+  startIntractEdata: IInteractEventEdata;
   resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
-  enrolledCourse: boolean;
+  enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR'];
   courseId: string;
@@ -79,6 +80,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
+        this.startIntractEdata = {
+          id: 'course-start',
+          type: 'click',
+          pageid: 'course-consumption'
+        };
         this.resumeIntractEdata = {
           id: 'course-resume',
           type: 'click',
