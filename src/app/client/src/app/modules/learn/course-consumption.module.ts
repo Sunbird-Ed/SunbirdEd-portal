@@ -18,6 +18,8 @@ import { BatchDetailsComponent,  } from './components/batch/batch-details/batch-
 import { UnEnrollBatchComponent} from './components/batch/unenroll-batch/unenroll-batch.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
+import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { AssessmentPlayerComponent } from './components/course-consumption/asses
   ],
   // providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
-    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent, AssessmentPlayerComponent]
+    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent, AssessmentPlayerComponent,
+    CourseDetailsComponent]
 })
 export class CourseConsumptionModule { }

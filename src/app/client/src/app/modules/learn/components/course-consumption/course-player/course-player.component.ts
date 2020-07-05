@@ -36,7 +36,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public playerConfig: any;
   public loader = true;
   public courseHierarchy: any;
-  public readMore = false;
   public istrustedClickXurl = false;
   public telemetryCourseImpression: IImpressionEventInput;
   public telemetryContentImpression: IImpressionEventInput;
