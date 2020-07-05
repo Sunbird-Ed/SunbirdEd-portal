@@ -51,16 +51,12 @@
                 </div>
               </section>
             </div>
-
           </div>
-          <!-- Here the player accordions end-->
-
         </div>
 
         <!-- Course details displayed on bottom when course is enrolled -->
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="enrolledCourse"></app-course-details>
 
-        
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
@@ -96,24 +92,43 @@
   </div>
 </div>
 
-
-
-
-
-<!-- Join Course for explore-course-->
-<sui-modal *ngIf="showJoinModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #modal>
+<router-outlet></router-outlet>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
+  *ngIf="showJoinTrainingModal" #joinTrainingModal>
+  <!--Header-->
   <div class="sb-modal-header">
-    Access Course
+    {{resourceService?.frmelmnts?.btn?.enroll}}
   </div>
-  <div class="sb-modal-content sb-join-modal-content">
-    <div class="fsmall px-0 py-8">
-      To access the course player you have to login and join it
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{resourceService?.frmelmnts?.lbl?.joinTrainingToAcessContent}}</p>
     </div>
   </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showSmallModal = !showSmallModal">
-      Join Course
-    </button>
-  </div>
+  <!--/Content-->
 </sui-modal>
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="closeSharePopup('close-share-link-popup')">
+</app-share-link>
+
+<!-- new UI -->
+<div class="sb-bg-color-gray-0 textbook-container hide">
+  <div class="ui container">
+    <div class="textbook py-16 d-flex flex-ai-center">
+      <div class="textbook__details d-flex flex-ai-center">
+        <img src="./assets/images/book.png" class="textbook__bookimg" alt="textbook">
+        <div class="ml-8 textbook__heading">
+          <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS
+          </h5>
+          <div class="textbook__rating">
+            <sui-rating class="star mini" [ngModel]="4" [maximum]="5"></sui-rating>
+          </div>
+        </div>
+      </div>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">Add to Group</button>
+    </div>
+  </div>
+</div>

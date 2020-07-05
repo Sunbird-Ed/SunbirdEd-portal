@@ -1,6 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
-
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-course-details',
@@ -10,5 +8,4 @@ import { ResourceService } from '@sunbird/shared';
 export class CourseDetailsComponent {
   @Input() courseHierarchy: any;
   readMore = false;
-  constructor(public resourceService: ResourceService) { }
 }

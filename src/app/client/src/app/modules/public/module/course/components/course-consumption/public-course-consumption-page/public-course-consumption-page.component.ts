@@ -10,7 +10,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
   templateUrl: './public-course-consumption-page.component.html',
-  styleUrls: ['./public-course-consumption-page.component.css']
+  styleUrls: ['./public-course-consumption-page.component.scss']
 })
 export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseId: string;
@@ -31,6 +31,10 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
     private resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService, private telemetryService: TelemetryService) {
+  }
+
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {

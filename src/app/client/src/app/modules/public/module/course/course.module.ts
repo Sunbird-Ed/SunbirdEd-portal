@@ -10,7 +10,7 @@ import { PublicCourseComponent, PublicCourseConsumptionPageComponent,
   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
-import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
+import { CourseConsumptionService, CourseBatchService, CourseProgressService, CourseDetailsComponent } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
@@ -34,6 +34,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
   declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,
-    PublicCoursePlayerComponent, PublicBatchDetailsComponent ]
+    PublicCoursePlayerComponent, PublicBatchDetailsComponent, CourseDetailsComponent ]
 })
 export class CourseModule { }
