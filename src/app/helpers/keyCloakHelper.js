@@ -8,6 +8,7 @@ const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
 const logger = require('sb_logger_util_v2');
+const { logErr, logDebug, logInfo} = require('./utilityService.js');
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
@@ -30,7 +31,7 @@ const authenticated = function (request, next) {
     var userId = request.kauth.grant.access_token.content.sub.split(':')
     request.session.userId = userId[userId.length - 1];
   } catch (err) {
-    console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
+    logErr(req, err, 'userId conversation error');
   }
   const postLoginRequest = [];
   postLoginRequest.push(function (callback) {
@@ -46,10 +47,10 @@ const authenticated = function (request, next) {
   telemetryHelper.logSessionStart(request);
   async.series(postLoginRequest, function (err, results) {
     if (err) {
-      logger.error({msg: 'error loggin in user', error: err});
+      logErr(request, err, 'error loggin in user');
       next(err, null);
     } else {
-      logger.error({msg: 'keycloack authenticated successfully'});
+      logErr(request, err, 'keycloack authenticated successfully');
       next(null, 'loggedin');
     }
   })

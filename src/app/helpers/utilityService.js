@@ -106,14 +106,13 @@ const decodeNChkTime = (encryptedData) => {
  * Later we can log telemetry error events from here
  */
 const logError = (req, err, msg) => {
-  logger.error({
-    URL: req.url,
-    body: JSON.stringify(req.body),
-    uuid: _.get(req,'headers.x-msgid'),
-    did:_.get(req,'headers.x-device-id'),
-    msg: '[Portal]: ' + msg,
-    error: JSON.stringify(err)
-  });
+  logger.error( getLogObj(req, err, msg))
+}
+
+const errorToString = (err) => {
+ var result = _.pick(err, ['name', 'message', 'error.name', 'error.statusCode', 'error.message', 'error.error', 'error.stacktrace', 'error.response.request.method', 'error.response.request.uri.params', 'error.response.request.uri.query', 'error.response.statusCode', 'error.response.body']);
+  var resultStr = JSON.stringify(result);
+  return resultStr;
 }
 
 const logInfo = (req, err, msg) => {
@@ -133,11 +132,13 @@ const getLogObj = (req, err, msg) => {
     did: _.get(req, 'headers.x-device-id'),
     ts: _.get(req, 'headers.ts'),
     url: _.get(req, 'originalUrl'),
-    uid: _.get(req, 'headers.x-msgid'),
+    uid: _.get(req, 'headers.x-msgid'), 
     sid: _.get(req, 'sessionID'),
     msg: msg ? msg : 'Unavailable',
-    error: JSON.stringify(err) ? JSON.stringify(err) : 'Unavailable'
   }
+  if(err && !_.isEmpty(err)) {
+    logObj.error = errorToString(err);
+  };
   return logObj;
 }
 
