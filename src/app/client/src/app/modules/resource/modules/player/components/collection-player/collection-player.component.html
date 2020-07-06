@@ -52,7 +52,7 @@
               {{resourceService?.frmelmnts?.btn?.cancel}}
               </button>
               
-              <button type="button"  appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
+              <button [ngClass]="{ 'sb-btn-disabled': !enableCreateButton }" [disabled]="!enableCreateButton" type="button"  appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
               href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked" appPermission
               [permission]="['CONTENT_CREATOR']" (click)="createCourse()" class="sb-btn sb-btn-normal sb-btn-primary">
               {{resourceService?.frmelmnts?.btn?.createCourse}}
@@ -102,7 +102,7 @@
           <div [hidden]="isSelectChapter" class="main-side-toc-content">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked" [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
-              (noContent)="showNoContent($event)" appTelemetryInteract [telemetryInteractEdata]="tocTelemetryInteractEdata"></sb-toc-item>
+              (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract [telemetryInteractEdata]="tocTelemetryInteractEdata"></sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">
             <span>

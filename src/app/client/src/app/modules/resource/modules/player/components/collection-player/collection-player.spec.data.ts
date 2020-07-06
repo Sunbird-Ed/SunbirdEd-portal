@@ -2019,5 +2019,40 @@ export const CollectionHierarchyGetMockResponse = {
           'visibility': 'Parent',
           'selected': false
         }]
-      }
+      },
+      enableButtonCollectionData:  {
+        identifier: 'do_112598807704158208111',
+        name: 'Demo course',
+        description: '',
+        framework: 'NCFCOPY',
+        children: [{
+          'parent': 'do_11303070829060915211',
+          'code': '8981daac-6d18-4322-81b3-5da1c284119b',
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'visibility': 'Parent',
+          'selected': true
+        }
+        ]
+    },
+    disbleButtonCollectionData:  {
+        identifier: 'do_112598807704158208111',
+        name: 'Demo course',
+        description: '',
+        framework: 'NCFCOPY',
+        children: [{
+          'parent': 'do_11303070829060915211',
+          'code': '8981daac-6d18-4322-81b3-5da1c284119b',
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'visibility': 'Parent',
+          'selected': false
+        },
+        {
+            'parent': 'do_11303070829060915211',
+            'code': '8981daac-6d18-4322-81b3-5da1c284119b',
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'visibility': 'Parent',
+            'selected': false
+          }
+        ]
+    }
 };

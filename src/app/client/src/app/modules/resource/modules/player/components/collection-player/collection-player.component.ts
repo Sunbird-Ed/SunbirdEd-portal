@@ -133,6 +133,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   showLoader = true;
   isCopyAsCourseClicked: Boolean =  false;
   selectAll: Boolean = false;
+  enableCreateButton: Boolean = false;
 
   constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -524,6 +525,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   clearSelection() {
     this.isCopyAsCourseClicked = !this.isCopyAsCourseClicked;
     this.selectAll = false;
+    this.enableCreateButton = false;
     this.collectionData['children'].forEach(item => {
       item.selected = false;
     });
@@ -599,6 +601,21 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
     });
+  }
+
+  /**
+   * @since #SH-362
+   * @param  {} event
+   * @description - this method will handle the enable/disable of create course button.
+   */
+  handleSelectedItem(event) {
+    let selectedItem = 0;
+    this.collectionData['children'].forEach(item => {
+      if (item.selected === true) {
+        selectedItem ++;
+      }
+    });
+    this.enableCreateButton = selectedItem > 0 ? true : false;
   }
 }
 

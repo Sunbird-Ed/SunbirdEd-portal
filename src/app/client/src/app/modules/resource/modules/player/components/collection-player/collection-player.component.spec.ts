@@ -184,6 +184,7 @@ describe('CollectionPlayerComponent', () => {
     component.clearSelection();
     expect(component.isCopyAsCourseClicked).toBe(false);
     expect(component.selectAll).toBe(false);
+    expect(component.enableCreateButton).toBe(false);
     expect(component.collectionData).toEqual(CollectionHierarchyGetMockResponse.copyContentDataAfterClear);
   });
 
@@ -232,5 +233,19 @@ describe('CollectionPlayerComponent', () => {
     component.copyContent(contentData);
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
+  });
+
+  it('should enable create course button', () => {
+    const event = {};
+    component.collectionData = CollectionHierarchyGetMockResponse.enableButtonCollectionData;
+    component.handleSelectedItem(event);
+    expect(component.enableCreateButton).toBe(true);
+  });
+
+  it('should disable create course button', () => {
+    const event = {};
+    component.collectionData = CollectionHierarchyGetMockResponse.disbleButtonCollectionData;
+    component.handleSelectedItem(event);
+    expect(component.enableCreateButton).toBe(false);
   });
 });
