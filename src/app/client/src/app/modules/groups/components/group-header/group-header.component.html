@@ -13,7 +13,9 @@
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="isMemberPopup(true)">
-          <img src="./assets/images/info-icon-blue.svg" width="20">
+          <i class="icon-svg icon-svg--sm icon-info" (click)="showModal=true"><svg class="icon icon-svg--primary">
+            <use xlink:href="./assets/images/sprite.svg#info"></use>
+          </svg></i>
         </button>
         <div class="kabab-menu" id="group-actions"  (click)="dropdownMenu()"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">

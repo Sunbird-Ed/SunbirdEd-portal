@@ -17,17 +17,34 @@
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    max-width:calculateRem(480px);
     width:calc(100% - 48px);
-    height:calc(100vh - 100px);
-    @include respond-above(sm){
-      max-height:calculateRem(490px);
-    }
+    height:calc(100vh - 48px);
+    overflow-y: auto;
     text-align:center;
     margin:0 auto;
-    padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+    padding: calculateRem(24px);
     border-radius:calculateRem(8px);
-
+    &--sm {
+      max-width:calculateRem(480px);
+    @include respond-above(sm){
+      max-height:calculateRem(490px);
+      padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+    }
+    }
+    &--md {
+      max-width:calculateRem(720px);
+      @include respond-above(sm){
+        height:auto;
+        padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+      }
+    }
+    &--large {
+      max-width:calculateRem(1024px);
+      height:auto;
+      @include respond-above(sm){
+        padding: calculateRem(32px) calculateRem(48px) calculateRem(24px) calculateRem(48px);
+      }
+    }
   }
 
   /* can be remove, comes from CC */
