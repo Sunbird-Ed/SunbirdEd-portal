@@ -8,8 +8,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
-import { NavigationHelperService, ResourceService, SharedModule, ToasterService,
-  ContentUtilsServiceService } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, SharedModule, ToasterService,
+  ContentUtilsServiceService
+} from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -368,7 +370,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
     component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
@@ -379,11 +381,50 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
     component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
       expect(response).toBeFalsy();
       expect(component.isFullScreenView).toBeFalsy();
     });
   });
+
+  it('should check for course completion', () => {
+    spyOn(component, 'getCourseCompletionStatus');
+    component.onRatingPopupClose();
+    expect(component.getCourseCompletionStatus).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    const param = {
+      identifier: 'do_123232534312',
+      contentType: 'Course',
+      pkgVersion: 1.0
+    };
+    component.setTelemetryShareData(param);
+    expect(component.telemetryShareData).toBeDefined();
+  });
+
+  it('should check for course Completion', () => {
+    component.isCourseCompleted = false;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+
+    const response = {
+      content: [
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_232343', status: 2 }, { identifier: 'do_45454', status: 2 }
+      ]
+    };
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    component.getCourseCompletionStatus(true);
+    expect(component.isCourseCompleted).toBe(true);
+    expect(component.showCourseCompleteMessage).toBe(true);
+  });
+
 });

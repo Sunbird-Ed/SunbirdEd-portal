@@ -50,6 +50,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   shareLinkModal: boolean;
   isUnitCompleted = false;
   isFullScreenView = false;
+  isCourseCompleted = false;
+  showCourseCompleteMessage = false;
+  parentCourse;
 
   constructor(
     public resourceService: ResourceService,
@@ -106,6 +109,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
+              this.parentCourse = data.courseHierarchy;
+              this.getCourseCompletionStatus();
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -154,6 +159,31 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     }));
   }
 
+  getCourseCompletionStatus(showPopup: boolean = false) {
+    /* istanbul ignore else */
+    if (!this.isCourseCompleted) {
+      const req = this.getContentStateRequest(this.parentCourse);
+      this.courseConsumptionService.getContentState(req)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(res => {
+          /* istanbul ignore else */
+          if (_.get(res, 'content.length')) {
+            this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+          }
+
+        }, err => console.error(err, 'content read api failed'));
+    }
+  }
+
+  getContentStateRequest(course: any) {
+    return {
+      userId: this.userService.userid,
+      courseId: this.courseId,
+      contentIds: this.courseConsumptionService.parseChildren(course),
+      batchId: this.batchId
+    };
+  }
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
     if (_.get(this.courseHierarchy, 'children')) {
       const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
@@ -220,12 +250,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    const req = {
-      userId: this.userService.userid,
-      courseId: this.courseId,
-      contentIds: this.courseConsumptionService.parseChildren(this.courseHierarchy),
-      batchId: this.batchId
-    };
+    const req = this.getContentStateRequest(this.courseHierarchy);
     this.courseConsumptionService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
@@ -476,6 +501,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.shareLink = this.contentUtilsServiceService.getCourseModulePublicShareUrl(this.courseId, this.collectionId);
     this.setTelemetryShareData(this.courseHierarchy);
   }
+
+  onRatingPopupClose() {
+    this.getCourseCompletionStatus(true);
+  }
+
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,

@@ -1,4 +1,4 @@
-<div class="flex-dc mt-48 sb-group-container" *ngIf="!groupList.length">
+<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupList.length">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
@@ -6,7 +6,9 @@
      </div>
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
       (click)="showCreateFormModal()">
-      <img src="./assets/images/Group-4.svg" width="24" height="24" class="mr-4">
+      <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
+        <use xlink:href="./assets/images/sprite.svg#groups"></use>
+      </svg></i>
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
   </div>
@@ -22,11 +24,15 @@
           <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mr-8" appTelemetryInteract
             [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject"
             type="button" (click)="showCreateFormModal()">
-            <img src="./assets/images/Group-4.svg" width="24" class="mr-4" />
+            <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
+              <use xlink:href="./assets/images/sprite.svg#groups"></use>
+            </svg></i>
             {{ resourceService?.frmelmnts?.lbl?.createGroup }}
           </button>
           <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup()">
-            <img src="./assets/images/info-icon-blue.svg" width="20" >
+            <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#info"></use>
+            </svg></i>
           </button>
         </div>
       </div>

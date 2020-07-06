@@ -51,8 +51,9 @@
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
                     title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}" *ngIf="!hideHeader">
-                    <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
-                    <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
+                    <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                      <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
+                    </svg></i>
                     <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
                 </button>
                 <!--/QR Button-->
@@ -99,8 +100,9 @@
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
                 [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
-                <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
-                <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
+                <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                  <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
+                </svg></i>
                 <span class="d-flex flex-ai-center">
                     {{resourceService.frmelmnts?.lbl?.enterQrCode}}
                 </span>

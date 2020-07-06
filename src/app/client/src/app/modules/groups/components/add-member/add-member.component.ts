@@ -16,7 +16,7 @@ export class AddMemberComponent implements OnInit {
   public  membersList = [
     {identifier: '1', initial: 'A', title: 'Abc', isAdmin: false,  isMenu: false, indexOfMember: 1}
   ];
-  config = {size: 'small', isBold: true, isSelectable: false, view: 'horizontal'};
+  config = {size: 'medium', isBold: true, isSelectable: false, view: 'horizontal'};
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
