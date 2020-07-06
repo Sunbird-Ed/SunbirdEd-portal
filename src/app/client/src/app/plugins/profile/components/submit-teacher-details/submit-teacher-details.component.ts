@@ -483,7 +483,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
+    this.searchService.getOrganisationDetails({
+      locationIds: [_.get(this.userDetailsForm, 'value.state.id')],
+      isRootOrg: true
+    }).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(
         (orgData: any) => {
