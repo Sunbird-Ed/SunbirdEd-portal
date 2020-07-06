@@ -43,7 +43,7 @@ logger.init({
 logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
 
 const app = express()
-app.use('/google/auth/callback', (req, res, next) => {
+app.use('/google/auth/callback', (req, res, next) => { // added to debug 504 issue
   req.reqId = uuid();
   logger.info({
     msg: 'google auth callback reached portal', 
