@@ -123,7 +123,7 @@
               <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
-                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-player>
+                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" (ratingPopupClose)="onRatingPopupClose()"></app-player>
               </div>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
@@ -176,3 +176,4 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">
 </app-share-link>
+<app-course-completion *ngIf="showCourseCompleteMessage"></app-course-completion>
