@@ -14,14 +14,14 @@
 
       <div class="d-flex flex-ai-center">
         <!-- Previous module button -->
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn">
-          <i class="chevron left icon mr-4"></i>Prev Module
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule" (click)="navigateToPlayerPage(prevModule)">
+          <i class="chevron left icon mr-4" ></i>Prev module
         </button>
         <!-- Previous Module button -->
-        <div class="modulebtn-divider"></div>
+        <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
         <!-- Next Module button -->
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn">
-          Next Module<i class="chevron right icon ml-4"></i>
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf= "nextModule" (click)="navigateToPlayerPage(nextModule)">
+          Next module<i class="chevron right icon ml-4"></i>
         </button>
         <!-- Next Module button -->
       </div>
@@ -76,8 +76,7 @@
               <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
               </h5>
               <!-- Textbook Rating with share icon -->
-              <div class="textbook__rating mt-4">
-                
+              <div class="textbook__rating mt-4">               
   
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
@@ -106,6 +105,18 @@
   </div>
 
 
+<!-- check the telemetry in prev and next module -->
+  <!-- <div *ngFor="let item of parentCourse?.children; let index = index">
+    <div class="d-flex flex-ai-center flex-jc-space-between py-8">
+      <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}} = {{item.identifier}}</h5>
+      <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
+        *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
+        class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+      <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
+        *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
+        class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
+        </div>
+        </div> -->
 
 
 
@@ -114,7 +125,7 @@
 
 
   <!-- CC-Player Video -->
-  <div class="ui container">
+   <div class="ui container">
     <div class="cc-player sb-g">
       <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column">
         <div class="toc-content text-left">
@@ -168,7 +179,7 @@
         </div>
       </section>
     </div>
-  </div>
+  </div> 
 </div>
 <div class="ui container py-16" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>

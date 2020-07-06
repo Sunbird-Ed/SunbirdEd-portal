@@ -16,21 +16,23 @@
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
 
         <div class="training-modules my-16">
+          <h4 class="sb-pageSection-title sb-pageSection-title-light">
+            {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
 
           <!-- Here the player accordions -->
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <div class="d-flex flex-ai-center flex-jc-space-between py-8">
               <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-              <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
+              <!-- <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
                 *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
                 class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
               <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
                 *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
-                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
+                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button> -->
             </div>
             <div class="chapter-box sb-g">
-              <section class="sb-g-col-xs-12"
-                [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
+              <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12"
+                >
                 <sb-toc-curriculum
                   *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
                   [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')"
@@ -45,7 +47,7 @@
                     {{resourceService?.messages?.stmsg?.m0121}}</div>
                 </ng-template>
               </section>
-              <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
+              <!-- <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
                 <div class="sb-bg-color-white course-list-progress text-left">
                   <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
                   </div>
@@ -57,7 +59,7 @@
                     class="green course-list-progress__barholder mt-8">
                   </sui-progress>
                 </div>
-              </section>
+              </section> -->
             </div>
           </div>
         </div>
