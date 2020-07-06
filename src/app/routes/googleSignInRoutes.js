@@ -34,7 +34,7 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    logger.info({msg: 'google auth callback called'});
+    logger.info({msg: 'google auth callback called', reqId: req.reqId});
     const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
@@ -44,36 +44,36 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
-      logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
+      logger.info({msg: 'googleProfile fetched ' + JSON.stringify(googleProfile),  reqId: req.reqId});
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
+      logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist),  reqId: req.reqId});
       if (!isUserExist) {
-        logger.info({msg: 'creating new google user'});
+        logger.info({msg: 'creating new google user',  reqId: req.reqId});
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
         await utils.delay(GOOGLE_SIGN_IN_DELAY);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
-      logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
+      logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken),  reqId: req.reqId});
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      logger.info({msg: 'redirect url ' + redirectUrl});
-      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
+      logger.info({msg: 'redirect url ' + redirectUrl,  reqId: req.reqId});
+      logger.info({msg:'google sign in success', reqId: req.reqId, additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
+      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl},  reqId: req.reqId})
       logErrorEvent(req, errType, error);
     } finally {
-      logger.info({msg: 'redirecting to ' + redirectUrl});
+      logger.info({msg: 'redirecting to ' + redirectUrl,  reqId: req.reqId});
       res.redirect(redirectUrl || '/resources');
     }
   });
