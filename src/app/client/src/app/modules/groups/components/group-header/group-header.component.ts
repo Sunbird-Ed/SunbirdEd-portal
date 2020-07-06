@@ -36,7 +36,7 @@ export class GroupHeaderComponent implements OnInit {
 
   ngOnInit () {
     const user = _.find(this.groupData['members'], {userId: this.userService.userid});
-    this.isGroupAdmin = user.role === 'admin';
+    this.isGroupAdmin = _.get(user, 'role') === 'admin';
     this.creator = this.groupData['isAdmin'] ? 'You' : _.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}).name;
   }
 
