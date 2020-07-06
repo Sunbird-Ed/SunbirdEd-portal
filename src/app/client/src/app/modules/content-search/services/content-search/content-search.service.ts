@@ -17,7 +17,8 @@ export class ContentSearchService {
     board: [],
     medium: [],
     gradeLevel: [],
-    subject: []
+    subject: [],
+    publisher: []
   };
   get filters() {
     return _.cloneDeep(this._filters);
@@ -51,6 +52,9 @@ export class ContentSearchService {
         this._frameworkId = _.get(selectedBoard, 'identifier');
       } else {
         this._frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
+      }
+      if (_.get(channelDetails, 'result.channel.publisher')) {
+        this._filters.publisher = JSON.parse(_.get(channelDetails, 'result.channel.publisher'));
       }
       return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories);
     }), map(frameworkDetails => {

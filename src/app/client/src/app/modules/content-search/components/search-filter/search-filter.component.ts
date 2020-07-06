@@ -28,7 +28,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedOption: { label: string, value: string, selectedOption: string };
   public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
   public type: string;
-  public channel: any[] = [{name: 'NCERT', value: 'NCERT'}, {name: 'NCERT - 2', value: 'NCERT - 2'}];
+  public publisher: any[] = [];
 
   public boards: any[] = [];
   public mediums: any[] = [];
@@ -43,11 +43,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.type = this.optionLabel.Board;
-    this.optionData.push({
-      label: this.optionLabel.Publisher,
-      value: 'channel',
-      option: this.channel,
-    });
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
   }
@@ -77,6 +72,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       }
       if (filters && filters.hasOwnProperty('board')) {
         filters['board'] = _.sortBy(filters['board'], ["name"]);
+      }
+      if (filters && filters.hasOwnProperty('publisher')){
+        filters['publisher'] = _.get(filters, 'publisher');
       }
       this.filters = filters;
       this.updateBoardList();
@@ -110,6 +108,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       name: node.name,
       value: node.name,
     }));
+    if (_.get(this.filters, 'publisher')) {
+      this.optionData.push({
+        label: this.optionLabel.Publisher,
+        value: 'channel',
+        option: _.get(this.filters, 'publisher'),
+      });
+    }
     this.optionData.push({
       label: this.optionLabel.Board,
       value: 'board',
@@ -193,8 +198,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     };
     if (this.type === this.optionLabel.Publisher) {
       filters['channel'] = [_.get(this.selectedChannel, 'selectedOption')];
+      filters['ispublisher'] = true;
     } else {
       filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
+      filters['ispublisher'] = false;
     }
     return filters;
   }
