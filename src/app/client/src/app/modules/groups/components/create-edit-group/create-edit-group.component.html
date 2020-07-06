@@ -45,7 +45,9 @@
     <button *ngIf="!groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
     [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
     (click)="onSubmitForm()">
-     <img src="./assets/images/icon_group.svg" width="24px" height="24px" class="mr-4">
+    <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
+      <use xlink:href="./assets/images/sprite.svg#groups"></use>
+    </svg></i>
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
     <button *ngIf="groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center" type="button"
