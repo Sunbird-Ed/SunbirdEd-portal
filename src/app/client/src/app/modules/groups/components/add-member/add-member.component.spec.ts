@@ -41,8 +41,6 @@ describe('AddMemberComponent', () => {
     fixture = TestBed.createComponent(AddMemberComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    // {userId: '2', name: 'user 2',
-    // title: 'user 2', initial: 'u', identifier: '2', isAdmin: false, isCreator: false}
   });
 
   it('should create', () => {
