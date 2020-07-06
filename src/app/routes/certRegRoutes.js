@@ -5,6 +5,7 @@ const certRegURL = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const logger = require('sb_logger_util_v2')
+const { logErr, logDebug, logInfo} = require('../helpers/utilityService.js');
 
 var certRegServiceApi = {
   searchCertificate : 'certreg/v1/certs/search'
