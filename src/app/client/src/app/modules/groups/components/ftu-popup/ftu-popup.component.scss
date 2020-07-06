@@ -58,9 +58,14 @@
   }
 
 ::ng-deep {
-  .modal-custom-carousel.slick-slider .slick-list {
-    min-height: 460px !important;
-  }
+  .modal-custom-carousel.slick-slider {
+    .slick-list {
+      height: inherit !important;
+    }
+    .item-help.slick-slide, .slick-track {
+      // width:100% !important;
+    }
+  } 
 }
 
 .item-help .column-2 {
