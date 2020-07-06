@@ -2,7 +2,7 @@ import { CsLibInitializerService } from './../../../../service/CsLibInitializer/
 import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
-
+import * as _ from 'lodash-es';
 
 
 @Injectable({
@@ -17,6 +17,22 @@ export class GroupsService {
         this.csLibInitializerService.initializeCs();
       }
       this.groupCservice = CsModule.instance.groupService;
+  }
+
+  addFieldsToMember(members) {
+   const memberList = _.forEach(members, (member) => {
+      return this.addFields(member);
+    });
+    return memberList;
+  }
+
+  addFields(member) {
+    member.title = member.name || member.userName;
+    member.initial = member.title[0];
+    member.identifier = member.userId || member.identifier;
+    member.isAdmin = member.role === 'admin';
+    member.isCreator = member.userId === member.createdBy;
+    return member;
   }
 
   createGroup(groupData: IGroup) {

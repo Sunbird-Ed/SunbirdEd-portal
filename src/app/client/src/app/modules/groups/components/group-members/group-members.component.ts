@@ -59,15 +59,7 @@ export class GroupMembersComponent implements OnInit {
       });
 
       this.groupsService.membersList.subscribe(members => {
-        this.memberListToShow = [];
-        _.forEach(members, member => {
-          member.title = member.name || member.userName;
-          member.initial = member.title[0];
-          member.identifier = member.userId || member.identifier;
-          member.isAdmin = member.role === 'admin';
-          member.isCreator = member.userId === member.createdBy;
-          this.memberListToShow.push(member);
-        });
+        this.memberListToShow = members;
       });
   }
 

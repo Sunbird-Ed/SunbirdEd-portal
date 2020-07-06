@@ -79,5 +79,22 @@ describe('GroupsService', () => {
     expect(service['membersList'].emit).toHaveBeenCalledWith([{userId: '1', name: 'User'}]);
   });
 
+  it ('should return a member with added fields', () => {
+    const service = TestBed.get(GroupsService);
+    const data = service.addFields({userId: '1', role: 'admin', name: 'user'});
+    expect(data.userId).toEqual('1');
+    expect(data.title).toEqual('user');
+    expect(data.initial).toEqual('u');
+  });
+
+  it ('should call addFields()', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service, 'addFields').and.callThrough();
+    const data = service.addFieldsToMember ([{userId: '1', role: 'admin', name: 'user', createdBy: '1'}]);
+    expect(data[0]).toEqual({userId: '1', role: 'admin', name: 'user', createdBy: '1',
+    title: 'user', initial: 'u', identifier: '1', isAdmin: true, isCreator: true});
+    expect(service.addFields).toHaveBeenCalledTimes(1);
+  });
+
 });
 
