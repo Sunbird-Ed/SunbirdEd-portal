@@ -8,14 +8,17 @@ const proxyUtils = require('../proxy/proxyUtils.js');
 const logger = require('sb_logger_util_v2');
 const { encriptWithTime } = require('../helpers/crypto');
 const { decodeNChkTime } = require('../helpers/utilityService');
+const googleService = require('../helpers/googleService');
 
 module.exports = (app) => {
 
-  app.post('/learner/user/v1/fuzzy/search', proxy(envHelper.learner_Service_Local_BaseUrl, {
+  app.post('/learner/user/v1/fuzzy/search',
+  googleService.validateRecaptcha,
+  proxy(envHelper.learner_Service_Local_BaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
-      return '/private/user/v1/search';
+    return '/private/user/v1/search';
     }
   }))
 
