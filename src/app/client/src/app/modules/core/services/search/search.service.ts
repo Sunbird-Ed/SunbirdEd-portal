@@ -122,6 +122,9 @@ export class SearchService {
         }
       }
     };
+    if (requestParam.isRootOrg) {
+      option.data.request.filters['isRootOrg'] = requestParam.isRootOrg;
+    }
     return this.publicDataService.post(option).pipe(
       map((data: ServerResponse) => {
         this._searchedOrganisationList = data.result.response;

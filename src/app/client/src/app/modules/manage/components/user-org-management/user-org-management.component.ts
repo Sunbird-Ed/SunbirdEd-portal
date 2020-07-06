@@ -124,7 +124,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   fetchDeclaredUserDetails() {
     let channelName = _.get(this.userProfile, 'rootOrg.channel');
     if (channelName) {
-      channelName = channelName.toLowerCase() + '.csv';
+      channelName = channelName + '.csv';
       this.manageService.getData('declared_user_detail', channelName).subscribe(response => {
           const url = (_.get(response, 'result.signedUrl'));
           if (url) {
