@@ -61,26 +61,12 @@ export class IdentifyAccountComponent implements OnInit {
   }
   handleNext(captchaResponse?: string) {
     if (captchaResponse) {
-      this.disableFormSubmit = true;
-      this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
-        if (_.get(data, 'result.success')) {
-          this.initiateFuzzyUserSearch();
-        }
-      }, (error) => {
-        const telemetryErrorData = {
-          env: this.activatedRoute.snapshot.data.telemetry.env,
-          errorMessage: _.get(error, 'error.params.errmsg') || '',
-          errorType: 'SYSTEM', pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          stackTrace: JSON.stringify((error && error.error) || '')
-        };
-        this.telemetryService.generateErrorEvent(telemetryErrorData);
-        this.resetGoogleCaptcha();
-      });
+      this.initiateFuzzyUserSearch(captchaResponse);
     }
   }
 
-  initiateFuzzyUserSearch() {
-    this.recoverAccountService.fuzzyUserSearch(this.form.value).subscribe(response => {
+  initiateFuzzyUserSearch(captchaResponse?: string) {
+    this.recoverAccountService.fuzzyUserSearch(this.form.value, captchaResponse).subscribe(response => {
       if (_.get(response, 'result.response.count') > 0) { // both match
         this.navigateToNextStep(response);
       } else { // both dint match
@@ -91,6 +77,9 @@ export class IdentifyAccountComponent implements OnInit {
       this.resetGoogleCaptcha();
       if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
         this.identiferStatus = 'MATCHED';
+        this.handleError(error);
+      } else if (_.get(error, 'error.params.errmsg') && error.error.params.errmsg === 'CAPTCHA_VALIDATING_FAILED') {
+        this.identiferStatus = 'CAPTCHA_VALIDATING_FAILED';
         this.handleError(error);
       } else {
         this.identiferStatus = 'NOT_MATCHED';
