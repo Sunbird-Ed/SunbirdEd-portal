@@ -107,7 +107,7 @@ describe('GroupHeaderComponent', () => {
 
   it ('show change dropdownMenuContent', () => {
     component.showMemberPopup = false;
-    component.isMemberPopup(true);
+    component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
   });
 

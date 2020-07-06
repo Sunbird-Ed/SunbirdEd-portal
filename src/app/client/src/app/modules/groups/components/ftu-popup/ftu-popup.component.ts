@@ -1,12 +1,12 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, Input, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-ftu-popup',
   templateUrl: './ftu-popup.component.html',
   styleUrls: ['./ftu-popup.component.scss']
 })
-export class FtuPopupComponent implements OnInit, AfterViewInit {
+export class FtuPopupComponent implements OnInit {
   @Input() showWelcomePopup;
   @Output() close = new EventEmitter();
 
@@ -18,20 +18,17 @@ export class FtuPopupComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.instance = this.resourceService.instance;
     this.slideConfig1 = {
-      // "lazyLoad": 'progressive',
-      "slidesToShow": 1,
-      "infinite": false,
-      "rtl": false,
-      "dots": true,
-      "adaptiveHeight": true
-      //"fade": true,
-      //"cssEase": 'linear',
-      // "autoplay": true,
-      // "autoplaySpeed": 2000
+      // 'lazyLoad': 'progressive',
+      'slidesToShow': 1,
+      'infinite': false,
+      'rtl': false,
+      'dots': true,
+      'adaptiveHeight': true
+      // 'fade': true,
+      // 'cssEase': 'linear',
+      // 'autoplay': true,
+      // 'autoplaySpeed': 2000
     };
-  }
-  ngAfterViewInit(){
- 
   }
 
   closeModal() {

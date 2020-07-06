@@ -1,5 +1,5 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
 
@@ -11,6 +11,7 @@ import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
 export class GroupsService {
   private groupCservice: any;
   private _groupData;
+  public membersList = new EventEmitter();
   constructor(private csLibInitializerService: CsLibInitializerService) {
       if (!CsModule.instance.isInitialised) {
         this.csLibInitializerService.initializeCs();
@@ -38,14 +39,19 @@ export class GroupsService {
     return this.groupCservice.deleteById(groupId);
   }
 
-  // addMemberById(memberId: string, groupId: string) {
-  //   return this.groupCservice.addMemberById(memberId, groupId);
-  // }
+  addMemberById(groupId: string, members) {
+    return this.groupCservice.addMembers(groupId, {members});
+  }
 
   set groupData(list) {
     this._groupData = list;
   }
+
   get groupData() {
     return this._groupData;
+  }
+
+  emitMembers(members) {
+    this.membersList.emit(members);
   }
 }

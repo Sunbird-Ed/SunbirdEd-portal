@@ -22,8 +22,10 @@ export class GroupHeaderComponent implements OnInit {
   showEditModal: boolean;
   creator: string;
   showMemberPopup = false;
+  isGroupAdmin = false;
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
-    private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService) {
+    private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
+    private userService: UserService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -33,6 +35,8 @@ export class GroupHeaderComponent implements OnInit {
   }
 
   ngOnInit () {
+    const user = _.find(this.groupData['members'], {userId: this.userService.userid});
+    this.isGroupAdmin = user.role === 'admin';
     this.creator = this.groupData['isAdmin'] ? 'You' : _.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}).name;
   }
 
@@ -63,7 +67,7 @@ export class GroupHeaderComponent implements OnInit {
     this.dropdownContent = !this.dropdownContent;
   }
 
-  isMemberPopup(visibility: boolean = false) {
+  toggleFtuModal(visibility: boolean = false) {
     this.showMemberPopup = visibility;
   }
 }

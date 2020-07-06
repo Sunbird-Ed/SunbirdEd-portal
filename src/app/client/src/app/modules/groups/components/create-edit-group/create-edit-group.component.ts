@@ -27,7 +27,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    this.groupDetails = this.groupService.groupData;
+    this.groupDetails = this.groupId ? this.groupService.groupData : {};
     this.initializeForm();
   }
 
