@@ -29,7 +29,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
-    private resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
+    public resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService, private telemetryService: TelemetryService) {
   }
 
