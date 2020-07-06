@@ -1,31 +1,3 @@
-<!-- Back Button Previous Module & Next Module button -->
-<div class="sb-bg-color-white relative position back-btn-container">
-  <div class="ui container">
-    <div class="py-8 d-flex flex-ai-center">
-      <!-- /* Back button */ -->
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-        {{resourceService?.frmelmnts?.btn?.back}}
-      </button>
-      <!-- Back button -->
-      <div class="d-flex flex-ai-center">
-        <!-- Previous module button -->
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn">
-          <i class="chevron left icon mr-4"></i>Prev Module
-        </button>
-        <!-- Previous Module button -->
-        <div class="modulebtn-divider"></div>
-        <!-- Next Module button -->
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn">
-          Next Module<i class="chevron right icon ml-4"></i>
-        </button>
-        <!-- Next Module button -->
-      </div>
-    </div>
-  </div>
-</div>
 <!-- Textbook details with continue playing and join course button -->
 <div class="textbook-container">
   <div class="ui container">
@@ -61,29 +33,22 @@
                 title="{{resourceService?.frmelmnts?.lbl?.copy}}">
                 <i class="blue clone outline icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
-              </button>
-
-              <!-- Info displaying if course is flagged -->
-              <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
-                {{resourceService?.messages?.imsg?.m0001}}</h6>
-
-              <!-- Info displaying if batch has expired -->
-              <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
-                {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}</h6>
+              </button>              
             </div>
           </div>
         </div>
 
+        <!-- Info displaying if course is flagged -->
+        <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
+          {{resourceService?.messages?.imsg?.m0001}}</h6>
+
+        <!-- Info displaying if batch has expired -->
+        <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
+          {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}</h6>
+
       </div>
 
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course" style="align-self: center;">
-        <!-- Module Progress bar -->
-        <div class="certified-course__progress" *ngIf="enableProgress">
-          <div class="fsmall">Module Progress</div>
-          <div class="sb-color-primary fnormal font-weight-bold mt-4">8/9 Completed</div>
-          <sui-progress [value]="8" [maximum]="9" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-        </div>
-
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"

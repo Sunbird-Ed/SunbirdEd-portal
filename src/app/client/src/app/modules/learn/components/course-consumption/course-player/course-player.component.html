@@ -4,10 +4,18 @@
     <div class="sb-course-details sb-g py-16">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
 
+        <!-- Course details for mobile view -->
+        <div class="sb-bg-color-white p-8 mb-16 mobile only">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
+          </div>
+        </div>
+
         <!-- Course details displayed on top when course is not enrolled -->
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
 
-        <div class="training-modules mt-16">
+        <div class="training-modules my-16">
 
           <!-- Here the player accordions -->
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
@@ -61,12 +69,12 @@
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
         <!-- Hide this if course does not contain certificate -->
-        <div class="sb-bg-color-white p-8 mb-16">
+        <div class="sb-bg-color-white p-8 mb-16 computer only">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
           </div>
-        </div>
+        </div>        
 
         <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse">

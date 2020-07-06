@@ -47,7 +47,8 @@
         width: calculateRem(48px);
         height: calculateRem(48px);
         img {
-            width: 100%;
+            width: calculateRem(48px);
+            height: calculateRem(48px);
         }
     }
 
@@ -64,6 +65,10 @@
     &__addbtn {
         white-space: nowrap;
     }
+}
+
+.sb-btn {
+ text-transform: none;
 }
 
 @include respond-below(sm) {

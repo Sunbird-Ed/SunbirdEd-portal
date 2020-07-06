@@ -108,11 +108,7 @@
     }
   }
 }
-::ng-deep {
-  .sb-modal .ui.modal .sb-join-modal-content.sb-modal-content {
-    min-height: auto;
-  }
-}
+
 @include respond-below(sm) {
   .certified-course__btn {
     margin-top: 8px;

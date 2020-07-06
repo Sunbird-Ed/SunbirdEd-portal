@@ -8,8 +8,8 @@
     <div class="sb-modal-content" *ngIf="showAllBatchList">
         <div class="join-batch">
             <div class="join-batch__heading">
-                <span>Available batches</span>
-                <span>Created by</span>
+                <div>Available batches</div>
+                <div>Created by</div>
             </div>
             <div class="join-batch__body" *ngFor="let batch of allBatchList">
                 <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
