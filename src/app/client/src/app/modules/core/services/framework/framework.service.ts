@@ -58,7 +58,7 @@ export class FrameworkService {
         }
       }
     }
-  private getChannel(hashTagId) {
+  public getChannel(hashTagId) {
     const channelOptions = {
       url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + hashTagId
     };

@@ -28,6 +28,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() hideElements = false;
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
+  @Input() hash: string;
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig: any;
@@ -410,7 +411,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   public getChartSummary() {
     const chartId = _.get(this.chartConfig, 'id');
     if (_.get(this.chartConfig, 'id')) {
-      return this.reportService.getLatestSummary({ reportId: this.activatedRoute.snapshot.params.reportId, chartId }).pipe(
+      return this.reportService.getLatestSummary({ reportId: this.activatedRoute.snapshot.params.reportId, chartId, ...(this.hash && { hash: this.hash }) }).pipe(
         map(chartSummary => {
           return _.map(chartSummary, summaryObj => {
             const summary = _.get(summaryObj, 'summary');

@@ -11,6 +11,10 @@
               <div class="d-flex flex-ai center mb-16">
                 <h2 class="mr-auto">
                   {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
+                  <button *ngIf="hash && reportService.isUserSuperAdmin()" type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i
+                      class="chevron circle right icon"></i>{{reportService.getParameterFromHash(hash)}}
+                  </button>
                   <div
                     [ngClass]="{'sb-label-error-0': report.status === 'retired', 'sb-label-success-0': report.status === 'live', 'sb-label-gray-0': report.status === 'draft'}"
                     *ngIf="isUserReportAdmin && !hideElements" class="sb-label sb-label-table hawkeye-label ml-16">
@@ -154,7 +158,7 @@
                     <app-data-chart
                       [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                       [chartInfo]="chart" [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
-                      (openAddSummaryModal)="openAddSummaryModal($event)">
+                      (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                     </app-data-chart>
                   </div>
                   <div class="ui warning message" *ngIf="!currentReport.charts.length">

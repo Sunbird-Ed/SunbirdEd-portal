@@ -208,7 +208,8 @@ export class SearchService {
           filters: requestParam.filters,
           limit: requestParam.limit,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
-          query: requestParam.query
+          query: requestParam.query,
+          ...(requestParam.fields && { fields: requestParam.fields })
         }
       }
     };
@@ -281,7 +282,7 @@ export class SearchService {
   * @param {SearchParam} requestParam api request data
  */
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
-    const offset = (requestParam.offset === 0 ||  requestParam.offset)
+    const offset = (requestParam.offset === 0 || requestParam.offset)
       ? requestParam.offset : (requestParam.pageNumber - 1) * requestParam.limit;
     const option = {
       url: this.config.urlConFig.URLS.BATCH.GET_BATCHS,
@@ -316,11 +317,11 @@ export class SearchService {
   processFilterData(facets) {
     const facetObj = {};
     _.forEach(facets, (value) => {
-        if (value) {
-            let data = {};
-            data = value.values;
-            facetObj[value.name] = data;
-        }
+      if (value) {
+        let data = {};
+        data = value.values;
+        facetObj[value.name] = data;
+      }
     });
     return facetObj;
   }
@@ -348,11 +349,11 @@ export class SearchService {
   }
 
 
-  set subjectThemeAndCourse (subjectData) {
+  set subjectThemeAndCourse(subjectData) {
     this._subjectThemeAndCourse = subjectData;
   }
 
-  get subjectThemeAndCourse () {
+  get subjectThemeAndCourse() {
     return this._subjectThemeAndCourse;
   }
 
@@ -364,11 +365,11 @@ export class SearchService {
       filters['channel'] = request.channelId;
     }
     const option = {
-        limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
-        filters: filters,
-        // mode: 'soft',
-        // facets: facets,
-        params: _.cloneDeep(this.config.appConfig.ExplorePage.contentApiQueryParams),
+      limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
+      filters: filters,
+      // mode: 'soft',
+      // facets: facets,
+      params: _.cloneDeep(this.config.appConfig.ExplorePage.contentApiQueryParams),
     };
     if (request.frameworkId) {
       option.params.framework = request.frameworkId;
@@ -377,62 +378,64 @@ export class SearchService {
   }
 
   getFilterValues(contents) {
-      let subjects = _.map(contents, content => {
-        return (_.get(content, 'subject'));
+    let subjects = _.map(contents, content => {
+      return (_.get(content, 'subject'));
+    });
+    subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
+      return ({
+        title: subject[0], count: subject.length === 1 ?
+          `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
+          : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: []
       });
-      subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
-      return ({ title: subject[0], count: subject.length === 1 ?
-        `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
-        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: [] });
-      });
+    });
 
-      _.map(contents, content => {
-        const matchedSubject =  _.find(subjects, subject => (_.trim(_.lowerCase(content.subject)) === _.trim(_.lowerCase(subject.title))));
-        if (matchedSubject) {
-          matchedSubject.contents.push(content);
-        }
-      });
+    _.map(contents, content => {
+      const matchedSubject = _.find(subjects, subject => (_.trim(_.lowerCase(content.subject)) === _.trim(_.lowerCase(subject.title))));
+      if (matchedSubject) {
+        matchedSubject.contents.push(content);
+      }
+    });
 
     return subjects;
   }
 
   getSubjectsStyles() {
     return {
-        Mathematics: {
-          background: '#FFDFD9',
-          titleColor: '#EA2E52',
-          icon: './../../../../../assets/images/sub_math.svg'
-        },
-        Science: {
-          background: '#FFD6EB',
-          titleColor: '#FD59B3',
-          icon: './../../../../../assets/images/sub_science.svg'
-        },
-        Social: {
-          background: '#DAD4FF',
-          titleColor: '#635CDC',
-          icon: './../../../../../assets/images/sub_social.svg'
-        },
-        English: {
-          background: '#DAFFD8',
-          titleColor: '#218432',
-          icon: './../../../../../assets/images/sub_english.svg'
-        },
-        Hindi: {
-          background: '#C2E2E9',
-          titleColor: '#07718A',
-          icon: './../../../../../assets/images/sub_hindi.svg'
-        },
-        Chemistry: {
-          background: '#FFE59B',
-          titleColor: '#8D6A00',
-          icon: './../../../../../assets/images/sub_chemistry.svg'
-        },
-        Geography: {
-          background: '#C2ECE6',
-          titleColor: '#149D88',
-          icon: './../../../../../assets/images/sub_geography.svg'
-        }
+      Mathematics: {
+        background: '#FFDFD9',
+        titleColor: '#EA2E52',
+        icon: './../../../../../assets/images/sub_math.svg'
+      },
+      Science: {
+        background: '#FFD6EB',
+        titleColor: '#FD59B3',
+        icon: './../../../../../assets/images/sub_science.svg'
+      },
+      Social: {
+        background: '#DAD4FF',
+        titleColor: '#635CDC',
+        icon: './../../../../../assets/images/sub_social.svg'
+      },
+      English: {
+        background: '#DAFFD8',
+        titleColor: '#218432',
+        icon: './../../../../../assets/images/sub_english.svg'
+      },
+      Hindi: {
+        background: '#C2E2E9',
+        titleColor: '#07718A',
+        icon: './../../../../../assets/images/sub_hindi.svg'
+      },
+      Chemistry: {
+        background: '#FFE59B',
+        titleColor: '#8D6A00',
+        icon: './../../../../../assets/images/sub_chemistry.svg'
+      },
+      Geography: {
+        background: '#C2ECE6',
+        titleColor: '#149D88',
+        icon: './../../../../../assets/images/sub_geography.svg'
+      }
     };
   }
 

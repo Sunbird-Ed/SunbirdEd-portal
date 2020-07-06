@@ -1,21 +1,23 @@
 import { CourseProgressService } from './../course-progress/course-progress.service';
 import { IListReportsFilter, IReportsApiResponse, IDataSource } from './../../interfaces';
 import { ConfigService, IUserData } from '@sunbird/shared';
-import { UserService, BaseReportService, PermissionService } from '@sunbird/core';
+import { UserService, BaseReportService, PermissionService, SearchService, FrameworkService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
-import { map, catchError, pluck, mergeMap } from 'rxjs/operators';
+import { map, catchError, pluck, mergeMap, share } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
 import * as moment from 'moment';
+
+const PRE_DEFINED_PARAMETERS = ["$slug"];
 
 @Injectable()
 export class ReportService {
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
-    private courseProgressService: CourseProgressService) { }
+    private courseProgressService: CourseProgressService, private searchService: SearchService, private frameworkService: FrameworkService) { }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
     return this.usageService.getData(filePath).pipe(
@@ -56,10 +58,13 @@ export class ReportService {
     );
   }
 
-  public fetchReportById(id): Observable<IReportsApiResponse> {
+  public fetchReportById(id, hash?: string): Observable<IReportsApiResponse> {
     const req = {
       url: `${this.configService.urlConFig.URLS.REPORT.READ}/${id}`
     };
+    if (hash) {
+      req.url = `${this.configService.urlConFig.URLS.REPORT.READ}/${id}/${hash}`;
+    }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
     );
@@ -71,10 +76,13 @@ export class ReportService {
    * @returns
    * @memberof ReportService
    */
-  public publishReport(reportId: string) {
+  public publishReport(reportId: string, hash?: string) {
     const req = {
       url: `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}`
     };
+    if (hash) {
+      req.url = `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}/${hash}`
+    }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
     );
@@ -86,10 +94,13 @@ export class ReportService {
    * @returns
    * @memberof ReportService
    */
-  public retireReport(reportId: string) {
+  public retireReport(reportId: string, hash?: string) {
     const req = {
       url: `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}`
     };
+    if (hash) {
+      req.url = `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}/${hash}`
+    }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
     );
@@ -260,6 +271,11 @@ export class ReportService {
     return false;
   }
 
+  public isUserSuperAdmin(): boolean {
+    if (!this.isUserReportAdmin()) return false;
+    return _.get(this.userService, 'userProfile.rootOrg.slug') === 'sunbird'
+  }
+
   public transformHTML(data: any) {
     return this.sanitizer.bypassSecurityTrustHtml(data);
   }
@@ -273,6 +289,7 @@ export class ReportService {
       reportid: reportId,
       createdby: this.userService.userid,
       summary: summaryDetails.summary,
+      ...(summaryDetails.hash && { param_hash: summaryDetails.hash }),
       ...(type === 'chart' && { chartid: summaryDetails.chartId })
     };
     return this.addSummary(reqBody);
@@ -314,14 +331,83 @@ export class ReportService {
   /**
    * @description calls the API to fetch latest report and chart level summary
    */
-  public getLatestSummary({ reportId, chartId = null }): Observable<any> {
-    const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
+  public getLatestSummary({ reportId, chartId = null, hash = null }): Observable<any> {
+    let url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
     const req = {
       url: chartId ? `${url}/${chartId}` : url
     };
+    if (hash) req.url = `${req.url}?hash=${hash}`;
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result.summaries')),
       catchError(err => of([]))
     );
+  }
+
+
+  public getParameterValues(parameter: string) {
+    const parameterMappings = {
+      $slug: {
+        value: _.get(this.userService, 'userProfile.rootOrg.slug'),
+        masterData: () => {
+          const req = {
+            filters: { isRootOrg: true },
+            fields: ["id", "channel", "slug", "orgName"],
+            pageNumber: 1,
+            limit: 2000
+          };
+          return this.searchService.orgSearch(req).pipe(
+            map(res => _.map(_.get(res, 'result.response.content'), "slug"))
+          )
+        }
+      },
+      $board: {
+        value: _.get(this.userService, 'userProfile.framework.board')[0],
+        masterData: () => {
+          return this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
+            .pipe(
+              mergeMap(channel => this.frameworkService.getFrameworkCategories(_.get(channel, 'result.channel.defaultFramework'))
+                .pipe(
+                  map(framework => {
+                    const frameworkData = _.get(framework, 'result.framework');
+                    const boardCategory = _.find(frameworkData.categories, ["code", "board"]);
+                    if (!boardCategory) return of([]);
+                    return _.map(boardCategory.terms, "name");
+                  }),
+                  share(),
+                )),
+              catchError(err => of([]))
+            )
+        }
+      }
+    }
+
+    return parameterMappings[parameter];
+  }
+
+  public getParametersHash = (report: { parameters: string[] }) => {
+    const parameters = _.get(report, 'parameters');
+    return btoa(_.join(_.map(parameters, param => {
+      return _.replace(param, _.toLower(param), this.getParameterValues(param).value);
+    }), "__"));
+  }
+
+  private getParameterFromHash = (hash: string) => {
+    return _.split(atob(hash), "__");
+  }
+
+  public isReportParameterized = report => _.get(report, 'parameters.length') > 0 && _.isArray(report.parameters) && _.get(report, 'isParameterized');
+
+  public resolveParameterizedPath(path: string, explicitValue?: string): string {
+    return _.reduce(PRE_DEFINED_PARAMETERS, (result: string, parameter: string) => {
+      if (_.includes(result, parameter) && this.getParameterValues(parameter)) {
+        result = _.replace(result, parameter, explicitValue || this.getParameterValues(parameter).value);
+      }
+      return result;
+    }, path);
+  }
+
+  public getUpdatedParameterizedPath(dataSources: IDataSource[], hash?: string) {
+    const explicitValue = hash ? this.getParameterFromHash(hash) : null;
+    return _.map(dataSources, (dataSource: IDataSource) => ({ id: dataSource.id, path: this.resolveParameterizedPath(dataSource.path, explicitValue) }))
   }
 }

@@ -41,6 +41,19 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public showComponent = true;
   public showConfirmationModal = false;
   public confirmationPopupInput: { title: string, event: 'retire' | 'publish', body: string };
+  private materializedReport: boolean = false;
+  private hash: string;
+  private set setMaterializedReportStatus(val: string) {
+    this.materializedReport = (val === "true");
+  };
+
+  private set setParametersHash(report) {
+    const { hash } = this.activatedRoute.snapshot.params;
+    this.hash = hash;
+    if (this.reportService.isReportParameterized(report) && !this.reportService.isUserSuperAdmin()) {
+      this.hash = this.reportService.getParametersHash(this.report);
+    }
+  }
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -48,12 +61,13 @@ export class ReportComponent implements OnInit, AfterViewInit {
     private router: Router) { }
 
   ngOnInit() {
-    const reportId: string = this.activatedRoute.snapshot.params.reportId;
+    const { reportId, hash } = this.activatedRoute.snapshot.params;
+    this.setMaterializedReportStatus = this.activatedRoute.snapshot.queryParams.materialize;
     this.report$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
         this.noResult = false;
         this.hideElements = false;
-        return isAuthenticated ? this.renderReport(reportId) : throwError({ messageText: 'messages.stmsg.m0144' });
+        return isAuthenticated ? this.renderReport(reportId, hash) : throwError({ messageText: 'messages.stmsg.m0144' });
       }),
       catchError(err => {
         console.error('Error while rendering report', err);
@@ -71,8 +85,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @description fetches a report by its report id
    * @param reportId
    */
-  private fetchConfig(reportId): Observable<any> {
-    return this.reportService.fetchReportById(reportId).pipe(
+  private fetchConfig(reportId, hash?: string): Observable<any> {
+    if (this.materializedReport) hash = null;
+    return this.reportService.fetchReportById(reportId, hash).pipe(
       mergeMap(apiResponse => {
         const report = _.get(apiResponse, 'reports');
         return report ? of(_.head(report)) : throwError('No report found');
@@ -84,8 +99,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @description This function fetches config file, datasource and prepares chart and tables data from it.
    * @param reportId
    */
-  private renderReport(reportId: string) {
-    return this.fetchConfig(reportId)
+  private renderReport(reportId: string, hash?: string) {
+    return this.fetchConfig(reportId, hash)
       .pipe(
         switchMap(report => {
           const isUserReportAdmin = this.isUserReportAdmin = this.reportService.isUserReportAdmin();
@@ -93,10 +108,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
+            this.setParametersHash = this.report;
+            if (this.materializedReport) {
+              this.report.status = "draft";
+            }
             const reportConfig = _.get(report, 'reportconfig');
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
             const dataSource = _.get(reportConfig, 'dataSource') || [];
-            const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
+            let updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
+            updatedDataSource = this.reportService.getUpdatedParameterizedPath(updatedDataSource, hash);
             const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table'), files = _.get(reportConfig, 'files');
             return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
               retry(1),
@@ -258,7 +278,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   private getLatestSummary(reportId: string) {
-    return this.reportService.getLatestSummary({ reportId }).pipe(
+    const hash = this.hash;
+    return this.reportService.getLatestSummary({ reportId, hash }).pipe(
       map(reportSummary => {
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
@@ -338,7 +359,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private handleAddSummaryStreams() {
     return this.addSummaryBtnClickStream$.pipe(
       mergeMap(event => {
-        const reportId: string = this.activatedRoute.snapshot.params.reportId;
+        const { reportId } = this.activatedRoute.snapshot.params;
+        event['hash'] = this.hash;
         this.closeSummaryModal();
         return this.reportService.addReportSummary({
           reportId,
@@ -371,11 +393,17 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private handlePublishBtnStream() {
     return this.publishBtnStream$.pipe(
       switchMap(event => {
-        return this.reportService.publishReport(this.activatedRoute.snapshot.params.reportId);
+        const { reportId } = this.activatedRoute.snapshot.params;
+        const hash = this.hash;
+        return this.reportService.publishReport(reportId, hash);
       }),
       tap(res => {
         this.toasterService.info(this.resourceService.messages.imsg.reportPublished);
         this.report.status = 'live';
+        if (this.materializedReport) {
+          this.materializedReport = false;
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
+        }
       })
     );
   }
@@ -383,15 +411,20 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private handleRetireBtnStream() {
     return this.retireBtnStream$.pipe(
       switchMap(event => {
-        return this.reportService.retireReport(this.activatedRoute.snapshot.params.reportId);
+        const { reportId } = this.activatedRoute.snapshot.params;
+        const hash = this.hash;
+        return this.reportService.retireReport(reportId, hash);
       }),
       tap(res => {
         this.toasterService.info(this.resourceService.messages.imsg.reportRetired);
         this.report.status = 'retired';
+        if (this.materializedReport) {
+          this.materializedReport = false;
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
+        }
       })
     )
   }
-
 }
 
 
