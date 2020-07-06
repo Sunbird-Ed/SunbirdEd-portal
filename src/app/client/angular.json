@@ -168,7 +168,14 @@
             "codeCoverageExclude": [
               "src/assets/**",
               "src/thidparty/**",
-              "src/app/modules/offline/**"
+              "src/app/modules/offline/**",
+              "src/app/modules/**/**/index.ts",
+              "src/app/plugins/profile/index.ts",
+              "src/app/plugins/profile/services/index.ts",
+              "src/app/testUtil/index.ts",
+              "src/app/client/src/**/*.spec.ts",
+              "src/app/client/src/**/*.spec.data.ts",
+              "src/app/client/src/**/*.module.ts"
             ]
           }
         },
