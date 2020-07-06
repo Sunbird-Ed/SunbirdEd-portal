@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Component, OnDestroy, ViewChild, Input } from '@angular/core';
-=======
-import { Component, OnDestroy, ViewChild } from '@angular/core';
->>>>>>> fc89be81970a97121b633131c33b78409f6e5189
 import { ResourceService } from '@sunbird/shared';
 import { TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
