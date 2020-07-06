@@ -63,7 +63,7 @@ export class GroupHeaderComponent implements OnInit {
     this.dropdownContent = !this.dropdownContent;
   }
 
-  closeModal(visibility: boolean = false) {
+  isMemberPopup(visibility: boolean = false) {
     this.showMemberPopup = visibility;
   }
 }
