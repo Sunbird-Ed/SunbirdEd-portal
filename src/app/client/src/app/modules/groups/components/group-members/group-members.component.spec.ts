@@ -69,7 +69,7 @@ describe('GroupMembersComponent', () => {
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
     component.members = members;
-    component.showMenu = true;
+    component.showKebabMenu = true;
     component.config.showMemberMenu = false;
     document.body.dispatchEvent(new Event('click'));
     component.ngOnInit();
@@ -78,7 +78,7 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call getMenuData', () => {
-    component.showMenu = false;
+    component.showKebabMenu = false;
     const member = {
       identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false
     };
@@ -86,7 +86,7 @@ describe('GroupMembersComponent', () => {
       stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
     };
     component.getMenuData({ data: { name: 'delete' }, event: clickEvent }, member);
-    expect(component.showMenu).toBe(true);
+    expect(component.showKebabMenu).toBe(true);
   });
 
   it('should call search', () => {

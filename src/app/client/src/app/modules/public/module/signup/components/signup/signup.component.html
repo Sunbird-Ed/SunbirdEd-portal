@@ -22,7 +22,7 @@
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
-            <div class="required field mb-16">
+            <div class="required field mb-8">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
               <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
                 type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
