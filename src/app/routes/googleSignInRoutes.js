@@ -6,6 +6,12 @@ const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
+/**
+ * keycloack adds this string to track auth redirection and 
+ * with this it triggers auth code verification to get token and create session
+ * google flow this is not required
+ */
+const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1'; 
 
 module.exports = (app) => {
 
@@ -63,9 +69,9 @@ module.exports = (app) => {
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
-      redirectUrl = reqQuery.redirect_uri.split('?')[0];
+      redirectUrl = reqQuery.redirect_uri.replace(KEYCLOACK_AUTH_CALLBACK_STRING, ''); // to avoid 401 auth errors from keycloak
       if (reqQuery.client_id === 'android') {
-        redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
+        redirectUrl = reqQuery.redirect_uri.split('?')[0] + getQueryParams(keyCloakToken);
       }
       logger.info({msg: 'redirect url ' + redirectUrl});
       logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
@@ -165,4 +171,34 @@ const handleGoogleProfileError = (error) => {
     error: error,
   });
   throw error.error || error.message || error;
+};
+
+var handleGoogleAuthEvent = () => {
+	const googleAuthUrl = '/google/auth';
+	const curUrlObj = window.location;
+	let redirect_uri = getValueFromSession('redirect_uri');
+	let client_id = (new URLSearchParams(curUrlObj.search)).get('client_id');
+	const updatedQuery = curUrlObj.search + '&error_callback=' + curUrlObj.href.split('?')[0];
+	const sessionUrl = sessionStorage.getItem('session_url');
+	if (sessionUrl) {
+		if (redirect_uri) {
+      const redirect_uriLocation = new URL(redirect_uri);
+      const sessionUrlObj = new URL(sessionUrl);
+      const updatedQuery = redirect_uriLocation.search + '&error_callback=' + redirect_uriLocation.href.split('?')[0];
+			if (client_id === 'android') {
+				let host = sessionUrlObj.host;
+				if (host.indexOf("merge.") !== -1) {
+					host = host.slice(host.indexOf("merge.") + 6, host.length);
+				}
+				const googleRedirectUrl = sessionUrlObj.protocol + '//' + host + googleAuthUrl;
+				window.location.href = redirect_uri + '?googleRedirectUrl=' + googleRedirectUrl + updatedQuery;
+			} else {
+				window.location.href = redirect_uriLocation.protocol + '//' + redirect_uriLocation.host + googleAuthUrl + updatedQuery;
+			}
+		} else {
+			redirectToLib();
+		}
+	} else {
+		redirectToLib();
+	}
 };
