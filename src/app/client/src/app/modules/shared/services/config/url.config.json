@@ -218,7 +218,10 @@
     },
     "OTP": {
       "GENERATE": "otp/v1/generate",
-      "VERIFY": "otp/v1/verify"
+      "VERIFY": "otp/v1/verify",
+      "ANONYMOUS": {
+        "GENERATE": "anonymous/otp/v1/generate"
+      }
     },
     "OFFLINE": {
       "DOWNLOAD": "content/v1/download",

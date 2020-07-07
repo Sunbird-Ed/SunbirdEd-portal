@@ -54,6 +54,8 @@ module.exports = function (app) {
     googleService.validateRecaptcha
   );
 
+  app.post('/learner/anonymous/otp/v1/generate', googleService.validateRecaptcha);
+
   // Generate telemetry fot proxy service
   app.all('/learner/*', telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy)
@@ -139,7 +141,7 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
-        
+        if (urlParam.indexOf('anonymous') > -1) urlParam = urlParam.replace('anonymous/', '');
         // TODO: This should be generic, all the requests should add logs 
         // Body should be logged only for non-secure data
         if(req.url.indexOf('/otp/') > 0){

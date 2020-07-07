@@ -310,31 +310,17 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.vaidateUserContact(captchaResponse);
         this.formInputType = undefined;
       } else {
-        this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
-          if (_.get(data, 'result.success')) {
-            this.telemetryLogEvents('validate-recaptcha', true);
-            this.onSubmitSignUpForm();
-          }
-        }, (error) => {
-          const telemetryErrorData = {
-            env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
-            errorType: 'SYSTEM', pageid: 'signup',
-            stackTrace: JSON.stringify((error && error.error) || '')
-          };
-          this.telemetryService.generateErrorEvent(telemetryErrorData);
-          this.formInputType = undefined;
-          this.resetGoogleCaptcha();
-        });
+        this.onSubmitSignUpForm(captchaResponse);
       }
     }
   }
 
-  onSubmitSignUpForm() {
+  onSubmitSignUpForm(captchaResponse) {
     this.disableSubmitBtn = true;
-    this.generateOTP();
+    this.generateOTP(captchaResponse);
   }
 
-  generateOTP() {
+  generateOTP(captchaResponse) {
     const request = {
       'request': {
         'key': this.signUpForm.controls.contactType.value === 'phone' ?
@@ -345,7 +331,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isMinor) {
       request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
     }
-    this.signupService.generateOTP(request).subscribe(
+    this.signupService.generateOTPforAnonymousUser(request, captchaResponse).subscribe(
       (data: ServerResponse) => {
         this.showSignUpForm = false;
         this.disableSubmitBtn = false;
