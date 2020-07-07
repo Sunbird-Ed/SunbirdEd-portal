@@ -135,11 +135,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.navigationHelperService['_history'].length === 1) {
-      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
-    } else {
-      this.location.back();
-    }
+    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
   }
 
   private subscribeToQueryParam() {

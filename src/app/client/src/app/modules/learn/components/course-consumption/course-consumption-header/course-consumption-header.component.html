@@ -1,4 +1,19 @@
-<!-- Textbook details with continue playing and join course button -->
+<!-- Back Button Previous Module & Next Module button -->
+<div class="sb-bg-color-white relative position back-btn-container">
+  <div class="ui container">
+      <div class="py-8 d-flex flex-ai-center">
+          <!-- /* Back button */ -->
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" routerLink="/learn">
+              <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                  </svg></i>
+              {{resourceService?.frmelmnts?.btn?.back}}
+          </button>
+      </div>
+  </div>
+</div>
+
+<!-- Textbook details with continue playing and join course button routerLink="/registration" -->
 <div class="textbook-container">
   <div class="ui container">
     <div class="textbook py-16 sb-g">

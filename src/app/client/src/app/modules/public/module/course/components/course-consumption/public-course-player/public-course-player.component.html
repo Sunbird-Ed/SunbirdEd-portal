@@ -4,12 +4,23 @@
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
 
         <!-- Course details for mobile view -->
-        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only"
+          *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
           </div>
         </div>
+
+        <ng-template #noMobileCertificate>
+          <div class="sb-bg-color-white p-8 mb-16 mobile only">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+              <img src="assets/images/certificate-icon.png" alt="Certificate">
+              <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course does not have a
+                certificate</span>
+            </div>
+          </div>
+        </ng-template>
 
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
@@ -42,7 +53,7 @@
         </div>
 
         <!-- Content Section -->
-        <div class="training-modules mt-16">
+        <!-- <div class="training-modules mt-16">
           <h4 class="sb-pageSection-title sb-pageSection-title-light">
             {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
@@ -67,17 +78,90 @@
               </section>
             </div>
           </div>
+        </div> -->
+
+
+
+
+        <div class="training-modules my-16">
+
+          <div class="training-modules__title d-flex flex-ai-center mb-16">
+            <h4 class="sb-pageSection-title sb-pageSection-title-light">
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+            <button *ngIf="!isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = true;"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">Expand
+              all</button>
+            <button *ngIf="isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = false;"><img src="assets/images/collapse.png" class="mr-8" alt=""
+                width="12px">Collapse all</button>
+          </div>
+
+          <div *ngFor="let item of courseHierarchy?.children; let index = index">
+            <sb-accordion [multi]="false">
+              <sb-accordion-item [expanded]="isExpanded(index)">
+                <sb-accordion-header class="sb-bg-color-gray-0">
+                  <i class="icon-svg icon-svg--md icon-tick mr-8"
+                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                    <svg class="icon">
+                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
+                    </svg>
+                  </i>
+                  {{item?.name}}
+                </sb-accordion-header>
+                <sb-accordion-body>
+                  <div class="chapter-box sb-g">
+                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
+                      <div *ngIf="item;else noContent">
+                        <div
+                          *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                          <div class="child-content-padding">
+                            <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, 'toc-card')"
+                              [type]="cardType">
+                            </sb-toc-card>
+                          </div>
+                        </div>
+                        <div *ngIf="item?.children?.length">
+                          <div *ngFor="let child of item?.children">
+                            <div>
+                              <sb-toc-child-item [childData]="child"
+                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType">
+                              </sb-toc-child-item>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #noContent>
+                        <div class="heading">{{noContentMessage}}</div>
+                      </ng-template>
+                    </section>
+                  </div>
+                </sb-accordion-body>
+              </sb-accordion-item>
+            </sb-accordion>
+          </div>
         </div>
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
         <!-- Hide this if course does not contain certificate -->
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
           </div>
         </div>
+
+        <ng-template #noCertificate>
+          <div class="sb-bg-color-white p-8 mb-16 computer only">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+              <img src="assets/images/certificate-icon.png" alt="Certificate">
+              <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course does not have a
+                certificate</span>
+            </div>
+          </div>
+        </ng-template>
 
         <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy"
           (allBatchDetails)="getAllBatchDetails($event)">

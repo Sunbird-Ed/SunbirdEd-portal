@@ -103,6 +103,7 @@
   .sbaccordion__panel-header__title {
     display: flex !important;
     align-items: center;
+    padding: 8px 0 !important;
   }
 }
 :host::ng-deep {
