@@ -5,6 +5,7 @@ const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
+const uuid = require('uuid/v1')
 
 module.exports = (app) => {
 
@@ -14,8 +15,12 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state = JSON.stringify(req.query);
-    logger.info({msg: 'query params state' + state});
+    const state = uuid();
+    req.session.googleSignInData = {
+      ...req.query,
+      state
+    }
+    logger.info({msg: 'query params state', googleSignInData: req.session.googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
@@ -35,7 +40,7 @@ module.exports = (app) => {
    */
   app.get('/google/auth/callback', async (req, res) => {
     logger.info({msg: 'google auth callback called'});
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
+    const reqQuery = _.pick(req.session.googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
