@@ -320,7 +320,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.generateOTP(captchaResponse);
   }
 
-  generateOTP(captchaResponse) {
+  generateOTP(captchaResponse?) {
     const request = {
       'request': {
         'key': this.signUpForm.controls.contactType.value === 'phone' ?
