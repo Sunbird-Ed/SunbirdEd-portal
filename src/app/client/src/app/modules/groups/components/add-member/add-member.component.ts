@@ -1,16 +1,19 @@
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ResourceService, ToasterService, RecaptchaService } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
   styleUrls: ['./add-member.component.scss']
 })
+
 export class AddMemberComponent implements OnInit {
   showModal = false;
   instance: string;
@@ -24,15 +27,24 @@ export class AddMemberComponent implements OnInit {
   verifiedMember: {};
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  captchaResponse = '';
+  googleCaptchaSiteKey: string;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
-    private userService: UserService, private toasterService: ToasterService) {
+    private userService: UserService, private toasterService: ToasterService, public recaptchaService: RecaptchaService,
+    public telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
     this.instance = _.upperCase(this.resourceService.instance);
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
   }
 
@@ -101,4 +113,53 @@ export class AddMemberComponent implements OnInit {
   toggleModal(visibility: boolean = false) {
     this.showModal = visibility;
   }
+
+  onVarifyMember() {
+    this.resetGoogleCaptcha();
+    this.captchaRef.execute();
+  }
+
+  resolved(captchaResponse: string) {
+    this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+        if (_.get(data, 'result.success')) {
+          this.telemetryLogEvents('validate-recaptcha', true);
+          this.verifyMember();
+        }
+      }, (error: any) => {
+        const telemetryErrorData = {
+          env: 'add-member', errorMessage: _.get(error, 'error.params.errmsg') || '',
+          errorType: 'SYSTEM', pageid: 'add-member',
+          stackTrace: JSON.stringify((error && error.error) || '')
+        };
+        this.telemetryService.generateErrorEvent(telemetryErrorData);
+        this.resetGoogleCaptcha();
+      });
+  }
+
+  resetGoogleCaptcha() {
+    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
+    element.click();
+  }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'add-member'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
 }
+

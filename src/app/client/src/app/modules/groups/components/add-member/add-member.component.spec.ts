@@ -2,12 +2,17 @@ import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, RecaptchaService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { TelemetryService } from '@sunbird/telemetry';
+import { By } from '@angular/platform-browser';
+import { addMemberTestData } from './add-member.component.spec.data';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -28,9 +33,9 @@ describe('AddMemberComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
-      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, RecaptchaModule],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
-        {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: APP_BASE_HREF, useValue: '/'}, TelemetryService, RecaptchaService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -155,6 +160,37 @@ describe('AddMemberComponent', () => {
     component['groupsService'].addMemberById('123', [{userId: '2', role: 'member'}]).subscribe(data => {}, err => {
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
+  });
+
+  it('should load re-captcha when googleCaptchaSiteKey is provided', () => {
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeTruthy();
+  });
+
+  it('should validate recaptcha and generate success telemetry and verify member', () => {
+    const recaptchaService = TestBed.get(RecaptchaService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(addMemberTestData.recaptchaResponse));
+    spyOn(component, 'verifyMember').and.callThrough();
+    spyOn(component, 'telemetryLogEvents').and.callThrough();
+    component.onVarifyMember();
+    component.resolved('captchaToken');
+    expect(component.telemetryLogEvents).toHaveBeenCalled();
+    expect(telemetryService.log).toHaveBeenCalledWith(addMemberTestData.telemetryLogSuccess);
+    expect(component.verifyMember).toHaveBeenCalled();
+  });
+
+  it('should should log telemetry if validating captcha fail and reset captcha ', () => {
+    const recaptchaService = TestBed.get(RecaptchaService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'generateErrorEvent');
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(throwError(addMemberTestData.recaptchaErrorResponse));
+    spyOn(component, 'resetGoogleCaptcha').and.callThrough();
+    component.onVarifyMember();
+    component.resolved('captchaToken');
+    expect(telemetryService.generateErrorEvent).toHaveBeenCalledWith(addMemberTestData.telemetryLogError);
+    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
   });
 
 });
