@@ -219,15 +219,25 @@ const getBlobProperties = async (request, callback) => {
 
 const isReportParameterized = (report) => _.get(report, 'parameters.length') > 0 && _.isArray(report.parameters);
 
-const getParametersHash = (report, user) => {
+const getHashedValue = (val) => Buffer.from(val).toString("base64");
+
+const getParameterValue = (param, user) => {
     const parametersMapping = {
         $slug: _.get(user, 'rootOrg.slug'),
-        $board: _.get(user, 'framework.board')[0]
+        $board: _.get(user, 'framework.board')
     };
+    return parametersMapping[param];
+}
+
+const getParametersHash = (report, user) => {
     const parameters = _.get(report, 'parameters');
-    return Buffer.from(_.join(_.map(parameters, param => {
-        return _.replace(param, _.toLower(param), parametersMapping[param]);
-    }), "__")).toString("base64");
+    const result = _.map(parameters, param => {
+        const userParamValue = getParameterValue(_.toLower(param), user);
+        if (!userParamValue) return null;
+        if (!_.isArray(userParamValue)) return getHashedValue(userParamValue);
+        return _.map(userParamValue, val => getHashedValue(val));
+    });
+    return _.flatMap(_.compact(result));
 }
 
 const isUserAdmin = (user) => {
@@ -250,16 +260,26 @@ const getReports = (reports, user) => {
             if (isUserSuperAdmin(user)) {
                 results.push(report);
             } else if (isUserAdmin(user)) {
-                const childReports = _.filter(report.children, child => child.hashed_val === hash);
+                const childReports = _.filter(report.children, child => hash.includes(child.hashed_val));
                 if (childReports.length) {
-                    delete report.children;
-                    results.push(_.assign(report, _.omit(childReports[0], 'id')));
+                    if (childReports.length === 1) {
+                        delete report.children;
+                        results.push(_.assign(report, _.omit(childReports[0], 'id')));
+                    } else {
+                        report.children = childReports;
+                        results.push(report);
+                    }
                 }
             } else {
-                const childReports = _.filter(report.children, child => child.hashed_val === hash && child.status === 'live');
+                const childReports = _.filter(report.children, child => hash.includes(child.hashed_val) && child.status === 'live');
                 if (childReports.length) {
-                    delete report.children;
-                    results.push(_.assign(report, _.omit(childReports[0], 'id')));
+                    if (childReports.length === 1) {
+                        delete report.children;
+                        results.push(_.assign(report, _.omit(childReports[0], 'id')));
+                    } else {
+                        report.children = childReports;
+                        results.push(report);
+                    }
                 }
             }
         }

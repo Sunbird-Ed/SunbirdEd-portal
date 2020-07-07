@@ -5,7 +5,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, TemplateRef } 
 import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
-import { of, Observable, throwError, BehaviorSubject, forkJoin } from 'rxjs';
+import { of, Observable, throwError, BehaviorSubject, forkJoin, iif } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -75,6 +75,34 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         map((response: any[]) => ({ reports: response, count: response.length })));
   }
 
+
+  private getFlattenedReports(reports: any[]) {
+    const flattenedReports: any[] = _.reduce(reports, (result, report) => {
+      const isParameterized = _.get(report, 'isParameterized') || false;
+      if (isParameterized && _.get(report, 'children.length')) {
+        for (const childReport of report.children) {
+          const flattenedReport = _.assign({ ...report }, _.omit(childReport, 'id'));
+          delete flattenedReport.children;
+          result.push(flattenedReport);
+        }
+        return result;
+      }
+      result.push(report);
+      return result;
+    }, []);
+    return of({ reports: flattenedReports, count: flattenedReports.length });
+  }
+
+  private filterReportsBasedOnRoles = (reports: any[]) => {
+    if (this.reportService.isUserSuperAdmin()) {
+      return this.getMaterializedChildRows(reports);
+    } else if (this.reportService.isUserReportAdmin()) {
+      return of({ reports, count: reports.length });
+    } else {
+      return this.getFlattenedReports(reports);
+    }
+  }
+
   /**
    * @private
    * @returns Observable with list of reports.
@@ -83,7 +111,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   private getReportsList(isUserReportAdmin: boolean) {
     const filters = {};
     return this.reportService.listAllReports(filters).pipe(
-      mergeMap(res => this.getMaterializedChildRows(res.reports)),
+      mergeMap(res => this.filterReportsBasedOnRoles(res.reports)),
       map((apiResponse: { reports: any[], count: number }) => {
         this.reports = apiResponse.reports;
         const { count, reports } = apiResponse;
@@ -111,7 +139,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
     const renderStatus = (data, type, row) => {
 
-      if (row.isParameterized && row.children && this.reportService.isUserSuperAdmin()) {
+      if (row.isParameterized && row.children && !this.reportService.isUserReportAdmin()) {
         if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
           data = "live"
         } else {
@@ -151,19 +179,19 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
       autoWidth: true,
       data: this.reports,
       columns: [
-        ...(this.reportService.isUserSuperAdmin() ? [{
+        ...(this.reportService.isUserReportAdmin() ? [{
           class: 'details-control',
           orderable: false,
           data: null,
           render: (data, type, row) => {
             const isParameterized = _.get(row, 'isParameterized') || false;
             let count = 0;
-            if (isParameterized) {
+            if (isParameterized && row.children) {
               count = _.filter(row.children, child => _.toLower(child.status) === 'live').length;
             }
             return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square">
-            <i class="icon ${isParameterized ? 'copy outline' : 'file outline'} 
-            alternate"></i><span>${isParameterized ? `${count}/${row.children.length} Live` : ""}</span></button>`;
+            <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'} 
+            alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ""}</span></button>`;
           },
           defaultContent: ''
         }] : []),
@@ -197,8 +225,9 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable.row(event.currentTarget).data();
-      if (_.get(rowData, 'isParameterized')) return false;
-      this.rowClickEventHandler(_.get(rowData, 'reportid'));
+      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) return false;
+      const hash = _.get(rowData, 'hashed_val');
+      this.rowClickEventHandler(_.get(rowData, 'reportid'), hash);
     });
 
     const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
@@ -211,6 +240,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         row.child.hide();
       } else {
         if (!rowData.isParameterized) return false;
+        if (!_.has(rowData, 'children')) return false;
         const id = rowData.reportid;
         row.child(getChildTable(id)).show();
         const childTable = $(`#${id}`).DataTable({

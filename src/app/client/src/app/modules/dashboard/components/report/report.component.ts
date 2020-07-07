@@ -51,7 +51,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     const { hash } = this.activatedRoute.snapshot.params;
     this.hash = hash;
     if (this.reportService.isReportParameterized(report) && !this.reportService.isUserSuperAdmin()) {
-      this.hash = this.reportService.getParametersHash(this.report);
+      this.hash = _.get(report, 'hashed_val') || this.reportService.getParametersHash(this.report);
     }
   }
 
@@ -108,6 +108,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
+            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length')) {
+              return throwError({ messageText: 'messages.emsg.mutliParametersFound' })
+            }
             this.setParametersHash = this.report;
             if (this.materializedReport) {
               this.report.status = "draft";

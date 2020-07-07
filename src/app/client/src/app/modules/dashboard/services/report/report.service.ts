@@ -384,9 +384,11 @@ export class ReportService {
     return parameterMappings[parameter];
   }
 
+  public convertToBase64 = (value) => btoa(value);
+
   public getParametersHash = (report: { parameters: string[] }) => {
     const parameters = _.get(report, 'parameters');
-    return btoa(_.join(_.map(parameters, param => {
+    return this.convertToBase64(_.join(_.map(parameters, param => {
       return _.replace(param, _.toLower(param), this.getParameterValues(param).value);
     }), "__"));
   }
