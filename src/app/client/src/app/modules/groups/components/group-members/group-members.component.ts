@@ -27,7 +27,7 @@ export class GroupMembersComponent implements OnInit {
     { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
     { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: true }
   ];
-  showMenu = false;
+  showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
   memberListToShow = [];
@@ -56,16 +56,15 @@ export class GroupMembersComponent implements OnInit {
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
-        if (this.showMenu) {
-          this.showMenu = false;
+        if (this.showKebabMenu) {
+          this.showKebabMenu = false;
         }
       });
   }
 
   getMenuData(event, member) {
-    this.showMenu = !this.showMenu;
+    this.showKebabMenu = !this.showKebabMenu;
     this.selectedMember = member;
-    event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {

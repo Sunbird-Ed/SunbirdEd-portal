@@ -15,8 +15,8 @@
         </sb-course-card>
         <div class="kabab-menu-dropdown-content"
           *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
-          <div class="list sb-color-error" (click)="toggleModal(true)">
-            <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+          <div class="list sb-color-error">
+            <span (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
 
 <!-- Remove Activity from the group -->
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="closeModal()" #modal *ngIf="showModal">
+  appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
   </div>
