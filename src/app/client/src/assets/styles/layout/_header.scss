@@ -1,4 +1,5 @@
 .ui.menu {
+  // position: sticky;
   z-index: 999;
   border: 0;
   margin-bottom: calculateRem(-1px);
@@ -43,7 +44,7 @@
   }
 
   .ui.icon.button {
-    background: $qr-btn;
+    background: var(--gray-100);
     padding: calculateRem(4px) calculateRem(7px);
   }
 }
@@ -54,7 +55,7 @@
   border-radius: calculateRem(4px);
   font-weight: normal;
   border: calculateRem(0.5px) solid $primary-300;
-  box-shadow: 0 3px 4px 0 rgba(0,0,0,0.5);
+  box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.5);
   height: calculateRem(32px);
   padding: calculateRem(8px) calculateRem(16px);
   font-size: calculateRem(12px);
@@ -70,7 +71,7 @@
   height: calculateRem(24px);
   width: calculateRem(1px);
   margin: 0 calculateRem(16px);
-  background: rgba(128, 167, 206, .34);
+  background: rgba(var(--rc-rgba-primary-300), 0.34);
 }
 
 .ui.sidebar.right {

@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Subject, of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
+import { UserService } from '../../../core/services';
 
 const startEvent = {
   detail: {
@@ -39,11 +40,13 @@ const playerConfig = {
 describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
+  let userService;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
+      providers: [{ provide: UserService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -53,6 +56,8 @@ describe('PlayerComponent', () => {
     fixture = TestBed.createComponent(PlayerComponent);
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
+    userService = TestBed.get(UserService);
+    userService._authenticated = false;
     component.contentIframe = {
       nativeElement: {
         contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
@@ -209,7 +214,7 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
@@ -220,7 +225,7 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeFalsy();
@@ -234,6 +239,11 @@ describe('PlayerComponent', () => {
     expect(component.navigationHelperService.emitFullScreenEvent).toHaveBeenCalledWith(false);
   });
 
+  it('should call closeModal', () => {
+    spyOn(component.ratingPopupClose, 'emit');
+    component.closeModal();
+    expect(component.ratingPopupClose.emit).toHaveBeenCalled();
+  });
 
 });
 

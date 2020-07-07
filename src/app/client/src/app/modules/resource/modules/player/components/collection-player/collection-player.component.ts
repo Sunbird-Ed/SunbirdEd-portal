@@ -1,8 +1,8 @@
 
 import { mergeMap, filter, map, catchError } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService } from '@sunbird/core';
-import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
 import {
@@ -84,6 +84,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   copyAsCourseInteractEdata: IInteractEventEdata;
 
+  cancelInteractEdata: IInteractEventEdata;
+
+  createCourseInteractEdata: IInteractEventEdata;
+
   tocTelemetryInteractEdata: IInteractEventEdata;
 
   private subscription: Subscription;
@@ -127,6 +131,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   activeContent: any;
   isSelectChapter: Boolean = false;
   showLoader = true;
+  isCopyAsCourseClicked: Boolean =  false;
+  selectAll: Boolean = false;
+  selectedItems = [];
 
   constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -393,6 +400,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       type: 'click',
       pageid: 'collection-player'
     };
+    this.cancelInteractEdata = {
+      id: 'cancel-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.createCourseInteractEdata = {
+      id: 'create-course-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
     this.collectionInteractObject = {
       id: this.collectionId,
       type: this.contentType,
@@ -494,21 +511,32 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   /**
-   * @since - #SH-66
-   * @param  {ContentData} contentData
-   * @description - It will copy the textbook as a curriculum course by hitting a content service API.
+   * @since - #SH-362
+   * @description - It will show/hide create course and cancel button also will hide the other action buttons.
    */
-  copyAsCourse(contentData: ContentData) {
-    this.userService.userOrgDetails$.subscribe(() => {
-      this.showCopyLoader = true;
-      this.copyContentService.copyAsCourse(contentData).subscribe( (response) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0042);
-        this.showCopyLoader = false;
-      }, (err) => {
-        this.showCopyLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0008);
-      });
+  copyAsCourse() {
+    this.isCopyAsCourseClicked = !this.isCopyAsCourseClicked;
+  }
+
+  /**
+   * @since #SH-362
+   * @description - This method clears all the intended action and takes the book toc to the default state
+   */
+  clearSelection() {
+    this.isCopyAsCourseClicked = !this.isCopyAsCourseClicked;
+    this.selectAll = false;
+    this.selectedItems = [];
+    this.collectionData['children'].forEach(item => {
+      item.selected = false;
     });
+  }
+
+  /**
+   * @since - SH-362
+   * @description - This methods selects/deselects all the textbook units
+   */
+  selectAllItem() {
+    this.selectAll = !this.selectAll;
   }
 
   private setTelemetryStartEndData() {
@@ -556,4 +584,59 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }
     };
   }
+
+  /**
+   * @since #SH-362
+   * @description - This method handles the creation of course from a textbook (entire or selected units)
+   */
+  createCourse() {
+    this.userService.userOrgDetails$.subscribe(() => {
+      this.showCopyLoader = true;
+      this.copyContentService.copyAsCourse(this.collectionData).subscribe((response) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0042);
+        this.showCopyLoader = false;
+      }, (err) => {
+        this.showCopyLoader = false;
+        this.clearSelection();
+        this.toasterService.error(this.resourceService.messages.emsg.m0008);
+      });
+    });
+  }
+
+  /**
+   * @since #SH-362
+   * @param  {} event
+   * @description - this method will handle the enable/disable of create course button.
+   */
+  handleSelectedItem(event) {
+    if ('selectAll' in event) {
+      this.handleSelectAll(event);
+    } else {
+      if (_.get(event, 'data.selected') === true) {
+        this.selectedItems.push(event.data);
+      } else {
+        _.remove(this.selectedItems, (item) => {
+          return (item === event.data);
+        });
+      }
+    }
+  }
+
+  /**
+   * @since #SH-362
+   * @param  {} event
+   * @description - To handle select/deselect all checkbox event particularly
+   */
+  handleSelectAll(event) {
+    if (_.get(event, 'selectAll') === true) {
+      event.data.forEach(element => {
+        if (this.selectedItems.indexOf(element) === -1) {
+          this.selectedItems.push(element);
+        }
+      });
+    } else if (_.get(event, 'selectAll') === false) {
+      this.selectedItems = [];
+    }
+  }
 }
+

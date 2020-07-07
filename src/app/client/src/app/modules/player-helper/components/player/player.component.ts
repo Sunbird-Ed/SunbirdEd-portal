@@ -9,6 +9,7 @@ const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
@@ -40,6 +41,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() telemetryObject: {};
   @Input() pageId: string;
   @Output() closePlayerEvent = new EventEmitter<any>();
+  @Output() ratingPopupClose = new EventEmitter<any>();
   isMobileOrTab: boolean;
   showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
@@ -60,7 +62,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -92,6 +94,22 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       if (utmData && !_.get(this.playerConfig, 'context.cdata')) {
         this.playerConfig.context['cdata'] = [];
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+    }
+    // Check for loggedIn user; and append user data to context object
+    // User data (`firstName` and `lastName`) is used to show at the end of quiz
+    if (this.playerConfig) {
+      this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+      if (this.userService.loggedIn) {
+        this.userService.userData$.subscribe((user: any) => {
+          if (user && !user.err) {
+            const userProfile = user.userProfile;
+            this.playerConfig.context['userData'] = {
+              firstName: userProfile.firstName ? userProfile.firstName : '',
+              lastName: userProfile.lastName ? userProfile.lastName : ''
+            };
+          }
+        });
       }
     }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
@@ -297,8 +315,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.loadPlayer();
   }
 
+  closeModal() {
+    this.ratingPopupClose.emit({});
+  }
+
   ngOnDestroy() {
-    if (this.contentIframe.nativeElement) {
+    if (_.get(this.contentIframe, 'nativeElement')) {
       this.contentIframe.nativeElement.remove();
     }
     this.unsubscribe.next();

@@ -22,6 +22,7 @@ import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunb
 import { CacheService } from 'ng2-cache-service';
 import {environment} from '@sunbird/environment';
 import {Subject, zip} from 'rxjs';
+import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 declare var jQuery: any;
 
@@ -105,6 +106,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  hideHeader = false;
+  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
@@ -233,6 +236,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       let currentRoute = this.activatedRoute.root;
       this.showAccountMergemodal = false; // to remove popup on browser back button click
       this.contributeTabActive = this.router.isActive('/contribute', true);
+      this.hideHeader = (_.includes(this.router.url, 'explore-groups') || _.includes(this.router.url, 'my-groups'));
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;
@@ -447,4 +451,25 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
+
+  /**
+   * Used to hide language change dropdown for specific route
+   * restrictedRoutes[] => routes where do not require language change dropdown
+   */
+  showLanguageDropdown() {
+    const restrictedRoutes = ['workspace', 'manage'];
+    let showLanguageChangeDropdown = true;
+    for (const route of restrictedRoutes) {
+      if (this.router.isActive(route, false)) {
+        showLanguageChangeDropdown = false;
+        break;
+      }
+    }
+    return showLanguageChangeDropdown;
+  }
+
+  navigateToGroups() {
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+  }
+  
 }

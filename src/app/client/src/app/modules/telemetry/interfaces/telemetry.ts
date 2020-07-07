@@ -38,6 +38,7 @@ export interface IAuditEventEData {
   'props': string[];
   'state': string;
   'prevstate': string;
+  'type'?: string;
 }
 export interface IShareEventData {
   'type': string;

@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProfilePageComponent, CreateUserComponent, ChooseUserComponent } from './components';
+import {
+  ProfilePageComponent,
+  CreateUserComponent,
+  ChooseUserComponent,
+  SubmitTeacherDetailsComponent
+} from './components';
 const telemetryEnv = 'profile';
 const objectType = 'profile';
 const routes: Routes = [
@@ -26,6 +31,15 @@ const routes: Routes = [
       telemetry: {
         env: telemetryEnv, pageid: 'choose-managed-user', type: 'view',
         uri: '/profile/choose-managed-user',
+      }
+    }
+  },
+  {
+    path: 'teacher-declaration', component: SubmitTeacherDetailsComponent,
+    data: {
+      telemetry: {
+        env: telemetryEnv, pageid: 'teacher-declaration', type: 'view',
+        uri: '/profile/teacher-declaration',
       }
     }
   }

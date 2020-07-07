@@ -184,6 +184,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.botObject['appId'] = this.userService.appId;
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
+
+    this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
+    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
   
   isBotdisplayforRoute () {
@@ -311,12 +314,14 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-    if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
-      _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = true;
-    } else {
-      this.checkFrameworkSelected();
-    }
+    this.userService.userData$.subscribe((user: IUserData) => {
+      if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
+        _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
+        this.showTermsAndCondPopUp = true;
+      } else {
+        this.checkFrameworkSelected();
+      }
+    });
   }
   public getOrgDetails() {
     const slug = this.userService.slug;

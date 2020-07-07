@@ -2,7 +2,6 @@
 @import 'mixins/mixins';
 @import 'pages/user-mgmt';
 
-
 .field-focus {
   display: flex;
   flex-direction: column-reverse;
@@ -12,18 +11,17 @@
   border-radius: calculateRem(40px);
 }
 
-
 :host {
-  
+
   .fields-selection {
     display: flex;
 
     .sb-field .ui.selection.active.dropdown {
-      border-color: #96c8da;
+      border-color: var(--rc-96C8DA);
     }
 
     .sb-field .ui.selection.active.dropdown .text {
-      color: #0076FE !important;
+      color: var(--rc-0076FE) !important;
     }
 
     .sb-field {
@@ -33,7 +31,7 @@
       @include respond-below(sm) {}
 
       label {
-        font-size: 14px;
+        font-size: calculateRem(14px);
       }
     }
 
@@ -41,9 +39,9 @@
 }
 
 .orange-border {
-  border-color: $danger-color !important;
+  border-color: var(--red-100) !important;
 }
 
 .orange.text {
-  color: $danger-color;
+  color: var(--red-100);
 }

@@ -8,6 +8,8 @@ const proxy = require('express-http-proxy')
 const healthService = require('../helpers/healthCheckService.js')
 const _ = require('lodash')
 const logger = require('sb_logger_util_v2')
+const bodyParser = require('body-parser')
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = (app) => {
     // Generate telemetry fot proxy service
@@ -37,8 +39,10 @@ module.exports = (app) => {
         }))
 
     app.all('/content/*',
-        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
-        proxyUtils.verifyToken(),
+    bodyParser.json(),
+    healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
+    proxyUtils.verifyToken(),
+    isAPIWhitelisted.isAllowed(),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,

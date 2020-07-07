@@ -50,23 +50,24 @@
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
-                    title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
-                    <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
-                    <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
+                    title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}" *ngIf="!hideHeader">
+                    <i class="icon-svg icon-svg--xxs icon-qrcode mr-4"><svg class="icon icon-svg--primary">
+                      <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
+                    </svg></i>
                     <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
                 </button>
                 <!--/QR Button-->
                 <!--Divider-->
-                <span class="computer only search-qrcode-divider"></span>
+                <span class="computer only search-qrcode-divider" *ngIf="!hideHeader"></span>
                 <!--/Divider-->
                 <!--Search Box-->
                 <!--Logged in Pages-->
-                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent"
+                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent && !hideHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 </app-search>
                 <!--/Logged in Pages-->
                 <!--Explore Pages-->
-                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent"
+                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent && !hideHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                     <div class="input-div relative">
                         <!-- <i class="search icon"></i> -->
@@ -86,7 +87,7 @@
                 <!--/Search Box-->
                 <!--Language Dropdown-->
                 <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
-                    *ngIf="languages && !router.isActive('workspace', false)">
+                    *ngIf="languages && showLanguageDropdown()">
                 </app-language-dropdown>
                 <!--/Language Dropdown-->
             </div>
@@ -99,8 +100,9 @@
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
                 [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
-                <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
-                <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
+                <i class="icon-svg icon-svg--xxs icon-qrcode mr-4"><svg class="icon icon-svg--primary">
+                  <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
+                </svg></i>
                 <span class="d-flex flex-ai-center">
                     {{resourceService.frmelmnts?.lbl?.enterQrCode}}
                 </span>
@@ -212,6 +214,13 @@
             routerLink="/learn">
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
+
+        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
+        [class.active]="router.isActive(routerLinks?.groups)" 
+        *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]">
+            {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
+        </li>
+
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
             *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"

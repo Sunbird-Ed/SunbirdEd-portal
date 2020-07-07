@@ -5,10 +5,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CsCourseProgressCalculator } from '@project-sunbird/client-services/services/course/utilities/course-progress-calculator';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { CoreModule, PlayerService, UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
-import { NavigationHelperService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import {
+  NavigationHelperService, ResourceService, SharedModule, ToasterService,
+  ContentUtilsServiceService
+} from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -49,9 +52,10 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService, CsCourseProgressCalculator,
+        UserService, CsContentProgressCalculator,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        ContentUtilsServiceService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -306,17 +310,17 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculate method to get the courseProgress', () => {
     const playerSummury = assessmentPlayerMockData.playerSummuryData;
     const mimeType = 'application/vnd.ekstep.ecml-archive';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
-    expect(CsCourseProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
+    expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
     expect(component.courseProgress).toEqual(100);
   });
 
   it('should not call calculate method if the contentType is selfAssess', () => {
     component.activeContent = assessmentPlayerMockData.activeContent;
     component.activeContent.contentType = 'SelfAssess';
-    spyOn<any>(CsCourseProgressCalculator, 'calculate').and.returnValue(100);
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
@@ -342,6 +346,15 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['unsubscribe'].complete).toHaveBeenCalled();
   });
 
+  it('should call onShareLink', () => {
+    spyOn(component, 'setTelemetryShareData');
+    component.courseId = 'do_2130355309225574401298';
+    component.collectionId = 'do_2130355309234831361304';
+    component.onShareLink();
+    expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
+  });
+
   it('should call logAuditEvent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.activeContent = assessmentPlayerMockData.activeContent;
@@ -357,7 +370,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
     component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
@@ -368,11 +381,50 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
     component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
       expect(response).toBeFalsy();
       expect(component.isFullScreenView).toBeFalsy();
     });
   });
+
+  it('should check for course completion', () => {
+    spyOn(component, 'getCourseCompletionStatus');
+    component.onRatingPopupClose();
+    expect(component.getCourseCompletionStatus).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    const param = {
+      identifier: 'do_123232534312',
+      contentType: 'Course',
+      pkgVersion: 1.0
+    };
+    component.setTelemetryShareData(param);
+    expect(component.telemetryShareData).toBeDefined();
+  });
+
+  it('should check for course Completion', () => {
+    component.isCourseCompleted = false;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+
+    const response = {
+      content: [
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_232343', status: 2 }, { identifier: 'do_45454', status: 2 }
+      ]
+    };
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    component.getCourseCompletionStatus(true);
+    expect(component.isCourseCompleted).toBe(true);
+    expect(component.showCourseCompleteMessage).toBe(true);
+  });
+
 });

@@ -1,15 +1,15 @@
   <div class="signup-background">
-    <div class="ui raised shadow container segment">
-      <div class="d-flex flex-jc-center mb-24">
-        <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
-      </div>
-      <div class="width-300 mx-auto">
+    <div class="fullpage-background-image">
+      <div class="container-wrapper">
+        <div class="text-center mb-24">
+          <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
+        </div>
         <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
-          <!-- <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-20 text-center">{{resourceService.frmelmnts.lbl.signUp}}</div> -->
+          <!-- <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-16 text-center">{{resourceService.frmelmnts.lbl.signUp}}</div> -->
           <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
-            class="sb-account-header-text  text-center">
+            class="title text-center">
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
-          <div class="year-birth my-24 required">
+          <div class="year-birth my-16 required">
             <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
             <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
                         (selectedOptionChange)="changeBirthYear($event)"
@@ -22,12 +22,12 @@
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
-            <div class="required field mb-20">
+            <div class="required field mb-8">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
               <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
                 type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
             </div>
-            <div class="required field mb-20"
+            <div class="required field mb-16"
                  *ngIf="!(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors) && !showUniqueError">
               <label id="phoneOrEmail" class="pt-0 font-weight-bold">
                 {{resourceService.frmelmnts.lbl.phoneOrEmail}}
@@ -65,7 +65,7 @@
                 <i class=" icon">+91-</i>
               </div>
             </div>
-            <div class="required field mb-20">
+            <div class="required field mb-16">
               <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
                 <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
@@ -76,7 +76,7 @@
               <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
-            <div class="required field mb-20">
+            <div class="required field mb-16">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}</label>
               <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
                 formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">

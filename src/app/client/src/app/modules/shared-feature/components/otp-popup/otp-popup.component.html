@@ -1,47 +1,42 @@
 <!--Header-->
-<div class="sb-modal-header">
+<div class="sb-modal-header hide">
   &nbsp;
 </div>
 <!--/Header-->
 
 <!--Content-->
 <div class="sb-modal-content">
-  <div class="">
+  <div class="container-wrapper">
     <div class="d-flex flex-jc-center">
       <img class="image centered" alt={{tenantName}} height="45" src="{{logo}}">
     </div>
-    <div class="mx-auto">
       <div class="mt-20">
-        <p *ngIf="!disableResendButton" class="line-height-1-3 grey text text-center mb-30">{{otpData.instructions}}</p>
+        <p *ngIf="!disableResendButton" class="line-height-1-3 grey text text-center mb-24">{{otpData.instructions}}</p>
         <div *ngIf="disableResendButton" class="grey text fs-1 text-center mb-30 line-height-1-3">{{otpData.retryMessage}}<br><span
             (click)="redirectToParentComponent()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.clickHere}}</span>
           {{resourceService?.frmelmnts?.lbl?.toTryAgain}}</div>
-        <div class="fs-1 font-weight-bold text-center mb-30">{{resourceService?.frmelmnts?.lbl?.enterOTP}}</div>
-        <form class="ui form borderd mb-20" [formGroup]="otpForm">
-          <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
+        <div class="fs-1 font-weight-bold text-center mb-16">{{resourceService?.frmelmnts?.lbl?.enterOTP}}</div>
+        <form class="sb-form borderd mb-16" [formGroup]="otpForm">
+          <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
           <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
-          <div class="field">
-            <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">
+          <div class="sb-field">
+            <input class="sb-form-control text-center" [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">
           </div>
         </form>
-        <div  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+        <div appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
         [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': !enableResendButton}" (click)="resendOTP(); disableResendButton = true" class="fs-1 text-center blue text mb-30 cursor-pointer"
           role="button" tabindex="0">{{resendOTPbtn}}</div>
       </div>
-    </div>
   </div>
 </div>
 <!--/Content-->
 
 <!--Actions-->
-<div class="sb-modal-actions">
+<div class="sb-modal-actions text-center">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
   [telemetryInteractEdata]="submitInteractEdata"
     [ngClass]="{'disabled':!enableSubmitBtn}" 
     class="sb-btn sb-btn-normal sb-btn-primary"
-    (click)="verifyOTP()"
-  >
-    {{resourceService?.frmelmnts?.lbl?.submitOTP}}
-  </button>
+    (click)="verifyOTP()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
 </div>
 <!--/Actions-->

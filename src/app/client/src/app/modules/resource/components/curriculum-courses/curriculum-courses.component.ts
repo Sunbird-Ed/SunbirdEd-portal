@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 import { SearchService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, NavigationHelperService
+} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { map } from 'rxjs/operators';
@@ -39,7 +40,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
     private router: Router, private navigationhelperService: NavigationHelperService,
     private coursesService: CoursesService, private telemetryService: TelemetryService,
     private location: Location
-   ) { }
+  ) { }
 
   ngOnInit() {
     this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
@@ -70,29 +71,33 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   }
 
   private fetchEnrolledCourses() {
-    return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+    this.coursesService.enrolledCourseData$.pipe(map(({ enrolledCourses, err }) => {
       return enrolledCourses;
     })).subscribe(enrolledCourses => {
-      this.mergedCourseList = this.courseList.map((course) => {
-        const enrolledCourse = _.find(enrolledCourses,  {courseId: course.identifier});
-        if (enrolledCourse) {
-          return {
-            ...enrolledCourse,
-            completionPercentage: enrolledCourse.completionPercentage || 0,
-            isEnrolledCourse: true,
-          };
-        } else {
-          return {
-            ...course,
-            isEnrolledCourse: false
-          };
-        }
-      });
+      this.setCourseList(enrolledCourses);
     });
   }
 
+  private setCourseList(enrolledCourses) {
+    const unorderedList = this.courseList.map((course) => {
+      const enrolledCourse = _.find(enrolledCourses, { courseId: course.identifier });
+      if (enrolledCourse) {
+        return {
+          ...enrolledCourse,
+          completionPercentage: enrolledCourse.completionPercentage || 0,
+          isEnrolledCourse: true,
+        };
+      } else {
+        return {
+          ...course,
+          isEnrolledCourse: false,
+          courseName: course.name
+        };
+      }
+    });
 
-
+    this.mergedCourseList = _.orderBy(unorderedList, ['isEnrolledCourse', course => _.toLower(course.courseName)], ['desc', 'asc']);
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -126,9 +131,9 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
       },
       object: {
-          id: course.identifier,
-          type: course.contentType || 'course',
-          ver: course.pkgVersion ? course.pkgVersion.toString() : '1.0'
+        id: course.identifier,
+        type: course.contentType || 'course',
+        ver: course.pkgVersion ? course.pkgVersion.toString() : '1.0'
       }
     };
     this.telemetryService.interact(cardClickInteractData);

@@ -1,3 +1,4 @@
+import { MY_GROUPS } from '../routerLinks';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
@@ -11,7 +12,7 @@ export class ExploreGroupComponent {
   constructor(public resourceService: ResourceService) { }
 
   redirectTologin() {
-    window.location.href = '/groups';
+    window.location.href = MY_GROUPS;
   }
 
 }
