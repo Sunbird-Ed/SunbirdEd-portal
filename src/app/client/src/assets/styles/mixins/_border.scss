@@ -1,6 +1,6 @@
 // Set basic variables
-$border-width:1px;
-$border-color: #CCCCCC;
+$border-width:calculateRem(1px);
+$border-color: var(--gray-100);
 //@include border(border,$border-width,$border-color);
 
 @mixin border($var-direction: "border", $var-width: $border-width, $var-color: $border-color) {

@@ -1,0 +1,7 @@
+<sui-select class="selection state-selection" [(ngModel)]="preSelectedValue">
+  <div class="state-selection__section" *ngFor="let group of optionData">
+    <div class="header">{{group.label}}</div>
+    <sui-select-option class="active" *ngFor="let option of group.option" [value]="option.name"
+      (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+  </div>
+</sui-select>

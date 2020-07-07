@@ -205,5 +205,6 @@ export const mockData: any = {
     },
     userSessionData: {
         'userId': '99733cb8-588a-42af-8161-57e783351a0e'
-    }
+    },
+    auditEventData: {'eid': 'AUDIT', 'ets': 1591617608327, 'ver': '3.0', 'mid': 'AUDIT:251dbd7227e4b2f03980cdeb8b82b190', 'actor': {'id': 'dfb3f8c4-4d63-4ca7-b4e5-de4cadc976c8', 'type': 'User'}, 'context': {'channel': '0126632859575746566', 'pdata': {'id': 'dev.sunbird.portal', 'ver': '3.0.0', 'pid': 'sunbird-portal'}, 'env': 'Course', 'sid': 'b6HWUs10TFQV8KmLxWYqPq3_Jl96ILvX', 'did': '9ba76b574f470a4945b77fc632832d47', 'cdata': [{'id': 'do_2130362003064668161511', 'type': 'CourseId'}, {'id': 'dfb3f8c4-4d63-4ca7-b4e5-de4cadc976c8', 'type': 'UserId'}, {'id': '01303620862525440010', 'type': 'BatchId'}, {'id': 'do_2130362003070074881523', 'type': 'UnitId'}, {'id': 'b6HWUs10TFQV8KmLxWYqPq3_Jl96ILvX', 'type': 'UserSession'}], 'rollup': {'l1': '0126632859575746566'}, 'uid': 'dfb3f8c4-4d63-4ca7-b4e5-de4cadc976c8'}, 'object': {'id': '01303620862525440010', 'type': 'batch', 'ver': '1.0', 'rollup': {}}, 'tags': ['0126632859575746566'], 'edata': {'props': ['courseId', 'userId', 'batchId', 'UnitId'], 'state': '', 'prevstate': ''}}
 };

@@ -217,4 +217,10 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(JSON.parse(result.edata.stacktrace).type).toEqual('view');
     expect(result).toBeTruthy();
   });
+  it('should call setActiveContent', () => {
+    component.collectionData = CollectionHierarchyGetMockResponse.result.content;
+    const activeContent = component.setActiveContent('domain_44689');
+    expect(activeContent).toBeDefined();
+    expect(activeContent.identifier).toBe('domain_44689');
+  });
 });

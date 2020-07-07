@@ -150,7 +150,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
       });
   }
 
@@ -165,11 +165,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
-    this.cardData = cardData;
+    this.cardData = _.sortBy(cardData, ['title']);
   }, err => {
       this.isLoading = false;
       this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
   });
   }
 

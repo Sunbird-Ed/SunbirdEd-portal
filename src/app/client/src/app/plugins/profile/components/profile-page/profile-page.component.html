@@ -71,8 +71,11 @@
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="submitTeacherDetailsInteractEdata" *ngIf="!udiseObj && !teacherObj && !schoolObj" (click)="showSubmitTeacherDetails=true" class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-          {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
+                [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
+                *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj && !stateObj && !districtObj"
+                (click)="navigate('/profile/teacher-declaration','submit')"
+                class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
       </div>
     </div>
 
@@ -159,7 +162,7 @@
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
     <!-- User info computer view starts-->
     <div class="ui container">
-      <div class="d-flex flex-jc-center flex-ai-center flex-dc">
+      <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
         <div class="max-w-400 computer only">
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
@@ -222,26 +225,43 @@
   </section>
 
   <!-- 4 section start teacher profile-->
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="udiseObj || teacherObj || schoolObj">
-    <div class="d-flex flex-jc-center flex-dc school-id-section">
-      <div class="d-flex flex-jc-center mb-16" *ngIf="schoolObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{schoolObj?.id}}</span>
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3"
+           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj || stateObj || districtObj">
+  <div class="flex-ai-jc-center flex-dc text-center school-id-section">
+    <div *ngIf="stateObj">
+      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.state}}:</div>
+      <div class="fnormal font-w-bold mt-4 mb-8"> {{stateObj?.id}}</div>
+    </div>
+    <div *ngIf="districtObj">
+      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.district}}:</div>
+      <div class="fnormal font-w-bold mt-4 mb-8"> {{districtObj?.id}}</div>
+    </div>
+      <div *ngIf="phoneObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.phoneNumber}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">+91 {{phoneObj?.id}}</div>
       </div>
-      <div class="d-flex flex-jc-center mb-16" *ngIf="udiseObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{udiseObj?.id}}</span>
+      <div *ngIf="emailObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.emailId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{emailObj?.id}}</div>
       </div>
-      <div class="d-flex flex-jc-center" *ngIf="teacherObj">
-        <span class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</span>
-        <span class="fnormal font-w-bold pl-4">{{teacherObj?.id}}</span>
+      <div *ngIf="schoolObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{schoolObj?.id}}</div>
       </div>
-      <div class="d-flex flex-jc-center my-16">
+      <div *ngIf="udiseObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{udiseObj?.id}}</div>
+      </div>
+      <div *ngIf="teacherObj">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{teacherObj?.id}}</div>
+      </div>
+      <div class="my-8">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
-        (click)="showUpdateTeacherDetails = !showUpdateTeacherDetails">{{resourceService.frmelmnts?.btn?.update}}</button>
+        (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
-      <div class="d-flex flex-jc-center fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
+      <div class="fsmall">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
     </div>
   </section>
   <!-- 4 section end -->
@@ -366,26 +386,5 @@
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
   <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup;" *ngIf="showEditUserDetailsPopup"
     [userProfile]="userProfile"></app-update-user-details>
-  <app-submit-teacher-details [formAction]="'submit'" [userProfile]="userProfile" (showSuccessModal)="showSuccessModal=true;"
-      (close)="showSubmitTeacherDetails = !showSubmitTeacherDetails;" *ngIf="showSubmitTeacherDetails">
-    </app-submit-teacher-details>
-  <app-submit-teacher-details [formAction]="'update'" [userProfile]="userProfile"
-      (close)="showUpdateTeacherDetails = !showUpdateTeacherDetails" *ngIf="showUpdateTeacherDetails">
-    </app-submit-teacher-details>
 <router-outlet></router-outlet>
 
-<!-- information submitted modal in TEACHER Profile-->
-<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
-  <div class="sb-modal-header font-weight-normal">
-    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
-  </div>
-  <div class="sb-modal-content text-center">
-    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" (click)="showSuccessModal = !showSuccessModal">
-      {{resourceService?.frmelmnts?.btn?.ok}}
-    </button>
-  </div>
-</sui-modal>

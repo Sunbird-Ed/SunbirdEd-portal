@@ -1,7 +1,25 @@
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-multi-rows py-16">
+    <div class="d-flex flex-ai-center ui container">
+      <h4 class="sb-manage-section-title m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
+      <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
+              [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
+              type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
+              (click)="downloadFile(userDeclaredDetailsUrl)">
+        {{resourceService.frmelmnts?.btn?.download}}
+      </button>
+      <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
+      <div class="d-flex" *ngIf="!userDeclaredDetailsUrl">
+        <img src="./assets/images/icon-info.svg" height="16px" class="m-8">
+        <label class="no-data-label font-weight-normal">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+      </div>
+    </div>
+  </div>
+
   <div class="ui container sb-multi-rows">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
+
   <div class="sb-pageSection sb-multi-rows">
     <div class="ui container py-20">
       <div class="sb-pageSection-content">

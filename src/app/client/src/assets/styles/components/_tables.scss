@@ -17,7 +17,7 @@
 
     &.search-header-withbg {
       background: var(--gray-0);
-      border: 1px solid var(--gray-100);
+      border: calculateRem(1px) solid var(--gray-100);
       border-bottom: none;
       border-radius: calculateRem(4px) calculateRem(4px) 0 0;
     }
@@ -54,8 +54,7 @@
 .sb-table {
   width: 100%;
   background: var(--white-color);
-  border: 1px solid var(--gray-100);
-  // border-bottom: none;
+  border: calculateRem(1px) solid var(--gray-100);
   box-shadow: none;
   border-radius: calculateRem(4px) calculateRem(4px) 0 0;
   text-align: left;
@@ -85,7 +84,7 @@
   &-hover {
     tbody tr:hover {
       background: var(--secondary-0);
-      color: rgba($gray-0, .95);
+      color: rgba(var(--rc-rgba-gray), 0.95);
       cursor: pointer;
     }
   }
@@ -132,10 +131,10 @@
     font-size: calculateRem(12px);
     color: var(--gray);
     padding: calculateRem(8px) calculateRem(16px);
-    background-color: rgba($gray-0, 0.6);
+    background-color: rgba(var(--rc-rgba-gray), 0.6);
     position: relative;
     height: calculateRem(40px);
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: calculateRem(1px) solid var(--gray-100);
   }
 
   /* Heading with background for course-dashboard */
@@ -167,7 +166,7 @@
       padding: calculateRem(16px);
       color: var(--gray);
       height: calculateRem(56px);
-      border-bottom: 1px solid var(--gray-100);
+      border-bottom: calculateRem(1px) solid var(--gray-100);
     }
 
     tr:last-child {
@@ -268,7 +267,7 @@
 //     thead tr th {
 //       padding:  calculateRem(8px)  calculateRem(16px)  calculateRem(8px)  calculateRem(32px);
 //       background-color: $white-color;
-//       border-bottom:  calculateRem(1px) solid rgba(34, 36, 38, 0.1);
+//       border-bottom:  calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
 //       background-repeat: no-repeat;
 //       background-position: center right;
 //       max-width:  calculateRem(176px);
@@ -290,12 +289,12 @@
 //     .dataTables_paginate .paginate_button {
 //       &.current {
 //         color: var( --gray-800)33;
-//         background: rgba(0, 0, 0, 0.05);
+//         background: rgba(var(--rc-rgba-black), 0.05);
 //         border:  calculateRem(0.5px) solid #979797;
 
 //         &:hover {
 //           color: var( --gray-800)33;
-//           background-color: rgba(0, 0, 0, 0.05);
+//           background-color: rgba(var(--rc-rgba-black), 0.05);
 //           border:  calculateRem(0.5px) solid #979797;
 //         }
 //       }
@@ -315,8 +314,8 @@
 
 //       &:hover {
 //         border: calculateRem(0.5px) solid #979797;
-//         background: rgba(0, 0, 0, 0.03);
-//         color: rgba(0, 0, 0, 0.95) !important;
+//         background: rgba(var(--rc-rgba-black), 0.03);
+//         color: rgba(var(--rc-rgba-black), 0.95) !important;
 //       }
 
 //       &:active {
@@ -374,7 +373,7 @@
 //     }
 
 //     .ui.celled.table tr td:first-child {
-//       border-left: calculateRem(1px) solid rgba(34, 36, 38, .1);
+//       border-left: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
 //     }
 
 //     .ui.celled.table tr td:last-child {
@@ -382,7 +381,7 @@
 //     }
 
 //     .ui.celled.table tr th:first-child {
-//       border-left: calculateRem(1px) solid rgba(34, 36, 38, .1);
+//       border-left: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
 //     }
 
 //     .ui.celled.table tr th:last-child {

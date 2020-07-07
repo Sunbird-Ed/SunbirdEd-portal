@@ -3,6 +3,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { FancyTreeComponent } from './fancy-tree.component';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
+import { of } from 'rxjs';
 
 describe('FancyTreeComponent', () => {
   let component: FancyTreeComponent;
@@ -69,6 +70,7 @@ describe('FancyTreeComponent', () => {
         fancytree: mockFancyTree
       };
     });
+    spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(of({}));
     // act
     component.ngAfterViewInit();
     expect(component.getTelemetryInteractEdata).toHaveBeenCalled();

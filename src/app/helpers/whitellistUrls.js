@@ -43,26 +43,18 @@ const WHITELIST_URLS = [
 
     //User related APIs
     'user/v1/create',
+    'user/v1/managed',
     'user/v1/tnc/accept',
     'user/v1/update',
-    'user/v1/skill/endorse/add',
-    'user/v1/skill/update',
-    'user/v1/skill/read',
-    'user/v1/profile/visibility',
     'user/v1/get',
     'user/v1/exists',
     'user/v1/signup',
-    'user/v1/certs/download',
     'user/v1/feed',
     'user/v1/migrate',
     'user/v1/type/list',
-    'user/v1/block',
     'user/v1/search',
-    'user/v1/role/assign',
-    'user/v1/read/', 
     'user/v1/upload',
     'user/v2/read/',  
-    'user/v2/create',
     'user/v2/accept/tnc',
     'user/v2/bulk/upload',
     'user/v2/upload',
@@ -70,7 +62,6 @@ const WHITELIST_URLS = [
     'get/tenant/logo',
     '/v1/tenant',
     '/info',
-    'data/v1/skills',
     'data/v1/location/search', 
     'data/v1/role/read',
     'certreg/v1/certs/validate',
@@ -83,11 +74,7 @@ const WHITELIST_URLS = [
     
     // ORD related APIs
     'org/v1/search',
-    'org/v1/upload',
     'org/v1/type/list',
-    'org/v1/type/create',
-    'org/v1/type/update',
-    'org/v1/role/assign',
 
     //Dashboard related APIs
     'dashboard/v1/creation/org',
@@ -109,6 +96,24 @@ const WHITELIST_URLS = [
     'data/v1/role/read',        // Role read
     'content/v1/media/upload',
     'role/read'
+
+    // @deprecated API
+    // Removing in release-3.0.0
+    // To be deleted in release-3.1.0 - retaining for reference
+    // 'user/v1/skill/endorse/add',
+    // 'user/v1/skill/update',
+    // 'user/v1/skill/read',
+    // 'user/v1/profile/visibility',
+    // 'user/v1/certs/download',
+    // 'user/v1/block',
+    // 'user/v1/read/',
+    // 'data/v1/skills',
+    // 'org/v1/upload',
+    // 'org/v1/type/create',
+    // 'org/v1/type/update',
+
+    // Internal APIs
+    // 'user/v2/create',
 ];
 
 const allowedUrls = function() {

@@ -1,89 +1,73 @@
-import { Injectable } from '@angular/core';
-import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { map, mergeMap, filter, first } from 'rxjs/operators';
-import * as _ from 'lodash-es';
-import { of, throwError } from 'rxjs';
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
+import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
+import * as _ from 'lodash-es';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupsService {
   private groupCservice: any;
-  constructor(private channelService: ChannelService, private orgDetailsService: OrgDetailsService, private userService: UserService,
-    private frameworkService: FrameworkService) {
+  private _groupData;
+  public membersList = new EventEmitter();
+  constructor(private csLibInitializerService: CsLibInitializerService) {
+      if (!CsModule.instance.isInitialised) {
+        this.csLibInitializerService.initializeCs();
+      }
       this.groupCservice = CsModule.instance.groupService;
-    }
-
-  public isCustodianOrgUser() {
-    return this.orgDetailsService.getCustodianOrgDetails().pipe(map((custodianOrg) => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        return true;
-      }
-      return false;
-    }));
   }
 
-  public getCustodianOrgData() {
-    return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
-      const custOrgFrameworks = _.sortBy(_.get(channelData, 'result.channel.frameworks') || [], 'index');
-      return {
-          range: custOrgFrameworks,
-          label: 'Board',
-          code: 'board',
-          index: 1
-        };
-    }));
-  }
-
-  public getFilteredFieldData(frameWorkId?) {
-    this.frameworkService.initialize(frameWorkId);
-    return this.frameworkService.frameworkData$.pipe(
-      filter((frameworkDetails: any) => {
-      if (!frameworkDetails.err) {
-        const framework = frameWorkId ? frameWorkId : 'defaultFramework';
-        if (!_.get(frameworkDetails.frameworkdata, framework)) {
-          return false;
-        }
-      }
-      return true;
-    }),
-    mergeMap((frameworkDetails: any) => {
-      if (!frameworkDetails.err) {
-        return this.filterFrameworkCategories(frameworkDetails, frameWorkId);
-      } else {
-        return throwError(frameworkDetails.err);
-      }
-    }), map((formData: any) => {
-        return this.filterFrameworkCategoryTerms(formData);
-    }), first());
-  }
-
-  public filterFrameworkCategories(frameworkDetails, frameWorkId) {
-    const framework = frameWorkId ? frameWorkId : 'defaultFramework';
-    const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-    frameWorkId = frameworkData.identifier;
-    const categoryMasterList = _.filter(frameworkData.categories, (category) => {
-      return ['board', 'medium', 'gradeLevel', 'subject'].includes(_.get(category, 'code'));
+  addFieldsToMember(members) {
+   const memberList = _.forEach(members, (member) => {
+      return this.addFields(member);
     });
-    return of({categoryMasterList, 'frameWorkId': frameWorkId});
+    return memberList;
   }
 
-  public filterFrameworkCategoryTerms(formData) {
-    const formFieldProperties = _.filter(formData.categoryMasterList, (formFieldCategory) => {
-      formFieldCategory.range = _.get(_.find(formData.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
-      return true;
-    });
-    return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
+  addFields(member) {
+    member.title = member.name || member.userName;
+    member.initial = member.title[0];
+    member.identifier = member.userId || member.identifier;
+    member.isAdmin = member.role === 'admin';
+    member.isCreator = member.userId === member.createdBy;
+    return member;
   }
 
-  async createGroup(data: any) {
-    return await this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject).toPromise();
+  createGroup(groupData: IGroup) {
+    return this.groupCservice.create(groupData);
   }
 
-  async getAllGroups() {
-    return await this.groupCservice.getAll().toPromise();
+  updateGroup(groupId: string, updateRequest: IGroupUpdate) {
+    return this.groupCservice.updateById(groupId, updateRequest);
   }
 
+  searchUserGroups(request: IGroupSearchRequest) {
+    return this.groupCservice.search(request);
+  }
 
+  getGroupById(groupId: string, includeMembers?: boolean) {
+    return this.groupCservice.getById(groupId, {includeMembers});
+  }
+
+  deleteGroupById (groupId: string) {
+    return this.groupCservice.deleteById(groupId);
+  }
+
+  addMemberById(groupId: string, members) {
+    return this.groupCservice.addMembers(groupId, {members});
+  }
+
+  set groupData(list) {
+    this._groupData = list;
+  }
+
+  get groupData() {
+    return this._groupData;
+  }
+
+  emitMembers(members) {
+    this.membersList.emit(members);
+  }
 }

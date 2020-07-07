@@ -1,11 +1,11 @@
 /* user create and choose user page UI styles */
 
 .user-profile-box {
-  margin: 32px auto;
+  margin: calculateRem(32px) auto;
   max-width: 480px;
   width: calc(100% - 32px);
   background: var(--white);
-  border-radius: 8px;
+  border-radius: calculateRem(8px);
 
   &__title {
     font-weight: bold;
@@ -14,8 +14,8 @@
   }
 
   &__actions {
-    border-top: 1px solid #ddd;
-    padding: 16px 0px 0px 0px;
+    border-top: calculateRem(1px) solid var(--rc-dddddd);
+    padding: calculateRem(16px) 0px 0px 0px;
     display: flex;
     flex-direction: row-reverse;
   }

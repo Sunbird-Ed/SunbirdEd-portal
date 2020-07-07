@@ -89,7 +89,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
@@ -148,7 +148,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
       });
   }
 
@@ -168,7 +168,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }, err => {
       this.isLoading = false;
       this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
   });
   }
 

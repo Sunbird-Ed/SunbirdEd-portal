@@ -14,7 +14,7 @@
         margin: calculateRem(35px) auto !important;
         width: calculateRem(944px) !important;
         padding: calculateRem(20px);
-        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
+        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
     }
 }
 @media only screen and (max-width: 767px) {
@@ -39,13 +39,13 @@
     border-color: var(--primary-400) !important;
 }
 .ui.dodger-blue.button {
-    background: $primary-color;
-    color: $white-color;
+    background: var(--primary-color);
+    color: var(--white);
     height: calculateRem(38px) !important;
 }
 .ui.grey.button {
     background: var(--gray-200);
-    color: $white-color;
+    color: var(--white);
     pointer-events: none !important;
     cursor: not-allowed !important; 
     height: calculateRem(38px) !important;
@@ -54,17 +54,17 @@
     color: var(--gray-400)!important;
 }
 .orange.text {
-    color: $danger-color;
+    color: var(--red-100);
 }
 .orange-border {
-    border-color: $danger-color !important;
+    border-color: var(--red-100) !important;
 }
 .blue.text {
-    color: $primary-color;
+    color: var(--primary-color);
 }
 .ui.basic.blue.navigation.label {
-    background: $white-color !important;
-    color: $primary-color !important;
+    background: var(--white) !important;
+    color: var(--primary-color) !important;
     border: 0  !important;
     padding-left: 0;
     font-size: 1rem;
@@ -73,7 +73,7 @@
 }
 .ui.basic.error.label {
     background: none !important;
-    color: $danger-color!important;
+    color: var(--red-100)!important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
@@ -116,7 +116,7 @@ input[type=number]::-webkit-inner-spin-button {
     height: calculateRem(16px);
     border: calculateRem(2px) solid var(--gray-300) !important;
     border-radius: 100%;
-    background: $white-color;
+    background: var(--white);
 }
 .ui.form.borderd [type="radio"]:checked + label:before {
     border: calculateRem(2px) solid var(--primary-400) !important;
