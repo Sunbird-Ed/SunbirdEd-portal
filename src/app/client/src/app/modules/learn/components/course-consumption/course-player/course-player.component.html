@@ -9,7 +9,7 @@
           *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -17,8 +17,7 @@
           <div class="sb-bg-color-white p-8 mb-16 mobile only">
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course does not have a
-                certificate</span>
+              <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template>
@@ -33,12 +32,11 @@
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
-              (click)="isExpandedAll = true;"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">Expand
-              all</button>
+              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
-              (click)="isExpandedAll = false;"><img src="assets/images/collapse.png" class="mr-8" alt=""
-                width="12px">Collapse all</button>
+              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img src="assets/images/collapse.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
@@ -97,7 +95,7 @@
         <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -105,19 +103,18 @@
           <div class="sb-bg-color-white p-8 mb-16 computer only">
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course does not have a
-                certificate</span>
+              <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template>
 
         <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse">
-          <div class="fsmall">Course Progress</div>
-          <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}% Completed</div>
+          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}% {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
           <!-- Hide this if course does not contain certificate -->
-          <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">Complete all the modules to get a certificate
+          <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">{{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
           </div>
         </div>
 

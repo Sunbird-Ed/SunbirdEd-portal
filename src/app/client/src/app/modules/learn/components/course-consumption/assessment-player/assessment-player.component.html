@@ -16,14 +16,14 @@
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
             (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule);">
-            <i class="chevron left icon mr-4"></i>Prev module
+            <i class="chevron left icon mr-4"></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
             (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule)">
-            Next module<i class="chevron right icon ml-4"></i>
+            {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="chevron right icon ml-4"></i>
           </button>
           <!-- Next Module button -->
         </div>
@@ -38,17 +38,12 @@
           <!-- Textbook details -->
           <div class="textbook__details d-flex flex-ai-center">
             <!-- Textbook image -->
-            <!-- <div class="textbook__bookimg">
-              <img [src]="courseHierarchy?.appIcon || courseHierarchy?.courseLogoUrl" alt=""
-                style="width: 55px; height: 55px;" (error)="img.src = courseFallbackImg" #img>
-            </div> -->
             <div class="textbook__heading">
               <!-- Textbook title -->
               <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
               </h5>
               <!-- Textbook Rating with share icon -->
               <div class="textbook__rating mt-4">
-
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
                   <i class="blue share alternate icon"></i>
@@ -62,7 +57,7 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course" style="align-self: center;">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0">
-            <div class="fsmall">Module progress</div>         
+            <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
             <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents || '0'}}/{{totalContents || '0'}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
             <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
           </div>
@@ -94,7 +89,7 @@
         </div>
       </section>
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16">
-        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentLabel}}</p>
+        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</p>
         <div class="side-toc-content chapter-box">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
