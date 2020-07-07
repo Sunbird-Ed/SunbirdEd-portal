@@ -35,9 +35,10 @@ module.exports = (app) => {
    */
   app.get('/google/auth/callback', async (req, res) => {
     logger.info({msg: 'google auth callback called', reqId: req.reqId});
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
+    let reqQuery =  {};
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
+      reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
@@ -69,6 +70,9 @@ module.exports = (app) => {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
+      }
+      if(error instanceof Error){
+        error = error.message;
       }
       logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl},  reqId: req.reqId})
       logErrorEvent(req, errType, error);
