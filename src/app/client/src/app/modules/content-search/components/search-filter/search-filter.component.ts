@@ -28,7 +28,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedOption: { label: string, value: string, selectedOption: string };
   public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
   public type: string;
-  public channel: any[] = [{name: 'NCERT', value: 'NCERT'}, {name: 'NCERT - 2', value: 'NCERT - 2'}];
+  public publisher: any[] = [];
 
   public boards: any[] = [];
   public mediums: any[] = [];
@@ -43,11 +43,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.type = this.optionLabel.Board;
-    this.optionData.push({
-      label: this.optionLabel.Publisher,
-      value: 'channel',
-      option: this.channel,
-    });
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
   }
@@ -64,7 +59,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     mergeMap((queryParams) => {
       if (queryParams.channel) {
         this.selectedChannel = { label: this.optionLabel.Publisher, value: 'channel', selectedOption: queryParams.channel[0] };
-        this.type = this.optionLabel.Publisher;
       }
       this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
       this.queryFilters = _.cloneDeep(queryParams);
@@ -110,6 +104,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       name: node.name,
       value: node.name,
     }));
+    if (_.get(this.filters, 'publisher') && _.get(this.filters, 'publisher').length > 0) {
+      this.optionData.push({
+        label: this.optionLabel.Publisher,
+        value: 'channel',
+        option: _.get(this.filters, 'publisher'),
+      });
+    }
     this.optionData.push({
       label: this.optionLabel.Board,
       value: 'board',
@@ -193,8 +194,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     };
     if (this.type === this.optionLabel.Publisher) {
       filters['channel'] = [_.get(this.selectedChannel, 'selectedOption')];
+      filters['ispublisher'] = true;
     } else {
       filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
+      filters['ispublisher'] = false;
     }
     return filters;
   }
