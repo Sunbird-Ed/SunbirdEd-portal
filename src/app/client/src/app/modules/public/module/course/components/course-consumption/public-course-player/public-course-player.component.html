@@ -8,7 +8,8 @@
           *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -16,7 +17,8 @@
           <div class="sb-bg-color-white p-8 mb-16 mobile only">
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              <span
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template>
@@ -25,12 +27,14 @@
         <div class="training-info" *ngIf="courseHierarchy">
           <h4 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h4>
           <div class="training-relevant my-16">
-            <h6 class="mt-0 mb-8 fsmall training-relevant__heading">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}:</h6>
+            <h6 class="mt-0 mb-8 fsmall training-relevant__heading">
+              {{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}:</h6>
             <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.gradeLevel">
               <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ courseHierarchy?.gradeLevel?.join(', ')}}</span>
             </div>
             <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.subject">
-              <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.subject}}</span></div>
+              <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.subject}}</span>
+            </div>
             <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.medium">
               <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ courseHierarchy?.medium}}</span>
             </div>
@@ -57,10 +61,13 @@
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
-              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
+              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
+                src="assets/images/plus.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
-              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img src="assets/images/collapse.png" class="mr-8" alt=""
+              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
+                src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
@@ -111,11 +118,11 @@
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
-        <!-- Hide this if course does not contain certificate -->
         <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -123,7 +130,8 @@
           <div class="sb-bg-color-white p-8 mb-16 computer only">
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              <span
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template>
