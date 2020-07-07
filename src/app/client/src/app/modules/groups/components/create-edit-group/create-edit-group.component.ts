@@ -20,12 +20,14 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   groupDetails;
   groupId: string;
   url = document.location.origin;
+  instance: string;
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.groupDetails = this.groupId ? this.groupService.groupData : {};
     this.initializeForm();

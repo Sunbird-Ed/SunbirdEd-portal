@@ -39,6 +39,7 @@ export class FtuPopupComponent implements OnInit {
   closeMemberPopup() {
     this.showMemberPopup = false;
     this.close.emit(true);
+    localStorage.setItem('login_members_ftu', 'members');
   }
 
 }
