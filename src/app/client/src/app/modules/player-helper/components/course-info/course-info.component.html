@@ -1,7 +1,7 @@
 <sui-accordion class="styled fluid sb-accordion">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-      Credits & license info
+      {{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}}
       <i class="chevron down icon ml-auto"></i>
     </div>
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
@@ -16,8 +16,7 @@
         <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.creator}}</div>
       </div>
       <div class="pb-24">
-        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">Published on {{instance}}
-          by</div>
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
         <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.organisation?.join(', ')}}
         </div>
         <div *ngIf="courseHierarchy?.orgDetails?.email" class="content-metadeta__text  fnormal sb-color-gray-400"><a
@@ -60,9 +59,6 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
-
-
-
 
 <app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
   (close)="showContentCreditsModal = false"></app-content-credits>
