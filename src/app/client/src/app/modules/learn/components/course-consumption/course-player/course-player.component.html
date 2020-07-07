@@ -18,11 +18,8 @@
         <div class="training-modules my-16">
 
           <div class="training-modules__title d-flex flex-ai-center mb-16">
-
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
-  
-            <!-- Change design and remove this comment -->
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>  
             <button *ngIf="!isExpandedAll" class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center" (click)="isExpandedAll = true;"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">Expand all</button>
             <button *ngIf="isExpandedAll" class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center" (click)="isExpandedAll = false;"><img src="assets/images/collapse.png" class="mr-8" alt="" width="12px">Collapse all</button>
           </div>
