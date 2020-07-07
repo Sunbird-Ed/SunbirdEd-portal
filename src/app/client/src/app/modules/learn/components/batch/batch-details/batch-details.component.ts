@@ -83,7 +83,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        this.showJoinModal = data;
+        // If batch length is 1, then directly join the batch
+        if (this.allBatchList && this.allBatchList.length === 1) {
+          this.enrollBatch(this.allBatchList[0]);
+        } else {
+          this.showJoinModal = data;
+        }
       });
 
     this.courseInteractObject = {
@@ -266,6 +271,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate(['create/batch'], { relativeTo: this.activatedRoute });
   }
   enrollBatch(batch) {
+    this.showJoinModal = false;
     this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
   }
