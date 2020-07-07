@@ -79,21 +79,11 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should go to courseDetails page', () => {
-    const navigationService = TestBed.get(NavigationHelperService);
     spyOn(component['router'], 'navigate');
-    navigationService['_history'] = ['http://localhost:3000/learn/course/do_2130362003064668161511/batch/01303620862525440010'];
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
   });
 
-  it('should navigate to previous page', () => {
-    const navigationService = TestBed.get(NavigationHelperService);
-    spyOn(component['router'], 'navigate');
-    spyOn(component['location'], 'back');
-    navigationService['_history'] = ['http://localhost:3000/learn/course/do_2130362003064668161511/batch/01303620862525440010', 'http://localhost:3000/learn'];
-    component.goBack();
-    expect(component['location'].back).toHaveBeenCalled();
-  });
   it('should call subscribeToQueryParam', () => {
     spyOn<any>(component, 'setTelemetryCourseImpression');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
