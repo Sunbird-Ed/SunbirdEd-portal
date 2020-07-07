@@ -59,7 +59,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     mergeMap((queryParams) => {
       if (queryParams.channel) {
         this.selectedChannel = { label: this.optionLabel.Publisher, value: 'channel', selectedOption: queryParams.channel[0] };
-        this.type = this.optionLabel.Publisher;
       }
       this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
       this.queryFilters = _.cloneDeep(queryParams);
@@ -72,9 +71,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       }
       if (filters && filters.hasOwnProperty('board')) {
         filters['board'] = _.sortBy(filters['board'], ["name"]);
-      }
-      if (filters && filters.hasOwnProperty('publisher')){
-        filters['publisher'] = _.get(filters, 'publisher');
       }
       this.filters = filters;
       this.updateBoardList();
