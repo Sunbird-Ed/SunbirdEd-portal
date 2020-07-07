@@ -482,4 +482,25 @@ describe('SubmitTeacherDetailsComponent', () => {
   }));
 
 
+  it('should not show verification as user changed phone and made it blank', fakeAsync(() => {
+    const tncService = TestBed.get(TncService);
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
+    spyOn(telemetryService, 'impression');
+    userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
+    component.ngOnInit();
+    const phoneControl = component.userDetailsForm.controls.phone;
+    phoneControl.setValue('9656989656');
+    tick(500);
+    fixture.detectChanges();
+    phoneControl.setValue('');
+    tick(500);
+    fixture.detectChanges();
+    expect(component.validationType.phone.isVerificationRequired).toBe(false);
+    expect(component.validationType.phone.isVerified).toBe(false);
+  }));
+
 });
