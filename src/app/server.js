@@ -151,7 +151,6 @@ app.use('/plugin', subApp)
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp()).catch(error => runApp())
 
 function endSession(request, response, next) {
-  console.log(request.session);
   delete request.session['roles']
   delete request.session['rootOrgId']
   delete request.session['orgs']
