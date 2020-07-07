@@ -55,6 +55,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   parentCourse;
   prevModule;
   nextModule;
+  totalContents = 0;
+  consumedContents = 0;
 
   constructor(
     public resourceService: ResourceService,
@@ -143,6 +145,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(([params, queryParams]) => {
+        this.consumedContents = 0;
+        this.totalContents = 0;
         this.collectionId = params.collectionId;
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
@@ -386,44 +390,59 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   calculateProgress(isLogAuditEvent?: boolean) {
     /* istanbul ignore else */
     if (_.get(this.courseHierarchy, 'children')) {
-      const consumedContents = [];
-      let totalContents = 0;
+      this.consumedContents = 0;
+      this.totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
-          const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
-          totalContents += flattenDeepContents.length;
-
-          let contents = [];
-          /* istanbul ignore else */
-          if (this.contentStatus.length) {
-            contents = flattenDeepContents.filter(o => {
-              return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
-            });
-          }
+          let consumedContents = [];
+          let flattenDeepContents = [];
 
           /* istanbul ignore else */
-          if (contents.length) {
-            consumedContents.push(...contents);
+          if (_.get(unit, 'children.length')) {
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            /* istanbul ignore else */
+            if (this.contentStatus.length) {
+              consumedContents = flattenDeepContents.filter(o => {
+                return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
+              });
+            }
           }
+
+          unit.consumedContent = consumedContents.length;
+          unit.contentCount = flattenDeepContents.length;
+          unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
+          unit.isUnitConsumptionStart = false;
+
+          if (consumedContents.length) {
+            unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+            unit.isUnitConsumptionStart = true;
+          } else {
+            unit.progress = 0;
+            unit.isUnitConsumptionStart = false;
+          }
+
         } else {
-          totalContents++;
-          const content = this.contentStatus.find(item => item.contentId === unit.identifier && item.status === 2);
-          /* istanbul ignore else */
-          if (content) {
-            consumedContents.push(content);
-          }
+          const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
+          unit.consumedContent = consumedContent.length;
+          unit.contentCount = 1;
+          unit.isUnitConsumed = consumedContent.length === 1;
+          unit.progress = consumedContent.length ? 100 : 0;
+          unit.isUnitConsumptionStart = Boolean(consumedContent.length);
+        }
+
+        this.consumedContents = this.consumedContents + unit.consumedContent;
+        this.totalContents = this.totalContents + unit.contentCount;
+        this.courseHierarchy.progress = 0;
+        /* istanbul ignore else */
+        if (this.consumedContents) {
+          this.courseHierarchy.progress = (this.consumedContents / this.totalContents) * 100;
+        }
+        this.isUnitCompleted = this.totalContents === this.consumedContents;
+        /* istanbul ignore else */
+        if (isLogAuditEvent && this.isUnitCompleted) {
+          this.logAuditEvent(true);
         }
       });
-      this.courseHierarchy.progress = 0;
-      /* istanbul ignore else */
-      if (consumedContents.length) {
-        this.courseHierarchy.progress = (consumedContents.length / totalContents) * 100;
-      }
-      this.isUnitCompleted = totalContents === consumedContents.length;
-      /* istanbul ignore else */
-      if (isLogAuditEvent && this.isUnitCompleted) {
-        this.logAuditEvent(true);
-      }
     }
   }
 

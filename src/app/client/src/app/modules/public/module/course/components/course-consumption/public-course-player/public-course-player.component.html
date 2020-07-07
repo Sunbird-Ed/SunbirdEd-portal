@@ -3,6 +3,14 @@
     <div class="sb-course-details sb-g py-16">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
 
+        <!-- Course details for mobile view -->
+        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="courseHierarchy.certTemplate">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>
+          </div>
+        </div>
+
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
           <h4 class="font-weight-bold">Course details</h4>
@@ -64,7 +72,7 @@
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
         <!-- Hide this if course does not contain certificate -->
-        <div class="sb-bg-color-white p-8 mb-16">
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span class="fnormal sb-color-primary ml-16 font-weight-bold">This course contains a certificate</span>

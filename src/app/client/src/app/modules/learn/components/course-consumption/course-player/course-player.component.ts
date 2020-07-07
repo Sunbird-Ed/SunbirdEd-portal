@@ -15,6 +15,7 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
+import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
 
 @Component({
   selector: 'app-course-player',
@@ -63,6 +64,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   progress = 0;
+  isExpandedAll: boolean;
+  isFirst = false;
+
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   constructor(
@@ -298,6 +302,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }
     };
+  }
+
+  isExpanded(index: number) {
+    if (_.isUndefined(this.isExpandedAll)) {
+      return Boolean(index === 0);
+    }
+    return this.isExpandedAll;
   }
 
   navigateToPlayerPage(collectionUnit: any, event?) {
