@@ -133,6 +133,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   showLoader = true;
   isCopyAsCourseClicked: Boolean =  false;
   selectAll: Boolean = false;
+  selectedItems = [];
 
   constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -524,6 +525,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   clearSelection() {
     this.isCopyAsCourseClicked = !this.isCopyAsCourseClicked;
     this.selectAll = false;
+    this.selectedItems = [];
     this.collectionData['children'].forEach(item => {
       item.selected = false;
     });
@@ -599,6 +601,42 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
     });
+  }
+
+  /**
+   * @since #SH-362
+   * @param  {} event
+   * @description - this method will handle the enable/disable of create course button.
+   */
+  handleSelectedItem(event) {
+    if ('selectAll' in event) {
+      this.handleSelectAll(event);
+    } else {
+      if (_.get(event, 'data.selected') === true) {
+        this.selectedItems.push(event.data);
+      } else {
+        _.remove(this.selectedItems, (item) => {
+          return (item === event.data);
+        });
+      }
+    }
+  }
+
+  /**
+   * @since #SH-362
+   * @param  {} event
+   * @description - To handle select/deselect all checkbox event particularly
+   */
+  handleSelectAll(event) {
+    if (_.get(event, 'selectAll') === true) {
+      event.data.forEach(element => {
+        if (this.selectedItems.indexOf(element) === -1) {
+          this.selectedItems.push(element);
+        }
+      });
+    } else if (_.get(event, 'selectAll') === false) {
+      this.selectedItems = [];
+    }
   }
 }
 
