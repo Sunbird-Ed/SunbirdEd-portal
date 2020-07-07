@@ -184,7 +184,6 @@ describe('CollectionPlayerComponent', () => {
     component.clearSelection();
     expect(component.isCopyAsCourseClicked).toBe(false);
     expect(component.selectAll).toBe(false);
-    expect(component.enableCreateButton).toBe(false);
     expect(component.collectionData).toEqual(CollectionHierarchyGetMockResponse.copyContentDataAfterClear);
   });
 
