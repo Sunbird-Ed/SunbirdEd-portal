@@ -27,7 +27,7 @@
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)">
                 <sb-accordion-header class="sb-bg-color-gray-0">
-                  <i class="icon-svg icon-svg--md icon-tick" *ngIf="item?.consumedContent === item?.contentCount">
+                  <i class="icon-svg icon-svg--md icon-tick" *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
                     </svg>
