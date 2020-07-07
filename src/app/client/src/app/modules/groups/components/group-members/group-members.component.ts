@@ -24,7 +24,7 @@ export class GroupMembersComponent implements OnInit {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  showMenu = false;
+  showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
   memberListToShow = [];
@@ -53,8 +53,8 @@ export class GroupMembersComponent implements OnInit {
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
-        if (this.showMenu) {
-          this.showMenu = false;
+        if (this.showKebabMenu) {
+          this.showKebabMenu = false;
         }
       });
 
@@ -64,7 +64,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   getMenuData(event, member) {
-    this.showMenu = !this.showMenu;
+    this.showKebabMenu = !this.showKebabMenu;
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
@@ -89,6 +89,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   onModalClose() {
+    this.showModal = false;
     // Handle Telemetry
   }
 
