@@ -1,5 +1,5 @@
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="closeModal()" #modal>
+  appBodyScroll #modal>
   <i class="close icon" aria-hidden="true" (click)="closeModal()"></i>
   <div class="course-complete sb-bg-white p-32">
     <div class="course-complete-content">
@@ -9,7 +9,7 @@
         <div>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</div>
       </div>
     </div>
-    <div class="course-complete-para mt-32">
+    <div class="course-complete-para mt-32" *ngIf="isCertificateAttached">
       {{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}
     </div>
   </div>
