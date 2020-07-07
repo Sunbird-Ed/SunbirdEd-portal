@@ -12,7 +12,7 @@
             <div class="w-100">
               <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
                 <span class="text-right d-flex font-weight-normal ml-16">{{resourceService?.frmelmnts?.lbl?.whatInstanceId  | interpolate:'{instance}': instance}}
-                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="showModal=true"><svg class="icon icon-svg--primary">
+                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true)"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
                 </span>
@@ -55,4 +55,4 @@
   </div>
 </div>
 
-<app-ftu-popup *ngIf="showModal" [showMemberPopup]="showModal" (close)="closeModal()"></app-ftu-popup>
+<app-ftu-popup *ngIf="showModal" [showMemberPopup]="showModal" (close)="toggleModal(false)"></app-ftu-popup>

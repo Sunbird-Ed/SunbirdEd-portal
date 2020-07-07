@@ -30,6 +30,7 @@ export class AddMemberComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
@@ -95,5 +96,9 @@ export class AddMemberComponent implements OnInit {
     }, err => {
       this.membersList.push(this.verifiedMember);
     });
+  }
+
+  toggleModal(visibility: boolean = false) {
+    this.showModal = visibility;
   }
 }
