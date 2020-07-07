@@ -629,10 +629,10 @@
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
 
-"@project-sunbird/common-consumption@^3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.6.tgz#db2139ea3bd43058e60f676bcfdc0ac14955d1a4"
-  integrity sha512-iHEjRkoEqOa2ZdtjJrfgLg0NtDaaMdcEGM0zDjryYihU3pZSZeAxJd0dwSc8UjP7Enrlov5USq3lxBPFTTsKeA==
+"@project-sunbird/common-consumption@^3.1.7":
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.7.tgz#0748bdf356561c520a1279718b472b59457fa3fa"
+  integrity sha512-QWEArCTBwsExDhqYpTJSziSAJZ4xXANSfdZI4KG87I4OfiJ8R0wa5GWpJq9opnyTAHJo4J+n+Fu8qUZUMz9+PQ==
   dependencies:
     tslib "^1.9.0"
 
