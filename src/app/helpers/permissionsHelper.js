@@ -154,7 +154,7 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      // logger.debug({msg: 'user/v1/read api response', error, requestOptions: options});
+      logger.info({msg: 'user/v1/read api response', error, requestOptions: options});
       telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = [];
       reqObj.session.orgs = [];
@@ -163,7 +163,7 @@ let PERMISSIONS_HELPER = {
         callback(error, null)
       } else if (!error && body) {
         module.exports.setUserSessionData(reqObj, body);
-        // logger.debug({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
+        logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
         reqObj.session.save(function (error) {
           if (error) {
             callback(error, null)
