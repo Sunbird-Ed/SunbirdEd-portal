@@ -99,6 +99,11 @@
       }
     }
   }
+
+  .sbaccordion__panel-header__title {
+    display: flex !important;
+    align-items: center;
+  }
 }
 :host::ng-deep {
   .certified-course__progress {

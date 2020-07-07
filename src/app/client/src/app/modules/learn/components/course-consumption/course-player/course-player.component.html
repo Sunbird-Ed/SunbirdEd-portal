@@ -16,18 +16,22 @@
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
 
         <div class="training-modules my-16">
-          <h4 class="sb-pageSection-title sb-pageSection-title-light">
-            {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
 
-          <!-- Change design and remove this comment -->
-          <button *ngIf="!isExpandedAll" (click)="isExpandedAll = true;">Expand all</button>
-          <button *ngIf="isExpandedAll" (click)="isExpandedAll = false;">Collapse all</button>
+          <div class="training-modules__title d-flex flex-ai-center mb-16">
+
+            <h4 class="sb-pageSection-title sb-pageSection-title-light">
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+  
+            <!-- Change design and remove this comment -->
+            <button *ngIf="!isExpandedAll" class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center" (click)="isExpandedAll = true;"><img src="assets/images/plus.png" class="mr-8" alt="" width="12px">Expand all</button>
+            <button *ngIf="isExpandedAll" class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center" (click)="isExpandedAll = false;"><img src="assets/images/collapse.png" class="mr-8" alt="" width="12px">Collapse all</button>
+          </div>
 
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)">
                 <sb-accordion-header class="sb-bg-color-gray-0">
-                  <i class="icon-svg icon-svg--md icon-tick" *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                  <i class="icon-svg icon-svg--md icon-tick mr-8" *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
                     </svg>
