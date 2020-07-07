@@ -50,7 +50,7 @@ describe('GroupHeaderComponent', () => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
     component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123',
-    members: [{createdBy: 'user_123', name: 'user123'}]};
+    members: [{createdBy: 'user_123', name: 'user123', role: 'admin'}]};
     fixture.detectChanges();
   });
 
@@ -107,7 +107,7 @@ describe('GroupHeaderComponent', () => {
 
   it ('show change dropdownMenuContent', () => {
     component.showMemberPopup = false;
-    component.isMemberPopup(true);
+    component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
   });
 
