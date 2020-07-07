@@ -525,7 +525,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   clearSelection() {
     this.isCopyAsCourseClicked = !this.isCopyAsCourseClicked;
     this.selectAll = false;
-    this.selectedItems.length = 0;
+    this.selectedItems = [];
     this.collectionData['children'].forEach(item => {
       item.selected = false;
     });
@@ -635,7 +635,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         }
       });
     } else if (_.get(event, 'selectAll') === false) {
-      this.selectedItems.length = 0;
+      this.selectedItems = [];
     }
   }
 }
