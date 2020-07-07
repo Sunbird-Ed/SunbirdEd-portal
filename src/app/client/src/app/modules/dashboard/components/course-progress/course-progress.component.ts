@@ -249,6 +249,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
+    this.showWarningDiv = false;
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
@@ -292,6 +293,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
   populateCourseDashboardData(batch?: any): void {
+    return ;
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
