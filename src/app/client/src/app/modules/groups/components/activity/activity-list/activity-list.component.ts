@@ -100,7 +100,6 @@ export class ActivityListComponent {
   getMenuData(event, member) {
     this.showMenu = !this.showMenu;
     this.selectedActivity = member;
-    event.event.stopImmediatePropagation();
   }
 
 
