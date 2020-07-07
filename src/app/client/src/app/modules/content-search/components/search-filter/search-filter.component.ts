@@ -104,7 +104,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       name: node.name,
       value: node.name,
     }));
-    if (_.get(this.filters, 'publisher')) {
+    if (_.get(this.filters, 'publisher') && _.get(this.filters, 'publisher').length > 0) {
       this.optionData.push({
         label: this.optionLabel.Publisher,
         value: 'channel',
