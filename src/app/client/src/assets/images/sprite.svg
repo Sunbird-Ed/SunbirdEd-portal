@@ -124,4 +124,8 @@
       </g>
     </symbol>
 
+  <symbol viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" id="play">
+  <path d="M7 0C3.1 0 0 3.1 0 7s3.1 7 7 7 7-3.1 7-7-3.1-7-7-7zM5.6 10.1V3.8l4.2 3.1-4.2 3.2z" ></path>
+  </symbol>
+
 </svg>
