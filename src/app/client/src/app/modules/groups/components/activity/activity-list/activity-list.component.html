@@ -15,8 +15,8 @@
         </sb-course-card>
         <div class="kabab-menu-dropdown-content"
           *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
-          <div class="list sb-color-error">
-            <span (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+          <div class="list sb-color-error" (click)="toggleModal(true)">
+            <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
           </div>
         </div>
       </div>

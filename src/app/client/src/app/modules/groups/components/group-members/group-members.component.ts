@@ -65,6 +65,7 @@ export class GroupMembersComponent implements OnInit {
   getMenuData(event, member) {
     this.showKebabMenu = !this.showKebabMenu;
     this.selectedMember = member;
+    event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {
@@ -87,6 +88,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   onModalClose() {
+    this.showModal = false;
     // Handle Telemetry
   }
 
