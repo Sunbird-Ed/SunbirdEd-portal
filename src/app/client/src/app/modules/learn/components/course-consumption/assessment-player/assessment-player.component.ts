@@ -52,6 +52,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isFullScreenView = false;
   isCourseCompleted = false;
   showCourseCompleteMessage = false;
+  isCertificateAttached = false;
   parentCourse;
   prevModule;
   nextModule;
@@ -163,6 +164,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.treeModel = model.parse(data.courseHierarchy);
               this.parentCourse = data.courseHierarchy;
               this.setPreviousAndNextModule();
+              this.isCertificateAttached = Boolean(_.get(this.parentCourse, 'certTemplate.length'));
               this.getCourseCompletionStatus();
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
