@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from './../routerLinks';
 import { IGroupMemberConfig, IGroupMember } from '../../interfaces';
 import { GroupsService } from '../../services';
+import { IGroup } from '../../interfaces/group';
 
 
 
@@ -24,6 +25,8 @@ export class GroupMembersComponent implements OnInit {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
+  @Input() groupData: IGroup;
+  currentUser;
   showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
@@ -45,10 +48,7 @@ export class GroupMembersComponent implements OnInit {
   ngOnInit() {
     this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    /* istanbul ignore else */
-    if (!this.config.showMemberMenu) {
-      this.memberListToShow.forEach(item => item.isMenu = false);
-    }
+    this.hideMemberMenu();
 
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
@@ -58,9 +58,17 @@ export class GroupMembersComponent implements OnInit {
         }
       });
 
-      this.groupsService.membersList.subscribe(members => {
-        this.memberListToShow = members;
-      });
+    this.groupsService.membersList.subscribe(members => {
+      this.memberListToShow = members;
+      this.hideMemberMenu();
+    });
+  }
+
+  hideMemberMenu() {
+    /* istanbul ignore else */
+    if (!this.config.showMemberMenu) {
+      this.memberListToShow.forEach(item => item.isMenu = false);
+    }
   }
 
   getMenuData(event, member) {

@@ -3,6 +3,8 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
 import * as _ from 'lodash-es';
+import { UserService } from '@sunbird/core';
+import { ResourceService } from '@sunbird/shared';
 
 
 @Injectable({
@@ -12,18 +14,20 @@ export class GroupsService {
   private groupCservice: any;
   private _groupData;
   public membersList = new EventEmitter();
-  constructor(private csLibInitializerService: CsLibInitializerService) {
-      if (!CsModule.instance.isInitialised) {
-        this.csLibInitializerService.initializeCs();
-      }
-      this.groupCservice = CsModule.instance.groupService;
+  constructor(
+    private csLibInitializerService: CsLibInitializerService,
+    private userService: UserService,
+    private resourceService: ResourceService
+    ) {
+    if (!CsModule.instance.isInitialised) {
+      this.csLibInitializerService.initializeCs();
+    }
+    this.groupCservice = CsModule.instance.groupService;
   }
 
   addFieldsToMember(members) {
-   const memberList = _.forEach(members, (member) => {
-      return this.addFields(member);
-    });
-    return memberList;
+    const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
+    return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.name)], ['desc', 'desc', 'asc']);
   }
 
   addFields(member) {
@@ -32,6 +36,10 @@ export class GroupsService {
     member.identifier = member.userId || member.identifier;
     member.isAdmin = member.role === 'admin';
     member.isCreator = member.userId === member.createdBy;
+    member.isSelf = this.userService.userid === member.identifier;
+    member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
+    member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
+
     return member;
   }
 
@@ -47,16 +55,16 @@ export class GroupsService {
     return this.groupCservice.search(request);
   }
 
-  getGroupById(groupId: string, includeMembers?: boolean) {
-    return this.groupCservice.getById(groupId, {includeMembers});
+  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean) {
+    return this.groupCservice.getById(groupId, { includeMembers, includeActivities });
   }
 
-  deleteGroupById (groupId: string) {
+  deleteGroupById(groupId: string) {
     return this.groupCservice.deleteById(groupId);
   }
 
   addMemberById(groupId: string, members) {
-    return this.groupCservice.addMembers(groupId, {members});
+    return this.groupCservice.addMembers(groupId, { members });
   }
 
   set groupData(list) {
