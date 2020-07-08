@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./select-option-group.component.scss']
 })
 export class SelectOptionGroupComponent implements OnInit {
-  @Input() optionData: Array<{ name: string, value: string }>;
+  @Input() optionData: Array<{}>;
   @Input() selectedOption: { label: string, value: string, selectedOption: string };
   @Output() selectedValue = new EventEmitter<{ label: string, value: string, selectedOption: string }>();
   public preSelectedValue: string;
