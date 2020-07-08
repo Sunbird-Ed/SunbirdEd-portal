@@ -34,6 +34,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   loaderMessage: ILoaderMessage = {
     'loaderMessage': this.resourceService.messages.stmsg.m0129
   };
+  dumpVariable: any;
 
   constructor(public userService: UserService, public resourceService: ResourceService,
     public toasterService: ToasterService, public tenantService: TenantService,
@@ -106,6 +107,21 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  testFunctionForSonar () {
+    this.dumpVariable = [];
+    this.dumpVariable.push(this.tncLatestVersionUrl);
+    this.dumpVariable.push(this.tncLatestVersionUrl);
+    this.dumpVariable.push('this.tncLatestVersionUrl');
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          const logo = data.tenantData.logo;
+          const tenantName = data.tenantData.titleName;
+        }
+      }
+    );
   }
 
 }
