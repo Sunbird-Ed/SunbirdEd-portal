@@ -35,7 +35,7 @@
         </div>
         <div ngxSlickItem  class="item-help">
           <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
-          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere }}</p>
+          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': instance }}</p>
             <img src="./assets/images/step_3.png" alt="">
           </div>
       </ngx-slick>

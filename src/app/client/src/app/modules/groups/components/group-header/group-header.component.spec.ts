@@ -1,4 +1,3 @@
-import { CREATE_GROUP } from './../routerLinks';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -9,7 +8,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MY_GROUPS, GROUP_DETAILS } from '../routerLinks';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -49,7 +48,7 @@ describe('GroupHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
-    component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123',
+    component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
     members: [{createdBy: 'user_123', name: 'user123', role: 'admin'}]};
     fixture.detectChanges();
   });
@@ -71,7 +70,6 @@ describe('GroupHeaderComponent', () => {
   });
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
-    component.groupData = {id: '1234'};
     spyOn(component, 'toggleModal');
     spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of (true));
     spyOn(component['toasterService'], 'success');
@@ -80,14 +78,13 @@ describe('GroupHeaderComponent', () => {
     tick();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      component['groupService'].deleteGroupById('1234').subscribe(response => {
+      component['groupService'].deleteGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
       });
     });
   }));
 
   it ('should route to create-edit-group', () => {
-    component.groupData = {id: '1234'};
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
     _.get(component.groupData, 'id'), CREATE_GROUP]);
