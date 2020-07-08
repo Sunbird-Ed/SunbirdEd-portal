@@ -37,6 +37,7 @@ export class NavigationHelperService {
    */
   private cacheServiceName = 'previousUrl';
   contentFullScreenEvent = new EventEmitter<any>();
+  previousNavigationUrl;
 
   constructor(
     public router: Router,
@@ -208,5 +209,24 @@ export class NavigationHelperService {
 
   emitFullScreenEvent(value) {
     this.contentFullScreenEvent.emit(value);
+  }
+
+  setNavigationUrl() {
+    const urlToNavigate = this.getPreviousUrl();
+    if (urlToNavigate && !(_.includes(urlToNavigate.url, 'create-managed-user') || _.includes(urlToNavigate.url, 'choose-managed-user'))) {
+      this.previousNavigationUrl = urlToNavigate;
+    }
+  }
+
+  navigateToLastUrl() {
+    if (this.previousNavigationUrl) {
+      if (this.previousNavigationUrl.queryParams) {
+        this.router.navigate([this.previousNavigationUrl.url], {queryParams: this.previousNavigationUrl.queryParams});
+      } else {
+        this.router.navigate([this.previousNavigationUrl.url]);
+      }
+    } else {
+      this.router.navigate(['/resources']);
+    }
   }
 }
