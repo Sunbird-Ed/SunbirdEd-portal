@@ -1,4 +1,4 @@
-import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES, EDIT_GROUP } from './components/routerLinks';
+import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES } from './interfaces';
 import {
   MyGroupsComponent, AddMemberComponent, GroupDetailsComponent,
   CreateEditGroupComponent, ActivitySearchComponent, ActivityDashboardComponent
@@ -14,12 +14,17 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Groups', url: '' }],
       telemetry: { env: telemetryEnv, pageid: MY_GROUPS, type: 'view', subtype: 'paginate' },
       baseUrl: MY_GROUPS
-    }
+    },
+    children: [
+      { path: CREATE_GROUP, component: CreateEditGroupComponent }
+    ]
   },
-
-  { path: CREATE_GROUP, component: CreateEditGroupComponent },
-  { path: EDIT_GROUP, component: CreateEditGroupComponent },
-  { path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent },
+  {
+    path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent,
+    children: [
+      { path: CREATE_GROUP, component: CreateEditGroupComponent },
+    ]
+  },
   { path: ADD_MEMBER_TO_GROUP, component: AddMemberComponent },
   { path: `${WORKSPACE.GROUP_ID}/${ADD_ACTIVITY_TO_GROUP}/${COURSES}/:pageNumber`, component: ActivitySearchComponent },
   { path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent },

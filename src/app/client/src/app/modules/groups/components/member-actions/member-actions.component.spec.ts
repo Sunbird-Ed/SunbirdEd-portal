@@ -48,7 +48,10 @@ describe('MemberActionsComponent', () => {
       isAdmin: false,
       isMenu: true,
       indexOfMember: 5,
-      isCreator: false
+      isCreator: false,
+      userId: '2',
+      role: 'member',
+      name: 'Paul Walker'
     };
     component.performAction();
     expect(component.actionConfirm.emit).toHaveBeenCalled();

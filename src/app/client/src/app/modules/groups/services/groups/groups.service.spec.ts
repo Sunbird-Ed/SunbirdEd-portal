@@ -68,7 +68,7 @@ describe('GroupsService', () => {
   it('should add members to group', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'addMembers');
-    service.addMemberById('123', [{ role: 'member', userId: '1' }]);
+    service.addMemberById('123', { members: [{ role: 'member', userId: '1' }] });
     expect(service['groupCservice'].addMembers).toHaveBeenCalledWith('123', { members: [{ role: 'member', userId: '1' }] });
   });
 
@@ -98,6 +98,13 @@ describe('GroupsService', () => {
       initial: 'u', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: false,
     });
     expect(service.addFields).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit members', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['closeForm'], 'emit');
+    service.emitCloseForm();
+    expect(service['closeForm'].emit).toHaveBeenCalled();
   });
 
 });

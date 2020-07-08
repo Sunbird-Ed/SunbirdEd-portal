@@ -3,7 +3,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { IGroupMember } from '../../interfaces';
+import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
 @Component({
@@ -14,14 +14,14 @@ import { Subject } from 'rxjs';
 export class AddMemberComponent implements OnInit {
   showModal = false;
   instance: string;
-  membersList = [];
-  groupData;
+  membersList: IGroupMember[] ;
+  groupData: IGroupCard;
   showLoader = false;
   isVerifiedUser = false;
   memberId: string;
   config = { size: 'medium', isBold: true, isSelectable: false, view: 'horizontal' };
   isInvalidUser = false;
-  verifiedMember: {};
+  verifiedMember: IGroupMember;
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
 
@@ -50,7 +50,7 @@ export class AddMemberComponent implements OnInit {
   verifyMember() {
     this.showLoader = true;
     if (!this.isExistingMember()) {
-      this.userService.getUserData(this.memberId).subscribe(member => {
+      this.userService.getUserData(this.memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         const user = this.groupsService.addFields(_.get(member, 'result.response'));
         this.verifiedMember = _.pick(user, ['title', 'initial', 'identifier', 'isAdmin', 'isCreator']);
         this.showLoader = false;
@@ -74,8 +74,8 @@ export class AddMemberComponent implements OnInit {
 
   addMemberToGroup() {
     if (!this.isExistingMember()) {
-      const member = [{ userId: this.memberId, role: 'member' }];
-      this.groupsService.addMemberById(this.groupData.id, member).subscribe(response => {
+      const member: IMember = {members: [{ userId: this.memberId, role: 'member' }]};
+      this.groupsService.addMemberById(this.groupData.id, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);

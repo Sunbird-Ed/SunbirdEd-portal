@@ -5,9 +5,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-
-import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS, COURSES } from '../routerLinks';
-import { IGroupMemberConfig } from '../../interfaces';
+import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES  } from '../../interfaces';
 import { IGroupMember } from '../../interfaces/group';
 
 @Component({
@@ -17,7 +15,7 @@ import { IGroupMember } from '../../interfaces/group';
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('addActivityModal') addActivityModal;
-  groupData;
+  groupData: IGroupCard;
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
@@ -45,6 +43,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
+    this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.getGroupData();
+    });
   }
 
   getGroupData() {

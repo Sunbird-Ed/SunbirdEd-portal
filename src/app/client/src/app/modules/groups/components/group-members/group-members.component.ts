@@ -1,13 +1,12 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from './../routerLinks';
-import { IGroupMemberConfig, IGroupMember } from '../../interfaces';
+import { IGroupMemberConfig, IGroupMember, ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
 import { GroupsService } from '../../services';
-import { IGroup } from '../../interfaces/group';
+import { Group } from '@project-sunbird/client-services/models/group';
 
 
 
@@ -16,7 +15,7 @@ import { IGroup } from '../../interfaces/group';
   templateUrl: './group-members.component.html',
   styleUrls: ['./group-members.component.scss']
 })
-export class GroupMembersComponent implements OnInit {
+export class GroupMembersComponent implements OnInit, OnDestroy {
   @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
     showMemberCount: false,
@@ -25,15 +24,15 @@ export class GroupMembersComponent implements OnInit {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData: IGroup;
+  @Input() groupData: Group;
   currentUser;
   showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
-  memberListToShow = [];
+  memberListToShow: IGroupMember[] = [];
   memberAction: string;
   searchQuery = '';
-  selectedMember = {};
+  selectedMember: IGroupMember;
   private unsubscribe$ = new Subject<void>();
   groupId;
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
@@ -46,7 +45,10 @@ export class GroupMembersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.memberListToShow = _.cloneDeep(this.members);
+
+    const groupData = this.groupsService.groupData;
+    this.members = this.groupsService.addFieldsToMember(groupData.members);
+    this.memberListToShow = this.members;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.hideMemberMenu();
 

@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="groupData">
   <app-group-header [groupData]="groupData"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24">
@@ -28,3 +28,4 @@
   appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
   <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
 </sui-modal>
+<router-outlet></router-outlet>
