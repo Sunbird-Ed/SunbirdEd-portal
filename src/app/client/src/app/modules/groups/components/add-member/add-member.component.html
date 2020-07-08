@@ -26,7 +26,6 @@
               </div>
             </div>
             <re-captcha #captchaRef="reCaptcha" (resolved)="$event && resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
             <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="onVarifyMember()">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>

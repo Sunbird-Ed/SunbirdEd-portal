@@ -114,11 +114,18 @@ export class AddMemberComponent implements OnInit {
     this.showModal = visibility;
   }
 
+
+  /**
+   * @description This function will reset google recaptcha and execute method of recaptcha component
+   */
   onVarifyMember() {
-    this.resetGoogleCaptcha();
+    this.captchaRef.reset();
     this.captchaRef.execute();
   }
 
+   /**
+   * @description reCaptcha component will triggered this method, which will verify recaptcha token and on success proceed with logical task
+   */
   resolved(captchaResponse: string) {
     this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
         if (_.get(data, 'result.success')) {
@@ -132,13 +139,8 @@ export class AddMemberComponent implements OnInit {
           stackTrace: JSON.stringify((error && error.error) || '')
         };
         this.telemetryService.generateErrorEvent(telemetryErrorData);
-        this.resetGoogleCaptcha();
+        this.captchaRef.reset();
       });
-  }
-
-  resetGoogleCaptcha() {
-    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
-    element.click();
   }
 
   telemetryLogEvents(api: any, status: boolean) {

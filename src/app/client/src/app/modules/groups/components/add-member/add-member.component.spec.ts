@@ -186,11 +186,9 @@ describe('AddMemberComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'generateErrorEvent');
     spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(throwError(addMemberTestData.recaptchaErrorResponse));
-    spyOn(component, 'resetGoogleCaptcha').and.callThrough();
     component.onVarifyMember();
     component.resolved('captchaToken');
     expect(telemetryService.generateErrorEvent).toHaveBeenCalledWith(addMemberTestData.telemetryLogError);
-    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
   });
 
 });
