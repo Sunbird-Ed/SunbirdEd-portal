@@ -292,6 +292,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
+ // TODO: This function will be removed. API got deprecated.
   populateCourseDashboardData(batch?: any): void {
     return ;
     if (!batch && this.currentBatch) {
