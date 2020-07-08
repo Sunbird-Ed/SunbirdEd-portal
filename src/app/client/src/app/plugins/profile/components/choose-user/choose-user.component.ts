@@ -41,6 +41,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   userDataSubscription: any;
 
   ngOnInit() {
+    this.navigationhelperService.setNavigationUrl();
     this.userDataSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       this.getManagedUserList();
     });
@@ -172,6 +173,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   closeSwitchUser() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile');
+    this.navigationhelperService.navigateToLastUrl();
   }
 }

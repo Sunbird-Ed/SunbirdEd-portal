@@ -1,7 +1,7 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { IGroup, IGroupSearchRequest, IGroupUpdate } from '../../interfaces';
+import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import * as _ from 'lodash-es';
 
 
@@ -10,8 +10,10 @@ import * as _ from 'lodash-es';
 })
 export class GroupsService {
   private groupCservice: any;
-  private _groupData;
+  private _groupData: IGroupCard;
   public membersList = new EventEmitter();
+  public closeForm = new EventEmitter();
+
   constructor(private csLibInitializerService: CsLibInitializerService) {
       if (!CsModule.instance.isInitialised) {
         this.csLibInitializerService.initializeCs();
@@ -19,14 +21,14 @@ export class GroupsService {
       this.groupCservice = CsModule.instance.groupService;
   }
 
-  addFieldsToMember(members) {
+  addFieldsToMember(members): IGroupMember[] {
    const memberList = _.forEach(members, (member) => {
       return this.addFields(member);
     });
     return memberList;
   }
 
-  addFields(member) {
+  addFields(member): IGroupMember {
     member.title = member.name || member.userName;
     member.initial = member.title[0];
     member.identifier = member.userId || member.identifier;
@@ -55,19 +57,23 @@ export class GroupsService {
     return this.groupCservice.deleteById(groupId);
   }
 
-  addMemberById(groupId: string, members) {
-    return this.groupCservice.addMembers(groupId, {members});
+  addMemberById(groupId: string, members: IMember) {
+    return this.groupCservice.addMembers(groupId, members);
   }
 
-  set groupData(list) {
-    this._groupData = list;
+  set groupData(group: IGroupCard) {
+    this._groupData = group;
   }
 
   get groupData() {
     return this._groupData;
   }
 
-  emitMembers(members) {
+  emitCloseForm() {
+    this.closeForm.emit();
+  }
+
+  emitMembers(members: IGroupMember[]) {
     this.membersList.emit(members);
   }
 }
