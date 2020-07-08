@@ -1,4 +1,4 @@
-import { WORKSPACE, ADD_MEMBER, CREATE_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES } from './interfaces';
+import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS, ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES } from './interfaces';
 import {
   MyGroupsComponent, AddMemberComponent, GroupDetailsComponent,
   CreateEditGroupComponent, ActivitySearchComponent, ActivityDashboardComponent
@@ -23,9 +23,9 @@ const routes: Routes = [
     path: WORKSPACE.GROUP_ID, component: GroupDetailsComponent,
     children: [
       { path: CREATE_GROUP, component: CreateEditGroupComponent },
-      { path: ADD_MEMBER, component: AddMemberComponent }
     ]
   },
+  { path: ADD_MEMBER_TO_GROUP, component: AddMemberComponent },
   { path: `${WORKSPACE.GROUP_ID}/${ADD_ACTIVITY_TO_GROUP}/${COURSES}/:pageNumber`, component: ActivitySearchComponent },
   { path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent },
 ];

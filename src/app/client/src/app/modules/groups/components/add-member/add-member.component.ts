@@ -50,7 +50,7 @@ export class AddMemberComponent implements OnInit {
   verifyMember() {
     this.showLoader = true;
     if (!this.isExistingMember()) {
-      this.userService.getUserData(this.memberId).subscribe(member => {
+      this.userService.getUserData(this.memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         const user = this.groupsService.addFields(_.get(member, 'result.response'));
         this.verifiedMember = _.pick(user, ['title', 'initial', 'identifier', 'isAdmin', 'isCreator']);
         this.showLoader = false;
@@ -75,7 +75,7 @@ export class AddMemberComponent implements OnInit {
   addMemberToGroup() {
     if (!this.isExistingMember()) {
       const member: IMember = {members: [{ userId: this.memberId, role: 'member' }]};
-      this.groupsService.addMemberById(this.groupData.id, member).subscribe(response => {
+      this.groupsService.addMemberById(this.groupData.id, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
