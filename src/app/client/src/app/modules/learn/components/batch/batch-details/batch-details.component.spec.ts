@@ -236,7 +236,4 @@ describe('BatchDetailsComponent', () => {
     component.getJoinCourseBatchDetails();
     expect(component.showAllBatchError).toBeTruthy();
   });
-
-
-
 });
