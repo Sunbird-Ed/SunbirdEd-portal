@@ -13,7 +13,7 @@ export class SelectOptionGroupComponent implements OnInit {
   public preSelectedValue: string;
 
   ngOnInit() {
-    this.preSelectedValue = this.selectedOption.selectedOption;
+    this.choosedValue();
   }
 
   /**
@@ -22,5 +22,24 @@ export class SelectOptionGroupComponent implements OnInit {
   */
   onChange(option) {
     this.selectedValue.emit(option);
+  }
+
+  /**
+   * @description Function to prepare the selected value
+   * @since release-3.1.0
+   */
+  choosedValue() {
+    if (this.selectedOption.label === 'Publisher') {
+      const publisher = _.find(this.optionData, ['label', 'Publisher']);
+      if (publisher) {
+        _.forEach(publisher.option, value => {
+          if (value.value === this.selectedOption.selectedOption) {
+            this.preSelectedValue = value.name;
+          }
+        });
+      }
+    } else {
+      this.preSelectedValue = this.selectedOption.selectedOption;
+    }
   }
 }
