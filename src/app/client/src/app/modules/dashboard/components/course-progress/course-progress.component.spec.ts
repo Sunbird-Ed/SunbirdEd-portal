@@ -241,4 +241,19 @@ describe('CourseProgressComponent', () => {
     expect(window.open).toHaveBeenCalledWith(testData.mockUserData.assessmentReportDownloadMock.result.reports.assessmentReportUrl,
       '_blank');
   })));
+
+  it('should set completedCount and participantCount as 0 to the currentBatch if it is empty in the currentBatch', () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataBefore;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(0);
+    expect(component.currentBatch['participantCount']).toEqual(0);
+  });
+
+  it(`should set completedCount and participantCount to the currentBatch with the existing values
+  if it is not empty in the currentBatch`, () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataWithCount;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
+    expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
+  });
 });
