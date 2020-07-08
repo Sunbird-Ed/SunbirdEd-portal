@@ -67,10 +67,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }))
     .subscribe(filters => {
       if (filters && filters.hasOwnProperty('medium')) {
-        filters['medium'] = _.sortBy(filters['medium'], ["name"]);
+        filters['medium'] = _.sortBy(filters['medium'], ['name']);
       }
       if (filters && filters.hasOwnProperty('board')) {
-        filters['board'] = _.sortBy(filters['board'], ["name"]);
+        filters['board'] = _.sortBy(filters['board'], ['name']);
       }
       this.filters = filters;
       this.updateBoardList();
