@@ -213,7 +213,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
       if (this.formAction === 'update') {
-        this.prepopulatedValue[key] = this.getExternalId('declared-' + key)
+        this.prepopulatedValue[key] = this.getExternalId('declared-' + key);
       } else {
         this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
       }

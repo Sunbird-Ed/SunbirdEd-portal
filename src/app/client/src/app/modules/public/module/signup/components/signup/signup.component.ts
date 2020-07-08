@@ -17,7 +17,7 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-import { RecaptchaComponent } from "ng-recaptcha";
+import { RecaptchaComponent } from 'ng-recaptcha';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',

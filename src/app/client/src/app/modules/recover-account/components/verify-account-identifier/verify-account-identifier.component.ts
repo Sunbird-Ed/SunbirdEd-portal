@@ -40,7 +40,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     this.resendOtpEnablePostTimer();
     this.setTelemetryImpression();
   }
-  resendOtpEnablePostTimer(){
+  resendOtpEnablePostTimer() {
     this.counter = 20;
     this.disableResendOtp = false;
     setTimeout(() => {

@@ -188,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
     this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
-  
+
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
@@ -245,7 +245,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.showUserTypePopup = !localStorage.getItem('userType');
           }
         }
-      })
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
       this.showUserTypePopup = false;
