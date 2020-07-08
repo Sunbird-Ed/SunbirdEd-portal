@@ -85,12 +85,12 @@
               <span *ngIf="!currentBatch.endDate">-</span>
             </span>
 
-            <span *ngIf="currentBatch.participantCount" class="course-participants course-participants-label  px-16">
+            <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.participants}}
               </span> 
               <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
             </span>
-            <span *ngIf="currentBatch.completedCount!==null && currentBatch.completedCount >= 0"
+            <span *ngIf="currentBatch.completedCount !== null"
               class="course-participants course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
               </span>
