@@ -6,7 +6,7 @@
   <div class="sb-modal-content">
     <div class="sb-radio-btn-checkbox sb-radio-btn-primary mb-16" *ngFor="let item of activityTypes">
       <input type="radio" [id]="item?.title" name="group-activity" [value]="item" [(ngModel)]="selectedActivity"
-        [attr.disabled]="item?.editable ? 'disabled' : null">
+        [attr.disabled]="!item?.editable ? 'disabled' : null">
       <label for="item?.title">{{item?.title}}</label> 
   </div>
 </div>
