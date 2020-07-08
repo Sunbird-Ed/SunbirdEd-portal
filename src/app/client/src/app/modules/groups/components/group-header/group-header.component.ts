@@ -1,28 +1,28 @@
 import { UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
-import { Component, ViewChild, Input, EventEmitter, Output, Renderer2, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from '../routerLinks';
+import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
   styleUrls: ['./group-header.component.scss']
 })
-export class GroupHeaderComponent implements OnInit {
-  showDeleteModal;
-  showPastMemberModal;
+export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
   @ViewChild('modal') modal;
-  @Input() modalName: string;
-  @Output() modalClosed = new EventEmitter();
   @Input() groupData: {};
   showModal = false;
   showEditModal: boolean;
   creator: string;
   showMemberPopup = false;
   isGroupAdmin = false;
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
     private userService: UserService) {
@@ -47,7 +47,7 @@ export class GroupHeaderComponent implements OnInit {
   deleteGroup() {
     this.toggleModal(false);
     setTimeout(() => {
-      this.groupService.deleteGroupById(_.get(this.groupData, 'id')).subscribe(data => {
+      this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m003);
@@ -69,5 +69,10 @@ export class GroupHeaderComponent implements OnInit {
 
   toggleFtuModal(visibility: boolean = false) {
     this.showMemberPopup = visibility;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

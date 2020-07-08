@@ -3,7 +3,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { IGroupMember } from '../../interfaces';
+import { IGroupMember, IGroupCard } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
 @Component({
@@ -14,14 +14,14 @@ import { Subject } from 'rxjs';
 export class AddMemberComponent implements OnInit {
   showModal = false;
   instance: string;
-  membersList = [];
-  groupData;
+  membersList: IGroupMember[] ;
+  groupData: IGroupCard;
   showLoader = false;
   isVerifiedUser = false;
   memberId: string;
   config = { size: 'medium', isBold: true, isSelectable: false, view: 'horizontal' };
   isInvalidUser = false;
-  verifiedMember: {};
+  verifiedMember: IGroupMember;
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
 

@@ -3,7 +3,7 @@ import { ConfigService } from '../../../../shared/services/config/config.service
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ResourceService } from '../../../../shared/services/resource/resource.service';
-import { ACTIVITY_DETAILS, MY_GROUPS } from '../../routerLinks';
+import { ACTIVITY_DETAILS } from './../../../interfaces';
 import { Router, ActivatedRoute } from '@angular/router';
 
 export interface IActivity {
