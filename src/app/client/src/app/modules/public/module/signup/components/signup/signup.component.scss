@@ -282,3 +282,9 @@ form.Off {
 form.On {
   opacity: 1;
 }
+
+.signup-background{
+  .container-wrapper{
+    max-width: calculateRem(328px);
+  }
+}
