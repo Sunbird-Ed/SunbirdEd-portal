@@ -2,7 +2,7 @@ import { UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS } from './../../interfaces';
+import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
   @ViewChild('modal') modal;
-  @Input() groupData: {};
+  @Input() groupData: IGroupCard;
   showModal = false;
   showEditModal: boolean;
   creator: string;

@@ -68,7 +68,7 @@ describe('GroupsService', () => {
   it ('should add members to group', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'addMembers');
-    service.addMemberById('123', [{role: 'member', userId: '1'}]);
+    service.addMemberById('123', {members: [{role: 'member', userId: '1'}]});
     expect(service['groupCservice'].addMembers).toHaveBeenCalledWith('123', {members: [{role: 'member', userId: '1'}]});
   });
 
@@ -94,6 +94,13 @@ describe('GroupsService', () => {
     expect(data[0]).toEqual({userId: '1', role: 'admin', name: 'user', createdBy: '1',
     title: 'user', initial: 'u', identifier: '1', isAdmin: true, isCreator: true});
     expect(service.addFields).toHaveBeenCalledTimes(1);
+  });
+
+  it ('should emit members', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['closeForm'], 'emit');
+    service.emitCloseForm();
+    expect(service['closeForm'].emit).toHaveBeenCalled();
   });
 
 });

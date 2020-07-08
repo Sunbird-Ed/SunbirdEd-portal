@@ -38,5 +38,19 @@ describe('ExploreGroupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    localStorage.setItem('anonymous_ftu_groups', 'anonymous');
+    component.ngOnInit();
+    expect(component.showWelcomePopup).toBeFalsy();
   });
+
+  it('should make showWelcomePopup TRUE', () => {
+    component.showFtuPopup(true);
+    expect(component.showWelcomePopup).toBeTruthy();
+  });
+
+  it('should make showWelcomePopup FALSE ', () => {
+    component.ngOnInit();
+    expect(component.showWelcomePopup).toBeFalsy();
+  });
+
 });

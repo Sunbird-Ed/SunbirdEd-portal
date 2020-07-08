@@ -11,7 +11,6 @@ import * as _ from 'lodash-es';
 export class GroupsService {
   private groupCservice: any;
   private _groupData: IGroupCard;
-  public updatedGroupData = new EventEmitter();
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
 

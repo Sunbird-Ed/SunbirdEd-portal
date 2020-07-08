@@ -11,11 +11,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { of } from 'rxjs';
 
 describe('GroupMembersComponent', () => {
   let component: GroupMembersComponent;
   let fixture: ComponentFixture<GroupMembersComponent>;
-
+  let members: IGroupMember[] = [];
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -58,11 +59,7 @@ describe('GroupMembersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupMembersComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    const members: IGroupMember[] = [
+    members = [
       { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
       indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
       { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
@@ -70,10 +67,15 @@ describe('GroupMembersComponent', () => {
       { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true,
       indexOfMember: 7, isCreator: false, name: 'Robert Downey', userId: '3', role: 'member' }
     ];
+    component['groupsService'].groupData = {id: '123', name: 'Test group', members: members, createdBy: '1'};
+    spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
+    spyOn(component['groupsService'], 'membersList').and.returnValue(of (members));
+    fixture.detectChanges();
+  });
 
+  it('should create', () => {
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
-    component.members = members;
     component.showKebabMenu = true;
     component.config.showMemberMenu = false;
     document.body.dispatchEvent(new Event('click'));
@@ -96,7 +98,7 @@ describe('GroupMembersComponent', () => {
 
   it('should call search', () => {
     component.showSearchResults = false;
-    const members: IGroupMember[] = [
+     members = [
       { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
       indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];
@@ -108,7 +110,7 @@ describe('GroupMembersComponent', () => {
 
   it('should reset the list to membersList when no search key present', () => {
     component.showSearchResults = true;
-    const members: IGroupMember[] = [
+     members = [
       { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
       indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];

@@ -60,7 +60,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => of (mockGroupList));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {
-      expect(component.groupList[0].isAdmin).toBeTruthy();
+      expect(component.groupList.adminGroups[0].isAdmin).toBeTruthy();
     });
   });
 

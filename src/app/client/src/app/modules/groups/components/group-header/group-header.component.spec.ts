@@ -48,7 +48,7 @@ describe('GroupHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
-    component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123',
+    component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
     members: [{createdBy: 'user_123', name: 'user123', role: 'admin'}]};
     fixture.detectChanges();
   });
@@ -70,7 +70,6 @@ describe('GroupHeaderComponent', () => {
   });
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
-    component.groupData = {id: '1234'};
     spyOn(component, 'toggleModal');
     spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of (true));
     spyOn(component['toasterService'], 'success');
@@ -79,14 +78,13 @@ describe('GroupHeaderComponent', () => {
     tick();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      component['groupService'].deleteGroupById('1234').subscribe(response => {
+      component['groupService'].deleteGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
       });
     });
   }));
 
   it ('should route to create-edit-group', () => {
-    component.groupData = {id: '1234'};
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
     _.get(component.groupData, 'id'), CREATE_GROUP]);
