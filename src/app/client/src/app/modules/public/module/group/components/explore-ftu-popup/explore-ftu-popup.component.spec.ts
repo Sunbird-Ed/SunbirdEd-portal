@@ -32,6 +32,8 @@ describe('ExploreFtuPopupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    spyOn(component['close'], 'emit');
     component.userVisited();
+    expect(component['close'].emit).toHaveBeenCalled();
   });
 });
