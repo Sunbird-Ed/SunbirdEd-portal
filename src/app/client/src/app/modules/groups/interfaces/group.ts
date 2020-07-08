@@ -6,6 +6,15 @@ export interface IGroup {
   description?: string;
 }
 
+export interface IMember {
+  members: [
+    {
+      userId: string;
+      role: string;
+    }
+  ];
+}
+
 export interface IGroupUpdate {
   name: string;
   membershipType?: GroupMembershipType;
@@ -16,12 +25,15 @@ export interface IGroupUpdate {
 export interface IGroupCard {
   name: string;
   description?: string;
+  members?: Array<{}>;
+  createdBy: string;
   cardBgColor?: any;
   cardTitleColor?: any;
   isLoading?: boolean;
   theme?: string;
-  isAdmin: any;
-  initial: string;
+  isAdmin?: any;
+  initial?: string;
+  id: string;
 }
 export interface IGroupSearchRequest {
   filters: {
@@ -52,5 +64,8 @@ export interface IGroupMember {
   isMenu: boolean;
   indexOfMember: number;
   isCreator: boolean;
+  userId: string;
+  role: string;
+  name: string;
 }
 

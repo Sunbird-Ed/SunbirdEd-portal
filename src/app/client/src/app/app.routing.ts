@@ -1,4 +1,4 @@
-import { MY_GROUPS } from './modules/groups/components/routerLinks';
+import { MY_GROUPS } from './modules/groups';
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
