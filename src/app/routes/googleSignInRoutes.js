@@ -45,7 +45,8 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    logger.info({msg: 'google auth callback called'});
+    logger.info({msg: 'google auth callback called', session: req.session.googleSignInData});
+    console.info({msg: 'google auth callback called'});
     const reqQuery = _.pick(req.session.googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
@@ -55,9 +56,11 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
+      console.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
+      console.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
       logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
       if (!isUserExist) {
         logger.info({msg: 'creating new google user'});
@@ -68,6 +71,7 @@ module.exports = (app) => {
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
+      console.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.replace(KEYCLOACK_AUTH_CALLBACK_STRING, ''); // to avoid 401 auth errors from keycloak
       if (reqQuery.client_id === 'android') {
@@ -81,6 +85,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
+      console.log({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}});
       logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
