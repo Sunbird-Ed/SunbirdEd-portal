@@ -1,41 +1,50 @@
 import { UserService } from '@sunbird/core';
-import { IGroupSearchRequest, IGroupCard } from './../../interfaces';
-import { GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../routerLinks';
-import { Component, OnInit } from '@angular/core';
+import { IGroupSearchRequest, IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../../interfaces';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
   styleUrls: ['./my-groups.component.scss']
 })
-export class MyGroupsComponent implements OnInit {
+export class MyGroupsComponent implements OnInit, OnDestroy {
   showGroupCreateForm = false;
-  public groupList: IGroupCard[] = [];
+  public groupList: {adminGroups: IGroupCard[], memberGroups: IGroupCard[]} = {adminGroups: [], memberGroups: []};
   public showModal = false;
+  private unsubscribe$ = new Subject<void>();
   constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService,
-    private userService: UserService) {
+    private userService: UserService, private activatedRoute: ActivatedRoute) {
+
   }
 
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.getMyGroupList();
+    this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.getMyGroupList();
+    });
   }
 
   getMyGroupList() {
+    this.groupList = {adminGroups: [], memberGroups: []};
     const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
-    this.groupService.searchUserGroups(request).subscribe(groups => {
+    this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
       _.forEach(groups, (group) => {
         if (group) {
-          group.isAdmin = (group.createdBy === this.userService.userid);
+          group.isAdmin = _.find(group.members, {userId: this.userService.userid}).role === 'admin';
           group.initial = group.name[0];
-          this.groupList.push(group);
+          group.isAdmin ? this.groupList.adminGroups.push(group) : this.groupList.memberGroups.push(group);
         }
       });
+      _.orderBy(this.groupList.adminGroups, 'createdOn');
+      _.orderBy(this.groupList.memberGroups, 'createdOn');
     }, (err) => {
-      this.groupList = [];
+      this.groupList = {adminGroups: [], memberGroups: []};
     });
   }
 
@@ -56,4 +65,8 @@ export class MyGroupsComponent implements OnInit {
     localStorage.setItem('login_ftu_groups', 'login_user');
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
