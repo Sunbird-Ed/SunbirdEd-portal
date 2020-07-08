@@ -4,6 +4,7 @@ export interface IGroup {
   name: string;
   membershipType?: GroupMembershipType;
   description?: string;
+  isAdmin: boolean;
 }
 
 export interface IGroupUpdate {
