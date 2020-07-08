@@ -64,6 +64,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.testFunctionForSonar()
   }
 
   /**
@@ -110,18 +111,14 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   }
 
   testFunctionForSonar () {
-    this.dumpVariable = [];
-    this.dumpVariable.push(this.tncLatestVersionUrl);
-    this.dumpVariable.push(this.tncLatestVersionUrl);
-    this.dumpVariable.push('this.tncLatestVersionUrl');
-    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
-      data => {
-        if (data && !data.err) {
-          const logo = data.tenantData.logo;
-          const tenantName = data.tenantData.titleName;
-        }
-      }
-    );
+    const varA = 10;
+    const varB = 20;
+    console.log('Variable A ', varA); // TODO: log!
+    console.log('Variable B ', varB); // TODO: log!
+    const add = varA + varB;
+    console.log('Sum = ', add); // TODO: log!
+    const multiply = varA * varB;
+    console.log('Multiply ', multiply); // TODO: log!
   }
 
 }
