@@ -23,7 +23,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  showMenu = false;
+  showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
   memberListToShow: IGroupMember[] = [];
@@ -53,8 +53,8 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
-        if (this.showMenu) {
-          this.showMenu = false;
+        if (this.showKebabMenu) {
+          this.showKebabMenu = false;
         }
       });
 
@@ -63,8 +63,8 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       });
   }
 
-  getMenuData(event, member: IGroupMember) {
-    this.showMenu = !this.showMenu;
+  getMenuData(event, member) {
+    this.showKebabMenu = !this.showKebabMenu;
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
@@ -89,6 +89,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   onModalClose() {
+    this.showModal = false;
     // Handle Telemetry
   }
 

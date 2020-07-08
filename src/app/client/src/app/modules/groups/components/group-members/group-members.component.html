@@ -30,7 +30,7 @@
           [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu" [indexOfMember]="member?.indexOfMember"
           [initial]="member?.initial" (menuClick)="getMenuData($event, member)">
         </sb-member-card>
-        <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedMember?.identifier === member?.identifier">
+        <div class="kabab-menu-dropdown-content" *ngIf="showKebabMenu && selectedMember?.identifier === member?.identifier">
           <div class="list mb-8" (click)="openModal('promoteAsAdmin')">
             <span>{{resourceService?.frmelmnts?.btn?.makeAdmin}}</span>
           </div>
