@@ -58,7 +58,7 @@
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0">
             <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents || '0'}}/{{totalContents || '0'}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
             <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as dayjs from 'dayjs';
 
@@ -27,11 +27,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Input() courseHierarchy: any;
   @Input() courseProgressData: any;
 
-  public courseInteractObject: IInteractEventObject;
-  public updateBatchIntractEdata: IInteractEventEdata;
-  public createBatchIntractEdata: IInteractEventEdata;
-  public enrollBatchIntractEdata: IInteractEventEdata;
-  public unenrollBatchIntractEdata: IInteractEventEdata;
   courseMentor = false;
   batchList = [];
   userList = [];
@@ -50,12 +45,13 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showAllBatchList = false;
   showAllBatchError = false;
   showJoinModal = false;
+  telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService,
-    public courseConsumptionService: CourseConsumptionService) {
+    public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -83,39 +79,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        // If batch length is 1, then directly join the batch
-        if (this.allBatchList && this.allBatchList.length === 1) {
-          this.enrollBatch(this.allBatchList[0]);
-        } else {
-          this.showJoinModal = data;
-        }
+        this.getJoinCourseBatchDetails();
       });
 
-    this.courseInteractObject = {
-      id: this.courseHierarchy.identifier,
-      type: 'Course',
-      ver: this.courseHierarchy.pkgVersion ? this.courseHierarchy.pkgVersion.toString() : '1.0'
-    };
-    this.updateBatchIntractEdata = {
-      id: 'update-batch',
-      type: 'click',
-      pageid: 'course-consumption'
-    };
-    this.createBatchIntractEdata = {
-      id: 'create-batch',
-      type: 'click',
-      pageid: 'course-consumption'
-    };
-    this.enrollBatchIntractEdata = {
-      id: 'enroll-batch',
-      type: 'click',
-      pageid: 'course-consumption'
-    };
-    this.unenrollBatchIntractEdata = {
-      id: 'unenroll-batch',
-      type: 'click',
-      pageid: 'course-consumption'
-    };
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -171,7 +137,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe))
         .subscribe((data: ServerResponse) => {
           this.allBatchDetails.emit(_.get(data, 'result.response'));
-          this.getJoinCourseBatchDetails();
           if (data.result.response.content && data.result.response.content.length > 0) {
             this.batchList = data.result.response.content;
             this.fetchUserDetails();
@@ -208,10 +173,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       ).pipe(takeUntil(this.unsubscribe))
         .subscribe((data) => {
           this.allBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
-          if (_.isEmpty(this.allBatchList)) {
+          // If batch length is 1, then directly join the batch
+          if (this.allBatchList && this.allBatchList.length === 1) {
+            this.enrollBatch(this.allBatchList[0]);
+          } else if (_.isEmpty(this.allBatchList)) {
             this.showAllBatchError = true;
           } else {
             this.showAllBatchList = true;
+            this.showJoinModal = true;
           }
         }, (err) => {
           this.showAllBatchError = true;
@@ -294,5 +263,33 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const isPermissionAvailable = (this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) &&
     this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])) ? true : false;
     return (isCourseCreator && isPermissionAvailable);
+  }
+
+  logTelemetry(id, content?: {}) {
+    if (this.courseId) {
+      this.telemetryCdata.push({ id: this.courseId, type: 'Course' });
+    }
+    if (this.batchId) {
+      this.telemetryCdata.push({ id: this.batchId, type: 'Batch' });
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata || []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 }

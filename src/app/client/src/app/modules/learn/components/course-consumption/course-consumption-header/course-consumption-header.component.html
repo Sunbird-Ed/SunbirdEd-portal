@@ -85,7 +85,7 @@
             [disabled]="showResumeCourse" (click)="resumeCourse(true)"><i
               class="icon-svg icon-svg--xxs icon-play mr-8"><svg class="icon icon-svg--white">
                 <use xlink:href="./assets/images/libdemo/sprite.svg#play"></use>
-              </svg></i>{{resourceService?.frmelmnts?.lbl?.continueLearning}}</button>
+              </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
         </div>
 
         <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse"
