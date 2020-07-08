@@ -5,6 +5,13 @@ const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
+const uuid = require('uuid/v1')
+/**
+ * keycloack adds this string to track auth redirection and 
+ * with this it triggers auth code verification to get token and create session
+ * google flow this is not required
+ */
+const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1'; 
 
 module.exports = (app) => {
 
@@ -14,8 +21,12 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state = JSON.stringify(req.query);
-    logger.info({msg: 'query params state' + state});
+    const state = uuid();
+    req.session.googleSignInData = {
+      ...req.query,
+      state
+    }
+    logger.info({msg: 'query params state', googleSignInData: req.session.googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
@@ -35,7 +46,7 @@ module.exports = (app) => {
    */
   app.get('/google/auth/callback', async (req, res) => {
     logger.info({msg: 'google auth callback called'});
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
+    const reqQuery = _.pick(req.session.googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
@@ -58,9 +69,9 @@ module.exports = (app) => {
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
-      redirectUrl = reqQuery.redirect_uri.split('?')[0];
+      redirectUrl = reqQuery.redirect_uri.replace(KEYCLOACK_AUTH_CALLBACK_STRING, ''); // to avoid 401 auth errors from keycloak
       if (reqQuery.client_id === 'android') {
-        redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
+        redirectUrl = reqQuery.redirect_uri.split('?')[0] + getQueryParams(keyCloakToken);
       }
       logger.info({msg: 'redirect url ' + redirectUrl});
       logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
