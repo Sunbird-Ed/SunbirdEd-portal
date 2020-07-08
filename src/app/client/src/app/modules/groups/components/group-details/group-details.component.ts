@@ -21,7 +21,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
-  members: IGroupMember[] = [];
+  members: IGroupMember [] = [];
 
   config: IGroupMemberConfig = {
     showMemberCount: true,

@@ -6,7 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IGroupMemberConfig, IGroupMember, ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
 import { GroupsService } from '../../services';
-import { Group } from '@project-sunbird/client-services/models/group';
+import { IGroup } from '../../interfaces/group';
 
 
 
@@ -24,7 +24,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData: Group;
+  @Input() groupData: IGroup;
   currentUser;
   showKebabMenu = false;
   showModal = false;
