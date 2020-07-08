@@ -1,7 +1,7 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard } from '../../interfaces';
+import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import * as _ from 'lodash-es';
 
 
@@ -58,11 +58,11 @@ export class GroupsService {
     return this.groupCservice.deleteById(groupId);
   }
 
-  addMemberById(groupId: string, members) {
-    return this.groupCservice.addMembers(groupId, {members});
+  addMemberById(groupId: string, members: IMember) {
+    return this.groupCservice.addMembers(groupId, members);
   }
 
-  set groupData(group) {
+  set groupData(group: IGroupCard) {
     this._groupData = group;
   }
 
@@ -74,7 +74,7 @@ export class GroupsService {
     this.closeForm.emit();
   }
 
-  emitMembers(members) {
+  emitMembers(members: IGroupMember[]) {
     this.membersList.emit(members);
   }
 }

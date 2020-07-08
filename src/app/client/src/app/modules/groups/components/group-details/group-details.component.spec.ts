@@ -66,9 +66,9 @@ describe('GroupDetailsComponent', () => {
 
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
-    spyOn(groupService, 'getGroupById').and.returnValue(of({ name: 'groupName' }));
+    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1' }));
     component.getGroupData();
-    expect(component.groupData).toEqual({ name: 'groupName' });
+    expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1' });
   });
 
   it('should handle error', () => {

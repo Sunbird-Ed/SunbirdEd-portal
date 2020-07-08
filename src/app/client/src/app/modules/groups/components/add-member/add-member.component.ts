@@ -3,7 +3,7 @@ import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { IGroupMember, IGroupCard } from '../../interfaces';
+import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
 @Component({
@@ -74,7 +74,7 @@ export class AddMemberComponent implements OnInit {
 
   addMemberToGroup() {
     if (!this.isExistingMember()) {
-      const member = [{ userId: this.memberId, role: 'member' }];
+      const member: IMember = {members: [{ userId: this.memberId, role: 'member' }]};
       this.groupsService.addMemberById(this.groupData.id, member).subscribe(response => {
         this.getUpdatedGroupData();
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',

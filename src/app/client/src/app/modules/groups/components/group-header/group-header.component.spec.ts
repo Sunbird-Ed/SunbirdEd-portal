@@ -1,4 +1,3 @@
-import { CREATE_GROUP } from './../routerLinks';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -9,7 +8,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MY_GROUPS, GROUP_DETAILS } from '../routerLinks';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import * as _ from 'lodash-es';

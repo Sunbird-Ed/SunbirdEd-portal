@@ -1,4 +1,4 @@
-import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../routerLinks';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -68,7 +68,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => throwError ({}));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {}, err => {
-      expect(component.groupList).toEqual([]);
+      expect(component.groupList).toEqual({adminGroups: [], memberGroups: []});
     });
   });
 

@@ -1,3 +1,4 @@
+import { IGroupMember } from './../../interfaces/group';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -61,10 +62,14 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should create', () => {
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
-      { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
-      { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: false }];
+    const members: IGroupMember[] = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
+      { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
+      indexOfMember: 5, isCreator: false, name: 'Paul Walke', userId: '2', role: 'member' },
+      { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true,
+      indexOfMember: 7, isCreator: false, name: 'Robert Downey', userId: '3', role: 'member' }
+    ];
 
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
@@ -91,8 +96,9 @@ describe('GroupMembersComponent', () => {
 
   it('should call search', () => {
     component.showSearchResults = false;
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+    const members: IGroupMember[] = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];
     component.members = members;
     component.memberListToShow = [];
@@ -102,8 +108,9 @@ describe('GroupMembersComponent', () => {
 
   it('should reset the list to membersList when no search key present', () => {
     component.showSearchResults = true;
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+    const members: IGroupMember[] = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];
     component.members = members;
     component.search('');

@@ -40,6 +40,11 @@ describe('AddMemberComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddMemberComponent);
     component = fixture.componentInstance;
+    component.membersList = [{identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+    indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}];
+    component.verifiedMember = {identifier: '2', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
+    indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member'};
+    component.groupData = {id: '123', name: 'Test', members: [{userId: '1', role: 'admin', name: 'user'}], createdBy: '1'};
     fixture.detectChanges();
   });
 
@@ -68,16 +73,16 @@ describe('AddMemberComponent', () => {
 
   it ('should return is member is already present', () => {
     component.memberId = '2';
-    component.membersList = [{userId: '1', name: 'user'}];
+
     spyOn(component, 'isExistingMember').and.returnValue(true);
     component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
   });
 
   it ('should return is member is not already present', () => {
-    component.groupData = {name: 'Test', members: [{userId: '1', role: 'admin', name: 'user'}], createdBy: '1'};
+    // component.groupData = {name: 'Test', members: [{userId: '1', role: 'admin', name: 'user'}], createdBy: '1'};
     component.memberId = '2';
-    component.membersList = [{userId: '1', name: 'user'}];
+    // component.membersList = [{userId: '1', name: 'user'}];
     spyOn(component['userService'], 'getUserData').and.returnValue(of ({result: {response: {identifier: '2', name: 'user 2'}}}));
     spyOn(component, 'isExistingMember').and.returnValue(false);
     component.verifyMember();
@@ -87,7 +92,7 @@ describe('AddMemberComponent', () => {
 
   it ('should throw error', () => {
     component.memberId = '1';
-    component.membersList = [{userId: '1', name: 'user'}];
+    // component.membersList = [{userId: '1', name: 'user'}];
     spyOn(component['toasterService'], 'error');
     const value = component.isExistingMember();
     expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m007);
@@ -96,15 +101,15 @@ describe('AddMemberComponent', () => {
 
   it ('should not throw error', () => {
     component.memberId = '2';
-    component.membersList = [{userId: '1', name: 'user'}];
+    // component.membersList = [{userId: '1', name: 'user'}];
     const value = component.isExistingMember();
     expect(value).toBeFalsy();
   });
 
   it ('should get getGroupById()', () => {
     component.memberId = '2';
-    component.membersList = [{}];
-    component.groupData = {id: '123'};
+    // component.membersList = [{}];
+    // component.groupData = {id: '123'};
     const response = {id: '123', name: 'Test', members:
     [{userId: '2', role: 'member', name: 'user'}, {userId: '1', role: 'admin', name: 'user 2'}]};
     spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue([response]);
@@ -117,28 +122,28 @@ describe('AddMemberComponent', () => {
 
   it ('should  add member to group', () => {
     component.memberId = '2';
-    component.groupData = {id: '123'};
+    // component.groupData = {id: '123'};
     component.membersList = [];
-    component.verifiedMember = {title: 'user 2'};
+    // component.verifiedMember = {title: 'user 2'};
     spyOn(component, 'isExistingMember').and.returnValue(false);
     spyOn(component['groupsService'], 'addMemberById').and.returnValue(of ({}));
     spyOn(component['toasterService'], 'success');
     component.addMemberToGroup();
     expect(component.isExistingMember).toHaveBeenCalled();
-    component['groupsService'].addMemberById('123', [{userId: '2', role: 'member'}]).subscribe(data => {
+    component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {
     expect(component['toasterService'].success).toHaveBeenCalledWith('user 2 added to group successfully');
     });
   });
 
   it ('should throw error while adding member to group id there is error {}', () => {
     component.memberId = '2';
-    component.verifiedMember = {title: 'user 2'};
-    component.groupData = {id: '123'};
+    // component.verifiedMember = {title: 'user 2'};
+    // component.groupData = {id: '123'};
     component.membersList = [];
     spyOn(component['groupsService'], 'addMemberById').and.returnValue(of ({errors: ['2']}));
     spyOn(component, 'showErrorMsg');
     component.addMemberToGroup();
-    component['groupsService'].addMemberById('123', [{userId: '2', role: 'member'}]).subscribe(data => {
+    component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {
       expect(data).toEqual({errors: ['2']});
       expect(component.showErrorMsg).toHaveBeenCalledWith(data);
     });
@@ -146,13 +151,13 @@ describe('AddMemberComponent', () => {
 
   it ('should throw error while adding member to group', () => {
     component.memberId = '2';
-    component.verifiedMember = {title: 'user 2'};
-    component.groupData = {id: '123'};
+    // component.verifiedMember = {title: 'user 2'};
+    // component.groupData = {id: '123'};
     component.membersList = [];
     spyOn(component['groupsService'], 'addMemberById').and.returnValue(throwError ({}));
     spyOn(component, 'showErrorMsg');
     component.addMemberToGroup();
-    component['groupsService'].addMemberById('123', [{userId: '2', role: 'member'}]).subscribe(data => {}, err => {
+    component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {}, err => {
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
   });
