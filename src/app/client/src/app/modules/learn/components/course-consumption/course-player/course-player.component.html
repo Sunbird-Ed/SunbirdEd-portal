@@ -120,7 +120,7 @@
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">
+          <div class="fsmall mt-8" *ngIf="progress < 100 && courseHierarchy.certTemplate">
             {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
           </div>
         </div>

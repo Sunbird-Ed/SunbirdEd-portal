@@ -194,4 +194,49 @@ describe('BatchDetailsComponent', () => {
     component.showCreateBatch();
     expect(component.showCreateBatch()).toBeFalsy();
   });
+
+  it('should call getJoinCourseBatchDetails and get success', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    component.enrolledCourse = false;
+    component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    component.getJoinCourseBatchDetails();
+    const searchParamsOne: any = {
+      filters: {
+        status: component.statusOptions[0].value.toString(),
+        courseId: component.courseId,
+        enrollmentType: 'open'
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    const searchParamsTwo: any = {
+      filters: {
+        status: component.statusOptions[0].value.toString(),
+        courseId: component.courseId,
+        enrollmentType: 'open'
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    expect(component.courseMentor).toBeFalsy();
+    expect(component.allBatchList).toBeDefined();
+    expect(component.showAllBatchList).toBeTruthy();
+    expect(component.showJoinModal).toBeTruthy();
+    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParamsOne);
+    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParamsTwo);
+  });
+  it('should call getJoinCourseBatchDetails and get error', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    component.enrolledCourse = false;
+    component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
+    component.getJoinCourseBatchDetails();
+    expect(component.showAllBatchError).toBeTruthy();
+  });
+
+
+
 });
