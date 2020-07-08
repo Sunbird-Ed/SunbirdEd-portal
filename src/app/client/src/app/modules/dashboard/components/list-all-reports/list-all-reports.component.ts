@@ -139,7 +139,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
     const renderStatus = (data, type, row) => {
 
-      if (row.isParameterized && row.children && !this.reportService.isUserReportAdmin()) {
+      if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
         if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
           data = "live"
         } else {

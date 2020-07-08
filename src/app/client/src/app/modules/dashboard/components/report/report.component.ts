@@ -108,7 +108,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
-            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length')) {
+            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') && !this.reportService.isUserSuperAdmin()) {
               return throwError({ messageText: 'messages.emsg.mutliParametersFound' })
             }
             this.setParametersHash = this.report;
