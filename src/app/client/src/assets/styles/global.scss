@@ -286,24 +286,9 @@ app-workspace {
   }
 }
 
-.fields-selection label {
-  line-height: normal;
+.fields-selection label{
+ line-height: normal;
 }
-
-.hideBot {
+.hideBot{
   display: none !important;
-}
-
-//workspace common component css
-.ui.dropdown:not(.button)>.default.text {
-  display: none;
-}
-
-.ui.inline.dropdown.search-dropdown {
-  margin-left: calculateRem(5px);
-  box-sizing: border-box;
-}
-
-.popup-content {
-  width: calculateRem(850px) !important;
 }

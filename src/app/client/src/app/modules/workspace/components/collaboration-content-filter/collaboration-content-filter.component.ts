@@ -8,7 +8,19 @@ import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operato
 import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-collaboration-content-filter',
-  templateUrl: './collaboration-content-filter.component.html'
+  templateUrl: './collaboration-content-filter.component.html',
+  styles: [`
+     >>> .ui.dropdown:not(.button)>.default.text {
+      display: none;
+       }
+      .ui.inline.dropdown.search-dropdown {
+       margin-left: 5px;
+       box-sizing: border-box;
+       }
+      .popup-content{
+        width: 850px !important;
+       }
+   `]
 })
 export class CollaborationContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
