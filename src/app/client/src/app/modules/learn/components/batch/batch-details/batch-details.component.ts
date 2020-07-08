@@ -158,21 +158,16 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParams: any = {
       filters: {
         courseId: this.courseId,
-        enrollmentType: 'open'
+        enrollmentType: 'open',
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
-    const searchParamsOne = _.cloneDeep(searchParams);
-    const searchParamsTwo = _.cloneDeep(searchParams);
-      searchParamsOne.filters.status = this.statusOptions[0].value.toString();
-      searchParamsTwo.filters.status = this.statusOptions[1].value.toString();
-      combineLatest(
-        this.courseBatchService.getAllBatchDetails(searchParamsOne),
-        this.courseBatchService.getAllBatchDetails(searchParamsTwo),
-      ).pipe(takeUntil(this.unsubscribe))
+      this.courseBatchService.getAllBatchDetails(searchParams)
+      .pipe(takeUntil(this.unsubscribe))
         .subscribe((data) => {
-          this.allBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.allBatchList = _.get(data, 'result.response.content');
           // If batch length is 1, then directly join the batch
           if (this.allBatchList && this.allBatchList.length === 1) {
             this.enrollBatch(this.allBatchList[0]);

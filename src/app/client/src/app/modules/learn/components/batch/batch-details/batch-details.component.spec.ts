@@ -202,18 +202,9 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     component.getJoinCourseBatchDetails();
-    const searchParamsOne: any = {
+    const searchParams: any = {
       filters: {
-        status: component.statusOptions[0].value.toString(),
-        courseId: component.courseId,
-        enrollmentType: 'open'
-      },
-      offset: 0,
-      sort_by: { createdDate: 'desc' }
-    };
-    const searchParamsTwo: any = {
-      filters: {
-        status: component.statusOptions[0].value.toString(),
+        status: ['0', '1'],
         courseId: component.courseId,
         enrollmentType: 'open'
       },
@@ -224,8 +215,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.allBatchList).toBeDefined();
     expect(component.showAllBatchList).toBeTruthy();
     expect(component.showJoinModal).toBeTruthy();
-    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParamsOne);
-    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParamsTwo);
+    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
   });
   it('should call getJoinCourseBatchDetails and get error', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
