@@ -6,21 +6,12 @@
   font-weight: bold !important;
 }
 
-  /* colors */
-  .color-2 {
-    color: var(--rc-007AFF)!important;
-  }
+/* colors */
+.color-2 {
+  color: var(--rc-007AFF) !important;
+}
 
 /* profile page color palate */
-
-.profile-bg-c-1 {
-  background: var(--white) !important;
-}
-
-.profile-bg-c-2 {
-  background: var(--rc-FAFAFA) !important;
-}
-
 .profile-bg-c-3 {
   background: var(--rc-196DAB) !important;
 }
@@ -38,15 +29,9 @@
   max-width: calculateRem(400px) !important;
 }
 
-.min-w-90 {
-  min-width: calculateRem(90px) !important;
-}
-
 .profile-label-container {
   max-width: calculateRem(600px) !important;
-}
 
-.profile-label-container {
   .ui.basic.label:hover {
     border: calculateRem(1px) solid var(--rc-fdfdfd) !important;
   }
@@ -66,40 +51,6 @@
   }
 }
 
-.right-aligned-button {
-  ::ng-deep {
-    .ui.inline.dropdown>.text {
-      color: var(--white);
-      padding-right: calculateRem(5px);
-      font-weight: 400;
-    }
-
-    .ui.inline.dropdown .dropdown.icon {
-      color: var(--white);
-    }
-  }
-}
-
-;
-
-.ui.primary.admin-button {
-  background: var(--rc-007AFF)!important;
-}
-
-.line-height-24 {
-  line-height: calculateRem(24px) !important;
-}
-
-.ui.semi-circular.update.basic.label,
-.ui.semi-circular.basic.label {
-  border: 1px solid var(--primary-color) !important;
-  border-radius: calculateRem(18.5px);
-  font-size: 1.16rem;
-  padding: calculateRem(11px) calculateRem(27px);
-  padding-right: calculateRem(80px);
-  color: var(--rc-9b9b9b);
-}
-
 .text-warm-grey {
   color: var(--rc-9b9b9b);
 }
@@ -116,28 +67,9 @@
   mask-repeat: no-repeat;
   width: calculateRem(20px);
   height: calculateRem(20px);
-  margin-left: calculateRem(3px);
+  margin-top: calculateRem(3px);
+  margin-left: calculateRem(5px);
   display: inline-block;
-}
-
-.org-info {
-  .info {
-    // background-image: url(../../../../../assets/images/info-icon.svg);
-    background-color: $gray-400;
-    -webkit-mask-image: url(../../../../../assets/images/info-icon.svg);
-    mask-image: url(../../../../../assets/images/info-icon.svg);
-    -webkit-mask-size: contain;
-    -webkit-mask-position: 50% 50%;
-    -webkit-mask-repeat: no-repeat;
-    mask-size: contain;
-    mask-position: 50% 50%;
-    mask-repeat: no-repeat;
-    width: calculateRem(20px);
-    height: calculateRem(20px);
-    display: inline-block;
-    margin-top: calculateRem(3px);
-    margin-left: calculateRem(5px);
-  }
 }
 
 ::ng-deep {
@@ -149,16 +81,6 @@
 }
 
 // TODO::need to move this to styles component(right now this is done to avoid shadow DOM)
-.ui.semi-circular.update.basic.label {
-  border-radius: calculateRem(18.5px);
-  font-size: 1.16rem;
-  padding: calculateRem(8px) calculateRem(16px);
-  color: var(--rc-9b9b9b);
-
-  .icon {
-    margin: 0;
-  }
-}
 
 .ui.semi-circular.dodger-blue.basic.label {
   border-radius: calculateRem(18.5px);
@@ -173,6 +95,16 @@
   .icon {
     margin: 0;
   }
+}
+
+.ui.semi-circular.update.basic.label,
+.ui.semi-circular.basic.label {
+  border: 1px solid var(--primary-color) !important;
+  border-radius: calculateRem(18.5px);
+  font-size: 1.16rem;
+  padding: calculateRem(11px) calculateRem(27px);
+  padding-right: calculateRem(80px);
+  color: var(--rc-9b9b9b);
 }
 
 .ui.label>.recovery-img {
@@ -222,17 +154,8 @@
   text-transform: none;
 }
 
-.information-label {
-  color: var(--primary-color);
-}
-
 .profile-user-label {
   font-size: calculateRem(32px);
-}
-
-.sb-certificate-trained-no-flex-space {
-  flex: 0;
-  max-width: calculateRem(240px);
 }
 
 .status-progress {
