@@ -6,6 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from './../routerLinks';
 import { IGroupMemberConfig, IGroupMember } from '../../interfaces';
+import { GroupsService } from '../../services';
 
 
 
@@ -22,12 +23,8 @@ export class GroupMembersComponent implements OnInit {
     showAddMemberButton: false,
     showMemberMenu: false
   };
-  @Input() members: IGroupMember[] = [
-    { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
-    { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
-    { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: true }
-  ];
-  showMenu = false;
+  @Input() members: IGroupMember[] = [];
+  showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
   memberListToShow = [];
@@ -41,13 +38,13 @@ export class GroupMembersComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    private groupsService: GroupsService
   ) { }
 
   ngOnInit() {
     this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-
     /* istanbul ignore else */
     if (!this.config.showMemberMenu) {
       this.memberListToShow.forEach(item => item.isMenu = false);
@@ -56,14 +53,18 @@ export class GroupMembersComponent implements OnInit {
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
-        if (this.showMenu) {
-          this.showMenu = false;
+        if (this.showKebabMenu) {
+          this.showKebabMenu = false;
         }
+      });
+
+      this.groupsService.membersList.subscribe(members => {
+        this.memberListToShow = members;
       });
   }
 
   getMenuData(event, member) {
-    this.showMenu = !this.showMenu;
+    this.showKebabMenu = !this.showKebabMenu;
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
@@ -88,6 +89,7 @@ export class GroupMembersComponent implements OnInit {
   }
 
   onModalClose() {
+    this.showModal = false;
     // Handle Telemetry
   }
 
