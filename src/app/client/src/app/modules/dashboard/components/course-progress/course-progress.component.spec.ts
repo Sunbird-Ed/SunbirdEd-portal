@@ -140,26 +140,6 @@ describe('CourseProgressComponent', () => {
     expect(component.queryParams.timePeriod).toEqual('7d');
   }));
 
-  it('spy on populateCourseDashboardData()', inject([UserService, CourseProgressService],
-    (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(component.dashboarData).toBeDefined();
-      expect(component.showLoader).toEqual(false);
-    }));
-
-  it('spy on populateCourseDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
-    (userService, courseService, resourceService, toasterService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.callFake(() => observableThrowError(testData.mockUserData.dashboardError));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
-    }));
-
   it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
@@ -261,4 +241,19 @@ describe('CourseProgressComponent', () => {
     expect(window.open).toHaveBeenCalledWith(testData.mockUserData.assessmentReportDownloadMock.result.reports.assessmentReportUrl,
       '_blank');
   })));
+
+  it('should set completedCount and participantCount as 0 to the currentBatch if it is empty in the currentBatch', () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataBefore;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(0);
+    expect(component.currentBatch['participantCount']).toEqual(0);
+  });
+
+  it(`should set completedCount and participantCount to the currentBatch with the existing values
+  if it is not empty in the currentBatch`, () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataWithCount;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
+    expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
+  });
 });

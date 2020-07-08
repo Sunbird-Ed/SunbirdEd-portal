@@ -230,6 +230,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
+          this.setCounts(this.currentBatch);
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
@@ -249,10 +250,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
+    this.showWarningDiv = false;
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.currentBatch = batch;
+    this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
   }
 
@@ -291,7 +294,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
+ // TODO: This function will be removed. API got deprecated.
   populateCourseDashboardData(batch?: any): void {
+    return ;
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
@@ -499,6 +504,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       };
     });
   }
+
+  /**
+   * @since - #SH-601
+   * @param  {} currentBatch
+   * @description - This will set completedCount and participantCount to the currentBatch object;
+   */
+    setCounts(currentBatch) {
+      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+    }
 
   ngOnDestroy() {
     if (this.userDataSubscription) {

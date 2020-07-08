@@ -9,8 +9,13 @@
         <div>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</div>
       </div>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="isCertificateAttached">
-      {{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}
+    <div class="course-complete-para mt-32">
+      <span
+        *ngIf="isCertificateAttached; else noCertificate">{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</span>
     </div>
   </div>
+
+  <ng-template #noCertificate>
+    <span>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote}}</span>
+  </ng-template>
 </sui-modal>

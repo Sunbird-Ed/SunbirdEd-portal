@@ -223,7 +223,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.validationType[key].isVerified = true;
       }
       const keyControl = this.userDetailsForm.controls[key];
-      const userFieldValue = this.prepopulatedValue[key];
+      let userFieldValue;
+      if (this.prepopulatedValue[key]) {
+        userFieldValue = this.prepopulatedValue[key];
+      }
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
         if (userFieldValue === newValue) {
