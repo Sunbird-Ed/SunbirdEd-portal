@@ -68,45 +68,46 @@
               </div>
             
           </div>
+          <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
           <div class="d-flex mt-16 mb-0 sb-course-progress-status d-flex flex-w-wrap px-16 py-8 flex-ai-center"
-            *ngIf="dashboarData">
+            *ngIf="currentBatch">
             <span class="course-start-dt course-participants-label  pr-16">
-              <span *ngIf="dashboarData.startDate">
+              <span *ngIf="currentBatch.startDate">
                 {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
               </span>
-             <span class="font-weight-bold"> {{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}</span>
+             <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
             </span>
 
             <span class="course-end-dt course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
               </span>
-              <span *ngIf="dashboarData.endDate" class="font-weight-bold">{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
-              <span *ngIf="!dashboarData.endDate">-</span>
+              <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat :'DD/MM/YYYY'}}</span>
+              <span *ngIf="!currentBatch.endDate">-</span>
             </span>
 
-            <span *ngIf="dashboarData.count" class="course-participants course-participants-label  px-16">
+            <span *ngIf="currentBatch.participantCount" class="course-participants course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.participants}}
               </span> 
-              <span class="font-weight-bold">{{dashboarData.count}}</span>
+              <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
             </span>
-            <span *ngIf="dashboarData.completedCount!==null"
+            <span *ngIf="currentBatch.completedCount!==null"
               class="course-participants course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
               </span>
-              <span class="font-weight-bold">{{dashboarData.completedCount}}</span>
+              <span class="font-weight-bold">{{currentBatch.completedCount}}</span>
               
             </span>
             <!-- TODO: Need to revert when changes are done from KP side-->
-            <!-- <span *ngIf="dashboarData.certificateCount!==null"
+            <!-- <span *ngIf="currentBatch.certificateCount!==null"
               class="course-participants course-participants-label  px-16">
               <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
               </span>
-              <span class="font-weight-bold"> {{dashboarData.certificateCount}}</span>
+              <span class="font-weight-bold"> {{currentBatch.certificateCount}}</span>
             </span> -->
           </div>
         </div>
         <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding"
-          *ngIf="dashboarData &&  dashboarData.count>10000">
+          *ngIf="currentBatch &&  currentBatch.count>10000">
           <div class="sb-toast-body">
             <div class="sb-toast-texts">
               <div class="sb-toast-message">{{resourceService?.frmelmnts?.instn?.t0085}}</div>
