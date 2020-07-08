@@ -175,7 +175,9 @@
               "src/app/testUtil/index.ts",
               "src/app/client/src/**/*.spec.ts",
               "src/app/client/src/**/*.spec.data.ts",
-              "src/app/client/src/**/*.module.ts"
+              "src/app/client/src/**/*.module.ts",
+              "src/app/client/src/assets/**",
+              "**/node_modules/**"
             ]
           }
         },
