@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
@@ -42,7 +44,7 @@ describe('BatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [BatchDetailsComponent],
-      providers: [CourseBatchService, CourseProgressService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, TelemetryService, CourseProgressService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
