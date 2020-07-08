@@ -42,6 +42,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
     const groupData = this.groupsService.groupData;
     this.members = this.groupsService.addFieldsToMember(groupData.members);
     this.memberListToShow = this.members;
