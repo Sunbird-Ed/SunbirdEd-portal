@@ -172,33 +172,3 @@ const handleGoogleProfileError = (error) => {
   });
   throw error.error || error.message || error;
 };
-
-var handleGoogleAuthEvent = () => {
-	const googleAuthUrl = '/google/auth';
-	const curUrlObj = window.location;
-	let redirect_uri = getValueFromSession('redirect_uri');
-	let client_id = (new URLSearchParams(curUrlObj.search)).get('client_id');
-	const updatedQuery = curUrlObj.search + '&error_callback=' + curUrlObj.href.split('?')[0];
-	const sessionUrl = sessionStorage.getItem('session_url');
-	if (sessionUrl) {
-		if (redirect_uri) {
-      const redirect_uriLocation = new URL(redirect_uri);
-      const sessionUrlObj = new URL(sessionUrl);
-      const updatedQuery = redirect_uriLocation.search + '&error_callback=' + redirect_uriLocation.href.split('?')[0];
-			if (client_id === 'android') {
-				let host = sessionUrlObj.host;
-				if (host.indexOf("merge.") !== -1) {
-					host = host.slice(host.indexOf("merge.") + 6, host.length);
-				}
-				const googleRedirectUrl = sessionUrlObj.protocol + '//' + host + googleAuthUrl;
-				window.location.href = redirect_uri + '?googleRedirectUrl=' + googleRedirectUrl + updatedQuery;
-			} else {
-				window.location.href = redirect_uriLocation.protocol + '//' + redirect_uriLocation.host + googleAuthUrl + updatedQuery;
-			}
-		} else {
-			redirectToLib();
-		}
-	} else {
-		redirectToLib();
-	}
-};
