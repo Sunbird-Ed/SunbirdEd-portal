@@ -493,6 +493,9 @@ const API_LIST = {
     },
     '/learner/user/v1/exists/phone/:phoneNumber': {
       checksNeeded: []
+    },
+    '/learner/anonymous/otp/v1/generate': {
+      checksNeeded: []
     }
   },
   URL_PATTERN: [
