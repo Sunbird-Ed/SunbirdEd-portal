@@ -443,9 +443,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  logTelemetry(id, content?: {}) {
+  logTelemetry(id, content?: {}, rollup?) {
     if (this.batchId) {
       this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
+    if (rollup) {
+      rollup = {l1: this.courseId};
     }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
@@ -459,10 +462,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
       },
       object: {
-        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        id: content ? _.get(content, 'identifier') : this.courseId,
         type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+        rollup: rollup || this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
