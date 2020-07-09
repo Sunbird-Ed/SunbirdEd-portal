@@ -28,12 +28,12 @@ export class ExploreGroupComponent implements OnInit {
     this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env')
       },
       edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
+        type: _.get(this.activatedRoute, 'snapshot.data.telemetry.type'),
         pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
         uri: this.router.url,
         duration: this.navigationhelperService.getPageLoadTime()
       }

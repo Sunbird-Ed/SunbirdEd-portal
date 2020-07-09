@@ -2,12 +2,12 @@ import { UserService } from '@sunbird/core';
 import { IGroupSearchRequest, IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../../interfaces';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-my-groups',
@@ -25,9 +25,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     public router: Router,
     public resourceService: ResourceService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute,
-    private navigationhelperService: NavigationHelperService,
-    private telemetryService: TelemetryService, ) { }
+    private activatedRoute: ActivatedRoute
+    ) { }
 
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_ftu_groups');
@@ -35,23 +34,9 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
-    this.setTelemetryImpression();
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
-  setTelemetryImpression () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url,
-        duration: this.navigationhelperService.getPageLoadTime()
-      }
-    };
-  }
 
   getMyGroupList() {
     this.groupList = {adminGroups: [], memberGroups: []};
@@ -90,18 +75,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id) {
-    const interactData = {
-      context: {
-        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: []
-      },
-      edata: {
-        id: id,
-        type: 'click',
-        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-      },
-    };
-    this.telemetryService.interact(interactData);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
   }
 
   ngOnDestroy() {

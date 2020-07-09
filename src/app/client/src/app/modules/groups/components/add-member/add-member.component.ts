@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
-import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
@@ -29,10 +29,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   @Output() members = new EventEmitter<any>();
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
-    private userService: UserService, private toasterService: ToasterService,
-    private telemetryService: TelemetryService,
-    private navigationhelperService: NavigationHelperService,
+    private userService: UserService, private toasterService: ToasterService
     private activatedRoute: ActivatedRoute,
+    private groupService: GroupsService,
     private router: Router
     ) {
   }
@@ -42,27 +41,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.groupData = this.groupsService.groupData;
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.setTelemetryImpression();
-  }
-
-  setTelemetryImpression () {
-    this.telemetryImpression = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        uri: this.router.url,
-        duration: this.navigationhelperService.getPageLoadTime()
-      },
-      object: {
-        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
-        type: 'Group',
-        ver: '1.0'
-      }
-    };
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
   reset() {
@@ -132,24 +111,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id) {
-    const interactData = {
-      context: {
-        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: []
-      },
-      edata: {
-        id: id,
-        type: 'click',
-        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-      },
-      object: {
-        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
-        type: 'Group',
-        ver: '1.0'
-      }
-    };
-    this.telemetryService.interact(interactData);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
   }
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

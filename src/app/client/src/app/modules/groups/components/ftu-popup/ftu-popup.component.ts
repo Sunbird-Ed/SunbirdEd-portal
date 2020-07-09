@@ -1,8 +1,8 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { GroupsService } from '../../services';
 @Component({
   selector: 'app-ftu-popup',
   templateUrl: './ftu-popup.component.html',
@@ -19,7 +19,7 @@ export class FtuPopupComponent implements OnInit {
 
   constructor(public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
-    private telemetryService: TelemetryService) { }
+    private groupService: GroupsService) { }
 
 
 
@@ -51,23 +51,8 @@ export class FtuPopupComponent implements OnInit {
   }
 
   addTelemetry (id) {
-    const interactData = {
-      context: {
-        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: []
-      },
-      edata: {
-        id: id,
-        type: 'click',
-        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-      },
-      object: {
-        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
-        type: 'Group',
-        ver: '1.0',
-      }
-    };
-    this.telemetryService.interact(interactData);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
   }
+
 
 }

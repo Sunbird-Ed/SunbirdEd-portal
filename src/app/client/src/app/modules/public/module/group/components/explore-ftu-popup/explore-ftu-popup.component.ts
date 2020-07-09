@@ -25,13 +25,13 @@ export class ExploreFtuPopupComponent {
   addTelemetry (id) {
     const interactData = {
       context: {
-        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
         cdata: []
       },
       edata: {
         id: id,
         type: 'click',
-        pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
+        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
       },
     };
     this.telemetryService.interact(interactData);

@@ -1,3 +1,4 @@
+import { TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -12,15 +13,13 @@ import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import * as _ from 'lodash-es';
+import { impressionObj, fakeActivatedRoute, RouterStub } from './../../services/groups/groups.service.spec.data';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;
   configureTestSuite();
-  const fakeActivatedRoute = {};
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
+
   const resourceBundle = {
     messages: {
       smsg: { m002: '' },
@@ -40,7 +39,9 @@ describe('GroupHeaderComponent', () => {
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       { provide: APP_BASE_HREF, useValue: '/' },
-      { provide: Router, useClass: RouterStub }],
+      { provide: Router, useClass: RouterStub },
+      TelemetryService,
+    ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
@@ -53,10 +54,13 @@ describe('GroupHeaderComponent', () => {
       id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
       members: [{ createdBy: 'user_123', name: 'user123', role: 'admin' }]
     };
+    spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
+    spyOn(component['groupService'], 'addTelemetry');
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    component.groupData['isCreator'] = true;
     expect(component).toBeTruthy();
     component.ngOnInit();
     expect(component.creator).toEqual('You');
@@ -121,6 +125,11 @@ describe('GroupHeaderComponent', () => {
     component.showMemberPopup = false;
     component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
+  });
+
+  it('should call addTelemetry', () => {
+    component.addTelemetry('ftu-popup');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
   });
 
 });

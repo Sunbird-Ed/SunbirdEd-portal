@@ -1,3 +1,5 @@
+import { impressionObj, fakeActivatedRoute, RouterStub } from './../../services/groups/groups.service.spec.data';
+import { TelemetryService } from '@sunbird/telemetry';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyGroupsComponent } from './my-groups.component';
@@ -12,29 +14,19 @@ import { GroupsService } from '../../services';
 import { of, throwError } from 'rxjs';
 import { mockGroupList } from './my-groups.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
+import { APP_BASE_HREF } from '@angular/common';
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
-  const fakeActivatedRoute = {
-    'params': of ({}),
-    snapshot: {
-        data: {
-            telemetry: {
-                env: 'groups', pageid: 'gropus-list', type: 'view', object: { type: 'groups', ver: '1.0' }
-            }
-        }
-    }
-  };
-  class RouterStub {
-      navigate = jasmine.createSpy('navigate');
-  }
+
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
-      providers: [ GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService ],
+      providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService,
+        { provide: APP_BASE_HREF, useValue: '/' } ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -44,6 +36,8 @@ describe('MyGroupsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     component['userService']['_userid'] = '123';
+    spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
+    spyOn(component['groupService'], 'addTelemetry');
   });
 
   it('should create', () => {
@@ -88,4 +82,14 @@ describe('MyGroupsComponent', () => {
     expect(component.showModal).toBeFalsy();
   });
 
+  it('should get impressionObject', () => {
+    component.ngOnInit();
+    expect(component.telemetryImpression).toEqual(impressionObj);
+    expect(component['groupService'].getImpressionObject).toHaveBeenCalled();
+  });
+
+  it('should call addTelemetry', () => {
+    component.addTelemetry('ftu-popup');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
+  });
 });

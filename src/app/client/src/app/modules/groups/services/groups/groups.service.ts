@@ -1,10 +1,11 @@
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 
 
 @Injectable({
@@ -19,7 +20,9 @@ export class GroupsService {
   constructor(
     private csLibInitializerService: CsLibInitializerService,
     private userService: UserService,
-    private resourceService: ResourceService
+    private resourceService: ResourceService,
+    private telemetryService: TelemetryService,
+    private navigationhelperService: NavigationHelperService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -38,7 +41,7 @@ export class GroupsService {
     member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
     member.isAdmin = _.get(member, 'role') === 'admin';
     member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
-    member.isSelf = (this.userService.userid === _.get(member, 'userId')) ||(this.userService.userid || _.get(member, 'identifier'));
+    member.isSelf = (this.userService.userid === _.get(member, 'userId')) || (this.userService.userid === _.get(member, 'identifier'));
     member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
     member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
 
@@ -83,5 +86,54 @@ export class GroupsService {
 
   emitMembers(members: IGroupMember[]) {
     this.membersList.emit(members);
+  }
+
+  addTelemetry(eid: string, routeData) {
+
+    const interactData = {
+      context: {
+        env: _.get(routeData, 'data.telemetry.env'),
+        cdata: []
+      },
+      edata: {
+        id: eid,
+        type: 'click',
+        pageid: _.get(routeData, 'data.telemetry.pageid'),
+      }
+    };
+
+    if (_.get(routeData, 'params.groupId')) {
+      interactData['object'] = {
+        id: _.get(routeData, 'params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      };
+    }
+    this.telemetryService.interact(interactData);
+  }
+
+  getImpressionObject(routeData, url): IImpressionEventInput {
+
+    const impressionObj = {
+      context: {
+        env: _.get(routeData, 'data.telemetry.env')
+      },
+      edata: {
+        type: _.get(routeData, 'data.telemetry.type'),
+        pageid: _.get(routeData, 'data.telemetry.pageid'),
+        subtype: _.get(routeData, 'data.telemetry.subtype'),
+        uri: url,
+        duration: this.navigationhelperService.getPageLoadTime()
+      },
+    };
+
+    if (_.get(routeData, 'params.groupId')) {
+      impressionObj['object'] = {
+        id: _.get(routeData, 'params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      };
+    }
+    return impressionObj;
   }
 }

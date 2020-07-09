@@ -1,22 +1,32 @@
+import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ResourceService } from '@sunbird/shared';
 import { GroupsService } from './groups.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
-import { groupServiceMockData } from './groups.service.spec.data';
-import { of } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('GroupsService', () => {
   configureTestSuite();
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        you: 'You',
+      }
+    }
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [GroupsService, ConfigService, UserService, FrameworkService, ChannelService, OrgDetailsService,
-        { provide: APP_BASE_HREF, useValue: '/' }]
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: ResourceService, useValue: resourceBundle },
+        TelemetryService,
+      ]
     });
   });
 
@@ -105,6 +115,13 @@ describe('GroupsService', () => {
     spyOn(service['closeForm'], 'emit');
     service.emitCloseForm();
     expect(service['closeForm'].emit).toHaveBeenCalled();
+  });
+
+  it('should call interact() ', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service['telemetryService'], 'interact');
+    service.addTelemetry('login-group');
+    expect(service['telemetryService'].interact).toHaveBeenCalled();
   });
 
 });
