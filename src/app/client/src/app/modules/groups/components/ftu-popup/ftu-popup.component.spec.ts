@@ -8,7 +8,7 @@ import { FtuPopupComponent } from './ftu-popup.component';
 import { SlickModule } from 'ngx-slick';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { ActivatedRoute, Router } from '@angular/router';
-import { fakeActivatedRoute, RouterStub } from '../../services/groups/groups.service.spec.data';
+import { fakeActivatedRoute } from '../../services/groups/groups.service.spec.data';
 import { APP_BASE_HREF } from '@angular/common';
 
 describe('FtuPopupComponent', () => {
@@ -22,6 +22,12 @@ describe('FtuPopupComponent', () => {
       },
     }
   };
+
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FtuPopupComponent ],

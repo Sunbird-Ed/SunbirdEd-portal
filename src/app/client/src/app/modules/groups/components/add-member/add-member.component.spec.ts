@@ -9,7 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
-import { impressionObj, fakeActivatedRoute, RouterStub, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
+import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { ActivatedRoute } from '@angular/router';
 
 describe('AddMemberComponent', () => {
@@ -33,6 +33,11 @@ describe('AddMemberComponent', () => {
       }
     }
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],

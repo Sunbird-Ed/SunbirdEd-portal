@@ -56,8 +56,3 @@ export const fakeActivatedRouteWithGroupId = {
       }
   }
 };
-
-export class RouterStub {
-  navigate = jasmine.createSpy('navigate');
-  url: '/my-groups';
-}

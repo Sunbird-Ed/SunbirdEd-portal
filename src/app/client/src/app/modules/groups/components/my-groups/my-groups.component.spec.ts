@@ -1,4 +1,4 @@
-import { impressionObj, fakeActivatedRoute, RouterStub } from './../../services/groups/groups.service.spec.data';
+import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -20,6 +20,12 @@ describe('MyGroupsComponent', () => {
   let fixture: ComponentFixture<MyGroupsComponent>;
 
   configureTestSuite();
+
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],

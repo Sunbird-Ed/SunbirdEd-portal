@@ -13,7 +13,7 @@ import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import * as _ from 'lodash-es';
-import { impressionObj, fakeActivatedRoute, RouterStub } from './../../services/groups/groups.service.spec.data';
+import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
@@ -32,6 +32,11 @@ describe('GroupHeaderComponent', () => {
       }
     }
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupHeaderComponent],
