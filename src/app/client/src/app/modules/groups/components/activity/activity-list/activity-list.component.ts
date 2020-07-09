@@ -99,7 +99,7 @@ export class ActivityListComponent {
     if (_.get(this.groupData, 'isAdmin')) {
       this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], { relativeTo: this.activateRoute });
     } else {
-      this.router.navigate(['/learn/course', activity.identifier], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+      this.router.navigate(['/learn/course', activity.identifier]);
     }
   }
 
@@ -107,7 +107,6 @@ export class ActivityListComponent {
     this.showMenu = !this.showMenu;
     this.selectedActivity = member;
   }
-
 
   toggleModal(show = false) {
     this.showModal = show;
