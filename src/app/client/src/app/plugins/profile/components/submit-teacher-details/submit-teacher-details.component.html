@@ -76,9 +76,14 @@
 
                 <!-- error icon -->
                 <div class="warning-icon"
-                  *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
+                     *ngIf="(validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
                   <img src="./assets/images/warning-icon.svg" width="20px">
                 </div>
+
+                <div><label class="font-weight-normal invalid-msg"
+                            *ngIf="validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified">
+                  {{resourceService.frmelmnts?.lbl?.pleaseValidateYour}} {{field.label | lowercase}}
+                </label></div>
 
                 <div *ngFor="let validation of field.validation">
                   <label class="font-weight-normal invalid-msg"
