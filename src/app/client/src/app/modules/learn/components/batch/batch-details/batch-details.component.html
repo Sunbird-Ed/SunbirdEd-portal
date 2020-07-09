@@ -18,7 +18,7 @@
                 <button [disabled]="isEnrollmentAllowed(batch?.enrollmentEndDate)"
                     [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch?.enrollmentEndDate), 'sb-btn-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
                     class="sb-btn sb-btn-outline-secondary sb-btn-normal"
-                    (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy)"
+                    (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
                     *ngIf="!courseMentor">{{resourceService?.frmelmnts?.lbl?.join}}</button>
             </div>
         </div>
@@ -52,7 +52,7 @@
                                         class="calendar outline icon"></i> {{batch.startDate | dateFormat}}
                                     <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
                                 <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal ml-auto"
-                                    (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy);">
+                                    (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
                                     {{resourceService?.frmelmnts?.lbl?.edit}}
                                 </button>
                             </div>

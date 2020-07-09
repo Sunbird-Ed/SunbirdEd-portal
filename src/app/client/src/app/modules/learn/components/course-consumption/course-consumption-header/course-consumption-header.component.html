@@ -68,21 +68,17 @@
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-            (click)="showJoinModal(true);">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
+            (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
         </div>
 
         <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0">
-          <button appTelemetryInteract [telemetryInteractEdata]="startIntractEdata"
-            [telemetryInteractObject]="courseInteractObject"
-            class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" [disabled]="showResumeCourse"
-            (click)="resumeCourse(true)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
+          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" [disabled]="showResumeCourse"
+            (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
         </div>
 
         <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0">
-          <button appTelemetryInteract [telemetryInteractEdata]="resumeIntractEdata"
-            [telemetryInteractObject]="courseInteractObject"
-            class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
-            [disabled]="showResumeCourse" (click)="resumeCourse(true)"><i
+          <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
+            [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)"><i
               class="icon-svg icon-svg--xxs icon-play mr-8"><svg class="icon icon-svg--white">
                 <use xlink:href="./assets/images/libdemo/sprite.svg#play"></use>
               </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>

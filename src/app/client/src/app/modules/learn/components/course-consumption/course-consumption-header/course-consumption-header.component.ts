@@ -10,7 +10,7 @@ import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-course-consumption-header',
@@ -35,8 +35,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showCopyLoader = false;
   onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
-  startIntractEdata: IInteractEventEdata;
-  resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
   enrolledCourse = false;
@@ -80,16 +78,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
-        this.startIntractEdata = {
-          id: 'course-start',
-          type: 'click',
-          pageid: 'course-consumption'
-        };
-        this.resumeIntractEdata = {
-          id: 'course-resume',
-          type: 'click',
-          pageid: 'course-consumption'
-        };
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -140,7 +128,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           courseHierarchy: this.courseHierarchy
          });
   }
-
 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
@@ -213,6 +200,31 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         type: _.get(this.courseHierarchy, 'contentType') || 'Course',
         ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
         rollup: {l1: this.courseId}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'Course',
+        cdata: this.telemetryCdata || []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);

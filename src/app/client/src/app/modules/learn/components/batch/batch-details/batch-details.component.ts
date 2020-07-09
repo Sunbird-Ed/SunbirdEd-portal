@@ -260,9 +260,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     return (isCourseCreator && isPermissionAvailable);
   }
 
-  logTelemetry(id, content?: {}) {
-    if (this.batchId) {
-      this.telemetryCdata.push({ id: this.batchId, type: 'courseBatch' });
+  logTelemetry(id, content?: {}, batchId?) {
+    if (batchId || this.batchId) {
+      this.telemetryCdata = [{ id: batchId || this.batchId, type: 'courseBatch' }];
     }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {

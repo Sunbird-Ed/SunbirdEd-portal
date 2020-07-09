@@ -80,14 +80,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
   }
 
-  navigateToPlayerPage(collectionUnit, event?) {
+  navigateToPlayerPage(collectionUnit: {}, event?) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
       };
 
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
-      } else if (collectionUnit.mimeType === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+      } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
         && _.get(this.contentStatus, 'length')) {
         const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
         const collectionChildren = [];
