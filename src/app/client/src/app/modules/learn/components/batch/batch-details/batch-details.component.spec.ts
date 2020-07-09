@@ -18,8 +18,16 @@ class RouterStub {
 }
 const fakeActivatedRoute = {
   'params': observableOf({ courseId: 'do_1125083286221291521153' }),
-  'queryParams': observableOf({})
+  'queryParams': observableOf({}),
+  'snapshot': {
+    data: {
+      telemetry: {
+        env: 'course', pageid: 'Course', type: 'view',
+      }
+    }
+  }
 };
+
 const resourceServiceMockData = {
   messages : {
     imsg: { m0027: 'Something went wrong'},
@@ -225,5 +233,12 @@ describe('BatchDetailsComponent', () => {
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.getJoinCourseBatchDetails();
     expect(component.showAllBatchError).toBeTruthy();
+  });
+
+  it('should call logTelemetry', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('buutonid');
+    expect(telemetryService.interact).toHaveBeenCalled();
   });
 });

@@ -264,7 +264,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     if (batchId || this.batchId) {
       this.telemetryCdata = [{ id: batchId || this.batchId, type: 'courseBatch' }];
     }
-    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    let objectRollUp;
+    if (content) {
+      objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    }
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'Course',
@@ -276,10 +279,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
       },
       object: {
-        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        id: content ? _.get(content, 'identifier') : this.courseId,
         type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+        rollup: objectRollUp ? this.courseConsumptionService.getRollUp(objectRollUp) : {}
       }
     };
     this.telemetryService.interact(interactData);
