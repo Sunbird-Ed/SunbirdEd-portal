@@ -1,19 +1,27 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-ftu-popup',
   templateUrl: './ftu-popup.component.html',
   styleUrls: ['./ftu-popup.component.scss']
 })
 export class FtuPopupComponent implements OnInit {
-  @Input() showWelcomePopup;
-  @Output() close = new EventEmitter();
 
-  @Input()showMemberPopup;
-  constructor(public resourceService: ResourceService, private elementRef: ElementRef) { }
   slideConfig1 = {};
   instance;
+
+  @Input() showWelcomePopup;
+  @Input()showMemberPopup;
+  @Output() close = new EventEmitter();
+
+  constructor(public resourceService: ResourceService,
+    private activatedRoute: ActivatedRoute,
+    private telemetryService: TelemetryService) { }
+
+
 
   ngOnInit() {
     this.instance = this.resourceService.instance;
@@ -40,6 +48,26 @@ export class FtuPopupComponent implements OnInit {
     this.showMemberPopup = false;
     this.close.emit(true);
     localStorage.setItem('login_members_ftu', 'members');
+  }
+
+  addTelemetry (id) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+      },
+      object: {
+        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
 }

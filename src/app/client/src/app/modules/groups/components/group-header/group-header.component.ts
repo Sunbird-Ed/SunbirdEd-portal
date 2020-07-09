@@ -1,5 +1,5 @@
-import { UserService } from '@sunbird/core';
-import { Router } from '@angular/router';
+import { TelemetryService } from '@sunbird/telemetry';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
@@ -20,12 +20,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   showEditModal: boolean;
   creator: string;
   showMemberPopup = false;
-  isGroupAdmin = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private userService: UserService) {
+    private activatedRoute: ActivatedRoute, private telemetryService: TelemetryService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -35,9 +34,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
-    const user = _.find(this.groupData['members'], {userId: this.userService.userid});
-    this.isGroupAdmin = _.get(user, 'role') === 'admin';
-    this.creator = this.groupData['isAdmin'] ? 'You' : _.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}).name;
+    this.creator =  _.get(this.groupData, 'isCreator') ? 'You' :
+    _.get(_.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}), 'name');
   }
 
   toggleModal(visibility = false) {
@@ -69,6 +67,26 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   toggleFtuModal(visibility: boolean = false) {
     this.showMemberPopup = visibility;
+  }
+
+  addTelemetry (id) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+      },
+      object: {
+        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   ngOnDestroy() {

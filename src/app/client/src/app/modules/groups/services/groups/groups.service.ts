@@ -29,11 +29,11 @@ export class GroupsService {
   }
 
   addFields(member): IGroupMember {
-    member.title = member.name || member.userName;
-    member.initial = member.title[0];
-    member.identifier = member.userId || member.identifier;
-    member.isAdmin = member.role === 'admin';
-    member.isCreator = member.userId === member.createdBy;
+    member.title = _.get(member, 'name') || _.get(member, 'username') || _.get(member, 'userName');
+    member.initial = _.get(member, 'title[0]') || 'D';
+    member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
+    member.isAdmin = _.get(member, 'role') === 'admin';
+    member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
     return member;
   }
 

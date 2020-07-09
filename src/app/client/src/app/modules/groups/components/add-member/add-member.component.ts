@@ -1,17 +1,19 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
   styleUrls: ['./add-member.component.scss']
 })
-export class AddMemberComponent implements OnInit {
+export class AddMemberComponent implements OnInit, OnDestroy {
   showModal = false;
   instance: string;
   membersList: IGroupMember[] ;
@@ -22,11 +24,17 @@ export class AddMemberComponent implements OnInit {
   config = { size: 'medium', isBold: true, isSelectable: false, view: 'horizontal' };
   isInvalidUser = false;
   verifiedMember: IGroupMember;
+  telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
-    private userService: UserService, private toasterService: ToasterService) {
+    private userService: UserService, private toasterService: ToasterService,
+    private telemetryService: TelemetryService,
+    private navigationhelperService: NavigationHelperService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+    ) {
   }
 
   ngOnInit() {
@@ -34,6 +42,27 @@ export class AddMemberComponent implements OnInit {
     this.groupData = this.groupsService.groupData;
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
+    this.setTelemetryImpression();
+  }
+
+  setTelemetryImpression () {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url,
+        duration: this.navigationhelperService.getPageLoadTime()
+      },
+      object: {
+        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
+        type: 'Group',
+        ver: '1.0'
+      }
+    };
   }
 
   reset() {
@@ -100,5 +129,30 @@ export class AddMemberComponent implements OnInit {
 
   toggleModal(visibility: boolean = false) {
     this.showModal = visibility;
+  }
+
+  addTelemetry (id) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+      },
+      object: {
+        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
+        type: 'Group',
+        ver: '1.0'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

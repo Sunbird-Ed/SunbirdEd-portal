@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES  } from '../../interfaces';
-
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -20,6 +20,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
+  telemetryImpression: IImpressionEventInput;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -34,6 +35,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private router: Router,
     public resourceService: ResourceService,
+    private telemetryService: TelemetryService,
+    private navigationhelperService: NavigationHelperService,
   ) {
     this.groupService = groupService;
   }
@@ -44,7 +47,29 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getGroupData();
     });
+    this.setTelemetryImpression();
   }
+
+  setTelemetryImpression () {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        uri: this.router.url,
+        duration: this.navigationhelperService.getPageLoadTime()
+      },
+      object: {
+        id: _.get(this.activatedRoute, 'snapshot.params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      }
+    };
+  }
+
 
   getGroupData() {
     this.groupService.getGroupById(this.groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
@@ -68,6 +93,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.addActivityModal.deny();
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
   }
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -105,6 +105,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
+  myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
@@ -291,6 +292,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'contribute'
     };
+    this.myGroupIntractEData = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
   }
 
   getFeatureId(featureId, taskId) {
@@ -471,5 +477,5 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   navigateToGroups() {
     return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
   }
-  
+
 }
