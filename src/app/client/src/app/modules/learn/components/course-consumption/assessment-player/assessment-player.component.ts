@@ -107,7 +107,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
+      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
   setPreviousAndNextModule() {
