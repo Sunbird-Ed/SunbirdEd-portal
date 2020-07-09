@@ -15,14 +15,14 @@
         <div class="d-flex flex-ai-center">
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
-            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', courseHierarchy);">
+            (click)="courseConsumptionService.navigateToPlayerPage(parentCourse, batchId, contentStatus, prevModule); logTelemetry('previous-module', courseHierarchy);">
             <i class="chevron left icon mr-4"></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
-            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', courseHierarchy)">
+            (click)="courseConsumptionService.navigateToPlayerPage(parentCourse, batchId, contentStatus, nextModule); logTelemetry('next-module', courseHierarchy)">
             {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="chevron right icon ml-4"></i>
           </button>
           <!-- Next Module button -->
