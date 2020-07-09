@@ -36,7 +36,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
       _.forEach(groups, (group) => {
         if (group) {
-          group.isAdmin = _.find(group.members, {userId: this.userService.userid}).role === 'admin';
+          group.isCreator = group['createdBy'] === this.userService.userid;
+          group.isAdmin = group.isCreator ? true : _.get(group, 'memberRole') === 'admin';
           group.initial = group.name[0];
           group.isAdmin ? this.groupList.adminGroups.push(group) : this.groupList.memberGroups.push(group);
         }
