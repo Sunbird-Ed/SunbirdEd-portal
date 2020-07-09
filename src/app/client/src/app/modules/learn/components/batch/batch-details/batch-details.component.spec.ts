@@ -238,7 +238,7 @@ describe('BatchDetailsComponent', () => {
   it('should call logTelemetry', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact');
-    component.logTelemetry('buutonid');
+    component.logTelemetry('buttonId');
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 });
