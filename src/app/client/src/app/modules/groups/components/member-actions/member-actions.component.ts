@@ -20,6 +20,7 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
   @ViewChild('modal') modal;
   @Input() action: string;
   @Input() member: IGroupMember;
+  @Input() groupName: string;
   @Output() modalClose = new EventEmitter<void>();
   @Output() actionConfirm = new EventEmitter<any>();
 
@@ -51,6 +52,14 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           description: _.replace(this.resourceService.frmelmnts.lbl.dismissWarning, '{memberName}', this.member.title),
           buttonText: this.resourceService.frmelmnts.btn.dismissAdmin,
           theme: 'primary'
+        };
+        break;
+      case 'leaveFromGroup':
+        this.memberActionData = {
+          title: `${this.resourceService.frmelmnts.lbl.leaveGroup}?`,
+          description: _.replace(this.resourceService.frmelmnts.lbl.leaveGroupWarning, '{groupName}', this.groupName),
+          buttonText: this.resourceService.frmelmnts.lbl.leaveGroup,
+          theme: 'error'
         };
         break;
     }
