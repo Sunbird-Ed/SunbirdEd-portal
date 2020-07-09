@@ -245,5 +245,17 @@ describe('PlayerComponent', () => {
     expect(component.ratingPopupClose.emit).toHaveBeenCalled();
   });
 
+  it('should adjust player height on landscap mode of mobile or tab device', () => {
+    const mockDomElement = document.createElement('div');
+    mockDomElement.setAttribute('id', 'contentPlayer');
+    spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+    spyOn(mockDomElement, 'style').and.returnValue(of({height: window.innerHeight}));
+    fixture.detectChanges();
+    component.isMobileOrTab = true;
+    component.adjustPlayerHeight();
+    fixture.detectChanges();
+    expect(screen.orientation.type).toEqual('landscape-primary');
+  });
+
 });
 
