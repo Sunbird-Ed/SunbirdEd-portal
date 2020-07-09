@@ -29,7 +29,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   @Output() members = new EventEmitter<any>();
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
-    private userService: UserService, private toasterService: ToasterService
+    private userService: UserService, private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute,
     private groupService: GroupsService,
     private router: Router
