@@ -113,9 +113,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
               this.parentCourse = data.courseHierarchy;
-              const { prev, next } = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
-              this.nextModule = next;
-              this.prevModule = prev;
+              const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
+              this.nextModule = _.get(module, 'next');
+              this.prevModule = _.get(module, 'prev');
               this.isCertificateAttached = Boolean(_.get(this.parentCourse, 'certTemplate.length'));
               this.getCourseCompletionStatus();
               if (!this.isParentCourse && data.courseHierarchy.children) {
