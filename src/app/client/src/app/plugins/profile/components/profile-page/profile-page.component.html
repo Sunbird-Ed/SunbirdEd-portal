@@ -66,11 +66,11 @@
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
       <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <button appTelemetryInteract
           [telemetryInteractEdata]="editProfileInteractEdata"
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <button appTelemetryInteract
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
                 *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj && !stateObj && !districtObj"
                 (click)="navigate('/profile/teacher-declaration','submit')"
@@ -115,13 +115,13 @@
       <div class="d-flex flex-jc-center">
         <div (click)="showContactPopup=true;contactType='phone'"
           class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
-          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
         <div (click)="showContactPopup=true;contactType='phone'"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
-          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
@@ -129,12 +129,12 @@
      <div class="d-flex flex-jc-center">
       <div (click)="showContactPopup=true;contactType='email'"
       class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
-      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
+      [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
     <div (click)="showContactPopup=true;contactType='email'"
       class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
     </div>
@@ -143,14 +143,14 @@
       <!-- Add/edit recovery email/phone-->
     <div class="d-flex flex-jc-center">
       <div *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      appTelemetryInteract
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
         <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
         <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
        </div>
-       <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex" 
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+       <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+      appTelemetryInteract
       [telemetryInteractEdata]="addRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
        <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
@@ -186,7 +186,7 @@
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
-          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          appTelemetryInteract
           [telemetryInteractEdata]="myFrameworkEditEdata"
           (click)="showEdit = !showEdit">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
@@ -216,7 +216,7 @@
           *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="myFrameworkEditEdata"
+        [telemetryInteractEdata]="myFrameworkEditEdata"
         (click)="showEdit = !showEdit">
         <button class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
@@ -257,7 +257,7 @@
         <div class="fnormal font-w-bold mt-4 mb-8">{{teacherObj?.id}}</div>
       </div>
       <div class="my-8">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <button appTelemetryInteract
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
         (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
@@ -310,7 +310,7 @@
               </div>
               <div class="list-items__item" *ngIf="data.certificates && data.certificates.length > 0">
                 <button appTelemetryInteract
-                [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCertificateEData" 
+                 [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.certificates)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
@@ -325,12 +325,10 @@
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
               (click)="toggleCourse(true, attendedTraining.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
               (click)="toggleCourse(false, attendedTraining.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
@@ -349,7 +347,7 @@
               <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
-                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadOthersCertificateEData"
+                <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
@@ -361,12 +359,10 @@
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
               (click)="toggleCourse(true, otherCertificates.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
               (click)="toggleCourse(false, otherCertificates.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>

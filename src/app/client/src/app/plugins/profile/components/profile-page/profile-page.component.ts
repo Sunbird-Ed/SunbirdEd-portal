@@ -56,7 +56,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCertificateEData: IInteractEventEdata;
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
   submitTeacherDetailsInteractEdata: IInteractEventEdata;
   updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
@@ -306,11 +305,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       id: 'profile-edit-emailId',
       type: 'click',
       pageid: 'profile-read'
-    };
-    this.telemetryInteractObject = {
-      id: this.userService.userid,
-      type: 'User',
-      ver: '1.0'
     };
     this.downloadCertificateEData = {
       id: 'profile-download-certificate',

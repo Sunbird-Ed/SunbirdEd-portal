@@ -8,7 +8,8 @@ import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operato
 import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-up-for-review-filter',
-  templateUrl: './up-for-review-filter.component.html'
+  templateUrl: './up-for-review-filter.component.html',
+  styleUrls: ['./up-for-review-filter.component.scss']
 })
 export class UpforReviewFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
