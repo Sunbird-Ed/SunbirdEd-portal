@@ -117,33 +117,6 @@ getAllOpenBatches(contents) {
     this.toasterService.error(this.resourceService.messages.emsg.m0003);
   }
 }
-  navigateToPlayerPage(parentCourse: {}, batchId: string, contentStatus: [], collectionUnit: {}) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { batchId, courseId: _.get(parentCourse, 'identifier'), courseName: _.get(parentCourse, 'name') }
-    };
-
-    if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
-      && _.get(contentStatus, 'length')) {
-      const parsedChildren = this.parseChildren(collectionUnit);
-      const collectionChildren = [];
-      contentStatus.forEach(item => {
-        if (parsedChildren.find(content => content === _.get(item, 'contentId'))) {
-          collectionChildren.push(item);
-        }
-      });
-
-      /* istanbul ignore else */
-      if (collectionChildren.length) {
-        const selectedContent: any = collectionChildren.find(item => item.status !== 2);
-
-        /* istanbul ignore else */
-        if (selectedContent) {
-          navigationExtras.queryParams.selectedContent = selectedContent.contentId;
-        }
-      }
-    }
-    this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
-  }
 
   setPreviousAndNextModule(courseHierarchy: {}, collectionId: string) {
     if (_.get(courseHierarchy, 'children')) {

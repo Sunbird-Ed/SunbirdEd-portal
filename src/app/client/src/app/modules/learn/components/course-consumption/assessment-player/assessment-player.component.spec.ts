@@ -416,4 +416,15 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isCourseCompleted).toBe(true);
     expect(component.showCourseCompleteMessage).toBe(true);
   });
+
+  it('should call navigateToPlayerPage', () => {
+    spyOn(component['router'], 'navigate');
+    component.batchId = 'do_1130272760359813121209';
+    component.courseId = 'do_1130272760359485441199';
+    component.parentCourse = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy.children[0]);
+    const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' } };
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
+  });
+
 });

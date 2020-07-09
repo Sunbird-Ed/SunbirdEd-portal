@@ -102,15 +102,6 @@ describe('CourseConsumptionService', () => {
     service.getAllOpenBatches({content: [], count: 0});
     expect(service['toasterService'].error).toHaveBeenCalledWith(service['resourceService'].messages.emsg.m0003);
   });
-  it('should call navigateToPlayerPage', () => {
-    const service = TestBed.get(CourseConsumptionService);
-    const batchId = 'do_1130272760359813121209';
-    const contentStatus = courseConsumptionServiceMockData.contentStatus;
-    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
-    service.navigateToPlayerPage(parentCourse, batchId, contentStatus, courseConsumptionServiceMockData.courseHierarchy.children[0]);
-    const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' } };
-    expect(service['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
-  });
 
   it('should call setPreviousAndNextModule and check only next module is defined', () => {
     const service = TestBed.get(CourseConsumptionService);

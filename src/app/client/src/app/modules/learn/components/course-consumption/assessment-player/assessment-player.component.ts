@@ -62,7 +62,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
-    public courseConsumptionService: CourseConsumptionService,
+    private courseConsumptionService: CourseConsumptionService,
     private configService: ConfigService,
     private courseBatchService: CourseBatchService,
     private toasterService: ToasterService,
@@ -78,6 +78,36 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.playerOption = {
       showContentRating: true
     };
+  }
+
+  navigateToPlayerPage(collectionUnit: {}, event?) {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
+      };
+
+      if (event && !_.isEmpty(event.event)) {
+        navigationExtras.queryParams.selectedContent = event.data.identifier;
+      } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+        && _.get(this.contentStatus, 'length')) {
+        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+        const collectionChildren = [];
+        this.contentStatus.forEach(item => {
+          if (parsedChildren.find(content => content === item.contentId)) {
+            collectionChildren.push(item);
+          }
+        });
+
+        /* istanbul ignore else */
+        if (collectionChildren.length) {
+          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
+
+          /* istanbul ignore else */
+          if (selectedContent) {
+            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
+          }
+        }
+      }
+      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
   ngOnInit() {
