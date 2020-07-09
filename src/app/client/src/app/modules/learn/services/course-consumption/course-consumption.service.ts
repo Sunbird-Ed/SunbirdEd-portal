@@ -117,7 +117,6 @@ getAllOpenBatches(contents) {
     this.toasterService.error(this.resourceService.messages.emsg.m0003);
   }
 }
-// navigateToPlayerPage(collectionUnit: {}, event?) {
   navigateToPlayerPage(parentCourse: {}, batchId: string, contentStatus: [], collectionUnit: {}) {
     const navigationExtras: NavigationExtras = {
       queryParams: { batchId, courseId: _.get(parentCourse, 'identifier'), courseName: _.get(parentCourse, 'name') }
@@ -146,7 +145,7 @@ getAllOpenBatches(contents) {
     this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
-  setPreviousAndNextModule(courseHierarchy: {}, collectionId: string,) {
+  setPreviousAndNextModule(courseHierarchy: {}, collectionId: string) {
     if (_.get(courseHierarchy, 'children')) {
       let prev;
       let next;

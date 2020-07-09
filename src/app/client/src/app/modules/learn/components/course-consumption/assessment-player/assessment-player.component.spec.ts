@@ -416,39 +416,4 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isCourseCompleted).toBe(true);
     expect(component.showCourseCompleteMessage).toBe(true);
   });
-
-  it('should call navigateToPlayerPage', () => {
-    spyOn(component['router'], 'navigate');
-    component.batchId = 'do_1130272760359813121209';
-    component.courseId = 'do_1130272760359485441199';
-    component.parentCourse = assessmentPlayerMockData.courseHierarchy;
-    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy.children[0]);
-    const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' } };
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
-  });
-
-  it('should call setPreviousAndNextModule and check only next module is defined', () => {
-    component.parentCourse = assessmentPlayerMockData.courseHierarchy;
-    component.collectionId = 'do_1130272760359813121209';
-    component.setPreviousAndNextModule();
-    expect(component.nextModule).toBeDefined();
-    expect(component.prevModule).toBeUndefined();
-  });
-
-  it('should call setPreviousAndNextModule and check both prev/next module is defined', () => {
-    component.parentCourse = assessmentPlayerMockData.courseHierarchy;
-    component.collectionId = 'do_1130272760359567361201';
-    component.setPreviousAndNextModule();
-    expect(component.nextModule).toBeDefined();
-    expect(component.prevModule).toBeDefined();
-  });
-
-  it('should call setPreviousAndNextModule and check only prev module is defined', () => {
-    component.parentCourse = assessmentPlayerMockData.courseHierarchy;
-    component.collectionId = 'do_1130272760359567361202';
-    component.setPreviousAndNextModule();
-    expect(component.nextModule).toBeUndefined();
-    expect(component.prevModule).toBeDefined();
-  });
-
 });
