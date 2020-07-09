@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityFormComponent } from './activity-form.component';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { FormsModule } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CoreModule, FormService } from '@sunbird/core';
@@ -17,7 +17,8 @@ describe('ActivityFormComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'There is some technical error',
-      }
+      },
+      'emsg': { 'm0005': 'Something went wrong, try again later'}
     },
     'frmelmnts': {
       'lbl': {}
@@ -66,10 +67,13 @@ describe('ActivityFormComponent', () => {
     expect(component.activityTypes).toBeDefined();
   });
 
-  it('should get getFormDetails', () => {
+  it('should get getFormDetails on error', () => {
     const formService = TestBed.get(FormService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
     spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
     component['getFormDetails']();
     expect(component.activityTypes).not.toBeDefined();
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
 });

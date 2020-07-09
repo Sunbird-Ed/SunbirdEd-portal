@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormService } from '@sunbird/core';
 
 @Component({
@@ -12,7 +12,7 @@ export class ActivityFormComponent implements OnInit {
 
   activityTypes;
   selectedActivity: any;
-  constructor(public resourceService: ResourceService, private formService: FormService) { }
+  constructor(public resourceService: ResourceService, private formService: FormService, private toasterService: ToasterService) { }
 
   ngOnInit() {
     this.getFormDetails();
@@ -30,6 +30,7 @@ export class ActivityFormComponent implements OnInit {
       this.chooseActivity(this.activityTypes[0]);
     }, error => {
       console.error('Error while getting activity form data', error);
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
 
   }
