@@ -11,13 +11,23 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 const fakeActivatedRoute = {
   'params': observableOf({ courseId: 'do_1125083286221291521153' }),
-  'queryParams': observableOf({})
+  'queryParams': observableOf({}),
+  'snapshot': {
+    data: {
+      telemetry: {
+        env: 'course', pageid: 'Course', type: 'view',
+      }
+    }
+  }
 };
+
 const resourceServiceMockData = {
   messages : {
     imsg: { m0027: 'Something went wrong'},
@@ -42,7 +52,7 @@ describe('BatchDetailsComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [BatchDetailsComponent],
-      providers: [CourseBatchService, CourseProgressService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, TelemetryService, CourseProgressService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -191,5 +201,44 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
     expect(component.showCreateBatch()).toBeFalsy();
+  });
+
+  it('should call getJoinCourseBatchDetails and get success', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    component.enrolledCourse = false;
+    component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    component.getJoinCourseBatchDetails();
+    const searchParams: any = {
+      filters: {
+        status: ['0', '1'],
+        courseId: component.courseId,
+        enrollmentType: 'open'
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    expect(component.courseMentor).toBeFalsy();
+    expect(component.allBatchList).toBeDefined();
+    expect(component.showAllBatchList).toBeTruthy();
+    expect(component.showJoinModal).toBeTruthy();
+    expect(component.courseBatchService.getAllBatchDetails).toHaveBeenCalledWith(searchParams);
+  });
+  it('should call getJoinCourseBatchDetails and get error', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    component.enrolledCourse = false;
+    component.courseId = 'do_1125083286221291521153';
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
+    component.getJoinCourseBatchDetails();
+    expect(component.showAllBatchError).toBeTruthy();
+  });
+
+  it('should call logTelemetry', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('buttonId');
+    expect(telemetryService.interact).toHaveBeenCalled();
   });
 });

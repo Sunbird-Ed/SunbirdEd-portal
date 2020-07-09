@@ -10,7 +10,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 
 @Component({
   templateUrl: './public-course-consumption-page.component.html',
-  styleUrls: ['./public-course-consumption-page.component.css']
+  styleUrls: ['./public-course-consumption-page.component.scss']
 })
 export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseId: string;
@@ -29,8 +29,12 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
-    private resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
+    public resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService, private telemetryService: TelemetryService) {
+  }
+
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
@@ -88,6 +92,31 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
         type: _.get(this.courseHierarchy, 'contentType') || 'Course',
         ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
         rollup: { l1: this.courseId }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  logTelemetry(id, content?: {}) {
+    let objectRollUp;
+    if (content) {
+      objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    }
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'explore-course',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: objectRollUp ? this.courseConsumptionService.getRollUp(objectRollUp) : {}
       }
     };
     this.telemetryService.interact(interactData);

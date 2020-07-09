@@ -1,0 +1,27 @@
+.join-batch {
+    &__heading, &__body {
+      display: flex;
+      align-items: center;
+      div {
+        flex-basis: 45%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      button {
+        flex-basis: 10%;
+      }
+    }
+    &__heading {
+      font-size: 12px;
+      margin-bottom: 16px;
+      font-weight: bold;
+      padding: 0 16px;
+    }
+    &__body {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+  }

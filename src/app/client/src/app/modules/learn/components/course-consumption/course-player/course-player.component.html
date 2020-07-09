@@ -1,90 +1,143 @@
-<div class="ui container mt-24" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div *ngIf="!loader">
-    <div class="course-player" [appTelemetryImpression]="telemetryCourseImpression">
-      <div class="sb-pageSection course-player--header text-left">
-        <div class="sb-pageSection-header">
-          <h4 class="sb-pageSection-title sb-pageSection-title-light">
-            {{resourceService?.frmelmnts?.lbl?.aboutthecourse}}</h4>
-        </div>
-        <div class="sb-pageSection-content">
-          <div *ngIf="courseHierarchy?.description">
-            <p *ngIf="!readMore">
-              {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer"
-                *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
-                (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
-            </p>
-            <p *ngIf="readMore">
-              {{ courseHierarchy?.description}}&nbsp;
-              <span class="ui cardsKnowMore mouse-pointer"
-                (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
-            </p>
+<!-- Accordion and batch card section start -->
+<div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+  <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
+    <div class="sb-course-details sb-g py-16">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+
+        <!-- Course details for mobile view -->
+        <div class="sb-bg-color-white p-8 mb-16 mobile only"
+          *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
-      </div>
 
-      <div class="course-player--card text-left">
+        <ng-template #noMobileCertificate>
+          <div class="sb-bg-color-white p-8 mb-16 mobile only">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+              <img src="assets/images/certificate-icon.png" alt="Certificate">
+              <span
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Course details displayed on top when course is not enrolled -->
+        <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
+
+        <div class="training-modules my-16">
+
+          <div class="training-modules__title d-flex flex-ai-center mb-16">
+            <h4 class="sb-pageSection-title sb-pageSection-title-light">
+              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+            <button *ngIf="!isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
+                src="assets/images/plus.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
+            <button *ngIf="isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
+                src="assets/images/collapse.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
+          </div>
+
+          <div *ngFor="let item of courseHierarchy?.children; let index = index">
+            <sb-accordion [multi]="false">
+              <sb-accordion-item [expanded]="isExpanded(index)">
+                <sb-accordion-header class="sb-bg-color-gray-0">
+                  <i class="icon-svg icon-svg--md icon-tick mr-8"
+                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                    <svg class="icon">
+                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
+                    </svg>
+                  </i>
+                  {{item?.name}}
+                </sb-accordion-header>
+                <sb-accordion-body>
+                  <div class="chapter-box sb-g">
+                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
+                      <div *ngIf="item;else noContent">
+                        <div
+                          *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                          <div class="child-content-padding">
+                            <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
+                              [type]="cardType" [contentStatus]="contentStatus">
+                            </sb-toc-card>
+                          </div>
+                        </div>
+                        <div *ngIf="item?.children?.length">
+                          <div *ngFor="let child of item?.children">
+                            <div>
+                              <sb-toc-child-item [childData]="child"
+                                (tocCardClick)="navigateToContent($event, item, 'child-item')"
+                                [contentStatus]="contentStatus" [type]="cardType">
+                              </sb-toc-child-item>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #noContent>
+                        <div class="heading">{{noContentMessage}}</div>
+                      </ng-template>
+                    </section>
+                  </div>
+                </sb-accordion-body>
+              </sb-accordion-item>
+            </sb-accordion>
+          </div>
+        </div>
+
+        <!-- Course details displayed on bottom when course is enrolled -->
+        <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="enrolledCourse"></app-course-details>
+
+      </div>
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+          </div>
+        </div>
+
+        <ng-template #noCertificate>
+          <div class="sb-bg-color-white p-8 mb-16 computer only">
+            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+              <img src="assets/images/certificate-icon.png" alt="Certificate">
+              <span
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- 2. Course Progress bar -->
+        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse">
+          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
+            {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+          <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+          <div class="fsmall mt-8" *ngIf="progress < 100 && courseHierarchy.certTemplate">
+            {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
+          </div>
+        </div>
+
+        <!-- 3. Join batch, leave batch and show batch popup-->
         <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
-      </div>
 
-      <div class="course-player--content text-left">
-        <h4 class="sb-pageSection-title sb-pageSection-title-light">
-          {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
-
-        <div class="sb-pageSection">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index">
-            <div class="d-flex flex-ai-center flex-jc-space-between py-8">
-              <h5 class="course-list_title py-8 ellipsis mr-16">{{item?.name}}</h5>
-              <button (click)="navigateToPlayerPage(item); logTelemetry('continue-course', item)"
-                *ngIf="enrolledCourse && !item?.isUnitConsumed && item?.isUnitConsumptionStart"
-                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-              <button (click)="navigateToPlayerPage(item); logTelemetry('start-course', item)"
-                *ngIf="(!enrolledCourse && !hasPreviewPermission) || !item?.isUnitConsumptionStart && item?.children?.length"
-                class="sb-btn sb-btn-outline-secondary sb-btn-normal flex-none ml-8">{{resourceService?.frmelmnts?.btn?.start}}</button>
-            </div>
-            <div class="chapter-box sb-g">
-              <section class="sb-g-col-xs-12"
-                [ngClass]="{'sb-g-col-md-12 sb-g-col-lg-12': !enrolledCourse, 'sb-g-col-md-8 sb-g-col-lg-8': enrolledCourse}">
-                <sb-toc-curriculum
-                  *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection' && item?.children?.length; else noContent"
-                  [isAccordion]="true" (tocCardClick)="navigateToContent($event, item, 'curriculum-toc-card')"
-                  [tocData]="item" [activeContent]="activeContent" [type]="cardType" [contentStatus]="contentStatus">
-                </sb-toc-curriculum>
-                <sb-toc-card [content]="item" *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection'"
-                  (tocCardClick)="navigateToContent($event, item, 'toc-card')" [type]="cardType"
-                  [contentStatus]="contentStatus">
-                </sb-toc-card>
-                <ng-template #noContent>
-                  <div class="heading" *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'">
-                    {{resourceService?.messages?.stmsg?.m0121}}</div>
-                </ng-template>
-              </section>
-              <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4" *ngIf="enrolledCourse">
-                <div class="sb-bg-color-white course-list-progress text-left">
-                  <div class="course-list-progress__title">{{resourceService?.messages?.stmsg?.m0108 | uppercase}}
-                  </div>
-                  <div class="course-list-progress__status mt-8">
-                    {{item?.consumedContent || '0'}}/{{item?.contentCount || '0'}}
-                    {{resourceService?.frmelmnts?.lbl?.completed}}
-                  </div>
-                  <sui-progress [value]="item?.progress" maximum="100"
-                    class="green course-list-progress__barholder mt-8">
-                  </sui-progress>
-                </div>
-              </section>
-            </div>
-          </div>
+        <!-- Credits & License information -->
+        <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata text-left">
+          <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
         </div>
-      </div>
 
-      <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata text-left">
-        <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
       </div>
     </div>
   </div>
-
 </div>
 
 <router-outlet></router-outlet>
@@ -109,8 +162,6 @@
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
 
-
-
 <!-- new UI -->
 <div class="sb-bg-color-gray-0 textbook-container hide">
   <div class="ui container">
@@ -128,47 +179,3 @@
     </div>
   </div>
 </div>
-
-  <div class="ui container hide">
-    <div class="sb-course-details sb-g py-16">
-      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
-        <div>
-        <h4 class="font-weight-bold mb-16">Course Details</h4>
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary"><img src="assets/images/certificate-icon.png" alt="Certificate" class="mr-4">Certified course</button>
-        <div class="training-relevant my-8">
-          <h6 class="mt-0 mb-8 fsmall training-relevant__heading">Training is relevant for teachers of:</h6>
-          <div class="fnormal mb-4"><span>Class:&nbsp;</span><span>9, 10</span></div>
-          <div class="fnormal mb-4"><span>Subject:&nbsp;</span><span>English, Mathmatics</span></div>
-          <div class="fnormal"><span>Medium:&nbsp;</span><span>English</span></div>
-        </div>
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
-      </div>
-      <div class="d-flex flex-ai-center flex-jc-space-between mt-32">
-        <h4 class="font-weight-bold">Course modules</h4>
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"><i class="icon plus mr-4"></i>Expand All</button>
-      </div>
-      </div>
-
-      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
-        <sui-accordion class="styled fluid sb-accordion">
-          <sui-accordion-panel [isOpen]="true">
-            <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-              Content Information
-              <i class="chevron down icon ml-auto"></i>
-            </div>
-            <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
-              <div class="pb-24">
-                <div class="content-metadeta__title fsmall font-weight-bold mb-8 sb-color-gray-800">Published on SUNBIRD by</div>
-                <div class="content-metadeta__text fnormal sb-color-gray-400">Chandigarh SCERT</div>
-              </div>
-              <div class="pb-24">
-                <div class="content-metadeta__title font-weight-bold fsmall mb-8 sb-color-gray-800">License Terms</div>
-                <div class="content-metadeta__text  fnormal sb-color-gray-400">Creative Commons Attribution(CC by)</div>
-              </div>
-              <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">View more</button>
-            </div>
-          </sui-accordion-panel>
-        </sui-accordion>
-      </div>
-    </div>
-  </div>
