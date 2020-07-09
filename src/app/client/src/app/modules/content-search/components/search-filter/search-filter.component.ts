@@ -59,6 +59,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     mergeMap((queryParams) => {
       if (queryParams.channel) {
         this.selectedChannel = { label: this.optionLabel.Publisher, value: 'channel', selectedOption: queryParams.channel[0] };
+        this.type = this.optionLabel.Publisher;
       }
       this.filterChange.emit({status: 'FETCHING'}); // used to show loader until framework is fetched
       this.queryFilters = _.cloneDeep(queryParams);
@@ -67,10 +68,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }))
     .subscribe(filters => {
       if (filters && filters.hasOwnProperty('medium')) {
-        filters['medium'] = _.sortBy(filters['medium'], ["name"]);
+        filters['medium'] = _.sortBy(filters['medium'], ['name']);
       }
       if (filters && filters.hasOwnProperty('board')) {
-        filters['board'] = _.sortBy(filters['board'], ["name"]);
+        filters['board'] = _.sortBy(filters['board'], ['name']);
       }
       this.filters = filters;
       this.updateBoardList();
@@ -194,10 +195,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     };
     if (this.type === this.optionLabel.Publisher) {
       filters['channel'] = [_.get(this.selectedChannel, 'selectedOption')];
-      filters['ispublisher'] = true;
     } else {
       filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
-      filters['ispublisher'] = false;
     }
     return filters;
   }

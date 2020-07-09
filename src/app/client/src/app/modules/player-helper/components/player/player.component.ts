@@ -200,7 +200,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   adjustPlayerHeight() {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {
-      const height = playerWidth * (9 / 16);
+      let height = playerWidth * (9 / 16);
+      if (_.get(screen, 'orientation.type') === 'landscape-primary' && this.isMobileOrTab) {
+        height = window.innerHeight;
+      }
       $('#contentPlayer').css('height', height + 'px');
     }
   }

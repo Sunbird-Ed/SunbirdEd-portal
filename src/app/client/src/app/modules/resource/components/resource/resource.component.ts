@@ -139,7 +139,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     }))
       .subscribe(data => {
         this.showLoader = false;
-        this.apiContentList = _.sortBy(data, ["name"]);
+        this.apiContentList = _.sortBy(data, ['name']);
         if (!this.apiContentList.length) {
           return; // no page section
         }
