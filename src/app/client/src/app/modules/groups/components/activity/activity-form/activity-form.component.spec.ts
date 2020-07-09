@@ -18,7 +18,7 @@ describe('ActivityFormComponent', () => {
       'fmsg': {
         'm0085': 'There is some technical error',
       },
-      'emsg': { 'm0005': 'Something went wrong, try again later'}
+      'emsg': { 'm0005': 'Something went wrong, try again later' }
     },
     'frmelmnts': {
       'lbl': {}
@@ -58,7 +58,10 @@ describe('ActivityFormComponent', () => {
   });
 
   it('should get getFormDetails', () => {
-    const response = [{ 'index': 1, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'activityValues': ['Course'] }, { 'index': 2, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'activityValues': ['TextBook'] }];
+    const response = [
+      { 'index': 0, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['Course'] } },
+      { 'index': 1, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
+    ];
     const formService = TestBed.get(FormService);
     spyOn(component, 'chooseActivity');
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));

@@ -22,7 +22,8 @@ export class ActivityFormComponent implements OnInit {
     const formServiceInputParams = {
       formType: 'group',
       contentType: 'activities',
-      formAction: 'list'
+      formAction: 'list',
+      component: 'portal'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe(fields => {
       fields.forEach(item => { item.title = this.resourceService.frmelmnts.lbl[item.title]; });
