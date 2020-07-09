@@ -98,7 +98,10 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
 
   logTelemetry(id, content?: {}) {
-    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    let objectRollUp;
+    if (content) {
+      objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    }
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -113,7 +116,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
         id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
         type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+        rollup: objectRollUp ? this.courseConsumptionService.getRollUp(objectRollUp) : {}
       }
     };
     this.telemetryService.interact(interactData);
