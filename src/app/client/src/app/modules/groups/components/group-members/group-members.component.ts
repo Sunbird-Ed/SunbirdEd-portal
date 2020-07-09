@@ -6,6 +6,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IGroupMemberConfig, IGroupMember, ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
 import { GroupsService } from '../../services';
+import { IGroup } from '../../interfaces/group';
 
 
 
@@ -23,6 +24,8 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
+  @Input() groupData: IGroup;
+  currentUser;
   showKebabMenu = false;
   showModal = false;
   showSearchResults = false;
@@ -47,9 +50,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     this.members = this.groupsService.addFieldsToMember(groupData.members);
     this.memberListToShow = this.members;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-
-    this.memberListToShow.forEach(item => item.isMenu =
-      ((groupData.createdBy === item.userId) ? false : this.config.showMemberMenu));
+    this.hideMemberMenu();
 
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
@@ -59,9 +60,17 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.groupsService.membersList.subscribe(members => {
-        this.memberListToShow = members;
-      });
+    this.groupsService.membersList.subscribe(members => {
+      this.memberListToShow = members;
+      this.hideMemberMenu();
+    });
+  }
+
+  hideMemberMenu() {
+    /* istanbul ignore else */
+    if (!this.config.showMemberMenu) {
+      this.memberListToShow.forEach(item => item.isMenu = false);
+    }
   }
 
   getMenuData(event, member) {

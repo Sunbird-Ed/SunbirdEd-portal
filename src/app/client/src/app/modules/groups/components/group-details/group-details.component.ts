@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES  } from '../../interfaces';
+import { IGroupMember } from '../../interfaces/group';
 
 @Component({
   selector: 'app-group-details',
@@ -20,6 +21,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
+  members: IGroupMember [] = [];
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -47,9 +49,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   getGroupData() {
-    this.groupService.getGroupById(this.groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupService.groupData = groupData;
       this.groupData = groupData;
+      this.members = this.groupService.addFieldsToMember(this.groupData.members);
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
