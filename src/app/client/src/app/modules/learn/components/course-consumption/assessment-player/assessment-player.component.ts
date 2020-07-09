@@ -122,19 +122,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
   }
 
-  private getCollectionInfo(courseId: string): Observable<any> {
-    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    return combineLatest([
-      this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-      this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-    ]).pipe(map((results: any) => {
-      return {
-        courseHierarchy: results[0],
-        enrolledBatchDetails: results[1],
-      };
-    }));
-  }
-
   private subscribeToQueryParam() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(takeUntil(this.unsubscribe))
@@ -193,6 +180,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.setTelemetryCourseImpression();
         this.subscribeToContentProgressEvents().subscribe(data => { });
       });
+  }
+
+
+  private getCollectionInfo(courseId: string): Observable<any> {
+    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+    return combineLatest([
+      this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+      this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+    ]).pipe(map((results: any) => {
+      return {
+        courseHierarchy: results[0],
+        enrolledBatchDetails: results[1],
+      };
+    }));
   }
 
   getCourseCompletionStatus(showPopup: boolean = false) {
