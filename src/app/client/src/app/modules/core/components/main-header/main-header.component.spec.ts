@@ -122,7 +122,7 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = false;
-    spyOn(learnerService, 'getWithHeaders')
+    spyOn(learnerService, 'getWithHeaders');
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'fetchManagedUserList');
     component.ngOnInit();

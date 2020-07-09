@@ -36,7 +36,7 @@ import { CourseDetailsComponent } from './components/course-consumption/course-d
   ],
   // providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
-    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent, 
+    CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
     AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent]
 })
 export class CourseConsumptionModule { }
