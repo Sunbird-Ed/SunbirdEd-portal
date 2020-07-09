@@ -5,6 +5,7 @@ import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard, IM
 import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
+import { CsGroupUpdateMembersRequest, CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest } from '@project-sunbird/client-services/services/group/interface';
 
 
 @Injectable({
@@ -41,7 +42,6 @@ export class GroupsService {
     member.isSelf = this.userService.userid === member.identifier;
     member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
     member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
-
     return member;
   }
 
@@ -67,6 +67,26 @@ export class GroupsService {
 
   addMemberById(groupId: string, members: IMember) {
     return this.groupCservice.addMembers(groupId, members);
+  }
+
+  updateMembers(groupId: string, updateMembersRequest: CsGroupUpdateMembersRequest[]) {
+    return this.groupCservice.updateMembers(groupId, updateMembersRequest);
+  }
+
+  removeMembers(groupId: string, userIds: string[]) {
+    return this.groupCservice.removeMembers(groupId, { userIds });
+  }
+
+  addActivities(groupId: string, addActivitiesRequest: CsGroupAddActivitiesRequest) {
+    return this.groupCservice.addActivities(groupId, addActivitiesRequest);
+  }
+
+  updateActivities(groupId: string, updateActivitiesRequest: CsGroupUpdateActivitiesRequest) {
+    return this.groupCservice.updateActivities(groupId, updateActivitiesRequest);
+  }
+
+  removeActivities(groupId: string, removeActivitiesRequest: CsGroupRemoveActivitiesRequest) {
+    return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
   }
 
   set groupData(group: IGroupCard) {

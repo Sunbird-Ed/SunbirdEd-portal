@@ -1,10 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { ConfigService } from '../../../../shared/services/config/config.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from '../../../../shared/services/config/config.service';
 import { ResourceService } from '../../../../shared/services/resource/resource.service';
 import { ACTIVITY_DETAILS } from './../../../interfaces';
-import { Router, ActivatedRoute } from '@angular/router';
 
 export interface IActivity {
   name: string;
@@ -20,7 +21,7 @@ export interface IActivity {
 })
 export class ActivityListComponent {
   @ViewChild('modal') modal;
-  @Input() groupId;
+  @Input() groupData;
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
@@ -94,7 +95,12 @@ export class ActivityListComponent {
 
   openActivity(event: any, activity: IActivity) {
     // TODO add telemetry here
-    this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], { relativeTo: this.activateRoute });
+
+    if (_.get(this.groupData, 'isAdmin')) {
+      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], { relativeTo: this.activateRoute });
+    } else {
+      this.router.navigate(['/learn/course', activity.identifier], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+    }
   }
 
   getMenuData(event, member) {

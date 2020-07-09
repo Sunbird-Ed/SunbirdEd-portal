@@ -115,7 +115,7 @@
         </ng-template>
 
         <!-- 2. Course Progress bar -->
-        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse">
+        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup">
           <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
@@ -126,7 +126,7 @@
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
-        <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
+        <app-batch-details *ngIf="courseStatus !== 'Unlisted' && !addToGroup" [courseId]="courseId" [batchId]="batchId"
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
