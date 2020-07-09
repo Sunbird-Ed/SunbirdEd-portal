@@ -71,14 +71,6 @@ describe('GroupDetailsComponent', () => {
     expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1' });
   });
 
-  it('should handle error', () => {
-    const groupService = TestBed.get(GroupsService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(groupService, 'getGroupById').and.returnValue(throwError({}));
-    spyOn(toasterService, 'error');
-    component.getGroupData();
-    expect(toasterService.error).toHaveBeenCalledWith('Unable to get Group data.Please try again later...');
-  });
 
   it('should call toggleActivityModal', () => {
     component.toggleActivityModal();
