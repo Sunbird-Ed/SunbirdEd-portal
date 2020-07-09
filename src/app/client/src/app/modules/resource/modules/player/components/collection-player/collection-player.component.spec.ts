@@ -228,7 +228,7 @@ describe('CollectionPlayerComponent', () => {
     const copyContentService = TestBed.get(CopyContentService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.stub();
-    spyOn(copyContentService, 'copyContent').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed))
+    spyOn(copyContentService, 'copyContent').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed));
     component.copyContent(contentData);
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);

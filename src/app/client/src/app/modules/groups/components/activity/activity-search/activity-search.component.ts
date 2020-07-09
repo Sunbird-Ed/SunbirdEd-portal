@@ -151,7 +151,7 @@ export class ActivitySearchComponent implements OnInit {
     };
 
     if (_.get(this.queryParams, 'sort_by')) {
-      option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType }
+      option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType };
     }
 
     /* istanbul ignore else */
