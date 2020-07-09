@@ -1,4 +1,4 @@
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 import { of as observableOf, Observable } from 'rxjs';
 import {
@@ -10,7 +10,7 @@ import { CourseConsumptionHeaderComponent } from './course-consumption-header.co
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
-import { CoreModule, CoursesService } from '@sunbird/core';
+import { CoreModule, CoursesService, PermissionService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
@@ -60,7 +60,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
-      providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
+      providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }, PermissionService,
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -75,12 +75,16 @@ describe('CourseConsumptionHeaderComponent', () => {
   it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseProgressService = TestBed.get(CourseProgressService);
+    const permissionService = TestBed.get(PermissionService);
     const resourceService = TestBed.get(ResourceService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
+    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.enrolledBatchInfo = { status: 1 };
+
+
     component.ngOnInit();
     component.ngAfterViewInit();
     courseProgressService.courseProgressData.emit({ lastPlayedContentId: 'do_123' });

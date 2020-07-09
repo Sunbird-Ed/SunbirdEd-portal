@@ -67,3 +67,56 @@
   padding: calculateRem(16px);
   border-radius: calculateRem(2px);
 }
+
+
+
+
+
+
+
+
+.sb-course-details {
+  .certified-course__certificate {
+    background-color: #E5EDF5;
+  }
+}
+
+:host::ng-deep {
+  .batch-details {
+    &__dropdown {
+      .selection {
+        &.ui.dropdown {
+          color: var(--primary-color);
+          &:not(.button) > .default.text {
+            padding: 6px 0;
+            color: var(--primary-color);
+          }
+        }
+        &.ui.selection.dropdown > .dropdown.icon, .ui.selection.dropdown > .search.icon {
+          font-size: 16px;
+          padding: 8px;
+        }
+      }
+    }
+  }
+
+  .sbaccordion__panel-header__title {
+    display: flex !important;
+    align-items: center;
+    padding: 8px 0 !important;
+  }
+}
+:host::ng-deep {
+  .certified-course__progress {
+    .ui.progress .bar {
+      height: 8px !important;
+      background: var(--secondary-color);
+    }
+  }
+}
+
+@include respond-below(sm) {
+  .certified-course__btn {
+    margin-top: 8px;
+  }
+}

@@ -74,7 +74,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   };
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
   pageId: string;
   searchBox = {
     'center': false,
@@ -265,11 +264,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: 'signup',
       type: 'click',
       pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'signup',
-      ver: '1.0'
     };
     this.enterDialCodeInteractEdata = {
       id: 'click-dial-code',
