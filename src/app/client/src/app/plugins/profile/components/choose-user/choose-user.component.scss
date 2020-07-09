@@ -1,14 +1,3 @@
-@import "variables";
 @import 'mixins/mixins';
 @import 'pages/user-mgmt';
 
-
-.sb-add-user-btn{
-  background: var(--rc-bfe1cf);
-  color: var(--secondary-color);
-}
-
-.member-list-container {
-    max-height: calculateRem(320px);
-    overflow-y: auto;
-}

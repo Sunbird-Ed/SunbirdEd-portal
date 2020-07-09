@@ -12,12 +12,12 @@
     <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
       <div class="ui stackable grid m-0" *ngFor="let field of formData">
         <div class="twelve wide column p-0" *ngIf="field.inputType==='input' && field.visible===true">
-          <div class="fields-selection p-0">
-            <div class="sb-field field-focus mb-8">
+          <div class="d-flex fields-selection p-0">
+            <div class="sb-field field-focus mb-8 w-100">
               <input [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}" class="sb-form-control" formControlName="{{field.code}}" type="text" name="{{field.code}}"
                 placeholder="{{field.description}}">
                 <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)" class="font-weight-normal">{{field.name}}<span class="sb-color-warning">*</span></label>
-                <label *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors" class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>            
+                <label *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors" class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>          
             </div>
           </div>
           <p class="fsmall my-8 text-left line-height-normal">{{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
