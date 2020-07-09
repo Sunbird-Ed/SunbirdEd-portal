@@ -9,7 +9,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-workspace-content-filter',
-  templateUrl: './workspace-content-filter.component.html'
+  templateUrl: './workspace-content-filter.component.html',
+  styleUrls: ['./workspace-content-filter.component.scss']
 })
 export class WorkspaceContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();

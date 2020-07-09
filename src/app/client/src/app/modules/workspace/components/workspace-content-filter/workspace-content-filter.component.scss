@@ -1,4 +1,3 @@
-
 @import"./mixins/mixins";
 
 >>>.ui.dropdown:not(.button)>.default.text {
@@ -13,5 +12,3 @@
     .popup-content{
         width: calculateRem(850px) !important;
     }
-
- 
