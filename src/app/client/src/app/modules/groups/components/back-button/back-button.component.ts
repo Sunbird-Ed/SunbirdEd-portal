@@ -1,5 +1,4 @@
-import { Location } from '@angular/common';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -10,12 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackButtonComponent implements OnInit {
 
-  constructor( public resourceService: ResourceService, private location: Location) { }
+  constructor(private navigationHelperService: NavigationHelperService, public resourceService: ResourceService) { }
 
   ngOnInit() {
   }
 
   goBack() {
-    this.location.back();
+    this.navigationHelperService.goBack();
   }
 }
