@@ -69,9 +69,13 @@ export class RecoverAccountService {
     };
     return this.learnerService.post(options);
   }
-  generateOTP(data) {
+  generateOTP(data, captchaResponse?) {
+    let URL = this.configService.urlConFig.URLS.OTP.GENERATE;
+    if (captchaResponse) {
+      URL = this.configService.urlConFig.URLS.OTP.ANONYMOUS.GENERATE + '?captchaResponse=' + captchaResponse;
+    }
     const options = {
-      url: this.configService.urlConFig.URLS.OTP.GENERATE,
+      url: URL,
       data: data
     };
     return this.learnerService.post(options);

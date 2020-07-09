@@ -9,7 +9,7 @@ import {TenantService} from '@sunbird/core';
   templateUrl: './auth-failed.component.html',
   styleUrls: ['./auth-failed.component.scss']
 })
-export class AuthFailedComponent implements OnInit,OnDestroy {
+export class AuthFailedComponent implements OnInit, OnDestroy {
   instance: string;
   logo: string;
   tenantName: string;

@@ -105,6 +105,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
+    if ( _.get(this.selectedFilters, 'channel') && (_.get(this.selectedFilters, 'channel')).length > 0) {
+      request.channelId = this.selectedFilters['channel'];
+    }
     const option = this.searchService.getSearchRequest(request, ['TextBook']);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
@@ -141,7 +144,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       }))
       .subscribe(data => {
         this.showLoader = false;
-        this.apiContentList = _.sortBy(data, ["name"]);
+        this.apiContentList = _.sortBy(data, ['name']);
         if (!this.apiContentList.length) {
           return; // no page section
         }

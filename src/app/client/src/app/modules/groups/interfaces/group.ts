@@ -1,9 +1,27 @@
-import { GroupMembershipType, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { GroupMembershipType, GroupEntityStatus, GroupActivity, GroupMember } from '@project-sunbird/client-services/models/group';
 
 export interface IGroup {
   name: string;
-  membershipType?: GroupMembershipType;
-  description?: string;
+  description: string;
+  id: string;
+  status: GroupEntityStatus;
+  membershipType: GroupMembershipType;
+  createdOn?: string;
+  createdBy?: string;
+  updatedOn?: string;
+  updatedBy?: string;
+  activities?: GroupActivity[];
+  members?: GroupMember[];
+  isAdmin: boolean;
+}
+
+export interface IMember {
+  members: [
+    {
+      userId: string;
+      role: string;
+    }
+  ];
 }
 
 export interface IMember {
@@ -31,9 +49,10 @@ export interface IGroupCard {
   cardTitleColor?: any;
   isLoading?: boolean;
   theme?: string;
-  isAdmin?: any;
+  isAdmin?: boolean;
   initial?: string;
   id: string;
+  isCreator?: boolean;
 }
 export interface IGroupSearchRequest {
   filters: {

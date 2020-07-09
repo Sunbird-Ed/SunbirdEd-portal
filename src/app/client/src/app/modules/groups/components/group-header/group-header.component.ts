@@ -20,6 +20,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   showEditModal: boolean;
   creator: string;
   showMemberPopup = false;
+  showLeaveGroupModal = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
@@ -30,11 +31,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         this.dropdownContent = true;
         this.showModal = false;
       }
-     });
+    });
   }
 
   ngOnInit () {
-    this.creator =  _.get(this.groupData, 'isCreator') ? 'You' :
+    this.creator =  _.get(this.groupData, 'isCreator') ? this.resourceService.frmelmnts.lbl.you :
     _.get(_.find(this.groupData['members'], {createdBy: this.groupData['createdBy']}), 'name');
   }
 
@@ -87,6 +88,10 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  leaveGroup() {
+    // TODO: leave group API integration and add telemetry
   }
 
   ngOnDestroy() {

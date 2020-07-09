@@ -62,7 +62,7 @@ export class OtpComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance);
     this.resendOtpEnablePostTimer();
   }
-resendOtpEnablePostTimer(){
+resendOtpEnablePostTimer() {
   this.counter = 20;
   this.disableResendButton = false;
   setTimeout(() => {

@@ -213,7 +213,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
       if (this.formAction === 'update') {
-        this.prepopulatedValue[key] = this.getExternalId('declared-' + key)
+        this.prepopulatedValue[key] = this.getExternalId('declared-' + key);
       } else {
         this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
       }
@@ -229,7 +229,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
-        if (userFieldValue === newValue) {
+        if (userFieldValue === newValue && keyControl.status === 'VALID') {
           this.validationType[key].isVerified = true;
           this.validationType[key].isVerificationRequired = false;
           this.setValidators(key);

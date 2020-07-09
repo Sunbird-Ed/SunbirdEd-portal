@@ -44,6 +44,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.getFormDetails();
@@ -123,7 +124,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onCancel() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile');
+    this.navigationhelperService.navigateToLastUrl();
   }
 
   onSubmitForm() {
