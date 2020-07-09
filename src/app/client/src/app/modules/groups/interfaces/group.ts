@@ -40,9 +40,10 @@ export interface IGroupCard {
   cardTitleColor?: any;
   isLoading?: boolean;
   theme?: string;
-  isAdmin?: any;
+  isAdmin?: boolean;
   initial?: string;
   id: string;
+  isCreator?: boolean;
 }
 export interface IGroupSearchRequest {
   filters: {
