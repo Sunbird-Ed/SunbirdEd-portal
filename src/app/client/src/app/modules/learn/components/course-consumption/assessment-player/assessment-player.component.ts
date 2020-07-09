@@ -80,7 +80,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
   }
 
-  navigateToPlayerPage(collectionUnit: any, event?) {
+  navigateToPlayerPage(collectionUnit, event?) {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
       };
