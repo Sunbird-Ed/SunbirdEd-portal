@@ -154,4 +154,16 @@ describe('PublicCoursePlayerComponent', () => {
     expect(component.joinTrainingModal).toBeUndefined();
   });
 
+  it('call isExpanded and return true', () => {
+    const returnVal = component.isExpanded(0);
+    expect(returnVal).toBe(true);
+  });
+
+  it('call isExpanded and return false', () => {
+    component.isExpandedAll = false;
+    const returnVal = component.isExpanded(1);
+    expect(returnVal).toBe(component.isExpandedAll);
+  });
+
+
 });
