@@ -471,5 +471,5 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   navigateToGroups() {
     return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
   }
-  
+
 }

@@ -49,7 +49,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       this.googleCaptchaSiteKey = '';
     }
   }
-  resendOtpEnablePostTimer(){
+  resendOtpEnablePostTimer() {
     this.counter = 20;
     this.disableResendOtp = false;
     setTimeout(() => {
