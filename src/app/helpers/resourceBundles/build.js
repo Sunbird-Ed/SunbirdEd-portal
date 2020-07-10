@@ -202,7 +202,7 @@ var mergeNbuildCreationResource = function() {
  * pullPhraseAppLocale function will fetch json locale json files from phrase app and stored in /sunbirdresourcebundle directory
  */
 const pullPhraseAppLocale = function() {
-  const cmd = `node ${rbPatah} -authToken="${authToken}" -project="${project}" -locale="${locale}" -merge="${merge}" -fileformat="${fileformat}"`;
+  const cmd = `node ${rbPatah} -authToken="token ${authToken}" -project="${project}" -locale="${locale}" -merge="${merge}" -fileformat="${fileformat}"`;
   exec(cmd, function async(err, stdout, stderr) {
     if(!err) {
       mergeNbuildCreationResource().then(res => {
@@ -234,8 +234,10 @@ var deleteFolderRecursive = function(path) {
 
 if (args.length && args[0].includes('-task')) {
   const task = args[0].slice(6);
-  if(task === 'phraseAppPull') {
+  if(task === 'phraseAppPull' && authToken) {
     pullPhraseAppLocale();
+  } else {
+    buildResources();
   }
 } else {
   buildResources();
