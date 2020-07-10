@@ -21,7 +21,7 @@ const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong', activityAddedSuccess: 'Activity added successfully' },
     stmsg: { m0009: 'error', activityAddFail: 'Unable to add activity, please try again' },
-    emsg: { m0005: 'error' }
+    emsg: { m0005: 'error', noAdminRole: `You don't have permission to add activity to the group` }
   },
   frmelmnts: {
     btn: {
@@ -172,6 +172,7 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call addActivityToGroup', () => {
     const groupService = TestBed.get(GroupsService);
+    groupService.groupData = { memberRole: 'admin' };
     component.courseId = 'do_113016540611043328128';
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'success');
@@ -183,10 +184,22 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should call addActivityToGroup on error', () => {
     const groupService = TestBed.get(GroupsService);
     component.courseId = 'do_113016540611043328128';
+    groupService.groupData = { memberRole: 'admin' };
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
     component.addActivityToGroup();
     expect(toasterService.error).toHaveBeenCalledWith('Unable to add activity, please try again');
+  });
+
+  it('should call show error for non admin user', () => {
+    const groupService = TestBed.get(GroupsService);
+    component.courseId = 'do_113016540611043328128';
+    groupService.groupData = { memberRole: 'member' };
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
+    component.addActivityToGroup();
+    expect(toasterService.error).toHaveBeenCalledWith(`You don't have permission to add activity to the group`);
   });
 });
