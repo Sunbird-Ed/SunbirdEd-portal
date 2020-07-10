@@ -1,21 +1,6 @@
-@import "variables";
+
 @import "mixins/mixins";
 
-.ui.light-sea-green.button {
-  background: var(--rc-2ca58d);
-  color: var(--white);
-  height: calculateRem(38px) !important;
-}
-
-.ui.grey.button {
-  background: var(--rc-9b9b9b);
-  color: var(--white);
-  height: calculateRem(38px) !important;
-}
-
-.width-310 {
-  width: calculateRem(310px) !important;
-}
 
 @include respond-below(sm) {
 
