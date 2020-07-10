@@ -10,8 +10,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
-import { of, throwError } from 'rxjs';
-import { impressionObj, fakeActivatedRoute, RouterStub } from './../../services/groups/groups.service.spec.data';
+import { of } from 'rxjs';
+import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -29,6 +29,11 @@ describe('GroupDetailsComponent', () => {
       'lbl': {}
     }
   };
+
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
 
   configureTestSuite();
   beforeEach(async(() => {
@@ -67,9 +72,10 @@ describe('GroupDetailsComponent', () => {
 
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
-    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1' }));
+    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
     component.getGroupData();
-    expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1' });
+    expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
+    isCreator: false, isAdmin: false, initial: 'g'});
   });
 
 

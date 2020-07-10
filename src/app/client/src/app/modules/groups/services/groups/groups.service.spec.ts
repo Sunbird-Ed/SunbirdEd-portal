@@ -71,8 +71,11 @@ describe('GroupsService', () => {
 
   it('should set group', () => {
     const service = TestBed.get(GroupsService);
+    spyOn(service, 'addGroupFields').and.returnValue({ name: 'Test',
+    description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T' });
     service.groupData = { name: 'Test', description: 'Test groups description' };
-    expect(service['_groupData']).toEqual({ name: 'Test', description: 'Test groups description' });
+    expect(service['_groupData']).toEqual({ name: 'Test',
+    description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T' });
   });
 
   it('should add members to group', () => {

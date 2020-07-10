@@ -48,6 +48,13 @@ export class GroupsService {
     return member;
   }
 
+  addGroupFields(group) {
+    group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
+    group.isAdmin = group.isCreator ? true : _.get(group, 'memberRole') === 'admin';
+    group.initial = _.get(group, 'name[0]');
+    return group;
+  }
+
   createGroup(groupData: IGroup) {
     return this.groupCservice.create(groupData);
   }
@@ -73,7 +80,7 @@ export class GroupsService {
   }
 
   set groupData(group: IGroupCard) {
-    this._groupData = group;
+    this._groupData = this.addGroupFields(group);
   }
 
   get groupData() {
