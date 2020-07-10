@@ -156,6 +156,14 @@ let envVariables = {
     COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
     CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
     GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
+  },
+
+  // PhraseApp configuration
+  PHRASE_APP: {
+    phrase_authToken: env.phrase_authToken || '',
+    phrase_project: env.phrase_project || 'DIKSHA Portal,Sunbird Creation',
+    phrase_locale: env.phrase_locale || ['en-IN', 'bn-IN', 'hi-IN', 'kn-IN', 'mr-IN', 'ur-IN', 'te-IN', 'ta-IN'],
+    phrase_fileformat: env.phrase_fileformat || 'json'
   }
 }
 
