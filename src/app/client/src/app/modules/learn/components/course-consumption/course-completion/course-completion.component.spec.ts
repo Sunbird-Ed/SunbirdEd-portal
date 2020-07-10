@@ -39,15 +39,17 @@ describe('CourseCompletionComponent', () => {
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
+    spyOn(component.close, 'emit');
+    spyOn(component, 'logInteractTelemetry');
     component.closeModal();
+    expect(component.logInteractTelemetry).toHaveBeenCalled();
+    expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should call ngOnDestroy', () => {
     spyOn(component, 'closeModal');
-    spyOn(component.close, 'emit');
     component.ngOnDestroy();
     expect(component.closeModal).toHaveBeenCalled();
-    expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should call logInteractTelemetry', () => {
