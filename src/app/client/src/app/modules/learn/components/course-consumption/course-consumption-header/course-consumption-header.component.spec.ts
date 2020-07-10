@@ -1,6 +1,6 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, Observable, of, throwError } from 'rxjs';
 import {
   CourseHierarchyGetMockResponse,
   CourseHierarchyGetMockResponseFlagged
@@ -12,15 +12,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
 import { CoreModule, CoursesService, PermissionService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
 
 const resourceServiceMockData = {
   messages: {
-    imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' },
-    emsg: { m0005: 'error' }
+    imsg: { m0027: 'Something went wrong', activityAddedSuccess: 'Activity added successfully' },
+    stmsg: { m0009: 'error', activityAddFail: 'Unable to add activity, please try again' },
+    emsg: { m0005: 'error', noAdminRole: `You don't have permission to add activity to the group` }
   },
   frmelmnts: {
     btn: {
@@ -167,5 +168,38 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.resumeCourse();
     expect(courseConsumptionService.launchPlayer.emit).toHaveBeenCalled();
     expect(coursesService.setExtContentMsg).toHaveBeenCalled();
+  });
+
+  it('should call addActivityToGroup', () => {
+    const groupService = TestBed.get(GroupsService);
+    groupService.groupData = { memberRole: 'admin' };
+    component.courseId = 'do_113016540611043328128';
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success');
+    spyOn(groupService, 'addActivities').and.returnValue(of(true));
+    component.addActivityToGroup();
+    expect(toasterService.success).toHaveBeenCalledWith('Activity added successfully');
+  });
+
+  it('should call addActivityToGroup on error', () => {
+    const groupService = TestBed.get(GroupsService);
+    component.courseId = 'do_113016540611043328128';
+    groupService.groupData = { memberRole: 'admin' };
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
+    component.addActivityToGroup();
+    expect(toasterService.error).toHaveBeenCalledWith('Unable to add activity, please try again');
+  });
+
+  it('should call show error for non admin user', () => {
+    const groupService = TestBed.get(GroupsService);
+    component.courseId = 'do_113016540611043328128';
+    groupService.groupData = { memberRole: 'member' };
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
+    component.addActivityToGroup();
+    expect(toasterService.error).toHaveBeenCalledWith(`You don't have permission to add activity to the group`);
   });
 });

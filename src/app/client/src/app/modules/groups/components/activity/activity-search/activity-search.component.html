@@ -53,7 +53,7 @@
 
       <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
         <div class="sb-card-grid--item" *ngFor="let content of contentList;">
-          <sb-course-card (cardClick)="playContent($event)" [course]="content" [section]="null"
+          <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
             [cardImg]="content?.appIcon || './assets/images/book.png'">
           </sb-course-card>
         </div>
