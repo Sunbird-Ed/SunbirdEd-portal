@@ -150,7 +150,7 @@ export class MainMenuComponent implements OnInit {
     this.groupsMenuIntractEdata = {
       id: 'groups-tab',
       type: 'click',
-      pageid: 'groups'
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
     };
     this.workspaceMenuIntractEdata = {
       id: 'workspace-menu-button',

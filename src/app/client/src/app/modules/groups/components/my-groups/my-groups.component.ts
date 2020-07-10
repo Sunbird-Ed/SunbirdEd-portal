@@ -7,6 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
@@ -17,10 +19,14 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   public groupList: {adminGroups: IGroupCard[], memberGroups: IGroupCard[]} = {adminGroups: [], memberGroups: []};
   public showModal = false;
   private unsubscribe$ = new Subject<void>();
-  constructor(public groupService: GroupsService, public router: Router, public resourceService: ResourceService,
-    private userService: UserService, private activatedRoute: ActivatedRoute) {
+  telemetryImpression: IImpressionEventInput;
 
-  }
+  constructor(public groupService: GroupsService,
+    public router: Router,
+    public resourceService: ResourceService,
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute
+    ) { }
 
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_ftu_groups');
@@ -28,7 +34,9 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
+
 
   getMyGroupList() {
     this.groupList = {adminGroups: [], memberGroups: []};
@@ -36,9 +44,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
       _.forEach(groups, (group) => {
         if (group) {
-          group.isCreator = group['createdBy'] === this.userService.userid;
-          group.isAdmin = group.isCreator ? true : _.get(group, 'memberRole') === 'admin';
-          group.initial = group.name[0];
+          group = this.groupService.addGroupFields(group);
           group.isAdmin ? this.groupList.adminGroups.push(group) : this.groupList.memberGroups.push(group);
         }
       });
@@ -64,6 +70,10 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   closeModal() {
     this.showModal = false;
     localStorage.setItem('login_ftu_groups', 'login_user');
+  }
+
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
   }
 
   ngOnDestroy() {
