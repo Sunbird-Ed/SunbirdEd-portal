@@ -42,6 +42,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
   @ViewChild('joinTrainingModal') joinTrainingModal;
+  isExpandedAll: boolean;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -101,6 +102,13 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     setTimeout(() => {
       this.setTelemetryCourseImpression();
     });
+  }
+
+  isExpanded(index: number) {
+    if (_.isUndefined(this.isExpandedAll)) {
+      return Boolean(index === 0);
+    }
+    return this.isExpandedAll;
   }
 
   ngOnDestroy() {

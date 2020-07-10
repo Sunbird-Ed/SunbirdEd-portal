@@ -13,6 +13,11 @@ describe('CourseInfoComponent', () => {
       imsg: { m0027: 'Something went wrong' },
       fmsg: { m0001: 'error', m0003: 'error' },
       emsg: { m0005: 'error' }
+    },
+    frmelmnts: {
+      lbl: {
+        creditsLicenceInfo: 'Credits and licence info'
+      }
     }
   };
 

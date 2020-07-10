@@ -74,7 +74,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   };
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
   pageId: string;
   searchBox = {
     'center': false,
@@ -105,6 +104,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
+  myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
@@ -266,11 +266,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'public'
     };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'signup',
-      ver: '1.0'
-    };
     this.enterDialCodeInteractEdata = {
       id: 'click-dial-code',
       type: 'click',
@@ -290,6 +285,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: 'contribute-tab',
       type: 'click',
       pageid: 'contribute'
+    };
+    this.myGroupIntractEData = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
     };
   }
 
