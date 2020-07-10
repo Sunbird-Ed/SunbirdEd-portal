@@ -539,7 +539,8 @@ const API_LIST = {
     '/learner/dashboard/v2/progress/course/:batchId',
     '/learner/user/v1/exists/email/:emailId',
     '/learner/user/v1/exists/phone/:phoneNumber',
-    '/learner/group/v1/read/:groupId'
+    '/learner/group/v1/read/:groupId',
+    '/learner/user/v2/exists/:key/:value'
   ]
 };
 module.exports = API_LIST;
