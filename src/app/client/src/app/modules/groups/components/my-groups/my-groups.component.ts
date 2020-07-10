@@ -60,6 +60,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDetailPage(event) {
+    this.addTelemetry('group-card', _.get(event, 'data.id'));
     this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
   }
 
@@ -72,8 +73,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     localStorage.setItem('login_ftu_groups', 'login_user');
   }
 
-  addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+  addTelemetry (id, groupId?) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, groupId);
   }
 
   ngOnDestroy() {

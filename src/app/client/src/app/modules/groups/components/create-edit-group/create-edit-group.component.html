@@ -10,7 +10,7 @@
   class="sb-modal" 
   appBodyScroll 
   #createGroupModal 
-  (dismissed)="closeModal()"
+  (dismissed)="closeModal();addTelemetry('close-group-form')"
   >
   <div class="sb-modal-header" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}</div>
   <div class="sb-modal-header" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
@@ -43,20 +43,20 @@
   </div>
   <div class="sb-modal-actions">
     <button *ngIf="!groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
-    [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
-    (click)="onSubmitForm()">
+    [disabled]="!groupForm.valid && !disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+    (click)="onSubmitForm();addTelemetry('submit-group-form')">
     <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
       <use xlink:href="./assets/images/sprite.svg#groups"></use>
     </svg></i>
       {{ resourceService?.frmelmnts?.lbl?.createGroup }}
     </button>
     <button *ngIf="groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center" type="button"
-    [disabled]="!groupForm.valid" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
-    (click)="updateGroup()">
+    [disabled]="!groupForm.valid && !disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+    (click)="updateGroup();addTelemetry('update-group-form')">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
     <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
-    (click)="reset()">
+    (click)="reset();addTelemetry('reset-group-form')">
       {{resourceService?.frmelmnts?.btn?.reset}}
     </button>
   </div>

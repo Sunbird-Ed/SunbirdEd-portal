@@ -98,7 +98,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addMember() {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, ADD_MEMBER]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id') || this.groupId, ADD_MEMBER]);
   }
 
   onModalClose() {
@@ -108,6 +108,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   onActionConfirm() {
     // Perform member action
+  }
+
+  addTelemetry (id) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot);
   }
 
   ngOnDestroy() {

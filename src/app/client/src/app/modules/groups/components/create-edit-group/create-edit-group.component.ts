@@ -1,5 +1,5 @@
 import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
@@ -19,11 +19,12 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   groupId: string;
   url = document.location.origin;
   instance: string;
+  disableBtn = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService,
-    private activatedRoute: ActivatedRoute, private router: Router) { }
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
@@ -49,14 +50,17 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
+    this.disableBtn = true;
     if (this.groupForm.valid) {
       const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
       this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
         if (group) {
           this.toasterService.success(this.resourceService.messages.smsg.m001);
         }
+        this.disableBtn = false;
         this.closeModal();
       }, err => {
+        this.disableBtn = false;
         this.toasterService.error(this.resourceService.messages.emsg.m001);
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
@@ -70,13 +74,16 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   updateGroup() {
+    this.disableBtn = true;
     if (this.groupForm.valid) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
       updatedForm.status = _.get(this.groupDetails, 'status');
       this.groupService.updateGroup(this.groupId, updatedForm).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
           this.toasterService.success(this.resourceService.messages.smsg.m003);
           this.closeModal();
+          this.disableBtn = false;
       }, err => {
+        this.disableBtn = false;
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
           control.patchValue({name: '', description: ''});
@@ -104,6 +111,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       this.createGroupModal.deny();
     }
     this.groupService.emitCloseForm();
+  }
+
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, this.groupId);
   }
 
   ngOnDestroy() {

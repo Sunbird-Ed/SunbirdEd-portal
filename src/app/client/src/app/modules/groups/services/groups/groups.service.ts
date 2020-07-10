@@ -2,11 +2,13 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService } from '@sunbird/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { NavigationHelperService, ResourceService } from '@sunbird/shared';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';	
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { of } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +38,7 @@ export class GroupsService {
 
   addFields(member): IGroupMember {
     member.title = _.get(member, 'name') || _.get(member, 'username') || _.get(member, 'userName');
-    member.initial = _.get(member, 'title[0]') || 'D';
+    member.initial = _.get(member, 'title[0]');
     member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
     member.isAdmin = _.get(member, 'role') === 'admin';
     member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
@@ -113,7 +115,7 @@ export class GroupsService {
     this.membersList.emit(members);
   }
 
-  addTelemetry(eid: string, routeData) {
+  addTelemetry(eid: string, routeData, groupId?: string) {
 
     const interactData = {
       context: {
@@ -127,9 +129,9 @@ export class GroupsService {
       }
     };
 
-    if (_.get(routeData, 'params.groupId')) {
+    if (_.get(routeData, 'params.groupId') || groupId) {
       interactData['object'] = {
-        id: _.get(routeData, 'params.groupId'),
+        id: _.get(routeData, 'params.groupId') || groupId,
         type: 'Group',
         ver: '1.0',
       };

@@ -5,7 +5,7 @@
       {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
      </div>
     <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
-      (click)="showCreateFormModal()">
+      (click)="showCreateFormModal();addTelemetry('create-group-btn')">
       <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
         <use xlink:href="./assets/images/sprite.svg#groups"></use>
       </svg></i>
@@ -23,7 +23,7 @@
         <div class="flex-ai-jc-center">
           <button class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mr-8" appTelemetryInteract
             [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractObject]="telemetryInteractObject"
-            type="button" (click)="showCreateFormModal()">
+            type="button" (click)="showCreateFormModal();addTelemetry('header-create-group-btn')">
             <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
               <use xlink:href="./assets/images/sprite.svg#groups"></use>
             </svg></i>
