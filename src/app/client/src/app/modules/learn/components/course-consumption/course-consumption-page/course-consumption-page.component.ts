@@ -18,6 +18,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseHierarchy: any;
   public unsubscribe$ = new Subject<void>();
   public enrolledBatchInfo: any;
+  public groupId: string;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -30,6 +31,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
+        this.groupId = queryParams.groupId;
         const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list

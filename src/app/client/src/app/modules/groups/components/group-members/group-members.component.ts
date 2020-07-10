@@ -50,6 +50,9 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     this.members = this.groupsService.addFieldsToMember(groupData.members);
     this.memberListToShow = this.members;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
+
+    this.memberListToShow.forEach(item => item.isMenu =
+      ((groupData.createdBy === item.userId) ? false : this.config.showMemberMenu));
     this.hideMemberMenu();
 
     fromEvent(document, 'click')
