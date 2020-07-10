@@ -1,4 +1,4 @@
-<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupList.length">
+<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupList.adminGroups.length && !groupList.memberGroups.length">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<div *ngIf="groupList.length">
+<div *ngIf="groupList.adminGroups.length || groupList.memberGroups.length" [appTelemetryImpression]="telemetryImpression">
 
   <div class="sb-bg-color-white">
     <div class="ui container">
@@ -29,7 +29,7 @@
             </svg></i>
             {{ resourceService?.frmelmnts?.lbl?.createGroup }}
           </button>
-          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup()">
+          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup();addTelemetry('ftu-info')">
             <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#info"></use>
             </svg></i>
@@ -41,12 +41,16 @@
 
   <div class="ui container mt-24">
     <div class="sb-card-grid">
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList">
+      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList?.adminGroups">
+        <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
+      </div>
+      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupList?.memberGroups">
         <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
     </div>
   </div>
 
 </div>
+<router-outlet></router-outlet>
 
 <app-ftu-popup *ngIf="showModal" [showWelcomePopup]="showModal" (close)="closeModal()"></app-ftu-popup>

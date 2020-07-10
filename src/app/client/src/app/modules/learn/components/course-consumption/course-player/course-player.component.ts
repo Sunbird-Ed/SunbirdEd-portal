@@ -15,6 +15,7 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
+import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
 
 @Component({
   selector: 'app-course-player',
@@ -36,7 +37,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public playerConfig: any;
   public loader = true;
   public courseHierarchy: any;
-  public readMore = false;
   public istrustedClickXurl = false;
   public telemetryCourseImpression: IImpressionEventInput;
   public telemetryContentImpression: IImpressionEventInput;
@@ -63,7 +63,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   shareLinkModal = false;
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
+  progress = 0;
+  isExpandedAll: boolean;
+  isFirst = false;
+  addToGroup = false;
+
   @ViewChild('joinTrainingModal') joinTrainingModal;
+  showJoinModal = false;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -108,6 +114,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.navigateToPlayerPage(unit);
         }
       });
+
+    this.activatedRoute.queryParams
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(response => {
+      this.addToGroup = Boolean(response.groupId);
+    });
 
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
@@ -173,7 +185,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
-      .subscribe(courseProgressData => this.courseProgressData = courseProgressData);
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+      });
   }
 
   private parseChildContent() {
@@ -214,10 +229,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
-    this.logTelemetry(id, event.data);
     /* istanbul ignore else */
-    if (!_.isEmpty(event.event)) {
-      this.navigateToPlayerPage(collectionUnit, event);
+    if (!this.addToGroup) {
+      this.logTelemetry(id, event.data);
+      /* istanbul ignore else */
+      if (!_.isEmpty(event.event)) {
+        this.navigateToPlayerPage(collectionUnit, event);
+      }
     }
   }
 
@@ -294,6 +312,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }
     };
+  }
+
+  isExpanded(index: number) {
+    if (_.isUndefined(this.isExpandedAll)) {
+      return Boolean(index === 0);
+    }
+    return this.isExpandedAll;
   }
 
   navigateToPlayerPage(collectionUnit: any, event?) {

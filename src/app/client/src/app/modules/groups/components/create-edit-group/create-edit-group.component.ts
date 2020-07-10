@@ -1,8 +1,9 @@
-import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
 import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
@@ -14,20 +15,20 @@ import * as _ from 'lodash-es';
 export class CreateEditGroupComponent implements OnInit, OnDestroy {
   @ViewChild('createGroupModal') createGroupModal;
   groupForm: FormGroup;
-  public formFieldOptions = [];
-  public selectedOption: any = {};
-  private unsubscribe: Subscription;
-  groupDetails;
+  groupDetails: {};
   groupId: string;
   url = document.location.origin;
+  instance: string;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, private toasterService: ToasterService,
     private fb: FormBuilder, public groupService: GroupsService, private navigationHelperService: NavigationHelperService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    this.groupDetails = this.groupService.groupData;
+    this.instance = _.upperCase(this.resourceService.instance);
+    this.groupId = _.get(this.activatedRoute, 'parent.snapshot.params.groupId');
+    this.groupDetails = this.groupId ? this.groupService.groupData : {};
     this.initializeForm();
   }
 
@@ -50,7 +51,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   onSubmitForm() {
     if (this.groupForm.valid) {
       const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
-      this.groupService.createGroup(request).subscribe(group => {
+      this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
         if (group) {
           this.toasterService.success(this.resourceService.messages.smsg.m001);
         }
@@ -72,7 +73,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (this.groupForm.valid) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
       updatedForm.status = _.get(this.groupDetails, 'status');
-      this.groupService.updateGroup(this.groupId, updatedForm).subscribe(group => {
+      this.groupService.updateGroup(this.groupId, updatedForm).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
           this.toasterService.success(this.resourceService.messages.smsg.m003);
           this.closeModal();
       }, err => {
@@ -102,13 +103,13 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (this.createGroupModal && this.createGroupModal.deny) {
       this.createGroupModal.deny();
     }
+    this.groupService.emitCloseForm();
   }
 
   ngOnDestroy() {
-    if (this.unsubscribe) {
-      this.unsubscribe.unsubscribe();
-    }
     this.close();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

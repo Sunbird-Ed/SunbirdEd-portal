@@ -126,9 +126,9 @@ describe('CollectionPlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(playerService, 'getCollectionHierarchy').and
-      .returnValue(observableOf(CollectionHierarchyGetMockResponse));
+      .returnValue(observableOf(CollectionHierarchyGetMockResponse.collectionHierarchyData));
     component.ngOnInit();
-    expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
+    expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.collectionHierarchyData.result.content });
   });
 
   it('should set dialcode to the telemetryCdata if any', () => {
@@ -228,9 +228,64 @@ describe('CollectionPlayerComponent', () => {
     const copyContentService = TestBed.get(CopyContentService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.stub();
-    spyOn(copyContentService, 'copyContent').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed))
+    spyOn(copyContentService, 'copyContent').and.callFake(() => throwError(CollectionHierarchyGetMockResponse.copyContentFailed));
     component.copyContent(contentData);
     expect(component.showCopyLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0008);
+  });
+
+  it('should call handleSelectAll() if select all checkbox is checked/unchecked', () => {
+    const event = {selectAll: true};
+    spyOn(component, 'handleSelectAll').and.stub();
+    component.handleSelectedItem(event);
+    expect(component.handleSelectAll).toHaveBeenCalledWith(event);
+  });
+
+  it('should push the selected item into the array', () => {
+    // It will generate a random number between 0 to 4(exclusive)
+    const index = Math.floor(Math.random() * 4);
+    // It will randomly select any children data of the textbook
+    const mockData = CollectionHierarchyGetMockResponse.eventDataWithContent.children[index];
+    mockData['selected'] = true;
+    const event = {
+      data: mockData
+    };
+    component.handleSelectedItem(event);
+    expect(component.selectedItems.length).toBe(1);
+  });
+
+  it('should remove the selected item from the array', () => {
+    const containerArrayLength  = CollectionHierarchyGetMockResponse.eventDataWithContent.children.length;
+    const index = Math.floor(Math.random() * 4);
+    const mockData = CollectionHierarchyGetMockResponse.eventDataWithContent.children[index];
+    mockData['selected'] = false;
+    component.selectedItems = CollectionHierarchyGetMockResponse.eventDataWithContent.children;
+    component.selectedItems[index]['selected'] = false;
+    const event = {
+      data: mockData
+    };
+    component.handleSelectedItem(event);
+    expect(component.selectedItems.length).toEqual(containerArrayLength - 1);
+  });
+
+  it('should select all the units of the textbook and push into the array', () => {
+    const mockData = CollectionHierarchyGetMockResponse.eventDataWithContent.children;
+    mockData.forEach( (item) => {
+      item['selected'] = true;
+    });
+    const event = {
+      selectAll: true,
+      data: mockData
+    };
+    component.handleSelectAll(event);
+    expect(component.selectedItems.length).toEqual(mockData.length);
+  });
+
+  it(`should make the containing array empty when user un-check 'Select all'`, () => {
+    const event = {
+      selectAll: false,
+    };
+    component.handleSelectAll(event);
+    expect(component.selectedItems.length).toEqual(0);
   });
 });

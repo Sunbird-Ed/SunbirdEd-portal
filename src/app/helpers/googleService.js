@@ -10,7 +10,12 @@ const {parseJson} = require('./utilityService');
 
 const validateRecaptcha = async (req, res, next) => {
   let errType;
-  const userExistsAPI = ['/learner/user/v1/exists/email/:emailId', '/learner/user/v1/exists/phone/:phoneNumber', '/learner/user/v1/fuzzy/search'];
+  const userExistsAPI = [
+    '/learner/user/v1/exists/email/:emailId',
+    '/learner/user/v1/exists/phone/:phoneNumber',
+    '/learner/user/v1/fuzzy/search',
+    '/learner/anonymous/otp/v1/generate'
+  ];
   try {
     // Validating if request is valid or not
     if (!req.query.captchaResponse) {

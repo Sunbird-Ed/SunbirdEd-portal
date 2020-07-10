@@ -28,7 +28,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedOption: { label: string, value: string, selectedOption: string };
   public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
   public type: string;
-  public channel: any[] = [{name: 'NCERT', value: 'NCERT'}, {name: 'NCERT - 2', value: 'NCERT - 2'}];
+  public publisher: any[] = [];
 
   public boards: any[] = [];
   public mediums: any[] = [];
@@ -43,11 +43,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.type = this.optionLabel.Board;
-    this.optionData.push({
-      label: this.optionLabel.Publisher,
-      value: 'channel',
-      option: this.channel,
-    });
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
   }
@@ -73,10 +68,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }))
     .subscribe(filters => {
       if (filters && filters.hasOwnProperty('medium')) {
-        filters['medium'] = _.sortBy(filters['medium'], ["name"]);
+        filters['medium'] = _.sortBy(filters['medium'], ['name']);
       }
       if (filters && filters.hasOwnProperty('board')) {
-        filters['board'] = _.sortBy(filters['board'], ["name"]);
+        filters['board'] = _.sortBy(filters['board'], ['name']);
       }
       this.filters = filters;
       this.updateBoardList();
@@ -110,6 +105,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       name: node.name,
       value: node.name,
     }));
+    if (_.get(this.filters, 'publisher') && _.get(this.filters, 'publisher').length > 0) {
+      this.optionData.push({
+        label: this.optionLabel.Publisher,
+        value: 'channel',
+        option: _.get(this.filters, 'publisher'),
+      });
+    }
     this.optionData.push({
       label: this.optionLabel.Board,
       value: 'board',

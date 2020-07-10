@@ -139,7 +139,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     }))
       .subscribe(data => {
         this.showLoader = false;
-        this.apiContentList = _.sortBy(data, ["name"]);
+        this.apiContentList = _.sortBy(data, ['name']);
         if (!this.apiContentList.length) {
           return; // no page section
         }
@@ -148,7 +148,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
       });
   }
 
@@ -168,7 +168,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }, err => {
       this.isLoading = false;
       this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
   });
   }
 

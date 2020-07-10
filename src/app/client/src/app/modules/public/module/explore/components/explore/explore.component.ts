@@ -90,7 +90,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
@@ -105,6 +105,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
+    if ( _.get(this.selectedFilters, 'channel') && (_.get(this.selectedFilters, 'channel')).length > 0) {
+      request.channelId = this.selectedFilters['channel'];
+    }
     const option = this.searchService.getSearchRequest(request, ['TextBook']);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
@@ -141,7 +144,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       }))
       .subscribe(data => {
         this.showLoader = false;
-        this.apiContentList = _.sortBy(data, ["name"]);
+        this.apiContentList = _.sortBy(data, ['name']);
         if (!this.apiContentList.length) {
           return; // no page section
         }
@@ -150,7 +153,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
       });
   }
 
@@ -169,7 +172,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }, err => {
       this.isLoading = false;
       this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
   });
   }
 

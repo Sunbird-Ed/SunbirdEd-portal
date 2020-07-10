@@ -213,7 +213,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     for (let index = 0; index < fieldType.length; index++) {
       const key = fieldType[index];
       if (this.formAction === 'update') {
-        this.prepopulatedValue[key] = this.getExternalId('declared-' + key)
+        this.prepopulatedValue[key] = this.getExternalId('declared-' + key);
       } else {
         this.prepopulatedValue[key] = this.getExternalId('declared-' + key) || this.userProfile[key];
       }
@@ -223,10 +223,13 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.validationType[key].isVerified = true;
       }
       const keyControl = this.userDetailsForm.controls[key];
-      const userFieldValue = this.prepopulatedValue[key];
+      let userFieldValue;
+      if (this.prepopulatedValue[key]) {
+        userFieldValue = this.prepopulatedValue[key];
+      }
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
-        if (userFieldValue === newValue) {
+        if (userFieldValue === newValue && keyControl.status === 'VALID') {
           this.validationType[key].isVerified = true;
           this.validationType[key].isVerificationRequired = false;
           this.setValidators(key);
@@ -483,7 +486,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    this.searchService.getOrganisationDetails({ locationIds: [_.get(this.userDetailsForm, 'value.state.id')] }).pipe(
+    this.searchService.getOrganisationDetails({
+      locationIds: [_.get(this.userDetailsForm, 'value.state.id')],
+      isRootOrg: true
+    }).pipe(
       takeUntil(this.unsubscribe))
       .subscribe(
         (orgData: any) => {

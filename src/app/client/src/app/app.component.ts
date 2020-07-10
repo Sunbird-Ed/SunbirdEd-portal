@@ -12,7 +12,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } from 'rxjs';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -188,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
     this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
-  
+
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
@@ -237,7 +237,15 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.showUserTypePopup = !localStorage.getItem('userType');
+      // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
+      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+        if (_.get(res[0], 'tenantData')) {
+          const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
+            this.showUserTypePopup = !localStorage.getItem('userType');
+          }
+        }
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
       this.showUserTypePopup = false;

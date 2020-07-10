@@ -5,10 +5,8 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-
-import { ADD_ACTIVITY_TO_GROUP, MY_GROUPS, COURSES } from '../routerLinks';
-import { IGroupMemberConfig } from '../../interfaces';
-
+import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember  } from '../../interfaces';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -16,12 +14,14 @@ import { IGroupMemberConfig } from '../../interfaces';
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('addActivityModal') addActivityModal;
-  groupData;
+  groupData: IGroupCard;
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
+  telemetryImpression: IImpressionEventInput;
+  members: IGroupMember [] = [];
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -43,12 +43,17 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
+    this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.getGroupData();
+    });
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
   getGroupData() {
-    this.groupService.getGroupById(this.groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupService.groupData = groupData;
       this.groupData = groupData;
+      this.members = this.groupService.addFieldsToMember(this.groupData.members);
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
@@ -67,6 +72,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.addActivityModal.deny();
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
   }
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -19,19 +19,6 @@
   background: transparent;
 }
 
-.qq-upload-cancel.custom-qq-upload-cancel {
-  background: var(--tertiary-400);
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: none;
-  color: var(--white);
-  padding: calculateRem(5px);
-}
-
-.qq-upload-cancel.custom-qq-upload-cancel:hover {
-  background: var(--rc-e68900);
-}
-
 .qq-upload-file.custom-qq-upload-file {
   font-size: 1.1em;
   font-weight: bold;
@@ -116,9 +103,6 @@
   }
 
   &__content {
-
-    // margin: 0 ($base-block-space * 8 - 4);
-    // width: 100%;
     .practical-sb-buttons {
       .sb-btn-file {
         border-top: calculateRem(1px) solid var(--primary-200);
@@ -222,4 +206,3 @@
     }
   }
 }
-

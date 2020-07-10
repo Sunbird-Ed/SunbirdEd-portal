@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
+import { FormService } from '@sunbird/core';
 
 @Component({
   selector: 'app-activity-form',
@@ -7,35 +8,40 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./activity-form.component.scss']
 })
 export class ActivityFormComponent implements OnInit {
-
   @Output() nextClick = new EventEmitter<{ activityType: string }>();
 
-  activityTypes = [
-    {
-      name: 'course',
-      title: this.resourceService.frmelmnts.lbl.courses,
-      disabled: false
-    }, {
-      name: 'textbooks',
-      title: `${this.resourceService.frmelmnts.lbl.textbooks} (${this.resourceService.frmelmnts.lbl.comingSoon})`,
-      disabled: true
-    },
-  ];
-
+  activityTypes;
   selectedActivity: any;
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService, private formService: FormService, private toasterService: ToasterService) { }
 
   ngOnInit() {
-    this.chooseActivity(this.activityTypes[0]);
+    this.getFormDetails();
+  }
+
+  private getFormDetails() {
+    const formServiceInputParams = {
+      formType: 'group',
+      contentType: 'activities',
+      formAction: 'list',
+      component: 'portal'
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe(fields => {
+      fields.forEach(item => { item.title = this.resourceService.frmelmnts.lbl[item.title]; });
+      this.activityTypes = [...fields];
+      this.chooseActivity(this.activityTypes[0]);
+    }, error => {
+      console.error('Error while getting activity form data', error);
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+
   }
 
   chooseActivity(value: any) {
-    // TODO: Handle telemetry here
     this.selectedActivity = value;
   }
 
   next() {
-    this.nextClick.emit({ activityType: this.selectedActivity.name });
+    this.nextClick.emit({ activityType: this.selectedActivity.title });
     // TODO: Handle telemetry here
   }
 }

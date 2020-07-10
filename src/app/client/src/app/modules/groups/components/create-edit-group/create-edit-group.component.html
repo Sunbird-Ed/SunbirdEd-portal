@@ -33,9 +33,9 @@
       <label class="d-flex flex-ai-center">
         <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
         [ngClass]="{'is-invalid' : isFieldValid('groupToc')}">
-        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc}} <a href="{{url}}/term-of-use.html " target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.termsOfService}}</a></span>
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': instance }} <a href="{{url}}/term-of-use.html " target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.termsOfService}}</a></span>
       </label>
-      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc}}</small>
+      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc | interpolate:'{instance}': instance}}</small>
     </div>
     </form>
   
@@ -55,7 +55,7 @@
     (click)="updateGroup()">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-    <button *ngIf="groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center" type="button"
+    <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
     (click)="reset()">
       {{resourceService?.frmelmnts?.btn?.reset}}
     </button>

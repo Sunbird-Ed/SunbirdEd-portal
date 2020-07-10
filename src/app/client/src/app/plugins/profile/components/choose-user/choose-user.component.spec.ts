@@ -83,6 +83,8 @@ describe('ChooseUserComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const managedUserService = TestBed.get(ManagedUserService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'setNavigationUrl');
     const userData = mockData.userReadApiResponse;
     userService._authenticated = true;
     userData.result.response['managedBy'] = 'mock managed by id';
@@ -94,6 +96,7 @@ describe('ChooseUserComponent', () => {
     managedUserService.fetchManagedUserList();
     component.ngOnInit();
     expect(component.userList).toEqual(mockData.userList);
+    expect(navigationHelperService.setNavigationUrl).toHaveBeenCalled();
   });
 
   it('should not fetch managed user list on init', () => {
@@ -132,9 +135,9 @@ describe('ChooseUserComponent', () => {
 
   it('should navigate', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    spyOn(navigationHelperService, 'navigateToLastUrl');
     component.closeSwitchUser();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
 
   xit('should switch selected user', () => {

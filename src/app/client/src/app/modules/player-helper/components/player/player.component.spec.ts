@@ -46,7 +46,7 @@ describe('PlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [{provide: UserService, useValue: {}}],
+      providers: [{ provide: UserService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -214,7 +214,7 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
@@ -225,7 +225,7 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeFalsy();
@@ -239,6 +239,23 @@ describe('PlayerComponent', () => {
     expect(component.navigationHelperService.emitFullScreenEvent).toHaveBeenCalledWith(false);
   });
 
+  it('should call closeModal', () => {
+    spyOn(component.ratingPopupClose, 'emit');
+    component.closeModal();
+    expect(component.ratingPopupClose.emit).toHaveBeenCalled();
+  });
+
+  it('should adjust player height on landscap mode of mobile or tab device', () => {
+    const mockDomElement = document.createElement('div');
+    mockDomElement.setAttribute('id', 'contentPlayer');
+    spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+    spyOn(mockDomElement, 'style').and.returnValue(of({height: window.innerHeight}));
+    fixture.detectChanges();
+    component.isMobileOrTab = true;
+    component.adjustPlayerHeight();
+    fixture.detectChanges();
+    expect(screen.orientation.type).toEqual('landscape-primary');
+  });
 
 });
 

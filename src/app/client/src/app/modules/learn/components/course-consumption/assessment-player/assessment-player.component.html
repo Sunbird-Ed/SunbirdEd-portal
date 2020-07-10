@@ -1,47 +1,71 @@
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression">
-  <!--CC-Player Back button -->
-  <div class="sb-bg-white relative position cc-player__btn-back ">
-    <div class="ui container py-8 px-0">
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-        (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4">
-          <svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg>
-        </i>
-        {{resourceService?.frmelmnts?.btn?.back}}
-      </button>
+
+  <!-- Header: Back Button Previous Module & Next Module button -->
+  <div class="sb-bg-color-white relative position back-btn-container">
+    <div class="ui container">
+      <div class="py-8 d-flex flex-ai-center">
+        <!-- Back button -->
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+          {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+        <div class="d-flex flex-ai-center">
+          <!-- Previous module button -->
+          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
+            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+            <i class="chevron left icon mr-4"></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
+          </button>
+          <!-- Previous Module button -->
+          <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
+          <!-- Next Module button -->
+          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
+            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+            {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="chevron right icon ml-4"></i>
+          </button>
+          <!-- Next Module button -->
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Header -->
-  <div class="content-header header-shadow"  [ngClass]="{'header-block': isFullScreenView}">
-    <div class="ui container py-16">
-      <div class="sb-g">
+  <div class="textbook-container" [ngClass]="{'header-block': isFullScreenView}">
+    <div class="ui container">
+      <div class="textbook py-16 sb-g">
         <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
-          <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-            <div class="content-header__img mr-8">
-              <img [src]="courseHierarchy?.appIcon || courseHierarchy?.courseLogoUrl" alt=""
-                style="width: 55px; height: 55px;" (error)="img.src = courseFallbackImg" #img>
-            </div>
-            <div class="flex-basis-1 mr-32">
-              <div class="content-header__title sb__ellipsis sb__ellipsis--one">
-                <div>{{courseName | titlecase}}</div>
-              </div>
-              <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="!isParentCourse">
-                <h5 class="sb-color-primary font-weight-bold">{{courseHierarchy?.name | titlecase}}</h5>
-                <a (click)="onShareLink();shareLinkModal=true;"
-                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16">
+          <!-- Textbook details -->
+          <div class="textbook__details d-flex flex-ai-center">
+            <!-- Textbook image -->
+            <div class="textbook__heading">
+              <!-- Textbook title -->
+              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
+              </h5>
+              <!-- Textbook Rating with share icon -->
+              <div class="textbook__rating mt-4">
+                <button (click)="onShareLink();shareLinkModal=true;"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
                   <i class="blue share alternate icon"></i>
                   {{resourceService?.frmelmnts?.lbl?.share}}
-                </a>
+                </button>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course" style="align-self: center;">
+          <!-- Module Progress bar -->
+          <div class="certified-course__progress" *ngIf="totalContents > 0">
+            <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <!-- CC-Player Video -->
   <div class="ui container">
     <div class="cc-player sb-g">
@@ -52,7 +76,8 @@
               <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
-                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-player>
+                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+                  (ratingPopupClose)="onRatingPopupClose()"></app-player>
               </div>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
@@ -64,7 +89,7 @@
         </div>
       </section>
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16">
-        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentLabel}}</p>
+        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</p>
         <div class="side-toc-content chapter-box">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
@@ -105,3 +130,4 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">
 </app-share-link>
+<app-course-completion *ngIf="showCourseCompleteMessage" [isCertificateAttached]="isCertificateAttached" ></app-course-completion>

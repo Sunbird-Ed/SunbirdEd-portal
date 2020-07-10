@@ -408,6 +408,7 @@ describe('SignUpComponent', () => {
     const tncService = TestBed.get(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
     const contactType = component.signUpForm.controls['contactType'];
@@ -419,7 +420,7 @@ describe('SignUpComponent', () => {
     expect(component.isMinor).toBe(true);
     expect(component.showSignUpForm).toBe(false);
     expect(component.disableSubmitBtn).toBe(false);
-    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor, undefined);
   });
 
   it('should generate otp as user is minor', () => {
@@ -427,6 +428,7 @@ describe('SignUpComponent', () => {
     const tncService = TestBed.get(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     const contactType = component.signUpForm.controls['contactType'];
@@ -438,7 +440,7 @@ describe('SignUpComponent', () => {
     expect(component.isMinor).toBe(false);
     expect(component.showSignUpForm).toBe(false);
     expect(component.disableSubmitBtn).toBe(false);
-    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp, undefined);
   });
 
 });

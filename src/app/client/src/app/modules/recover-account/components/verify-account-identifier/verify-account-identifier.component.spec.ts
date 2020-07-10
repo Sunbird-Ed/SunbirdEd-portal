@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 describe('VerifyAccountIdentifierComponent', () => {
   let component: VerifyAccountIdentifierComponent;
@@ -51,7 +52,8 @@ describe('VerifyAccountIdentifierComponent', () => {
     TestBed.configureTestingModule({
       declarations: [VerifyAccountIdentifierComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule,
+        RecaptchaModule, CoreModule, SharedModule.forRoot()],
       providers: [RecoverAccountService, UtilService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },

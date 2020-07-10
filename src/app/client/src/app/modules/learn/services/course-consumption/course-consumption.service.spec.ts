@@ -102,4 +102,31 @@ describe('CourseConsumptionService', () => {
     service.getAllOpenBatches({content: [], count: 0});
     expect(service['toasterService'].error).toHaveBeenCalledWith(service['resourceService'].messages.emsg.m0003);
   });
+
+  it('should call setPreviousAndNextModule and check only next module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359813121209';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeDefined();
+    expect(returnVal.prev).toBeUndefined();
+  });
+
+  it('should call setPreviousAndNextModule and check both prev/next module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359567361201';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeDefined();
+    expect(returnVal.prev).toBeDefined();
+  });
+
+  it('should call setPreviousAndNextModule and check only prev module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359567361207';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeUndefined();
+    expect(returnVal.prev).toBeDefined();
+  });
 });

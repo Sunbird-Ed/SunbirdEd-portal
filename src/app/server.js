@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express');
+const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
@@ -50,7 +51,7 @@ app.use(helmet())
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
-  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', 
+  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
 ],
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -88,8 +89,8 @@ app.get('/service/health', healthService.createAndValidateRequestBody, healthSer
 
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
-app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
-app.get('/user/v1/switch/:userId', bodyParser.json({limit: '1mb'}),keycloak.protect(), userService.switchUser);
+app.post('/user/v2/accept/tnc', bodyParser.json({ limit: '1mb' }), userService.acceptTnc);
+app.get('/user/v1/switch/:userId', bodyParser.json({ limit: '1mb' }), keycloak.protect(), userService.switchUser);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
@@ -178,6 +179,7 @@ function runApp() {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
     })
+    handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;
   })
 }
@@ -216,4 +218,22 @@ process.on('uncaughtException', (err) => {
   console.log('Uncaught Exception', err)
   process.exit(1);
 });
+
+function handleShutDowns() {
+
+  const cleanup = signal => new Promise(async (resolve, reject) => { // close db connections
+    await frameworkAPI.closeCassandraConnections();
+    logger.info({ msg: `Closed db connection after ${signal} signal.` })
+    resolve();
+  });
+
+  gracefulShutdown(portal.server, {
+    signals: 'SIGINT SIGTERM',
+    timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
+    onShutdown: cleanup,
+    finally: () => logger.info({ msg: 'Server gracefully shut down.'}),
+    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+  });
+}
+
 exports.close = () => portal.server.close()

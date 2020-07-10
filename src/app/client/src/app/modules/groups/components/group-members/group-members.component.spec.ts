@@ -1,3 +1,4 @@
+import { IGroupMember } from './../../interfaces/group';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -10,11 +11,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { of } from 'rxjs';
 
 describe('GroupMembersComponent', () => {
   let component: GroupMembersComponent;
   let fixture: ComponentFixture<GroupMembersComponent>;
-
+  let members: IGroupMember[] = [];
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -57,19 +59,24 @@ describe('GroupMembersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupMembersComponent);
     component = fixture.componentInstance;
+    members = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
+      { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
+      indexOfMember: 5, isCreator: false, name: 'Paul Walke', userId: '2', role: 'member' },
+      { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true,
+      indexOfMember: 7, isCreator: false, name: 'Robert Downey', userId: '3', role: 'member' }
+    ];
+    component['groupsService'].groupData = {id: '123', name: 'Test group', members: members, createdBy: '1'};
+    spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
+    spyOn(component['groupsService'], 'membersList').and.returnValue(of (members));
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true },
-      { identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false },
-      { identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true, indexOfMember: 7, isCreator: false }];
-
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
-    component.members = members;
-    component.showMenu = true;
+    component.showKebabMenu = true;
     component.config.showMemberMenu = false;
     document.body.dispatchEvent(new Event('click'));
     component.ngOnInit();
@@ -78,7 +85,7 @@ describe('GroupMembersComponent', () => {
   });
 
   it('should call getMenuData', () => {
-    component.showMenu = false;
+    component.showKebabMenu = false;
     const member = {
       identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true, indexOfMember: 5, isCreator: false
     };
@@ -86,13 +93,14 @@ describe('GroupMembersComponent', () => {
       stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
     };
     component.getMenuData({ data: { name: 'delete' }, event: clickEvent }, member);
-    expect(component.showMenu).toBe(true);
+    expect(component.showKebabMenu).toBe(true);
   });
 
   it('should call search', () => {
     component.showSearchResults = false;
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+     members = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];
     component.members = members;
     component.memberListToShow = [];
@@ -102,8 +110,9 @@ describe('GroupMembersComponent', () => {
 
   it('should reset the list to membersList when no search key present', () => {
     component.showSearchResults = true;
-    const members = [
-      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true }
+     members = [
+      { identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+      indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'},
     ];
     component.members = members;
     component.search('');

@@ -1,7 +1,6 @@
 <app-back-button></app-back-button>
 
-
-<div class="ui container">
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-g mt-24">
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
       <div class="sb-bg-color-white p-24">
@@ -13,35 +12,35 @@
             <div class="w-100">
               <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
                 <span class="text-right d-flex font-weight-normal ml-16">{{resourceService?.frmelmnts?.lbl?.whatInstanceId  | interpolate:'{instance}': instance}}
-                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="showModal=true"><svg class="icon icon-svg--primary">
+                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true);addTelemetry('member-ftu-popup')"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
                 </span>
               </label>
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
-                  <input type="id" name="id" class="sb-form-control is-invalid" placeholder="Enter user ID">
-                  <i class="icon close icon-input-close"></i>
+                  <input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="Enter user ID" [(ngModel)]="memberId" (ngModelChange)="reset()">
+                  <i class="icon close icon-input-close" (click)="resetValue()"></i>
                 </div>
-                <small class="message sb-color-error font-weight-bold mt-8">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
+                <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
               </div>
             </div>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-disabled" disabled>{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="verifyMember()">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
         <!-- Add to group button content -->
-        <div class="text-left fnormal mt-16 mb-8">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
-        <div class="flex-ai-jc-center add-member-content p-24">
+        <div class="text-left fnormal mt-16 mb-8" *ngIf="isVerifiedUser">{{resourceService?.frmelmnts?.lbl?.memberVerificationMsg  | interpolate:'{instance}': instance}}</div>
+        <div class="flex-ai-jc-center add-member-content p-24" *ngIf="showLoader">
           <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
         </div>
-        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-16">
+        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-24" *ngIf="isVerifiedUser">
           <div class="add-member-text flex-basis-1">
-              <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="config"
-                [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
+              <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
+                [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
           </div>
-          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal">
+          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal" (click)="addMemberToGroup()">
             <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>
         </div>
@@ -51,9 +50,9 @@
 
 
     <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
-      <app-group-members></app-group-members>
+      <app-group-members [members]="membersList"></app-group-members>
     </div>
   </div>
 </div>
 
-<app-ftu-popup *ngIf="showModal" (close)="closeModal()"></app-ftu-popup>
+<app-ftu-popup *ngIf="showModal" [showMemberPopup]="showModal" (close)="toggleModal(false)"></app-ftu-popup>

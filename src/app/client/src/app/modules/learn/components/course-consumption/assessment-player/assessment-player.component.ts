@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
@@ -50,6 +50,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   shareLinkModal: boolean;
   isUnitCompleted = false;
   isFullScreenView = false;
+  isCourseCompleted = false;
+  showCourseCompleteMessage = false;
+  isCertificateAttached = false;
+  parentCourse;
+  prevModule;
+  nextModule;
+  totalContents = 0;
+  consumedContents = 0;
 
   constructor(
     public resourceService: ResourceService,
@@ -72,6 +80,36 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
   }
 
+  navigateToPlayerPage(collectionUnit: {}, event?) {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
+      };
+
+      if (event && !_.isEmpty(event.event)) {
+        navigationExtras.queryParams.selectedContent = event.data.identifier;
+      } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+        && _.get(this.contentStatus, 'length')) {
+        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+        const collectionChildren = [];
+        this.contentStatus.forEach(item => {
+          if (parsedChildren.find(content => content === item.contentId)) {
+            collectionChildren.push(item);
+          }
+        });
+
+        /* istanbul ignore else */
+        if (collectionChildren.length) {
+          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
+
+          /* istanbul ignore else */
+          if (selectedContent) {
+            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
+          }
+        }
+      }
+      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+  }
+
   ngOnInit() {
     this.subscribeToQueryParam();
     this.navigationHelperService.contentFullScreenEvent.
@@ -81,17 +119,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if (this.navigationHelperService['_history'].length === 1) {
-      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
-    } else {
-      this.location.back();
-    }
+    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
   }
 
   private subscribeToQueryParam() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(([params, queryParams]) => {
+        this.consumedContents = 0;
+        this.totalContents = 0;
         this.collectionId = params.collectionId;
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
@@ -106,6 +142,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
               const model = new TreeModel();
               this.treeModel = model.parse(data.courseHierarchy);
+              this.parentCourse = data.courseHierarchy;
+              const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
+              this.nextModule = _.get(module, 'next');
+              this.prevModule = _.get(module, 'prev');
+              this.isCertificateAttached = Boolean(_.get(this.parentCourse, 'certTemplate.length'));
+              this.getCourseCompletionStatus();
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -154,6 +196,31 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     }));
   }
 
+  getCourseCompletionStatus(showPopup: boolean = false) {
+    /* istanbul ignore else */
+    if (!this.isCourseCompleted) {
+      const req = this.getContentStateRequest(this.parentCourse);
+      this.courseConsumptionService.getContentState(req)
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(res => {
+          /* istanbul ignore else */
+          if (_.get(res, 'content.length')) {
+            this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+          }
+
+        }, err => console.error(err, 'content read api failed'));
+    }
+  }
+
+  getContentStateRequest(course: any) {
+    return {
+      userId: this.userService.userid,
+      courseId: this.courseId,
+      contentIds: this.courseConsumptionService.parseChildren(course),
+      batchId: this.batchId
+    };
+  }
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
     if (_.get(this.courseHierarchy, 'children')) {
       const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
@@ -220,12 +287,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    const req = {
-      userId: this.userService.userid,
-      courseId: this.courseId,
-      contentIds: this.courseConsumptionService.parseChildren(this.courseHierarchy),
-      batchId: this.batchId
-    };
+    const req = this.getContentStateRequest(this.courseHierarchy);
     this.courseConsumptionService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
@@ -312,44 +374,59 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   calculateProgress(isLogAuditEvent?: boolean) {
     /* istanbul ignore else */
     if (_.get(this.courseHierarchy, 'children')) {
-      const consumedContents = [];
-      let totalContents = 0;
+      this.consumedContents = 0;
+      this.totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
         if (unit.mimeType === 'application/vnd.ekstep.content-collection') {
-          const flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
-          totalContents += flattenDeepContents.length;
-
-          let contents = [];
-          /* istanbul ignore else */
-          if (this.contentStatus.length) {
-            contents = flattenDeepContents.filter(o => {
-              return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
-            });
-          }
+          let consumedContents = [];
+          let flattenDeepContents = [];
 
           /* istanbul ignore else */
-          if (contents.length) {
-            consumedContents.push(...contents);
+          if (_.get(unit, 'children.length')) {
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            /* istanbul ignore else */
+            if (this.contentStatus.length) {
+              consumedContents = flattenDeepContents.filter(o => {
+                return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
+              });
+            }
           }
+
+          unit.consumedContent = consumedContents.length;
+          unit.contentCount = flattenDeepContents.length;
+          unit.isUnitConsumed = consumedContents.length === flattenDeepContents.length;
+          unit.isUnitConsumptionStart = false;
+
+          if (consumedContents.length) {
+            unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+            unit.isUnitConsumptionStart = true;
+          } else {
+            unit.progress = 0;
+            unit.isUnitConsumptionStart = false;
+          }
+
         } else {
-          totalContents++;
-          const content = this.contentStatus.find(item => item.contentId === unit.identifier && item.status === 2);
-          /* istanbul ignore else */
-          if (content) {
-            consumedContents.push(content);
-          }
+          const consumedContent = this.contentStatus.filter(({ contentId, status }) => unit.identifier === contentId && status === 2);
+          unit.consumedContent = consumedContent.length;
+          unit.contentCount = 1;
+          unit.isUnitConsumed = consumedContent.length === 1;
+          unit.progress = consumedContent.length ? 100 : 0;
+          unit.isUnitConsumptionStart = Boolean(consumedContent.length);
+        }
+
+        this.consumedContents = this.consumedContents + unit.consumedContent;
+        this.totalContents = this.totalContents + unit.contentCount;
+        this.courseHierarchy.progress = 0;
+        /* istanbul ignore else */
+        if (this.consumedContents) {
+          this.courseHierarchy.progress = (this.consumedContents / this.totalContents) * 100;
+        }
+        this.isUnitCompleted = this.totalContents === this.consumedContents;
+        /* istanbul ignore else */
+        if (isLogAuditEvent && this.isUnitCompleted) {
+          this.logAuditEvent(true);
         }
       });
-      this.courseHierarchy.progress = 0;
-      /* istanbul ignore else */
-      if (consumedContents.length) {
-        this.courseHierarchy.progress = (consumedContents.length / totalContents) * 100;
-      }
-      this.isUnitCompleted = totalContents === consumedContents.length;
-      /* istanbul ignore else */
-      if (isLogAuditEvent && this.isUnitCompleted) {
-        this.logAuditEvent(true);
-      }
     }
   }
 
@@ -366,9 +443,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
 
-  logTelemetry(id, content?: {}) {
+  logTelemetry(id, content?: {}, rollup?) {
     if (this.batchId) {
       this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+    }
+    if (rollup) {
+      rollup = {l1: this.courseId};
     }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
@@ -382,10 +462,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
       },
       object: {
-        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        id: content ? _.get(content, 'identifier') : this.courseId,
         type: content ? _.get(content, 'contentType') : 'Course',
         ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
-        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+        rollup: rollup || this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
     this.telemetryService.interact(interactData);
@@ -476,6 +556,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.shareLink = this.contentUtilsServiceService.getCourseModulePublicShareUrl(this.courseId, this.collectionId);
     this.setTelemetryShareData(this.courseHierarchy);
   }
+
+  onRatingPopupClose() {
+    this.getCourseCompletionStatus(true);
+  }
+
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
