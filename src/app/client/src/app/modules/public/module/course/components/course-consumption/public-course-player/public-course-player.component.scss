@@ -66,3 +66,7 @@
   padding: calculateRem(16px);
   border-radius: calculateRem(2px);
 }
+
+.certified-course__certificate {
+  background-color: var(--rc-E5EDF5);
+}

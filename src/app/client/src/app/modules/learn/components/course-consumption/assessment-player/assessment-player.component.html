@@ -46,7 +46,9 @@
               <div class="textbook__rating mt-4">
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-                  <i class="blue share alternate icon"></i>
+                  <i class="icon-svg icon-svg--xxs icon-share mr-8"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                  </svg></i>
                   {{resourceService?.frmelmnts?.lbl?.share}}
                 </button>
               </div>
@@ -54,7 +56,7 @@
           </div>
         </div>
 
-        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course" style="align-self: center;">
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0">
             <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
@@ -88,8 +90,8 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16">
-        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</p>
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16 px-0">
+        <h5 class="py-24 px-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
