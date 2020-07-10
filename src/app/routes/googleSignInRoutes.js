@@ -21,12 +21,8 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state = uuid();
-    req.session.googleSignInData = {
-      ...req.query,
-      state
-    }
-    logger.info({msg: 'query params state', googleSignInData: req.session.googleSignInData});
+    const state = Buffer.from(JSON.stringify(req.query)).toString('base64');
+    logger.info({msg: 'query params state', googleSignInData: req.query});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
@@ -45,10 +41,12 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    logger.info({msg: 'google auth callback called'});
-    const reqQuery = _.pick(req.session.googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
-    let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
+    logger.info({msg: 'google auth callback called' });
+    let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType, reqQuery = {};
     try {
+      errType = 'BASE64_STATE_DECODE';
+      const googleSignInData = JSON.parse(Buffer.from(req.query.state, 'base64').toString('ascii'));
+      reqQuery = _.pick(googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'])
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
@@ -81,6 +79,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
+      console.log({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}});
       logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
