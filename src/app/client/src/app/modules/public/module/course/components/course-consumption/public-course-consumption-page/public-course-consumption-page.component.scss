@@ -60,10 +60,6 @@
     }
 }
 
-.sb-btn {
-    text-transform: none;
-   }
-
 @include respond-below(sm) {
     .certified-course {
         justify-self: start;
