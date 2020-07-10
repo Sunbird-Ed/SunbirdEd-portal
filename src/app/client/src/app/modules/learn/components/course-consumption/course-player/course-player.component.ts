@@ -66,6 +66,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   progress = 0;
   isExpandedAll: boolean;
   isFirst = false;
+  addToGroup = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -113,6 +114,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           this.navigateToPlayerPage(unit);
         }
       });
+
+    this.activatedRoute.queryParams
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe(response => {
+      this.addToGroup = Boolean(response.groupId);
+    });
 
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
@@ -222,10 +229,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
-    this.logTelemetry(id, event.data);
     /* istanbul ignore else */
-    if (!_.isEmpty(event.event)) {
-      this.navigateToPlayerPage(collectionUnit, event);
+    if (!this.addToGroup) {
+      this.logTelemetry(id, event.data);
+      /* istanbul ignore else */
+      if (!_.isEmpty(event.event)) {
+        this.navigateToPlayerPage(collectionUnit, event);
+      }
     }
   }
 

@@ -1,12 +1,12 @@
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
-import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { Injectable, EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { IGroup, IGroupSearchRequest, IGroupUpdate, IGroupMember, IGroupCard, IMember } from '../../interfaces';
-import * as _ from 'lodash-es';
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService } from '@sunbird/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
-
+import { NavigationHelperService, ResourceService } from '@sunbird/shared';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
+import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember } from '../../interfaces';
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,6 @@ export class GroupsService {
     member.isSelf = (this.userService.userid === _.get(member, 'userId')) || (this.userService.userid === _.get(member, 'identifier'));
     member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
     member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
-
     return member;
   }
 
@@ -77,6 +76,26 @@ export class GroupsService {
 
   addMemberById(groupId: string, members: IMember) {
     return this.groupCservice.addMembers(groupId, members);
+  }
+
+  updateMembers(groupId: string, updateMembersRequest: CsGroupUpdateMembersRequest[]) {
+    return this.groupCservice.updateMembers(groupId, updateMembersRequest);
+  }
+
+  removeMembers(groupId: string, userIds: string[]) {
+    return this.groupCservice.removeMembers(groupId, { userIds });
+  }
+
+  addActivities(groupId: string, addActivitiesRequest: CsGroupAddActivitiesRequest) {
+    return this.groupCservice.addActivities(groupId, addActivitiesRequest);
+  }
+
+  updateActivities(groupId: string, updateActivitiesRequest: CsGroupUpdateActivitiesRequest) {
+    return this.groupCservice.updateActivities(groupId, updateActivitiesRequest);
+  }
+
+  removeActivities(groupId: string, removeActivitiesRequest: CsGroupRemoveActivitiesRequest) {
+    return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
   }
 
   set groupData(group: IGroupCard) {
