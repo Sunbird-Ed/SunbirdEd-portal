@@ -1,19 +1,28 @@
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CacheService } from 'ng2-cache-service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { APP_BASE_HREF } from '@angular/common';
 import { BackButtonComponent } from './back-button.component';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
+import { fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 
 describe('BackButtonComponent', () => {
   let component: BackButtonComponent;
   let fixture: ComponentFixture<BackButtonComponent>;
+  configureTestSuite();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BackButtonComponent ],
       imports: [RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],
+      providers: [
+        { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        TelemetryService
+      ]
     })
     .compileComponents();
   }));
@@ -26,5 +35,9 @@ describe('BackButtonComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    spyOn(component['groupService'], 'addTelemetry');
+    component.goBack();
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('back-button', fakeActivatedRoute.snapshot);
+
   });
 });

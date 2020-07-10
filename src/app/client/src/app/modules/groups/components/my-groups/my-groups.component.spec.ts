@@ -1,4 +1,4 @@
-import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
+import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -31,7 +31,7 @@ describe('MyGroupsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
       providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, ResourceService,
         { provide: APP_BASE_HREF, useValue: '/' } ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -95,7 +95,7 @@ describe('MyGroupsComponent', () => {
   });
 
   it('should call addTelemetry', () => {
-    component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
+    component.addTelemetry('ftu-popup', '123');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, '123');
   });
 });
