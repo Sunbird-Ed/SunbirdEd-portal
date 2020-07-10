@@ -85,11 +85,4 @@ describe('TopicPickerComponent', () => {
         // @ts-ignore
         expect(component, 'formatTopics').toBeTruthy();
     });
-
-    it('should be use correct selectors', function () {
-        spyOn(jQuery.fn, 'treePicker').and.callFake(() => { });
-        // @ts-ignore
-        component.initTopicPicker(topics);
-        expect(jQuery.fn.treePicker).toHaveBeenCalled();
-    });
 });
