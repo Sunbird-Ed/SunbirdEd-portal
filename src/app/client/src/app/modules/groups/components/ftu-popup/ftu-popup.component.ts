@@ -1,19 +1,27 @@
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
-
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import * as _ from 'lodash-es';
+import { GroupsService } from '../../services';
 @Component({
   selector: 'app-ftu-popup',
   templateUrl: './ftu-popup.component.html',
   styleUrls: ['./ftu-popup.component.scss']
 })
 export class FtuPopupComponent implements OnInit {
-  @Input() showWelcomePopup;
-  @Output() close = new EventEmitter();
 
-  @Input()showMemberPopup;
-  constructor(public resourceService: ResourceService, private elementRef: ElementRef) { }
   slideConfig1 = {};
   instance;
+
+  @Input() showWelcomePopup;
+  @Input()showMemberPopup;
+  @Output() close = new EventEmitter();
+
+  constructor(public resourceService: ResourceService,
+    private activatedRoute: ActivatedRoute,
+    private groupService: GroupsService) { }
+
+
 
   ngOnInit() {
     this.instance = this.resourceService.instance;
@@ -41,5 +49,10 @@ export class FtuPopupComponent implements OnInit {
     this.close.emit(true);
     localStorage.setItem('login_members_ftu', 'members');
   }
+
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+  }
+
 
 }

@@ -1,4 +1,4 @@
-<div *ngIf="groupData">
+<div *ngIf="groupData" [appTelemetryImpression]="telemetryImpression">
   <app-group-header [groupData]="groupData"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24">

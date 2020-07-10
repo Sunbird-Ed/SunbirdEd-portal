@@ -24,6 +24,15 @@ export interface IMember {
   ];
 }
 
+export interface IMember {
+  members: [
+    {
+      userId: string;
+      role: string;
+    }
+  ];
+}
+
 export interface IGroupUpdate {
   name: string;
   membershipType?: GroupMembershipType;

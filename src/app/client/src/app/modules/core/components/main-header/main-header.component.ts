@@ -104,6 +104,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
+  myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
@@ -284,6 +285,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: 'contribute-tab',
       type: 'click',
       pageid: 'contribute'
+    };
+    this.myGroupIntractEData = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
     };
   }
 
