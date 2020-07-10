@@ -1,42 +1,10 @@
 @import 'variables';
 @import "mixins/mixins";
-// .ui {
-//   &.selection.bordered.dropdown {
-//     border: 1px solid rgba(var(--rc-rgba-gray-300), 0.15);
-//     border-radius: 5px;
-//   }
-//   &.icon.input {
-//     width: 300px;
-//     height: 30px;
-//   }
-
-// }
-
-// .ui.selection.dropdown {
-//   font-size: 16px;
-//   font-weight: 700;
-//   padding: 8px 32px;
-//   min-height: 32px;
-// }
 
 .w-300 {
   width: calculateRem(300px);
 }
 
-.w-300 {
-  ::ng-deep {
-    
-    // .ui.search.selection.dropdown>input.search {
-    //   padding: 8px 32px;
-    // }
-    // .ui.selection.dropdown>.dropdown.icon {
-    //   padding: 8px;
-    // }
-    // .ui.selection.dropdown .menu>.item {
-    //   padding: 8px 32px !important;
-    // }
-  }
-}
 .download-file-container {
   background-color: var(--gray-100);
   height: calculateRem(48px);
@@ -76,7 +44,9 @@ a {
 }
 
 ::ng-deep {
-
+  .ui.selection.dropdown{
+    line-height: 1em;
+   }
   .ui.search.dropdown.course-dashboard-select>.text {
     margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
     // width: 136px;

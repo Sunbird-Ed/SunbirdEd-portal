@@ -14,8 +14,8 @@
             </button>
           </div>
         </div>
-        <!-- <app-add-activity></app-add-activity> -->
-        <app-activity-list></app-activity-list>
+        <app-add-activity *ngIf="!groupData?.activities?.length"></app-add-activity>
+        <app-activity-list *ngIf="groupData?.activities?.length" [groupData]="groupData"></app-activity-list>
       </div>
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
         <app-group-members [config]="config" [members]="members" [groupData]="groupData"></app-group-members>

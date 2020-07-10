@@ -7,6 +7,7 @@ import { takeUntil, map, catchError, first, debounceTime, tap, delay } from 'rxj
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
+import { GroupsService } from '../../../services/groups/groups.service';
 
 @Component({
   selector: 'app-activity-search',
@@ -32,6 +33,7 @@ export class ActivitySearchComponent implements OnInit {
   dataDrivenFilterEvent = new EventEmitter();
   paginationDetails: IPagination;
   noResultMessage: any;
+  groupData;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -47,11 +49,13 @@ export class ActivitySearchComponent implements OnInit {
     private utilService: UtilService,
     private userService: UserService,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private groupsService: GroupsService
   ) { }
 
   ngOnInit() {
     this.filterType = this.configService.appConfig.courses.filterType;
+    this.groupData = this.groupsService.groupData;
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.getFrameworkId();
     this.getFrameWork().pipe(first()).subscribe(framework => {
@@ -199,6 +203,10 @@ export class ActivitySearchComponent implements OnInit {
   toggleFilter() {
     this.showFilters = !this.showFilters;
     // TOTO add interact telemetry here
+  }
+
+  addActivity(event) {
+    this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
   }
 
   private setNoResultMessage() {

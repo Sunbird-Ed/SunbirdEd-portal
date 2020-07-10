@@ -108,4 +108,11 @@ describe('PublicCourseConsumptionPageComponent', () => {
     expect(component.sharelinkModal).toBe(false);
     expect(telemetryService.interact).toHaveBeenCalled();
   });
+
+  it('should call logTelemetry', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('do_121214221212');
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
 });
