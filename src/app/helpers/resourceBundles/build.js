@@ -14,8 +14,7 @@ const locale = envHelper.PHRASE_APP.phrase_locale;
 const fileformat = envHelper.PHRASE_APP.phrase_fileformat;
 const merge = true;
 
-const rbPatah = path.join(__dirname, '/./../../node_modules/sunbird-resource-bundle/index.js');
-
+const rbPatah = path.join(__dirname, '/./../../node_modules/sunbird-localization/index.js');
 const resBundlesArr = [
   {
     name: "consumption",
@@ -205,7 +204,6 @@ var mergeNbuildCreationResource = function() {
 const pullPhraseAppLocale = function() {
   const cmd = `node ${rbPatah} -authToken="${authToken}" -project="${project}" -locale="${locale}" -merge="${merge}" -fileformat="${fileformat}"`;
   exec(cmd, function async(err, stdout, stderr) {
-    console.log(stdout);
     if(!err) {
       mergeNbuildCreationResource().then(res => {
         if(res) {
