@@ -234,14 +234,18 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   addActivityToGroup() {
-    const request = {
-      activities: [{ id: this.courseId, type: 'course' }]
-    };
-    this.groupService.addActivities(this.groupId, request).subscribe(response => {
-      this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
-    }, error => {
-      console.error('Error while adding activity to the group', error);
-      this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
-    });
+    if (_.get(this.groupService, 'groupData.memberRole') === 'admin') {
+      const request = {
+        activities: [{ id: this.courseId, type: 'course' }]
+      };
+      this.groupService.addActivities(this.groupId, request).subscribe(response => {
+        this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
+      }, error => {
+        console.error('Error while adding activity to the group', error);
+        this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
+      });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
+    }
   }
 }
