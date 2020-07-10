@@ -44,8 +44,10 @@ describe('CourseCompletionComponent', () => {
 
   it('should call ngOnDestroy', () => {
     spyOn(component, 'closeModal');
+    spyOn(component.close, 'emit');
     component.ngOnDestroy();
     expect(component.closeModal).toHaveBeenCalled();
+    expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should call logInteractTelemetry', () => {

@@ -427,4 +427,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
   });
 
+  it('should call onCourseCompleteClose', () => {
+    component.onCourseCompleteClose();
+    expect(component.showCourseCompleteMessage).toBe(false);
+  });
 });

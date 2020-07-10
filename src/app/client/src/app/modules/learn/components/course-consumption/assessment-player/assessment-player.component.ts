@@ -146,7 +146,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               const module = this.courseConsumptionService.setPreviousAndNextModule(this.parentCourse, this.collectionId);
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
-              this.isCertificateAttached = Boolean(_.get(this.parentCourse, 'certTemplate.length'));
               this.getCourseCompletionStatus();
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
@@ -154,6 +153,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
+              this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
@@ -567,5 +567,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+
+  onCourseCompleteClose() {
+    this.showCourseCompleteMessage = false;
   }
 }
