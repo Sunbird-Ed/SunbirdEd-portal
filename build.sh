@@ -72,7 +72,7 @@ build_server(){
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo "completed server yarn install"
-    node helpers/resourceBundles/build.js
+    node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
 build_client & # run client build in background 

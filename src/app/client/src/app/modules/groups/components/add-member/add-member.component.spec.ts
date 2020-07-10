@@ -1,3 +1,4 @@
+import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -8,6 +9,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
+import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -23,14 +26,26 @@ describe('AddMemberComponent', () => {
       smsg: {
         m004: '{memberName} added to group successfully'
       }
+    },
+    frmelmnts: {
+      lbl: {
+        you: 'You',
+      }
     }
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
-      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
         {provide: APP_BASE_HREF, useValue: '/'},
+        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
+        TelemetryService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -51,6 +66,9 @@ describe('AddMemberComponent', () => {
 
     component.memberId = '2';
 
+    spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
+    spyOn(component['groupService'], 'addTelemetry');
+
     // fixture.detectChanges();
   });
 
@@ -60,6 +78,8 @@ describe('AddMemberComponent', () => {
     component.ngOnInit();
     expect(component.instance).toEqual('DEV');
     expect(component['groupsService'].addFieldsToMember).toHaveBeenCalled();
+    expect(component.telemetryImpression).toEqual(impressionObj);
+    expect(component['groupService'].getImpressionObject).toHaveBeenCalled();
   });
 
   it('should reset values', () => {
@@ -148,6 +168,13 @@ describe('AddMemberComponent', () => {
     component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {}, err => {
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
+  });
+
+
+
+  it('should call addTelemetry', () => {
+    component.addTelemetry('ftu-popup');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot);
   });
 
 });

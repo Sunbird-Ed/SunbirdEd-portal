@@ -60,12 +60,12 @@
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
               (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>

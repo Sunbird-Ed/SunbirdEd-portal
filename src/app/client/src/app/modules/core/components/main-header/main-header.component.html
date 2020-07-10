@@ -217,7 +217,7 @@
 
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
         [class.active]="router.isActive(routerLinks?.groups)" 
-        *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]">
+        *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
         </li>
 
