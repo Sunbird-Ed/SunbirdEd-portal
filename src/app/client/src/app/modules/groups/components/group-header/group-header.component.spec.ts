@@ -134,7 +134,7 @@ describe('GroupHeaderComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot, []);
   });
 
 });

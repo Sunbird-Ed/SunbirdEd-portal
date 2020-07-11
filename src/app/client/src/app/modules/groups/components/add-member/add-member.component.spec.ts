@@ -99,16 +99,16 @@ describe('AddMemberComponent', () => {
 
   it('should return is member is already present', () => {
     spyOn(component, 'isExistingMember').and.returnValue(true);
-    component.verifyMember();
+    component.verifyMember('1');
     expect(component.isExistingMember).toHaveBeenCalled();
   });
 
   it('should return is member is not already present', () => {
-    spyOn(component['userService'], 'getUserData').and.returnValue(of ({result: {response: {identifier: '2', name: 'user 2'}}}));
+    spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({result: {response: {identifier: '2', name: 'user 2'}}}));
     spyOn(component, 'isExistingMember').and.returnValue(false);
-    component.verifyMember();
+    component.verifyMember('2');
     expect(component.isExistingMember).toHaveBeenCalled();
-    expect(component['userService'].getUserData).toHaveBeenCalledWith('2');
+    expect(component['groupsService'].getUserData).toHaveBeenCalledWith('2');
   });
 
   it('should throw error', () => {
@@ -174,7 +174,7 @@ describe('AddMemberComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
   });
 
 });

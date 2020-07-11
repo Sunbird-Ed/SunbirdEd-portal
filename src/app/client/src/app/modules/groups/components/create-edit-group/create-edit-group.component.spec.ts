@@ -151,6 +151,6 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component['groupService'], 'addTelemetry');
     component.groupId = '123';
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, '123');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 });

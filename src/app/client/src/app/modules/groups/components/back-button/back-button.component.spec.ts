@@ -36,8 +36,10 @@ describe('BackButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
     spyOn(component['groupService'], 'addTelemetry');
+    spyOn(component['groupService'], 'goBack');
     component.goBack();
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('back-button', fakeActivatedRoute.snapshot);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('back-button', fakeActivatedRoute.snapshot, []);
+    expect(component['groupService'].goBack).toHaveBeenCalled();
 
   });
 });

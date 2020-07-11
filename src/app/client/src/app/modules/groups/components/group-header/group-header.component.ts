@@ -70,7 +70,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
   leaveGroup() {

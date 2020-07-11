@@ -18,13 +18,14 @@ describe('GroupsService', () => {
       }
     }
   };
-
+ 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [GroupsService, ConfigService, UserService, FrameworkService, ChannelService, OrgDetailsService,
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ResourceService, useValue: resourceBundle },
+
         TelemetryService,
       ]
     });

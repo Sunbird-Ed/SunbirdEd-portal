@@ -20,12 +20,12 @@
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
                   <input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="Enter user ID" [(ngModel)]="memberId" (ngModelChange)="reset()">
-                  <i class="icon close icon-input-close" (click)="resetValue();addTelemetry('reset-userId')"></i>
+                  <i class="icon close icon-input-close" (click)="resetValue(memberId);"></i>
                 </div>
                 <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
               </div>
             </div>
-            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="verifyMember();addTelemetry('verify-member')">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="verifyMember(memberId);addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
@@ -40,7 +40,7 @@
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
           </div>
-          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal" (click)="addMemberToGroup();addTelemetry('add-user-to-group')">
+          <button type="button" class="d-flex sb-btn sb-btn-primary sb-btn-normal" (click)="addMemberToGroup();addTelemetry('add-user-to-group', memberId)">
             <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>
         </div>

@@ -6,7 +6,7 @@ import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NO_ERRORS_SCHEMA, inject } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -60,7 +60,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => of (mockGroupList));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {
-      expect(component.groupList.adminGroups[0].isAdmin).toBeTruthy();
+      expect(component.adminGroupsList[0].isAdmin).toBeTruthy();
     });
   });
 
@@ -68,7 +68,8 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => throwError ({}));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {}, err => {
-      expect(component.groupList).toEqual({adminGroups: [], memberGroups: []});
+      expect(component.adminGroupsList).toEqual([]);
+      expect(component.memberGroupsList).toEqual([]);
     });
   });
 
@@ -96,6 +97,6 @@ describe('MyGroupsComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup', '123');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, '123');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 });

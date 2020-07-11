@@ -47,7 +47,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     const groupData = this.groupsService.groupData;
-    this.members = this.groupsService.addFieldsToMember(groupData.members);
+    this.members = this.groupsService.addFieldsToMember(_.get(groupData, 'members') || []);
     this.memberListToShow = this.members;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
 
@@ -111,7 +111,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot);
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
   ngOnDestroy() {

@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
@@ -5,7 +6,7 @@ import { UserService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
 import * as _ from 'lodash-es';
-import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember } from '../../interfaces';
+import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @Injectable({
@@ -13,6 +14,7 @@ import { CsLibInitializerService } from './../../../../service/CsLibInitializer/
 })
 export class GroupsService {
   private groupCservice: any;
+  private userCservice: any;
   private _groupData: IGroupCard;
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
@@ -22,21 +24,26 @@ export class GroupsService {
     private userService: UserService,
     private resourceService: ResourceService,
     private telemetryService: TelemetryService,
-    private navigationhelperService: NavigationHelperService
+    private navigationhelperService: NavigationHelperService,
+    private router: Router
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
     }
     this.groupCservice = CsModule.instance.groupService;
+    this.userCservice = CsModule.instance.userService;
   }
 
   addFieldsToMember(members): IGroupMember[] {
-    const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-    return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.name)], ['desc', 'desc', 'asc']);
+    if (members) {
+      const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
+      return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.name)], ['desc', 'desc', 'asc']);
+    }
+    return [];
   }
 
   addFields(member): IGroupMember {
-    member.title = _.get(member, 'name') || _.get(member, 'username') || _.get(member, 'userName');
+    member.title = _.get(member, 'name') || _.get(member, 'userName');
     member.initial = _.get(member, 'title[0]');
     member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
     member.isAdmin = _.get(member, 'role') === 'admin';
@@ -98,6 +105,10 @@ export class GroupsService {
     return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
   }
 
+  getUserData(memberId: string) {
+    return this.userCservice.checkUserExists({key: 'email', value: memberId}, '');
+  }
+
   set groupData(group: IGroupCard) {
     this._groupData = this.addGroupFields(group);
   }
@@ -114,12 +125,20 @@ export class GroupsService {
     this.membersList.emit(members);
   }
 
-  addTelemetry(eid: string, routeData, groupId?: string) {
+  goBack() {
+    if (this.navigationhelperService['_history'].length <= 1) {
+      this.router.navigate([MY_GROUPS]);
+    } else {
+      this.navigationhelperService.goBack();
+    }
+  }
+
+  addTelemetry(eid: string, routeData, cdata, groupId?: string) {
 
     const interactData = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
-        cdata: []
+        cdata: cdata
       },
       edata: {
         id: eid,
