@@ -63,9 +63,13 @@
   z-index: 99;
 }
 .chapter-box {
-  border: 0.03125rem solid var(--primary-300);
-  padding: calculateRem(16px);
+  border-bottom: .0625rem solid var(--gray-100);
+  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
+  &:last-child{
+    border-bottom: 0px solid var(--gray-100);
+    padding-bottom:0px;
+  }
 }
 
 

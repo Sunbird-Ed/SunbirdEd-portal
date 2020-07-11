@@ -4,7 +4,8 @@ import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-course-info',
-  templateUrl: './course-info.component.html'
+  templateUrl: './course-info.component.html',
+  styleUrls: ['./course-info.component.scss']
 })
 export class CourseInfoComponent implements OnInit {
 
