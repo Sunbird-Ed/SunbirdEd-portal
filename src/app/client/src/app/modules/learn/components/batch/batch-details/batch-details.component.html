@@ -31,9 +31,9 @@
 <!-- create batch -->
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor">
     <sui-accordion-panel [isOpen]="true">
-        <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-            {{resourceService?.frmelmnts?.lbl?.batches}}
-            <i class="chevron down icon ml-auto"></i>
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
+            <i class="chevron down icon"></i>
         </div>
         <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
             <div class="batch-details">
@@ -93,9 +93,9 @@
 <!-- Leave batch card -->
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo">
     <sui-accordion-panel [isOpen]="false">
-        <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-            {{resourceService.frmelmnts.lbl.batchdetails}}
-            <i class="chevron down icon ml-auto"></i>
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
+            <i class="chevron down icon"></i>
         </div>
         <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
             <div class="batch-details">
@@ -115,7 +115,6 @@
                         (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
                         [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
                 </div>
-                <div class="mb-16">
                     <div class="batch-details__created mt-8 fsmall">
                         <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
                             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
@@ -124,7 +123,6 @@
                             {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
                         </span>
                     </div>
-                </div>
             </div>
         </div>
     </sui-accordion-panel>
