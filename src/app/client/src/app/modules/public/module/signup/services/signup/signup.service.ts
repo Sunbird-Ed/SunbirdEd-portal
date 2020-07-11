@@ -20,6 +20,14 @@ export class SignupService {
     return this.learnerService.post(options);
   }
 
+  generateOTPforAnonymousUser(data, captchaResponse) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OTP.ANONYMOUS.GENERATE + '?captchaResponse=' + captchaResponse,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
+
   verifyOTP(data) {
     const options = {
       url: this.configService.urlConFig.URLS.OTP.VERIFY,

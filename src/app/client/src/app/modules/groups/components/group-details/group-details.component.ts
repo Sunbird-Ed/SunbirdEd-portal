@@ -5,9 +5,8 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES  } from '../../interfaces';
-import { IGroupMember } from '../../interfaces/group';
-
+import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember  } from '../../interfaces';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -21,6 +20,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   showActivityList = false;
   showFilters = false;
+  telemetryImpression: IImpressionEventInput;
   members: IGroupMember [] = [];
 
   config: IGroupMemberConfig = {
@@ -46,6 +46,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getGroupData();
     });
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
   getGroupData() {
@@ -71,6 +72,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.addActivityModal.deny();
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
   }
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

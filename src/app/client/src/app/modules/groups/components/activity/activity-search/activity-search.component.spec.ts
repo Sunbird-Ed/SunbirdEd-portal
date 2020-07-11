@@ -183,4 +183,13 @@ describe('ActivitySearchComponent', () => {
     component.search();
     expect(router.navigate).toHaveBeenCalledWith([]);
   });
+
+  it('should call addActivity', () => {
+    const router = TestBed.get(Router);
+    const event = { data: { identifier: 'do_234324446565' } };
+    component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
+    component.addActivity(event);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_234324446565'],
+      { queryParams: { groupId: 'adfddf-sdsds-wewew-sds' } });
+  });
 });

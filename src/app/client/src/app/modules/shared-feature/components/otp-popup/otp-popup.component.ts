@@ -61,7 +61,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
   }
 
-  resendOtpEnablePostTimer(){
+  resendOtpEnablePostTimer() {
     this.counter = 20;
     this.disableResendButton = false;
     this.enableResendButton = false;

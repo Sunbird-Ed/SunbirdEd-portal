@@ -1,3 +1,4 @@
+import { TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -12,51 +13,74 @@ import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import * as _ from 'lodash-es';
+import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;
   configureTestSuite();
-  const fakeActivatedRoute = {};
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
+
   const resourceBundle = {
     messages: {
-      smsg: {m002: ''},
-      emsg: {m003: ''}
+      smsg: { m002: '' },
+      emsg: { m003: '' }
     },
     frmelmnts: {
       lbl: {
-        createGroup: 'create group'
+        createGroup: 'create group',
+        you: 'You'
       }
     }
   };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url: '/my-groups';
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupHeaderComponent ],
+      declarations: [GroupHeaderComponent],
       imports: [SuiModule, CommonConsumptionModule, SharedModule.forRoot(), HttpClientModule, RouterTestingModule],
-      providers: [  { provide: ResourceService, useValue: resourceBundle},
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        {provide: APP_BASE_HREF, useValue: '/'},
-        { provide: Router, useClass: RouterStub }],
+      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      { provide: APP_BASE_HREF, useValue: '/' },
+      { provide: Router, useClass: RouterStub },
+      TelemetryService,
+    ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
-    component.groupData = {id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
-    members: [{createdBy: 'user_123', name: 'user123', role: 'admin'}]};
+    component.groupData = {
+      id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
+      members: [{ createdBy: 'user_123', name: 'user123', role: 'admin' }]
+    };
+    spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
+    spyOn(component['groupService'], 'addTelemetry');
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    component.groupData['isCreator'] = true;
     expect(component).toBeTruthy();
     component.ngOnInit();
     expect(component.creator).toEqual('You');
+  });
+
+  it('should set creator name', () => {
+    component.groupData = {
+      isAdmin: false,
+      name: 'Test',
+      createdBy: 'abcd-pqr-xyz',
+      id: 'pop-wer',
+      members: [{ createdBy: 'abcd-pqr-xyz', name: 'Admin user' }]
+    };
+    component.ngOnInit();
+    expect(component.creator).toEqual('Admin user');
   });
 
   it('should make showModal TRUE', () => {
@@ -71,7 +95,7 @@ describe('GroupHeaderComponent', () => {
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
     spyOn(component, 'toggleModal');
-    spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of (true));
+    spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
     component.deleteGroup();
     expect(component.toggleModal).toHaveBeenCalledWith(false);
@@ -79,33 +103,38 @@ describe('GroupHeaderComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       component['groupService'].deleteGroupById('123').subscribe(response => {
-      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
+        expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
       });
     });
   }));
 
-  it ('should route to create-edit-group', () => {
+  it('should route to create-edit-group', () => {
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
     _.get(component.groupData, 'id'), CREATE_GROUP]);
   });
 
-  it ('show call goBack', () => {
+  it('show call goBack', () => {
     spyOn(component['navigationHelperService'], 'goBack');
     component.goBack();
     expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
   });
 
-  it ('show change dropdownMenuContent', () => {
+  it('show change dropdownMenuContent', () => {
     component.dropdownContent = true;
     component.dropdownMenu();
     expect(component.dropdownContent).toBeFalsy();
   });
 
-  it ('show change dropdownMenuContent', () => {
+  it('show change dropdownMenuContent', () => {
     component.showMemberPopup = false;
     component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
+  });
+
+  it('should call addTelemetry', () => {
+    component.addTelemetry('ftu-popup');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
   });
 
 });

@@ -7,6 +7,7 @@ import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,10 @@ export class CourseConsumptionService {
   updateContentConsumedStatus = new EventEmitter<any>();
   launchPlayer = new EventEmitter<any>();
   updateContentState = new EventEmitter<any>();
+  showJoinCourseModal = new EventEmitter<any>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
-    private toasterService: ToasterService, private resourceService: ResourceService) { }
+    private toasterService: ToasterService, private resourceService: ResourceService, private router: Router) { }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
@@ -115,4 +117,18 @@ getAllOpenBatches(contents) {
     this.toasterService.error(this.resourceService.messages.emsg.m0003);
   }
 }
+
+  setPreviousAndNextModule(courseHierarchy: {}, collectionId: string) {
+    if (_.get(courseHierarchy, 'children')) {
+      let prev;
+      let next;
+      const children = _.get(courseHierarchy, 'children');
+      const i = _.findIndex(children, (o) => o.identifier === collectionId);
+      // Set next module
+      if (i === 0 || i - 1 !== children.length) { next = children[i + 1]; }
+      // Set prev module
+      if (i > 0) { prev = children[i - 1]; }
+      return { prev, next };
+    }
+  }
 }

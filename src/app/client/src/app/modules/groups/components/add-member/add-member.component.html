@@ -1,6 +1,6 @@
 <app-back-button></app-back-button>
 
-<div class="ui container">
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-g mt-24">
     <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
       <div class="sb-bg-color-white p-24">
@@ -12,7 +12,7 @@
             <div class="w-100">
               <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
                 <span class="text-right d-flex font-weight-normal ml-16">{{resourceService?.frmelmnts?.lbl?.whatInstanceId  | interpolate:'{instance}': instance}}
-                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true)"><svg class="icon icon-svg--primary">
+                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true);addTelemetry('member-ftu-popup')"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
                 </span>

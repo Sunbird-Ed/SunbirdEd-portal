@@ -24,6 +24,15 @@ export interface IMember {
   ];
 }
 
+export interface IMember {
+  members: [
+    {
+      userId: string;
+      role: string;
+    }
+  ];
+}
+
 export interface IGroupUpdate {
   name: string;
   membershipType?: GroupMembershipType;
@@ -40,9 +49,10 @@ export interface IGroupCard {
   cardTitleColor?: any;
   isLoading?: boolean;
   theme?: string;
-  isAdmin?: any;
+  isAdmin?: boolean;
   initial?: string;
   id: string;
+  isCreator?: boolean;
 }
 export interface IGroupSearchRequest {
   filters: {

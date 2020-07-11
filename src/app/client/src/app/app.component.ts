@@ -188,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
     this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
-  
+
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
@@ -245,7 +245,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.showUserTypePopup = !localStorage.getItem('userType');
           }
         }
-      })
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
       this.showUserTypePopup = false;
@@ -314,14 +314,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-    this.userService.userData$.subscribe((user: IUserData) => {
       if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
         _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
         this.showTermsAndCondPopUp = true;
       } else {
         this.checkFrameworkSelected();
       }
-    });
   }
   public getOrgDetails() {
     const slug = this.userService.slug;

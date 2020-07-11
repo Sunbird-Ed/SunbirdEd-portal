@@ -67,7 +67,7 @@
                 <span class="icon phone-code" *ngIf="field.code === 'phone'">+91-</span>
                 <input class="sb-form-control selection ui dropdown " type="{{field.inputType}}"
                   placeholder="{{field.description}}"
-                  [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'phone'}"
+                       [ngClass]="{'is-invalid': (validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'phone'}"
                   formControlName="{{field.code}}" name="code">
 
                 <!-- success icon -->
@@ -76,9 +76,14 @@
 
                 <!-- error icon -->
                 <div class="warning-icon"
-                  *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
+                     *ngIf="(validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
                   <img src="./assets/images/warning-icon.svg" width="20px">
                 </div>
+
+                <div><label class="font-weight-normal invalid-msg"
+                            *ngIf="validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified">
+                  {{resourceService.frmelmnts?.lbl?.pleaseValidateYour}} {{field.label | lowercase}}
+                </label></div>
 
                 <div *ngFor="let validation of field.validation">
                   <label class="font-weight-normal invalid-msg"

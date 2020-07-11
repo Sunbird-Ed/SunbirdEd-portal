@@ -545,12 +545,17 @@
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
 
-"@project-sunbird/common-consumption@^3.1.7":
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.7.tgz#0748bdf356561c520a1279718b472b59457fa3fa"
-  integrity sha512-QWEArCTBwsExDhqYpTJSziSAJZ4xXANSfdZI4KG87I4OfiJ8R0wa5GWpJq9opnyTAHJo4J+n+Fu8qUZUMz9+PQ==
+"@project-sunbird/common-consumption@^3.1.8":
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.8.tgz#a65644223ec601b1761426bdf119dd715572cc50"
+  integrity sha512-ua4/MuCH2KeqZvw5Aa4P9mUQuYUK1j4H6GvLS8VNvR8PGZP4Mdt1Sqc3bmT/YGGrN2W9/rAjOgDkzvVV7p8ejA==
   dependencies:
     tslib "^1.9.0"
+
+"@project-sunbird/sb-styles@~0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.1.tgz#4c61d0ddcfc32dc95c4389f587fba98182c6bcb9"
+  integrity sha512-FqL3/prg39YfvkTz2U7221eCEjGHrdbCrt7m4CGAz7thbt9cwRNINRNxWsAzsqpUXky0SAmyjahmRzg8gaJ9Dg==
 
 "@project-sunbird/telemetry-sdk@^0.0.26":
   version "0.0.26"
@@ -2563,11 +2568,6 @@ commander@~2.8.1:
   integrity sha1-Br42f+v9oMMwqh4qBy09yXYkJdQ=
   dependencies:
     graceful-readlink ">= 1.0.0"
-
-common-consumption-styles@0.0.16:
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/common-consumption-styles/-/common-consumption-styles-0.0.16.tgz#05428724f4bb4ffd38a5787d69964a739889fcf6"
-  integrity sha512-SKqlrpdr3AyRk9BZzwB/B381Bpa7y0Vb6wqJK8JM53gg1Gbuv6prqC86aK62SUgBh9o8nvvkTobGdCHeZPQkEg==
 
 commondir@^1.0.1:
   version "1.0.1"

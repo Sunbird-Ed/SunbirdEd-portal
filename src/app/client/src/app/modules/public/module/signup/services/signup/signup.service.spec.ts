@@ -7,6 +7,22 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SignupService', () => {
+  const generateOtpData = {
+    'id': 'api.otp.generate',
+    'ver': 'v1',
+    'ts': '2020-01-08 07:49:17:041+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': 'SUCCESS'
+    }
+  };
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,4 +36,15 @@ describe('SignupService', () => {
     const learnerService = TestBed.get(LearnerService);
     expect(service).toBeTruthy();
   }));
+
+  it('should call generate API for anonymous', () => {
+    const signupService = TestBed.get(SignupService);
+    const learnerService = TestBed.get(LearnerService);
+    const params = { 'request': { 'key': '1242142', 'type': 'phone' } };
+    spyOn(learnerService, 'post').and.returnValue(observableOf(generateOtpData));
+    signupService.generateOTPforAnonymousUser(params, 'G-cjkdjflsfkja');
+    const options = { url: 'anonymous/otp/v1/generate' + '?captchaResponse=' + 'G-cjkdjflsfkja', data: params };
+    expect(learnerService.post).toHaveBeenCalledWith(options);
+  });
+
 });

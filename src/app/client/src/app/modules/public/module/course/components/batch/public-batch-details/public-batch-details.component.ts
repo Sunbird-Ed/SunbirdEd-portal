@@ -1,6 +1,6 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { CourseBatchService } from '@sunbird/learn';
+import { CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
@@ -40,11 +40,18 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
-    public activatedRoute: ActivatedRoute) {
+    public activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
   ngOnInit() {
+    this.courseConsumptionService.showJoinCourseModal
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((data) => {
+      this.baseUrl = `/learn/course/${this.courseId}`;
+      this.showLoginModal = data;
+    });
+
     this.getAllBatchDetails();
     this.setTelemetryData();
   }
