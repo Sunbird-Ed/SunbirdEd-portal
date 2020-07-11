@@ -33,11 +33,11 @@ export class CsLibInitializerService {
           },
           services: {
               groupServiceConfig: {
-                apiPath: '/api/group/v1',
+                apiPath: '/learner/group/v1',
                 dataApiPath: '',
               },
               userServiceConfig: {
-                apiPath: '/api/user/v2',
+                apiPath: '/learner/user/v2',
               }
           }
       });
