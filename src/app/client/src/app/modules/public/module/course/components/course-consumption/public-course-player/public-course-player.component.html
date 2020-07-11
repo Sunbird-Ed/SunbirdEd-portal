@@ -2,27 +2,6 @@
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g py-16">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
-
-        <!-- Course details for mobile view -->
-        <div class="sb-bg-color-white p-8 mb-16 mobile only"
-          *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
-            <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
-          </div>
-        </div>
-
-        <ng-template #noMobileCertificate>
-          <div class="sb-bg-color-white p-8 mb-16 mobile only">
-            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
-              <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span
-                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
-            </div>
-          </div>
-        </ng-template>
-
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
           <h4 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h4>
@@ -117,24 +96,6 @@
         </div>
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
-
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
-          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
-            <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
-          </div>
-        </div>
-
-        <ng-template #noCertificate>
-          <div class="sb-bg-color-white p-8 mb-16 computer only">
-            <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
-              <img src="assets/images/certificate-icon.png" alt="Certificate">
-              <span
-                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
-            </div>
-          </div>
-        </ng-template>
 
         <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy"
           (allBatchDetails)="getAllBatchDetails($event)">
