@@ -77,7 +77,7 @@ describe('GroupHeaderComponent', () => {
       name: 'Test',
       createdBy: 'abcd-pqr-xyz',
       id: 'pop-wer',
-      members: [{ createdBy: 'abcd-pqr-xyz', name: 'Admin user' }]
+      members: [{ userId: 'abcd-pqr-xyz', createdBy: 'abcd-pqr-xyz', userName: 'Admin user' }]
     };
     component.ngOnInit();
     expect(component.creator).toEqual('Admin user');
