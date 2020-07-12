@@ -140,6 +140,8 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals(req) {
+  console.log('************************')
+  console.log(envHelper.sunbird_enable_sso)
   const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
@@ -186,6 +188,7 @@ function getLocals(req) {
   locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
   locals.botConfigured = envHelper.sunbird_bot_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
+  locals.enableSSO = envHelper.sunbird_enable_sso;
   return locals
 }
 

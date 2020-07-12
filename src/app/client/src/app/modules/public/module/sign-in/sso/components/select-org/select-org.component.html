@@ -5,6 +5,11 @@
       <div class="d-flex flex-jc-center mb-16">
         <img class="image centered" alt={{tenantInfo.tenantName}} height="56" src="{{tenantInfo.logo}}">
       </div>
+        <div *ngIf="enableSSO.toLowerCase() === 'false'" class="title mt-16">
+          <p>Login with State System is temporarily unavailable.</p>
+          <p> Please try again later.</p>
+        </div>
+        <div *ngIf="enableSSO.toLowerCase() === 'true'">
         <div class="title mt-8">{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}</div>
         <sui-select class="d-flex selection my-16"
           labelField="name" valueField="loginUrl" name="state" [(ngModel)]="selectedOrg" (ngModelChange)="handleOrgChange($event)" placeholder="{{ resourceService?.frmelmnts?.lbl?.sltstate || 'Select your State'}}">
@@ -13,6 +18,7 @@
         <button appTelemetryInteract [telemetryInteractEdata]="submitOrgInteractEdata"
           [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary w-100"
           tabindex="0" (click)="handleOrgSelection($event)">{{ resourceService?.frmelmnts?.btn?.submit || 'Submit'}}</button>
+      </div>
       </div>
     </div>
   </div>
