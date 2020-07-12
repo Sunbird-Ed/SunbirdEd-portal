@@ -12,8 +12,8 @@
     margin-right: 0;
   }
   .btn-group button.active {
-    background: #024a93;
-    color: #ffffff;
+    background: var(--primary-color);
+    color: var(--white);
   }
 
   .custom-image img {

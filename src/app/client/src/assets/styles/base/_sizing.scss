@@ -43,3 +43,23 @@ $width: "100" 100%,
   max-width: auto !important;
 }
 /* sizing styles ends */
+
+/* rotate classes */
+.rotate-90{
+  transform: rotate(-90deg);
+}
+.rotate90{
+  transform: rotate(90deg);
+}
+.rotate180{
+  transform: rotate(180deg);
+}
+.rotate-180{
+  transform: rotate(-180deg);
+}
+.rotate-45{
+  transform: rotate(-45deg);
+}
+.rotate45{
+  transform: rotate(45deg);
+}

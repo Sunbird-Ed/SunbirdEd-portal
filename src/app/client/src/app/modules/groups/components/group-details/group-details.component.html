@@ -1,4 +1,8 @@
-<div *ngIf="groupData" [appTelemetryImpression]="telemetryImpression">
+<div class="ui container" *ngIf="isLoader" > 
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
   <app-group-header [groupData]="groupData"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24">

@@ -28,13 +28,13 @@
                         <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
                         </h5>
                         <!-- Textbook Rating with share icon -->
-                        <div class="textbook__rating mt-4">
+                        <div class="textbook__rating d-flex flex-ai-center">
                             <sui-rating class="ui star rating" [isReadonly]="true"
                                 [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
                             <button (click)="onShareLink()"
-                                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8">
-                                <i class="icon-svg icon-svg--xxs icon-share mr-8"><svg class="icon icon-svg--primary">
+                                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#share"></use>
                                   </svg></i>
                                 {{resourceService?.frmelmnts?.lbl?.share}}

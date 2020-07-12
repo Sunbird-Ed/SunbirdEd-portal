@@ -423,3 +423,9 @@ $btnSquaresizes: "xs"1.5rem 1.5rem 1rem null,
 *[lang="hi"] .sb-btn-normal {
   line-height: 1.5;
 }
+
+.sb-btn-icon-fix {
+  display:flex;
+  align-items: center;
+  line-height: normal;
+}
