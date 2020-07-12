@@ -156,7 +156,10 @@ let envVariables = {
     COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
     CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
     GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
-  }
+  },
+
+  // Temporary Variable
+  sunbird_enable_sso: env.sunbird_enable_sso
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
