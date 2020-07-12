@@ -140,8 +140,6 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals(req) {
-  console.log('************************')
-  console.log(envHelper.sunbird_enable_sso)
   const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
