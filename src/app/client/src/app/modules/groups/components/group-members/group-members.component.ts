@@ -114,6 +114,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   onActionConfirm(event: any) {
+    /* istanbul ignore else */
     if (event.action) {
       switch (event.action) {
         case 'promoteAsAdmin':
@@ -168,7 +169,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTelemetry (id) {
+  addTelemetry(id) {
     this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
