@@ -28,13 +28,15 @@
                         <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
                         </h5>
                         <!-- Textbook Rating with share icon -->
-                        <div class="textbook__rating mt-4">
-                            <sui-rating class="ui star rating mr-16" [isReadonly]="true"
+                        <div class="textbook__rating d-flex flex-ai-center">
+                            <sui-rating class="ui star rating" [isReadonly]="true"
                                 [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
                             <button (click)="onShareLink()"
-                                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8">
-                                <i class="blue share alternate icon"></i>
+                                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                                  </svg></i>
                                 {{resourceService?.frmelmnts?.lbl?.share}}
                             </button>
                         </div>
@@ -42,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course" style="align-self: center;">
+            <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course">
                 <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
                     <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
                         (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>

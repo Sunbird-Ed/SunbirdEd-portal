@@ -1,11 +1,11 @@
 <!-- Accordion and batch card section start -->
 <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g py-16">
+    <div class="sb-course-details sb-g sb-g--gap24 py-16">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
 
         <!-- Course details for mobile view -->
-        <div class="sb-bg-color-white p-8 mb-16 mobile only"
+        <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
           *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
@@ -22,7 +22,15 @@
                 class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
+
+        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+          </div>
+        </div>
 
         <!-- Course details displayed on top when course is not enrolled -->
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
@@ -33,12 +41,12 @@
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
               {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-secondary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
               (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
@@ -48,17 +56,23 @@
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)">
                 <sb-accordion-header class="sb-bg-color-gray-0">
-                  <i class="icon-svg icon-svg--md icon-tick mr-8"
+                  <i class="icon-svg icon-svg--sm icon-tick mr-8"
                     *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
                     </svg>
                   </i>
+                  <!-- To be integrated -->
+                  <!-- <div class="progress-circle progress-circle--sm mr-8" data-percentage="75" *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
+                    <svg class="progress-circle__svg" viewport="0 0 2000 2000">
+                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
+                      <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
+                    </svg>
+                  </div> -->
                   {{item?.name}}
                 </sb-accordion-header>
                 <sb-accordion-body>
-                  <div class="chapter-box sb-g">
-                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
+                  <div class="chapter-box">
                       <div *ngIf="item;else noContent">
                         <div
                           *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
@@ -70,19 +84,17 @@
                         </div>
                         <div *ngIf="item?.children?.length">
                           <div *ngFor="let child of item?.children">
-                            <div>
                               <sb-toc-child-item [childData]="child"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType">
                               </sb-toc-child-item>
-                            </div>
                           </div>
                         </div>
                       </div>
                       <ng-template #noContent>
                         <div class="heading">{{noContentMessage}}</div>
                       </ng-template>
-                    </section>
+                 
                   </div>
                 </sb-accordion-body>
               </sb-accordion-item>
@@ -96,7 +108,7 @@
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
+        <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -112,7 +124,15 @@
                 class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
-        </ng-template>
+        </ng-template> -->
+
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+          </div>
+        </div>
 
         <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup">
@@ -120,9 +140,9 @@
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          <div class="fsmall mt-8" *ngIf="progress < 100 && courseHierarchy.certTemplate">
+          <!-- <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">
             {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
-          </div>
+          </div> -->
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
@@ -167,7 +187,7 @@
   <div class="ui container">
     <div class="textbook py-16 d-flex flex-ai-center">
       <div class="textbook__details d-flex flex-ai-center">
-        <img src="./assets/images/book.png" class="textbook__bookimg" alt="textbook">
+        <img src="./assets/images/book.png" class="textbook__bookimg" alt="">
         <div class="ml-8 textbook__heading">
           <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">TN X SCIENCE EM ALL ONE MARKS COLLECTIONS</h5>
           <div class="textbook__rating">

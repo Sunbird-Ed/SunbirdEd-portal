@@ -4,21 +4,25 @@
 
 :host {
   .header-shadow {
-    min-height: 80px;
+    min-height: calculateRem(80px);
     background-color: var(--rc-FAFAFA);
     box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
     z-index: 99;
     position: relative;
   }
   .chapter-box {
-    border: 0.03125rem solid var(--primary-300);
-    padding: 16px;
-    background: var(--gray-0);
+    border-bottom: .0625rem solid var(--gray-100);
+    padding: 0 calculateRem(16px);
+    &:last-child{
+      border-bottom: 0px solid var(--gray-100);
+    }
   }
   .side-toc-content {
-    max-height: 100vh;
-    overflow-y: scroll;
+    max-height: calc(100vh - 320px);
+    overflow-y: auto;
+    padding-bottom: calculateRem(24px);
   }
+
   //sbchapter css
   .sbchapter {
     border-bottom: calculateRem(1px) solid var(--rc-dddddd);
@@ -93,7 +97,7 @@
   .modulebtn-divider {
       width: 1px;
       height: 24px;
-      background: #999;
+      background: var(--gray-200);
       display: inline-block;
       margin: 0 8px;
   }
@@ -102,9 +106,9 @@
 
 .textbook {
   &-container {
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--black), 0.25);
       position: relative;
-      background-color: #fafafa;
+      background-color: var(--rc-FAFAFA);
   }
 
   &__details {
@@ -139,8 +143,18 @@
 :host::ng-deep {
   .certified-course__progress {
     .ui.progress .bar {
-      height: 8px !important;
+      height: calculateRem(8px) !important;
       background: var(--secondary-color);
     }
   }
+}
+
+.cc-player__list {
+  background-color: var(--gray-0);
+  padding: 0 calculateRem(16px);
+  box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+}
+
+.certified-course {
+  align-self: center;;
 }

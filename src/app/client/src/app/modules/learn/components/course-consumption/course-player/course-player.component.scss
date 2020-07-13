@@ -63,21 +63,19 @@
   z-index: 99;
 }
 .chapter-box {
-  border: 0.03125rem solid var(--primary-300);
-  padding: calculateRem(16px);
+  border-bottom: .0625rem solid var(--gray-100);
+  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
+  &:last-child{
+    border-bottom: 0px solid var(--gray-100);
+    padding-bottom:0px;
+  }
 }
-
-
-
-
-
-
 
 
 .sb-course-details {
   .certified-course__certificate {
-    background-color: #E5EDF5;
+    background-color: var(--rc-E5EDF5);
   }
 }
 
@@ -88,35 +86,115 @@
         &.ui.dropdown {
           color: var(--primary-color);
           &:not(.button) > .default.text {
-            padding: 6px 0;
+            padding: calculateRem(6px) 0;
             color: var(--primary-color);
           }
         }
         &.ui.selection.dropdown > .dropdown.icon, .ui.selection.dropdown > .search.icon {
-          font-size: 16px;
-          padding: 8px;
+          font-size: calculateRem(16px);
+          padding: calculateRem(8px);
         }
       }
     }
   }
 
-  .sbaccordion__panel-header__title {
-    display: flex !important;
-    align-items: center;
-    padding: 8px 0 !important;
-  }
-}
-:host::ng-deep {
   .certified-course__progress {
     .ui.progress .bar {
-      height: 8px !important;
+      height: calculateRem(8px) !important;
       background: var(--secondary-color);
+    }
+  }
+
+  .sbaccordion.sbaccordion--toc {    
+    .sbaccordion__panel-header__title {
+      display: flex !important;
+      align-items: center;
+      padding: calculateRem(8px) 0 !important;
     }
   }
 }
 
 @include respond-below(sm) {
   .certified-course__btn {
-    margin-top: 8px;
+    margin-top: calculateRem(8px);
+  }
+}
+
+// Progress Circle
+
+$progressCircle:
+xs calculateRem(16px) 4px 10px,
+sm calculateRem(24px) 6px 10px,
+md calculateRem(40px) 12px 10px,
+lg calculateRem(56px) 16px 14px,
+xl calculateRem(72px) 20px 18px,
+xxl calculateRem(88px) 24px 20px;
+@each $size, $shapeSize, $strokeSize, $fontSize in $progressCircle {
+  .progress-circle--#{$size} {
+    height: $shapeSize;
+    width: $shapeSize;
+    .progress-circle__stroke {
+      stroke-width: calculateRem($strokeSize);
+    }
+    span {
+      font-size: calculateRem($fontSize);
+    }
+  }
+}
+.progress-circle {
+  height: calculateRem(32px);
+  width: calculateRem(32px);
+  position: relative;
+  span {
+    position: absolute;
+    font-size: calculateRem(8px);
+    font-weight: bold;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &__svg {
+    border-radius: 50%;
+    height: 100%;
+    transform: scaleX(-1) rotate(-90deg);
+    width: 100%;
+  }
+  &__stroke {
+    fill: none;
+    stroke-width: calculateRem(8px);
+  
+    &:nth-child(1) {
+      stroke: var(--secondary-200);
+    }
+    
+    &:nth-child(2) {
+      stroke: var(--gray-100);
+      stroke-dasharray: 314.1592%;
+    }
+  }
+  &--xs, &--sm {
+    span {
+      display: none;
+    }
+  }
+  @each $size, $shapeSize, $strokeSize, $fontSize in $progressCircle {
+    &.progress-circle--#{$size} {
+      height: #{$shapeSize};
+      width: #{$shapeSize};
+      .progress-circle__stroke {
+        stroke-width: calculateRem($strokeSize);
+      }
+      span {
+        font-size: calculateRem($fontSize);
+      }
+    }
+  }
+  @for $i from 0 to 100 {
+    &[data-percentage="#{$i}"] {
+      .progress-circle__stroke:nth-child(2) {
+        stroke-dashoffset: calc(314.1592% * (#{$i} / 100));
+      }
+    }
   }
 }
