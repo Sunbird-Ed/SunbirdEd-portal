@@ -50,6 +50,7 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "scripts": {
+    "start": "NODE_ENV=production node server.js",
     "server": "gulp update:index:file && node server",
     "validate": "npm ls",
     "precommit": "lint-staged",
@@ -99,6 +100,7 @@
     "googleapis": "45.0.0",
     "helmet": "3.21.2",
     "http-graceful-shutdown": "^2.3.2",
+    "http-proxy": "^1.18.1",
     "http-status-codes": "1.3.0",
     "jsonwebtoken": "7.4.1",
     "kafka-node": "4.1.1",
