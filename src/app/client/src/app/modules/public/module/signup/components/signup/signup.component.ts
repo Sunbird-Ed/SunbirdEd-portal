@@ -325,7 +325,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-
+  
   onSubmitSignUpForm(captchaResponse?) {
     this.disableSubmitBtn = true;
     this.generateOTP(captchaResponse);

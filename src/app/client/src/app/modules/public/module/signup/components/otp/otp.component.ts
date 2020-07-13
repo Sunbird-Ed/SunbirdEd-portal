@@ -43,6 +43,7 @@ export class OtpComponent implements OnInit {
   counter;
   resendOtpCounter = 1;
   maxResendTry = 4;
+  googleCaptchaSiteKey: string;
   isP2CaptchaEnabled: any;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
@@ -63,6 +64,11 @@ export class OtpComponent implements OnInit {
     this.setInteractEvent();
     this.instance = _.upperCase(this.resourceService.instance);
     this.resendOtpEnablePostTimer();
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
     this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
       ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
