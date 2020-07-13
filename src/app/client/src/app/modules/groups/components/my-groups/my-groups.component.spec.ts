@@ -1,4 +1,4 @@
-import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
+import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -6,7 +6,7 @@ import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NO_ERRORS_SCHEMA, inject } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -31,7 +31,7 @@ describe('MyGroupsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
       providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, ResourceService,
         { provide: APP_BASE_HREF, useValue: '/' } ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -60,7 +60,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => of (mockGroupList));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {
-      expect(component.groupList.adminGroups[0].isAdmin).toBeTruthy();
+      expect(component.adminGroupsList[0].isAdmin).toBeTruthy();
     });
   });
 
@@ -68,7 +68,8 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => throwError ({}));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {}, err => {
-      expect(component.groupList).toEqual({adminGroups: [], memberGroups: []});
+      expect(component.adminGroupsList).toEqual([]);
+      expect(component.memberGroupsList).toEqual([]);
     });
   });
 
@@ -95,7 +96,7 @@ describe('MyGroupsComponent', () => {
   });
 
   it('should call addTelemetry', () => {
-    component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot);
+    component.addTelemetry('ftu-popup', '123');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 });

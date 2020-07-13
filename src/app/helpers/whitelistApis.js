@@ -496,6 +496,32 @@ const API_LIST = {
     },
     '/learner/anonymous/otp/v1/generate': {
       checksNeeded: []
+    },
+
+    // Groups related APIs
+    '/learner/group/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/group/v1/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/group/v1/read/:groupId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/group/v1/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/user/v2/exists/:key/:value': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/data/v1/group/activity/agg': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
     }
   },
   URL_PATTERN: [
@@ -512,7 +538,9 @@ const API_LIST = {
     '/learner/course/v1/batch/read/:batchId',
     '/learner/dashboard/v2/progress/course/:batchId',
     '/learner/user/v1/exists/email/:emailId',
-    '/learner/user/v1/exists/phone/:phoneNumber'
+    '/learner/user/v1/exists/phone/:phoneNumber',
+    '/learner/group/v1/read/:groupId',
+    '/learner/user/v2/exists/:key/:value'
   ]
 };
 module.exports = API_LIST;

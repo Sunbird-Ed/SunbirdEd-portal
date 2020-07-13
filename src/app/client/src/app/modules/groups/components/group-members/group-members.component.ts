@@ -1,14 +1,13 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
+import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IGroupMemberConfig, IGroupMember, ADD_MEMBER, GROUP_DETAILS, MY_GROUPS } from '../../interfaces';
-import { GroupsService } from '../../services';
+import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS } from '../../interfaces';
 import { IGroup } from '../../interfaces/group';
-
-
+import { GroupsService } from '../../services';
 
 @Component({
   selector: 'app-group-members',
@@ -41,13 +40,13 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
-    private groupsService: GroupsService
+    private groupsService: GroupsService,
+    private toasterService: ToasterService
   ) { }
 
   ngOnInit() {
-
     const groupData = this.groupsService.groupData;
-    this.members = this.groupsService.addFieldsToMember(groupData.members);
+    this.members = this.groupsService.addFieldsToMember(_.get(groupData, 'members') || []);
     this.memberListToShow = this.members;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
 
@@ -98,7 +97,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addMember() {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupId, ADD_MEMBER]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id') || this.groupId, ADD_MEMBER]);
   }
 
   onModalClose() {
@@ -106,8 +105,72 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     // Handle Telemetry
   }
 
-  onActionConfirm() {
-    // Perform member action
+  getUpdatedGroupData() {
+    this.groupsService.getGroupById(this.groupData.id, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupsService.groupData = groupData;
+      this.groupData = groupData;
+      this.memberListToShow = this.groupsService.addFieldsToMember(_.get(groupData, 'members'));
+    });
+  }
+
+  onActionConfirm(event: any) {
+    /* istanbul ignore else */
+    if (event.action) {
+      switch (event.action) {
+        case 'promoteAsAdmin':
+          this.promoteMember(event.data);
+          break;
+        case 'removeFromGroup':
+          this.removeMember(event.data);
+          break;
+        case 'dismissAsAdmin':
+          this.dismissRole(event.data);
+          break;
+      }
+    }
+  }
+
+  promoteMember(data) {
+    const memberReq = {
+      members: [{
+        userId: _.get(data, 'userId'),
+        role: GroupMemberRole.ADMIN
+      }]
+    };
+    this.groupsService.updateMembers(this.groupId, memberReq).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.getUpdatedGroupData();
+      this.toasterService.success(_.replace(this.resourceService.messages.smsg.promoteAsAdmin, '{memberName}', _.get(data, 'name')));
+    }, error => {
+      this.toasterService.error(_.replace(this.resourceService.messages.emsg.promoteAsAdmin, '{memberName}', _.get(data, 'name')));
+    });
+  }
+
+  removeMember(data) {
+    this.groupsService.removeMembers(this.groupId, [_.get(data, 'userId')]).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.getUpdatedGroupData();
+      this.toasterService.success(_.replace(this.resourceService.messages.smsg.removeMember, '{memberName}', _.get(data, 'name')));
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.removeMember);
+    });
+  }
+
+  dismissRole(data) {
+    const req = {
+      members: [{
+        userId: _.get(data, 'userId'),
+        role: GroupMemberRole.MEMBER
+      }]
+    };
+    this.groupsService.updateMembers(this.groupId, req).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.getUpdatedGroupData();
+      this.toasterService.success(_.replace(this.resourceService.messages.smsg.dissmissAsAdmin, '{memberName}', _.get(data, 'name')));
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.dissmissAsAdmin);
+    });
+  }
+
+  addTelemetry(id) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
   ngOnDestroy() {

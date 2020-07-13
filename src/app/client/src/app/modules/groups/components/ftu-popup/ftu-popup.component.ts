@@ -51,7 +51,7 @@ export class FtuPopupComponent implements OnInit {
   }
 
   addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
 

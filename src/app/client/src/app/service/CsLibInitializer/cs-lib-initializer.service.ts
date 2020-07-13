@@ -26,14 +26,18 @@ export class CsLibInitializerService {
               api: {
                   host: document.location.origin, // default host
                   authentication: {
-                      // userToken: string; // optional
-                      // bearerToken: string; // optional
-                  }
+                  // userToken: string; // optional
+                  // bearerToken: string; // optional
               }
+            }
           },
           services: {
               groupServiceConfig: {
-                apiPath: 'learner/v1/group',
+                apiPath: '/learner/group/v1',
+                dataApiPath: '',
+              },
+              userServiceConfig: {
+                apiPath: '/learner/user/v2',
               }
           }
       });

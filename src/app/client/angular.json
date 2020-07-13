@@ -34,8 +34,8 @@
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "src/assets/styles/styles.scss",
-              "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss"
+              "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
+              "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

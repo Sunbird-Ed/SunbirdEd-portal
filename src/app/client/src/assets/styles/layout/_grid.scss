@@ -23,6 +23,9 @@ $grid_arr: ((xs, $screen_viewport_xs),
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-column-gap: $grid_gutter;
+  &--gap24{
+    grid-column-gap: ($grid_gutter * 1.5);
+  }
 }
 
 @each $label,

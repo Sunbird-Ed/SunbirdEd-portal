@@ -20,18 +20,18 @@
             </svg>
           </i>
         </button>
-        <div class="kabab-menu" id="group-actions" (click)="dropdownMenu()"></div>
+        <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
           <div class="list">
             <button type="button" *ngIf="groupData?.isAdmin"
               class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0"
-              (click)="editGroup()">{{resourceService?.frmelmnts?.lbl?.editGroup}}
+              (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
             </button>
           </div>
           <div class="list">
             <button type="button" *ngIf="groupData?.isCreator"
               class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0 sb-color-error"
-              (click)="toggleModal(true)">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
+              (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
             </button>
           </div>
           <div class="list">
@@ -47,7 +47,7 @@
 </div>
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="toggleModal(false)" #modal *ngIf="showModal">
+  appBodyScroll (dismissed)="toggleModal(false);addTelemetry('close-delete-popup')" #modal *ngIf="showModal">
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
   </div>
@@ -55,8 +55,8 @@
     <p> {{resourceService?.messages?.imsg?.m0082 | interpolate:'{group name}': groupData?.name}} ?</p>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup()">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup();addTelemetry('confirm-delete-group')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false);addTelemetry('cancel-delete-group')">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 </sui-modal>
 
