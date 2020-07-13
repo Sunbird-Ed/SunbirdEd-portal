@@ -126,6 +126,9 @@
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
+  <% if (superAdminSlug) { %>
+    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>

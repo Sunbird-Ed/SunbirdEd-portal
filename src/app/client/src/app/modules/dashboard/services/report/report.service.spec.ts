@@ -56,6 +56,19 @@ describe('ReportService', () => {
     });
   });
 
+  it('should fetchReportById and hashed parameter', (done) => {
+    baseReportService = TestBed.get(BaseReportService);
+    const reportId = '1234-5678';
+    const hash = "sunbird";
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    reportService.fetchReportById(reportId, hash).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/get/${reportId}/${hash}` });
+      expect(res).toBeDefined();
+      done();
+    });
+  });
 
   it('should list all reports', (done) => {
     baseReportService = TestBed.get(BaseReportService);
@@ -97,16 +110,35 @@ describe('ReportService', () => {
     });
 
     it('should return false if user is not REPORT_ADMIN', () => {
-      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ roles: [] });
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: [] });
       const result = reportService.isUserReportAdmin();
       expect(result).toBeFalsy();
     });
 
     it('should return true if user is REPORT_ADMIN', () => {
-      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ roles: ['REPORT_ADMIN'] });
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: ['REPORT_ADMIN'] });
       const result = reportService.isUserReportAdmin();
+      expect(result).toBeTruthy();
+    });
+
+    it('should return true if user is super report admin', () => {
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: ['REPORT_ADMIN'], rootOrg: { slug: "sunbird" } });
+      const result = reportService.isUserSuperAdmin();
+      expect(result).toBeTruthy();
+    });
+
+    it('should return false if the user is not super report admin even if he is report admin', () => {
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: ['REPORT_ADMIN'], rootOrg: { slug: "rj" } });
+      const result = reportService.isUserSuperAdmin();
       expect(result).toBeFalsy();
     });
+
+    it('should return false if the user is not super report admin', () => {
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ userRoles: ['REPORT_VIEWER'], rootOrg: { slug: "sunbird" } });
+      const result = reportService.isUserSuperAdmin();
+      expect(result).toBeFalsy();
+    });
+
   });
 
 
@@ -178,4 +210,218 @@ describe('ReportService', () => {
     expect(result).toBeDefined();
     expect(result).toBe(1588902180000);
   });
+
+  it('should convert a string into base64 hash', () => {
+    const input = "sunbird";
+    const hash = "c3VuYmlyZA==";
+    const result = reportService.convertToBase64(input);
+    expect(result).toBe(hash);
+    expect(result).toBeDefined();
+  });
+
+  it('get string from base 64 string', () => {
+    const parameter = "sunbird";
+    const hash = "c3VuYmlyZA==";
+    const result = reportService['getParameterFromHash'](hash);
+    expect(result).toEqual([parameter]);
+    expect(result.length).toBe(1);
+    expect(result).toBeDefined();
+  });
+
+  it('should check if report is parameterised or not', () => {
+    const reportInput = {
+      isParameterized: true
+    };
+    expect(reportService.isReportParameterized(reportInput)).toBeFalsy();
+    reportInput['parameters'] = [];
+    expect(reportService.isReportParameterized(reportInput)).toBeFalsy();
+    reportInput['parameters'] = ['$slug'];
+    expect(reportService.isReportParameterized(reportInput)).toBeTruthy();
+  });
+
+  it('should publish a non parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    const reportId = '1234-5678';
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    reportService.publishReport(reportId).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/publish/${reportId}` });
+      expect(res).toBeDefined();
+      done();
+    });
+  })
+
+  it('should publish a parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    const reportId = '1234-5678';
+    const hash = "sunbird";
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    reportService.publishReport(reportId, hash).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/publish/${reportId}/${hash}` });
+      expect(res).toBeDefined();
+      done();
+    });
+  })
+
+  it('should retire a non parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    const reportId = '1234-5678';
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    reportService.retireReport(reportId).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/retire/${reportId}` });
+      expect(res).toBeDefined();
+      done();
+    });
+  })
+
+  it('should retire a parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    const reportId = '1234-5678';
+    const hash = "sunbird";
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    reportService.retireReport(reportId, hash).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/retire/${reportId}/${hash}` });
+      expect(res).toBeDefined();
+      done();
+    });
+  });
+
+  it('should get latest report summary for non parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: { summaries: [] } }));
+    const input = {
+      reportId: "test-report"
+    };
+    reportService.getLatestSummary(input).subscribe(res => {
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/summary/${input.reportId}` });
+      done();
+    })
+  });
+
+
+  it('should get latest chart summary for non parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: { summaries: [] } }));
+    const input = {
+      reportId: "test-report",
+      chartId: "chartid"
+    };
+    reportService.getLatestSummary(input).subscribe(res => {
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/summary/${input.reportId}/${input.chartId}` });
+      done();
+    })
+  });
+
+
+  it('should get latest report summary for  parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: { summaries: [] } }));
+    const input = {
+      reportId: "test-report",
+      hash: "hash"
+    };
+    reportService.getLatestSummary(input).subscribe(res => {
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/summary/${input.reportId}?hash=${input.hash}` });
+      done();
+    })
+  });
+
+
+  it('should get latest chart summary for  parameterized report', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    spyOn(baseReportService, 'get').and.returnValue(of({ result: { summaries: [] } }));
+    const input = {
+      reportId: "test-report",
+      chartId: "chartid",
+      hash: "hash"
+    };
+    reportService.getLatestSummary(input).subscribe(res => {
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/summary/${input.reportId}/${input.chartId}?hash=${input.hash}` });
+      done();
+    })
+  });
+
+  it('should handle error if get latest summary api fails or throw error', done => {
+    baseReportService = TestBed.get(BaseReportService);
+    spyOn(baseReportService, 'get').and.returnValue(throwError(""));
+    const input = {
+      reportId: "test-report"
+    };
+    reportService.getLatestSummary(input).subscribe(res => {
+      expect(baseReportService.get).toHaveBeenCalled();
+      expect(baseReportService.get).toHaveBeenCalledWith({ url: `/summary/${input.reportId}` });
+      expect(res).toEqual([]);
+      done();
+    })
+  });
+
+  it('should return hash based on parameters hash', () => {
+    userService = TestBed.get(UserService);
+    const input = {
+      parameters: ["$slug"]
+    }
+    spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ['CBSE'] } });
+    const result = reportService.getParametersHash(input);
+    expect(result).toBeDefined();
+    expect(result).toBe("c3VuYmlyZA==");
+  });
+
+  it('should return resolved parameterized path if the report data source path is parameterized', () => {
+    userService = TestBed.get(UserService);
+    const path = "/reports/fetch/$slug/file.json";
+    spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ['CBSE'] } });
+    const result = reportService.resolveParameterizedPath(path);
+    expect(result).toBeDefined();
+    expect(result).toEqual('/reports/fetch/sunbird/file.json');
+  });
+
+  it('should resolved report data source path as per parameters when hash is not passed', () => {
+    userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ['CBSE'] } });
+    const dataSources = [
+      {
+        id: "usage",
+        path: "/reports/fetch/$slug/file.json"
+      }
+    ];
+
+    const result = reportService.getUpdatedParameterizedPath(dataSources);
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+    expect(result).toEqual([{
+      id: "usage",
+      path: "/reports/fetch/sunbird/file.json"
+    }]);
+  });
+
+  it('should resolved report data source path as with hash value when hashed parameter is passed explicitly', () => {
+    userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ['CBSE'] } });
+    const dataSources = [
+      {
+        id: "usage",
+        path: "/reports/fetch/$slug/file.json"
+      }
+    ];
+    const hash = "cmo="; // equals to rj when converted back to string
+    const result = reportService.getUpdatedParameterizedPath(dataSources, hash);
+    expect(result).toBeDefined();
+    expect(result.length).toBe(1);
+    expect(result).toEqual([{
+      id: "usage",
+      path: "/reports/fetch/rj/file.json"
+    }]);
+  });
+
 });

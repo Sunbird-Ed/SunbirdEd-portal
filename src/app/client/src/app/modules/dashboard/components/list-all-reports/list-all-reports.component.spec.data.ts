@@ -32,66 +32,117 @@ export const mockListApiResponse = {
     'count': 1
 };
 
-export const mockTableStructureForReportViewer = {
-    'table': {
-        'header': [
-            'reportid',
-            'Title',
-            'Description',
-            'Last Updated Date',
-            'Tags',
-            'Update Frequency'
-        ],
-        'data': [
-            [
-                'd0fd5dfb-6bcf-4382-ba6d-fbb07552660d',
-                'DIKSHA Usage Report',
-                'This report provides details of DIKSHA usage',
-                '2020-04-12T00:00:00.000Z',
-                [
-                    'Consumption',
-                    'Engagement'
-                ],
-                'DAILY'
-            ]
-        ],
-        'defs': [],
-        'options': {
-            'searching': true
-        }
-    },
-    'count': 1
-};
 
-export const mockTableStructureForReportAdmin = {
-    'table': {
-        'header': [
-            'reportid',
-            'Title',
-            'Description',
-            'Last Updated Date',
-            'Tags',
-            'Update Frequency',
-            'Status'
-        ],
-        'data': [
-            [
-                'd0fd5dfb-6bcf-4382-ba6d-fbb07552660d',
-                'DIKSHA Usage Report',
-                'This report provides details of DIKSHA usage',
-                '2020-04-12T00:00:00.000Z',
-                [
-                    'Consumption',
-                    'Engagement'
+export const mockParameterizedReports = {
+    'reports': [
+        {
+            "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
+            "title": "Board wise Report",
+            "description": "National Quiz Reports",
+            "authorizedroles": [
+                "ORG_ADMIN"
+            ],
+            "status": "draft",
+            "type": "public",
+            "createdon": "2020-07-07T13:06:47.847Z",
+            "updatedon": "2020-07-07T13:06:47.847Z",
+            "createdby": "ravinder kumar",
+            "reportconfig": {
+                "id": "national_quiz_reports",
+                "label": "National Quiz Reports",
+                "table": {
+                    "valuesExpr": "tableData",
+                    "columnsExpr": "keys"
+                },
+                "title": "National Quiz Reports",
+                "charts": [
+                    {
+                        "id": "first",
+                        "options": {
+                            "title": {
+                                "text": "Daily Quiz Plays- by Mode",
+                                "display": true,
+                                "fontSize": 16
+                            },
+                            "legend": {
+                                "display": true
+                            },
+                            "scales": {
+                                "xAxes": [
+                                    {
+                                        "scaleLabel": {
+                                            "display": true,
+                                            "labelString": "Date"
+                                        }
+                                    }
+                                ],
+                                "yAxes": [
+                                    {
+                                        "scaleLabel": {
+                                            "display": true,
+                                            "labelString": "Content Plays"
+                                        }
+                                    }
+                                ]
+                            },
+                            "tooltips": {
+                                "mode": "x-axis",
+                                "intersect": false,
+                                "bodySpacing": 5,
+                                "titleSpacing": 5
+                            },
+                            "responsive": true
+                        },
+                        "datasets": [
+                            {
+                                "fill": false,
+                                "label": "app",
+                                "dataExpr": "prod.diksha.app"
+                            }
+                        ],
+                        "chartType": "line",
+                        "dataSource": {
+                            "ids": [
+                                "first"
+                            ],
+                            "commonDimension": "date"
+                        },
+                        "labelsExpr": "Date"
+                    }
                 ],
-                'DAILY',
-                'live'
-            ]
-        ],
-        'defs': [],
-        'options': {
-            'searching': true
+                "dataSource": [],
+                "description": "National Quiz Reports",
+                "reportLevelDataSourceId": "first"
+            },
+            "templateurl": null,
+            "slug": "sunbird",
+            "reportgenerateddate": "2020-04-12T00:00:00.000Z",
+            "reportduration": {
+                "enddate": "Thu May 7 2020",
+                "startdate": "Thu May 7 2020"
+            },
+            "tags": [
+                "Consumption",
+                "Engagement"
+            ],
+            "updatefrequency": "DAILY",
+            "parameters": [
+                "$board"
+            ],
+            "children": [
+                {
+                    "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
+                    "hashed_val": "Q0JTRQ==",
+                    "status": "live"
+                },
+                {
+                    "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
+                    "hashed_val": "SUNTRQ==",
+                    "status": "live"
+                }
+            ],
+            "isParameterized": true
         }
-    },
-    'count': 1
-};
+    ],
+    count: 1
+}
