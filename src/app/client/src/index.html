@@ -126,14 +126,20 @@
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
-  <% if (p1reCaptchaEnabled) { %>
-    <input type="hidden" id="p1reCaptchaEnabled" value="<%=p1reCaptchaEnabled%>" />
+  <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p1reCaptchaEnabled" value="true" />
+  <% } else { %>
+      <input type="hidden" id="p1reCaptchaEnabled" value="false" />
+  <% } %> 
+  <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="true" />
+  <% } else { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="false" />
   <% } %>
-  <% if (p2reCaptchaEnabled) { %>
-    <input type="hidden" id="p2reCaptchaEnabled" value="<%=p2reCaptchaEnabled%>" />
-  <% } %>
-  <% if (p3reCaptchaEnabled) { %>
-    <input type="hidden" id="p3reCaptchaEnabled" value="<%=p3reCaptchaEnabled%>" />
+  <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
+  <% } else { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="false" />
   <% } %>
   <app-root></app-root>
 </body>
