@@ -96,8 +96,8 @@ describe('GroupsService', () => {
     const service = TestBed.get(GroupsService);
     const data = service.addFields({ userId: '1', role: 'admin', name: 'user' });
     expect(data.userId).toEqual('1');
-    expect(data.title).toEqual('user');
-    expect(data.initial).toEqual('u');
+    expect(data.title).toEqual('User');
+    expect(data.initial).toEqual('U');
   });
 
   it('should call addFields()', () => {
@@ -107,8 +107,8 @@ describe('GroupsService', () => {
     service.groupData = { isAdmin: true };
     const data = service.addFieldsToMember([{ userId: '1', role: 'admin', name: 'user', createdBy: '1' }]);
     expect(data[0]).toEqual({
-      userId: '1', role: 'admin', name: 'user', createdBy: '1', title: 'user', indexOfMember: 0,
-      initial: 'u', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: false,
+      userId: '1', role: 'admin', name: 'user', createdBy: '1', title: 'User', indexOfMember: 0,
+      initial: 'U', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: true,
     });
     expect(service.addFields).toHaveBeenCalledTimes(1);
   });
