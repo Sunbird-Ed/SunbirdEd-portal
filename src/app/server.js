@@ -124,6 +124,8 @@ app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHead
 
 require('./routes/publicRoutes.js')(app) // public api routes
 
+require('./proxy/actionRoutes.js')(app, keycloak) // proxy api routes
+
 require('./proxy/contentEditorProxy.js')(app, keycloak) // proxy api routes
 
 require('./routes/contentRoutes.js')(app) // content api routes
