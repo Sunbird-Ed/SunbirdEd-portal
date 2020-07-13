@@ -307,8 +307,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
    * @since - release-3.0.3
    */
   submitSignupForm() {
-    this.resetGoogleCaptcha();
-    this.captchaRef.execute();
+    if (this.isP1CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.captchaRef.execute();
+    } else {
+      this.onSubmitSignUpForm();
+    }
   }
 
   resolved(captchaResponse: string) {
@@ -322,7 +326,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  onSubmitSignUpForm(captchaResponse) {
+  onSubmitSignUpForm(captchaResponse?) {
     this.disableSubmitBtn = true;
     this.generateOTP(captchaResponse);
   }
