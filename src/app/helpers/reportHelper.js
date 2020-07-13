@@ -248,7 +248,7 @@ const isUserAdmin = (user) => {
 const isUserSuperAdmin = (user) => {
     const isAdmin = isUserAdmin(user);
     if (!isAdmin) return false;
-    return _.get(user, 'rootOrg.slug') === 'sunbird';
+    return _.get(user, 'rootOrg.slug') === envHelper.sunbird_super_admin_slug;
 }
 
 const getReports = (reports, user) => {

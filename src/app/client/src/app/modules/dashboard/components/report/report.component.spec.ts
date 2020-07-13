@@ -20,6 +20,7 @@ describe('ReportComponent', () => {
     params: of({ reportId: 'daily_metrics' }),
     snapshot: {
       params: { reportId: 'daily_metrics' },
+      queryParams: { materialize: false },
       data:
         { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } }
     }
@@ -30,7 +31,10 @@ describe('ReportComponent', () => {
     messages: {
       imsg: {
         reportSummaryAdded: 'Summary Added Successfully',
-        reportPublished: 'Report Published Successfully'
+        reportPublished: 'Report Published Successfully',
+        reportRetired: 'Report Retired Successfully',
+        confirmReportPublish: 'Are you sure you want to publish the report ?',
+        confirmRetirePublish: 'Are you sure you want to retire the report ?'
       },
       emsg: {
         m0076: 'No data available to download ',
@@ -141,13 +145,6 @@ describe('ReportComponent', () => {
     expect(component.showSummaryModal).toBeFalsy();
   });
 
-  it('should toggle confirmation modal', () => {
-    component.toggleConfirmationModal();
-    expect(component.showConfirmationModal).toBeTruthy();
-    component.toggleConfirmationModal();
-    expect(component.showConfirmationModal).toBeFalsy();
-  });
-
   it('should refresh the component', fakeAsync(() => {
     expect(component.showComponent).toBeTruthy();
     component['refreshComponent']();
@@ -169,7 +166,7 @@ describe('ReportComponent', () => {
     spyOn(reportService, 'getLatestSummary').and.returnValue(of(mockLatestReportSummary));
     component['getLatestSummary']('123').subscribe(res => {
       expect(reportService.getLatestSummary).toHaveBeenCalled();
-      expect(reportService.getLatestSummary).toHaveBeenCalledWith({ reportId: '123' });
+      expect(reportService.getLatestSummary).toHaveBeenCalledWith({ reportId: '123', hash: undefined });
       expect(res).toBeDefined();
       expect(res).toEqual([{
         label: 'Report Summary',
@@ -179,23 +176,103 @@ describe('ReportComponent', () => {
     });
   });
 
-  it('should not publish the report when clicked on No in confirmation modal', () => {
-    component.showConfirmationModal = true;
-    spyOn(component, 'toggleConfirmationModal').and.callThrough();
-    spyOn(component['publishBtnStream$'], 'next');
-    component.onPublish(false);
-    expect(component.toggleConfirmationModal).toHaveBeenCalled();
-    expect(component['publishBtnStream$'].next).not.toHaveBeenCalled();
-    expect(component.showConfirmationModal).toBeFalsy();
+
+  describe('should handle confirmation modal events', () => {
+
+    beforeEach(() => {
+      spyOn<any>(component, 'closeConfirmationModal');
+      component.confirmationPopupInput = {
+        title: "Confirm",
+        body: "Are you sure you want to publish the report?",
+        event: "publish"
+      }
+    })
+
+    it('should handle publish event', () => {
+      spyOn(component, 'onPublish');
+      component.confirmationPopupInput['event'] = 'publish';
+      component.handleConfirmationEvent(true);
+      expect(component.onPublish).toHaveBeenCalled();
+      expect(component['closeConfirmationModal']).toHaveBeenCalled();
+    });
+
+    it('should handle retire event', () => {
+      spyOn(component, 'onRetire');
+      component.confirmationPopupInput.event = 'retire';
+      component.handleConfirmationEvent(true);
+      expect(component.onRetire).toHaveBeenCalled();
+      expect(component['closeConfirmationModal']).toHaveBeenCalled();
+    });
+
+    it('should handle false event', () => {
+      component.handleConfirmationEvent(false);
+      expect(component['closeConfirmationModal']).toHaveBeenCalled();
+    })
+
+  })
+
+  it('should publish the non parameterized report when clicked on Yes in confirmation modal', done => {
+    component.report = {};
+    spyOn<any>(component, 'handlePublishBtnStream').and.callThrough();
+    spyOn<any>(component, 'refreshComponent');
+    spyOn(reportService, 'publishReport').and.returnValue(of({}));
+    spyOn(component['publishBtnStream$'], 'next').and.callThrough();
+
+    component['publishBtnStream$'].subscribe(res => {
+      expect(component['publishBtnStream$'].next).toHaveBeenCalled();
+      expect(component['publishBtnStream$'].next).toHaveBeenCalledWith(true);
+      expect(reportService.publishReport).toHaveBeenCalled();
+      expect(reportService.publishReport).toHaveBeenCalledWith("daily_metrics", undefined);
+      expect(component['refreshComponent']).toHaveBeenCalled();
+      expect(component.report.status).toBe('live');
+      done();
+    });
+    component.onPublish(true);
   });
 
-  it('should publish the report when clicked on Yes in confirmation modal', () => {
-    component.showConfirmationModal = true;
-    spyOn(component, 'toggleConfirmationModal').and.callThrough();
-    spyOn(component['publishBtnStream$'], 'next');
-    component.onPublish(true);
-    expect(component.toggleConfirmationModal).toHaveBeenCalled();
-    expect(component['publishBtnStream$'].next).toHaveBeenCalled();
+
+  it('should retire the non parameterized report when clicked on Yes in confirmation modal', done => {
+    component.report = {};
+    component['mergeClickEventStreams']();
+    spyOn<any>(component, 'handleRetireBtnStream').and.callThrough();
+    spyOn<any>(component, 'refreshComponent');
+    spyOn(reportService, 'retireReport').and.returnValue(of({}));
+    spyOn(component['retireBtnStream$'], 'next').and.callThrough();
+    component['retireBtnStream$'].subscribe(res => {
+      expect(component['retireBtnStream$'].next).toHaveBeenCalled();
+      expect(component['retireBtnStream$'].next).toHaveBeenCalledWith(true);
+      expect(reportService.retireReport).toHaveBeenCalled();
+      expect(reportService.retireReport).toHaveBeenCalledWith("daily_metrics", undefined);
+      expect(component['refreshComponent']).toHaveBeenCalled();
+      expect(component.report.status).toBe('retired');
+      done();
+    });
+
+    component.onRetire(true);
+  });
+
+  it('should open confirmation modal when clicked on publish button', () => {
+    component.openConfirmationModal('publish');
+    expect(component.confirmationPopupInput).toEqual({
+      title: "Confirm",
+      body: resourceServiceMockData.messages.imsg.confirmReportPublish,
+      event: 'publish'
+    })
+    expect(component.showConfirmationModal).toBeTruthy();
+  });
+
+  it('should open confirmation modal when clicked on retire button', () => {
+    component.openConfirmationModal('retire');
+    expect(component.confirmationPopupInput).toEqual({
+      title: "Confirm",
+      body: resourceServiceMockData.messages.imsg.confirmRetirePublish,
+      event: 'retire'
+    })
+    expect(component.showConfirmationModal).toBeTruthy();
+  });
+
+  it('should close confirmation modal', () => {
+    component['closeConfirmationModal']();
     expect(component.showConfirmationModal).toBeFalsy();
   });
 

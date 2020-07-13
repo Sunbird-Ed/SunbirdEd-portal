@@ -119,7 +119,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
             const dataSource = _.get(reportConfig, 'dataSource') || [];
             let updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
-            updatedDataSource = this.reportService.getUpdatedParameterizedPath(updatedDataSource, hash);
+            updatedDataSource = this.reportService.getUpdatedParameterizedPath(updatedDataSource, this.hash);
             const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table'), files = _.get(reportConfig, 'files');
             return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
               retry(1),
@@ -428,6 +428,11 @@ export class ReportComponent implements OnInit, AfterViewInit {
       })
     )
   }
+
+  public gotoListPage() {
+    this.router.navigate(['/dashboard/reports']);
+  }
+
 }
 
 

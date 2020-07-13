@@ -10,14 +10,22 @@ import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
 import * as moment from 'moment';
 
-const PRE_DEFINED_PARAMETERS = ["$slug"];
+const PRE_DEFINED_PARAMETERS = ["$slug", "$board"];
 
 @Injectable()
 export class ReportService {
 
+  private _superAdminSlug: String;
+
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
-    private courseProgressService: CourseProgressService, private searchService: SearchService, private frameworkService: FrameworkService) { }
+    private courseProgressService: CourseProgressService, private searchService: SearchService, private frameworkService: FrameworkService) {
+    try {
+      this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
+    } catch (error) {
+      this._superAdminSlug = "sunbird";
+    }
+  }
 
   public fetchDataSource(filePath: string, id?: string | number): Observable<any> {
     return this.usageService.getData(filePath).pipe(
@@ -273,7 +281,7 @@ export class ReportService {
 
   public isUserSuperAdmin(): boolean {
     if (!this.isUserReportAdmin()) return false;
-    return _.get(this.userService, 'userProfile.rootOrg.slug') === 'sunbird'
+    return _.get(this.userService, 'userProfile.rootOrg.slug') === this._superAdminSlug;
   }
 
   public transformHTML(data: any) {
