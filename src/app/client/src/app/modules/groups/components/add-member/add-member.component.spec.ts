@@ -3,7 +3,7 @@ import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, RecaptchaService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
@@ -11,6 +11,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { ActivatedRoute } from '@angular/router';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { By } from '@angular/platform-browser';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -41,11 +44,11 @@ describe('AddMemberComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
-      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule, RecaptchaModule],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
         {provide: APP_BASE_HREF, useValue: '/'},
         { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
-        TelemetryService,
+        TelemetryService, RecaptchaService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -99,16 +102,20 @@ describe('AddMemberComponent', () => {
 
   it('should return is member is already present', () => {
     spyOn(component, 'isExistingMember').and.returnValue(true);
-    component.verifyMember('1');
+    component.memberId = '1';
+    component.captchaResponse = 'captchaToken';
+    component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
   });
 
   it('should return is member is not already present', () => {
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({result: {response: {identifier: '2', name: 'user 2'}}}));
     spyOn(component, 'isExistingMember').and.returnValue(false);
-    component.verifyMember('2');
+    component.memberId = '2';
+    component.captchaResponse = 'captchaToken';
+    component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
-    expect(component['groupsService'].getUserData).toHaveBeenCalledWith('2');
+    expect(component['groupsService'].getUserData).toHaveBeenCalledWith('2', component.captchaResponse);
   });
 
   it('should throw error', () => {
@@ -176,5 +183,25 @@ describe('AddMemberComponent', () => {
     component.addTelemetry('ftu-popup');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
   });
+
+  it('should load re-captcha when googleCaptchaSiteKey is provided', () => {
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeTruthy();
+  });
+
+  it('should reset and execute recaptcha method on click on varify button', () => {
+    spyOn(component, 'onVerifyMember').and.returnValue(true);
+    component.onVerifyMember();
+    expect(component.onVerifyMember).toHaveBeenCalled();
+  });
+
+  it('should resolved captcha responce and call varify method', () => {
+    spyOn(component, 'captchaResolved').and.callThrough();
+    spyOn(component, 'verifyMember').and.callThrough();
+    component.captchaResolved('captchResponceToken');
+    expect(component.captchaResolved).toHaveBeenCalled();
+    expect(component.verifyMember).toHaveBeenCalled();
+  });
+
 
 });

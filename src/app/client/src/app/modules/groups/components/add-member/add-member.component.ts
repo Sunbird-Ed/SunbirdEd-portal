@@ -1,13 +1,15 @@
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ResourceService, ToasterService, RecaptchaService } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
 import { Subject } from 'rxjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
@@ -27,13 +29,18 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  captchaResponse = '';
+  googleCaptchaSiteKey: string;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
     private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute,
     private groupService: GroupsService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    public recaptchaService: RecaptchaService,
+    public telemetryService: TelemetryService
     ) {
   }
 
@@ -45,6 +52,11 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
     if (!this.groupData) {
       this.location.back();
+    }
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
     }
   }
 
@@ -60,10 +72,20 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.reset();
   }
 
-  verifyMember(memberId) {
+  captchaResolved(captchaResponse: string) {
+    this.captchaResponse = captchaResponse;
+    this.verifyMember();
+  }
+
+  onVerifyMember() {
     this.showLoader = true;
-    if (!this.isExistingMember()) {
-      this.groupsService.getUserData(memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
+    this.captchaRef.reset();
+    this.captchaRef.execute();
+  }
+
+  verifyMember() {
+    if (!this.isExistingMember() && this.captchaResponse) {
+      this.groupsService.getUserData(this.memberId, this.captchaResponse).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         if (member.exists) {
           this.verifiedMember = this.groupsService.addFields(member);
           this.showLoader = false;

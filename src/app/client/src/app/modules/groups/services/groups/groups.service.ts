@@ -105,8 +105,8 @@ export class GroupsService {
     return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
   }
 
-  getUserData(memberId: string) {
-    return this.userCservice.checkUserExists({key: 'email', value: memberId}, '');
+  getUserData(memberId: string, captchaToken: string = '') {
+    return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
   set groupData(group: IGroupCard) {
