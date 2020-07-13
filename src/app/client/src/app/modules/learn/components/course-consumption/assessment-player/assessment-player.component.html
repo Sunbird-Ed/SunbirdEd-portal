@@ -16,14 +16,14 @@
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
             (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-            <i class="chevron left icon mr-4"></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
+            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
             (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-            {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="chevron right icon ml-4"></i>
+            {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
           </button>
           <!-- Next Module button -->
         </div>
@@ -46,7 +46,9 @@
               <div class="textbook__rating mt-4">
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-                  <i class="blue share alternate icon"></i>
+                  <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                  </svg></i>
                   {{resourceService?.frmelmnts?.lbl?.share}}
                 </button>
               </div>
@@ -54,7 +56,7 @@
           </div>
         </div>
 
-        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course" style="align-self: center;">
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0">
             <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
@@ -88,8 +90,9 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16">
-        <p class="py-8 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</p>
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
+        <div class="cc-player__list px-0">
+        <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">
           <div *ngFor="let item of courseHierarchy?.children; let index = index;">
             <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
@@ -120,6 +123,7 @@
             (tocCardClick)="onTocCardClick($event)" [type]="cardType">
           </sb-toc-card>
         </div>
+      </div>
       </section>
     </div>
   </div>
@@ -130,4 +134,4 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">
 </app-share-link>
-<app-course-completion *ngIf="showCourseCompleteMessage" [isCertificateAttached]="isCertificateAttached" ></app-course-completion>
+<app-course-completion *ngIf="showCourseCompleteMessage" [isCertificateAttached]="isCertificateAttached" (close)="onCourseCompleteClose()"></app-course-completion>

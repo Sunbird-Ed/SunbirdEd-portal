@@ -6,7 +6,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 @Component({
   selector: 'app-onboard-popup',
   templateUrl: './onboard-popup.component.html',
-  styleUrls: ['./onboard-popup.component.css']
+  styleUrls: ['./onboard-popup.component.scss']
 })
 export class OnboardPopupComponent implements OnInit, OnDestroy {
 

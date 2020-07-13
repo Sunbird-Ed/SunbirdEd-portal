@@ -22,7 +22,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   showFilters = false;
   telemetryImpression: IImpressionEventInput;
   members: IGroupMember [] = [];
-
+  isLoader = true;
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
@@ -50,11 +50,14 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   getGroupData() {
+    this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupService.groupData = groupData;
       this.groupData = groupData;
       this.members = this.groupService.addFieldsToMember(this.groupData.members);
+      this.isLoader = false;
     }, err => {
+      this.isLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }

@@ -67,7 +67,7 @@
                 <span class="icon phone-code" *ngIf="field.code === 'phone'">+91-</span>
                 <input class="sb-form-control selection ui dropdown " type="{{field.inputType}}"
                   placeholder="{{field.description}}"
-                  [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'phone'}"
+                       [ngClass]="{'is-invalid': (validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'phone'}"
                   formControlName="{{field.code}}" name="code">
 
                 <!-- success icon -->

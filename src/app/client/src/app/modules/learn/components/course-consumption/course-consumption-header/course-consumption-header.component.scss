@@ -1,28 +1,15 @@
 @import "./mixins/mixins";
 
-::ng-deep {
-    .ui.tiny.progress .bar {
-        min-width: 0
-    }
-
-    .ui.progress.status.expired .bar {
-        background-color: var(--rc-bdbdbd) !important;
-    }
-
-    .ui.progress .bar {
-        height: calculateRem(6px) !important;
-    }
-}
 
 .back-btn-container {
     z-index: 1;
 
     .modulebtn-divider {
-        width: 1px;
-        height: 24px;
-        background: #999;
+        width: calculateRem(1px);
+        height: calculateRem(24px);
+        background: var(--gray-200);
         display: inline-block;
-        margin: 0 8px;
+        margin: 0 calculateRem(8px);
     }
 }
 
@@ -33,9 +20,9 @@
 
 .textbook {
     &-container {
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+        box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--black), 0.25);
         position: relative;
-        background-color: #fafafa;
+        background-color: var(--rc-FAFAFA);
     }
 
     &__details {
@@ -65,10 +52,6 @@
     &__addbtn {
         white-space: nowrap;
     }
-}
-
-.sb-btn {
- text-transform: none;
 }
 
 @include respond-below(sm) {

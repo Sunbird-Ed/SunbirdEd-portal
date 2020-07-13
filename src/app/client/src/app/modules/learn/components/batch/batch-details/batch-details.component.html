@@ -1,7 +1,7 @@
 <!-- Join Course Table -->
 <sui-modal *ngIf="showJoinModal && !courseMentor" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
     [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #modal>
-    <div class="sb-modal-header">
+    <div class="sb-modal-header font-weight-normal">
         {{resourceService?.frmelmnts?.lbl?.selectBatch}}
     </div>
     <div class="sb-modal-content" *ngIf="showAllBatchList">
@@ -31,9 +31,9 @@
 <!-- create batch -->
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor">
     <sui-accordion-panel [isOpen]="true">
-        <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-            {{resourceService?.frmelmnts?.lbl?.batches}}
-            <i class="chevron down icon ml-auto"></i>
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
+            <i class="chevron down icon"></i>
         </div>
         <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
             <div class="batch-details">
@@ -53,6 +53,9 @@
                                     <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
                                 <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal ml-auto"
                                     (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
+                                    <i class="icon-svg icon-svg--xxs icon-edit mr-4"><svg class="icon icon-svg--primary">
+                                        <use xlink:href="assets/images/sprite.svg#edit"></use>
+                                      </svg></i> 
                                     {{resourceService?.frmelmnts?.lbl?.edit}}
                                 </button>
                             </div>
@@ -90,9 +93,9 @@
 <!-- Leave batch card -->
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo">
     <sui-accordion-panel [isOpen]="false">
-        <div title class="sb-accordion-title fsmall d-flex flex-ai-center">
-            {{resourceService.frmelmnts.lbl.batchdetails}}
-            <i class="chevron down icon ml-auto"></i>
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
+            <i class="chevron down icon"></i>
         </div>
         <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
             <div class="batch-details">
@@ -112,7 +115,6 @@
                         (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
                         [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
                 </div>
-                <div class="mb-16">
                     <div class="batch-details__created mt-8 fsmall">
                         <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
                             {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
@@ -121,7 +123,6 @@
                             {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
                         </span>
                     </div>
-                </div>
             </div>
         </div>
     </sui-accordion-panel>

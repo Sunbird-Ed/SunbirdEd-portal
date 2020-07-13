@@ -2,10 +2,10 @@ import { GroupMembershipType, GroupEntityStatus, GroupActivity, GroupMember } fr
 
 export interface IGroup {
   name: string;
-  description: string;
+  description?: string;
   id: string;
   status: GroupEntityStatus;
-  membershipType: GroupMembershipType;
+  membershipType?: GroupMembershipType;
   createdOn?: string;
   createdBy?: string;
   updatedOn?: string;
@@ -13,15 +13,6 @@ export interface IGroup {
   activities?: GroupActivity[];
   members?: GroupMember[];
   isAdmin: boolean;
-}
-
-export interface IMember {
-  members: [
-    {
-      userId: string;
-      role: string;
-    }
-  ];
 }
 
 export interface IMember {
@@ -53,6 +44,7 @@ export interface IGroupCard {
   initial?: string;
   id: string;
   isCreator?: boolean;
+  memberRole?: string;
 }
 export interface IGroupSearchRequest {
   filters: {

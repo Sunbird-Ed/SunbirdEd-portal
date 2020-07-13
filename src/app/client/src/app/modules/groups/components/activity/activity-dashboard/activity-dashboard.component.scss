@@ -2,7 +2,7 @@
 @import "mixins/mixins";
 
 .content-header {
-  background: #fafafa;
+  background: var(--rc-FAFAFA);
   min-height: calculateRem(14px);
   &__content {
     display: flex;
@@ -13,8 +13,8 @@
     }
   }
   &__img {
-    width: 48px;
-    height: 48px;
+    width: calculateRem(48px);
+    height: calculateRem(48px);
     overflow: hidden;display: flex;
     align-items: center;
     justify-content: center;
@@ -50,105 +50,5 @@
   .no-result-desc {
     font-size: calculateRem(12px);
     color: var(--gray-200);
-  }
-}
-
-// percentage circle loader
-.progress-circle {
-  height: 32px;
-  width: 32px;
-  position: relative;
-  span {
-    position: absolute;
-    font-size: calculateRem(8px);
-    font-weight: bold;
-    margin: 0 auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  &__svg {
-    border-radius: 50%;
-    height: 100%;
-    transform: scaleX(-1) rotate(-90deg);
-    width: 100%;
-  }
-  &__stroke {
-    fill: none;
-    stroke-width: calculateRem(8px);
-    &:nth-child(1) {
-      stroke: var(--secondary-200);
-    }
-    &:nth-child(2) {
-      stroke: var(--gray-100);
-      stroke-dasharray: 314.1592%;
-    }
-  }
-  &--xs,
-  &--sm {
-    span {
-      display: none;
-    }
-  }
-  &--xs {
-    height: calculateRem(16px);
-    width: calculateRem(16px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(4px);
-    }
-  }
-  &--sm {
-    height: calculateRem(24px);
-    width: calculateRem(24px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(6px);
-    }
-  }
-  &--md {
-    height: calculateRem(40px);
-    width: calculateRem(40px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(12px);
-    }
-    span {
-      font-size: calculateRem(10px);
-    }
-  }
-  &--lg {
-    height: calculateRem(56px);
-    width: calculateRem(56px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(16px);
-    }
-    span {
-      font-size: calculateRem(14px);
-    }
-  }
-  &--xl {
-    height: calculateRem(72px);
-    width: calculateRem(72px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(20px);
-    }
-    span {
-      font-size: calculateRem(18px);
-    }
-  }
-  &--xxl {
-    height: calculateRem(88px);
-    width: calculateRem(88px);
-    .progress-circle__stroke {
-      stroke-width: calculateRem(24px);
-    }
-    span {
-      font-size: calculateRem(20px);
-    }
-  }
-  @for $i from 0 to 100 {
-    &[data-percentage="#{$i}"] {
-      .progress-circle__stroke:nth-child(2) {
-        stroke-dashoffset: calc(314.1592% * (#{$i} / 100));
-      }
-    }
   }
 }

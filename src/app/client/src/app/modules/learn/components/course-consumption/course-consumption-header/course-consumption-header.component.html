@@ -30,24 +30,28 @@
             <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
             </h5>
             <!-- Textbook Rating with share icon -->
-            <div class="textbook__rating mt-4">
+            <div class="textbook__rating d-flex flex-ai-center">
 
               <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
                 [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
               <button (click)="onShareLink();sharelinkModal=true;"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8">
-                <i class="blue share alternate icon"></i>
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                  <use xlink:href="assets/images/sprite.svg#share"></use>
+                </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.share}}
               </button>
 
-              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8"
+              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
                 *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
                 appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
                 [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
                 [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
                 title="{{resourceService?.frmelmnts?.lbl?.copy}}">
-                <i class="blue clone outline icon"></i>
+                <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
+                  <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+                </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
             </div>
@@ -64,14 +68,14 @@
 
       </div>
 
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course" style="align-self: center;">
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course">
 
-        <div class="certified-course__btn" *ngIf="groupId">
+        <div class="certified-course__btn" *ngIf="showAddGroup">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-            (click)="addActivityToGroup(); this.logTelemetry('add-to-group', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.groupId}}</button>
+            (click)="addActivityToGroup(); this.logTelemetry('add-to-group', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->
-        <div *ngIf="!groupId">
+        <div *ngIf="!showAddGroup">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
               (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
@@ -82,14 +86,13 @@
               (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
           </div>
 
-          <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0">
-            <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-left-icon-btn"
-              [disabled]="showResumeCourse"
-              (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)"><i
-                class="icon-svg icon-svg--xxs icon-play mr-8"><svg class="icon icon-svg--white">
-                  <use xlink:href="./assets/images/libdemo/sprite.svg#play"></use>
-                </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
-          </div>
+        <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0">
+          <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
+            [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
+            <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#play-continue"></use>
+            </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
+        </div>
 
           <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse"
             appPermission [permission]="dashboardPermission">
