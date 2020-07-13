@@ -430,7 +430,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   public gotoListPage() {
-    this.router.navigate(['/dashboard/reports']);
+    this.router.navigate(['/dashBoard/reports']);
   }
 
 }

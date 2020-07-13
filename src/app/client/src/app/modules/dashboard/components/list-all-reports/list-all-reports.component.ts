@@ -138,7 +138,6 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   public prepareTable(el) {
 
     const renderStatus = (data, type, row) => {
-
       if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
         if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
           data = "live"
@@ -150,21 +149,21 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
           }
         }
       }
-
       const icon = {
-        live: { color: 'secondary', icon: 'check' },
+        live: { color: 'success', icon: 'check' },
         draft: { color: 'primary', icon: 'edit' },
-        retired: { color: 'gray', icon: 'close' },
+        retired: { color: 'warning', icon: 'close' },
         ["partially live"]: { color: 'secondary', icon: 'check' }
       };
-
-      return `<button class="sb-btn sb-btn-${icon[_.toLower(data)].color} sb-btn-normal sb-btn-square">
-      <i class="icon ${icon[_.toLower(data)].icon} alternate"></i><span>${_.startCase(_.toLower(data))}</span></button>`;
+      const status = _.startCase(_.toLower(data));
+      let spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
+      return spanElement;
     };
 
     const renderTags = (data) => {
       if (Array.isArray(data)) {
-        return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${_.startCase(_.toLower(tag))}</div>`);
+        const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), " ");
+        return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
       }
       return _.startCase(_.toLower(data));
     };
@@ -197,7 +196,13 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         }] : []),
         { title: "Report Id", data: "reportid", visible: false },
         { title: "Created On", data: "createdon", visible: false },
-        { title: "Title", data: "title" }, { title: "Description", data: "description" },
+        {
+          title: "Title", data: "title", render: (data, type, row) => {
+            const { title, description } = row;
+            return `<div class="sb-media"><div class="sb-media-body"><h6 class="media-heading ellipsis p-0">
+                  ${title}</h6> <p class="media-description"> ${description}</p></div></div>`
+          }
+        },
         {
           title: "Last Updated Date", data: "reportgenerateddate",
           render: (data) => {
@@ -244,8 +249,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         const id = rowData.reportid;
         row.child(getChildTable(id)).show();
         const childTable = $(`#${id}`).DataTable({
-          paging: false,
-          lengthChange: true,
+          paging: true,
+          lengthChange: false,
           searching: true,
           ordering: false,
           info: false,
