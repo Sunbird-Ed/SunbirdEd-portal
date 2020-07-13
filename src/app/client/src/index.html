@@ -126,13 +126,13 @@
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
-  <% if (p1reCaptchaEnabled.toString()) { %>
+  <% if (p1reCaptchaEnabled) { %>
     <input type="hidden" id="p1reCaptchaEnabled" value="<%=p1reCaptchaEnabled%>" />
   <% } %>
-  <% if (p2reCaptchaEnabled.toString()) { %>
+  <% if (p2reCaptchaEnabled) { %>
     <input type="hidden" id="p2reCaptchaEnabled" value="<%=p2reCaptchaEnabled%>" />
   <% } %>
-  <% if (p3reCaptchaEnabled.toString()) { %>
+  <% if (p3reCaptchaEnabled) { %>
     <input type="hidden" id="p3reCaptchaEnabled" value="<%=p3reCaptchaEnabled%>" />
   <% } %>
   <app-root></app-root>
