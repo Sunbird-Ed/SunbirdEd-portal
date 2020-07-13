@@ -12,6 +12,7 @@ import {CourseConsumptionService, CourseProgressService, CourseBatchService} fro
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 const enrolledCourse = {
   courseSuccessEnroll: {
@@ -69,12 +70,12 @@ describe('CourseConsumptionPageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
         CourseConsumptionService,  { provide: Router, useClass: MockRouter },
-        CourseProgressService, CourseBatchService],
+        CourseProgressService, CourseBatchService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
