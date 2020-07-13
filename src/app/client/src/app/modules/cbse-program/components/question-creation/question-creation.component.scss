@@ -34,7 +34,7 @@
     overflow-x: hidden;
     min-height: calculateRem(300px) !important;
     max-height: calculateRem(300px) !important;
-    padding: 5px;
+    padding: calculateRem(5px);
 }
 
 .mcq-primary-box {
