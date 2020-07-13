@@ -29,14 +29,18 @@ export class IdentifyAccountComponent implements OnInit {
     id: 'SB-13755',
     type: 'Task'
   }];
+  isP1CaptchaEnabled: any;
+
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
     public recaptchaService: RecaptchaService, public telemetryService: TelemetryService) {
-      try {
-        this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-      } catch (error) {
-        this.googleCaptchaSiteKey = '';
-      }
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
   }
 
   ngOnInit() {
@@ -60,8 +64,10 @@ export class IdentifyAccountComponent implements OnInit {
     this.form.controls.identifier.valueChanges.subscribe(val => this.identiferStatus = '');
   }
   handleNext(captchaResponse?: string) {
-    if (captchaResponse) {
+    if (captchaResponse && this.isP1CaptchaEnabled === 'true') {
       this.initiateFuzzyUserSearch(captchaResponse);
+    } else {
+      this.initiateFuzzyUserSearch();
     }
   }
 

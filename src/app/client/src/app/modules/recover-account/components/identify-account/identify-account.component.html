@@ -45,11 +45,11 @@
         </span>
       </div>
     </div>
-    <re-captcha *ngIf="googleCaptchaSiteKey" #captchaRef="reCaptcha" (resolved)="$event && handleNext($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+    <re-captcha *ngIf="isP1CaptchaEnabled === 'true' && googleCaptchaSiteKey" #captchaRef="reCaptcha" (resolved)="$event && handleNext($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
     <button class="sb-btn sb-btn-normal width-100 sb-btn-primary" [disabled]="disableFormSubmit" tabindex="0"
       appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
       [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
-      (click)="googleCaptchaSiteKey ? captchaRef.execute() : handleNext()">
+      (click)="(isP1CaptchaEnabled === 'true' && googleCaptchaSiteKey) ? captchaRef.execute() : handleNext()">
       {{resourceService?.frmelmnts?.lbl?.next}}</button>
   </form>
 </div>

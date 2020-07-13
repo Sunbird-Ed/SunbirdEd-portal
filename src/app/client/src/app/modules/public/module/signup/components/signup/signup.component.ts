@@ -52,6 +52,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   birthYearOptions: Array<number> = [];
   isMinor: Boolean = false;
   formInputType: string;
+  isP1CaptchaEnabled: any;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -105,6 +106,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initiateYearSelecter();
     // disabling the form as age should be selected
     this.signUpForm.disable();
+    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
   }
 
 
@@ -240,7 +243,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  vaidateUserContact(captchaResponse) {
+  vaidateUserContact(captchaResponse?) {
     const value = this.signUpForm.controls.contactType.value === 'phone' ?
       this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value + '?captchaResponse=' + captchaResponse;
@@ -282,16 +285,20 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
    * @since - release-3.0.1
    */
   getReCaptchaToken(inputType: string) {
-    this.resetGoogleCaptcha();
-    this.formInputType = inputType;
-    const emailControl = this.signUpForm.get('email');
-    const phoneControl = this.signUpForm.get('phone');
-    if (inputType === 'email' && emailControl.status === 'VALID' && emailControl.value !== '') {
-       this.signUpForm.controls['uniqueContact'].setValue('');
-      this.captchaRef.execute();
-    } else if (inputType === 'phone' && phoneControl.status === 'VALID' && phoneControl.value !== '') {
-       this.signUpForm.controls['uniqueContact'].setValue('');
-      this.captchaRef.execute();
+    if (this.isP1CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.formInputType = inputType;
+      const emailControl = this.signUpForm.get('email');
+      const phoneControl = this.signUpForm.get('phone');
+      if (inputType === 'email' && emailControl.status === 'VALID' && emailControl.value !== '') {
+         this.signUpForm.controls['uniqueContact'].setValue('');
+        this.captchaRef.execute();
+      } else if (inputType === 'phone' && phoneControl.status === 'VALID' && phoneControl.value !== '') {
+         this.signUpForm.controls['uniqueContact'].setValue('');
+        this.captchaRef.execute();
+      }
+    } else {
+      this.vaidateUserContact();
     }
   }
 

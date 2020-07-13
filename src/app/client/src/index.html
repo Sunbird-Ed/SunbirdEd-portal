@@ -126,6 +126,15 @@
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
+  <% if (p1reCaptchaEnabled.toString()) { %>
+    <input type="hidden" id="p1reCaptchaEnabled" value="<%=p1reCaptchaEnabled%>" />
+  <% } %>
+  <% if (p2reCaptchaEnabled.toString()) { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="<%=p2reCaptchaEnabled%>" />
+  <% } %>
+  <% if (p3reCaptchaEnabled.toString()) { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="<%=p3reCaptchaEnabled%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>
