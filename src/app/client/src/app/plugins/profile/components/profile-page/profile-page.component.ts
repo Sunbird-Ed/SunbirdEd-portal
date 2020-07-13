@@ -1,28 +1,38 @@
-import { ProfileService } from '../../services';
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService, CertRegService } from '@sunbird/core';
+import {ProfileService} from '../../services';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {
-  ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService,
-  NavigationHelperService
+  CertRegService,
+  CoursesService,
+  OrgDetailsService,
+  PlayerService,
+  SearchService,
+  UserService
+} from '@sunbird/core';
+import {
+  ConfigService,
+  IUserData,
+  NavigationHelperService,
+  ResourceService,
+  ServerResponse,
+  ToasterService,
+  UtilService
 } from '@sunbird/shared';
-import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Subscription } from 'rxjs';
-import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
+import {Subscription} from 'rxjs';
+import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService} from '@sunbird/telemetry';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CacheService} from 'ng2-cache-service';
+
 @Component({
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  showSuccessModal = false;
-  showSubmitTeacherDetails = false;
-  showUpdateTeacherDetails = false;
   @ViewChild('profileModal') profileModal;
   @ViewChild('slickModal') slickModal;
   userProfile: any;
   contributions = [];
+  totalContributions: Number;
   attendedTraining: Array<object>;
   roles: Array<string>;
   showMoreRoles = true;
@@ -46,14 +56,18 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCertificateEData: IInteractEventEdata;
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
   submitTeacherDetailsInteractEdata: IInteractEventEdata;
   updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
+  phoneObj: { idType: string, provider: string, id: string };
+  emailObj: { idType: string, provider: string, id: string };
   teacherObj: { idType: string, provider: string, id: string };
+  stateObj;
+  districtObj;
+  externalIds: {};
   schoolObj: { idType: string, provider: string, id: string };
   instance: string;
 
@@ -71,12 +85,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        this.populateLocationDetails();
         this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
         this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
         this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
         this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
+        this.phoneObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-phone');
+        this.emailObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-email');
         this.getOrgDetails();
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
@@ -84,6 +101,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+  }
+
+  populateLocationDetails() {
+    const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
+    fields.forEach((fieldKey, userProfileKey) => {
+      const externalIdData = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === fieldKey);
+      if (externalIdData) {
+        const requestData = {'filters': {'code': externalIdData && externalIdData.id}};
+        this.profileService.getUserLocation(requestData).subscribe(res => {
+          if (_.get(res, 'result.response[0].name')) {
+            this[userProfileKey] = {
+              id: _.get(res, 'result.response[0].name')
+            };
+          }
+        }, err => {
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0016'));
+        });
+      }
+    });
   }
 
   getOrgDetails() {
@@ -112,7 +148,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       });
     });
-    this.roles = _.uniq(this.roles);
+    this.roles = _.uniq(this.roles).sort();
     orgList = _.sortBy(orgList, ['orgjoindate']);
     this.orgDetails = orgList[0];
   }
@@ -136,6 +172,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
       this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
         this.contributions = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+        this.totalContributions = _.get(data, 'result.count') || 0;
       });
   }
 
@@ -269,11 +306,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
-    this.telemetryInteractObject = {
-      id: this.userService.userid,
-      type: 'User',
-      ver: '1.0'
-    };
     this.downloadCertificateEData = {
       id: 'profile-download-certificate',
       type: 'click',
@@ -304,6 +336,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'profile-read'
     };
+  }
+
+  navigate(url, formAction) {
+    this.router.navigate([url], {queryParams: {formaction: formAction}});
   }
 
   ngAfterViewInit() {

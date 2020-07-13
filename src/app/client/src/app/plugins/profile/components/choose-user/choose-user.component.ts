@@ -4,13 +4,13 @@ import {
   ConfigService,
   ResourceService,
   ToasterService,
-  IUserData, NavigationHelperService
+  IUserData, NavigationHelperService, UtilService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
-import {forkJoin} from 'rxjs';
+import {zip} from 'rxjs';
 
 @Component({
   selector: 'app-choose-user',
@@ -20,7 +20,7 @@ import {forkJoin} from 'rxjs';
 export class ChooseUserComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public navigationhelperService: NavigationHelperService,
-              public toasterService: ToasterService, public router: Router,
+              public toasterService: ToasterService, public router: Router, private utilService: UtilService,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
               public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
@@ -41,6 +41,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   userDataSubscription: any;
 
   ngOnInit() {
+    this.navigationhelperService.setNavigationUrl();
     this.userDataSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       this.getManagedUserList();
     });
@@ -56,19 +57,25 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   switchUser() {
     const userId = this.selectedUser.identifier;
-    this.managedUserService.initiateSwitchUser(userId).subscribe((data) => {
+    const switchUserRequest = {
+      userId: this.selectedUser.identifier,
+      isManagedUser: this.selectedUser.managedBy ? true : false
+    };
+    this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data) => {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
               this.telemetryService.setInitialization(false);
               this.telemetryService.initialize(this.getTelemetryContext());
-              this.router.navigate(['/resources']);
               this.toasterService.custom({
                 message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
                   this.selectedUser.firstName),
                 class: 'sb-toaster sb-toast-success sb-toast-normal'
               });
+              setTimeout(() => {
+                this.utilService.redirect('/resources');
+              }, 5100);
             });
           }
         });
@@ -94,9 +101,16 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   selectUser(event) {
     this.selectedUser = _.get(event, 'data.data');
+    if (this.selectedUser.selected) {
+      this.selectedUser = null;
+    }
     const userId = _.get(event, 'data.data.identifier');
     _.forEach(this.userList, (userData, index) => {
-      this.userList[index].selected = userData.identifier === userId;
+      if (userData.identifier === userId) {
+        this.userList[index].selected = !userData.selected;
+      } else {
+        this.userList[index].selected = userData.identifier === userId;
+      }
     });
   }
 
@@ -113,18 +127,11 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   getManagedUserList() {
-    const fetchManagedUserRequest = {
-      request: {
-        filters: {
-          managedBy: this.managedUserService.getUserId()
-        }, sort_by: {createdDate: 'desc'}
-      }
-    };
-    const requests = [this.managedUserService.fetchManagedUserList(fetchManagedUserRequest)];
+    const requests = [this.managedUserService.managedUserList$];
     if (this.userService.userProfile.managedBy) {
       requests.push(this.managedUserService.getParentProfile());
     }
-    forkJoin(requests).subscribe((data) => {
+    zip(...requests).subscribe((data) => {
       let userListToProcess = _.get(data[0], 'result.response.content');
       if (data[1]) {
         userListToProcess = [data[1]].concat(userListToProcess);
@@ -166,6 +173,6 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   closeSwitchUser() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile');
+    this.navigationhelperService.navigateToLastUrl();
   }
 }

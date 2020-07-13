@@ -6,6 +6,7 @@ dist
 coverage
 documentation
 thirdparty
+content-plugins
 mochawesome-report
 /.tmp
 /.sass-cache

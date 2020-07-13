@@ -120,6 +120,12 @@
   <% if (genericEditorURL) { %>
     <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
   <% } %>
+  <% if (botConfigured) { %>
+    <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
+  <% } %>
+  <% if (botServiceURL) { %>
+    <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
+  <% } %>
   <% if (superAdminSlug) { %>
     <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
   <% } %>

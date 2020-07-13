@@ -1,0 +1,112 @@
+::ng-deep {
+  .modal-custom-carousel {
+    .slick-slide {
+      overflow: hidden;
+      overflow-y: auto;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .slick-dots {
+        bottom: calculateRem(-32px);
+        li {
+            height: calculateRem(8px);
+            width: calculateRem(8px);
+            button {
+                background: var(--gray-100) !important;
+                width: calculateRem(8px);
+                height: calculateRem(8px);
+                border-radius: 50%;
+              }
+        }
+    }
+
+    .slick-dots li.slick-active button:before, .slick-dots li button:hover {
+      display: none;
+    }
+
+    .slick-dots li button:hover,
+    .slick-dots li.slick-active button {
+      background: var(--primary-400) !important;
+    }
+
+    .slick-prev,
+    .slick-next {
+      top: inherit;
+      bottom: calculateRem(-53px);
+      font-size: calculateRem(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-400);
+      cursor: pointer;
+    }
+
+    .slick-next {
+      right: calculateRem(12px);
+      display: flex;
+      flex-direction: row-reverse;
+
+    }
+
+    .slick-prev {
+      left: 0px;
+    }
+
+    .slick-disabled {
+      display: none !important;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+      background: none;
+      box-shadow: none;
+      font-size: calculateRem(20px);
+      line-height: calculateRem(24px);
+      height: calculateRem(24px);
+      width: calculateRem(24px);
+      color: var(--primary-400);
+    }
+
+    .slick-prev:before {
+    
+    }
+
+    .slick-next:before {
+     
+    }
+
+
+  }
+
+}
+
+
+.item-help {
+  h4 {
+    color: var(--gray-800);
+    font-size: calculateRem(20px);
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: calculateRem(28px);
+  }
+
+  p {
+    color: var(--gray-800);
+    font-size: calculateRem(14px) !important;
+    letter-spacing: 0;
+    font-size: calculateRem(22px);
+  }
+
+  h6 {
+    color: var(--primary-color);
+    font-size: calculateRem(16px);
+    font-weight: bold;
+    line-height: calculateRem(24px);
+  }
+}
+
+
+

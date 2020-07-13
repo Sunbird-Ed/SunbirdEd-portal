@@ -10,8 +10,9 @@ import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -35,10 +36,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showCopyLoader = false;
   onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
-  resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
-  enrolledCourse: boolean;
+  @Input() groupId: string;
+  enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR'];
   courseId: string;
@@ -50,15 +51,31 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
+  telemetryCdata: Array<{}>;
+  enableProgress = false;
+  courseMentor = false;
+  showAddGroup = false;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
+    private telemetryService: TelemetryService, private groupService: GroupsService) { }
 
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    if (this.groupId) {
+      this.getGroupData();
+    }
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
@@ -67,11 +84,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
-        this.resumeIntractEdata = {
-          id: 'course-resume',
-          type: 'click',
-          pageid: 'course-consumption'
-        };
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -82,6 +94,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
         if (this.batchId) {
           this.enrolledCourse = true;
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
       });
     this.interval = setInterval(() => {
@@ -122,20 +135,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
          });
   }
 
-
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard']);
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: {
-        batchId: this.batchId,
-        courseId: this.courseId,
-        selectedContent: this.lastPlayedContentId
-      }
-    };
-    this.router.navigate(['/learn/course/play', this.courseId], navigationExtras);
+    this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 
@@ -182,5 +187,77 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
+  }
+
+  closeSharePopup(id) {
+    this.sharelinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: {l1: this.courseId}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'Course',
+        cdata: this.telemetryCdata || []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  getGroupData() {
+    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(groupData => {
+      this.groupService.groupData = _.cloneDeep(groupData);
+      this.showAddGroup = _.get(this.groupService, 'groupData.isAdmin');
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+    });
+  }
+
+  addActivityToGroup() {
+    if (_.get(this.groupService, 'groupData.isAdmin')) {
+      const request = {
+        activities: [{ id: this.courseId, type: 'course' }]
+      };
+      this.groupService.addActivities(this.groupId, request).subscribe(response => {
+        this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
+      }, error => {
+        console.error('Error while adding activity to the group', error);
+        this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
+      });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
+    }
   }
 }

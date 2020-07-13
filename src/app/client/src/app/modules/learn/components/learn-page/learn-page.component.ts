@@ -1,4 +1,4 @@
-import { combineLatest, of, Subject, forkJoin, Observable, throwError } from 'rxjs';
+import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
@@ -43,6 +43,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<ICaraouselData> = [];
   public usersProfile: any;
   public toUseFrameWorkData = false;
+  private resourceDataSubscription: Subscription;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -70,6 +71,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnInit() {
+    this.getLanguageChange();
     // TODO change the slug to 'Igot'
     if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
@@ -99,6 +101,16 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
         });
+  }
+
+  private getLanguageChange() {
+    this.resourceService.languageSelected$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(item => {
+        if (_.get(this.enrolledSection, 'name')) {
+          this.enrolledSection.name = this.resourceService.frmelmnts.lbl.mytrainings;
+        }
+      });
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -226,6 +238,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         count: 0,
         contents: []
       };
+      this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
+        enrolledSection.name = this.resourceService.frmelmnts.lbl.mytrainings;
+      });
       if (err) {
         return enrolledSection;
       }
@@ -295,6 +310,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
   private setTelemetryData() {
     this.inViewLogs = [];

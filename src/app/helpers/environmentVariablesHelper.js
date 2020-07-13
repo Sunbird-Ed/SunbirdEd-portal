@@ -77,7 +77,7 @@ let envVariables = {
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
   PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.open-sunbird.org/auth',
-
+  KEY_CLOAK_PUBLIC_KEY: env.sunbird_keycloak_public_key,
 
   // Social login Configuration
   GOOGLE_OAUTH_CONFIG: {
@@ -127,6 +127,11 @@ let envVariables = {
   sunbird_portal_cassandra_db_health_status: 'true',
 
 
+  // Bot configuration 
+  sunbird_bot_configured: env.sunbird_bot_configured,
+  sunbird_bot_service_URL: env.sunbird_bot_service_URL,
+
+
   // Desktop App Configuration
   sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
   sunbird_portal_offline_supported_languages: env.sunbird_portal_offline_supported_languages,
@@ -151,6 +156,14 @@ let envVariables = {
     COLLECTION_EDITOR: env.sunbird_collectionEditorURL || '',
     CONTENT_EDITOR: env.sunbird_contentEditorURL || '',
     GENERIC_EDITOR: env.sunbird_genericEditorURL || ''
+  },
+
+  // PhraseApp configuration
+  PHRASE_APP: {
+    phrase_authToken: env.sunbird_phraseApp_token || '',
+    phrase_project: env.phrase_project || 'DIKSHA Portal,Sunbird Creation',
+    phrase_locale: env.phrase_locale || ['en-IN', 'bn-IN', 'hi-IN', 'kn-IN', 'mr-IN', 'ur-IN', 'te-IN', 'ta-IN'],
+    phrase_fileformat: env.phrase_fileformat || 'json'
   }
 }
 

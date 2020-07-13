@@ -398,5 +398,21 @@ export const mockUserData = {
             'reportname': 'assessment-reports'
           }
       }
-   }
+   },
+   currentBatchDataBefore: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1
+    },
+    currentBatchDataWithCount: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1,
+      'completedCount': 4,
+      'participantCount': 2
+    }
 };

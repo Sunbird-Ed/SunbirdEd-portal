@@ -1,7 +1,7 @@
 import { Observable, of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
-import {SharedModule} from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -38,6 +38,14 @@ const courseHierarchyGetMockResponse = {
   }
 };
 
+const resourceBundle = {
+  messages: {
+    emsg: {
+      m0003: `The Course doesn't have any open batches`
+    }
+  }
+};
+
 describe('CourseConsumptionService', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
@@ -49,7 +57,9 @@ describe('CourseConsumptionService', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute}]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute},
+        {provide: ResourceService, useValue: resourceBundle}
+      ]
     });
   });
   it('should be created', inject([CourseConsumptionService], (service: CourseConsumptionService) => {
@@ -86,5 +96,37 @@ describe('CourseConsumptionService', () => {
     const response = service.parseChildren(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toEqual(courseConsumptionServiceMockData.parseChildrenResult);
   });
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service['toasterService'], 'error');
+    service.getAllOpenBatches({content: [], count: 0});
+    expect(service['toasterService'].error).toHaveBeenCalledWith(service['resourceService'].messages.emsg.m0003);
+  });
 
+  it('should call setPreviousAndNextModule and check only next module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359813121209';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeDefined();
+    expect(returnVal.prev).toBeUndefined();
+  });
+
+  it('should call setPreviousAndNextModule and check both prev/next module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359567361201';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeDefined();
+    expect(returnVal.prev).toBeDefined();
+  });
+
+  it('should call setPreviousAndNextModule and check only prev module is defined', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const parentCourse = courseConsumptionServiceMockData.courseHierarchy;
+    const collectionId = 'do_1130272760359567361207';
+    const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
+    expect(returnVal.next).toBeUndefined();
+    expect(returnVal.prev).toBeDefined();
+  });
 });

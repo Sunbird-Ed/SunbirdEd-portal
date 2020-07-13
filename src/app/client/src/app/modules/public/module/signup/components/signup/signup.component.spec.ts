@@ -86,18 +86,15 @@ describe('SignUpComponent', () => {
     component.signUpForm = undefined;
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     expect(component.signUpForm.valid).toBeFalsy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show validation error message for name', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -107,13 +104,11 @@ describe('SignUpComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show validation error message for phone', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -123,13 +118,11 @@ describe('SignUpComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show pattern match error message for phone', () => {
     spyOn(component, 'onContactTypeValueChanges');
     spyOn(component, 'enableSignUpSubmitButton');
-    spyOn(component, 'onPhoneChange');
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     let errors = {};
@@ -139,7 +132,6 @@ describe('SignUpComponent', () => {
     expect(errors['pattern']).toBeTruthy();
     expect(component.onContactTypeValueChanges).toHaveBeenCalled();
     expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
-    expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should show required lowercase validation error message for password', fakeAsync(() => {
@@ -217,12 +209,10 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password cannot be same as your username.');
   }));
   it('should call onEmailChange method', () => {
-    spyOn(component, 'onEmailChange');
      spyOn(component, 'enableSignUpSubmitButton');
     component.ngOnInit();
     const contactType = component.signUpForm.controls['contactType'];
     contactType.setValue('email');
-     expect(component.onEmailChange).toHaveBeenCalled();
      expect(component.disableSubmitBtn).toBeTruthy();
      expect(component.enableSignUpSubmitButton).toHaveBeenCalled();
   });
@@ -319,7 +309,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
       'responseCode': 'OK', 'result': {'exists': false}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
   });
@@ -334,7 +324,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
       'responseCode': 'OK', 'result': {'exists': true}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('uniquePhone');
     expect(component.signUpForm.controls['uniqueContact'].value).toBe('');
   });
@@ -349,7 +339,7 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({
       'responseCode': '500', 'params': {'status': 500, 'type': 'INTERNAL_SERVER_ERROR'}
     }));
-    component.vaidateUserContact();
+    component.vaidateUserContact(undefined);
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
   });
@@ -418,6 +408,7 @@ describe('SignUpComponent', () => {
     const tncService = TestBed.get(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
     const contactType = component.signUpForm.controls['contactType'];
@@ -429,7 +420,7 @@ describe('SignUpComponent', () => {
     expect(component.isMinor).toBe(true);
     expect(component.showSignUpForm).toBe(false);
     expect(component.disableSubmitBtn).toBe(false);
-    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor, undefined);
   });
 
   it('should generate otp as user is minor', () => {
@@ -437,6 +428,7 @@ describe('SignUpComponent', () => {
     const tncService = TestBed.get(TncService);
     spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf({}));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
     const contactType = component.signUpForm.controls['contactType'];
@@ -448,7 +440,7 @@ describe('SignUpComponent', () => {
     expect(component.isMinor).toBe(false);
     expect(component.showSignUpForm).toBe(false);
     expect(component.disableSubmitBtn).toBe(false);
-    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp, undefined);
   });
 
 });

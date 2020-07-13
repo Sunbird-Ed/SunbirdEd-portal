@@ -1,10 +1,12 @@
 import { Injectable, Inject, InjectionToken } from '@angular/core';
 import * as _ from 'lodash-es';
+import { IAuditEventInput } from '../../interfaces/telemetry';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
   IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -47,7 +49,7 @@ export class TelemetryService {
    * @type {Boolean}
    * @memberof TelemetryService
    */
-  private isInitialized: Boolean = false;
+  private isInitialized = false;
 
   /**
    * Creates an instance of TelemetryService.
@@ -58,6 +60,7 @@ export class TelemetryService {
   sessionId;
   public UTMparam;
   userSid;
+  private deviceType: string;
 
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
@@ -69,6 +72,7 @@ export class TelemetryService {
     }
     this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
     ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
+    this.deviceType = this.getDeviceType();
   }
 
   /**
@@ -137,6 +141,13 @@ export class TelemetryService {
     }
   }
 
+  public audit(auditEventInput: IAuditEventInput) {
+    if (this.isInitialized) {
+      auditEventInput = _.cloneDeep(this.addUTM(auditEventInput));
+      const eventData: ITelemetryEvent = this.getEventData(auditEventInput);
+      this.telemetryProvider.audit(eventData.edata, eventData.options);
+    }
+  }
   /**
    * Logs 'share' telemetry event
    *
@@ -299,6 +310,10 @@ export class TelemetryService {
         type: 'UserSession'
       });
     }
+    eventContextData.cdata.push({
+      id: this.deviceType,
+      type: 'Device'
+    });
     return eventContextData;
   }
 
@@ -333,7 +348,7 @@ export class TelemetryService {
 
   public makeUTMSession(params) {
     this.UTMparam = _.toPairs(params).
-    filter(([key, value]) => value && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
+    filter(([key, value]) => value && _.isString(value) && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
     sessionStorage.setItem('UTM', JSON.stringify(this.UTMparam));
   }
 
@@ -358,5 +373,18 @@ export class TelemetryService {
 
   public setSessionIdentifier(value) {
     this.userSid = value;
+  }
+
+  public getDeviceType() {
+    const deviceDetectorService = new DeviceDetectorService('browser');
+    let device = '';
+    if (deviceDetectorService.isMobile()) {
+      device = 'Mobile';
+    } else if (deviceDetectorService.isTablet()) {
+      device = 'Tab';
+    } else if (deviceDetectorService.isDesktop()) {
+      device = 'Desktop';
+    }
+    return device;
   }
 }

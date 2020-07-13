@@ -1,35 +1,39 @@
 @import "variables";
 @import "mixins/mixins";
+
 .content-header {
-  background:#FAFAFA;
+  background: var(--rc-FAFAFA);
   min-height: calculateRem(14px);
-    &__content{
-        display:flex;
-        align-items: center;
-        justify-content: space-between;
-        @include respond-below(sm) {
-          display: block;
-        }
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include respond-below(sm) {
+      display: block;
     }
-    &__title {
-        color: var(--primary-400);
-        font-size: calculateRem(18px);
-    }
-    
-    &__info {
-        color: var(--gray-800);
-        font-size: calculateRem(14px);
-    }
-    
-    .dot-divider {
-        width: ($base-block-space / 2);
-        height: ($base-block-space / 2);
-        border-radius: 100%;
-        background-color: var(--gray-800);
-        display: inline-block;
-        margin: 0px $base-block-space;
-    }
-  
+  }
+
+  &__title {
+    color: var(--primary-400);
+    font-size: calculateRem(18px);
+  }
+
+  &__info {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
+  }
+
+  .dot-divider {
+    width: calculateRem(4px);
+    height: calculateRem(4px);
+    border-radius: 100%;
+    background-color: var(--gray-800);
+    display: inline-block;
+    margin: 0px calculateRem(8px);
+  }
+
   @include respond-below(sm) {
     &__buttons {
       margin-top: calculateRem(8px);
@@ -42,7 +46,7 @@
     overflow-y: auto;
     max-height: calc(100vh - 265px);
     height: auto;
-    box-shadow: 0 0 .625rem 0 rgba(0,0,0,.25)!important;
+    box-shadow: 0 0 .625rem 0 rgba(var(--rc-rgba-black), 0.25) !important;
 
     @include respond-below(sm) {
       height: auto;

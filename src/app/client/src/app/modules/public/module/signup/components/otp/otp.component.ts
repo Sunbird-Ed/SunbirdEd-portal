@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SignupService} from './../../services';
-import {ResourceService, ServerResponse, UtilService, ConfigService} from '@sunbird/shared';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SignupService } from './../../services';
+import { ResourceService, ServerResponse, UtilService, ConfigService } from '@sunbird/shared';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import {DeviceDetectorService} from 'ngx-device-detector';
-import {IEndEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-otp',
@@ -38,11 +38,14 @@ export class OtpComponent implements OnInit {
   emailAddress: any;
   phoneNumber: any;
   remainingAttempt: 'string';
-
+  resendOTPbtn;
+  counter;
+  resendOtpCounter = 1;
+  maxResendTry = 4;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
-              public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-              public deviceDetectorService: DeviceDetectorService, public router: Router,
-              public utilService: UtilService, public configService: ConfigService) {
+    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
+    public deviceDetectorService: DeviceDetectorService, public router: Router,
+    public utilService: UtilService, public configService: ConfigService) {
   }
 
   ngOnInit() {
@@ -57,11 +60,23 @@ export class OtpComponent implements OnInit {
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
     this.instance = _.upperCase(this.resourceService.instance);
-    setTimeout(() => {
-      this.disableResendButton = true;
-    }, 10000);
+    this.resendOtpEnablePostTimer();
   }
-
+resendOtpEnablePostTimer() {
+  this.counter = 20;
+  this.disableResendButton = false;
+  setTimeout(() => {
+    this.disableResendButton = true;
+  }, 22000);
+  const interval = setInterval(() => {
+    this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+    this.counter--;
+    if (this.counter < 0) {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+      clearInterval(interval);
+    }
+  }, 1000);
+}
   verifyOTP() {
     const wrongOTPMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
       this.resourceService.frmelmnts.lbl.wrongEmailOTP;
@@ -143,21 +158,21 @@ export class OtpComponent implements OnInit {
     createRequest.request['reqData'] = _.get(data, 'reqData');
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
-          this.telemetryLogEvents('sign-up', true);
-          const tncAcceptRequestBody = {
-            request: {
-              version: this.tncLatestVersion,
-              identifier: identifier
-            }
-          };
-          this.signupService.acceptTermsAndConditions(tncAcceptRequestBody).subscribe(res => {
-            this.telemetryLogEvents('accept-tnc', true);
-            this.redirectToSignPage();
-          }, (err) => {
-            this.telemetryLogEvents('accept-tnc', false);
-            this.redirectToSignPage();
-          });
-        },
+        this.telemetryLogEvents('sign-up', true);
+        const tncAcceptRequestBody = {
+          request: {
+            version: this.tncLatestVersion,
+            identifier: identifier
+          }
+        };
+        this.signupService.acceptTermsAndConditions(tncAcceptRequestBody).subscribe(res => {
+          this.telemetryLogEvents('accept-tnc', true);
+          this.redirectToSignPage();
+        }, (err) => {
+          this.telemetryLogEvents('accept-tnc', false);
+          this.redirectToSignPage();
+        });
+      },
         (err) => {
           this.telemetryLogEvents('sign-up', false);
           this.infoMessage = '';
@@ -205,6 +220,13 @@ export class OtpComponent implements OnInit {
   }
 
   resendOTP() {
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendButton = false;
+      this.infoMessage = '';
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretry;
+      return false;
+    }
     const request = {
       'request': {
         'key': this.signUpdata.controls.contactType.value === 'phone' ?
@@ -217,6 +239,7 @@ export class OtpComponent implements OnInit {
     }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
+        this.resendOtpEnablePostTimer();
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
       },

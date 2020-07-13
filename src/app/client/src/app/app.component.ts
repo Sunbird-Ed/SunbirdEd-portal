@@ -12,7 +12,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } from 'rxjs';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -21,7 +21,8 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -83,8 +84,13 @@ export class AppComponent implements OnInit, OnDestroy {
   labels: {};
   showUserTypePopup = false;
   deviceId: string;
-  userId: string;
-  appId: string;
+  public botObject: any = {};
+  isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+  ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+  ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+  baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+  ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -172,15 +178,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.changeLanguageAttribute();
     if (this.userService.loggedIn) {
-      this.userId = this.userService.userid;
+      this.botObject['userId'] = this.userService.userid;
     } else {
-      this.userId = this.deviceId;
+      this.botObject['userId'] = this.deviceId;
     }
-    this.appId = this.userService.appId;
+    this.botObject['appId'] = this.userService.appId;
+    this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
+
+    this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
+    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
+  }
+
+  isBotdisplayforRoute () {
+    const url = this.router.url;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
   isLocationStatusRequired() {
-    const url = this.router.url;
+    const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
@@ -222,9 +237,18 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.showUserTypePopup = !localStorage.getItem('userType');
+      // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
+      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+        if (_.get(res[0], 'tenantData')) {
+          const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
+            this.showUserTypePopup = !localStorage.getItem('userType');
+          }
+        }
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }
@@ -290,12 +314,12 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-    if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
-      _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = true;
-    } else {
-      this.checkFrameworkSelected();
-    }
+      if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
+        _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
+        this.showTermsAndCondPopUp = true;
+      } else {
+        this.checkFrameworkSelected();
+      }
   }
   public getOrgDetails() {
     const slug = this.userService.slug;
@@ -351,6 +375,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;
+          this.botObject['did'] = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
@@ -367,6 +392,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
         this.userProfile = user.userProfile;
         this.channel = this.userService.hashTagId;
+        this.botObject['channel'] = this.channel;
         return of(user.userProfile);
       }));
   }
@@ -378,6 +404,7 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
+        this.botObject['channel'] = this.channel;
         if (this.userService.slug !== '') {
           this.cacheService.set('orgDetailsFromSlug', data, {
             maxAge: 86400

@@ -279,7 +279,7 @@ export class UserService {
    */
   private getOrganizationDetails(organisationIds) {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
@@ -371,6 +371,11 @@ export class UserService {
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
       ? (<HTMLInputElement>document.getElementById('deviceId')).value : '';
     const url = `/v1/user/session/start/${deviceId}`;
+    this.http.get(url).subscribe();
+  }
+
+  public endSession() {
+    const url = this.config.urlConFig.URLS.USER.END_SESSION;
     this.http.get(url).subscribe();
   }
 

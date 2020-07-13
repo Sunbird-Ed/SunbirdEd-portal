@@ -1,89 +1,184 @@
-import { Injectable } from '@angular/core';
-import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { map, mergeMap, filter, first } from 'rxjs/operators';
-import * as _ from 'lodash-es';
-import { of, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
+import { UserService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService } from '@sunbird/shared';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
+import * as _ from 'lodash-es';
+import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupsService {
   private groupCservice: any;
-  constructor(private channelService: ChannelService, private orgDetailsService: OrgDetailsService, private userService: UserService,
-    private frameworkService: FrameworkService) {
-      this.groupCservice = CsModule.instance.groupService;
+  private userCservice: any;
+  private _groupData: IGroupCard;
+  public membersList = new EventEmitter();
+  public closeForm = new EventEmitter();
+
+  constructor(
+    private csLibInitializerService: CsLibInitializerService,
+    private userService: UserService,
+    private resourceService: ResourceService,
+    private telemetryService: TelemetryService,
+    private navigationhelperService: NavigationHelperService,
+    private router: Router
+  ) {
+    if (!CsModule.instance.isInitialised) {
+      this.csLibInitializerService.initializeCs();
     }
+    this.groupCservice = CsModule.instance.groupService;
+    this.userCservice = CsModule.instance.userService;
+  }
 
-  public isCustodianOrgUser() {
-    return this.orgDetailsService.getCustodianOrgDetails().pipe(map((custodianOrg) => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        return true;
+  addFieldsToMember(members): IGroupMember[] {
+    if (members) {
+      const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
+      return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.name)], ['desc', 'desc', 'asc']);
+    }
+    return [];
+  }
+
+  addFields(member): IGroupMember {
+    member.title = _.get(member, 'name') || _.get(member, 'userName');
+    member.initial = _.get(member, 'title[0]');
+    member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
+    member.isAdmin = _.get(member, 'role') === 'admin';
+    member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
+    member.isSelf = (this.userService.userid === _.get(member, 'userId')) || (this.userService.userid === _.get(member, 'identifier'));
+    member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
+    member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
+    return member;
+  }
+
+  addGroupFields(group) {
+    group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
+    group.isAdmin = group.isCreator ? true : _.get(group, 'memberRole') === 'admin';
+    group.initial = _.get(group, 'name[0]');
+    return group;
+  }
+
+  createGroup(groupData: IGroup) {
+    return this.groupCservice.create(groupData);
+  }
+
+  updateGroup(groupId: string, updateRequest: IGroupUpdate) {
+    return this.groupCservice.updateById(groupId, updateRequest);
+  }
+
+  searchUserGroups(request: IGroupSearchRequest) {
+    return this.groupCservice.search(request);
+  }
+
+  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean) {
+    return this.groupCservice.getById(groupId, { includeMembers, includeActivities });
+  }
+
+  deleteGroupById(groupId: string) {
+    return this.groupCservice.deleteById(groupId);
+  }
+
+  addMemberById(groupId: string, members: IMember) {
+    return this.groupCservice.addMembers(groupId, members);
+  }
+
+  updateMembers(groupId: string, updateMembersRequest: CsGroupUpdateMembersRequest) {
+    return this.groupCservice.updateMembers(groupId, updateMembersRequest);
+  }
+
+  removeMembers(groupId: string, userIds: string[]) {
+    return this.groupCservice.removeMembers(groupId, { userIds });
+  }
+
+  addActivities(groupId: string, addActivitiesRequest: CsGroupAddActivitiesRequest) {
+    return this.groupCservice.addActivities(groupId, addActivitiesRequest);
+  }
+
+  updateActivities(groupId: string, updateActivitiesRequest: CsGroupUpdateActivitiesRequest) {
+    return this.groupCservice.updateActivities(groupId, updateActivitiesRequest);
+  }
+
+  removeActivities(groupId: string, removeActivitiesRequest: CsGroupRemoveActivitiesRequest) {
+    return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
+  }
+
+  getUserData(memberId: string) {
+    return this.userCservice.checkUserExists({key: 'email', value: memberId}, '');
+  }
+
+  set groupData(group: IGroupCard) {
+    this._groupData = this.addGroupFields(group);
+  }
+
+  get groupData() {
+    return this._groupData;
+  }
+
+  emitCloseForm() {
+    this.closeForm.emit();
+  }
+
+  emitMembers(members: IGroupMember[]) {
+    this.membersList.emit(members);
+  }
+
+  goBack() {
+    if (this.navigationhelperService['_history'].length <= 1) {
+      this.router.navigate([MY_GROUPS]);
+    } else {
+      this.navigationhelperService.goBack();
+    }
+  }
+
+  addTelemetry(eid: string, routeData, cdata, groupId?: string) {
+
+    const interactData = {
+      context: {
+        env: _.get(routeData, 'data.telemetry.env'),
+        cdata: cdata
+      },
+      edata: {
+        id: eid,
+        type: 'click',
+        pageid: _.get(routeData, 'data.telemetry.pageid'),
       }
-      return false;
-    }));
+    };
+
+    if (_.get(routeData, 'params.groupId') || groupId) {
+      interactData['object'] = {
+        id: _.get(routeData, 'params.groupId') || groupId,
+        type: 'Group',
+        ver: '1.0',
+      };
+    }
+    this.telemetryService.interact(interactData);
   }
 
-  public getCustodianOrgData() {
-    return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
-      const custOrgFrameworks = _.sortBy(_.get(channelData, 'result.channel.frameworks') || [], 'index');
-      return {
-          range: custOrgFrameworks,
-          label: 'Board',
-          code: 'board',
-          index: 1
-        };
-    }));
+  getImpressionObject(routeData, url): IImpressionEventInput {
+
+    const impressionObj = {
+      context: {
+        env: _.get(routeData, 'data.telemetry.env')
+      },
+      edata: {
+        type: _.get(routeData, 'data.telemetry.type'),
+        pageid: _.get(routeData, 'data.telemetry.pageid'),
+        subtype: _.get(routeData, 'data.telemetry.subtype'),
+        uri: url,
+        duration: this.navigationhelperService.getPageLoadTime()
+      },
+    };
+
+    if (_.get(routeData, 'params.groupId')) {
+      impressionObj['object'] = {
+        id: _.get(routeData, 'params.groupId'),
+        type: 'Group',
+        ver: '1.0',
+      };
+    }
+    return impressionObj;
   }
-
-  public getFilteredFieldData(frameWorkId?) {
-    this.frameworkService.initialize(frameWorkId);
-    return this.frameworkService.frameworkData$.pipe(
-      filter((frameworkDetails: any) => {
-      if (!frameworkDetails.err) {
-        const framework = frameWorkId ? frameWorkId : 'defaultFramework';
-        if (!_.get(frameworkDetails.frameworkdata, framework)) {
-          return false;
-        }
-      }
-      return true;
-    }),
-    mergeMap((frameworkDetails: any) => {
-      if (!frameworkDetails.err) {
-        return this.filterFrameworkCategories(frameworkDetails, frameWorkId);
-      } else {
-        return throwError(frameworkDetails.err);
-      }
-    }), map((formData: any) => {
-        return this.filterFrameworkCategoryTerms(formData);
-    }), first());
-  }
-
-  public filterFrameworkCategories(frameworkDetails, frameWorkId) {
-    const framework = frameWorkId ? frameWorkId : 'defaultFramework';
-    const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-    frameWorkId = frameworkData.identifier;
-    const categoryMasterList = _.filter(frameworkData.categories, (category) => {
-      return ['board', 'medium', 'gradeLevel', 'subject'].includes(_.get(category, 'code'));
-    });
-    return of({categoryMasterList, 'frameWorkId': frameWorkId});
-  }
-
-  public filterFrameworkCategoryTerms(formData) {
-    const formFieldProperties = _.filter(formData.categoryMasterList, (formFieldCategory) => {
-      formFieldCategory.range = _.get(_.find(formData.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
-      return true;
-    });
-    return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
-  }
-
-  async createGroup(data: any) {
-    return await this.groupCservice.create(data.groupName, data.board, data.medium, data.gradeLevel, data.subject).toPromise();
-  }
-
-  async getAllGroups() {
-    return await this.groupCservice.getAll().toPromise();
-  }
-
-
 }

@@ -66,13 +66,13 @@ build_client(){
 build_server(){
     echo "Building server in background"
     echo "copying requied files to app_dist"
-    cp -R libs helpers proxy resourcebundles package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
+    cp -R libs helpers proxy resourcebundles package.json framework.config.js sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
     nvm use 12.16.1
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo "completed server yarn install"
-    node helpers/resourceBundles/build.js
+    node helpers/resourceBundles/build.js -task="phraseAppPull"
 }
 
 build_client & # run client build in background 

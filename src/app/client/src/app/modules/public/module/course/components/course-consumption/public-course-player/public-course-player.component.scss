@@ -57,12 +57,21 @@
 
 .header-shadow {
   min-height: calculateRem(80px);
-  background-color: #fafafa;
-  box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(0, 0, 0, 0.25);
+  background-color: var(--rc-FAFAFA);
+  box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.025);
   z-index: 99;
 }
+
 .chapter-box {
-  border: 0.03125rem solid var(--primary-300);
-  padding: calculateRem(16px);
+  border-bottom: .0625rem solid var(--gray-100);
+  // padding: calculateRem(16px);
   border-radius: calculateRem(2px);
+  &:last-child{
+    border-bottom: 0px solid var(--gray-100);
+    padding-bottom:0px;
+  }
+}
+
+.certified-course__certificate {
+  background-color: var(--rc-E5EDF5);
 }

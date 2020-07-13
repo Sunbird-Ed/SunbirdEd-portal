@@ -105,7 +105,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     },
     "PAGE_LIMIT": 20
@@ -337,6 +337,78 @@
       "slidesToShow": 4,
       "slidesToScroll": 4,
       "respondTo": "slider",
+      "responsive": [
+        {
+          "breakpoint": 2800,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2200,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2000,
+          "settings": {
+            "slidesToShow": 3.01,
+            "slidesToScroll": 3.01
+          }
+        },
+        {
+          "breakpoint": 1600,
+          "settings": {
+            "slidesToShow": 3,
+            "slidesToScroll": 3
+          }
+        },
+        {
+          "breakpoint": 1200,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2.5
+          }
+        },
+        {
+          "breakpoint": 900,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 660,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ],
       "infinite": false,
       "rtl": false
     }
@@ -396,7 +468,8 @@
       },
       "dynamicFields": {
         "maxCount": "leafNodesCount",
-        "progress": "progress"
+        "progress": "progress",
+        "ribbon.right.name": "content.contentType"
       }
     }
   },

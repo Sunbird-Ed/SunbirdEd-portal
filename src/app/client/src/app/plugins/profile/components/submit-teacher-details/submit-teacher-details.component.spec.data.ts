@@ -181,21 +181,80 @@ export const mockRes = {
     },
     'index': 2
   }, {
-    'code': 'school',
-    'dataType': 'text',
-    'name': 'school',
-    'label': 'School/ Org name',
-    'description': 'Enter school name',
+      'code': 'phone',
+    'dataType': 'number',
+    'name': 'phone',
+    'label': 'Phone Number',
+    'description': 'Enter phone number',
     'editable': true,
-    'inputType': 'input',
-    'required': false,
+    'inputType': 'number',
+    'required': true,
+    'validation': [
+      {
+        'type': 'minlength',
+        'value': '10',
+        'message': 'Entered phone number is incorrect'
+      },
+      {
+        'type': 'maxlength',
+        'value': '10',
+        'message': 'Entered phone number is incorrect'
+      },
+      {
+        'type': 'required',
+        'message': 'Phone number is required'
+      }
+    ],
     'displayProperty': 'Editable',
     'visible': true,
     'renderingHints': {
       'fieldColumnWidth': 'twelve'
     },
     'index': 3
-  }, {
+  },
+    {
+      'code': 'email',
+      'dataType': 'text',
+      'name': 'email',
+      'label': 'Email Id',
+      'description': 'Enter Email Id',
+      'editable': true,
+      'inputType': 'email',
+      'required': false,
+      'validation': [
+        {
+          'type': 'email',
+          'message': 'Entered email ID is incorrect'
+        },
+        {
+          'type': 'required',
+          'message': 'Phone number is required'
+        }
+      ],
+      'displayProperty': 'Editable',
+      'visible': true,
+      'renderingHints': {
+        'fieldColumnWidth': 'twelve'
+      },
+      'index': 4
+    },
+    {
+      'code': 'school',
+      'dataType': 'text',
+      'name': 'school',
+      'label': 'School/ Org name',
+      'description': 'Enter school name',
+      'editable': true,
+      'inputType': 'input',
+      'required': false,
+      'displayProperty': 'Editable',
+      'visible': true,
+      'renderingHints': {
+        'fieldColumnWidth': 'twelve'
+      },
+      'index': 5
+    },
+     {
     'code': 'udiseId',
     'dataType': 'text',
     'name': 'udiseId',
@@ -205,11 +264,11 @@ export const mockRes = {
     'inputType': 'input',
     'required': false,
     'validation': [{
-      'type': 'min',
+      'type': 'minlength',
       'value': '11',
       'message': 'Minimum length should be 11 numbers'
     }, {
-      'type': 'max',
+      'type': 'maxlength',
       'value': '11',
       'message': 'Maximum length should be 11 numbers'
     }, {
@@ -222,7 +281,7 @@ export const mockRes = {
     'renderingHints': {
       'fieldColumnWidth': 'twelve'
     },
-    'index': 4
+    'index': 6
   }, {
     'code': 'teacherId',
     'dataType': 'text',
@@ -237,22 +296,21 @@ export const mockRes = {
     'renderingHints': {
       'fieldColumnWidth': 'twelve'
     },
-    'index': 5
+    'index': 7
   }, {
-    'code': 'checkbox',
+    'code': 'tnc',
     'dataType': 'text',
     'name': 'tnc',
-    'label': 'I understand and accept the {env} Terms of Use.',
     'description': '',
     'editable': true,
     'inputType': 'checkbox',
     'required': true,
     'displayProperty': 'Editable',
-    'visible': false,
+    'visible': true,
     'renderingHints': {
-      'fieldColumnWidth': 'tweleve'
+      'fieldColumnWidth': 'twelve'
     },
-    'index': 6
+    'index': 8
   }],
   checkValidationInput: {
     'code': 'udiseId',
@@ -367,7 +425,16 @@ export const mockRes = {
           'idType': 'declared-school-udise-code',
           'provider': 'ROOT_ORG',
           'id': '09876543453'
-        }],
+        }, {
+          'idType': 'declared-email',
+          'provider': 'ROOT_ORG',
+          'id': 'asd@yopmail.com'
+        },
+          {
+            'idType': 'declared-state',
+            'provider': 'ROOT_ORG',
+            'id': '29'
+          }],
         'registryId': null,
         'roleList': [{
           'name': 'Content Curation',
@@ -558,5 +625,57 @@ export const mockRes = {
         'tncAcceptedVersion': 'v1'
       }
     }
+  },
+  tncConfig: {
+    'id': 'api',
+    'params': {
+      'status': 'success',
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'tncConfig',
+        'field': 'tncConfig',
+        'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+      }
+    }
+  },
+  tncConfigIncorrectData: {
+    'id': 'api',
+    'params': {
+      'status': 'success',
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'tncConfig',
+        'field': 'tncConfig',
+        'value': '{"latestVersion":"v4","v4":{"url":}}'
+      }
+    }
+  }, successResponse: {
+    responseCode: 'OK'
+  },
+  externalId: [
+    {
+      'idType': 'declared-ext-id',
+      'provider': 'tp',
+      'id': 'p'
+    },
+    {
+      'idType': 'declared-school-name',
+      'provider': 'tp',
+      'id': '2222'
+    }, {
+      'idType': 'declared-state',
+      'provider': 'tp',
+      'id': '29'
+    }
+  ],
+  stateDetails: {
+    'code': '50',
+    'name': 'mock state',
+    'id': '969dd3c1-4e9',
+    'type': 'state'
   }
 };

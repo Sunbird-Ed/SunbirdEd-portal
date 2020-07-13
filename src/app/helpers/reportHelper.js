@@ -182,6 +182,7 @@ const getLastModifiedDate = async (req, res) => {
                             lastModified: _.get(blob, 'value.lastModified'),
                             reportname: _.get(blob, 'value.reportname'),
                             statusCode: _.get(blob, 'value.statusCode'),
+                            fileSize: _.get(blob, 'value.contentLength')
                         }
                     }
                 });

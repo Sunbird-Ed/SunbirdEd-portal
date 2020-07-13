@@ -26,24 +26,36 @@
               </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-              <button type="button" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              <button type="button" *ngIf="!isCopyAsCourseClicked" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                 <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
               </button>
 
-              <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
+              <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked" appPermission
               [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
             
-              <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+              <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked" appPermission
               [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
 
               <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyAsCourseInteractEdata" 
-              href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-              [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+              href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked" appPermission
+              [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse()" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <img src="assets/images/copy-clone.svg" class="mr-4 pt-2"> {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
+              </button>
+
+              <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="cancelInteractEdata" 
+              href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked" appPermission
+              [permission]="['CONTENT_CREATOR']" (click)="clearSelection()" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+              {{resourceService?.frmelmnts?.btn?.cancel}}
+              </button>
+              
+              <button [ngClass]="{ 'sb-btn-disabled': !(selectedItems.length > 0) }" [disabled]="!(selectedItems.length > 0)" type="button"  appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
+              href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked" appPermission
+              [permission]="['CONTENT_CREATOR']" (click)="createCourse()" class="sb-btn sb-btn-normal sb-btn-primary">
+              {{resourceService?.frmelmnts?.btn?.createCourse}}
               </button>
              
               <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
@@ -64,9 +76,18 @@
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
-        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16" *ngIf="collectionData">
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16" *ngIf="collectionData">
+          <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
+              <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
+                  <h6 class="sb-color-primary font-weight-normal">{{resourceService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
+                  <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
+                      <input (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
+                      <label class="mb-0 mr-0 sb-color-primary" for="checkbox"> {{resourceService?.frmelmnts?.lbl?.selectAll}}</label>
+                  </div>
+              </div>
+          </div>
           <div class="toc-box-shadow mb-2">
-            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
+            <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16 hide"
             (click)="showChapter()">
             <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
             <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto"><svg class="icon icon-svg--primary">
@@ -79,9 +100,9 @@
           </div>
           
           <div [hidden]="isSelectChapter" class="main-side-toc-content">
-            <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+            <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked" [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
-              (noContent)="showNoContent($event)" appTelemetryInteract [telemetryInteractEdata]="tocTelemetryInteractEdata"></sb-toc-item>
+              (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract [telemetryInteractEdata]="tocTelemetryInteractEdata"></sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">
             <span>
