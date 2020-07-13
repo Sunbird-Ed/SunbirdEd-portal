@@ -1,7 +1,7 @@
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
@@ -29,10 +29,11 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   @Output() members = new EventEmitter<any>();
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
-    private userService: UserService, private toasterService: ToasterService,
+    private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute,
     private groupService: GroupsService,
-    private router: Router
+    private router: Router,
+    private location: Location
     ) {
   }
 
@@ -42,6 +43,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+    if (!this.groupData) {
+      this.location.back();
+    }
   }
 
   reset() {
@@ -50,24 +54,32 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.isVerifiedUser = false;
   }
 
-  resetValue() {
+  resetValue(memberId?) {
+    this.addTelemetry('reset-userId', memberId);
     this.memberId = '';
     this.reset();
   }
 
-  verifyMember() {
+  verifyMember(memberId) {
     this.showLoader = true;
     if (!this.isExistingMember()) {
-      this.userService.getUserData(this.memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
-        const user = this.groupsService.addFields(_.get(member, 'result.response'));
-        this.verifiedMember = _.pick(user, ['title', 'initial', 'identifier', 'isAdmin', 'isCreator']);
-        this.showLoader = false;
-        this.isVerifiedUser = true;
-      }, err => {
-        this.isInvalidUser = true;
-        this.showLoader = false;
+      this.groupsService.getUserData(memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
+        if (member.exists) {
+          this.verifiedMember = this.groupsService.addFields(member);
+          this.showLoader = false;
+          this.isVerifiedUser = true;
+        } else {
+          this.showInvalidUser();
+        }
+      }, (err) => {
+        this.showInvalidUser();
       });
     }
+  }
+
+  showInvalidUser () {
+    this.isInvalidUser = true;
+    this.showLoader = false;
   }
 
   isExistingMember() {
@@ -82,7 +94,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   addMemberToGroup() {
     if (!this.isExistingMember()) {
-      const member: IMember = {members: [{ userId: this.memberId, role: 'member' }]};
+      const member: IMember = {members: [{ userId: _.get(this.verifiedMember, 'id'), role: 'member' }]};
       this.groupsService.addMemberById(this.groupData.id, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
@@ -110,8 +122,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+  addTelemetry (id, memberId?) {
+    const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata);
   }
 
 

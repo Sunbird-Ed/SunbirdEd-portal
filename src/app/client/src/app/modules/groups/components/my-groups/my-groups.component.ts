@@ -16,11 +16,12 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class MyGroupsComponent implements OnInit, OnDestroy {
   showGroupCreateForm = false;
-  public groupList: {adminGroups: IGroupCard[], memberGroups: IGroupCard[]} = {adminGroups: [], memberGroups: []};
+  adminGroupsList: IGroupCard[] = [];
+  memberGroupsList: IGroupCard[] = [];
   public showModal = false;
   private unsubscribe$ = new Subject<void>();
   telemetryImpression: IImpressionEventInput;
-
+  isLoader = true;
   constructor(public groupService: GroupsService,
     public router: Router,
     public resourceService: ResourceService,
@@ -39,19 +40,24 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
 
   getMyGroupList() {
-    this.groupList = {adminGroups: [], memberGroups: []};
+    this.isLoader = true;
+    this.adminGroupsList = [];
+    this.memberGroupsList = [];
     const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
+      this.isLoader = false;
       _.forEach(groups, (group) => {
         if (group) {
           group = this.groupService.addGroupFields(group);
-          group.isAdmin ? this.groupList.adminGroups.push(group) : this.groupList.memberGroups.push(group);
+          group.isAdmin ? this.adminGroupsList.push(group) : this.memberGroupsList.push(group);
         }
       });
-      _.orderBy(this.groupList.adminGroups, 'createdOn');
-      _.orderBy(this.groupList.memberGroups, 'createdOn');
+      this.adminGroupsList = _.uniqBy(_.orderBy(this.adminGroupsList, 'createdOn'), 'id');
+      this.memberGroupsList = _.uniqBy(_.orderBy(this.memberGroupsList, 'createdOn'), 'id');
     }, (err) => {
-      this.groupList = {adminGroups: [], memberGroups: []};
+      this.isLoader = false;
+      this.adminGroupsList = [];
+      this.memberGroupsList = [];
     });
   }
 
@@ -60,6 +66,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDetailPage(event) {
+    this.addTelemetry('group-card', _.get(event, 'data.id'));
     this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
   }
 
@@ -72,8 +79,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     localStorage.setItem('login_ftu_groups', 'login_user');
   }
 
-  addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot);
+  addTelemetry (id, groupId?) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], groupId);
   }
 
   ngOnDestroy() {

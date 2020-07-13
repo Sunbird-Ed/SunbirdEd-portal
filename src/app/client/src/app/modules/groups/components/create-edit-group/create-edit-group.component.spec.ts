@@ -15,7 +15,7 @@ import { CoreModule, UserService} from '@sunbird/core';
 import { of, throwError } from 'rxjs';
 import { CacheService } from 'ng2-cache-service';
 import { TelemetryService } from '@sunbird/telemetry';
-import { GroupsService } from '../../services';
+import { GroupsService, fakeActivatedRouteWithGroupId } from '../../services';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
@@ -40,23 +40,14 @@ describe('CreateEditGroupComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = 'browse';
   }
-  const fakeActivatedRoute = {
-    'params': of({}),
-    snapshot: {
-      data: {
-          telemetry: {
-            env: 'groups', pageid: 'group-create', type: 'view', object: { type: 'groups', ver: '1.0' }
-          }
-      }
-    }
-  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CreateEditGroupComponent ],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, SuiModule],
       providers: [CacheService, { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }, UserService,
-        TelemetryService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }, GroupsService,
+        TelemetryService, { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, GroupsService,
         {provide: APP_BASE_HREF, useValue: '/'} ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -154,5 +145,12 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component.groupForm, 'reset');
     component.reset();
     expect(component.groupForm.reset).toHaveBeenCalled();
+  });
+
+  it('should call addTelemetry', () => {
+    spyOn(component['groupService'], 'addTelemetry');
+    component.groupId = '123';
+    component.addTelemetry('ftu-popup');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 });
