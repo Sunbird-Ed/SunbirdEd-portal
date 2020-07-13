@@ -34,7 +34,7 @@
   flex-direction: column;
   margin: 0 auto;
   background-color: var(--rc-F5F9FC);
-  border: 1px dashed var(--primary-200);
+  border: calculateRem(1px) dashed var(--primary-200);
 }
 
 .upload-file-description p {
