@@ -85,7 +85,7 @@ export class GroupsService {
     return this.groupCservice.addMembers(groupId, members);
   }
 
-  updateMembers(groupId: string, updateMembersRequest: CsGroupUpdateMembersRequest[]) {
+  updateMembers(groupId: string, updateMembersRequest: CsGroupUpdateMembersRequest) {
     return this.groupCservice.updateMembers(groupId, updateMembersRequest);
   }
 

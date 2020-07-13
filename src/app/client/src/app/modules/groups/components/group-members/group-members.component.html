@@ -67,4 +67,4 @@
   </div>
 </div>
 <app-member-actions *ngIf="showModal" [action]="memberAction" [member]="selectedMember" (modalClose)="onModalClose()"
-  (actionConfirm)="onActionConfirm()"></app-member-actions>
+  (actionConfirm)="onActionConfirm($event)"></app-member-actions>

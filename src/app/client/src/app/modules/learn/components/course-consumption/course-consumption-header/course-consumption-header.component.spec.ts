@@ -200,6 +200,6 @@ describe('CourseConsumptionHeaderComponent', () => {
     spyOn(toasterService, 'error');
     spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
     component.addActivityToGroup();
-    expect(toasterService.error).toHaveBeenCalledWith(`You don't have permission to add activity to the group`);
+    expect(toasterService.error).toHaveBeenCalledWith(`Unable to add activity, please try again`);
   });
 });

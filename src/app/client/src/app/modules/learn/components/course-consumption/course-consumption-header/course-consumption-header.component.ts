@@ -54,7 +54,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   telemetryCdata: Array<{}>;
   enableProgress = false;
   courseMentor = false;
-  addToGroup = false;
+  showAddGroup = false;
 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -68,6 +68,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    if (this.groupId) {
+      this.getGroupData();
+    }
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -233,8 +236,17 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.telemetryService.interact(interactData);
   }
 
+  getGroupData() {
+    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(groupData => {
+      this.groupService.groupData = _.cloneDeep(groupData);
+      this.showAddGroup = _.get(this.groupService, 'groupData.isAdmin');
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+    });
+  }
+
   addActivityToGroup() {
-    if (_.get(this.groupService, 'groupData.memberRole') === 'admin') {
+    if (_.get(this.groupService, 'groupData.isAdmin')) {
       const request = {
         activities: [{ id: this.courseId, type: 'course' }]
       };
