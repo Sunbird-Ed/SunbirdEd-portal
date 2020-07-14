@@ -61,12 +61,14 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   initRecaptcha() {
     this.groupService.getRecaptchaSettings().subscribe((res: any) => {
       if (res.result.response) {
-        const captchaConfig = JSON.parse(_.get(res, 'result.response.value'));
-        this.googleCaptchaSiteKey = captchaConfig.key || '';
-        this.isCaptchEnabled = captchaConfig.isEnabled || false;
+        try {
+          const captchaConfig = _.get(res, 'result.response.value') ? JSON.parse(_.get(res, 'result.response.value')) : {};
+          this.googleCaptchaSiteKey = captchaConfig.key || '';
+          this.isCaptchEnabled = captchaConfig.isEnabled || false;
+        } catch (e) {
+          console.log(_.get(res, 'result.response'));
+        }
       }
-    }, (err: any) => {
-      this.toasterService.error(this.resourceService.frmelmnts.instn.t0056);
     });
   }
 

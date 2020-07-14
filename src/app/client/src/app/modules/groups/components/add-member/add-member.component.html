@@ -25,7 +25,7 @@
                 <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
               </div>
             </div>
-            <re-captcha *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="onVerifyMember();addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>

@@ -220,19 +220,6 @@ describe('AddMemberComponent', () => {
     expect(recapta).toBeFalsy();
   });
 
-  it('should show toaster message while error on getRecaptchaSettings', () => {
-    spyOn(component['groupsService'], 'getRecaptchaSettings').and.callFake(() => throwError(addMemberMockData.disabledRecaptchaResponse));
-    spyOn(component['toasterService'], 'error');
-    spyOn(component['groupsService'], 'addFieldsToMember');
-    component.initRecaptcha();
-    fixture.detectChanges();
-    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
-    expect(component.googleCaptchaSiteKey).toEqual('');
-    expect(component.isCaptchEnabled).toBeFalsy();
-    expect(recapta).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.frmelmnts.instn.t0056);
-  });
-
   it('should resolved captcha responce and call varify method', () => {
     spyOn(component, 'captchaResolved').and.callThrough();
     spyOn(component, 'verifyMember').and.callThrough();
