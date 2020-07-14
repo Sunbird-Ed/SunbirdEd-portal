@@ -85,7 +85,7 @@
               {{resourceService.frmelmnts.lbl.fieldsmarked}}<span class="sb-error">*</span>{{resourceService.frmelmnts.lbl.mandatory  }}
           </div>
             <!-- Google invisible recaptcha -->
-            <re-captcha #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
               <input type="checkbox" id="tncAccepted" role="checkbox" (click)="generateTelemetry($event)"
                      formControlName="tncAccepted" name="tncAccepted">

@@ -32,6 +32,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }];
   googleCaptchaSiteKey: string;
   isCaptchaEnabled: boolean = true;
+  isP2CaptchaEnabled: any;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public utilService: UtilService, public configService: ConfigService) {
@@ -48,6 +49,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     } catch (error) {
       this.googleCaptchaSiteKey = '';
     }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
   resendOtpEnablePostTimer() {
     this.counter = 20;
@@ -135,7 +138,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
 
   submitResendOTP() {
-    if (this.isCaptchaEnabled) {
+    if (this.isP2CaptchaEnabled === 'true') {
       this.captchaRef.reset();
       this.captchaRef.execute();
     } else {

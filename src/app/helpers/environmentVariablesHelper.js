@@ -86,7 +86,9 @@ let envVariables = {
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   google_captcha_private_key: env.google_captcha_private_key,
-
+  sunbird_p1_reCaptcha_enabled: env.sunbird_p1_reCaptcha_enabled,
+  sunbird_p2_reCaptcha_enabled: env.sunbird_p2_reCaptcha_enabled,
+  sunbird_p3_reCaptcha_enabled: env.sunbird_p3_reCaptcha_enabled,
 
   // Android Configuration
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',

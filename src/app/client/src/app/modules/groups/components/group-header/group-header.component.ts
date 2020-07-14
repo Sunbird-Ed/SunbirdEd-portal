@@ -21,6 +21,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   creator: string;
   showMemberPopup = false;
   showLeaveGroupModal = false;
+  showLoader = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
@@ -45,12 +46,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
     this.toggleModal(false);
+    this.showLoader = true;
     setTimeout(() => {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
+        this.showLoader = false;
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m003);
       });
+      this.showLoader = false;
       this.goBack();
     });
   }
@@ -76,14 +80,17 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   leaveGroup() {
+    this.showLoader = true;
     /* istanbul ignore else */
     if (!this.groupService.isCurrentUserCreator) {
       this.groupService.removeMembers(this.groupData.id, [this.userService.userid])
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(resp => {
+          this.showLoader = false;
           this.toasterService.success(this.resourceService.messages.smsg.leaveGroup);
           this.goBack();
         }, error => {
+          this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.emsg.leaveGroup);
         });
     }

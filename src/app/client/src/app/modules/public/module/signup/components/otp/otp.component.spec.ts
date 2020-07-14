@@ -11,6 +11,7 @@ import { OtpComponent } from './otp.component';
 import { OtpComponentMockResponse } from './otp.component.spec.data';
 import { SignupService } from '../../services';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { RecaptchaModule } from 'ng-recaptcha';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpComponent', () => {
@@ -36,7 +37,8 @@ describe('OtpComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OtpComponent, InterpolatePipe],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RecaptchaModule,
+        FormsModule, ReactiveFormsModule],
       providers: [ConfigService, CacheService, BrowserCacheTtlService, UtilService,
         DeviceDetectorService, SignupService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
@@ -98,7 +100,7 @@ describe('OtpComponent', () => {
 
   it('it should resend otp', () => {
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'generateOTP').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
     component.resendOTP();
     expect(component.errorMessage).toBe('');
   });
@@ -106,14 +108,14 @@ describe('OtpComponent', () => {
   it('it should resend otp with minor user', () => {
     const signupService = TestBed.get(SignupService);
     component.isMinor = true;
-    spyOn(signupService, 'generateOTP').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
     const contactType = component.signUpdata.controls['contactType'];
     contactType.setValue('phone');
     const phone = component.signUpdata.controls['phone'];
     phone.setValue(OtpComponentMockResponse.generateOtpMinor.request.key);
     component.resendOTP();
     expect(component.errorMessage).toBe('');
-    expect(signupService.generateOTP).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtpMinor);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtpMinor, undefined);
   });
 
   it('it should throw error for resend the otp for minor user', () => {
@@ -132,10 +134,10 @@ describe('OtpComponent', () => {
     contactType.setValue('phone');
     const phone = component.signUpdata.controls['phone'];
     phone.setValue(OtpComponentMockResponse.generateOtpMinor.request.key);
-    spyOn(signupService, 'generateOTP').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
     component.resendOTP();
     expect(component.errorMessage).toBe('There was a technical error. Try again.');
-    expect(signupService.generateOTP).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtp);
+    expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtp, undefined);
   });
 
   it('it should not create new user as create user api failed', () => {
