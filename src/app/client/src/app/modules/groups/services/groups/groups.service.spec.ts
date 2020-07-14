@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
+import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 describe('GroupsService', () => {
   configureTestSuite();
@@ -48,6 +49,53 @@ describe('GroupsService', () => {
     expect(service['groupCservice'].search).toHaveBeenCalledWith({ filters: { userId: '123' } });
   });
 
+
+  it('should call updateMembers', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'updateMembers').and.callThrough();
+    service.updateMembers('123', { userId: 'pop-sdsds-sdsd', role: GroupMemberRole.ADMIN });
+    expect(service['groupCservice'].updateMembers).toHaveBeenCalledWith('123', { userId: 'pop-sdsds-sdsd', role: GroupMemberRole.ADMIN });
+  });
+
+
+  it('should call removeMembers', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'removeMembers').and.callThrough();
+    service.removeMembers('123', ['por-sdl-sas']);
+    expect(service['groupCservice'].removeMembers).toHaveBeenCalledWith('123', { userIds: ['por-sdl-sas'] });
+  });
+
+
+  it('should call addActivities', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'addActivities').and.callThrough();
+    service.addActivities('123', { id: 'do_233433y4234324', type: 'Course' });
+    expect(service['groupCservice'].addActivities).toHaveBeenCalledWith('123', { id: 'do_233433y4234324', type: 'Course' });
+  });
+
+
+  it('should call updateActivities', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'updateActivities').and.callThrough();
+    service.updateActivities('123', { id: 'do_233433y4234324', type: 'Textbook' });
+    expect(service['groupCservice'].updateActivities).toHaveBeenCalledWith('123', { id: 'do_233433y4234324', type: 'Textbook' });
+  });
+
+  it('should call removeActivities', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'removeActivities').and.callThrough();
+    service.removeActivities('123', { activityIds: ['do_233433y4234324'] });
+    expect(service['groupCservice'].removeActivities).toHaveBeenCalledWith('123', { activityIds: ['do_233433y4234324'] });
+  });
+
+
+  xit('should call getActivity', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'getActivity').and.callThrough();
+    service.getActivity('123', { id: 'do_233433y4234324', type: 'Course' });
+    expect(service['groupCservice']['activityService']['getDataAggregation']).toHaveBeenCalledWith('123', { id: 'do_233433y4234324', type: 'Course' });
+  });
+
   it('should call groupCs getById', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'getById');
@@ -71,11 +119,15 @@ describe('GroupsService', () => {
 
   it('should set group', () => {
     const service = TestBed.get(GroupsService);
-    spyOn(service, 'addGroupFields').and.returnValue({ name: 'Test',
-    description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T' });
+    spyOn(service, 'addGroupFields').and.returnValue({
+      name: 'Test',
+      description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T'
+    });
     service.groupData = { name: 'Test', description: 'Test groups description' };
-    expect(service['_groupData']).toEqual({ name: 'Test',
-    description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T' });
+    expect(service['_groupData']).toEqual({
+      name: 'Test',
+      description: 'Test groups description', isCreator: true, isAdmin: true, initial: 'T'
+    });
   });
 
   it('should add members to group', () => {
@@ -96,8 +148,8 @@ describe('GroupsService', () => {
     const service = TestBed.get(GroupsService);
     const data = service.addFields({ userId: '1', role: 'admin', name: 'user' });
     expect(data.userId).toEqual('1');
-    expect(data.title).toEqual('user');
-    expect(data.initial).toEqual('u');
+    expect(data.title).toEqual('User');
+    expect(data.initial).toEqual('U');
   });
 
   it('should call addFields()', () => {
@@ -107,8 +159,8 @@ describe('GroupsService', () => {
     service.groupData = { isAdmin: true };
     const data = service.addFieldsToMember([{ userId: '1', role: 'admin', name: 'user', createdBy: '1' }]);
     expect(data[0]).toEqual({
-      userId: '1', role: 'admin', name: 'user', createdBy: '1', title: 'user', indexOfMember: 0,
-      initial: 'u', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: false,
+      userId: '1', role: 'admin', name: 'user', createdBy: '1', title: 'User', indexOfMember: 0,
+      initial: 'U', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: true,
     });
     expect(service.addFields).toHaveBeenCalledTimes(1);
   });
