@@ -56,7 +56,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
-        if (!user) {
+        if (!user || _.get(groupData, 'status') === 'inactive') {
           this.groupService.goBack();
         }
         this.groupService.groupData = groupData;
