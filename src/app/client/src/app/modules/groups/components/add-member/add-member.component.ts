@@ -52,6 +52,13 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     if (!this.groupData) {
       this.location.back();
     }
+    this.initRecaptcha();
+    this.instance = _.upperCase(this.resourceService.instance);
+    this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+  }
+
+  initRecaptcha() {
     this.groupService.getRecaptchaSettings().subscribe((res: any) => {
       if (res.result.response) {
         const captchaConfig = JSON.parse(_.get(res, 'result.response.value'));
@@ -61,9 +68,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     }, (err: any) => {
       this.toasterService.error(this.resourceService.frmelmnts.instn.t0056);
     });
-    this.instance = _.upperCase(this.resourceService.instance);
-    this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
   reset() {

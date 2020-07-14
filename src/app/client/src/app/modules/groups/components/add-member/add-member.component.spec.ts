@@ -107,8 +107,11 @@ describe('AddMemberComponent', () => {
   it('should return is member is already present', () => {
     spyOn(component, 'isExistingMember').and.returnValue(true);
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '1', exists: true, name: 'user'}));
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
     component.memberId = '1';
-    component.captchaResponse = 'captchaToken';
     component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
     expect(component['groupsService'].getUserData).toHaveBeenCalled();
@@ -116,7 +119,11 @@ describe('AddMemberComponent', () => {
 
   it('should return is member is not already present', () => {
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '3', exists: true, name: 'user 2'}));
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component, 'isExistingMember').and.returnValue(false);
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
     component.memberId = '2';
     component.captchaResponse = 'captchaToken';
     component.verifyMember();
@@ -193,7 +200,8 @@ describe('AddMemberComponent', () => {
 
   it('should load re-captcha when recaptcha is enable from system setting', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
-    component.ngOnInit();
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
     fixture.detectChanges();
     expect(component.googleCaptchaSiteKey).toBeDefined();
     expect(component.isCaptchEnabled).toBeTruthy();
@@ -203,7 +211,8 @@ describe('AddMemberComponent', () => {
 
   it('should not load re-captcha when recaptcha is enable from system setting', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.disabledRecaptchaResponse));
-    component.ngOnInit();
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
     fixture.detectChanges();
     expect(component.googleCaptchaSiteKey).toEqual('');
     expect(component.isCaptchEnabled).toBeFalsy();
@@ -214,7 +223,8 @@ describe('AddMemberComponent', () => {
   it('should show toaster message while error on getRecaptchaSettings', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.callFake(() => throwError(addMemberMockData.disabledRecaptchaResponse));
     spyOn(component['toasterService'], 'error');
-    component.ngOnInit();
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
     fixture.detectChanges();
     const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
     expect(component.googleCaptchaSiteKey).toEqual('');
@@ -231,10 +241,11 @@ describe('AddMemberComponent', () => {
     expect(component.verifyMember).toHaveBeenCalled();
   });
 
-  it('should reset and execute recaptcha method on click on varify button', () => {
+  it('should execute recaptcha method on click on verify button', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component, 'onVerifyMember').and.callThrough();
-    component.ngOnInit();
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
     fixture.detectChanges();
     component.onVerifyMember();
     expect(component.isCaptchEnabled).toBeTruthy();
@@ -242,7 +253,7 @@ describe('AddMemberComponent', () => {
   });
 
   it('should call verify member if captcha is not enable', () => {
-    spyOn(component, 'onVerifyMember').and.callThrough();
+    spyOn(component, 'verifyMember').and.callThrough();
     component.isCaptchEnabled = false;
     component.onVerifyMember();
     expect(component.verifyMember).toHaveBeenCalled();
