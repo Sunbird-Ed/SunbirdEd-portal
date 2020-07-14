@@ -46,7 +46,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.members = _.get(this.groupsService, 'groupData.members') || [];
+    this.members = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
     this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.hideMemberMenu();

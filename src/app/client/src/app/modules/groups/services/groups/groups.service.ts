@@ -8,6 +8,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class GroupsService {
     this.setCurrentUserRole(members);
     if (members) {
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return membersList;
+     return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
     }
     return [];
   }
