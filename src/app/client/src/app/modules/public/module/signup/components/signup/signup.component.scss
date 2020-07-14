@@ -2,6 +2,22 @@
 @import 'mixins/mixins';
 @import 'pages/sign_in_up';
 
+.signup-background {
+  overflow-y: auto;
+  @include respond-between(sm, xl) {
+    align-items: flex-start;
+    padding-top: calculateRem(48px);
+  }
+  @include respond-below(sm) {
+    display: unset;
+    align-items: unset;
+    .fullpage-background-image {
+      height: unset;
+      overflow-y: unset;
+    }
+  }
+}
+
 .ui.raised.shadow.container.segment {
   margin: calculateRem(20px) auto !important;
   padding: calculateRem(10px);
