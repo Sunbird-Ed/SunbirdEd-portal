@@ -154,7 +154,7 @@
         margin-bottom: calculateRem(8px);
         display: block;
         width: 100%;
-        text-transform: capitalize;
+        text-transform: inherit;
         font-weight: $font-weight-bold;
         line-height: calculateRem(16px);
       }
