@@ -4,7 +4,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService } from '@sunbird/shared';
-import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
@@ -16,6 +16,8 @@ export class GroupsService {
   private groupCservice: any;
   private userCservice: any;
   private _groupData: IGroupCard;
+  public isCurrentUserAdmin = false;
+  public isCurrentUserCreator = false;
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
 
@@ -35,28 +37,47 @@ export class GroupsService {
   }
 
   addFieldsToMember(members): IGroupMember[] {
+    this.setCurrentUserRole(members);
     if (members) {
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.name)], ['desc', 'desc', 'asc']);
+      return membersList;
     }
     return [];
   }
 
+  setCurrentUserRole(members) {
+    const currentUser = members.find(item => item.userId === this.userService.userid);
+    this.isCurrentUserAdmin = _.get(currentUser, 'role') === 'admin';
+    this.isCurrentUserCreator = _.get(currentUser, 'userId') === _.get(currentUser, 'createdBy');
+  }
+
   addFields(member): IGroupMember {
-    member.title = _.get(member, 'name') || _.get(member, 'userName');
+    member.title = _.capitalize(member.name || member.userName);
     member.initial = _.get(member, 'title[0]');
     member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
     member.isAdmin = _.get(member, 'role') === 'admin';
     member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
     member.isSelf = (this.userService.userid === _.get(member, 'userId')) || (this.userService.userid === _.get(member, 'identifier'));
-    member.isMenu = _.get(this.groupData, 'isAdmin') && !(member.isSelf || member.isCreator);
-    member.title = member.isSelf ? `${member.title}(${this.resourceService.frmelmnts.lbl.you})` : member.title;
+    member.title = member.isSelf ? `${member.title} (${this.resourceService.frmelmnts.lbl.you})` : member.title;
+    member.isMenu = member.isAdmin && !(member.isSelf || member.isCreator);
+
+    if (this.isCurrentUserCreator) {
+      member.isMenu = !member.isSelf;
+    } else if (this.isCurrentUserAdmin) {
+      member.isMenu = (member.isSelf || member.isCreator) ? false : true;
+    } else {
+      member.isMenu = false;
+    }
+
     return member;
   }
 
   addGroupFields(group) {
+    const currentUser = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
     group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
-    group.isAdmin = group.isCreator ? true : _.get(group, 'memberRole') === 'admin';
+    group.isAdmin = group.isCreator ? true :
+    (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
+    _.isEqual(_.get(group, 'memberRole'), 'admin'));
     group.initial = _.get(group, 'name[0]');
     return group;
   }
@@ -102,11 +123,15 @@ export class GroupsService {
   }
 
   removeActivities(groupId: string, removeActivitiesRequest: CsGroupRemoveActivitiesRequest) {
-    return this.groupCservice.removeMembers(groupId, removeActivitiesRequest);
+    return this.groupCservice.removeActivities(groupId, removeActivitiesRequest);
   }
 
   getUserData(memberId: string) {
-    return this.userCservice.checkUserExists({key: 'email', value: memberId}, '');
+    return this.userCservice.checkUserExists({ key: 'userName', value: memberId }, '');
+  }
+
+  getActivity(groupId, activity) {
+    return this.groupCservice.activityService.getDataAggregation(groupId, activity);
   }
 
   set groupData(group: IGroupCard) {
@@ -132,6 +157,22 @@ export class GroupsService {
       this.navigationhelperService.goBack();
     }
   }
+
+  addGroupPaletteList(groupList: []) {
+
+    const bgColors = ['#FFDFD9', '#FFD6EB', '#DAD4FF', '#DAFFD8', '#C2E2E9', '#FFE59B', '#C2ECE6', '#FFDFC7', '#D4F386', '#E1E1E1'];
+    const titleColors = ['#EA2E52', '#FD59B3', '#635CDC', '#218432', '#07718A', '#8D6A00', '#149D88', '#AD632D', '#709511', '#666666'];
+
+    _.forEach(groupList, group => {
+      group.cardBgColor = bgColors[Math.floor(
+        Math.random() * bgColors.length)];
+      group.cardTitleColor = titleColors[Math.floor(
+        Math.random() * titleColors.length)];
+    });
+
+    return groupList || [];
+    }
+
 
   addTelemetry(eid: string, routeData, cdata, groupId?: string) {
 

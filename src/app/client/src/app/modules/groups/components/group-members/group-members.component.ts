@@ -34,6 +34,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   selectedMember: IGroupMember;
   private unsubscribe$ = new Subject<void>();
   groupId;
+  showLoader = false;
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
 
   constructor(
@@ -45,13 +46,9 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    const groupData = this.groupsService.groupData;
-    this.members = this.groupsService.addFieldsToMember(_.get(groupData, 'members') || []);
-    this.memberListToShow = this.members;
+    this.members = _.get(this.groupsService, 'groupData.members') || [];
+    this.memberListToShow = _.cloneDeep(this.members);
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-
-    this.memberListToShow.forEach(item => item.isMenu =
-      ((groupData.createdBy === item.userId) ? false : this.config.showMemberMenu));
     this.hideMemberMenu();
 
     fromEvent(document, 'click')

@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService } from '@sunbird/core';
 import * as dayjs from 'dayjs';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
 @Component({
   templateUrl: './course-consumption-page.component.html'
 })
@@ -19,10 +20,11 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public enrolledBatchInfo: any;
   public groupId: string;
+  public showAddGroup = false;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router,
+    private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
     public navigationHelperService: NavigationHelperService, public permissionService: PermissionService) {
   }
   ngOnInit() {
@@ -32,6 +34,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
         this.groupId = queryParams.groupId;
+
+        if (this.groupId) {
+          this.getGroupData();
+        }
         const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
@@ -114,6 +120,16 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       // }]);
     }
   }
+
+  getGroupData() {
+    this.groupsService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupsService.groupData = _.cloneDeep(groupData);
+      this.showAddGroup = _.get(this.groupsService.addGroupFields(groupData), 'isAdmin');
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+    });
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
