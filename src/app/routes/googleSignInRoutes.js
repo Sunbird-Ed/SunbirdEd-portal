@@ -6,6 +6,7 @@ const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
+const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 /**
  * keycloack adds this string to track auth redirection and 
  * with this it triggers auth code verification to get token and create session
@@ -21,8 +22,10 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state = Buffer.from(JSON.stringify(req.query)).toString('base64');
-    logger.info({msg: 'query params state', googleSignInData: req.query});
+    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
+    googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
+    const state = JSON.stringify(googleSignInData);
+    logger.info({msg: 'query params state', googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
@@ -45,8 +48,8 @@ module.exports = (app) => {
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType, reqQuery = {};
     try {
       errType = 'BASE64_STATE_DECODE';
-      const googleSignInData = JSON.parse(Buffer.from(req.query.state, 'base64').toString('ascii'));
-      reqQuery = _.pick(googleSignInData, ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'])
+      reqQuery = _.pick(JSON.parse(req.query.state), REQUIRED_STATE_FIELD);
+      reqQuery.redirect_uri = Buffer.from(reqQuery.redirect_uri, 'base64').toString('ascii');
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
