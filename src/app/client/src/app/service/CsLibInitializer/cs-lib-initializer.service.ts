@@ -34,7 +34,7 @@ export class CsLibInitializerService {
           services: {
               groupServiceConfig: {
                 apiPath: '/learner/group/v1',
-                dataApiPath: '',
+                dataApiPath: '/learner/data/v1/group',
               },
               userServiceConfig: {
                 apiPath: '/learner/user/v2',

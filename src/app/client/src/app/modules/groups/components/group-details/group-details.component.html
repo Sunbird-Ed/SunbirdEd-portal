@@ -11,7 +11,7 @@
           <div class="sb-pageSection-header">
             <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity" (click)="toggleActivityModal(true)">
               {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
-            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto"
+            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" *ngIf="isAdmin"
               (click)="toggleActivityModal(true)">
               <i class="plus icon" aria-hidden="true"></i>
               {{resourceService?.frmelmnts?.btn?.addActivity}}
