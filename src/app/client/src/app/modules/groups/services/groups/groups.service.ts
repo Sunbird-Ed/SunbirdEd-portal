@@ -8,6 +8,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +41,27 @@ export class GroupsService {
     this.setCurrentUserRole(members);
     if (members) {
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return membersList;
+      return this.sortMembers(membersList);
     }
     return [];
+  }
+
+  sortMembers(members) {
+    members.sort((a, b) => {
+      if (b.userId === this.userService.userid) {
+        return 1;
+      } else if (a.userId === this.userService.userid) {
+        return -1;
+      }
+      if (b.role === GroupMemberRole.ADMIN && a.role === GroupMemberRole.MEMBER) {
+        return 1;
+      } else if (b.role === GroupMemberRole.MEMBER && a.role === GroupMemberRole.ADMIN) {
+        return -1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+
+    return members;
   }
 
   setCurrentUserRole(members) {
