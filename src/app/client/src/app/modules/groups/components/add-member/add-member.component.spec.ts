@@ -3,7 +3,7 @@ import { of, throwError } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, RecaptchaService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AddMemberComponent } from './add-member.component';
@@ -11,6 +11,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { ActivatedRoute } from '@angular/router';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { By } from '@angular/platform-browser';
+import { addMemberMockData } from './add-member.component.spec.data';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -30,6 +34,9 @@ describe('AddMemberComponent', () => {
     frmelmnts: {
       lbl: {
         you: 'You',
+      },
+      instn: {
+        t0056: 'try again'
       }
     }
   };
@@ -41,11 +48,11 @@ describe('AddMemberComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AddMemberComponent ],
-      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, FormsModule, TelemetryModule, RecaptchaModule],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
         {provide: APP_BASE_HREF, useValue: '/'},
         { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
-        TelemetryService,
+        TelemetryService, RecaptchaService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -100,15 +107,26 @@ describe('AddMemberComponent', () => {
   it('should return is member is already present', () => {
     spyOn(component, 'isExistingMember').and.returnValue(true);
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '1', exists: true, name: 'user'}));
-    component.verifyMember('1');
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
+    component.memberId = '1';
+    component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
     expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
 
   it('should return is member is not already present', () => {
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '3', exists: true, name: 'user 2'}));
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component, 'isExistingMember').and.returnValue(false);
-    component.verifyMember('2');
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
+    component.memberId = '2';
+    component.captchaResponse = 'captchaToken';
+    component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
     expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
@@ -179,5 +197,54 @@ describe('AddMemberComponent', () => {
     component.addTelemetry('ftu-popup');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
   });
+
+  it('should load re-captcha when recaptcha is enable from system setting', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
+    expect(component.googleCaptchaSiteKey).toBeDefined();
+    expect(component.isCaptchEnabled).toBeTruthy();
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeTruthy();
+  });
+
+  it('should not load re-captcha when recaptcha is enable from system setting', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.disabledRecaptchaResponse));
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
+    expect(component.googleCaptchaSiteKey).toEqual('');
+    expect(component.isCaptchEnabled).toBeFalsy();
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeFalsy();
+  });
+
+  it('should resolved captcha responce and call varify method', () => {
+    spyOn(component, 'captchaResolved').and.callThrough();
+    spyOn(component, 'verifyMember').and.callThrough();
+    component.captchaResolved('captchResponceToken');
+    expect(component.captchaResolved).toHaveBeenCalled();
+    expect(component.verifyMember).toHaveBeenCalled();
+  });
+
+  it('should execute recaptcha method on click on verify button', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    spyOn(component, 'onVerifyMember').and.callThrough();
+    spyOn(component['groupsService'], 'addFieldsToMember');
+    component.initRecaptcha();
+    fixture.detectChanges();
+    component.onVerifyMember();
+    expect(component.isCaptchEnabled).toBeTruthy();
+    expect(component.onVerifyMember).toHaveBeenCalled();
+  });
+
+  it('should call verify member if captcha is not enable', () => {
+    spyOn(component, 'verifyMember').and.callThrough();
+    component.isCaptchEnabled = false;
+    component.onVerifyMember();
+    expect(component.verifyMember).toHaveBeenCalled();
+  });
+
 
 });

@@ -8,7 +8,7 @@
 <!--Show Activity List-->
 <div *ngIf="!showLoader && activityList?.length" class="sb-card-grid">
   <div class="sb-card-grid--item relative" *ngFor="let activity of activityList;">
-    <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="true"
+    <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin"
       [cardImg]="activity?.appIcon || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
     </sb-course-card>
     <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
