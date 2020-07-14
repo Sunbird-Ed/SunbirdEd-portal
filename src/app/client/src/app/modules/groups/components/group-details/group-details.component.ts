@@ -1,3 +1,4 @@
+import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -37,6 +38,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private router: Router,
     public resourceService: ResourceService,
+    private userService: UserService,
   ) {
     this.groupService = groupService;
   }
@@ -53,11 +55,15 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   getGroupData() {
     this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      this.groupService.groupData = groupData;
-      this.groupData = this.groupService.addGroupFields(groupData);
-      this.members = this.groupService.addFieldsToMember(this.groupData.members);
-      this.isAdmin = this.groupService.isCurrentUserAdmin;
-      this.isLoader = false;
+      const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
+        if (!user) {
+          this.groupService.goBack();
+        }
+        this.groupService.groupData = groupData;
+        this.groupData = this.groupService.addGroupFields(groupData);
+        this.members = this.groupService.addFieldsToMember(this.groupData.members);
+        this.isAdmin = this.groupService.isCurrentUserAdmin;
+        this.isLoader = false;
     }, err => {
       this.isLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m002);

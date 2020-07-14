@@ -179,5 +179,15 @@ describe('GroupsService', () => {
     expect(service['telemetryService'].interact).toHaveBeenCalled();
   });
 
+
+  it('should add colors', () => {
+    const service = TestBed.get(GroupsService);
+    const response = service.addGroupPaletteList([{name: 'G1', id: '1'}, {name: 'G2', id: '2'}]);
+    expect(Object.keys(response[0])).toContain('cardBgColor');
+    expect(Object.keys(response[0])).toContain('cardTitleColor');
+    expect(Object.keys(response[1])).toContain('cardBgColor');
+    expect(Object.keys(response[1])).toContain('cardTitleColor');
+  });
+
 });
 
