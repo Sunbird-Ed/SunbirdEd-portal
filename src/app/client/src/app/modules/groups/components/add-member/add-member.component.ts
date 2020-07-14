@@ -23,6 +23,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   memberId: string;
   config = { size: 'medium', isBold: true, isSelectable: false, view: 'horizontal' };
   isInvalidUser = false;
+  disableBtn = false;
   verifiedMember: IGroupMember;
   telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
@@ -40,12 +41,12 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
-    this.instance = _.upperCase(this.resourceService.instance);
-    this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
     if (!this.groupData) {
       this.location.back();
     }
+    this.instance = _.upperCase(this.resourceService.instance);
+    this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
   reset() {
@@ -63,8 +64,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   verifyMember(memberId) {
     this.showLoader = true;
       this.groupsService.getUserData(memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
-        if (member.exists) {
-          this.verifiedMember = this.groupsService.addFields(member);
+        this.verifiedMember = this.groupsService.addFields(member);
+        if (member.exists && !this.isExistingMember()) {
           this.showLoader = false;
           this.isVerifiedUser = true;
         } else {
@@ -91,14 +92,19 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   addMemberToGroup() {
+    this.disableBtn = true;
     if (!this.isExistingMember()) {
       const member: IMember = {members: [{ userId: _.get(this.verifiedMember, 'id'), role: 'member' }]};
       this.groupsService.addMemberById(this.groupData.id, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
+        this.disableBtn = false;
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
+          this.memberId = '';
           this.reset();
       }, err => {
+        this.disableBtn = false;
+        this.memberId = '';
         this.reset();
         this.showErrorMsg();
       });
