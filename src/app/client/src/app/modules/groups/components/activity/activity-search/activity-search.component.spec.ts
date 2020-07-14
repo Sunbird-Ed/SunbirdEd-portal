@@ -11,8 +11,9 @@ import { ActivitySearchComponent } from './activity-search.component';
 import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { GroupsService } from '../../../services/groups/groups.service';
 
-xdescribe('ActivitySearchComponent', () => {
+describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
   let fixture: ComponentFixture<ActivitySearchComponent>;
   let formService, sendFormApi;
@@ -34,6 +35,12 @@ xdescribe('ActivitySearchComponent', () => {
     },
     channelData$: of({ err: null, channelData: activitySearchMockData.channelData })
   };
+
+  class GroupsServiceMock {
+    getGroupById() {
+      return of();
+    }
+  }
 
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
@@ -63,7 +70,8 @@ xdescribe('ActivitySearchComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: FrameworkService, useValue: frameWorkServiceStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: GroupsService, useClass: GroupsServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

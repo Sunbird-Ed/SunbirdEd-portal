@@ -10,7 +10,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
-xdescribe('GroupsService', () => {
+describe('GroupsService', () => {
   configureTestSuite();
   const resourceBundle = {
     frmelmnts: {
