@@ -62,7 +62,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   verifyMember(memberId) {
     this.showLoader = true;
-    if (!this.isExistingMember()) {
       this.groupsService.getUserData(memberId).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         if (member.exists) {
           this.verifiedMember = this.groupsService.addFields(member);
@@ -74,7 +73,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       }, (err) => {
         this.showInvalidUser();
       });
-    }
   }
 
   showInvalidUser () {
@@ -83,7 +81,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   isExistingMember() {
-    const isExisting = _.find(this.membersList, { userId: this.memberId });
+    const isExisting = _.find(this.membersList, { userId: _.get(this.verifiedMember, 'id') });
     if (isExisting) {
       this.resetValue();
       this.toasterService.error(this.resourceService.messages.emsg.m007);
@@ -99,7 +97,11 @@ export class AddMemberComponent implements OnInit, OnDestroy {
         this.getUpdatedGroupData();
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
-      }, err => this.showErrorMsg());
+          this.reset();
+      }, err => {
+        this.reset();
+        this.showErrorMsg();
+      });
     }
   }
 
