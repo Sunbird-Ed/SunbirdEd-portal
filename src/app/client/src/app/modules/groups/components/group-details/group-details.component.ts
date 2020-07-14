@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember  } from '../../interfaces';
+import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
@@ -21,8 +21,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   showActivityList = false;
   showFilters = false;
   telemetryImpression: IImpressionEventInput;
-  members: IGroupMember [] = [];
+  members: IGroupMember[] = [];
   isLoader = true;
+  isAdmin = false;
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
@@ -53,8 +54,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupService.groupData = groupData;
-      this.groupData = groupData;
+      this.groupData = this.groupService.addGroupFields(groupData);
       this.members = this.groupService.addFieldsToMember(this.groupData.members);
+      this.isAdmin = this.groupService.isCurrentUserAdmin;
       this.isLoader = false;
     }, err => {
       this.isLoader = false;
