@@ -92,6 +92,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   addMemberToGroup() {
+    this.groupsService.emitShowLoader(true);
     this.disableBtn = true;
     if (!this.isExistingMember()) {
       const member: IMember = {members: [{ userId: _.get(this.verifiedMember, 'id'), role: 'member' }]};
@@ -103,6 +104,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
           this.memberId = '';
           this.reset();
       }, err => {
+        this.groupsService.emitShowLoader(false);
         this.disableBtn = false;
         this.memberId = '';
         this.reset();
@@ -121,7 +123,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupData = groupData;
       this.membersList = this.groupsService.addFieldsToMember(_.get(groupData, 'members'));
       this.groupsService.emitMembers(this.membersList);
+      this.groupsService.emitShowLoader(false);
     }, err => {
+      this.groupsService.emitShowLoader(false);
       this.membersList.push(this.verifiedMember);
     });
   }

@@ -20,6 +20,7 @@ export class GroupsService {
   public isCurrentUserCreator = false;
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
+  public showLoader = new EventEmitter();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -148,6 +149,10 @@ export class GroupsService {
 
   emitMembers(members: IGroupMember[]) {
     this.membersList.emit(members);
+  }
+
+  emitShowLoader(value) {
+    this.showLoader.emit(value);
   }
 
   goBack() {
