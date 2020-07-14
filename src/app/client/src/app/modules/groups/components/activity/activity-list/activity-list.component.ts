@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
@@ -21,7 +21,7 @@ export interface IActivity {
   templateUrl: './activity-list.component.html',
   styleUrls: ['./activity-list.component.scss']
 })
-export class ActivityListComponent {
+export class ActivityListComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() groupData;
   @Input() currentMember;

@@ -65,3 +65,7 @@
 
 <app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"
   (modalClose)="showLeaveGroupModal=false" (actionConfirm)="leaveGroup()"></app-member-actions>
+
+  <sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
+    <div class="ui text loader"><h2>{{resourceService?.messages?.fmsg?.m0087}}</h2></div>
+  </sui-dimmer>

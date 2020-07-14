@@ -66,6 +66,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.isLoader = false;
     }, err => {
       this.isLoader = false;
+      this.groupService.goBack();
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }
