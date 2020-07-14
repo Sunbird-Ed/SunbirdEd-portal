@@ -78,5 +78,6 @@ export interface IGroupMember {
   userId: string;
   role: string;
   name: string;
+  id?: string;
 }
 
