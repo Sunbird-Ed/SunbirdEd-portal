@@ -106,24 +106,27 @@ describe('AddMemberComponent', () => {
 
   it('should return is member is already present', () => {
     spyOn(component, 'isExistingMember').and.returnValue(true);
+    spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '1', exists: true, name: 'user'}));
     component.memberId = '1';
     component.captchaResponse = 'captchaToken';
     component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
+    expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
 
   it('should return is member is not already present', () => {
-    spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({result: {response: {identifier: '2', name: 'user 2'}}}));
+    spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '3', exists: true, name: 'user 2'}));
     spyOn(component, 'isExistingMember').and.returnValue(false);
     component.memberId = '2';
     component.captchaResponse = 'captchaToken';
     component.verifyMember();
     expect(component.isExistingMember).toHaveBeenCalled();
-    expect(component['groupsService'].getUserData).toHaveBeenCalledWith('2', component.captchaResponse);
+    expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
 
   it('should throw error', () => {
-    component.memberId = '1';
+    component.verifiedMember = {identifier: '1', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
+    indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member', id: '1'};
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'resetValue');
     const value = component.isExistingMember();

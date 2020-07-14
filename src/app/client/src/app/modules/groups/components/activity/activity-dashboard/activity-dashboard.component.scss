@@ -2,7 +2,7 @@
 @import "mixins/mixins";
 
 .content-header {
-  background: #fafafa;
+  background: var(--rc-FAFAFA);
   min-height: calculateRem(14px);
   &__content {
     display: flex;
@@ -13,8 +13,8 @@
     }
   }
   &__img {
-    width: 48px;
-    height: 48px;
+    width: calculateRem(48px);
+    height: calculateRem(48px);
     overflow: hidden;display: flex;
     align-items: center;
     justify-content: center;
