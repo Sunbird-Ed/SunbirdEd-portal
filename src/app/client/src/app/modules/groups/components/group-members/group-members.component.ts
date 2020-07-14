@@ -58,6 +58,9 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
           this.showKebabMenu = false;
         }
       });
+    this.groupsService.showLoader.subscribe(showLoader => {
+      this.showLoader = showLoader;
+    });
 
     this.groupsService.membersList.subscribe(members => {
       this.memberListToShow = members;
@@ -128,6 +131,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   promoteMember(data) {
+    this.showLoader = true;
     const memberReq = {
       members: [{
         userId: _.get(data, 'userId'),
@@ -135,23 +139,29 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       }]
     };
     this.groupsService.updateMembers(this.groupId, memberReq).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.showLoader = false;
       this.getUpdatedGroupData();
       this.toasterService.success(_.replace(this.resourceService.messages.smsg.promoteAsAdmin, '{memberName}', _.get(data, 'name')));
     }, error => {
+      this.showLoader = false;
       this.toasterService.error(_.replace(this.resourceService.messages.emsg.promoteAsAdmin, '{memberName}', _.get(data, 'name')));
     });
   }
 
   removeMember(data) {
+    this.showLoader = true;
     this.groupsService.removeMembers(this.groupId, [_.get(data, 'userId')]).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.showLoader = false;
       this.getUpdatedGroupData();
       this.toasterService.success(_.replace(this.resourceService.messages.smsg.removeMember, '{memberName}', _.get(data, 'name')));
     }, error => {
+      this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.removeMember);
     });
   }
 
   dismissRole(data) {
+    this.showLoader = true;
     const req = {
       members: [{
         userId: _.get(data, 'userId'),
@@ -159,9 +169,11 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       }]
     };
     this.groupsService.updateMembers(this.groupId, req).pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      this.showLoader = false;
       this.getUpdatedGroupData();
       this.toasterService.success(_.replace(this.resourceService.messages.smsg.dissmissAsAdmin, '{memberName}', _.get(data, 'name')));
     }, error => {
+      this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.dissmissAsAdmin);
     });
   }
