@@ -84,7 +84,7 @@
 .slick-slide {
     float: left;
     height: 100%;
-    min-height: 1px;
+    min-height: calculateRem(1px);
     [dir="rtl"] & {
         float: right;
     }
@@ -112,7 +112,7 @@
     .slick-vertical & {
         display: block;
         height: auto;
-        border: 1px solid transparent;
+        border: calculateRem(1px) solid transparent;
     }
     /*&:last-child{
         app-card{
