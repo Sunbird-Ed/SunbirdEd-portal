@@ -12,7 +12,7 @@ import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 
-xdescribe('ActivitySearchComponent', () => {
+describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
   let fixture: ComponentFixture<ActivitySearchComponent>;
   let formService, sendFormApi;
@@ -91,10 +91,8 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn(component, 'getFrameworkId');
-    spyOn<any>(component, 'fetchContents');
     component.ngOnInit();
     expect(component.getFrameworkId).toHaveBeenCalled();
-    expect(component['fetchContents']).toHaveBeenCalled();
   });
 
   it('should call toggleFilter', () => {
@@ -172,16 +170,18 @@ xdescribe('ActivitySearchComponent', () => {
 
   it('should search the courses if the search is not blank string', () => {
     const router = TestBed.get(Router);
+    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
     component.search();
-    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { key: 'english' } });
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should not search the courses if the search is blank string', () => {
     const router = TestBed.get(Router);
+    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = '';
     component.search();
-    expect(router.navigate).toHaveBeenCalledWith([]);
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should call addActivity', () => {
