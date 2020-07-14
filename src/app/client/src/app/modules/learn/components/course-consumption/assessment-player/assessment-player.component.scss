@@ -95,11 +95,11 @@
   z-index: 1;
 
   .modulebtn-divider {
-      width: 1px;
-      height: 24px;
+      width: calculateRem(1px);
+      height: calculateRem(24px);
       background: var(--gray-200);
       display: inline-block;
-      margin: 0 8px;
+      margin: 0 calculateRem(8px);
   }
 }
 
