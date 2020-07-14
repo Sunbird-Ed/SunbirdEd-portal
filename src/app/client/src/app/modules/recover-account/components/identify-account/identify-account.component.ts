@@ -84,8 +84,8 @@ export class IdentifyAccountComponent implements OnInit {
       if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
         this.identiferStatus = 'MATCHED';
         this.handleError(error);
-      } else if (_.get(error, 'error.params.errmsg') && error.error.params.errmsg === 'CAPTCHA_VALIDATING_FAILED') {
-        this.identiferStatus = 'CAPTCHA_VALIDATING_FAILED';
+      } else if (error.status === 418) {
+        this.identiferStatus = 'VALIDATING_FAILED';
         this.handleError(error);
       } else {
         this.identiferStatus = 'NOT_MATCHED';

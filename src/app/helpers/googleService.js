@@ -19,7 +19,7 @@ const validateRecaptcha = async (req, res, next) => {
   if (_.get(reCaptchaMapping, req.route.path)) {
     try {
       // Validating if request is valid or not
-      if (!req.query.captchaResponse) {
+      if (!req.query.captchaResponse || req.query.captchaResponse === undefined) {
         errType = 'MISSING_QUERY_PARAMS';
         throw new Error('MISSING_CAPTCHA_RESPONSE');
       }
@@ -39,7 +39,7 @@ const validateRecaptcha = async (req, res, next) => {
           next();
       } else {
         logger.info({
-          msg: 'googleService:validateRecaptcha success',
+          msg: 'googleService:validateRecaptcha failed',
           data: responseData,
           did: req.headers['x-device-id']
         });
@@ -53,13 +53,16 @@ const validateRecaptcha = async (req, res, next) => {
         errType: errType,
         did: req.headers['x-device-id']
       });
-      res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
+      res.status(httpSatusCode.IM_A_TEAPOT).send({
         'id': 'api.validate.recaptcha', 'ts': new Date(),
         'params': {
-          'resmsgid': uuidv1(), 'msgid': uuidv1(), 'err': 'INTERNAL_SERVER_ERROR',
-          'status': 'INTERNAL_SERVER_ERROR', 'errmsg': error.message
+          'resmsgid': uuidv1(),
+          'msgid': uuidv1(),
+          'err': 'I\'m a teapot',
+          'status': 'I\'m a teapot',
+          'errmsg': 'I\'m a teapot'
         },
-        'responseCode': 'INTERNAL_SERVER_ERROR',
+        'responseCode': 'I\'m a teapot',
         'result': {}
       });
     }

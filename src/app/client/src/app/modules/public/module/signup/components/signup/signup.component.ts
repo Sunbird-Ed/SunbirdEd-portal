@@ -261,7 +261,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       (err) => {
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
           this.showUniqueError = this.resourceService.frmelmnts.lbl.blockedUserError;
-        } else if (_.get(err, 'error.params.errmsg') && err.error.params.errmsg === 'CAPTCHA_VALIDATING_FAILED') {
+        } else if (err.status === 418) {
           this.signUpForm.controls['uniqueContact'].setValue(true);
           this.showUniqueError = this.resourceService.frmelmnts.lbl.captchaValidationFailed;
         } else {

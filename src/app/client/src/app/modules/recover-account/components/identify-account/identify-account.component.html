@@ -25,7 +25,7 @@
         <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'NOT_MATCHED'">
           {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
         </span>
-        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'CAPTCHA_VALIDATING_FAILED'">
+        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'VALIDATING_FAILED'">
           {{resourceService?.frmelmnts?.lbl?.captchaValidationFailed}}
         </span>
       </div>
