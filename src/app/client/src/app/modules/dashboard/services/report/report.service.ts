@@ -361,7 +361,7 @@ export class ReportService {
             filters: { isRootOrg: true },
             fields: ["id", "channel", "slug", "orgName"],
             pageNumber: 1,
-            limit: 2000
+            limit: 1000
           };
           return this.searchService.orgSearch(req).pipe(
             map(res => _.map(_.get(res, 'result.response.content'), "slug"))
@@ -401,7 +401,7 @@ export class ReportService {
     }), "__"));
   }
 
-  private getParameterFromHash = (hash: string) => {
+  public getParameterFromHash = (hash: string) => {
     return _.split(atob(hash), "__");
   }
 
@@ -420,4 +420,50 @@ export class ReportService {
     const explicitValue = hash ? this.getParameterFromHash(hash) : null;
     return _.map(dataSources, (dataSource: IDataSource) => ({ id: dataSource.id, path: this.resolveParameterizedPath(dataSource.path, explicitValue) }))
   }
+
+  public getMaterializedChildRows(reports: any[]) {
+    const apiCall = _.map(reports, report => {
+      const isParameterized = _.get(report, 'isParameterized') || false;
+      if (!isParameterized) return of(report);
+      const parameters = _.get(report, 'parameters');
+      if (!parameters.length) return of(report);
+      const paramObj: { masterData: () => Observable<any> } = this.getParameterValues(_.toLower(parameters[0]));
+      if (!paramObj) return of(report);
+      return paramObj.masterData()
+        .pipe(
+          map(results => {
+            report.children = _.uniqBy(_.concat(_.map(report.children, child => ({ ...child, label: this.getParameterFromHash(child.hashed_val) })),
+              _.map(results, res => ({
+                label: res,
+                hashed_val: this.convertToBase64(_.split(res, '__')),
+                status: "draft",
+                reportid: _.get(report, 'reportid'),
+                materialize: true
+              }))), "hashed_val");
+            return report;
+          }),
+          catchError(err => {
+            console.error(err);
+            return of(report)
+          }));
+    });
+    return forkJoin(apiCall)
+  }
+
+  public getFlattenedReports(reports: any[]) {
+    return _.reduce(reports, (result, report) => {
+      const isParameterized = _.get(report, 'isParameterized') || false;
+      if (isParameterized && _.get(report, 'children.length')) {
+        for (const childReport of report.children) {
+          const flattenedReport = _.assign({ ...report }, _.omit(childReport, 'id'));
+          delete flattenedReport.children;
+          result.push(flattenedReport);
+        }
+        return result;
+      }
+      result.push(report);
+      return result;
+    }, []);
+  }
+
 }

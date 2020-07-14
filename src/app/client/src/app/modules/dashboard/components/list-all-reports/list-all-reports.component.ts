@@ -48,58 +48,14 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private getMaterializedChildRows(reports: any[]) {
-    const apiCall = _.map(reports, report => {
-      const isParameterized = _.get(report, 'isParameterized') || false;
-      if (!isParameterized) return of(report);
-      const parameters = _.get(report, 'parameters');
-      if (!parameters.length) return of(report);
-      const paramObj: { masterData: () => Observable<any> } = this.reportService.getParameterValues(_.toLower(parameters[0]));
-      if (!paramObj) return of(report);
-      return paramObj.masterData()
-        .pipe(
-          map(results => {
-            report.children = _.uniqBy(_.concat(report.children, _.map(results, res => ({
-              hashed_val: btoa(_.split(res, '__')),
-              status: "draft", reportid: _.get(report, 'reportid'), materialize: true
-            }))), "hashed_val");
-            return report;
-          }),
-          catchError(err => {
-            console.error(err);
-            return of(report)
-          }));
-    });
-    return forkJoin(apiCall)
-      .pipe(
-        map((response: any[]) => ({ reports: response, count: response.length })));
-  }
-
-
-  private getFlattenedReports(reports: any[]) {
-    const flattenedReports: any[] = _.reduce(reports, (result, report) => {
-      const isParameterized = _.get(report, 'isParameterized') || false;
-      if (isParameterized && _.get(report, 'children.length')) {
-        for (const childReport of report.children) {
-          const flattenedReport = _.assign({ ...report }, _.omit(childReport, 'id'));
-          delete flattenedReport.children;
-          result.push(flattenedReport);
-        }
-        return result;
-      }
-      result.push(report);
-      return result;
-    }, []);
-    return of({ reports: flattenedReports, count: flattenedReports.length });
-  }
 
   private filterReportsBasedOnRoles = (reports: any[]) => {
     if (this.reportService.isUserSuperAdmin()) {
-      return this.getMaterializedChildRows(reports);
+      return this.reportService.getMaterializedChildRows(reports);
     } else if (this.reportService.isUserReportAdmin()) {
-      return of({ reports, count: reports.length });
+      return of(reports);
     } else {
-      return this.getFlattenedReports(reports);
+      return of(this.reportService.getFlattenedReports(reports));
     }
   }
 
@@ -112,9 +68,9 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     const filters = {};
     return this.reportService.listAllReports(filters).pipe(
       mergeMap(res => this.filterReportsBasedOnRoles(res.reports)),
-      map((apiResponse: { reports: any[], count: number }) => {
-        this.reports = apiResponse.reports;
-        const { count, reports } = apiResponse;
+      map(reports => {
+        this.reports = reports;
+        const count = _.get(reports, 'length');
         return { count, reports };
       })
     );

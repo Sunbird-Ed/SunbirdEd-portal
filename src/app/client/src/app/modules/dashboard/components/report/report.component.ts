@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
-import { Observable, throwError, of, forkJoin, Subject, merge, concat } from 'rxjs';
-import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
+import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } from 'rxjs';
+import { mergeMap, switchMap, map, retry, catchError, tap, pluck } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
@@ -43,6 +43,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public confirmationPopupInput: { title: string, event: 'retire' | 'publish', body: string };
   private materializedReport: boolean = false;
   private hash: string;
+  public getParametersValueForDropDown$: Observable<any>;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === "true");
   };
@@ -61,21 +62,25 @@ export class ReportComponent implements OnInit, AfterViewInit {
     private router: Router) { }
 
   ngOnInit() {
-    const { reportId, hash } = this.activatedRoute.snapshot.params;
-    this.setMaterializedReportStatus = this.activatedRoute.snapshot.queryParams.materialize;
-    this.report$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
-      mergeMap((isAuthenticated: boolean) => {
-        this.noResult = false;
-        this.hideElements = false;
-        return isAuthenticated ? this.renderReport(reportId, hash) : throwError({ messageText: 'messages.stmsg.m0144' });
-      }),
-      catchError(err => {
-        console.error('Error while rendering report', err);
-        this.noResultMessage = {
-          'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
-        };
-        this.noResult = true;
-        return of({});
+    this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
+      switchMap(params => {
+        const { reportId, hash } = this.activatedRoute.snapshot.params;
+        this.setMaterializedReportStatus = this.activatedRoute.snapshot.queryParams.materialize;
+        return this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
+          mergeMap((isAuthenticated: boolean) => {
+            this.noResult = false;
+            this.hideElements = false;
+            return isAuthenticated ? this.renderReport(reportId, hash) : throwError({ messageText: 'messages.stmsg.m0144' });
+          }),
+          catchError(err => {
+            console.error('Error while rendering report', err);
+            this.noResultMessage = {
+              'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
+            };
+            this.noResult = true;
+            return of({});
+          })
+        );
       })
     );
     this.mergeClickEventStreams();
@@ -112,6 +117,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
               return throwError({ messageText: 'messages.emsg.mutliParametersFound' })
             }
             this.setParametersHash = this.report;
+            this.getParametersValueForDropDown$ = this.getParametersValueForDropDown(report);
             if (this.materializedReport) {
               this.report.status = "draft";
             }
@@ -433,6 +439,31 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/dashBoard/reports']);
   }
 
+  public getParametersValueForDropDown(report?: object) {
+    const { reportId } = this.activatedRoute.snapshot.params;
+    return this.reportService.fetchReportById(reportId).pipe(
+      pluck('reports'),
+      switchMap(reports => {
+        if (this.reportService.isUserSuperAdmin()) {
+          return this.reportService.getMaterializedChildRows(reports).pipe(
+            map(response => {
+              const report = response[0];
+              return _.get(report, 'children');
+            })
+          );
+        } else {
+          return of(_.map(_.get(reports[0], 'children') || [], child => ({ ...child, label: this.reportService.getParameterFromHash(child.hashed_val) })));
+        }
+      })
+    );
+  }
+
+  public handleParameterChange(val: string) {
+    const { reportId } = this.activatedRoute.snapshot.params;
+    let hash = _.get(val, 'hashed_val');
+    const materialize = _.get(val, 'materialize') || false;
+    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } })
+  }
 }
 
 
