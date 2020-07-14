@@ -380,7 +380,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           unit.isUnitConsumptionStart = false;
 
           if (consumedContents.length) {
-            unit.progress = (consumedContents.length / flattenDeepContents.length) * 100;
+            unit.progress = Math.round((consumedContents.length / flattenDeepContents.length) * 100);
             unit.isUnitConsumptionStart = true;
           } else {
             unit.progress = 0;
