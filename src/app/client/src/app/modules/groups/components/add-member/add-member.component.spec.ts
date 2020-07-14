@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { By } from '@angular/platform-browser';
+import { addMemberMockData } from './add-member.component.spec.data';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -33,6 +34,9 @@ describe('AddMemberComponent', () => {
     frmelmnts: {
       lbl: {
         you: 'You',
+      },
+      instn: {
+        t0056: 'try again'
       }
     }
   };
@@ -184,15 +188,36 @@ describe('AddMemberComponent', () => {
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
   });
 
-  it('should load re-captcha when googleCaptchaSiteKey is provided', () => {
+  it('should load re-captcha when recaptcha is enable from system setting', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(component.googleCaptchaSiteKey).toBeDefined();
+    expect(component.isCaptchEnabled).toBeTruthy();
     const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
     expect(recapta).toBeTruthy();
   });
 
-  it('should reset and execute recaptcha method on click on varify button', () => {
-    spyOn(component, 'onVerifyMember').and.returnValue(true);
-    component.onVerifyMember();
-    expect(component.onVerifyMember).toHaveBeenCalled();
+  it('should not load re-captcha when recaptcha is enable from system setting', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.disabledRecaptchaResponse));
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(component.googleCaptchaSiteKey).toEqual('');
+    expect(component.isCaptchEnabled).toBeFalsy();
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeFalsy();
+  });
+
+  it('should show toaster message while error on getRecaptchaSettings', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.callFake(() => throwError(addMemberMockData.disabledRecaptchaResponse));
+    spyOn(component['toasterService'], 'error');
+    component.ngOnInit();
+    fixture.detectChanges();
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(component.googleCaptchaSiteKey).toEqual('');
+    expect(component.isCaptchEnabled).toBeFalsy();
+    expect(recapta).toBeFalsy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.frmelmnts.instn.t0056);
   });
 
   it('should resolved captcha responce and call varify method', () => {
@@ -200,6 +225,23 @@ describe('AddMemberComponent', () => {
     spyOn(component, 'verifyMember').and.callThrough();
     component.captchaResolved('captchResponceToken');
     expect(component.captchaResolved).toHaveBeenCalled();
+    expect(component.verifyMember).toHaveBeenCalled();
+  });
+
+  it('should reset and execute recaptcha method on click on varify button', () => {
+    spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+    spyOn(component, 'onVerifyMember').and.callThrough();
+    component.ngOnInit();
+    fixture.detectChanges();
+    component.onVerifyMember();
+    expect(component.isCaptchEnabled).toBeTruthy();
+    expect(component.onVerifyMember).toHaveBeenCalled();
+  });
+
+  it('should call verify member if captcha is not enable', () => {
+    spyOn(component, 'onVerifyMember').and.callThrough();
+    component.isCaptchEnabled = false;
+    component.onVerifyMember();
     expect(component.verifyMember).toHaveBeenCalled();
   });
 

@@ -31,7 +31,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   @Output() members = new EventEmitter<any>();
   @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   captchaResponse = '';
-  googleCaptchaSiteKey: string;
+  googleCaptchaSiteKey = '';
+  isCaptchEnabled = false;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
     private toasterService: ToasterService,
@@ -53,11 +54,15 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     if (!this.groupData) {
       this.location.back();
     }
-    try {
-      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-    } catch (error) {
-      this.googleCaptchaSiteKey = '';
-    }
+    this.groupService.getRecaptchaSettings().subscribe((res: any) => {
+      if (res.result.response) {
+        const captchaConfig = JSON.parse(_.get(res, 'result.response.value'));
+        this.googleCaptchaSiteKey = captchaConfig.key || '';
+        this.isCaptchEnabled = captchaConfig.isEnabled || false;
+      }
+    }, (err: any) => {
+      this.toasterService.error(this.resourceService.frmelmnts.instn.t0056);
+    });
   }
 
   reset() {
@@ -78,18 +83,23 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   onVerifyMember() {
-    this.showLoader = true;
-    this.captchaRef.reset();
-    this.captchaRef.execute();
+    if (this.isCaptchEnabled) {
+      this.showLoader = true;
+      this.captchaRef.execute();
+    } else {
+      this.verifyMember();
+    }
   }
 
   verifyMember() {
-    if (!this.isExistingMember() && this.captchaResponse) {
+    this.showLoader = true;
+    if (!this.isExistingMember()) {
       this.groupsService.getUserData(this.memberId, this.captchaResponse).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         if (member.exists) {
           this.verifiedMember = this.groupsService.addFields(member);
           this.showLoader = false;
           this.isVerifiedUser = true;
+          this.captchaRef.reset();
         } else {
           this.showInvalidUser();
         }

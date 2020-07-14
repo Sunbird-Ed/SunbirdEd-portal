@@ -2,8 +2,8 @@ import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
-import { UserService } from '@sunbird/core';
-import { NavigationHelperService, ResourceService } from '@sunbird/shared';
+import { UserService, LearnerService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
@@ -25,7 +25,9 @@ export class GroupsService {
     private resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService,
+    private learnerService: LearnerService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -180,5 +182,12 @@ export class GroupsService {
       };
     }
     return impressionObj;
+  }
+
+  getRecaptchaSettings() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.GOOGLE_RECAPTCHA
+    };
+    return this.learnerService.get(systemSetting);
   }
 }
