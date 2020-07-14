@@ -73,9 +73,11 @@ export class GroupsService {
   }
 
   addGroupFields(group) {
-    const currentUser = _.find(group.members, (m) => m.userId === this.userService.userid);
+    const currentUser = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
     group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
-    group.isAdmin = group.isCreator ? true : _.get(currentUser, 'role') === 'admin';
+    group.isAdmin = group.isCreator ? true :
+    (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
+    _.isEqual(_.get(group, 'memberRole'), 'admin'));
     group.initial = _.get(group, 'name[0]');
     return group;
   }
@@ -155,6 +157,22 @@ export class GroupsService {
       this.navigationhelperService.goBack();
     }
   }
+
+  addGroupPaletteList(groupList: []) {
+
+    const bgColors = ['#FFDFD9', '#FFD6EB', '#DAD4FF', '#DAFFD8', '#C2E2E9', '#FFE59B', '#C2ECE6', '#FFDFC7', '#D4F386', '#E1E1E1'];
+    const titleColors = ['#EA2E52', '#FD59B3', '#635CDC', '#218432', '#07718A', '#8D6A00', '#149D88', '#AD632D', '#709511', '#666666'];
+
+    _.forEach(groupList, group => {
+      group.cardBgColor = bgColors[Math.floor(
+        Math.random() * bgColors.length)];
+      group.cardTitleColor = titleColors[Math.floor(
+        Math.random() * titleColors.length)];
+    });
+
+    return groupList || [];
+    }
+
 
   addTelemetry(eid: string, routeData, cdata, groupId?: string) {
 
