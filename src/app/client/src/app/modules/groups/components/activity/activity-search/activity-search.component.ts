@@ -1,6 +1,3 @@
-/* istanbul ignore next */
-
-
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
 import { ConfigService, ResourceService, ToasterService, PaginationService, UtilService } from '@sunbird/shared';

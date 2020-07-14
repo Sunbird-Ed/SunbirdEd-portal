@@ -43,27 +43,9 @@ export class GroupsService {
     this.setCurrentUserRole(members);
     if (members) {
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return this.sortMembers(membersList);
+      _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
     }
     return [];
-  }
-
-  sortMembers(members) {
-    members.sort((a, b) => {
-      if (b.userId === this.userService.userid) {
-        return 1;
-      } else if (a.userId === this.userService.userid) {
-        return -1;
-      }
-      if (b.role === GroupMemberRole.ADMIN && a.role === GroupMemberRole.MEMBER) {
-        return 1;
-      } else if (b.role === GroupMemberRole.MEMBER && a.role === GroupMemberRole.ADMIN) {
-        return -1;
-      }
-      return a.name.localeCompare(b.name);
-    });
-
-    return members;
   }
 
   setCurrentUserRole(members) {
