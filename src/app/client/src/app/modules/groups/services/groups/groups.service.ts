@@ -73,7 +73,7 @@ export class GroupsService {
   }
 
   addGroupFields(group) {
-    const currentUser = _.find(_.get(group, 'members'), (m) => m.userId === this.userService.userid);
+    const currentUser = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
     group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
     group.isAdmin = group.isCreator ? true :
     (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
