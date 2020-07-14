@@ -77,6 +77,7 @@ describe('IdentifyAccountComponent', () => {
     spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     fixture = TestBed.createComponent(IdentifyAccountComponent);
     component = fixture.componentInstance;
+    component.isP1CaptchaEnabled = 'true';
     fixture.detectChanges();
   });
 
