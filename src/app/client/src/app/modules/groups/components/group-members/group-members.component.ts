@@ -56,6 +56,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       .subscribe(item => {
         if (this.showKebabMenu) {
           this.showKebabMenu = false;
+          this.addTelemetry('member-card-menu-close');
         }
       });
     this.groupsService.showLoader.subscribe(showLoader => {
@@ -77,6 +78,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showKebabMenu = !this.showKebabMenu;
+    this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
@@ -85,6 +87,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
+      this.addTelemetry('group-member-search-input', { query: searchKey });
     } else {
       this.showSearchResults = false;
       this.memberListToShow = _.cloneDeep(this.members);
@@ -178,8 +181,8 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTelemetry(id) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  addTelemetry(id, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
   }
 
   ngOnDestroy() {
