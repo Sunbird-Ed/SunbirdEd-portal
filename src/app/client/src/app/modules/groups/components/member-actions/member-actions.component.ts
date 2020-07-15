@@ -2,6 +2,8 @@ import { ResourceService } from '@sunbird/shared';
 import { Component, Input, EventEmitter, ViewChild, Output, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember } from '../../interfaces';
+import { GroupsService } from '../../services';
+import { ActivatedRoute } from '@angular/router';
 
 
 export interface IMemberActionData {
@@ -25,7 +27,10 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
   @Output() actionConfirm = new EventEmitter<any>();
 
   memberActionData: IMemberActionData;
-  constructor(public resourceService: ResourceService) {
+  constructor(public resourceService: ResourceService,
+    private groupService: GroupsService,
+    private activateRoute: ActivatedRoute
+    ) {
   }
 
   ngOnInit() {
@@ -37,6 +42,7 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           buttonText: this.resourceService.frmelmnts.btn.makeAdmin,
           theme: 'primary'
         };
+        this.addTelemetry('promote-admin');
         break;
       case 'removeFromGroup':
         this.memberActionData = {
@@ -45,6 +51,7 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           buttonText: this.resourceService.frmelmnts.btn.removeMember,
           theme: 'error'
         };
+        this.addTelemetry('remove-from-group');
         break;
       case 'dismissAsAdmin':
         this.memberActionData = {
@@ -53,6 +60,7 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           buttonText: this.resourceService.frmelmnts.btn.dismissAdmin,
           theme: 'primary'
         };
+        this.addTelemetry('dismiss-admin');
         break;
       case 'leaveFromGroup':
         this.memberActionData = {
@@ -61,8 +69,13 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           buttonText: this.resourceService.frmelmnts.lbl.leaveGroup,
           theme: 'error'
         };
+        this.addTelemetry('leave-from-group');
         break;
     }
+  }
+
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, [{id: _.get(this.member, 'userId'), type: _.get(this.member, 'role')}]);
   }
 
   closeModal() {

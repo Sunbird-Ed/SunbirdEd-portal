@@ -216,7 +216,12 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   addActivity(event) {
+    this.addTelemetry('activity-course-card', event);
     this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+  }
+
+  addTelemetry(id, event) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [{id: _.get(event, 'data.identifier'), type: 'Course'}]);
   }
 
   private setNoResultMessage() {
