@@ -20,7 +20,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public enrolledBatchInfo: any;
   public groupId: string;
-  public showAddGroup = false;
+  public showAddGroup = null;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -126,6 +126,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.groupsService.groupData = _.cloneDeep(groupData);
       this.showAddGroup = _.get(this.groupsService.addGroupFields(groupData), 'isAdmin');
     }, err => {
+      this.showAddGroup = false;
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }
