@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormService } from '@sunbird/core';
+import { GroupsService } from '../../../services';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-activity-form',
@@ -12,7 +14,8 @@ export class ActivityFormComponent implements OnInit {
 
   activityTypes;
   selectedActivity: any;
-  constructor(public resourceService: ResourceService, private formService: FormService, private toasterService: ToasterService) { }
+  constructor(public resourceService: ResourceService, private formService: FormService, private toasterService: ToasterService,
+    private groupService: GroupsService, private activateRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getFormDetails();
@@ -41,6 +44,7 @@ export class ActivityFormComponent implements OnInit {
   }
 
   next() {
+    this.groupService.addTelemetry('activity-type', this.activateRoute.snapshot, [{id: this.selectedActivity.title, type: 'activityType'}]);
     this.nextClick.emit({ activityType: this.selectedActivity.title });
     // TODO: Handle telemetry here
   }

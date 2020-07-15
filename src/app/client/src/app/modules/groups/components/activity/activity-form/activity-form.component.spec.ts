@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityFormComponent } from './activity-form.component';
@@ -24,13 +25,16 @@ describe('ActivityFormComponent', () => {
       'lbl': {}
     }
   };
+
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityFormComponent],
-      imports: [SharedModule.forRoot(), CoreModule, FormsModule, TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, FormsModule, TelemetryModule.forRoot(), HttpClientTestingModule,
+        RouterTestingModule],
       providers: [
-        { provide: ResourceService, useValue: resourceBundle }]
+        { provide: ResourceService, useValue: resourceBundle },
+      ]
     })
       .compileComponents();
   }));
@@ -52,9 +56,11 @@ describe('ActivityFormComponent', () => {
 
   it('should call next', () => {
     component.selectedActivity = { title: 'courses' };
+    spyOn(component['groupService'], 'addTelemetry');
     spyOn(component.nextClick, 'emit');
     component.next();
     expect(component.nextClick.emit).toHaveBeenCalledWith({ activityType: 'courses' });
+    expect(component['groupService'].addTelemetry).toHaveBeenCalled();
   });
 
   it('should get getFormDetails', () => {
