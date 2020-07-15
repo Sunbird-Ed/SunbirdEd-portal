@@ -37,6 +37,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
 
         if (this.groupId) {
           this.getGroupData();
+        } else {
+          this.showAddGroup = false;
         }
         const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
