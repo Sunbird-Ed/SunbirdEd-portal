@@ -67,6 +67,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isExpandedAll: boolean;
   isFirst = false;
   addToGroup = false;
+  isModuleExpanded = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -315,10 +316,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   isExpanded(index: number) {
-    if (_.isUndefined(this.isExpandedAll)) {
-      return Boolean(index === 0);
+    if (_.isUndefined(this.isExpandedAll) && !(this.isModuleExpanded) && index === 0) {
+      return true;
     }
     return this.isExpandedAll;
+  }
+
+  collapsedChange(event: boolean, index: number) {
+    if (event === false) {
+      _.map(_.get(this.courseHierarchy, 'children'), (unit, key) => {
+        unit.collapsed = key === index ? false : true;
+      });
+    }
   }
 
   navigateToPlayerPage(collectionUnit: any, event?) {
