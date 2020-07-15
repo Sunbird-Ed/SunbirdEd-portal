@@ -1,6 +1,3 @@
-<div class="ui container" *ngIf="isLoader"> 
-  <app-loader></app-loader>
-</div>
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!adminGroupsList.length && !memberGroupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
@@ -52,7 +49,14 @@
       </div>
     </div>
   </div>
+</div>
 
+<div class="ui container mt-24" *ngIf="isLoader">
+  <div class="sb-card-grid">
+    <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of [1,2,3,4,5,6,7,8]">
+      <sb-group-card [isLoading]="true"></sb-group-card>
+    </div>
+  </div>
 </div>
 <router-outlet></router-outlet>
 
