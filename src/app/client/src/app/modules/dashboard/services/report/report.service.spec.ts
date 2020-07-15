@@ -1,7 +1,7 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CourseProgressService } from './../course-progress/course-progress.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { UserService, CoreModule, PermissionService, BaseReportService } from '@sunbird/core';
+import { UserService, CoreModule, PermissionService, BaseReportService, SearchService, FrameworkService } from '@sunbird/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ReportService } from './report.service';
@@ -423,5 +423,89 @@ describe('ReportService', () => {
       path: "/reports/fetch/rj/file.json"
     }]);
   });
+
+  it('should flatten Reports when report have children', () => {
+    const input = [{ isParameterized: true, children: [{ status: "one", id: "one" }] }];
+    const res = reportService['getFlattenedReports'](input);
+    expect(res).toBeDefined();
+    expect(res).toEqual([{ isParameterized: true, status: "one" }]);
+    expect(res.length).toBe(1);
+  });
+
+  it('should flatten Reports when report do not have children', () => {
+    const input = [{ isParameterized: true, children: [] }];
+    const res = reportService['getFlattenedReports'](input);
+    expect(res).toBeDefined();
+    expect(res).toEqual(input);
+    expect(res.length).toBe(1);
+  });
+
+  it('should get materializedChildRows for known parameters', () => {
+    const input = [{ isParameterized: true, children: [], parameters: ["$board"], reportid: "123" }];
+    spyOn(reportService, 'getParameterValues').and.returnValue({ masterData: () => of(['CBSE']) });
+    spyOn(reportService, 'getParameterFromHash').and.returnValue("NCERT");
+    reportService['getMaterializedChildRows'](input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(res.length).toBe(1);
+      expect(reportService.getParameterValues).toHaveBeenCalled();
+      expect(res).toEqual([{
+        isParameterized: true, parameters: ["$board"], reportid: "123", children: [{
+          label: 'CBSE', hashed_val: 'Q0JTRQ==', status: 'draft', reportid: '123', materialize: true
+        }]
+      }])
+    })
+  });
+
+  it('should return the same report for unknow parameters', () => {
+    const input = [{ isParameterized: true, children: [], parameters: ["$board"], reportid: "123" }];
+    spyOn(reportService, 'getParameterValues').and.returnValue(null);
+    reportService['getMaterializedChildRows'](input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(res.length).toBe(1);
+      expect(res).toEqual(input);
+    })
+  });
+
+  it('should return the same report if the api to get masterData fails', () => {
+    const input = [{ isParameterized: true, children: [], parameters: ["$board"], reportid: "123" }];
+    spyOn(reportService, 'getParameterValues').and.returnValue({ masterData: () => throwError('') });
+    reportService['getMaterializedChildRows'](input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(res.length).toBe(1);
+      expect(res).toEqual(input);
+    })
+  });
+
+  describe('getParameterValues method', () => {
+
+    beforeEach(() => {
+      userService = TestBed.get(UserService);
+    })
+    it('check for slug parameter', done => {
+      const searchService = TestBed.get(SearchService);
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ["CBSE"] } });
+      spyOn(searchService, 'orgSearch').and.returnValue(of({ result: { response: { content: [{ slug: "sunbird" }, { slug: "rj" }] } } }));
+      const { value, masterData } = reportService.getParameterValues("$slug");
+      expect(value).toBe("sunbird");
+      masterData().subscribe(res => {
+        expect(res).toBeDefined();
+        done();
+      })
+    })
+
+    it('should check for board parameter', done => {
+      const frameworkService = TestBed.get(FrameworkService);
+      spyOn(frameworkService, 'getChannel').and.returnValue(of({ result: { channel: { defaultFramework: ["NCF"] } } }));
+      spyOn(frameworkService, 'getFrameworkCategories').and.returnValue(of({ result: { framework: { categories: [{ code: "board", terms: [{ name: "CBSE" }] }] } } }));
+      spyOnProperty(userService, 'hashTagId', 'get').and.returnValue("1234");
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: "sunbird" }, framework: { board: ["CBSE"] } });
+      const { value, masterData } = reportService.getParameterValues("$board");
+      expect(value).toBe("CBSE");
+      masterData().subscribe(res => {
+        expect(res).toBeDefined();
+        done();
+      })
+    })
+  })
 
 });

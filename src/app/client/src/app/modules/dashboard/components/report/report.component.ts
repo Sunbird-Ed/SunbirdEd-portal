@@ -290,6 +290,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     const hash = this.hash;
     return this.reportService.getLatestSummary({ reportId, hash }).pipe(
       map(reportSummary => {
+        this._reportSummary = "";
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
@@ -458,7 +459,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public handleParameterChange(val: string) {
+  public handleParameterChange(val) {
     const { reportId } = this.activatedRoute.snapshot.params;
     let hash = _.get(val, 'hashed_val');
     const materialize = _.get(val, 'materialize') || false;

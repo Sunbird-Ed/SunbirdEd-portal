@@ -1,11 +1,11 @@
 import { UserService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
-import { of, Observable, throwError, BehaviorSubject, forkJoin, iif } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -81,49 +81,54 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
    * @param {*} event
    * @memberof ListAllReportsComponent
    */
-  public rowClickEventHandler(reportId: string, hash?: string, materialize = false) {
+  public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
     this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])], { queryParams: { ...(this.reportService.isUserSuperAdmin() && { materialize }) } }).catch(err => {
       console.log({ err });
     });
   }
+
+  private renderStatus(data, type, row) {
+
+    if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
+      if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
+        data = "live"
+      } else {
+        if (_.some(row.children, child => _.toLower(child.status) === 'live')) {
+          data = "partially live"
+        } else {
+          data = "draft"
+        }
+      }
+    }
+
+    const icon = {
+      live: { color: 'success', icon: 'check' },
+      draft: { color: 'primary', icon: 'edit' },
+      retired: { color: 'warning', icon: 'close' },
+      ["partially live"]: { color: 'secondary', icon: 'check' }
+    };
+
+    const status = _.startCase(_.toLower(data));
+    let spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
+    return spanElement;
+  };
+
+  private renderTags(data) {
+
+    if (Array.isArray(data)) {
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), " ");
+      return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
+    }
+
+    return _.startCase(_.toLower(data));
+  };
+
   /**
    * @description initializes the datatables with relevant configurations
    * @param {*} el
    * @memberof ListAllReportsComponent
    */
   public prepareTable(el) {
-
-    const renderStatus = (data, type, row) => {
-      if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
-        if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
-          data = "live"
-        } else {
-          if (_.some(row.children, child => _.toLower(child.status) === 'live')) {
-            data = "partially live"
-          } else {
-            data = "draft"
-          }
-        }
-      }
-      const icon = {
-        live: { color: 'success', icon: 'check' },
-        draft: { color: 'primary', icon: 'edit' },
-        retired: { color: 'warning', icon: 'close' },
-        ["partially live"]: { color: 'secondary', icon: 'check' }
-      };
-      const status = _.startCase(_.toLower(data));
-      let spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
-      return spanElement;
-    };
-
-    const renderTags = (data) => {
-      if (Array.isArray(data)) {
-        const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), " ");
-        return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
-      }
-      return _.startCase(_.toLower(data));
-    };
-
     const masterTable = $(el).DataTable({
       paging: true,
       lengthChange: true,
@@ -171,21 +176,21 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         }, {
           title: "Tags",
           data: "tags",
-          render: renderTags
+          render: this.renderTags
         }, {
           title: "Update Frequency",
           data: "updatefrequency",
-          render: renderTags
+          render: this.renderTags
         },
         ...(this._isUserReportAdmin ? [{
           title: "Status",
           data: "status",
-          render: renderStatus
+          render: this.renderStatus.bind(this)
         }] : [])]
     });
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
-      const rowData = masterTable.row(event.currentTarget).data();
+      const rowData = masterTable && masterTable.row(event.currentTarget).data();
       if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) return false;
       const hash = _.get(rowData, 'hashed_val');
       this.rowClickEventHandler(_.get(rowData, 'reportid'), hash);
@@ -223,7 +228,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
           }, {
             title: "Status",
             data: "status",
-            render: renderStatus,
+            render: this.renderStatus.bind(this),
             className: "text-center"
           }]
         })
