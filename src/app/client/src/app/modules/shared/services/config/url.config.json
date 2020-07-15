@@ -99,7 +99,8 @@
       "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg",
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
       "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
-      "TENANT_CONFIG": "data/v1/system/settings/get"
+      "TENANT_CONFIG": "data/v1/system/settings/get",
+      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
     },
     "COURSE_FRAMEWORK":{
       "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"

@@ -4,10 +4,10 @@ const logger = require('sb_logger_util_v2');
 const sendRequest = async (options) => {
   logger.info({msg: 'httpRequestHandler:sendRequest fetching data for ' + options.url});
   return requestPromise(options).then(data => {
-    logger.info({msg: 'sendRequest data successfully fetched for' + options.url});
+    logger.info({msg: 'sendRequest data successfully fetched for ' + options.url});
     return data;
   }, (error) => {
-    logger.error({msg: 'httpRequestHandler:sendRequest errored', error: error});
+    logger.error({msg: 'httpRequestHandler:sendRequest error ', error: error});
     throw new Error(error);
   })
 };

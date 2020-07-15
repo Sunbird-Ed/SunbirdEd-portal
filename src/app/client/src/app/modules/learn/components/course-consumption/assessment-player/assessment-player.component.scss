@@ -158,3 +158,9 @@
 .certified-course {
   align-self: center;;
 }
+
+@include respond-below(sm) {
+  .certified-course__progress {
+    margin-top: calculateRem(8px);
+  }
+}

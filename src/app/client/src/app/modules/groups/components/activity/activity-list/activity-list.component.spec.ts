@@ -98,6 +98,7 @@ describe('ActivityListComponent', () => {
 
 
   it('should call openActivity for Admin', () => {
+    spyOn(component, 'addTelemetry');
     const activity = {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
@@ -107,9 +108,11 @@ describe('ActivityListComponent', () => {
     };
     component.openActivity({}, activity);
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call openActivity for group member', () => {
+    spyOn(component, 'addTelemetry');
     const activity = {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
@@ -120,6 +123,7 @@ describe('ActivityListComponent', () => {
     component.groupData.isAdmin = true;
     component.openActivity({}, activity);
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call getMenuData', () => {

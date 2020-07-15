@@ -17,6 +17,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { SlickModule } from 'ngx-slick';
     ContentSearchModule,
     SlickModule,
     SuiModalModule,
-    SuiRatingModule
+    SuiRatingModule,
+    RecaptchaModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,

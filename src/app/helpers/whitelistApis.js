@@ -205,6 +205,10 @@ const API_LIST = {
     '/learner/data/v1/system/settings/get/:slug': {
       checksNeeded: []
     },
+    '/learner/data/v1/system/settings/get/googleReCaptcha': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     //Course related APIs
     '/learner/course/v1/hierarchy/:do_id': {
@@ -388,8 +392,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/location/search': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     '/learner/data/v1/role/read': {
       checksNeeded: ['ROLE_CHECK'],

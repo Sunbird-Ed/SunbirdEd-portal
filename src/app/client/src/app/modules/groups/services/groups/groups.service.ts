@@ -2,12 +2,13 @@ import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
-import { UserService } from '@sunbird/core';
-import { NavigationHelperService, ResourceService } from '@sunbird/shared';
-import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { UserService, LearnerService } from '@sunbird/core';
+import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class GroupsService {
   public isCurrentUserCreator = false;
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
+  public showLoader = new EventEmitter();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -27,7 +29,9 @@ export class GroupsService {
     private resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService,
+    private learnerService: LearnerService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -40,7 +44,7 @@ export class GroupsService {
     this.setCurrentUserRole(members);
     if (members) {
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
-      return membersList;
+     return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
     }
     return [];
   }
@@ -73,9 +77,11 @@ export class GroupsService {
   }
 
   addGroupFields(group) {
-    const currentUser = _.find(group.members, (m) => m.userId === this.userService.userid);
+    const currentUser = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
     group.isCreator = _.get(group, 'createdBy') === this.userService.userid;
-    group.isAdmin = group.isCreator ? true : _.get(currentUser, 'role') === 'admin';
+    group.isAdmin = group.isCreator ? true :
+    (currentUser ? _.isEqual(_.get(currentUser, 'role'), 'admin') :
+    _.isEqual(_.get(group, 'memberRole'), 'admin'));
     group.initial = _.get(group, 'name[0]');
     return group;
   }
@@ -124,8 +130,8 @@ export class GroupsService {
     return this.groupCservice.removeActivities(groupId, removeActivitiesRequest);
   }
 
-  getUserData(memberId: string) {
-    return this.userCservice.checkUserExists({ key: 'userName', value: memberId }, '');
+  getUserData(memberId: string, captchaToken: string = '') {
+    return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
   getActivity(groupId, activity) {
@@ -148,6 +154,10 @@ export class GroupsService {
     this.membersList.emit(members);
   }
 
+  emitShowLoader(value) {
+    this.showLoader.emit(value);
+  }
+
   goBack() {
     if (this.navigationhelperService['_history'].length <= 1) {
       this.router.navigate([MY_GROUPS]);
@@ -155,6 +165,22 @@ export class GroupsService {
       this.navigationhelperService.goBack();
     }
   }
+
+  addGroupPaletteList(groupList: []) {
+
+    const bgColors = ['#FFDFD9', '#FFD6EB', '#DAD4FF', '#DAFFD8', '#C2E2E9', '#FFE59B', '#C2ECE6', '#FFDFC7', '#D4F386', '#E1E1E1'];
+    const titleColors = ['#EA2E52', '#FD59B3', '#635CDC', '#218432', '#07718A', '#8D6A00', '#149D88', '#AD632D', '#709511', '#666666'];
+
+    _.forEach(groupList, group => {
+      group.cardBgColor = bgColors[Math.floor(
+        Math.random() * bgColors.length)];
+      group.cardTitleColor = titleColors[Math.floor(
+        Math.random() * titleColors.length)];
+    });
+
+    return groupList || [];
+    }
+
 
   addTelemetry(eid: string, routeData, cdata, groupId?: string) {
 
@@ -203,5 +229,12 @@ export class GroupsService {
       };
     }
     return impressionObj;
+  }
+
+  getRecaptchaSettings() {
+    const systemSetting = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.GOOGLE_RECAPTCHA
+    };
+    return this.learnerService.get(systemSetting);
   }
 }
