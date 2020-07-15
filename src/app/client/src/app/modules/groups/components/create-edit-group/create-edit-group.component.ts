@@ -55,6 +55,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     this.disableBtn = true;
     if (this.groupForm.valid) {
       const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
+      request.name = _.trim(request.name);
+      request.description = _.trim(request.description);
       this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
         if (group) {
           this.toasterService.success(this.resourceService.messages.smsg.m001);
@@ -81,6 +83,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     this.disableBtn = true;
     if (this.groupForm.valid) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
+      updatedForm.name = _.trim(updatedForm.name);
+      updatedForm.description = _.trim(updatedForm.description);
       updatedForm.status = _.get(this.groupDetails, 'status');
       this.groupService.updateGroup(this.groupId, updatedForm).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
           this.toasterService.success(this.resourceService.messages.smsg.m003);
