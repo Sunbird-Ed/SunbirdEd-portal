@@ -59,9 +59,11 @@ describe('ActivityFormComponent', () => {
 
   it('should call next', () => {
     component.selectedActivity = { title: 'courses' };
+    spyOn(component['groupService'], 'addTelemetry');
     spyOn(component.nextClick, 'emit');
     component.next();
     expect(component.nextClick.emit).toHaveBeenCalledWith({ activityType: 'courses' });
+    expect(component['groupService'].addTelemetry).toHaveBeenCalled();
   });
 
   it('should get getFormDetails', () => {

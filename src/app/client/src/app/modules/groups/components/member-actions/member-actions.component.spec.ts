@@ -1,6 +1,6 @@
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -12,13 +12,26 @@ describe('MemberActionsComponent', () => {
   let component: MemberActionsComponent;
   let fixture: ComponentFixture<MemberActionsComponent>;
   configureTestSuite();
+  const resourceBundle = {
+    frmelmnts: {
+      btn: {
+        makeAdmin: 'makeAdmin',
+        removeMember: 'removeMember',
+        dismissAdmin: 'dismissAdmin',
+      },
+      lbl: {
+        leaveGroup: 'leaveGroup'
+      }
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule],
       providers: [ TelemetryService,
-        {provide: APP_BASE_HREF, useValue: '/'}
+        {provide: APP_BASE_HREF, useValue: '/'},
+        { provide: ResourceService, useValue: resourceBundle }
       ]
     })
       .compileComponents();
@@ -27,6 +40,8 @@ describe('MemberActionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MemberActionsComponent);
     component = fixture.componentInstance;
+    component.member = {identifier: '1', title: 'user', initial: 'u',
+    isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true, userId: '1', role: 'admin', name: 'user'};
     fixture.detectChanges();
   });
 
@@ -64,4 +79,33 @@ describe('MemberActionsComponent', () => {
     expect(component.actionConfirm.emit).toHaveBeenCalled();
     expect(component.closeModal).toHaveBeenCalled();
   });
+
+  it ('should call addTelemtry (promote-admin)', () => {
+    component.action = 'promoteAsAdmin';
+    spyOn(component, 'addTelemetry');
+    component.ngOnInit();
+    expect(component.addTelemetry).toHaveBeenCalledWith('promote-admin');
+  });
+
+  it ('should call addTelemtry (remove-from-group)', () => {
+    component.action = 'removeFromGroup';
+    spyOn(component, 'addTelemetry');
+    component.ngOnInit();
+    expect(component.addTelemetry).toHaveBeenCalledWith('remove-from-group');
+  });
+
+  it ('should call addTelemtry (dismiss-admin)', () => {
+    component.action = 'dismissAsAdmin';
+    spyOn(component, 'addTelemetry');
+    component.ngOnInit();
+    expect(component.addTelemetry).toHaveBeenCalledWith('dismiss-admin');
+  });
+
+  it ('should call addTelemtry (leave-from-group)', () => {
+    component.action = 'leaveFromGroup';
+    spyOn(component, 'addTelemetry');
+    component.ngOnInit();
+    expect(component.addTelemetry).toHaveBeenCalledWith('leave-from-group');
+  });
+
 });
