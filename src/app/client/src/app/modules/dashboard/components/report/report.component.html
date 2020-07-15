@@ -35,8 +35,17 @@
                           class="sb-label sb-label-table hawkeye-label ml-16">
                           {{report?.status}}</div>
                       </div>
-                      <div *ngIf="false" class="d-flex flex-ai-center content-header__info mt-4">
-                        <span>Label</span>
+                      <div
+                        *ngIf="reportService.isUserReportAdmin() && report.parameters && report.parameters.length && !hideElements"
+                        class="d-flex flex-ai-center content-header__info mt-4">
+                        <div class="sb-field mb-0 mr-8" *ngIf="getParametersValueForDropDown$ | async as options">
+                          <sui-select *ngIf="options.length" class="selection mr-8" [options]="options"
+                            labelField="label" isSearchable="true" [placeholder]="'Select Parameter'"
+                            (selectedOptionChange)="handleParameterChange($event)" #paramSelect>
+                            <sui-select-option *ngFor="let option of paramSelect.filteredOptions" [value]="option">
+                            </sui-select-option>
+                          </sui-select>
+                        </div>
                       </div>
                     </div>
                     <div *ngIf="isUserReportAdmin && !hideElements"
@@ -47,7 +56,7 @@
                         {{ resourceService?.frmelmnts?.lbl?.reportSummary}}
                       </button>
                       <button (click)="openConfirmationModal('retire')" *ngIf="report?.status !== 'retired'"
-                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                         <i class="white close alternate icon"></i> {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                       </button>
                       <button (click)="openConfirmationModal('publish')" *ngIf="report?.status === 'draft'"

@@ -4,18 +4,20 @@ import { CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ListAllReportsComponent } from './list-all-reports.component';
 import { NO_ERRORS_SCHEMA, ElementRef } from '@angular/core';
 import { ReportService } from '../../services';
-import { of, Observable, throwError } from 'rxjs';
+import { of } from 'rxjs';
+import * as $ from 'jquery';
+import 'datatables.net';
 import {
   mockListApiResponse, mockParameterizedReports
 } from './list-all-reports.component.spec.data';
 
 class MockElementRef {
-  nativeElement: {}
+  nativeElement: {};
 }
 
 describe('ListAllReportsComponent', () => {
@@ -84,7 +86,7 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(true);
-      expect(res).toEqual(mockListApiResponse)
+      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
@@ -102,7 +104,7 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(true);
-      expect(res).toEqual(mockListApiResponse)
+      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
@@ -120,7 +122,7 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(false);
-      expect(res).toEqual(mockListApiResponse)
+      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
@@ -131,37 +133,6 @@ describe('ListAllReportsComponent', () => {
     expect(component.prepareTable).toHaveBeenCalled();
   });
 
-  it('should flatten Reports when report have children', () => {
-    component['getFlattenedReports'](mockParameterizedReports.reports).subscribe(res => {
-      expect(res).toBeDefined();
-      expect(res.count).toBe(2);
-    })
-  })
-
-  it('should get materializedChildRows for known parameters', () => {
-    spyOn(reportService, 'getParameterValues').and.returnValue({ masterData: () => of(['CBSE', 'NCERT']) });
-    component['getMaterializedChildRows'](mockParameterizedReports.reports).subscribe(res => {
-      expect(res).toBeDefined();
-      expect(res.count).toBe(1);
-    })
-  });
-
-  it('should return the same report for unknow parameters', () => {
-    spyOn(reportService, 'getParameterValues').and.returnValue(null);
-    component['getMaterializedChildRows'](mockParameterizedReports.reports).subscribe(res => {
-      expect(res).toBeDefined();
-      expect(res.count).toBe(1);
-    })
-  });
-
-  it('should return the same report if the api to get masterData fails', () => {
-    spyOn(reportService, 'getParameterValues').and.returnValue({ masterData: () => throwError('') });
-    component['getMaterializedChildRows'](mockParameterizedReports.reports).subscribe(res => {
-      expect(res).toBeDefined();
-      expect(res.count).toBe(1);
-    })
-  });
-
   it('should route to report details page', () => {
     const router = TestBed.get(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -170,11 +141,75 @@ describe('ListAllReportsComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/dashBoard/reports', 'report_id'], { queryParams: {} });
   });
 
-  it('should prepare Data Table', () => {
+  it('should prepare Data Table', fakeAsync(() => {
     component.reports = mockParameterizedReports.reports;
+    spyOn(component, 'rowClickEventHandler');
     spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
     const tableElement = document.createElement('table');
+    const dataTableMethodSpy = spyOn($(tableElement), 'DataTable');
+    tableElement.innerHTML = '<tbody> <tr> <td> 123 </td></tr> </tbody>';
     component.prepareTable(tableElement);
-  })
+    tableElement.querySelector('td').click();
+  }));
 
+  it('should render status of the report if report is not parameterized', () => {
+    spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
+    const input = {
+      data: 'live',
+      row: {
+        isParameterized: false,
+        children: []
+      }
+    };
+
+    let result;
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success">Live</span>`);
+
+    input.data = 'draft';
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-primary">Draft</span>`);
+
+    input.data = 'retired';
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-warning">Retired</span>`);
+  });
+
+  it('should render the status of paramterized report', () => {
+
+    spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
+    const input = {
+      data: 'live',
+      row: {
+        isParameterized: true,
+        children: [{
+          status: 'live'
+        }]
+      }
+    };
+
+    let result;
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success">Live</span>`);
+
+    input.row.children.push({ status: 'draft' });
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-secondary">Partially Live</span>`);
+
+    input.row.children = [{ status: 'draft' }];
+    result = component['renderStatus'](input.data, null, input.row);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-primary">Draft</span>`);
+  });
+
+  it('should render tags either input is string', () => {
+    const input = 'live';
+    const result = component['renderTags'](input);
+    expect(result).toBe('Live');
+  });
+
+  it('should render tags either input is array of string', () => {
+    const input = ['live'];
+    const result = component['renderTags'](input);
+    expect(result).toBe(`<div class="sb-filter-label mb-16"><div class="d-inline-flex"><span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">Live</span></div></div>`);
+  });
 });

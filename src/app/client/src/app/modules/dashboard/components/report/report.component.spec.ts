@@ -11,21 +11,22 @@ import { ReportService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
-import { mockLatestReportSummary } from './report.component.spec.data';
-
+import { mockLatestReportSummary, mockReportObj } from './report.component.spec.data';
+import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
 describe('ReportComponent', () => {
   let component: ReportComponent;
   let fixture: ComponentFixture<ReportComponent>;
   const fakeActivatedRoute = {
-    params: of({ reportId: 'daily_metrics' }),
+    params: of({ reportId: 'daily_metrics', hash: '123#' }),
+    queryParams: of({}),
     snapshot: {
-      params: { reportId: 'daily_metrics' },
+      params: { reportId: 'daily_metrics', hash: '123#' },
       queryParams: { materialize: false },
       data:
         { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } }
     }
   };
-  const routerStub = { url: '/dashBoard/reports/daily_metrics' };
+  const routerStub = { url: '/dashBoard/reports/daily_metrics', navigate: () => { } };
   let reportService: ReportService;
   const resourceServiceMockData = {
     messages: {
@@ -182,11 +183,11 @@ describe('ReportComponent', () => {
     beforeEach(() => {
       spyOn<any>(component, 'closeConfirmationModal');
       component.confirmationPopupInput = {
-        title: "Confirm",
-        body: "Are you sure you want to publish the report?",
-        event: "publish"
-      }
-    })
+        title: 'Confirm',
+        body: 'Are you sure you want to publish the report?',
+        event: 'publish'
+      };
+    });
 
     it('should handle publish event', () => {
       spyOn(component, 'onPublish');
@@ -207,9 +208,9 @@ describe('ReportComponent', () => {
     it('should handle false event', () => {
       component.handleConfirmationEvent(false);
       expect(component['closeConfirmationModal']).toHaveBeenCalled();
-    })
+    });
 
-  })
+  });
 
   it('should publish the non parameterized report when clicked on Yes in confirmation modal', done => {
     component.report = {};
@@ -222,7 +223,7 @@ describe('ReportComponent', () => {
       expect(component['publishBtnStream$'].next).toHaveBeenCalled();
       expect(component['publishBtnStream$'].next).toHaveBeenCalledWith(true);
       expect(reportService.publishReport).toHaveBeenCalled();
-      expect(reportService.publishReport).toHaveBeenCalledWith("daily_metrics", undefined);
+      expect(reportService.publishReport).toHaveBeenCalledWith('daily_metrics', undefined);
       expect(component['refreshComponent']).toHaveBeenCalled();
       expect(component.report.status).toBe('live');
       done();
@@ -242,7 +243,7 @@ describe('ReportComponent', () => {
       expect(component['retireBtnStream$'].next).toHaveBeenCalled();
       expect(component['retireBtnStream$'].next).toHaveBeenCalledWith(true);
       expect(reportService.retireReport).toHaveBeenCalled();
-      expect(reportService.retireReport).toHaveBeenCalledWith("daily_metrics", undefined);
+      expect(reportService.retireReport).toHaveBeenCalledWith('daily_metrics', undefined);
       expect(component['refreshComponent']).toHaveBeenCalled();
       expect(component.report.status).toBe('retired');
       done();
@@ -254,20 +255,20 @@ describe('ReportComponent', () => {
   it('should open confirmation modal when clicked on publish button', () => {
     component.openConfirmationModal('publish');
     expect(component.confirmationPopupInput).toEqual({
-      title: "Confirm",
+      title: 'Confirm',
       body: resourceServiceMockData.messages.imsg.confirmReportPublish,
       event: 'publish'
-    })
+    });
     expect(component.showConfirmationModal).toBeTruthy();
   });
 
   it('should open confirmation modal when clicked on retire button', () => {
     component.openConfirmationModal('retire');
     expect(component.confirmationPopupInput).toEqual({
-      title: "Confirm",
+      title: 'Confirm',
       body: resourceServiceMockData.messages.imsg.confirmRetirePublish,
       event: 'retire'
-    })
+    });
     expect(component.showConfirmationModal).toBeTruthy();
   });
 
@@ -281,4 +282,97 @@ describe('ReportComponent', () => {
     component.onAddSummary({ title: 'Add Report Summary', type: 'report' } as ISummaryObject);
     expect(component['addSummaryBtnClickStream$'].next).toHaveBeenCalled();
   });
+
+  it('should set the parameters hash', () => {
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(true);
+    spyOn(reportService, 'isReportParameterized').and.returnValue(false);
+    component['setParametersHash'] = mockReportObj;
+    expect(component['hash']).toBe('123#');
+  });
+
+  it('should set the parameters hash for super admin', () => {
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(true);
+    spyOn(reportService, 'isReportParameterized').and.returnValue(false);
+    component['setParametersHash'] = mockReportObj;
+    expect(component['hash']).toBe('123#');
+  });
+
+  it('should set the parameters hash for non super admin', () => {
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
+    spyOn(reportService, 'isReportParameterized').and.returnValue(true);
+    component['setParametersHash'] = mockReportObj;
+    expect(component['hash']).toBe('123');
+  });
+
+  it('should set the parameters hash for non super admin and if hashed_val is not present in the reports', () => {
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
+    spyOn(reportService, 'isReportParameterized').and.returnValue(true);
+    spyOn(reportService, 'getParametersHash').and.returnValue('123');
+    delete mockReportObj.hashed_val;
+    component['setParametersHash'] = mockReportObj;
+    expect(component['hash']).toBe('123');
+    expect(reportService.getParametersHash).toHaveBeenCalled();
+  });
+
+  it('should navigate to the list page', () => {
+    spyOn(component['router'], 'navigate');
+    component.gotoListPage();
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/dashBoard/reports']);
+  });
+
+  it('should navigate with updated parameters hash and reload the component', () => {
+    spyOn(component['router'], 'navigate');
+    const input = {
+      hashed_val: '123',
+      materialize: true
+    };
+    component.handleParameterChange(input);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/dashBoard/reports', 'daily_metrics', '123'],
+      { queryParams: { materialize: true } });
+  });
+
+  it('should parameters value for dropdown for super admin', done => {
+    spyOn(reportService, 'fetchReportById').and.returnValue(of(mockParameterizedReports));
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(true);
+    spyOn(reportService, 'getMaterializedChildRows').and.returnValue(of(mockParameterizedReports.reports));
+    component.getParametersValueForDropDown().subscribe(res => {
+      expect(res).toBeDefined();
+      expect(reportService.getMaterializedChildRows).toHaveBeenCalled();
+      expect(reportService.isUserSuperAdmin).toHaveBeenCalled();
+      expect(Array.isArray(res)).toBeTruthy();
+      expect(res.length).toBe(2);
+      expect(res).toBe(mockParameterizedReports.reports[0].children);
+      done();
+    });
+  });
+
+  it('should parameters value for dropdown for report admin', done => {
+    spyOn(reportService, 'fetchReportById').and.returnValue(of(mockParameterizedReports));
+    spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
+    spyOn(reportService, 'getMaterializedChildRows').and.returnValue(of(mockParameterizedReports.reports));
+    component.getParametersValueForDropDown().subscribe(res => {
+      expect(res).toBeDefined();
+      expect(reportService.getMaterializedChildRows).not.toHaveBeenCalled();
+      expect(reportService.isUserSuperAdmin).toHaveBeenCalled();
+      expect(Array.isArray(res)).toBeTruthy();
+      expect(res.length).toBe(2);
+      expect(res.every(childReport => 'label' in childReport)).toBeTruthy();
+      done();
+    });
+  });
+
+  it('should handle handleAddSummaryStreams subscription', done => {
+    component['hash'] = 'hash';
+    spyOn(component, 'closeSummaryModal');
+    spyOn(reportService, 'addReportSummary').and.returnValue(of({}));
+    component['handleAddSummaryStreams']().subscribe(res => {
+      expect(component.closeSummaryModal).toHaveBeenCalled();
+      expect(reportService.addReportSummary).toHaveBeenCalled();
+      done();
+    });
+
+    component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
+
+  });
+
 });

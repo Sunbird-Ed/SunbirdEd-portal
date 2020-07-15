@@ -10,20 +10,21 @@ import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
 import * as moment from 'moment';
 
-const PRE_DEFINED_PARAMETERS = ["$slug", "$board"];
+const PRE_DEFINED_PARAMETERS = ['$slug', '$board'];
 
 @Injectable()
 export class ReportService {
 
-  private _superAdminSlug: String;
+  private _superAdminSlug: string;
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
-    private courseProgressService: CourseProgressService, private searchService: SearchService, private frameworkService: FrameworkService) {
+    private courseProgressService: CourseProgressService, private searchService: SearchService,
+    private frameworkService: FrameworkService) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
-      this._superAdminSlug = "sunbird";
+      this._superAdminSlug = 'sunbird';
     }
   }
 
@@ -89,7 +90,7 @@ export class ReportService {
       url: `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}`
     };
     if (hash) {
-      req.url = `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}/${hash}`
+      req.url = `${this.configService.urlConFig.URLS.REPORT.PUBLISH}/${reportId}/${hash}`;
     }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
@@ -107,7 +108,7 @@ export class ReportService {
       url: `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}`
     };
     if (hash) {
-      req.url = `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}/${hash}`
+      req.url = `${this.configService.urlConFig.URLS.REPORT.RETIRE}/${reportId}/${hash}`;
     }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
@@ -280,7 +281,7 @@ export class ReportService {
   }
 
   public isUserSuperAdmin(): boolean {
-    if (!this.isUserReportAdmin()) return false;
+    if (!this.isUserReportAdmin()) { return false; }
     return _.get(this.userService, 'userProfile.rootOrg.slug') === this._superAdminSlug;
   }
 
@@ -340,11 +341,11 @@ export class ReportService {
    * @description calls the API to fetch latest report and chart level summary
    */
   public getLatestSummary({ reportId, chartId = null, hash = null }): Observable<any> {
-    let url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
+    const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
     const req = {
       url: chartId ? `${url}/${chartId}` : url
     };
-    if (hash) req.url = `${req.url}?hash=${hash}`;
+    if (hash) { req.url = `${req.url}?hash=${hash}`; }
     return this.baseReportService.get(req).pipe(
       map(apiResponse => _.get(apiResponse, 'result.summaries')),
       catchError(err => of([]))
@@ -359,13 +360,13 @@ export class ReportService {
         masterData: () => {
           const req = {
             filters: { isRootOrg: true },
-            fields: ["id", "channel", "slug", "orgName"],
+            fields: ['id', 'channel', 'slug', 'orgName'],
             pageNumber: 1,
-            limit: 2000
+            limit: 1000
           };
           return this.searchService.orgSearch(req).pipe(
-            map(res => _.map(_.get(res, 'result.response.content'), "slug"))
-          )
+            map(res => _.map(_.get(res, 'result.response.content'), 'slug'))
+          );
         }
       },
       $board: {
@@ -377,17 +378,17 @@ export class ReportService {
                 .pipe(
                   map(framework => {
                     const frameworkData = _.get(framework, 'result.framework');
-                    const boardCategory = _.find(frameworkData.categories, ["code", "board"]);
-                    if (!boardCategory) return of([]);
-                    return _.map(boardCategory.terms, "name");
+                    const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
+                    if (!boardCategory) { return of([]); }
+                    return _.map(boardCategory.terms, 'name');
                   }),
                   share(),
                 )),
               catchError(err => of([]))
-            )
+            );
         }
       }
-    }
+    };
 
     return parameterMappings[parameter];
   }
@@ -398,11 +399,11 @@ export class ReportService {
     const parameters = _.get(report, 'parameters');
     return this.convertToBase64(_.join(_.map(parameters, param => {
       return _.replace(param, _.toLower(param), this.getParameterValues(param).value);
-    }), "__"));
+    }), '__'));
   }
 
-  private getParameterFromHash = (hash: string) => {
-    return _.split(atob(hash), "__");
+  public getParameterFromHash = (hash: string) => {
+    return _.split(atob(hash), '__');
   }
 
   public isReportParameterized = report => _.get(report, 'parameters.length') > 0 && _.isArray(report.parameters) && _.get(report, 'isParameterized');
@@ -418,6 +419,58 @@ export class ReportService {
 
   public getUpdatedParameterizedPath(dataSources: IDataSource[], hash?: string) {
     const explicitValue = hash ? this.getParameterFromHash(hash) : null;
-    return _.map(dataSources, (dataSource: IDataSource) => ({ id: dataSource.id, path: this.resolveParameterizedPath(dataSource.path, explicitValue) }))
+    return _.map(dataSources, (dataSource: IDataSource) => ({
+      id: dataSource.id,
+      path: this.resolveParameterizedPath(dataSource.path, explicitValue)
+    }));
   }
+
+  public getMaterializedChildRows(reports: any[]) {
+    const apiCall = _.map(reports, report => {
+      const isParameterized = _.get(report, 'isParameterized') || false;
+      if (!isParameterized) { return of(report); }
+      const parameters = _.get(report, 'parameters');
+      if (!parameters.length) { return of(report); }
+      const paramObj: { masterData: () => Observable<any> } = this.getParameterValues(_.toLower(parameters[0]));
+      if (!paramObj) { return of(report); }
+      return paramObj.masterData()
+        .pipe(
+          map(results => {
+            report.children = _.uniqBy(_.concat(_.map(report.children, child => ({
+              ...child,
+              label: this.getParameterFromHash(child.hashed_val)
+            })),
+              _.map(results, res => ({
+                label: res,
+                hashed_val: this.convertToBase64(_.split(res, '__')),
+                status: 'draft',
+                reportid: _.get(report, 'reportid'),
+                materialize: true
+              }))), 'hashed_val');
+            return report;
+          }),
+          catchError(err => {
+            console.error(err);
+            return of(report);
+          }));
+    });
+    return forkJoin(apiCall);
+  }
+
+  public getFlattenedReports(reports: any[]) {
+    return _.reduce(reports, (result, report) => {
+      const isParameterized = _.get(report, 'isParameterized') || false;
+      if (isParameterized && _.get(report, 'children.length')) {
+        for (const childReport of report.children) {
+          const flattenedReport = _.assign({ ...report }, _.omit(childReport, 'id'));
+          delete flattenedReport.children;
+          result.push(flattenedReport);
+        }
+        return result;
+      }
+      result.push(report);
+      return result;
+    }, []);
+  }
+
 }
