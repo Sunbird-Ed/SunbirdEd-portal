@@ -27,8 +27,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   private _isUserReportAdmin: boolean;
   public telemetryImpression: IImpressionEventInput;
 
-  @ViewChild("all_reports") set inputTag(element: ElementRef | null) {
-    if (!element) return;
+  @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
+    if (!element) { return; }
     this.prepareTable(element.nativeElement);
   }
 
@@ -82,21 +82,22 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
    * @memberof ListAllReportsComponent
    */
   public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
-    this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])], { queryParams: { ...(this.reportService.isUserSuperAdmin() && { materialize }) } }).catch(err => {
-      console.log({ err });
-    });
+    this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])],
+      { queryParams: { ...(this.reportService.isUserSuperAdmin() && { materialize }) } }).catch(err => {
+        console.log({ err });
+      });
   }
 
   private renderStatus(data, type, row) {
 
     if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
       if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
-        data = "live"
+        data = 'live';
       } else {
         if (_.some(row.children, child => _.toLower(child.status) === 'live')) {
-          data = "partially live"
+          data = 'partially live';
         } else {
-          data = "draft"
+          data = 'draft';
         }
       }
     }
@@ -105,23 +106,23 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
       live: { color: 'success', icon: 'check' },
       draft: { color: 'primary', icon: 'edit' },
       retired: { color: 'warning', icon: 'close' },
-      ["partially live"]: { color: 'secondary', icon: 'check' }
+      ['partially live']: { color: 'secondary', icon: 'check' }
     };
 
     const status = _.startCase(_.toLower(data));
-    let spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
+    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
     return spanElement;
-  };
+  }
 
   private renderTags(data) {
 
     if (Array.isArray(data)) {
-      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), " ");
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), ' ');
       return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
     }
 
     return _.startCase(_.toLower(data));
-  };
+  }
 
   /**
    * @description initializes the datatables with relevant configurations
@@ -133,7 +134,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
       paging: true,
       lengthChange: true,
       searching: true,
-      order: [[1, "desc"]],
+      order: [[1, 'desc']],
       ordering: true,
       info: true,
       autoWidth: true,
@@ -150,22 +151,22 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
               count = _.filter(row.children, child => _.toLower(child.status) === 'live').length;
             }
             return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square">
-            <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'} 
-            alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ""}</span></button>`;
+            <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'}
+            alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ''}</span></button>`;
           },
           defaultContent: ''
         }] : []),
-        { title: "Report Id", data: "reportid", visible: false },
-        { title: "Created On", data: "createdon", visible: false },
+        { title: 'Report Id', data: 'reportid', visible: false },
+        { title: 'Created On', data: 'createdon', visible: false },
         {
-          title: "Title", data: "title", render: (data, type, row) => {
+          title: 'Title', data: 'title', render: (data, type, row) => {
             const { title, description } = row;
             return `<div class="sb-media"><div class="sb-media-body"><h6 class="media-heading ellipsis p-0">
-                  ${title}</h6> <p class="media-description"> ${description}</p></div></div>`
+                  ${title}</h6> <p class="media-description"> ${description}</p></div></div>`;
           }
         },
         {
-          title: "Last Updated Date", data: "reportgenerateddate",
+          title: 'Last Updated Date', data: 'reportgenerateddate',
           render: (data) => {
             const date = moment(data);
             if (date.isValid()) {
@@ -174,24 +175,24 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
             return _.startCase(_.toLower(data));
           }
         }, {
-          title: "Tags",
-          data: "tags",
+          title: 'Tags',
+          data: 'tags',
           render: this.renderTags
         }, {
-          title: "Update Frequency",
-          data: "updatefrequency",
+          title: 'Update Frequency',
+          data: 'updatefrequency',
           render: this.renderTags
         },
         ...(this._isUserReportAdmin ? [{
-          title: "Status",
-          data: "status",
+          title: 'Status',
+          data: 'status',
           render: this.renderStatus.bind(this)
         }] : [])]
     });
 
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
-      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) return false;
+      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
       const hash = _.get(rowData, 'hashed_val');
       this.rowClickEventHandler(_.get(rowData, 'reportid'), hash);
     });
@@ -200,13 +201,13 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
     $(el).on('click', 'td.details-control', (event) => {
       const tr = $(event.currentTarget).closest('tr');
-      var row = masterTable.row(tr);
+      const row = masterTable.row(tr);
       const rowData = _.get(row, 'data')();
       if (row.child.isShown()) {
         row.child.hide();
       } else {
-        if (!rowData.isParameterized) return false;
-        if (!_.has(rowData, 'children')) return false;
+        if (!rowData.isParameterized) { return false; }
+        if (!_.has(rowData, 'children')) { return false; }
         const id = rowData.reportid;
         row.child(getChildTable(id)).show();
         const childTable = $(`#${id}`).DataTable({
@@ -218,25 +219,25 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
           autoWidth: false,
           data: rowData.children,
           columns: [{
-            title: "Parameter",
-            data: "hashed_val",
-            className: "text-center",
+            title: 'Parameter',
+            data: 'hashed_val',
+            className: 'text-center',
             render: data => {
-              const parameters = _.split(atob(data), "__");
-              return parameters
+              const parameters = _.split(atob(data), '__');
+              return parameters;
             }
           }, {
-            title: "Status",
-            data: "status",
+            title: 'Status',
+            data: 'status',
             render: this.renderStatus.bind(this),
-            className: "text-center"
+            className: 'text-center'
           }]
-        })
+        });
 
-        $(`#${id}`).on("click", "td", event => {
-          const { reportid, hashed_val, materialize } = childTable.row(event.currentTarget).data();
+        $(`#${id}`).on('click', 'td', e => {
+          const { reportid, hashed_val, materialize } = childTable.row(e.currentTarget).data();
           this.rowClickEventHandler(reportid, hashed_val, materialize || false);
-        })
+        });
       }
     });
   }

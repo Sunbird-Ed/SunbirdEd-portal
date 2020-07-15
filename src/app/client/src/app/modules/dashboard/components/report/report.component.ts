@@ -41,12 +41,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public showComponent = true;
   public showConfirmationModal = false;
   public confirmationPopupInput: { title: string, event: 'retire' | 'publish', body: string };
-  private materializedReport: boolean = false;
+  private materializedReport = false;
   private hash: string;
   public getParametersValueForDropDown$: Observable<any>;
   private set setMaterializedReportStatus(val: string) {
-    this.materializedReport = (val === "true");
-  };
+    this.materializedReport = (val === 'true');
+  }
 
   private set setParametersHash(report) {
     const { hash } = this.activatedRoute.snapshot.params;
@@ -91,7 +91,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @param reportId
    */
   private fetchConfig(reportId, hash?: string): Observable<any> {
-    if (this.materializedReport) hash = null;
+    if (this.materializedReport) { hash = null; }
     return this.reportService.fetchReportById(reportId, hash).pipe(
       mergeMap(apiResponse => {
         const report = _.get(apiResponse, 'reports');
@@ -113,13 +113,14 @@ export class ReportComponent implements OnInit, AfterViewInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
-            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') && !this.reportService.isUserSuperAdmin()) {
-              return throwError({ messageText: 'messages.emsg.mutliParametersFound' })
+            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') &&
+              !this.reportService.isUserSuperAdmin()) {
+              return throwError({ messageText: 'messages.emsg.mutliParametersFound' });
             }
             this.setParametersHash = this.report;
             this.getParametersValueForDropDown$ = this.getParametersValueForDropDown(report);
             if (this.materializedReport) {
-              this.report.status = "draft";
+              this.report.status = 'draft';
             }
             const reportConfig = _.get(report, 'reportconfig');
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
@@ -290,7 +291,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     const hash = this.hash;
     return this.reportService.getLatestSummary({ reportId, hash }).pipe(
       map(reportSummary => {
-        this._reportSummary = "";
+        this._reportSummary = '';
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
@@ -315,7 +316,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public openConfirmationModal(eventType: 'publish' | 'retire') {
     const { confirmReportPublish, confirmRetirePublish } = _.get(this.resourceService, 'messages.imsg');
     this.confirmationPopupInput = {
-      title: "Confirm",
+      title: 'Confirm',
       body: eventType === 'publish' ? confirmReportPublish : confirmRetirePublish,
       event: eventType
     };
@@ -433,7 +434,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
           this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {} });
         }
       })
-    )
+    );
   }
 
   public gotoListPage() {
@@ -448,12 +449,13 @@ export class ReportComponent implements OnInit, AfterViewInit {
         if (this.reportService.isUserSuperAdmin()) {
           return this.reportService.getMaterializedChildRows(reports).pipe(
             map(response => {
-              const report = response[0];
-              return _.get(report, 'children');
+              const reportObj = response[0];
+              return _.get(reportObj, 'children');
             })
           );
         } else {
-          return of(_.map(_.get(reports[0], 'children') || [], child => ({ ...child, label: this.reportService.getParameterFromHash(child.hashed_val) })));
+          return of(_.map(_.get(reports[0], 'children') || [],
+            child => ({ ...child, label: this.reportService.getParameterFromHash(child.hashed_val) })));
         }
       })
     );
@@ -461,9 +463,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
   public handleParameterChange(val) {
     const { reportId } = this.activatedRoute.snapshot.params;
-    let hash = _.get(val, 'hashed_val');
+    const hash = _.get(val, 'hashed_val');
     const materialize = _.get(val, 'materialize') || false;
-    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } })
+    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } });
   }
 }
 

@@ -36,113 +36,113 @@ export const mockListApiResponse = {
 export const mockParameterizedReports = {
     'reports': [
         {
-            "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
-            "title": "Board wise Report",
-            "description": "National Quiz Reports",
-            "authorizedroles": [
-                "ORG_ADMIN"
+            'reportid': 'a8971368-34a4-412d-8532-eea6c0fd9e70',
+            'title': 'Board wise Report',
+            'description': 'National Quiz Reports',
+            'authorizedroles': [
+                'ORG_ADMIN'
             ],
-            "status": "draft",
-            "type": "public",
-            "createdon": "2020-07-07T13:06:47.847Z",
-            "updatedon": "2020-07-07T13:06:47.847Z",
-            "createdby": "ravinder kumar",
-            "reportconfig": {
-                "id": "national_quiz_reports",
-                "label": "National Quiz Reports",
-                "table": {
-                    "valuesExpr": "tableData",
-                    "columnsExpr": "keys"
+            'status': 'draft',
+            'type': 'public',
+            'createdon': '2020-07-07T13:06:47.847Z',
+            'updatedon': '2020-07-07T13:06:47.847Z',
+            'createdby': 'ravinder kumar',
+            'reportconfig': {
+                'id': 'national_quiz_reports',
+                'label': 'National Quiz Reports',
+                'table': {
+                    'valuesExpr': 'tableData',
+                    'columnsExpr': 'keys'
                 },
-                "title": "National Quiz Reports",
-                "charts": [
+                'title': 'National Quiz Reports',
+                'charts': [
                     {
-                        "id": "first",
-                        "options": {
-                            "title": {
-                                "text": "Daily Quiz Plays- by Mode",
-                                "display": true,
-                                "fontSize": 16
+                        'id': 'first',
+                        'options': {
+                            'title': {
+                                'text': 'Daily Quiz Plays- by Mode',
+                                'display': true,
+                                'fontSize': 16
                             },
-                            "legend": {
-                                "display": true
+                            'legend': {
+                                'display': true
                             },
-                            "scales": {
-                                "xAxes": [
+                            'scales': {
+                                'xAxes': [
                                     {
-                                        "scaleLabel": {
-                                            "display": true,
-                                            "labelString": "Date"
+                                        'scaleLabel': {
+                                            'display': true,
+                                            'labelString': 'Date'
                                         }
                                     }
                                 ],
-                                "yAxes": [
+                                'yAxes': [
                                     {
-                                        "scaleLabel": {
-                                            "display": true,
-                                            "labelString": "Content Plays"
+                                        'scaleLabel': {
+                                            'display': true,
+                                            'labelString': 'Content Plays'
                                         }
                                     }
                                 ]
                             },
-                            "tooltips": {
-                                "mode": "x-axis",
-                                "intersect": false,
-                                "bodySpacing": 5,
-                                "titleSpacing": 5
+                            'tooltips': {
+                                'mode': 'x-axis',
+                                'intersect': false,
+                                'bodySpacing': 5,
+                                'titleSpacing': 5
                             },
-                            "responsive": true
+                            'responsive': true
                         },
-                        "datasets": [
+                        'datasets': [
                             {
-                                "fill": false,
-                                "label": "app",
-                                "dataExpr": "prod.diksha.app"
+                                'fill': false,
+                                'label': 'app',
+                                'dataExpr': 'prod.diksha.app'
                             }
                         ],
-                        "chartType": "line",
-                        "dataSource": {
-                            "ids": [
-                                "first"
+                        'chartType': 'line',
+                        'dataSource': {
+                            'ids': [
+                                'first'
                             ],
-                            "commonDimension": "date"
+                            'commonDimension': 'date'
                         },
-                        "labelsExpr": "Date"
+                        'labelsExpr': 'Date'
                     }
                 ],
-                "dataSource": [],
-                "description": "National Quiz Reports",
-                "reportLevelDataSourceId": "first"
+                'dataSource': [],
+                'description': 'National Quiz Reports',
+                'reportLevelDataSourceId': 'first'
             },
-            "templateurl": null,
-            "slug": "sunbird",
-            "reportgenerateddate": "2020-04-12T00:00:00.000Z",
-            "reportduration": {
-                "enddate": "Thu May 7 2020",
-                "startdate": "Thu May 7 2020"
+            'templateurl': null,
+            'slug': 'sunbird',
+            'reportgenerateddate': '2020-04-12T00:00:00.000Z',
+            'reportduration': {
+                'enddate': 'Thu May 7 2020',
+                'startdate': 'Thu May 7 2020'
             },
-            "tags": [
-                "Consumption",
-                "Engagement"
+            'tags': [
+                'Consumption',
+                'Engagement'
             ],
-            "updatefrequency": "DAILY",
-            "parameters": [
-                "$board"
+            'updatefrequency': 'DAILY',
+            'parameters': [
+                '$board'
             ],
-            "children": [
+            'children': [
                 {
-                    "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
-                    "hashed_val": "Q0JTRQ==",
-                    "status": "live"
+                    'reportid': 'a8971368-34a4-412d-8532-eea6c0fd9e70',
+                    'hashed_val': 'Q0JTRQ==',
+                    'status': 'live'
                 },
                 {
-                    "reportid": "a8971368-34a4-412d-8532-eea6c0fd9e70",
-                    "hashed_val": "SUNTRQ==",
-                    "status": "live"
+                    'reportid': 'a8971368-34a4-412d-8532-eea6c0fd9e70',
+                    'hashed_val': 'SUNTRQ==',
+                    'status': 'live'
                 }
             ],
-            "isParameterized": true
+            'isParameterized': true
         }
     ],
     count: 1
-}
+};
