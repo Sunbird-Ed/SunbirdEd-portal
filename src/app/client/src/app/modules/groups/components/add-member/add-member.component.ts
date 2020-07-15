@@ -105,7 +105,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
         if (member.exists && !this.isExistingMember()) {
           this.showLoader = false;
           this.isVerifiedUser = true;
-          this.captchaRef.reset();
+          if (this.isCaptchEnabled) {
+            this.captchaRef.reset();
+          }
         } else {
           this.showInvalidUser();
         }
