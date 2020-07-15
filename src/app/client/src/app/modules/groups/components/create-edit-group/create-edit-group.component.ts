@@ -52,7 +52,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     if (field === 'name') {
       this.groupForm.patchValue({ name: _.trimStart(this.groupForm.get(field).value), });
     }
-    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
+    return !this.groupForm.get(field).valid && this.groupForm.get(field).dirty;
   }
 
   onSubmitForm() {
