@@ -167,7 +167,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       this.courseBatchService.getAllBatchDetails(searchParams)
       .pipe(takeUntil(this.unsubscribe))
         .subscribe((data) => {
-          this.allBatchList = _.get(data, 'result.response.content');
+          this.allBatchList = _.filter(_.get(data, 'result.response.content'), (batch) => {
+            return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
+          });
           // If batch length is 1, then directly join the batch
           if (this.allBatchList && this.allBatchList.length === 1) {
             this.enrollBatch(this.allBatchList[0]);
