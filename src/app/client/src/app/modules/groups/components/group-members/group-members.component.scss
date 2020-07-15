@@ -41,7 +41,12 @@
     text-align: left;
     right: 0;
     top: 0;
-    width: calculateRem(170px);
+    min-width: calculateRem(170px);
+
+    .sb-btn-link:hover,.sb-btn-link:active{
+      background-color: var(--primary-100);
+    }
+
     .list {
         display: flex;
         align-items: center;
