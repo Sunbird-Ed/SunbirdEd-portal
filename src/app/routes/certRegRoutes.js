@@ -16,7 +16,7 @@ module.exports = function (app) {
     permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
         return (certRegURL + certRegServiceApi.searchCertificate)
       },

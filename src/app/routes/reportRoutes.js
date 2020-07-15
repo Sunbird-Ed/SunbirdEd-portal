@@ -11,7 +11,7 @@ module.exports = function (app) {
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
@@ -32,7 +32,7 @@ module.exports = function (app) {
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },

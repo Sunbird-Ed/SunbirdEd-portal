@@ -21,7 +21,7 @@ module.exports = (app) => {
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
                 return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
             },
@@ -46,7 +46,7 @@ module.exports = (app) => {
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
                 let urlParam = req.params['0']
                 let query = require('url').parse(req.url).query
