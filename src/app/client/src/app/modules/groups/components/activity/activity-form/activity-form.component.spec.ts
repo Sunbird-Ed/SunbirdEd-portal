@@ -1,3 +1,4 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityFormComponent } from './activity-form.component';
@@ -24,13 +25,19 @@ describe('ActivityFormComponent', () => {
       'lbl': {}
     }
   };
+  // class RouterStub {
+  //   navigate = jasmine.createSpy('navigate');
+  //   url: '/my-groups';
+  // }
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityFormComponent],
-      imports: [SharedModule.forRoot(), CoreModule, FormsModule, TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), CoreModule, FormsModule, TelemetryModule.forRoot(), HttpClientTestingModule,
+        RouterTestingModule],
       providers: [
-        { provide: ResourceService, useValue: resourceBundle }]
+        { provide: ResourceService, useValue: resourceBundle },
+      ]
     })
       .compileComponents();
   }));

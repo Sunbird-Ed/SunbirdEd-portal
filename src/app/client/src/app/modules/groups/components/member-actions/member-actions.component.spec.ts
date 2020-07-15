@@ -1,18 +1,25 @@
+import { RouterTestingModule } from '@angular/router/testing';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { APP_BASE_HREF } from '@angular/common';
 import { MemberActionsComponent } from './member-actions.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MemberActionsComponent', () => {
   let component: MemberActionsComponent;
   let fixture: ComponentFixture<MemberActionsComponent>;
+  configureTestSuite();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
-      imports: [SuiModule, SharedModule.forRoot(), HttpClientModule]
+      imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule],
+      providers: [ TelemetryService,
+        {provide: APP_BASE_HREF, useValue: '/'}
+      ]
     })
       .compileComponents();
   }));
