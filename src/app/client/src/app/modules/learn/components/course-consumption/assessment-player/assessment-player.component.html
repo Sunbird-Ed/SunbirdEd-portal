@@ -99,7 +99,7 @@
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <div class="child-content-padding">
-                  <sb-toc-card [activeContent]="activeContent" [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
+                  <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
                     [contentStatus]="contentStatus">
                   </sb-toc-card>
                 </div>
