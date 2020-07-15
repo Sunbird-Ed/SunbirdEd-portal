@@ -109,6 +109,7 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({id: '1', exists: true, name: 'user'}));
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component['groupsService'], 'addFieldsToMember');
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     component.initRecaptcha();
     fixture.detectChanges();
     component.memberId = '1';
@@ -122,6 +123,7 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component, 'isExistingMember').and.returnValue(false);
     spyOn(component['groupsService'], 'addFieldsToMember');
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     component.initRecaptcha();
     fixture.detectChanges();
     component.memberId = '2';
@@ -201,6 +203,7 @@ describe('AddMemberComponent', () => {
   it('should load re-captcha when recaptcha is enable from system setting', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component['groupsService'], 'addFieldsToMember');
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     component.initRecaptcha();
     fixture.detectChanges();
     expect(component.googleCaptchaSiteKey).toBeDefined();
@@ -232,6 +235,7 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
     spyOn(component, 'onVerifyMember').and.callThrough();
     spyOn(component['groupsService'], 'addFieldsToMember');
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     component.initRecaptcha();
     fixture.detectChanges();
     component.onVerifyMember();

@@ -63,7 +63,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       if (res.result.response) {
         try {
           const captchaConfig = _.get(res, 'result.response.value') ? JSON.parse(_.get(res, 'result.response.value')) : {};
-          this.googleCaptchaSiteKey = captchaConfig.key || '';
+          this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value || '';
           this.isCaptchEnabled = captchaConfig.isEnabled || false;
         } catch (e) {
           console.log(_.get(res, 'result.response'));
