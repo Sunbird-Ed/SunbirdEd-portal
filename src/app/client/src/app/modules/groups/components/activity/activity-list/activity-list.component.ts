@@ -61,6 +61,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   openActivity(event: any, activity: IActivity) {
+    this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
     // TODO add telemetry here
 
     if (_.get(this.groupData, 'isAdmin')) {
@@ -81,17 +82,24 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   removeActivity() {
     const activityIds = [this.selectedActivity.identifier];
+    this.showLoader = true;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
+        this.showLoader = false;
       }, error => {
+        this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.activityRemove);
       });
     this.toggleModal();
 
     // TODO: add telemetry here
+  }
+
+  addTelemetry (id, cdata) {
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
   }
 
   ngOnDestroy() {

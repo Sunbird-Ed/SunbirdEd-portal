@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -48,6 +48,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   isFieldValid(field: string) {
     if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
+
+    if (field === 'name') {
+      this.groupForm.patchValue({ name: _.trimStart(this.groupForm.get(field).value), });
+    }
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
@@ -81,7 +85,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   updateGroup() {
     this.disableBtn = true;
-    if (this.groupForm.valid) {
+    if (this.groupForm.valid && !_.isEmpty(_.trim(this.groupForm.value.name))) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
       updatedForm.name = _.trim(updatedForm.name);
       updatedForm.description = _.trim(updatedForm.description);
@@ -104,6 +108,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.closeModal();
       });
     } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m005);
       this.closeModal();
     }
   }

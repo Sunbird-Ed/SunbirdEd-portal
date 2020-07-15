@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { of, throwError, BehaviorSubject } from 'rxjs';
@@ -65,13 +65,15 @@ describe('ActivitySearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitySearchComponent],
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
+        SlickModule, TelemetryModule],
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
         { provide: FrameworkService, useValue: frameWorkServiceStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
         { provide: GroupsService, useClass: GroupsServiceMock },
+        TelemetryService,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -89,6 +91,7 @@ describe('ActivitySearchComponent', () => {
       }
       return throwError({});
     });
+    spyOn(component['frameworkService'], 'channelData$').and.returnValue(of ({channelData: {defaultFramework: '123456' } }));
     fixture.detectChanges();
 
   });
@@ -193,10 +196,12 @@ describe('ActivitySearchComponent', () => {
   });
 
   it('should call addActivity', () => {
+    spyOn(component, 'addTelemetry');
     const router = TestBed.get(Router);
     const event = { data: { identifier: 'do_234324446565' } };
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_234324446565'],
       { queryParams: { groupId: 'adfddf-sdsds-wewew-sds' } });
   });
