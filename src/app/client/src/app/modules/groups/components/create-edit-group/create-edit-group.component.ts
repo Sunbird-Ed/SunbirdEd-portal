@@ -48,7 +48,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   isFieldValid(field: string) {
     if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
-    return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
+    return !this.groupForm.get(field).valid && this.groupForm.get(field).dirty;
   }
 
   onSubmitForm() {
