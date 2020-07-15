@@ -10,8 +10,7 @@
                 <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
                 <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
             </div>
-            <span  *ngFor="let batch of allBatchList" >
-                <div class="join-batch__body" *ngIf="!isEnrollmentAllowed(batch?.enrollmentEndDate)">
+            <div class="join-batch__body" *ngFor="let batch of allBatchList">
                 <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
                     </span></div>
                 <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
@@ -19,8 +18,7 @@
                 <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
                     (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
                     *ngIf="!courseMentor">{{resourceService?.frmelmnts?.lbl?.join}}</button>
-                </div>
-            </span>
+            </div>
         </div>
     </div>
     <div *ngIf="showAllBatchError">
