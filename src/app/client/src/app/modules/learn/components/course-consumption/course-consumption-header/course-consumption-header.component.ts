@@ -236,15 +236,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.telemetryService.interact(interactData);
   }
 
-  getGroupData() {
-    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(groupData => {
-      this.groupService.groupData = _.cloneDeep(groupData);
-      this.showAddGroup = _.get(this.groupService, 'groupData.isAdmin');
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m002);
-    });
-  }
-
   addActivityToGroup() {
     if (_.get(this.groupService, 'groupData.isAdmin')) {
       const request = {
