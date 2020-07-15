@@ -16,7 +16,7 @@
                     </span></div>
                 <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
                     {{userNames[batch.createdBy].lastName}}</div>
-                <button class="sb-btn sb-btn-outline-secondary sb-btn-normal 'sb-btn-primary"
+                <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
                     (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
                     *ngIf="!courseMentor">{{resourceService?.frmelmnts?.lbl?.join}}</button>
                 </div>
