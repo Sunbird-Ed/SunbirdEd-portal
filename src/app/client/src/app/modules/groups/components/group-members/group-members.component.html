@@ -24,7 +24,7 @@
       <div class="devided-line m-8"></div>
     </div>
 
-    <div class="d-flex flex-dc" *ngIf="memberListToShow?.length">
+    <div class="d-flex flex-dc" *ngIf="memberListToShow?.length && !showLoader">
       <div *ngFor="let member of memberListToShow" class="relative">
         <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
           [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu" [indexOfMember]="member?.indexOfMember"
@@ -46,7 +46,7 @@
     </div>
 
     <div class="d-flex flex-dc" *ngIf="showLoader"><!--showLoader && !memberListToShow?.length -->
-      <div *ngFor="let item of [1,2,3,4,5,6]">
+      <div *ngFor="let item of memberListToShow">
         <sb-member-card [isLoading]="true" [config]="memberCardConfig"></sb-member-card>
       </div>
     </div>

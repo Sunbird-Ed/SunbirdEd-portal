@@ -70,12 +70,8 @@ export class RecoverAccountService {
     return this.learnerService.post(options);
   }
   generateOTP(data, captchaResponse?) {
-    let URL = this.configService.urlConFig.URLS.OTP.GENERATE;
-    if (captchaResponse) {
-      URL = this.configService.urlConFig.URLS.OTP.ANONYMOUS.GENERATE + '?captchaResponse=' + captchaResponse;
-    }
     const options = {
-      url: URL,
+      url: this.configService.urlConFig.URLS.OTP.ANONYMOUS.GENERATE + '?captchaResponse=' + captchaResponse,
       data: data
     };
     return this.learnerService.post(options);
