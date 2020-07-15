@@ -82,12 +82,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   removeActivity() {
     const activityIds = [this.selectedActivity.identifier];
+    this.showLoader = true;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
+        this.showLoader = false;
       }, error => {
+        this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.activityRemove);
       });
     this.toggleModal();

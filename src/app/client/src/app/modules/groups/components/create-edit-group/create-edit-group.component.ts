@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -48,6 +48,10 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   isFieldValid(field: string) {
     if (this.groupId) { this.groupForm.patchValue({groupToc: true}); }
+
+    if (field === 'name') {
+      this.groupForm.patchValue({ name: _.trimStart(this.groupForm.get(field).value), });
+    }
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
   }
 
