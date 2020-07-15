@@ -25,10 +25,7 @@ describe('ActivityFormComponent', () => {
       'lbl': {}
     }
   };
-  // class RouterStub {
-  //   navigate = jasmine.createSpy('navigate');
-  //   url: '/my-groups';
-  // }
+
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
