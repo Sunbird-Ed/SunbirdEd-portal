@@ -6,7 +6,7 @@
 
         <!-- Course details for mobile view -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
-          *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
+          *ngIf="enrolledBatchInfo?.cert_templates; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -24,7 +24,7 @@
           </div>
         </ng-template> -->
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -107,7 +107,7 @@
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
-        <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
+        <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledBatchInfo?.cert_templates; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -125,7 +125,7 @@
           </div>
         </ng-template> -->
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -139,7 +139,7 @@
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          <!-- <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">
+          <!-- <div class="fsmall mt-8" *ngIf="enrolledBatchInfo?.cert_templates">
             {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
           </div> -->
         </div>
