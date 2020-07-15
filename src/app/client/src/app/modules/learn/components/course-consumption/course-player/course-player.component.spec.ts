@@ -535,4 +535,10 @@ describe('CoursePlayerComponent', () => {
     component.ngOnDestroy();
     expect(component.joinTrainingModal).toBeUndefined();
   });
+
+  it('should call collapsedChange', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.collapsedChange(false, 0);
+    expect(component.courseHierarchy.children[0].collapsed).toBeFalsy();
+  });
 });
