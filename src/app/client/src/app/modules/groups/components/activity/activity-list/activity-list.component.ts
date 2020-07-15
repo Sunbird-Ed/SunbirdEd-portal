@@ -61,6 +61,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   openActivity(event: any, activity: IActivity) {
+    this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
     // TODO add telemetry here
 
     if (_.get(this.groupData, 'isAdmin')) {
@@ -95,6 +96,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.toggleModal();
 
     // TODO: add telemetry here
+  }
+
+  addTelemetry (id, cdata) {
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
   }
 
   ngOnDestroy() {

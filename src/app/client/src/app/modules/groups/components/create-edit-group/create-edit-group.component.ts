@@ -85,7 +85,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   updateGroup() {
     this.disableBtn = true;
-    if (this.groupForm.valid) {
+    if (this.groupForm.valid && !_.isEmpty(_.trim(this.groupForm.value.name))) {
       const updatedForm = _.omit(this.groupForm.value, 'groupToc');
       updatedForm.name = _.trim(updatedForm.name);
       updatedForm.description = _.trim(updatedForm.description);
@@ -108,6 +108,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.closeModal();
       });
     } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m005);
       this.closeModal();
     }
   }
