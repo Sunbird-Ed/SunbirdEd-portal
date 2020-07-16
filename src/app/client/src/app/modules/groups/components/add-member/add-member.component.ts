@@ -100,7 +100,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   verifyMember() {
     this.showLoader = true;
-      this.groupsService.getUserData(this.memberId, this.captchaResponse).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
+      this.groupsService.getUserData(_.trim(this.memberId), this.captchaResponse).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         this.verifiedMember = this.groupsService.addFields(member);
         if (member.exists && !this.isExistingMember()) {
           this.showLoader = false;
