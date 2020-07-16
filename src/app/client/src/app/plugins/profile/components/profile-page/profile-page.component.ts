@@ -101,6 +101,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.setInteractEventData();
+    if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+      this.showEdit = true;
+    }
   }
 
   populateLocationDetails() {
