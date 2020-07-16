@@ -30,7 +30,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
-        this.showModal = false;
       }
     });
   }
