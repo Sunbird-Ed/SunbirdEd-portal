@@ -134,8 +134,8 @@ export class GroupsService {
     return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
-  getActivity(groupId, activity) {
-    return this.groupCservice.activityService.getDataAggregation(groupId, activity);
+getActivity(groupId, activity, mergeGroup) {
+    return this.groupCservice.activityService.getDataAggregation(groupId, activity, mergeGroup);
   }
 
   set groupData(group: IGroupCard) {
