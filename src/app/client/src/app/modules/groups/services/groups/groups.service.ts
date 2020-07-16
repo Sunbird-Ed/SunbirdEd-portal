@@ -41,8 +41,8 @@ export class GroupsService {
   }
 
   addFieldsToMember(members): IGroupMember[] {
-    this.setCurrentUserRole(members);
     if (members) {
+      this.setCurrentUserRole(members);
       const membersList = members.map((item, index) => _.extend(this.addFields(item), { indexOfMember: index }));
      return _.orderBy(membersList, ['isSelf', 'isAdmin', item => _.toLower(item.title)], ['desc', 'desc', 'asc']);
     }
