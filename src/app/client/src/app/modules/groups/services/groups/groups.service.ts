@@ -4,7 +4,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService, LearnerService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
-import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry'; 
+import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry'; 
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
@@ -52,7 +52,7 @@ export class GroupsService {
   setCurrentUserRole(members) {
     const currentUser = members.find(item => item.userId === this.userService.userid);
     this.isCurrentUserAdmin = _.get(currentUser, 'role') === 'admin';
-    this.isCurrentUserCreator = _.get(currentUser, 'userId') === _.get(currentUser, 'createdBy');
+    this.isCurrentUserCreator = _.get(this.userService, 'userid') === _.get(this.groupData, 'createdBy');
   }
 
   addFields(member): IGroupMember {
@@ -60,7 +60,7 @@ export class GroupsService {
     member.initial = _.get(member, 'title[0]');
     member.identifier = _.get(member, 'userId') || _.get(member, 'identifier');
     member.isAdmin = _.get(member, 'role') === 'admin';
-    member.isCreator = _.get(member, 'userId') === _.get(member, 'createdBy');
+    member.isCreator = _.get(this.groupData, 'createdBy') === _.get(member, 'userId');
     member.isSelf = (this.userService.userid === _.get(member, 'userId')) || (this.userService.userid === _.get(member, 'identifier'));
     member.title = member.isSelf ? `${member.title} (${this.resourceService.frmelmnts.lbl.you})` : member.title;
     member.isMenu = member.isAdmin && !(member.isSelf || member.isCreator);
@@ -182,9 +182,9 @@ export class GroupsService {
     }
 
 
-  addTelemetry(eid: string, routeData, cdata, groupId?: string) {
+  addTelemetry(eid: string, routeData, cdata, groupId?: string, extra?) {
 
-    const interactData = {
+    const interactData: IInteractEventInput = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
         cdata: cdata
@@ -195,6 +195,10 @@ export class GroupsService {
         pageid: _.get(routeData, 'data.telemetry.pageid'),
       }
     };
+
+    if (extra) {
+      interactData.edata.extra = extra;
+    }
 
     if (_.get(routeData, 'params.groupId') || groupId) {
       interactData['object'] = {

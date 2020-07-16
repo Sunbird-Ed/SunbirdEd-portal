@@ -11,6 +11,7 @@ export interface IMemberActionData {
   description: string;
   buttonText: string;
   theme?: 'primary' | 'error';
+  eid: string;
 }
 
 @Component({
@@ -40,52 +41,55 @@ export class MemberActionsComponent implements OnDestroy, OnInit {
           title: `${this.resourceService.frmelmnts.btn.makeAdmin}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.makeAdmin, '{memberName}', this.member.title),
           buttonText: this.resourceService.frmelmnts.btn.makeAdmin,
-          theme: 'primary'
+          theme: 'primary',
+          eid: 'promote-admin'
         };
-        this.addTelemetry('promote-admin');
         break;
       case 'removeFromGroup':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.btn.removeMember}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.removeWarning, '{memberName}', this.member.title),
           buttonText: this.resourceService.frmelmnts.btn.removeMember,
-          theme: 'error'
+          theme: 'error',
+          eid: 'remove-from-group'
         };
-        this.addTelemetry('remove-from-group');
         break;
       case 'dismissAsAdmin':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.btn.dismissAdmin}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.dismissWarning, '{memberName}', this.member.title),
           buttonText: this.resourceService.frmelmnts.btn.dismissAdmin,
-          theme: 'primary'
+          theme: 'primary',
+          eid: 'dismiss-admin'
         };
-        this.addTelemetry('dismiss-admin');
         break;
       case 'leaveFromGroup':
         this.memberActionData = {
           title: `${this.resourceService.frmelmnts.lbl.leaveGroup}?`,
           description: _.replace(this.resourceService.frmelmnts.lbl.leaveGroupWarning, '{groupName}', this.groupName),
           buttonText: this.resourceService.frmelmnts.lbl.leaveGroup,
-          theme: 'error'
+          theme: 'error',
+          eid: 'leave-from-group'
         };
-        this.addTelemetry('leave-from-group');
         break;
     }
   }
 
   addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activateRoute.snapshot, [{id: _.get(this.member, 'userId'), type: _.get(this.member, 'role')}]);
+    const cData = this.member ? [{id: _.get(this.member, 'userId'), type: _.get(this.member, 'role')}] : [];
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cData);
   }
 
   closeModal() {
+    this.addTelemetry(`close-${this.memberActionData.eid}`);
     this.modal.deny();
     this.modalClose.emit();
   }
 
   performAction() {
+    this.addTelemetry(`confirm-${this.memberActionData.eid}`);
     this.actionConfirm.emit({ data: this.member, action: this.action });
-    this.closeModal();
+    this.modal.deny();
   }
 
   ngOnDestroy() {

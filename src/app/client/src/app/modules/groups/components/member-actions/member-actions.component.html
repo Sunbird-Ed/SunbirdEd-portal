@@ -1,5 +1,5 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  [ngClass]="{'sb-error': memberActionData?.theme === 'error'}" appBodyScroll (dismissed)="closeModal();addTelemetry('close-' + action + '-popup')" #modal>
+  [ngClass]="{'sb-error': memberActionData?.theme === 'error'}" appBodyScroll (dismissed)="closeModal();" #modal>
 
   <div class="sb-modal-header">
     {{memberActionData?.title}}
