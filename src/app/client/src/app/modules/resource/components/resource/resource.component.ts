@@ -11,7 +11,7 @@ import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   templateUrl: './resource.component.html',
-  styles: ['.course-card-width { width: 280px !important }']
+  styleUrls: ['./resource.component.scss']
 })
 export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilter = false;

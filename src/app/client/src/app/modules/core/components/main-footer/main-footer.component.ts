@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
+  import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -64,7 +64,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
     } else {
-      (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
+      (document.querySelector('.sb-layout') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
       (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
     }

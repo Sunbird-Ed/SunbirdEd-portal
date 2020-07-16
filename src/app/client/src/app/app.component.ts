@@ -21,8 +21,7 @@ import { DOCUMENT } from '@angular/platform-browser';
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styles: ['.header-block { display: none;}']
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
@@ -194,6 +193,26 @@ export class AppComponent implements OnInit, OnDestroy {
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
+  ngAfterViewInit(){
+    //themeing code
+    let trans = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+          document.documentElement.classList.remove('transition')
+      }, 1000)
+  }
+    var selector = document.querySelectorAll('input[name=selector]');
+    for(var i=0;i<selector.length;i++){
+      selector[i].addEventListener('change', function() {
+        if(this.checked) {
+           trans()
+           document.documentElement.setAttribute('data-theme', this.value)
+        }
+    })
+    }
+    //themeing code
+  }
+  
   isLocationStatusRequired() {
     const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));

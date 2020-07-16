@@ -93,13 +93,14 @@
 }
 
 .footer {
-  background: $primary-color;
+  background: var(--sbt-footer-bg);
   color: $white-color !important;
   padding: calculateRem(34px) 0;
   font-size: calculateRem(14px);
   position: relative;
   width: 100%;
-
+  z-index: 1112;
+  margin-top: -60px;
   a {
     color: $white-color !important;
 
@@ -194,3 +195,5 @@
 
   }
 }
+
+
