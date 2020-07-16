@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
-import { combineLatest, Subject } from 'rxjs';
-import { debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
-import { IGroup } from '../../../interfaces/group';
+import { combineLatest, Subject, forkJoin, concat } from 'rxjs';
+import { debounceTime, delay, map, takeUntil, tap, concatMap } from 'rxjs/operators';
 import { GroupsService } from '../../../services';
 import { IActivity } from '../activity-list/activity-list.component';
 import * as _ from 'lodash-es';
@@ -19,12 +18,14 @@ export class ActivityDashboardComponent implements OnInit {
   queryParams;
   activityId: string;
   groupId: string;
-  groupData: IGroup;
+  groupData;
   activity: IActivity;
   groupMembers = [];
   memberListToShow = [];
   showSearchResults = false;
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
+  completedCount: number;
+  enrollmentCount: number;
   loaderMessage = this.resourceService.messages.fmsg.m0087;
   constructor(
     public resourceService: ResourceService,
@@ -56,56 +57,62 @@ export class ActivityDashboardComponent implements OnInit {
   }
 
   fetchActivity() {
-    this.groupService.getGroupById(this.groupId).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      this.groupData = groupData;
+    const activityData = { id: this.activityId, type: 'Course' };
+    this.groupService.getGroupById(this.groupId, true, true)
+      .pipe(concatMap(res => {
+        console.log("Group", res);
+        return this.groupService.getActivity(this.groupId, activityData, res);
+      })).subscribe((data) => {
+        console.log('Final', data);
+      }, error => {
+        console.error('Error', error);
+        this.toasterService.error(this.resourceService.messages.emsg.m002);
+      });
 
-      this.showLoader = false;
-      this.activity = {
-        name: 'Social Science',
-        identifier: 'do_123523212190',
-        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
-        organisation: ['Pre-prod Custodian Organization'],
-        subject: 'Social Science'
-      };
+    this.showLoader = false;
+    this.activity = {
+      name: 'Social Science',
+      identifier: 'do_123523212190',
+      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
+      organisation: ['Pre-prod Custodian Organization'],
+      subject: 'Social Science'
+    };
 
-      this.groupMembers = [
-        {
-          identifier: '1',
-          initial: 'J',
-          title: 'John Doe',
-          isAdmin: true,
-          isMenu: false,
-          indexOfMember: 1,
-          isCreator: true,
-          progress: '0'
-        },
-        {
-          identifier: '2',
-          initial: 'P',
-          title: 'Paul Walker',
-          isAdmin: false,
-          isMenu: true,
-          indexOfMember: 5,
-          isCreator: false,
-          progress: 100
-        }, {
-          identifier: '6',
-          initial: 'R',
-          title: 'Robert Downey',
-          isAdmin: true,
-          isMenu: true,
-          indexOfMember: 7,
-          isCreator: true,
-          progress: '37'
-        }
-      ];
+    this.groupMembers = [
+      {
+        identifier: '1',
+        initial: 'J',
+        title: 'John Doe',
+        isAdmin: true,
+        isMenu: false,
+        indexOfMember: 1,
+        isCreator: true,
+        progress: '0'
+      },
+      {
+        identifier: '2',
+        initial: 'P',
+        title: 'Paul Walker',
+        isAdmin: false,
+        isMenu: true,
+        indexOfMember: 5,
+        isCreator: false,
+        progress: 100
+      }, {
+        identifier: '6',
+        initial: 'R',
+        title: 'Robert Downey',
+        isAdmin: true,
+        isMenu: true,
+        indexOfMember: 7,
+        isCreator: true,
+        progress: 37
+      }
+    ];
 
-      this.groupMembers = _.orderBy(this.groupMembers, ['title'], ['asc']);
-      this.memberListToShow = _.cloneDeep(this.groupMembers);
+    this.groupMembers = _.orderBy(this.groupMembers, ['title'], ['asc']);
+    this.memberListToShow = _.cloneDeep(this.groupMembers);
 
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m002);
-    });
   }
 
   search(searchKey: string) {

@@ -37,6 +37,9 @@ describe('ActivityDashboardComponent', () => {
     'messages': {
       'fmsg': {
         'm0085': 'Please wait',
+      },
+      'emsg': {
+        'm002': 'Could not find the group. Try again later'
       }
     },
     'frmelmnts': {
