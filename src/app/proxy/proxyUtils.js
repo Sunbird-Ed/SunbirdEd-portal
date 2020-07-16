@@ -50,8 +50,8 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
-    proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
-    proxyReqOpts.headers['connection'] = 'keep-alive';
+    // proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
+    // proxyReqOpts.headers['connection'] = 'keep-alive';
     // var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
     // logger.info({
     //   URL: srcReq.url,
