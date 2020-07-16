@@ -58,7 +58,7 @@ describe('GroupHeaderComponent', () => {
     component = fixture.componentInstance;
     component.groupData = {
       id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
-      members: [{ createdBy: 'user_123', name: 'user123', role: 'admin' }]
+      members: [{ userId: 'user_123', createdBy: 'user_123', name: 'user123', role: 'admin' }]
     };
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
@@ -69,7 +69,7 @@ describe('GroupHeaderComponent', () => {
     component.groupData['isCreator'] = true;
     expect(component).toBeTruthy();
     component.ngOnInit();
-    expect(component.creator).toEqual('You');
+    expect(component.creator).toEqual('User123');
   });
 
   it('should set creator name', () => {
