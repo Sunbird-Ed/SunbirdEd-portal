@@ -64,6 +64,7 @@ $sb-download-text-max-width: 18em;
 .sb-accordion-content {
   background-color: $primary-0;
   padding: calculateRem(16px);
+  border-radius: calculateRem(2px);
 }
 .sb-accordion-text {
   color: $gray-800;
