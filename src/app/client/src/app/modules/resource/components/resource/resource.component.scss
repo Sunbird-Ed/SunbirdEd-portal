@@ -23,3 +23,8 @@
 .sb-g-cgap-0 {
   grid-column-gap: 0;
 }
+.sbt-page-container {
+  margin-top: -96px;
+  z-index: 99;
+  position: relative;
+}
