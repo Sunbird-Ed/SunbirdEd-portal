@@ -11,6 +11,7 @@ node=$2
 org=$3
 buildDockerImage=$4
 buildCdnAssests=$5
+phraseAppToken=$7
 echo "buildDockerImage: " $buildDockerImage
 echo "buildCdnAssests: " $buildCdnAssests
 if [ $buildCdnAssests == true ]
@@ -72,7 +73,7 @@ build_server(){
     echo "starting server yarn install"
     yarn install --no-progress --production=true
     echo "completed server yarn install"
-    node helpers/resourceBundles/build.js -task="phraseAppPull"
+    node helpers/resourceBundles/build.js -task="phraseAppPull" -token="${phraseAppToken}"
 }
 
 build_client & # run client build in background 
