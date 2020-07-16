@@ -36,6 +36,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
+    this.creator = _.get(this.groupData, 'isCreator') ? `${this.creator} (${this.resourceService.frmelmnts.lbl.you})` : this.creator ;
   }
 
   toggleModal(visibility = false) {
