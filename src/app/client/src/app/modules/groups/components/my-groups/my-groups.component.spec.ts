@@ -60,7 +60,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => of (mockGroupList));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {
-      expect(component.adminGroupsList[0].isAdmin).toBeTruthy();
+      expect(component.groupsList[0].isAdmin).toBeTruthy();
     });
   });
 
@@ -68,8 +68,7 @@ describe('MyGroupsComponent', () => {
     spyOn(component.groupService, 'searchUserGroups').and.callFake(() => throwError ({}));
     component.getMyGroupList();
     component.groupService.searchUserGroups({filters: {userId: '123'}}).subscribe(data => {}, err => {
-      expect(component.adminGroupsList).toEqual([]);
-      expect(component.memberGroupsList).toEqual([]);
+      expect(component.groupsList).toEqual([]);
     });
   });
 

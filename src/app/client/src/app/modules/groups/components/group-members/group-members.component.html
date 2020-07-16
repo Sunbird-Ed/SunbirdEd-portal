@@ -46,7 +46,7 @@
     </div>
 
     <div class="d-flex flex-dc" *ngIf="showLoader"><!--showLoader && !memberListToShow?.length -->
-      <div *ngFor="let item of memberListToShow">
+      <div *ngFor="let item of [0,1,2,3]">
         <sb-member-card [isLoading]="true" [config]="memberCardConfig"></sb-member-card>
       </div>
     </div>
