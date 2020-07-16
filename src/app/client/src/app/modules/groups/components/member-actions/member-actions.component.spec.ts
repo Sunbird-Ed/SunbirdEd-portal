@@ -29,8 +29,8 @@ describe('MemberActionsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule],
-      providers: [ TelemetryService,
-        {provide: APP_BASE_HREF, useValue: '/'},
+      providers: [TelemetryService,
+        { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ResourceService, useValue: resourceBundle }
       ]
     })
@@ -40,8 +40,10 @@ describe('MemberActionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MemberActionsComponent);
     component = fixture.componentInstance;
-    component.member = {identifier: '1', title: 'user', initial: 'u',
-    isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true, userId: '1', role: 'admin', name: 'user'};
+    component.member = {
+      identifier: '1', title: 'user', initial: 'u',
+      isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true, userId: '1', role: 'admin', name: 'user'
+    };
     fixture.detectChanges();
   });
 
@@ -53,6 +55,13 @@ describe('MemberActionsComponent', () => {
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
+    component.memberActionData = {
+      title: `Leave Group?`,
+      description: 'asas',
+      buttonText: 'Leave Group',
+      theme: 'error',
+      eid: 'leave-from-group'
+    };
     spyOn(component.modalClose, 'emit');
     component.closeModal();
     expect(component.modalClose.emit).toHaveBeenCalled();
@@ -61,8 +70,14 @@ describe('MemberActionsComponent', () => {
 
   it('should emit handleMember event', () => {
     spyOn(component.actionConfirm, 'emit');
-    spyOn(component, 'closeModal');
     component.action = 'dismiss';
+    component.memberActionData = {
+      title: `Remove member?`,
+      description: 'Remove member',
+      buttonText: 'Remove member',
+      theme: 'error',
+      eid: 'leave-from-group'
+    };
     component.member = {
       identifier: '2',
       initial: 'P',
@@ -77,35 +92,6 @@ describe('MemberActionsComponent', () => {
     };
     component.performAction();
     expect(component.actionConfirm.emit).toHaveBeenCalled();
-    expect(component.closeModal).toHaveBeenCalled();
-  });
-
-  it ('should call addTelemtry (promote-admin)', () => {
-    component.action = 'promoteAsAdmin';
-    spyOn(component, 'addTelemetry');
-    component.ngOnInit();
-    expect(component.addTelemetry).toHaveBeenCalledWith('promote-admin');
-  });
-
-  it ('should call addTelemtry (remove-from-group)', () => {
-    component.action = 'removeFromGroup';
-    spyOn(component, 'addTelemetry');
-    component.ngOnInit();
-    expect(component.addTelemetry).toHaveBeenCalledWith('remove-from-group');
-  });
-
-  it ('should call addTelemtry (dismiss-admin)', () => {
-    component.action = 'dismissAsAdmin';
-    spyOn(component, 'addTelemetry');
-    component.ngOnInit();
-    expect(component.addTelemetry).toHaveBeenCalledWith('dismiss-admin');
-  });
-
-  it ('should call addTelemtry (leave-from-group)', () => {
-    component.action = 'leaveFromGroup';
-    spyOn(component, 'addTelemetry');
-    component.ngOnInit();
-    expect(component.addTelemetry).toHaveBeenCalledWith('leave-from-group');
   });
 
 });

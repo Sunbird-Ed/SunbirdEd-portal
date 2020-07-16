@@ -132,6 +132,7 @@ export class ActivitySearchComponent implements OnInit {
   search() {
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, `1`);
     if (this.searchQuery.trim().length) {
+      this.addTelemetry('add-course-activity-search', [], { query: this.searchQuery });
       this.router.navigate([url], { queryParams: { key: this.searchQuery } });
     } else {
       this.router.navigate([url]);
@@ -216,12 +217,13 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   addActivity(event) {
-    this.addTelemetry('activity-course-card', event);
+    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+    this.addTelemetry('activity-course-card', cdata);
     this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
   }
 
-  addTelemetry(id, event) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [{id: _.get(event, 'data.identifier'), type: 'Course'}]);
+  addTelemetry(id, cdata, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
   }
 
   private setNoResultMessage() {

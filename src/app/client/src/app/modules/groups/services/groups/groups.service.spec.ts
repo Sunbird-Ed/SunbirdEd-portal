@@ -160,7 +160,7 @@ describe('GroupsService', () => {
     const data = service.addFieldsToMember([{ userId: '1', role: 'admin', name: 'user', createdBy: '1' }]);
     expect(data[0]).toEqual({
       userId: '1', role: 'admin', name: 'user', createdBy: '1', title: 'User', indexOfMember: 0,
-      initial: 'U', identifier: '1', isAdmin: true, isCreator: true, isSelf: false, isMenu: true,
+      initial: 'U', identifier: '1', isAdmin: true, isCreator: false, isSelf: false, isMenu: true,
     });
     expect(service.addFields).toHaveBeenCalledTimes(1);
   });

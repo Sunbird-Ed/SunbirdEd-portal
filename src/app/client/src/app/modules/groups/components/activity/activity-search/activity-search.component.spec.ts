@@ -183,8 +183,10 @@ describe('ActivitySearchComponent', () => {
     const router = TestBed.get(Router);
     router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
+    spyOn(component, 'addTelemetry');
     component.search();
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should not search the courses if the search is blank string', () => {
