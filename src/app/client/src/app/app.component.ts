@@ -22,6 +22,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
+  //,styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
