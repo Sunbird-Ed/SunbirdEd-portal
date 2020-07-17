@@ -1,14 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { mockActivityList } from './activity-list.component.data.spec';
+import { GroupsService } from '../../../services/groups/groups.service';
 
 describe('ActivityListComponent', () => {
   let component: ActivityListComponent;
@@ -33,10 +35,20 @@ describe('ActivityListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
+  class GroupServiceMock {
+    removeActivities() { return of({}); }
+  }
+
   const resourceBundle = {
     'messages': {
       'fmsg': {
         'm0085': 'Please wait',
+      },
+      'smsg': {
+        'activityRemove': 'Activity removed from the group successfully'
+      },
+      'emsg': {
+        'activityRemove': 'Could not remove activity. Try again later'
       }
     },
     'frmelmnts': {
@@ -51,7 +63,8 @@ describe('ActivityListComponent', () => {
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: GroupsService, useClass: GroupServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -62,6 +75,7 @@ describe('ActivityListComponent', () => {
     router = TestBed.get(Router);
     fixture = TestBed.createComponent(ActivityListComponent);
     component = fixture.componentInstance;
+    component.groupData = mockActivityList.groupData;
     fixture.detectChanges();
   });
 
@@ -82,7 +96,9 @@ describe('ActivityListComponent', () => {
     expect(component.activityList).toBeDefined();
   });
 
-  it('should call openActivity', () => {
+
+  it('should call openActivity for Admin', () => {
+    spyOn(component, 'addTelemetry');
     const activity = {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
@@ -92,6 +108,22 @@ describe('ActivityListComponent', () => {
     };
     component.openActivity({}, activity);
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
+  });
+
+  it('should call openActivity for group member', () => {
+    spyOn(component, 'addTelemetry');
+    const activity = {
+      name: 'Class 5 English',
+      identifier: 'do_123523212190',
+      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
+      organisation: ['Pre-prod Custodian Organization'],
+      subject: 'Social Science'
+    };
+    component.groupData.isAdmin = true;
+    component.openActivity({}, activity);
+    expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call getMenuData', () => {
@@ -108,46 +140,38 @@ describe('ActivityListComponent', () => {
       organisation: ['Prod Custodian Organization'],
       subject: 'Social Science'
     };
+    spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
     expect(component.selectedActivity).toEqual(member);
     expect(component.showMenu).toBe(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal(true);
     expect(component.showModal).toEqual(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('remove-activity-kebab-menu-btn');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
   });
 
-  it('should call removeActivity', () => {
-    component.activityList = [{
-      name: 'Class 5 English',
-      identifier: 'do_123523212190',
-      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
-      organisation: ['Pre-prod Custodian Organization'],
-      subject: 'Social Science'
-    }, {
-      name: 'India & Contemporary World II',
-      identifier: 'do_123523212112',
-      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291521464536268819635/artifact/jess1cc_1575435434756.thumb.jpg',
-      organisation: ['Prod Custodian Organization'],
-      subject: 'Social Science'
-    }, {
-      name: 'Footprints without Feet - English Supplementary Reader',
-      identifier: 'do_1235232121343',
-      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
-      organisation: ['Prod Custodian Organization'],
-      subject: 'Social Science'
-    }];
-    component.selectedActivity = component.activityList[2];
+  xit('should call removeActivity', () => {
+    component.selectedActivity = component.groupData.activities.map(item => item.activityInfo);
+    const groupService = TestBed.get(GroupsService);
+    const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'toggleModal');
+    spyOn(groupService, 'removeActivities');
+    spyOn(toasterService, 'success');
     component.removeActivity();
-    expect(component.activityList.length).toEqual(2);
+    expect(component.activityList.length).toEqual(3);
     expect(component.toggleModal).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalled();
   });
 
   it('should call ngOnDestroy', () => {
@@ -162,4 +186,6 @@ describe('ActivityListComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
     expect(component.modal.deny).toHaveBeenCalled();
   });
+
+
 });

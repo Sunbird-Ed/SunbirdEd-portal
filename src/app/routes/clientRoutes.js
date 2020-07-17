@@ -187,6 +187,9 @@ function getLocals(req) {
   locals.botConfigured = envHelper.sunbird_bot_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
   locals.superAdminSlug = envHelper.sunbird_super_admin_slug;
+  locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
+  locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
+  locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   return locals
 }
 

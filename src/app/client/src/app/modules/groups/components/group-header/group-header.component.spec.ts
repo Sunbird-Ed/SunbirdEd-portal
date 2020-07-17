@@ -1,7 +1,7 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
@@ -11,9 +11,10 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
+import { GroupsService } from '../../services/groups/groups.service';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
@@ -45,8 +46,8 @@ describe('GroupHeaderComponent', () => {
       { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       { provide: APP_BASE_HREF, useValue: '/' },
       { provide: Router, useClass: RouterStub },
-      TelemetryService,
-    ],
+        TelemetryService,
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
@@ -57,7 +58,7 @@ describe('GroupHeaderComponent', () => {
     component = fixture.componentInstance;
     component.groupData = {
       id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
-      members: [{ createdBy: 'user_123', name: 'user123', role: 'admin' }]
+      members: [{ userId: 'user_123', createdBy: 'user_123', name: 'user123', role: 'admin' }]
     };
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
@@ -68,7 +69,7 @@ describe('GroupHeaderComponent', () => {
     component.groupData['isCreator'] = true;
     expect(component).toBeTruthy();
     component.ngOnInit();
-    expect(component.creator).toEqual('You');
+    expect(component.creator).toEqual('User123');
   });
 
   it('should set creator name', () => {
@@ -77,7 +78,7 @@ describe('GroupHeaderComponent', () => {
       name: 'Test',
       createdBy: 'abcd-pqr-xyz',
       id: 'pop-wer',
-      members: [{ userId: 'abcd-pqr-xyz', createdBy: 'abcd-pqr-xyz', userName: 'Admin user' }]
+      members: [{ userId: 'abcd-pqr-xyz', createdBy: 'abcd-pqr-xyz', name: 'Admin user' }]
     };
     component.ngOnInit();
     expect(component.creator).toEqual('Admin user');
@@ -137,4 +138,25 @@ describe('GroupHeaderComponent', () => {
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot, []);
   });
 
+  it('should call leaveGroup on success', () => {
+    const groupService = TestBed.get(GroupsService);
+    const toastService = TestBed.get(ToasterService);
+    groupService.isCurrentUserCreator = false;
+    spyOn(toastService, 'success');
+    spyOn(groupService, 'removeMembers').and.returnValue(of({}));
+    spyOn(component, 'goBack');
+    component.leaveGroup();
+    expect(component.goBack).toHaveBeenCalled();
+    expect(toastService.success).toHaveBeenCalled();
+  });
+
+  it('should call leaveGroup on error', () => {
+    const groupService = TestBed.get(GroupsService);
+    const toastService = TestBed.get(ToasterService);
+    groupService.isCurrentUserCreator = false;
+    spyOn(toastService, 'error');
+    spyOn(groupService, 'removeMembers').and.returnValue(throwError({}));
+    component.leaveGroup();
+    expect(toastService.error).toHaveBeenCalled();
+  });
 });

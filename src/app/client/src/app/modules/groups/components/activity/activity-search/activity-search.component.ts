@@ -34,6 +34,7 @@ export class ActivitySearchComponent implements OnInit {
   paginationDetails: IPagination;
   noResultMessage: any;
   groupData;
+  groupId: string;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -56,6 +57,7 @@ export class ActivitySearchComponent implements OnInit {
   ngOnInit() {
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
+    this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.getFrameworkId();
     this.getFrameWork().pipe(first()).subscribe(framework => {
@@ -72,25 +74,32 @@ export class ActivitySearchComponent implements OnInit {
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
-
-    this.fetchContents();
   }
 
   private fetchContentOnParamChange() {
-    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
+    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams, this.groupsService.getGroupById(this.groupId, true, true)])
       .pipe(debounceTime(5), // to sync params and queryParams events
         delay(10), // to trigger pageexit telemetry event
         tap(data => {
           this.showLoader = true;
           // TODO set telemetry here
         }),
-        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
+        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1], group: result[2] })),
         takeUntil(this.unsubscribe$))
-      .subscribe(({ params, queryParams }) => {
-        this.queryParams = { ...queryParams };
-        this.paginationDetails.currentPage = params.pageNumber;
-        this.contentList = [];
-        this.fetchContents();
+      .subscribe(({ params, queryParams, group }) => {
+        const user = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
+
+        /* istanbul ignore else */
+        if (!user || _.get(user, 'role') === 'member' || _.get(user, 'status') === 'inactive' || _.get(group, 'status') === 'inactive') {
+          this.toasterService.warning(this.resourceService.messages.emsg.noAdminRole);
+          this.groupsService.goBack();
+        } else {
+          this.groupData = this.groupsService.addGroupFields(group);
+          this.queryParams = { ...queryParams };
+          this.paginationDetails.currentPage = params.pageNumber;
+          this.contentList = [];
+          this.fetchContents();
+        }
       });
   }
 
@@ -121,10 +130,12 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   search() {
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, `1`);
     if (this.searchQuery.trim().length) {
-      this.router.navigate([], { queryParams: { key: this.searchQuery } });
+      this.addTelemetry('add-course-activity-search', [], { query: this.searchQuery });
+      this.router.navigate([url], { queryParams: { key: this.searchQuery } });
     } else {
-      this.router.navigate([]);
+      this.router.navigate([url]);
     }
   }
 
@@ -206,7 +217,13 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   addActivity(event) {
+    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+    this.addTelemetry('activity-course-card', cdata);
     this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+  }
+
+  addTelemetry(id, cdata, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
   }
 
   private setNoResultMessage() {

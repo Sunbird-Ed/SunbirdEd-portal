@@ -13,6 +13,8 @@ import {
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
+import { Location } from '@angular/common';
+import { NavigationHelperService } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -39,6 +41,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
   @Input() groupId: string;
+  @Input() showAddGroup = false;
   enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR'];
@@ -54,23 +57,20 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   telemetryCdata: Array<{}>;
   enableProgress = false;
   courseMentor = false;
-  showAddGroup = false;
 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
-    private telemetryService: TelemetryService, private groupService: GroupsService) { }
+    private telemetryService: TelemetryService, private groupService: GroupsService,
+    private navigationHelperService: NavigationHelperService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
-    if (this.groupId) {
-      this.getGroupData();
-    }
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -236,28 +236,25 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.telemetryService.interact(interactData);
   }
 
-  getGroupData() {
-    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe)).subscribe(groupData => {
-      this.groupService.groupData = _.cloneDeep(groupData);
-      this.showAddGroup = _.get(this.groupService, 'groupData.isAdmin');
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m002);
-    });
-  }
-
   addActivityToGroup() {
     if (_.get(this.groupService, 'groupData.isAdmin')) {
       const request = {
-        activities: [{ id: this.courseId, type: 'course' }]
+        activities: [{ id: this.courseId, type: 'Course' }]
       };
       this.groupService.addActivities(this.groupId, request).subscribe(response => {
+        this.goBack();
         this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
       }, error => {
         console.error('Error while adding activity to the group', error);
+        this.goBack();
         this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
       });
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
+  }
+
+  goBack() {
+    this.navigationHelperService.goBack();
   }
 }

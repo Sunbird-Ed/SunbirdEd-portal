@@ -1,4 +1,4 @@
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
   <div class="sb-bg-color-white relative position back-btn-container">
@@ -107,7 +107,7 @@
               <div *ngIf="item?.children?.length">
                 <div *ngFor="let child of item?.children">
                   <div>
-                    <sb-toc-child-item [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
+                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
                   </div>
