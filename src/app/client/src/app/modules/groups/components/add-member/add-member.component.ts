@@ -78,6 +78,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   resetValue(memberId?) {
     this.addTelemetry('reset-userId', memberId);
     this.memberId = '';
+    this.groupsService.emitShowLoader(false);
     this.reset();
   }
 
@@ -113,7 +114,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   showInvalidUser () {
     this.isInvalidUser = true;
-    this.showLoader = false;
+    this.captchaRef.reset();
   }
 
   isExistingMember() {
@@ -131,7 +132,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.disableBtn = true;
     if (!this.isExistingMember()) {
       const member: IMember = {members: [{ userId: _.get(this.verifiedMember, 'id'), role: 'member' }]};
-      this.groupsService.addMemberById(this.groupData.id, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
+      const groupId = _.get(this.groupData, 'id') || _.get(this.activatedRoute.snapshot, 'params.groupId');
+      this.groupsService.addMemberById(groupId, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         this.disableBtn = false;
         const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
@@ -153,7 +155,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   getUpdatedGroupData() {
-    this.groupsService.getGroupById(this.groupData.id, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    const groupId = _.get(this.groupData, 'id') || _.get(this.activatedRoute.snapshot, 'params.groupId');
+    this.groupsService.getGroupById(groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       this.groupsService.groupData = groupData;
       this.groupData = groupData;
       this.membersList = this.groupsService.addFieldsToMember(_.get(groupData, 'members'));
