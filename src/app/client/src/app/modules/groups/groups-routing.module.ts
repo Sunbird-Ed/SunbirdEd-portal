@@ -45,8 +45,18 @@ const routes: Routes = [
       telemetry: { env: telemetryEnv, pageid: ADD_MEMBER, type: type, subtype: subtype },
     },
   },
-  { path: `${WORKSPACE.GROUP_ID}/${ADD_ACTIVITY_TO_GROUP}/${COURSES}/:pageNumber`, component: ActivitySearchComponent },
-  { path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent },
+  {
+    path: `${WORKSPACE.GROUP_ID}/${ADD_ACTIVITY_TO_GROUP}/${COURSES}/:pageNumber`, component: ActivitySearchComponent,
+    data: {
+      telemetry: { env: telemetryEnv, pageid: ADD_ACTIVITY_TO_GROUP, type: type, subtype: subtype },
+    },
+  },
+  {
+    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent,
+    data: {
+      telemetry: { env: telemetryEnv, pageid: ACTIVITY_DETAILS, type: type, subtype: subtype },
+    },
+  },
 ];
 
 
