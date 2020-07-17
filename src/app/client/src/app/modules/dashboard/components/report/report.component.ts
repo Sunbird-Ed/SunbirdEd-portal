@@ -465,7 +465,9 @@ export class ReportComponent implements OnInit, AfterViewInit {
     const { reportId } = this.activatedRoute.snapshot.params;
     const hash = _.get(val, 'hashed_val');
     const materialize = _.get(val, 'materialize') || false;
-    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } });
+    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } }).then(() => {
+      this.refreshComponent();
+    });
   }
 }
 

@@ -1,3 +1,4 @@
+import { ProfileService } from '@sunbird/profile';
 import { CourseProgressService } from './../course-progress/course-progress.service';
 import { IListReportsFilter, IReportsApiResponse, IDataSource } from './../../interfaces';
 import { ConfigService, IUserData } from '@sunbird/shared';
@@ -5,12 +6,12 @@ import { UserService, BaseReportService, PermissionService, SearchService, Frame
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
-import { map, catchError, pluck, mergeMap, share } from 'rxjs/operators';
+import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
 import * as moment from 'moment';
 
-const PRE_DEFINED_PARAMETERS = ['$slug', '$board'];
+const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state'];
 
 @Injectable()
 export class ReportService {
@@ -20,7 +21,7 @@ export class ReportService {
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
-    private frameworkService: FrameworkService) {
+    private frameworkService: FrameworkService, private profileService: ProfileService) {
     try {
       this._superAdminSlug = (<HTMLInputElement>document.getElementById('superAdminSlug')).value;
     } catch (error) {
@@ -353,7 +354,7 @@ export class ReportService {
   }
 
 
-  public getParameterValues(parameter: string) {
+  public getParameterValues(parameter: string): { value: string, masterData: () => Observable<string[]> } {
     const parameterMappings = {
       $slug: {
         value: _.get(this.userService, 'userProfile.rootOrg.slug'),
@@ -365,7 +366,8 @@ export class ReportService {
             limit: 1000
           };
           return this.searchService.orgSearch(req).pipe(
-            map(res => _.map(_.get(res, 'result.response.content'), 'slug'))
+            map(res => _.map(_.get(res, 'result.response.content'), 'slug')),
+            shareReplay(1)
           );
         }
       },
@@ -382,10 +384,21 @@ export class ReportService {
                     if (!boardCategory) { return of([]); }
                     return _.map(boardCategory.terms, 'name');
                   }),
-                  share(),
+                  shareReplay(1),
                 )),
               catchError(err => of([]))
             );
+        }
+      },
+      $state: {
+        value: _.get(_.find(_.get(this.userService, 'userProfile.userLocations'), ['type', 'state']), 'name'),
+        masterData: () => {
+          const requestData = { 'filters': { 'type': 'state' } };
+          return this.profileService.getUserLocation(requestData).pipe(
+            map(apiResponse => _.map(_.get(apiResponse, 'result.response'), state => _.get(state, 'name'))),
+            shareReplay(1),
+            catchError(err => of([]))
+          );
         }
       }
     };
