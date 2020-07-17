@@ -98,6 +98,7 @@ export class ActivityDashboardComponent implements OnInit {
   }
 
   search(searchKey: string) {
+    searchKey = _.toLower(searchKey);
     if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
