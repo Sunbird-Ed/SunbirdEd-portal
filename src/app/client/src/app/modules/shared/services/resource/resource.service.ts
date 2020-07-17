@@ -96,6 +96,10 @@ export class ResourceService {
         return observableOf(data);
       }));
   }
+  /**
+   * @description - Function to generate HTTP headers for API request
+   * @returns HttpOptions
+   */
   private getHeader(): HttpOptions['headers'] {
     return {
       'Content-Type': 'application/json',
@@ -105,7 +109,8 @@ export class ResourceService {
       'X-Org-code': '',
       'X-Source': 'web',
       'ts': dayjs().format(),
-      'X-msgid': UUID.UUID()
+      'X-msgid': UUID.UUID(),
+      'X-Request-ID': UUID.UUID()
     };
   }
   /**

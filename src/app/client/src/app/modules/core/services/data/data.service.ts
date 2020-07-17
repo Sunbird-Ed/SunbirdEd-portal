@@ -178,7 +178,8 @@ export class DataService {
       // 'X-Consumer-ID': 'X-Consumer-ID',
       'X-Source': 'web',
       'ts': dayjs().format(),
-      'X-msgid': UUID.UUID()
+      'X-msgid': UUID.UUID(),
+      'X-Request-ID': UUID.UUID()
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
