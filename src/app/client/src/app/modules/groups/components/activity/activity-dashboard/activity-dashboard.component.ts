@@ -118,7 +118,7 @@ export class ActivityDashboardComponent implements OnInit {
     this.members = aggResponse.members.map((item) => {
       /* istanbul ignore else */
       if (_.get(item, 'status') === 'active') {
-        const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value');
+        const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value') || 0;
         return {
           title: _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
