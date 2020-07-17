@@ -122,7 +122,7 @@ export class ActivityDashboardComponent implements OnInit {
         return {
           title: _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
-          progress: (completedCount / this.leafNodesCount) * 100,
+          progress: Math.round((completedCount / this.leafNodesCount) * 100),
           initial: _.get(item, 'name[0]')
         };
       }
