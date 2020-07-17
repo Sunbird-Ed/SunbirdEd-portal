@@ -54,13 +54,13 @@
     <!--No Group member except admin-->
     <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center my-24"
       *ngIf="memberListToShow?.length < 2 && !showSearchResults">
-      <img height="176" alt="" width="210" src="./assets/images/no-member.png">
+      <img width="197" alt="" src="./assets/images/add-member.png">
     </div>
 
     <!--No search results -->
     <div class="member-no-result pt-32" *ngIf="showSearchResults && !memberListToShow?.length">
       <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
-        <img alt="no member" height="165" width="206" src="./assets/images/group-search-empty.svg">
+        <img alt="" height="165" width="206" src="./assets/images/group-search-empty.svg">
         <div class="mt-16 no-result-text">
           {{resourceService?.frmelmnts?.lbl?.NoSerchGroupMemberResults}}
         </div>
