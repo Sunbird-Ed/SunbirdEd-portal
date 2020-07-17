@@ -93,6 +93,7 @@ export class ActivityDashboardComponent implements OnInit {
         console.error('Error', error);
         // this.processData(this.temp);
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.groupService.goBack();
       });
   }
 
