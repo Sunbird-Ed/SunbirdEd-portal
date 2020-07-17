@@ -53,7 +53,7 @@
 
 .sb-table {
   width: 100%;
-  background: var(--white-color);
+  background: var(--gray-0);
   border: calculateRem(1px) solid var(--gray-100);
   box-shadow: none;
   border-radius: calculateRem(4px) calculateRem(4px) 0 0;
@@ -131,7 +131,7 @@
     font-size: calculateRem(12px);
     color: var(--gray);
     padding: calculateRem(8px) calculateRem(16px);
-    background-color: rgba(var(--rc-rgba-gray), 0.6);
+    background-color: var(--gray-0);
     position: relative;
     height: calculateRem(40px);
     border-bottom: calculateRem(1px) solid var(--gray-100);
@@ -259,6 +259,16 @@
   }
 }
 
+table.dataTable {
+  thead th {
+    background-color: var(--white);
+    border-bottom: calculateRem(1px) solid var(--gray-100);
+  }
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: calculateRem(8px);
+}
 // Semantic Ui Data table customised CSS
 
 // .sb-data-table-container {
