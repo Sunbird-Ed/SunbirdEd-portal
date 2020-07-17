@@ -264,6 +264,9 @@ table.dataTable {
     background-color: var(--white);
     border-bottom: calculateRem(1px) solid var(--gray-100);
   }
+  &.no-footer {
+    border-bottom: none;
+  }
 }
 
 .dataTables_wrapper .dataTables_paginate {
