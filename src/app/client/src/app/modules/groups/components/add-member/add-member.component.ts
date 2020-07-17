@@ -49,9 +49,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
-    if (!this.groupData) {
-      this.location.back();
-    }
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
