@@ -33,7 +33,7 @@
         <div class="flex-ai-jc-center add-member-content p-24" *ngIf="showLoader">
           <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
         </div>
-        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-24" *ngIf="isVerifiedUser">
+        <div class="d-flex flex-ai-center flex-jc-space-between add-member-content p-16" *ngIf="isVerifiedUser">
           <div class="add-member-text flex-basis-1">
               <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
@@ -47,9 +47,7 @@
       </div>
     </div>
 
-
-
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-members-column">
       <app-group-members [members]="membersList" [groupData]="groupData"></app-group-members>
     </div>
   </div>
