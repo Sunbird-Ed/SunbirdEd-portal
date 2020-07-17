@@ -543,7 +543,8 @@ const API_LIST = {
     '/learner/user/v1/exists/email/:emailId',
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
-    '/learner/user/v2/exists/:key/:value'
+    '/learner/user/v2/exists/:key/:value',
+    '/learner/data/v1/group/activity/agg'
   ]
 };
 module.exports = API_LIST;
