@@ -12,7 +12,7 @@
     padding: calculateRem(8px);
 
     &:focus {
-      border: calculateRem(1px) solid #ddd;
+      border: calculateRem(1px) solid var(--rc-dddddd);
       border-radius: calculateRem(3px);
     }
 
@@ -44,7 +44,7 @@
 }
 
 .graph-statistics {
-  border-bottom: calculateRem(1px) solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
 }
 
 .sb-prominent-filter
@@ -67,7 +67,7 @@
 }
 
 .sb-filter-label {
-  border-bottom: calculateRem(1px) solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   width: 100%;
 
   .sb-label-value {
@@ -84,7 +84,7 @@
 
   .ui.toggle.checkbox .box:before,
   .ui.toggle.checkbox label:before {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(var(--rc-rgba-black), 0.2);
   }
 
   .ui.toggle.checkbox .box:after,
@@ -107,7 +107,7 @@
   .ui.styled.accordion,
   .ui.styled.accordion .accordion {
     box-shadow: none;
-    border-bottom: calculateRem(1px) solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   }
 
   .graph-filters {
@@ -129,7 +129,7 @@
     .ui.styled.accordion,
     .ui.styled.accordion .accordion {
       box-shadow: none;
-      border-bottom: calculateRem(1px) solid #ddd;
+      border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     }
   }
 }
@@ -176,13 +176,13 @@
 }
 
 .dashboard-graph-statistics {
-  border-bottom: calculateRem(1px) solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: calculateRem(24px);
   .graph-stat-block {
     flex: 1;
-    border-right: calculateRem(1px) solid #d4d8da !important;
+    border-right: calculateRem(1px) solid var(--rc-d4d8da) !important;
     .graph-stat-label {
       font-size: calculateRem(18px);
     }
@@ -195,7 +195,7 @@
       font-size: calculateRem(18px);
     }
     &:nth-child(3n + 3) {
-      border-right: 0px solid #d4d8da !important;
+      border-right: 0px solid var(--rc-d4d8da) !important;
     }
   }
 }
@@ -212,7 +212,7 @@
 
 @include respond-below(md) {
   .dashboard-graph-statistics {
-    border-bottom: calculateRem(1px) solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     .graph-stat-block {
       .graph-stat-label {
         font-size: calculateRem(14px);

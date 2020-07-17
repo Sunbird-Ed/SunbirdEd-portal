@@ -22,7 +22,7 @@
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
-            <div class="required field mb-16">
+            <div class="required field mb-8">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
               <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
                 type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
@@ -51,14 +51,17 @@
                 </div>
               </div>
             </div>
+            <div>
+              <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.OTPmsgforuser}}</label>
+            </div>
             <div class="field" *ngIf="showContact === 'email'">
               <input class="sb-form-control" type="email" [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
-                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
+                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}" (blur)="getReCaptchaToken('email')">
             </div>
             <div class="field" *ngIf="showContact === 'phone'">
               <div class="ui left icon input">
                 <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
-                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}">
+                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}" (blur)="getReCaptchaToken('phone')">
                 <i class=" icon">+91-</i>
               </div>
             </div>
@@ -82,7 +85,7 @@
               {{resourceService.frmelmnts.lbl.fieldsmarked}}<span class="sb-error">*</span>{{resourceService.frmelmnts.lbl.mandatory  }}
           </div>
             <!-- Google invisible recaptcha -->
-            <re-captcha #captchaRef="reCaptcha" (resolved)="$event && resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
               <input type="checkbox" id="tncAccepted" role="checkbox" (click)="generateTelemetry($event)"
                      formControlName="tncAccepted" name="tncAccepted">
@@ -94,8 +97,8 @@
             </div>
 
           </form>
-          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-secondary':!disableSubmitBtn}" class="sb-btn sb-btn-normal w-100 mt-16" tabindex="0"
-            (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.signUp}}</button>
+          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0"
+            (click)="submitSignupForm()">{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
         <div *ngIf="!showSignUpForm">

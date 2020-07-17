@@ -1,0 +1,39 @@
+<!--Show loader-->
+<div class="sb-card-grid" *ngIf="showLoader">
+  <div class="sb-grid--item" *ngFor="let i of numberOfSections">
+    <sb-course-card [isLoading]="true"></sb-course-card>
+  </div>
+</div>
+
+<!--Show Activity List-->
+<div *ngIf="!showLoader && activityList?.length" class="sb-card-grid">
+  <div class="sb-card-grid--item relative" *ngFor="let activity of activityList;">
+    <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin"
+      [cardImg]="activity?.appIcon || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
+    </sb-course-card>
+    <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
+      <div class="list sb-color-error" (click)="toggleModal(true)">
+        <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- No Activity -->
+<app-add-activity *ngIf="!showLoader && !activityList?.length"></app-add-activity>
+
+<!-- Remove Activity from the group -->
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
+  </div>
+  <div class="sb-modal-content">
+    <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-error"
+      (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+  </div>
+
+</sui-modal>

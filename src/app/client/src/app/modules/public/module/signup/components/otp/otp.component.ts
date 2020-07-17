@@ -1,11 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {SignupService} from './../../services';
-import {ResourceService, ServerResponse, UtilService, ConfigService} from '@sunbird/shared';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { SignupService } from './../../services';
+import { ResourceService, ServerResponse, UtilService, ConfigService } from '@sunbird/shared';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import {DeviceDetectorService} from 'ngx-device-detector';
-import {IEndEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-otp',
@@ -13,7 +14,7 @@ import {IEndEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/te
   styleUrls: ['./otp.component.scss']
 })
 export class OtpComponent implements OnInit {
-
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   @Input() signUpdata: any;
   @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;
@@ -38,11 +39,16 @@ export class OtpComponent implements OnInit {
   emailAddress: any;
   phoneNumber: any;
   remainingAttempt: 'string';
-
+  resendOTPbtn;
+  counter;
+  resendOtpCounter = 1;
+  maxResendTry = 4;
+  googleCaptchaSiteKey: string;
+  isP2CaptchaEnabled: any;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
-              public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-              public deviceDetectorService: DeviceDetectorService, public router: Router,
-              public utilService: UtilService, public configService: ConfigService) {
+    public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
+    public deviceDetectorService: DeviceDetectorService, public router: Router,
+    public utilService: UtilService, public configService: ConfigService) {
   }
 
   ngOnInit() {
@@ -57,11 +63,30 @@ export class OtpComponent implements OnInit {
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
     this.instance = _.upperCase(this.resourceService.instance);
-    setTimeout(() => {
-      this.disableResendButton = true;
-    }, 10000);
+    this.resendOtpEnablePostTimer();
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
-
+resendOtpEnablePostTimer() {
+  this.counter = 20;
+  this.disableResendButton = false;
+  setTimeout(() => {
+    this.disableResendButton = true;
+  }, 22000);
+  const interval = setInterval(() => {
+    this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+    this.counter--;
+    if (this.counter < 0) {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+      clearInterval(interval);
+    }
+  }, 1000);
+}
   verifyOTP() {
     const wrongOTPMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
       this.resourceService.frmelmnts.lbl.wrongEmailOTP;
@@ -143,21 +168,21 @@ export class OtpComponent implements OnInit {
     createRequest.request['reqData'] = _.get(data, 'reqData');
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
-          this.telemetryLogEvents('sign-up', true);
-          const tncAcceptRequestBody = {
-            request: {
-              version: this.tncLatestVersion,
-              identifier: identifier
-            }
-          };
-          this.signupService.acceptTermsAndConditions(tncAcceptRequestBody).subscribe(res => {
-            this.telemetryLogEvents('accept-tnc', true);
-            this.redirectToSignPage();
-          }, (err) => {
-            this.telemetryLogEvents('accept-tnc', false);
-            this.redirectToSignPage();
-          });
-        },
+        this.telemetryLogEvents('sign-up', true);
+        const tncAcceptRequestBody = {
+          request: {
+            version: this.tncLatestVersion,
+            identifier: identifier
+          }
+        };
+        this.signupService.acceptTermsAndConditions(tncAcceptRequestBody).subscribe(res => {
+          this.telemetryLogEvents('accept-tnc', true);
+          this.redirectToSignPage();
+        }, (err) => {
+          this.telemetryLogEvents('accept-tnc', false);
+          this.redirectToSignPage();
+        });
+      },
         (err) => {
           this.telemetryLogEvents('sign-up', false);
           this.infoMessage = '';
@@ -204,7 +229,14 @@ export class OtpComponent implements OnInit {
     };
   }
 
-  resendOTP() {
+  resendOTP(captchaResponse?) {
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendButton = false;
+      this.infoMessage = '';
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretry;
+      return false;
+    }
     const request = {
       'request': {
         'key': this.signUpdata.controls.contactType.value === 'phone' ?
@@ -215,8 +247,9 @@ export class OtpComponent implements OnInit {
     if (this.isMinor) {
       request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
     }
-    this.signupService.generateOTP(request).subscribe(
+    this.signupService.generateOTPforAnonymousUser(request, captchaResponse).subscribe(
       (data: ServerResponse) => {
+        this.resendOtpEnablePostTimer();
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
       },
@@ -227,6 +260,26 @@ export class OtpComponent implements OnInit {
         this.telemetryService.interact(this.generateOTPErrorInteractEdata);
       }
     );
+  }
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.resendOTP(captchaResponse);
+    }
+  }
+
+  resetGoogleCaptcha() {
+    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
+    element.click();
+  }
+
+  generateResendOTP() {
+    if (this.isP2CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.captchaRef.execute();
+    } else {
+      this.resendOTP();
+    }
   }
 
   logGenerateOtpError(error) {

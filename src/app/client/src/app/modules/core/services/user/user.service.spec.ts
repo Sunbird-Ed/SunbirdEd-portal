@@ -80,7 +80,7 @@ describe('userService', () => {
     userService.registerUser(reqData).subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
       expect(apiResponse.result.response).toBe('SUCCESS');
-      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06')
+      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06');
     });
   });
   it('should migrate custodian user', () => {

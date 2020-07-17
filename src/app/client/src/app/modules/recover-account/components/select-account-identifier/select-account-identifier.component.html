@@ -11,9 +11,11 @@
             </sui-radio-button>
             <br>
         </div>
-        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit" 
+        <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+        <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
+        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" 
             appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
             [telemetryInteractEdata]="{id: 'generate-otp', type: 'click', pageid: 'select-identifier', extra: { form: selectedAccountIdentifier} }"
-            (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.lbl?.getOTP}}</button>
+            (click)="submitSelection()">{{resourceService?.frmelmnts?.lbl?.getOTP}}</button>
     </div>
 </div>

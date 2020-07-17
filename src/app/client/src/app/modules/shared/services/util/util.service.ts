@@ -305,4 +305,8 @@ export class UtilService {
   redirectToLogin(errorMessage) {
     window.location.href = '/redirect/login?error_message=' + errorMessage;
   }
+
+  redirect(redirectUrl) {
+    window.location.href = redirectUrl;
+  }
 }

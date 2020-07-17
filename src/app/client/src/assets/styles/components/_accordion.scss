@@ -64,6 +64,7 @@ $sb-download-text-max-width: 18em;
 .sb-accordion-content {
   background-color: $primary-0;
   padding: calculateRem(16px);
+  border-radius: calculateRem(2px);
 }
 .sb-accordion-text {
   color: $gray-800;
@@ -75,7 +76,7 @@ $sb-download-text-max-width: 18em;
 }
 .ui.styled.accordion.sb-single-pannel-accordion {
   border-radius: calculateRem(4px) calculateRem(4px) 0 0;
-  box-shadow: 0 calculateRem(-4px) calculateRem(5px) 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 calculateRem(-4px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.25);
 }
 .sb-download-manager-panel {
   z-index: 999;

@@ -1,20 +1,27 @@
 import { RecoverAccountService } from './../../services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {ResourceService, ToasterService, ConfigService, InterpolatePipe, UtilService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { RecaptchaComponent } from "ng-recaptcha";
 
 @Component({
   templateUrl: './verify-account-identifier.component.html',
   styleUrls: ['./verify-account-identifier.component.scss']
 })
 export class VerifyAccountIdentifierComponent implements OnInit {
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   disableFormSubmit = true;
   disableResendOtp = false;
   form: FormGroup;
   errorCount = 0;
+  counter;
+  resendOTPbtn: string;
+  resendOtpCounter = 1;
+  maxResendTry = 4;
+  errorMessage: string;
   telemetryImpression: IImpressionEventInput;
   telemetryCdata = [{
     id: 'user:account:recovery',
@@ -23,6 +30,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     id: 'SB-13755',
     type: 'Task'
   }];
+  googleCaptchaSiteKey: string;
+  isCaptchaEnabled: boolean = true;
+  isP2CaptchaEnabled: any;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public utilService: UtilService, public configService: ConfigService) {
@@ -32,10 +42,30 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     if (this.verifyState()) {
       this.initializeForm();
     }
+    this.resendOtpEnablePostTimer();
+    this.setTelemetryImpression();
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
+  }
+  resendOtpEnablePostTimer() {
+    this.counter = 20;
+    this.disableResendOtp = false;
     setTimeout(() => {
       this.disableResendOtp = true;
-    }, 10000);
-    this.setTelemetryImpression();
+    }, 22000);
+    const interval = setInterval(() => {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.counter--;
+      if (this.counter < 0) {
+        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        clearInterval(interval);
+      }
+    }, 1000);
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -100,8 +130,30 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       this.toasterService.error(errorMessage);
     }
   }
-  handleResendOtp() {
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.handleResendOtp(captchaResponse);
+    }
+  }
+
+  submitResendOTP() {
+    if (this.isP2CaptchaEnabled === 'true') {
+      this.captchaRef.reset();
+      this.captchaRef.execute();
+    } else {
+      this.handleResendOtp();
+    }
+  }
+
+  handleResendOtp(captchaResponse?) {
     this.disableResendOtp = false;
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendOtp = false;
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretryreached;
+      return false;
+    }
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
@@ -110,10 +162,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         templateId: this.configService.constants.TEMPLATES.RESET_PASSWORD_TEMPLATE
       }
     };
-    this.recoverAccountService.generateOTP(request).subscribe(response => {
-      setTimeout(() => {
-        this.disableResendOtp = true;
-      }, 10000);
+    this.recoverAccountService.generateOTP(request, captchaResponse).subscribe(response => {
+      this.resendOtpEnablePostTimer();
       this.toasterService.success('OTP sent successfully.');
     }, error => {
       this.toasterService.error('Resend OTP failed. Please try again');

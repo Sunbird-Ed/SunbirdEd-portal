@@ -25,7 +25,7 @@
     &-info,
     &-success,
     &-warning,
-    &-danger {
+    &-danger,&-error {
       border-right-width: 0px;
       border-bottom-width: 0px;
       border-top-width: 0px;
@@ -90,7 +90,7 @@
       }
     }
 
-    &-danger {
+    &-danger, &-error {
       border-color: var(--red-400);
       background: var(--red-0);
 
@@ -131,6 +131,10 @@
       height: calculateRem(24px) !important;
       background-position: 0px calculateRem(4px) !important;
       margin-right: calculateRem(8px);
+      html[dir="rtl"] & {
+        margin-left: calculateRem(8px);
+        margin-right:0;
+      }
       font-size: calculateRem(24px);
       line-height: calculateRem(24px);
     }
@@ -150,7 +154,7 @@
         margin-bottom: calculateRem(8px);
         display: block;
         width: 100%;
-        text-transform: capitalize;
+        text-transform: inherit;
         font-weight: $font-weight-bold;
         line-height: calculateRem(16px);
       }
@@ -197,7 +201,7 @@
         }
       }
 
-      &-danger {
+      &-danger,&-error {
 
         .iziToast-title,
         .sb-toast-title {

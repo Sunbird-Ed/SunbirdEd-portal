@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService } from '@sunbird/core';
 import * as dayjs from 'dayjs';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
 @Component({
   templateUrl: './course-consumption-page.component.html'
 })
@@ -18,10 +19,12 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseHierarchy: any;
   public unsubscribe$ = new Subject<void>();
   public enrolledBatchInfo: any;
+  public groupId: string;
+  public showAddGroup = null;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
-    private resourceService: ResourceService, public router: Router,
+    private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
     public navigationHelperService: NavigationHelperService, public permissionService: PermissionService) {
   }
   ngOnInit() {
@@ -30,6 +33,13 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         const queryParams = this.activatedRoute.snapshot.queryParams;
         this.courseId = routeParams.courseId;
+        this.groupId = queryParams.groupId;
+
+        if (this.groupId) {
+          this.getGroupData();
+        } else {
+          this.showAddGroup = false;
+        }
         const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
@@ -63,7 +73,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         this.showLoader = false;
       }, (err) => {
         if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0086);
+          this.toasterService.error(this.resourceService.messages.emsg.m0002);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
         }
@@ -112,6 +122,17 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       // }]);
     }
   }
+
+  getGroupData() {
+    this.groupsService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      this.groupsService.groupData = _.cloneDeep(groupData);
+      this.showAddGroup = _.get(this.groupsService.addGroupFields(groupData), 'isAdmin');
+    }, err => {
+      this.showAddGroup = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+    });
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

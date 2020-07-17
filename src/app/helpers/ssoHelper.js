@@ -34,6 +34,7 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
+    forever: true,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
@@ -42,7 +43,9 @@ const verifySignature = async (token) => {
     }
   }
   const echoRes = await request(options);
-  if(echoRes !== '/test'){
+  if (echoRes !== 'test') {
+    // TODO: To be removed in future relase
+    console.log('SsoHelper: verifySignature -echoRes', echoRes);
     throw new Error('INVALID_SIGNATURE');
   }
   return true

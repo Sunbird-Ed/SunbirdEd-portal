@@ -27,6 +27,10 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   disableResendButton = false;
   enableResendButton = false;
   tenantDataSubscription: Subscription;
+  resendOTPbtn;
+  counter;
+  resendOtpCounter = 0;
+  maxResendTry = 4;
   logo: string;
   tenantName: string;
   submitInteractEdata: IInteractEventEdata;
@@ -52,12 +56,28 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
     });
-    setTimeout(() => {
-      this.enableResendButton = true;
-    }, 10000);
+   this.resendOtpEnablePostTimer();
     this.enableSubmitButton();
     this.setInteractEventData();
   }
+
+  resendOtpEnablePostTimer() {
+    this.counter = 20;
+    this.disableResendButton = false;
+    this.enableResendButton = false;
+    setTimeout(() => {
+      this.enableResendButton = true;
+    }, 22000);
+    const interval = setInterval(() => {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.counter--;
+      if (this.counter < 0) {
+        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
 
   verifyOTP() {
     const wrongOTPMessage = this.otpData.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
@@ -104,6 +124,15 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   }
 
   resendOTP() {
+    this.disableResendButton = false;
+    this.enableResendButton = false;
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendButton = false;
+      this.infoMessage = '';
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretryreached;
+      return false;
+    }
     this.otpForm.controls['otp'].setValue('');
     const request = {
       'request': {
@@ -113,6 +142,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     };
     this.otpService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
+        this.resendOtpEnablePostTimer();
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
       },

@@ -10,9 +10,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
-import { BehaviorSubject, throwError, of} from 'rxjs';
+import { BehaviorSubject, throwError, of } from 'rxjs';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentSearchService } from './../../services';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -34,20 +37,20 @@ describe('SearchFilterComponent', () => {
         params = of({});
         get queryParams() { return this.queryParamsMock.asObservable(); }
         snapshot = {
-          params: {slug: 'ap'},
-          data: {
-            telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
-          }
+            params: { slug: 'ap' },
+            data: {
+                telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate' }
+            }
         };
         public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
-      }
+    }
     configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],
             imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),
                 SuiModule, HttpClientModule, SharedModule, RouterModule.forRoot([])],
-            providers: [
+            providers: [ ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },
                 CacheService,
@@ -70,5 +73,20 @@ describe('SearchFilterComponent', () => {
     });
     it('should create', () => {
         expect(component).toBeTruthy();
+    });
+    it('should call selectedGroupOption with board data', () => {
+        const contentSearchService = TestBed.get(ContentSearchService);
+        spyOn(contentSearchService, 'fetchFilter').and.returnValue(observableOf(response.filterValue));
+        const inputData = { 'label': 'Board', 'value': 'board', 'selectedOption': 'AP Board' };
+        component.selectedGroupOption(inputData);
+        expect(component.type).toBe('Board');
+        expect(component.selectedBoard).toBe(inputData);
+        expect(component.selectedChannel).toBeUndefined();
+    });
+    it('should call selectedGroupOption with publisher data', () => {
+        const inputData = { 'label': 'Publisher', 'value': 'channel', 'selectedOption': 'NCERT' };
+        component.selectedGroupOption(inputData);
+        expect(component.type).toBe('Publisher');
+        expect(component.selectedChannel).toBe(inputData);
     });
 });

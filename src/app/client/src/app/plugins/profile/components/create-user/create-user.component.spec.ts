@@ -85,10 +85,13 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call ngOnInit', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'setNavigationUrl');
     spyOn(component, 'getFormDetails');
     component.ngOnInit();
     expect(component.instance).toEqual('SUNBIRD');
     expect(component.getFormDetails).toHaveBeenCalled();
+    expect(navigationHelperService.setNavigationUrl).toHaveBeenCalled();
   });
 
   it('should call getFormDetails with success', () => {
@@ -110,16 +113,12 @@ describe('CreateUserComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
-  it('should set mode', () => {
-    component.showAndHidePopup(false);
-    expect(component.showTncPopup).toBeFalsy();
-  });
-
   it('should call onSubmitForm with success', () => {
     const userService = TestBed.get(UserService);
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'getParentProfile').and.returnValue(observableOf(mockRes.userData));
     spyOn(managedUserService, 'getUserId').and.returnValue('mock user id');
+    spyOn(managedUserService, 'updateUserList');
     component.formData = mockRes.formData;
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.initializeFormFields();
@@ -171,9 +170,9 @@ describe('CreateUserComponent', () => {
 
   it('should redirect to profile page on cancel', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    spyOn(navigationHelperService, 'navigateToLastUrl');
     component.onCancel();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
   it('should throw error as max user creation limit excees', () => {
     const userService = TestBed.get(UserService);

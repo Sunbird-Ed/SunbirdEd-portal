@@ -18,21 +18,23 @@
 
 .sb-content-rating-container {
   width: 100%;
-  border-top: 1px solid #ccc;
+  border-top: calculateRem(1px) solid var(--gray-100);
 
   .sb-content-rating {
-    max-width: 360px;
+    max-width: calculateRem(360px);
     width: 100%;
   }
 }
 
 @include respond-below(sm) {
   .sb-modal-content {
+
     .field,
     .rating-header {
       text-align: center;
     }
   }
+
   .sb-modal-actions {
     justify-content: center;
   }
@@ -46,6 +48,7 @@
         width: 100% !important;
         height: 100% !important;
         max-width: 100% !important;
+
         .sb-modal-content {
           min-height: calc(100% - 96px);
           max-height: 100%;

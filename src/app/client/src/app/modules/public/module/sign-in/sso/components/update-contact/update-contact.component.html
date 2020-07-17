@@ -49,8 +49,8 @@
             </label>
             </div>
             <div class="text-center">
-              <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
-                      class="sb-btn sb-btn-normal sb-btn-secondary mt-24 w-100" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
+              <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
+                      class="sb-btn sb-btn-normal mt-24 w-100" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
             </div>
           </form>
         </div>

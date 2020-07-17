@@ -1,0 +1,20 @@
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll #modal>
+  <i class="close icon" aria-hidden="true" (click)="closeModal()"></i>
+  <div class="course-complete sb-bg-white p-32">
+    <div class="course-complete-content">
+      <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
+      <div class="course-complete-data font-weight-bold">
+        <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
+        <div>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</div>
+      </div>
+    </div>
+    <div class="course-complete-para mt-32" *ngIf="!isCertificateAttached">
+      <span>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
+    </div>
+  </div>
+
+  <ng-template #withCertificate>
+    <span>{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</span>
+  </ng-template>
+</sui-modal>

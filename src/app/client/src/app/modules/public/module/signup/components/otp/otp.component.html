@@ -22,12 +22,14 @@
         <input class="sb-form-control" [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp"  placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
       </div>
   </div>
+  <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
        
        <input type="button" appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-        class="sb-btn sb-btn-normal sb-btn-outline-secondary mr-8 w-50" tabindex="2"
-       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="Resend OTP"/>
+        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 w-50" tabindex="2"
+       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="generateResendOTP();" type="button" value="Resend OTP"/>
        <input type="submit" appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-       class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-secondary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
+       class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
+      <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>

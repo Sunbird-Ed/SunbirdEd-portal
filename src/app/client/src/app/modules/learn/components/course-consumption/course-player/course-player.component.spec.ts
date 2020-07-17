@@ -26,7 +26,7 @@ describe('CoursePlayerComponent', () => {
     messages: {
       imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error' }
+      emsg: { m0005: 'error', m0003: `The Course doesn't have any open batches` }
     },
     frmelmnts: {
       btn: {
@@ -367,16 +367,18 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  it('should show join training popup if course is unenrolled and try to play content', () => {
+  xit('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser2';
+    component['courseId'] = 'do_212347136096788480178';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe').and.callThrough();
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
@@ -385,8 +387,10 @@ describe('CoursePlayerComponent', () => {
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
     expect(component.showJoinTrainingModal).toBeFalsy();
+    courseConsumptionService.updateContentConsumedStatus.emit({ courseHierarchy: {} });
+    expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
-  it('should log telemetry on click of close icon on join training popup ', () => {
+  xit('should log telemetry on click of close icon on join training popup ', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -405,7 +409,6 @@ describe('CoursePlayerComponent', () => {
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
-    component.closeJoinTrainingModal();
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryInteractMockData);
   });
 
@@ -444,8 +447,10 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('should call navigateToContent', () => {
+    spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
-    component.navigateToContent({ event: { type: 'click' } });
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToContent({ event: { type: 'click' }, data: { identifier: '12343536' } }, 'test');
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
 
@@ -484,4 +489,56 @@ describe('CoursePlayerComponent', () => {
     expect(component.showJoinTrainingModal).toBe(true);
   });
 
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+    spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
+    component.getAllBatchDetails({ content: [], count: 0 });
+    expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({ content: [], count: 0 });
+  });
+
+  it('should call shareUnitLink', () => {
+    const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
+    spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
+    spyOn(component, 'setTelemetryShareData');
+    component.shareUnitLink({ identifier: 'do_23823253221' });
+    expect(component.shareLink).toEqual('http://localhost:3000/explore-course/course/do_1130314965721088001129?moduleId=do_23823253221');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    const param = {
+      identifier: 'do_1130314965721088001129',
+      contentType: 'Course',
+      pkgVersion: 2
+    };
+    component.setTelemetryShareData(param);
+    expect(component.telemetryShareData).toBeDefined();
+    expect(component.telemetryShareData).toEqual([{ id: param.identifier, type: param.contentType, ver: param.pkgVersion.toString() }]);
+  });
+
+  it('should close the popup and generate telemetry', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.telemetryCdata = [{ id: '22321244', type: 'CourseBatch' }];
+    component['courseId'] = assessmentPlayerMockData.courseHierarchy.identifier;
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.closeSharePopup('close-share-link-popup');
+    expect(component.shareLinkModal).toBe(false);
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
+  it('should close the join training popup on browser back button click', () => {
+    component.hasPreviewPermission = false;
+    component.contentStatus = [];
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+    expect(component.showJoinTrainingModal).toBe(true);
+    component.ngOnDestroy();
+    expect(component.joinTrainingModal).toBeUndefined();
+  });
+
+  it('should call collapsedChange', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.collapsedChange(false, 0);
+    expect(component.courseHierarchy.children[0].collapsed).toBeFalsy();
+  });
 });
