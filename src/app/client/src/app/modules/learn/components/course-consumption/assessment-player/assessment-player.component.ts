@@ -282,6 +282,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
+      this.highlightContent();
       this.logTelemetry(id, event.data);
     }
   }
@@ -292,6 +293,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
         this.contentStatus = res.content || [];
+        this.highlightContent();
         this.calculateProgress();
       }, err => console.error(err, 'content read api failed'));
   }
@@ -571,5 +573,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   onCourseCompleteClose() {
     this.showCourseCompleteMessage = false;
+  }
+
+  highlightContent() {
+    this.contentStatus.forEach((item) => {
+      if (_.get(item, 'contentId') === _.get(this.activeContent, 'identifier') && item.status === 0) {
+        item.status = 1;
+      }
+    });
   }
 }
