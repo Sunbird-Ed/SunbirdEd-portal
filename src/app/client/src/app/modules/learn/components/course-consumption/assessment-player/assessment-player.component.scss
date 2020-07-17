@@ -164,3 +164,13 @@
     margin-top: calculateRem(8px);
   }
 }
+
+.module-complete-content {
+  background-color: var(--rc-bfe1cf);
+  .complete-content-image {
+    width: calculateRem(64px);
+    img {
+      max-width: 100%;
+    }
+  }
+}
