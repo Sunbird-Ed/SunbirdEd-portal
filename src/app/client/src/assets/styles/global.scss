@@ -531,6 +531,8 @@ html[data-theme='Night'] {
 
 /* sd card */
 .sb--card {
+	border-radius: 12px !important;
+	box-shadow: 0 2px 7px 0 rgba(0,0,0,0.05) !important;
   &__type {
     background: var(--sbt-card-bookmark-bg) !important;
 	color:var(--sbt-card-bookmark-text) !important;
@@ -538,4 +540,8 @@ html[data-theme='Night'] {
       border-color: var(--sbt-card-bookmark-bg) var(--sbt-card-bookmark-bg) var(--sbt-card-bookmark-bg) transparent !important;
     }
   }
+  .sb--card__img .img-container {
+	border-radius: 12px !important;
+	}
 }
+

@@ -196,17 +196,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit(){
     //themeing code
-    let trans = () => {
-      document.documentElement.classList.add('transition');
-      window.setTimeout(() => {
-          document.documentElement.classList.remove('transition')
-      }, 1000)
-  }
-    var selector = document.querySelectorAll('input[name=selector]');
-    for(var i=0;i<selector.length;i++){
+  let selector = document.querySelectorAll('input[name=selector]');
+    for(let i=0;i<selector.length;i++){
       selector[i].addEventListener('change', function() {
         if(this.checked) {
-           trans()
            document.documentElement.setAttribute('data-theme', this.value)
         }
     })

@@ -357,6 +357,9 @@
 
   .ui.text.menu .active.item {
     background: var(--sbt-primary-menu-bg-dark);
+    &:hover {
+        background: var(--sbt-primary-menu-bg-dark);
+    }
   }
 
   .selection.state-selection {
