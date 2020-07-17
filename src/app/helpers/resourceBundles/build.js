@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 var exec = require('child_process').exec;
 
 // PhraseApp Configuration
-let authToken = envHelper.PHRASE_APP.phrase_authToken;
+const authToken = envHelper.PHRASE_APP.phrase_authToken;
 const project = envHelper.PHRASE_APP.phrase_project;
 const locale = envHelper.PHRASE_APP.phrase_locale;
 const fileformat = envHelper.PHRASE_APP.phrase_fileformat;
@@ -234,7 +234,6 @@ var deleteFolderRecursive = function(path) {
 
 if (args.length && args[0].includes('-task')) {
   const task = args[0].slice(6);
-  authToken =  args.length > 1 && args[1].includes('-token') ? args[1].slice(7) : authToken;
   if(task === 'phraseAppPull' && authToken) {
     pullPhraseAppLocale();
   } else {
