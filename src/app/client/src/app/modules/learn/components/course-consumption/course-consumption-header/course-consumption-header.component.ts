@@ -237,7 +237,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   addActivityToGroup() {
-    if (_.get(this.groupService, 'groupData.isAdmin')) {
+    const isActivityAdded = _.find(_.get(this.groupService, 'groupData.activities'), {id: this.courseId});
+    if (_.get(this.groupService, 'groupData.isAdmin') && _.isEmpty(isActivityAdded)) {
       const request = {
         activities: [{ id: this.courseId, type: 'Course' }]
       };
@@ -250,6 +251,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
       });
     } else {
+      this.goBack();
+      isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
   }
