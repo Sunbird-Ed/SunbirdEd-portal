@@ -51,6 +51,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       .subscribe(item => {
         if (this.showMenu) {
           this.showMenu = false;
+          this.addTelemetry('activity-kebab-menu-close');
         }
       });
   }
@@ -74,13 +75,16 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   getMenuData(event, member) {
     this.showMenu = !this.showMenu;
     this.selectedActivity = member;
+    this.addTelemetry('activity-kebab-menu-open');
   }
 
   toggleModal(show = false) {
+    show ? this.addTelemetry('remove-activity-kebab-menu-btn') : this.addTelemetry('close-remove-activity-popup');
     this.showModal = show;
   }
 
   removeActivity() {
+    this.addTelemetry('confirm-remove-activity-button');
     const activityIds = [this.selectedActivity.identifier];
     this.showLoader = true;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
@@ -98,7 +102,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     // TODO: add telemetry here
   }
 
-  addTelemetry (id, cdata) {
+  addTelemetry (id, cdata = []) {
     this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
   }
 

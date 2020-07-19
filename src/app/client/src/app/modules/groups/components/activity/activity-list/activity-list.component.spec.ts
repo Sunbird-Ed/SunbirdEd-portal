@@ -140,19 +140,25 @@ describe('ActivityListComponent', () => {
       organisation: ['Prod Custodian Organization'],
       subject: 'Social Science'
     };
+    spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
     expect(component.selectedActivity).toEqual(member);
     expect(component.showMenu).toBe(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal(true);
     expect(component.showModal).toEqual(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('remove-activity-kebab-menu-btn');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
   });
 
   xit('should call removeActivity', () => {

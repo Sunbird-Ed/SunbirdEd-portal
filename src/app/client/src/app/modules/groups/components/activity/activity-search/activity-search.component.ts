@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
 import { ConfigService, ResourceService, ToasterService, PaginationService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -8,13 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-activity-search',
   templateUrl: './activity-search.component.html',
   styleUrls: ['./activity-search.component.scss']
 })
-export class ActivitySearchComponent implements OnInit {
+export class ActivitySearchComponent implements OnInit, OnDestroy {
   showFilters = false;
   searchResultCount = 0;
   searchQuery: string;
@@ -35,6 +36,7 @@ export class ActivitySearchComponent implements OnInit {
   noResultMessage: any;
   groupData;
   groupId: string;
+  telemetryImpression: IImpressionEventInput;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -71,6 +73,7 @@ export class ActivitySearchComponent implements OnInit {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
+      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
@@ -132,6 +135,7 @@ export class ActivitySearchComponent implements OnInit {
   search() {
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, `1`);
     if (this.searchQuery.trim().length) {
+      this.addTelemetry('add-course-activity-search', [], { query: this.searchQuery });
       this.router.navigate([url], { queryParams: { key: this.searchQuery } });
     } else {
       this.router.navigate([url]);
@@ -216,12 +220,13 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   addActivity(event) {
-    this.addTelemetry('activity-course-card', event);
+    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+    this.addTelemetry('activity-course-card', cdata);
     this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
   }
 
-  addTelemetry(id, event) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [{id: _.get(event, 'data.identifier'), type: 'Course'}]);
+  addTelemetry(id, cdata, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
   }
 
   private setNoResultMessage() {
@@ -229,6 +234,11 @@ export class ActivitySearchComponent implements OnInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

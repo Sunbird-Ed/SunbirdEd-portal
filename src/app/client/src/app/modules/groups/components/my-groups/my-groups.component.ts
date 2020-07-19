@@ -16,8 +16,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class MyGroupsComponent implements OnInit, OnDestroy {
   showGroupCreateForm = false;
-  adminGroupsList: IGroupCard[] = [];
-  memberGroupsList: IGroupCard[] = [];
+  groupsList: IGroupCard[] = [];
   public showModal = false;
   private unsubscribe$ = new Subject<void>();
   telemetryImpression: IImpressionEventInput;
@@ -41,8 +40,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
   getMyGroupList() {
     this.isLoader = true;
-    this.adminGroupsList = [];
-    this.memberGroupsList = [];
+    this.groupsList = [];
     const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
       this.isLoader = false;
@@ -50,15 +48,12 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       _.forEach(groups, (group) => {
         if (group) {
           group = this.groupService.addGroupFields(group);
-          group.isAdmin ? this.adminGroupsList.push(group) : this.memberGroupsList.push(group);
+          this.groupsList.push(group);
         }
       });
-      this.adminGroupsList = _.uniqBy(_.orderBy(this.adminGroupsList, 'createdOn'), 'id');
-      this.memberGroupsList = _.uniqBy(_.orderBy(this.memberGroupsList, 'createdOn'), 'id');
     }, (err) => {
       this.isLoader = false;
-      this.adminGroupsList = [];
-      this.memberGroupsList = [];
+      this.groupsList = [];
     });
   }
 

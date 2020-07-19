@@ -40,6 +40,9 @@ describe('ActivitySearchComponent', () => {
     getGroupById() {
       return of();
     }
+    getImpressionObject() {
+      return { 'context': { 'channel': '0124784842112040965', 'pdata': { 'id': 'dev.sunbird.portal', 'ver': '3.1.0', 'pid': 'sunbird-portal' }, 'env': 'groups', 'sid': 'tzXa1UyXEs7dFrheulrtwzxjOaRAHNtT', 'did': '9ee98766c121536bd11264f8f7801676', 'cdata': [{ 'id': 'tzXa1UyXEs7dFrheulrtwzxjOaRAHNtT', 'type': 'UserSession' }, { 'id': 'Desktop', 'type': 'Device' }], 'rollup': { 'l1': '0124784842112040965' }, 'uid': 'd6eae4e4-3ed1-47e2-8b73-96a5f5ea3d73' }, 'object': { 'id': '04925160-23c0-4b9d-b515-7b7f16a533cb', 'type': 'Group', 'ver': '1.0', 'rollup': {} }, 'edata': { 'type': 'view', 'pageid': 'add-activity-to-group', 'subtype': 'paginate', 'uri': '/my-groups/group-details/04925160-23c0-4b9d-b515-7b7f16a533cb/add-activity-to-group/courses/1', 'duration': 0.602 } };
+    }
   }
 
   class FakeActivatedRoute {
@@ -91,7 +94,7 @@ describe('ActivitySearchComponent', () => {
       }
       return throwError({});
     });
-    spyOn(component['frameworkService'], 'channelData$').and.returnValue(of ({channelData: {defaultFramework: '123456' } }));
+    spyOn(component['frameworkService'], 'channelData$').and.returnValue(of({ channelData: { defaultFramework: '123456' } }));
     fixture.detectChanges();
 
   });
@@ -183,8 +186,10 @@ describe('ActivitySearchComponent', () => {
     const router = TestBed.get(Router);
     router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
+    spyOn(component, 'addTelemetry');
     component.search();
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should not search the courses if the search is blank string', () => {
