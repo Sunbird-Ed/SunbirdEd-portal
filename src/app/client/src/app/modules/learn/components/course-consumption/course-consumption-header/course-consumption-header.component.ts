@@ -72,9 +72,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.courseConsumptionService.disableJoinCourseBtn.subscribe((data) => {
-      this.disableJoinCourseBtn = data;
-    });
+    this.courseConsumptionService.disableJoinCourseBtn.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data: boolean) => {
+        this.disableJoinCourseBtn = data;
+      });
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
