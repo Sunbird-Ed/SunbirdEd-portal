@@ -16,7 +16,7 @@ import { IActivity } from '../activity-list/activity-list.component';
 })
 export class ActivityDashboardComponent implements OnInit {
   unsubscribe$ = new Subject<void>();
-  showLoader = false;
+  showLoader = true;
   queryParams;
   activityId: string;
   groupId: string;
@@ -31,8 +31,8 @@ export class ActivityDashboardComponent implements OnInit {
   members;
   telemetryImpression: IImpressionEventInput;
   loaderMessage = this.resourceService.messages.fmsg.m0087;
+  memberListUpdatedOn: string;
 
-  // temp = { 'activity': { 'agg': [{ 'metric': 'enrolmentCount', 'lastUpdatedOn': 1594898939615, 'value': 2 }, { 'metric': 'leafNodesCount', 'lastUpdatedOn': 1557890515518, 'value': 10 }], 'id': 'do_2125636421522554881918', 'type': 'Course' }, 'groupId': 'ddebb90c-59b5-4e82-9805-0fbeabed9389', 'members': [{ 'role': 'admin', 'createdBy': '1147aef6-ada5-4d27-8d62-937db8afb40b', 'name': 'Tarento Mobility  ', 'userId': '1147aef6-ada5-4d27-8d62-937db8afb40b', 'status': 'active', 'agg': [{ 'metric': 'completedCount', 'lastUpdatedOn': 1594898939617, 'value': 4 }] }, { 'role': 'member', 'createdBy': '0a4300a0-6a7a-4edb-9111-a7c9c6a53693', 'name': 'Qualitrix Book Reviewer', 'userId': '9e74d241-004f-40d9-863e-63947ef10bbd', 'status': 'active', 'agg': [{ 'metric': 'completedCount', 'lastUpdatedOn': 1594898939617, 'value': 5 }] }] };
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
@@ -115,16 +115,18 @@ export class ActivityDashboardComponent implements OnInit {
     this.enrolmentCount = _.get(enrolmentInfo, 'value');
     this.leafNodesCount = _.get(leafNodesInfo, 'value');
     this.membersCount = _.get(aggResponse, 'members.length');
+    this.memberListUpdatedOn = _.get(_.find(aggResponse.members[0].agg, { metric: 'completedCount' }), 'lastUpdatedOn');
 
-    this.members = aggResponse.members.map((item) => {
+    this.members = aggResponse.members.map((item, index) => {
       /* istanbul ignore else */
       if (_.get(item, 'status') === 'active') {
         const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value') || 0;
         return {
           title: _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
-          progress: Math.round((completedCount / this.leafNodesCount) * 100),
-          initial: _.get(item, 'name[0]')
+          progress: _.toString(Math.round((completedCount / this.leafNodesCount) * 100)),
+          initial: _.get(item, 'name[0]'),
+          indexOfMember: index
         };
       }
     });
