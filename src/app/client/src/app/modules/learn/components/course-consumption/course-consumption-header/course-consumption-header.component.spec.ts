@@ -205,7 +205,6 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call goBack and return to learn page', () => {
     const router = TestBed.get(Router);
-    spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/learn']);
   });
