@@ -258,6 +258,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   goBack() {
-    this.navigationHelperService.goBack();
+    this.router.navigate(['/learn']);
   }
 }
