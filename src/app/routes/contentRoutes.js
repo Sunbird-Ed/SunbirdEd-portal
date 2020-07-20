@@ -20,6 +20,7 @@ module.exports = (app) => {
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
+            timeout: envHelper.sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
@@ -45,6 +46,7 @@ module.exports = (app) => {
     isAPIWhitelisted.isAllowed(),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
+            timeout: envHelper.sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {

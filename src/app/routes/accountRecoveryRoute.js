@@ -15,6 +15,7 @@ module.exports = (app) => {
   app.post('/learner/user/v1/fuzzy/search',
   googleService.validateRecaptcha,
   proxy(envHelper.learner_Service_Local_BaseUrl, {
+    timeout: envHelper.sunbird_api_request_timeout,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
@@ -51,6 +52,7 @@ module.exports = (app) => {
       }
     },
     proxy(envHelper.learner_Service_Local_BaseUrl, {
+      timeout: envHelper.sunbird_api_request_timeout,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
@@ -60,6 +62,7 @@ module.exports = (app) => {
   app.all('/learner/otp/v1/verify',
     bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     proxy(envHelper.LEARNER_URL, {
+      timeout: envHelper.sunbird_api_request_timeout,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.LEARNER_URL),
       proxyReqPathResolver: (req) => {
         return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
