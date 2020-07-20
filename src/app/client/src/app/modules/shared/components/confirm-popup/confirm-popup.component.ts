@@ -4,6 +4,7 @@ import { ResourceService } from '../../services';
 interface InputType {
   title: string;
   body: string;
+  event: string;
 }
 
 @Component({

@@ -126,6 +126,9 @@
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
   <% } %>
+  <% if (superAdminSlug) { %>
+    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+  <% } %>
   <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
     <input type="hidden" id="p1reCaptchaEnabled" value="true" />
   <% } else { %>
