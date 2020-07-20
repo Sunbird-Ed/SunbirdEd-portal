@@ -95,7 +95,7 @@ describe('ActivityDashboardComponent', () => {
     component.groupId = 'abcd12343';
     const groupService = TestBed.get(GroupsService);
     spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
-    component.fetchActivity();
+    component.fetchActivity('Course');
     expect(component.showLoader).toBe(true);
   });
 

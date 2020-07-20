@@ -60,7 +60,8 @@ export class ActivityDashboardComponent implements OnInit {
         this.queryParams = { ...queryParams };
         this.groupId = params.groupId;
         this.activityId = params.activityId;
-        this.fetchActivity();
+        const type = _.get(this.queryParams, 'contentType') || 'Course';
+        this.fetchActivity(type);
       });
   }
 
@@ -73,8 +74,8 @@ export class ActivityDashboardComponent implements OnInit {
     }
   }
 
-  fetchActivity() {
-    const activityData = { id: this.activityId, type: 'Course' };
+  fetchActivity(type: string) {
+    const activityData = { id: this.activityId, type };
     this.groupService.getGroupById(this.groupId, true, true)
       .pipe(
         tap(res => {
