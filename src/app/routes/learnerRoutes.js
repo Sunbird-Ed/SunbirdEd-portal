@@ -133,7 +133,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     // To be removed from release-3.2.0
     // whitelistUrls.isWhitelistUrl(),
-    isAPIWhitelisted.isAllowed(),
+    // isAPIWhitelisted.isAllowed(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
