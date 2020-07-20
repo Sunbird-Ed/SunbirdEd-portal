@@ -76,7 +76,7 @@
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div *ngIf="!showAddGroup">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
-            <button [disabled]="disableJoinCourseBtn"  [ngClass]="{'sb-btn-disabled': disableJoinCourseBtn}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+            <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
               (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
           </div>
 

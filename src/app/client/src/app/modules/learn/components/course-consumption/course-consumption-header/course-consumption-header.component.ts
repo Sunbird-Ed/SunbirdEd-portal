@@ -57,7 +57,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   telemetryCdata: Array<{}>;
   enableProgress = false;
   courseMentor = false;
-  disableJoinCourseBtn = false;
 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -72,11 +71,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.courseConsumptionService.disableJoinCourseBtn.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe((data: boolean) => {
-        this.disableJoinCourseBtn = data;
-      });
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
