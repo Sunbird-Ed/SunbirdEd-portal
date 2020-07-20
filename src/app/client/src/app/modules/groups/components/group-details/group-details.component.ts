@@ -86,6 +86,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
 
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

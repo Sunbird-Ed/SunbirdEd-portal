@@ -11,11 +11,9 @@
           <div class="d-flex flex-jc-space-between flex-ai-center">
             <div class="w-100">
               <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
-                <span class="text-right d-flex font-weight-normal ml-16">{{resourceService?.frmelmnts?.lbl?.whatInstanceId  | interpolate:'{instance}': instance}}
                   <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true);addTelemetry('member-ftu-popup')"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
-                </span>
               </label>
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
@@ -26,7 +24,7 @@
               </div>
             </div>
             <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId, 'sb-btn-disabled': !memberId}" [disabled]="!memberId" (click)="onVerifyMember();addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
@@ -35,7 +33,7 @@
         <div class="flex-ai-jc-center add-member-content p-24" *ngIf="showLoader">
           <div class="flex-ai-jc-center"><img class="mr-8" src="./assets/images/loader.gif" width="32" /><span>{{resourceService?.frmelmnts?.lbl?.verifying}}</span></div>
         </div>
-        <div class="d-flex flex-ai-center flex-jc-space-between  add-member-content p-24" *ngIf="isVerifiedUser">
+        <div class="d-flex flex-ai-center flex-jc-space-between add-member-content p-16" *ngIf="isVerifiedUser">
           <div class="add-member-text flex-basis-1">
               <sb-member-card [title]="verifiedMember?.title" [identifier]="verifiedMember?.identifier" [config]="config"
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
@@ -49,9 +47,7 @@
       </div>
     </div>
 
-
-
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-members-column">
       <app-group-members [members]="membersList" [groupData]="groupData"></app-group-members>
     </div>
   </div>

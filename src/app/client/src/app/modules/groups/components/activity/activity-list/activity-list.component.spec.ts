@@ -98,6 +98,7 @@ describe('ActivityListComponent', () => {
 
 
   it('should call openActivity for Admin', () => {
+    spyOn(component, 'addTelemetry');
     const activity = {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
@@ -107,9 +108,11 @@ describe('ActivityListComponent', () => {
     };
     component.openActivity({}, activity);
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call openActivity for group member', () => {
+    spyOn(component, 'addTelemetry');
     const activity = {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
@@ -120,6 +123,7 @@ describe('ActivityListComponent', () => {
     component.groupData.isAdmin = true;
     component.openActivity({}, activity);
     expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call getMenuData', () => {
@@ -136,19 +140,25 @@ describe('ActivityListComponent', () => {
       organisation: ['Prod Custodian Organization'],
       subject: 'Social Science'
     };
+    spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
     expect(component.selectedActivity).toEqual(member);
     expect(component.showMenu).toBe(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal(true);
     expect(component.showModal).toEqual(true);
+    expect(component.addTelemetry).toHaveBeenCalledWith('remove-activity-kebab-menu-btn');
   });
 
   it('should call toggleModal', () => {
+    spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
   });
 
   xit('should call removeActivity', () => {

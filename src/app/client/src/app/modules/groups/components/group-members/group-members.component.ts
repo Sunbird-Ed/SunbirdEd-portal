@@ -1,3 +1,4 @@
+import { UserService } from '@sunbird/core';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
@@ -42,20 +43,21 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
     private groupsService: GroupsService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
-    this.members = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.memberListToShow = _.cloneDeep(this.members);
+    this.showLoader = true;
+    this.getUpdatedGroupData();
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.hideMemberMenu();
-
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
         if (this.showKebabMenu) {
           this.showKebabMenu = false;
+          this.addTelemetry('member-card-menu-close');
         }
       });
     this.groupsService.showLoader.subscribe(showLoader => {
@@ -77,14 +79,17 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showKebabMenu = !this.showKebabMenu;
+    this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {
+    searchKey = _.toLower(searchKey);
     if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));
+      this.addTelemetry('group-member-search-input', { query: searchKey });
     } else {
       this.showSearchResults = false;
       this.memberListToShow = _.cloneDeep(this.members);
@@ -106,10 +111,21 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   getUpdatedGroupData() {
-    this.groupsService.getGroupById(this.groupData.id, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    const groupId = _.get(this.groupData, 'id') || _.get(this.activatedRoute.snapshot, 'params.groupId');
+    this.groupsService.getGroupById(groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+      const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
+      if (!user || _.get(groupData, 'status') === 'inactive') {
+        this.groupsService.goBack();
+      }
       this.groupsService.groupData = groupData;
       this.groupData = groupData;
-      this.memberListToShow = this.groupsService.addFieldsToMember(_.get(groupData, 'members'));
+      this.members = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
+      this.memberListToShow = _.cloneDeep(this.members);
+      this.showLoader = false;
+    }, err => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m002);
+      this.groupsService.goBack();
     });
   }
 
@@ -178,8 +194,8 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTelemetry(id) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  addTelemetry(id, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
   }
 
   ngOnDestroy() {

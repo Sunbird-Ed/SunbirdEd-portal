@@ -45,5 +45,6 @@ export interface ISummaryObject {
     index?: number;
     chartId?: string;
     summary?: string;
+    hash?: string;
 }
 
