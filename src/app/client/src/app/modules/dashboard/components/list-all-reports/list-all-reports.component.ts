@@ -83,7 +83,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
    */
   public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
     this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])],
-      { queryParams: { ...(this.reportService.isUserSuperAdmin() && { materialize }) } }).catch(err => {
+      { queryParams: { ...(this.reportService.isUserReportAdmin() && { materialize }) } }).catch(err => {
         console.log({ err });
       });
   }
@@ -103,22 +103,23 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     }
 
     const icon = {
-      live: { color: 'success', icon: 'check' },
-      draft: { color: 'primary', icon: 'edit' },
-      retired: { color: 'warning', icon: 'close' },
-      ['partially live']: { color: 'secondary', icon: 'check' }
+      live: { color: 'success-0', icon: 'check' },
+      draft: { color: 'warning-0', icon: 'edit' },
+      retired: { color: 'primary-100', icon: 'close' },
+      ['partially live']: { color: 'secondary-0', icon: 'check' }
     };
 
     const status = _.startCase(_.toLower(data));
-    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
+    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">
+    ${data === 'live' ? `<span class="sb-live"></span>` : ''} ${status}</span>`;
     return spanElement;
   }
 
   private renderTags(data) {
 
     if (Array.isArray(data)) {
-      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), ' ');
-      return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">${_.startCase(_.toLower(tag))}</span>`), ' ');
+      return `<div class="sb-filter-label"><div class="d-inline-flex m-0">${elements}</div></div>`;
     }
 
     return _.startCase(_.toLower(data));
@@ -161,8 +162,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         {
           title: 'Title', data: 'title', render: (data, type, row) => {
             const { title, description } = row;
-            return `<div class="sb-media"><div class="sb-media-body"><h6 class="media-heading ellipsis p-0">
-                  ${title}</h6> <p class="media-description"> ${description}</p></div></div>`;
+            return `<div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                  ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
           }
         },
         {
@@ -193,8 +194,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
       if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
-      const hash = _.get(rowData, 'hashed_val');
-      this.rowClickEventHandler(_.get(rowData, 'reportid'), hash);
+      const { reportid, hash, materialize } = rowData;
+      this.rowClickEventHandler(reportid, hash, materialize || false);
     });
 
     const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
