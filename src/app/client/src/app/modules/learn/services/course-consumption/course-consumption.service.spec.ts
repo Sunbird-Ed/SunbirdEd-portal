@@ -96,11 +96,18 @@ describe('CourseConsumptionService', () => {
     const response = service.parseChildren(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toEqual(courseConsumptionServiceMockData.parseChildrenResult);
   });
-  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+  it(`Show throw error with msg The course doesn't have any open batches and emit enableCourseEntrollment as false event`, () => {
     const service = TestBed.get(CourseConsumptionService);
     spyOn(service['toasterService'], 'error');
     service.getAllOpenBatches({content: [], count: 0});
+    expect(service['enableCourseEntrollment'].emit).toHaveBeenCalledWith(false);
     expect(service['toasterService'].error).toHaveBeenCalledWith(service['resourceService'].messages.emsg.m0003);
+  });
+
+  it(`Show emit enableCourseEntrollment as true event`, () => {
+    const service = TestBed.get(CourseConsumptionService);
+    service.getAllOpenBatches({ content: [{ enrollmentType: 'open' }], count: 1 });
+    expect(service['enableCourseEntrollment'].emit).toHaveBeenCalledWith(true);
   });
 
   it('should call setPreviousAndNextModule and check only next module is defined', () => {
