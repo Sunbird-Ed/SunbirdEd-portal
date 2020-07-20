@@ -96,7 +96,7 @@ describe('ActivityDashboardComponent', () => {
     const groupService = TestBed.get(GroupsService);
     spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
     component.fetchActivity();
-    expect(component.showLoader).toBe(false);
+    expect(component.showLoader).toBe(true);
   });
 
   it('should reset the list to membersList when no search key present', () => {
