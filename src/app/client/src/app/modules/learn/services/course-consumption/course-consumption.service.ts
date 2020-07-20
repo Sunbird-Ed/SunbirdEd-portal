@@ -19,6 +19,7 @@ export class CourseConsumptionService {
   launchPlayer = new EventEmitter<any>();
   updateContentState = new EventEmitter<any>();
   showJoinCourseModal = new EventEmitter<any>();
+  enableCourseEntrollment = new EventEmitter();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router) { }
@@ -114,7 +115,10 @@ getAllOpenBatches(contents) {
     }
   });
   if (openBatchCount === 0) {
+    this.enableCourseEntrollment.emit(false);
     this.toasterService.error(this.resourceService.messages.emsg.m0003);
+  } else {
+    this.enableCourseEntrollment.emit(true);
   }
 }
 
