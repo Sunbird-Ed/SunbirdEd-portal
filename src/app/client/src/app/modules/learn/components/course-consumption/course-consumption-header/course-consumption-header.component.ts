@@ -15,6 +15,7 @@ import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { Location } from '@angular/common';
 import { NavigationHelperService } from '@sunbird/shared';
+import { CourseBatchService } from '@sunbird/learn';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -57,6 +58,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   telemetryCdata: Array<{}>;
   enableProgress = false;
   courseMentor = false;
+  disableJoinCourseBtn = false;
 
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -64,13 +66,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService) { }
+    private navigationHelperService: NavigationHelperService, private courseBatchService: CourseBatchService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    this.courseConsumptionService.disableJoinCourseBtn.subscribe((data) => {
+      this.disableJoinCourseBtn = data;
+    })
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {

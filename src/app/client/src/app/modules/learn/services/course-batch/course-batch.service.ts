@@ -12,6 +12,7 @@ export class CourseBatchService {
   private _enrollToBatchDetails: any;
   private _updateBatchDetails: any;
   public updateEvent = new EventEmitter();
+  public openBatchCount = new EventEmitter();
   private _enrolledBatchDetails: any;
   private defaultUserList: any;
   constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
