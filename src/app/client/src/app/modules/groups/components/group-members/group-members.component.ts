@@ -85,6 +85,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   search(searchKey: string) {
+    searchKey = _.toLower(searchKey);
     if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));

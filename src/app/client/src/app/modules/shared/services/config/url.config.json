@@ -47,6 +47,8 @@
       "READ": "/get",
       "LIST": "/list",
       "UPDATE": "/update",
+      "PUBLISH": "/publish",
+      "RETIRE": "/retire",
       "SUMMARY": {
         "PREFIX": "/summary",
         "CREATE": "/summary/create"
