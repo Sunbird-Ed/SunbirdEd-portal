@@ -138,7 +138,8 @@ describe('ActivityListComponent', () => {
       identifier: 'do_1235232121343',
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
       organisation: ['Prod Custodian Organization'],
-      subject: 'Social Science'
+      subject: 'Social Science',
+      type: 'Course'
     };
     spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
