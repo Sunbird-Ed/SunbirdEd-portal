@@ -55,6 +55,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
           this.addTelemetry('activity-kebab-menu-close');
         }
       });
+
+    this.groupService.showMenu.subscribe(data => {
+      this.showMenu = data === 'activity';
+    });
   }
 
   getActivities() {
@@ -74,6 +78,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showMenu = !this.showMenu;
+    this.groupService.emitMenuVisibility('activity');
     this.selectedActivity = member;
     this.addTelemetry('activity-kebab-menu-open');
   }
