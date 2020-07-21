@@ -35,10 +35,6 @@ describe('ActivityListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-  class GroupServiceMock {
-    removeActivities() { return of({}); }
-  }
-
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -64,7 +60,7 @@ describe('ActivityListComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
-        { provide: GroupsService, useClass: GroupServiceMock },
+        GroupsService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -88,6 +84,7 @@ describe('ActivityListComponent', () => {
     component.ngOnInit();
     expect(component.showLoader).toBe(true);
     expect(component.getActivities).toHaveBeenCalled();
+
   });
 
   it('should call getActivities', () => {
@@ -141,11 +138,13 @@ describe('ActivityListComponent', () => {
       subject: 'Social Science',
       type: 'Course'
     };
+    spyOn(component['groupService'], 'emitMenuVisibility');
     spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
     expect(component.selectedActivity).toEqual(member);
     expect(component.showMenu).toBe(true);
     expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
+    expect(component['groupService'].emitMenuVisibility).toHaveBeenCalledWith('activity');
   });
 
   it('should call toggleModal', () => {

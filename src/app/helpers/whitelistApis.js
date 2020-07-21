@@ -399,8 +399,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/certreg/v1/certs/validate': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     '/learner/otp/v1/verify': {
       checksNeeded: ['ROLE_CHECK'],
