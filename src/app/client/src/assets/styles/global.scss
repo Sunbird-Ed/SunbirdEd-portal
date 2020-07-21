@@ -293,3 +293,9 @@ app-workspace {
 .hideBot {
   display: none !important;
 }
+
+.sb-table-hover tbody tr.non-clickable-row:hover {
+  background: var(--white);
+  color: rgba(var(--rc-rgba-gray), 0.95);
+  cursor: initial;
+}

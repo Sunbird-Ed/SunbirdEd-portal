@@ -120,5 +120,29 @@ module.exports = {
       });
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err') || 'FAILED');
     })
+  },
+  getUserDetailsV2: async function (userId, userToken) {
+    const options = {
+      method: 'GET',
+      url: learnerURL + 'user/v2/read/' + userId,
+      qs: {
+        fields: "locations"
+      },
+      headers: {
+        'x-msgid': uuidv1(),
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': userToken
+      },
+      json: true
+    };
+    return requestPromise(options).then(data => {
+      if (data.responseCode === 'OK') {
+        return _.get(data, 'result.response');
+      } else {
+        throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+      }
+    })
   }
 };
