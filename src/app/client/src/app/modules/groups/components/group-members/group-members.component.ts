@@ -1,5 +1,5 @@
 import { UserService } from '@sunbird/core';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -68,6 +68,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       this.memberListToShow = members;
       this.hideMemberMenu();
     });
+
+    this.groupsService.showMenu.subscribe(data => {
+      this.showKebabMenu = data === 'member';
+    });
   }
 
   hideMemberMenu() {
@@ -79,6 +83,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showKebabMenu = !this.showKebabMenu;
+    this.groupsService.emitMenuVisibility('member');
     this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
     this.selectedMember = member;
     event.event.stopImmediatePropagation();

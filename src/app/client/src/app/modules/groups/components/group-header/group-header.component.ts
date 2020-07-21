@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
 import { GroupsService } from '../../services';
@@ -36,10 +36,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
+
+    this.groupService.showMenu.subscribe(data => {
+      this.dropdownContent = data !== 'group';
+    });
   }
 
   toggleModal(visibility = false) {
     this.showModal = visibility;
+    this.groupService.emitMenuVisibility('group');
   }
 
   deleteGroup() {
