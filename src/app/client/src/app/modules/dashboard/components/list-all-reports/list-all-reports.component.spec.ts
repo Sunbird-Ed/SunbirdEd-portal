@@ -218,4 +218,45 @@ describe('ListAllReportsComponent', () => {
     const result = component['renderTags'](input);
     expect(result).toBe(`<div class="sb-filter-label"><div class="d-inline-flex m-0"><span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">Live</span></div></div>`);
   });
+
+  describe('it should handle datatable click handler', () => {
+
+    let spy, tableElement;
+
+    beforeEach(() => {
+      spy = spyOn(component, 'rowClickEventHandler');
+      tableElement = document.createElement('table');
+      tableElement.innerHTML = '<tbody> <tr> <td> 123 </td></tr> </tbody>';
+      spyOn($(tableElement), 'DataTable').and.returnValue({});
+    });
+
+    it('should handle click event from dataTable when row is parameterized and have child rows', fakeAsync(() => {
+      component.reports = [{
+        isParameterized: true,
+        children: [{
+          status: 'draft'
+        }]
+      }];
+      component.prepareTable(tableElement);
+      tableElement.querySelector('td').click();
+      tick();
+      expect(spy).not.toHaveBeenCalled();
+    }));
+
+    it('should handle click event from dataTable when row is non parameterized or do not have child rows', fakeAsync(() => {
+      component.reports = [{
+        reportid: '123',
+        hash: 'hash',
+        isParameterized: false,
+        children: [{
+          status: 'draft'
+        }]
+      }];
+      component.prepareTable(tableElement);
+      tableElement.querySelector('td').click();
+      tick();
+      expect(spy).toHaveBeenCalledWith('123', 'hash', false);
+    }));
+  });
+
 });
