@@ -1,5 +1,5 @@
 import { UserService } from '@sunbird/core';
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 import { ResourceService, ToasterService } from '@sunbird/shared';
