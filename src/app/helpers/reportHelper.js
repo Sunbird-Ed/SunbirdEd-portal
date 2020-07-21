@@ -225,7 +225,8 @@ const getHashedValue = (val) => Buffer.from(val).toString("base64");
 const getParameterValue = (param, user) => {
     const parametersMapping = {
         $slug: _.get(user, 'rootOrg.slug'),
-        $board: _.get(user, 'framework.board')
+        $board: _.get(user, 'framework.board'),
+        $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name')
     };
     return parametersMapping[param];
 }

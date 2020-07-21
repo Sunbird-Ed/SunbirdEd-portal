@@ -4,10 +4,6 @@
   &__section {
     padding-bottom: calculateRem(8px);
 
-    &:first-child {
-      border-bottom: calculateRem(1px) solid var(--primary-color);
-    }
-
     &:not(:first-child) {
       margin-top: calculateRem(8px);
     }

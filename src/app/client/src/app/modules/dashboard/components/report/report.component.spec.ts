@@ -26,7 +26,7 @@ describe('ReportComponent', () => {
         { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } }
     }
   };
-  const routerStub = { url: '/dashBoard/reports/daily_metrics', navigate: () => { } };
+  const routerStub = { url: '/dashBoard/reports/daily_metrics', navigate: () => Promise.resolve(true) };
   let reportService: ReportService;
   const resourceServiceMockData = {
     messages: {
@@ -321,7 +321,7 @@ describe('ReportComponent', () => {
   });
 
   it('should navigate with updated parameters hash and reload the component', () => {
-    spyOn(component['router'], 'navigate');
+    spyOn(component['router'], 'navigate').and.returnValue(Promise.resolve(true));
     const input = {
       hashed_val: '123',
       materialize: true

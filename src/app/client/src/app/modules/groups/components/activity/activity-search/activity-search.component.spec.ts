@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CoreModule, FrameworkService, SearchService, FormService } from '@sunbird/core';
 import { SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
 import { of, throwError, BehaviorSubject } from 'rxjs';
@@ -11,6 +11,7 @@ import { ActivitySearchComponent } from './activity-search.component';
 import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { GroupsService } from '../../../services/groups/groups.service';
 
 describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
@@ -35,6 +36,15 @@ describe('ActivitySearchComponent', () => {
     channelData$: of({ err: null, channelData: activitySearchMockData.channelData })
   };
 
+  class GroupsServiceMock {
+    getGroupById() {
+      return of();
+    }
+    getImpressionObject() {
+      return { 'context': { 'channel': '0124784842112040965', 'pdata': { 'id': 'dev.sunbird.portal', 'ver': '3.1.0', 'pid': 'sunbird-portal' }, 'env': 'groups', 'sid': 'tzXa1UyXEs7dFrheulrtwzxjOaRAHNtT', 'did': '9ee98766c121536bd11264f8f7801676', 'cdata': [{ 'id': 'tzXa1UyXEs7dFrheulrtwzxjOaRAHNtT', 'type': 'UserSession' }, { 'id': 'Desktop', 'type': 'Device' }], 'rollup': { 'l1': '0124784842112040965' }, 'uid': 'd6eae4e4-3ed1-47e2-8b73-96a5f5ea3d73' }, 'object': { 'id': '04925160-23c0-4b9d-b515-7b7f16a533cb', 'type': 'Group', 'ver': '1.0', 'rollup': {} }, 'edata': { 'type': 'view', 'pageid': 'add-activity-to-group', 'subtype': 'paginate', 'uri': '/my-groups/group-details/04925160-23c0-4b9d-b515-7b7f16a533cb/add-activity-to-group/courses/1', 'duration': 0.602 } };
+    }
+  }
+
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
     paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });
@@ -58,12 +68,15 @@ describe('ActivitySearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitySearchComponent],
-      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
+      imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
+        SlickModule, TelemetryModule],
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
         { provide: FrameworkService, useValue: frameWorkServiceStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }
+        { provide: Router, useClass: RouterStub },
+        { provide: GroupsService, useClass: GroupsServiceMock },
+        TelemetryService,
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -81,6 +94,7 @@ describe('ActivitySearchComponent', () => {
       }
       return throwError({});
     });
+    spyOn(component['frameworkService'], 'channelData$').and.returnValue(of({ channelData: { defaultFramework: '123456' } }));
     fixture.detectChanges();
 
   });
@@ -91,10 +105,8 @@ describe('ActivitySearchComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn(component, 'getFrameworkId');
-    spyOn<any>(component, 'fetchContents');
     component.ngOnInit();
     expect(component.getFrameworkId).toHaveBeenCalled();
-    expect(component['fetchContents']).toHaveBeenCalled();
   });
 
   it('should call toggleFilter', () => {
@@ -172,23 +184,29 @@ describe('ActivitySearchComponent', () => {
 
   it('should search the courses if the search is not blank string', () => {
     const router = TestBed.get(Router);
+    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = 'english';
+    spyOn(component, 'addTelemetry');
     component.search();
-    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { key: 'english' } });
+    expect(router.navigate).toHaveBeenCalled();
+    expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should not search the courses if the search is blank string', () => {
     const router = TestBed.get(Router);
+    router.url = 'http://localhost:3000/my-groups/group-details/3cccc4b6-e6f0-4c15-9883-02ddf361fd4a/add-activity-to-group/courses/1';
     component.searchQuery = '';
     component.search();
-    expect(router.navigate).toHaveBeenCalledWith([]);
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   it('should call addActivity', () => {
+    spyOn(component, 'addTelemetry');
     const router = TestBed.get(Router);
     const event = { data: { identifier: 'do_234324446565' } };
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_234324446565'],
       { queryParams: { groupId: 'adfddf-sdsds-wewew-sds' } });
   });

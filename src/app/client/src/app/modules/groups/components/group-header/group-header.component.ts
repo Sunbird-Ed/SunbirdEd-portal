@@ -6,6 +6,7 @@ import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UserService } from '@sunbird/core';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -20,22 +21,21 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   creator: string;
   showMemberPopup = false;
   showLeaveGroupModal = false;
+  showLoader = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute, private userService: UserService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
-        this.showModal = false;
       }
     });
   }
 
   ngOnInit () {
-    this.creator =  _.get(this.groupData, 'isCreator') ? this.resourceService.frmelmnts.lbl.you :
-    _.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'userName');
+    this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
   }
 
   toggleModal(visibility = false) {
@@ -44,12 +44,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
     this.toggleModal(false);
+    this.showLoader = true;
     setTimeout(() => {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
+        this.showLoader = false;
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m003);
       });
+      this.showLoader = false;
       this.goBack();
     });
   }
@@ -61,6 +64,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   goBack() {
     this.navigationHelperService.goBack();
   }
+
   dropdownMenu() {
     this.dropdownContent = !this.dropdownContent;
   }
@@ -69,11 +73,25 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showMemberPopup = visibility;
   }
 
-  addTelemetry (id) {
+  addTelemetry(id) {
     this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
   leaveGroup() {
+    this.showLoader = true;
+    /* istanbul ignore else */
+    if (!this.groupService.isCurrentUserCreator) {
+      this.groupService.removeMembers(this.groupData.id, [this.userService.userid])
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(resp => {
+          this.showLoader = false;
+          this.toasterService.success(this.resourceService.messages.smsg.leaveGroup);
+          this.goBack();
+        }, error => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.emsg.leaveGroup);
+        });
+    }
     // TODO: leave group API integration and add telemetry
   }
 

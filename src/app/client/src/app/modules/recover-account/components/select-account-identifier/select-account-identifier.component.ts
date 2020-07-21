@@ -25,7 +25,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
     type: 'Task'
   }];
   googleCaptchaSiteKey: string;
-  isCaptchaEnabled: boolean = true;
+  isP2CaptchaEnabled: any;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public configService: ConfigService) {
@@ -41,6 +41,8 @@ export class SelectAccountIdentifierComponent implements OnInit {
     } catch (error) {
       this.googleCaptchaSiteKey = '';
     }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
   setSelectIdentifier(selectedAccountIdentifier) {
     this.disableFormSubmit = false;
@@ -54,7 +56,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
   }
 
   submitSelection() {
-    if (this.isCaptchaEnabled) {
+    if (this.isP2CaptchaEnabled === 'true') {
       this.captchaRef.reset();
       this.captchaRef.execute();
     } else {

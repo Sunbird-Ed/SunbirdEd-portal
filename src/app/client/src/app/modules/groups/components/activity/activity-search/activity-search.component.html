@@ -1,6 +1,6 @@
 <div>
   <app-back-button></app-back-button>
-  <div class="content-header">
+  <div class="content-header" [appTelemetryImpression]="telemetryImpression">
     <div class="ui container py-16">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="flex-basis-1 mr-32 activity-search">
@@ -54,7 +54,7 @@
       <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
         <div class="sb-card-grid--item" *ngFor="let content of contentList;">
           <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
-            [cardImg]="content?.appIcon || './assets/images/book.png'">
+            [cardImg]="content?.image || './assets/images/book.png'">
           </sb-course-card>
         </div>
       </div>

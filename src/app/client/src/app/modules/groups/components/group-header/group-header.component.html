@@ -14,7 +14,7 @@
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
         <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
           (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">
-          <i class="icon-svg icon-svg--sm icon-info"  aria-hidden="true">
+          <i class="icon-svg icon-svg--sm icon-info" aria-hidden="true">
             <svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#info"></use>
             </svg>
@@ -22,24 +22,19 @@
         </button>
         <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
-          <div class="list">
-            <button type="button" *ngIf="groupData?.isAdmin"
-              class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0"
-              (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
-            </button>
+
+          <div *ngIf="groupData?.isAdmin" class="d-flex flex-ai-center list p-8 w-100"
+            (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
           </div>
-          <div class="list">
-            <button type="button" *ngIf="groupData?.isCreator"
-              class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0 sb-color-error"
-              (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
-            </button>
+
+          <div *ngIf="groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+            (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
           </div>
-          <div class="list">
-            <button type="button" *ngIf="!groupData?.isCreator"
-              class="sb-btn sb-btn-normal sb-btn-link w-100 text-left p-0 sb-color-error"
-              (click)="showLeaveGroupModal=true;dropdownMenu()" >{{resourceService?.frmelmnts?.lbl?.leaveGroup}}
-            </button>
+
+          <div *ngIf="!groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+            (click)="showLeaveGroupModal=true;dropdownMenu()">{{resourceService?.frmelmnts?.lbl?.leaveGroup}}
           </div>
+
         </div>
       </div>
     </div>
@@ -55,8 +50,10 @@
     <p> {{resourceService?.messages?.imsg?.m0082 | interpolate:'{group name}': groupData?.name}} ?</p>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="deleteGroup();addTelemetry('confirm-delete-group')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="toggleModal(false);addTelemetry('cancel-delete-group')">{{resourceService?.frmelmnts?.btn?.no}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error"
+      (click)="deleteGroup();addTelemetry('confirm-delete-group')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error"
+      (click)="toggleModal(false);addTelemetry('cancel-delete-group')">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 </sui-modal>
 
@@ -65,3 +62,9 @@
 
 <app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"
   (modalClose)="showLeaveGroupModal=false" (actionConfirm)="leaveGroup()"></app-member-actions>
+
+<sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
+  <div class="ui text loader">
+    <h2>{{resourceService?.messages?.fmsg?.m0087}}</h2>
+  </div>
+</sui-dimmer>

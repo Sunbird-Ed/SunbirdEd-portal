@@ -1,12 +1,12 @@
 <!-- Accordion and batch card section start -->
 <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g sb-g--gap24 py-16">
+    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
 
         <!-- Course details for mobile view -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
-          *ngIf="courseHierarchy.certTemplate; else noMobileCertificate">
+          *ngIf="enrolledBatchInfo?.cert_templates; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -24,7 +24,7 @@
           </div>
         </ng-template> -->
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -54,21 +54,20 @@
 
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
-              <sb-accordion-item [expanded]="isExpanded(index)">
-                <sb-accordion-header class="sb-bg-color-gray-0">
+              <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
+                <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;">
                   <i class="icon-svg icon-svg--sm icon-tick mr-8"
                     *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
                     </svg>
                   </i>
-                  <!-- To be integrated -->
-                  <!-- <div class="progress-circle progress-circle--sm mr-8" data-percentage="75" *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
+                  <div class="progress-circle progress-circle--sm mr-8" [attr.data-percentage]="item?.progress" *ngIf="enrolledCourse && item?.consumedContent > 0 && item?.consumedContent !== item?.contentCount">
                     <svg class="progress-circle__svg" viewport="0 0 2000 2000">
                       <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
                       <circle class="progress-circle__stroke" r="50%" cx="50%" cy="50%"></circle>
                     </svg>
-                  </div> -->
+                  </div>
                   {{item?.name}}
                 </sb-accordion-header>
                 <sb-accordion-body>
@@ -108,7 +107,7 @@
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
 
-        <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="courseHierarchy.certTemplate; else noCertificate">
+        <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledBatchInfo?.cert_templates; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -126,7 +125,7 @@
           </div>
         </ng-template> -->
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !courseHierarchy.certTemplate">
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -140,7 +139,7 @@
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          <!-- <div class="fsmall mt-8" *ngIf="courseHierarchy.certTemplate">
+          <!-- <div class="fsmall mt-8" *ngIf="enrolledBatchInfo?.cert_templates">
             {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
           </div> -->
         </div>

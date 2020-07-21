@@ -25,14 +25,14 @@
 	@include respond-below(sm) {
 		flex-direction: column;
 		button {
-			margin-top: calculateRem(24px);
+			margin-top: calculateRem(16px);
 		}
 	}
 
 	.add-member-text {
-		margin: calculateRem(8px) calculateRem(24px) calculateRem(8px) 0px;
+		margin: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0px;
 		html[dir="rtl"] & {
-			margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(24px);
+			margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(8px);
 		}
 		@include respond-below(sm) {
 			align-self: self-start;
@@ -100,5 +100,15 @@
 			flex-direction: column;
 			margin-bottom: calculateRem(24px);
 		}
+	}
+}
+
+.recaptcha {
+	z-index: 1;
+}
+
+.sb-members-column {
+	@include respond-below(sm) {
+		margin-top: calculateRem(16px);
 	}
 }

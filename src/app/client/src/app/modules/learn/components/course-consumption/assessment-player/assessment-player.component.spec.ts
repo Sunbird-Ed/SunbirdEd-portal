@@ -190,9 +190,11 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onTocCardClick', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
+    spyOn(component, 'highlightContent');
     component.onTocCardClick({ data: { identifier: 'do_2334343' } }, 'test');
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
+    expect(component.highlightContent).toHaveBeenCalled();
   });
 
   it('should call getContentState', () => {
@@ -201,10 +203,12 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_123232']);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of({ content: [] }));
     spyOn(component, 'calculateProgress');
+    spyOn(component, 'highlightContent');
     component['getContentState']();
     expect(component.calculateProgress).toHaveBeenCalled();
     expect(component.contentStatus).toEqual([]);
     expect(courseConsumptionService.parseChildren).toHaveBeenCalled();
+    expect(component.highlightContent);
   });
 
   it('should call contentProgressEvent', () => {
@@ -430,5 +434,14 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onCourseCompleteClose', () => {
     component.onCourseCompleteClose();
     expect(component.showCourseCompleteMessage).toBe(false);
+  });
+
+  it('should call highlightContent', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.activeContent = {
+      identifier: 'do_112832506508320768123'
+    };
+    component.highlightContent();
+    expect(component.contentStatus).toBeDefined();
   });
 });

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
 import { ConfigService, ResourceService, ToasterService, PaginationService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -8,13 +8,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-activity-search',
   templateUrl: './activity-search.component.html',
   styleUrls: ['./activity-search.component.scss']
 })
-export class ActivitySearchComponent implements OnInit {
+export class ActivitySearchComponent implements OnInit, OnDestroy {
   showFilters = false;
   searchResultCount = 0;
   searchQuery: string;
@@ -34,6 +35,8 @@ export class ActivitySearchComponent implements OnInit {
   paginationDetails: IPagination;
   noResultMessage: any;
   groupData;
+  groupId: string;
+  telemetryImpression: IImpressionEventInput;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -56,6 +59,7 @@ export class ActivitySearchComponent implements OnInit {
   ngOnInit() {
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
+    this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.getFrameworkId();
     this.getFrameWork().pipe(first()).subscribe(framework => {
@@ -69,28 +73,36 @@ export class ActivitySearchComponent implements OnInit {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
+      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
-
-    this.fetchContents();
   }
 
   private fetchContentOnParamChange() {
-    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
+    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams, this.groupsService.getGroupById(this.groupId, true, true)])
       .pipe(debounceTime(5), // to sync params and queryParams events
         delay(10), // to trigger pageexit telemetry event
         tap(data => {
           this.showLoader = true;
           // TODO set telemetry here
         }),
-        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
+        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1], group: result[2] })),
         takeUntil(this.unsubscribe$))
-      .subscribe(({ params, queryParams }) => {
-        this.queryParams = { ...queryParams };
-        this.paginationDetails.currentPage = params.pageNumber;
-        this.contentList = [];
-        this.fetchContents();
+      .subscribe(({ params, queryParams, group }) => {
+        const user = _.find(_.get(group, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
+
+        /* istanbul ignore else */
+        if (!user || _.get(user, 'role') === 'member' || _.get(user, 'status') === 'inactive' || _.get(group, 'status') === 'inactive') {
+          this.toasterService.warning(this.resourceService.messages.emsg.noAdminRole);
+          this.groupsService.goBack();
+        } else {
+          this.groupData = this.groupsService.addGroupFields(group);
+          this.queryParams = { ...queryParams };
+          this.paginationDetails.currentPage = params.pageNumber;
+          this.contentList = [];
+          this.fetchContents();
+        }
       });
   }
 
@@ -121,10 +133,12 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   search() {
+    const url = this.router.url.split('?')[0].replace(/[^\/]+$/, `1`);
     if (this.searchQuery.trim().length) {
-      this.router.navigate([], { queryParams: { key: this.searchQuery } });
+      this.addTelemetry('add-course-activity-search', [], { query: this.searchQuery });
+      this.router.navigate([url], { queryParams: { key: this.searchQuery } });
     } else {
-      this.router.navigate([]);
+      this.router.navigate([url]);
     }
   }
 
@@ -206,7 +220,13 @@ export class ActivitySearchComponent implements OnInit {
   }
 
   addActivity(event) {
+    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+    this.addTelemetry('activity-course-card', cdata);
     this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+  }
+
+  addTelemetry(id, cdata, extra?) {
+    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
   }
 
   private setNoResultMessage() {
@@ -214,6 +234,11 @@ export class ActivitySearchComponent implements OnInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

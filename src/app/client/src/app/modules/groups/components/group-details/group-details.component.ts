@@ -1,3 +1,4 @@
+import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -5,7 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember  } from '../../interfaces';
+import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
@@ -21,8 +22,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   showActivityList = false;
   showFilters = false;
   telemetryImpression: IImpressionEventInput;
-  members: IGroupMember [] = [];
+  members: IGroupMember[] = [];
   isLoader = true;
+  isAdmin = false;
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
@@ -36,6 +38,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private router: Router,
     public resourceService: ResourceService,
+    private userService: UserService,
   ) {
     this.groupService = groupService;
   }
@@ -52,12 +55,18 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   getGroupData() {
     this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
-      this.groupService.groupData = groupData;
-      this.groupData = groupData;
-      this.members = this.groupService.addFieldsToMember(this.groupData.members);
-      this.isLoader = false;
+      const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
+        if (!user || _.get(groupData, 'status') === 'inactive') {
+          this.groupService.goBack();
+        }
+        this.groupService.groupData = groupData;
+        this.groupData = this.groupService.addGroupFields(groupData);
+        this.members = this.groupService.addFieldsToMember(this.groupData.members);
+        this.isAdmin = this.groupService.isCurrentUserAdmin;
+        this.isLoader = false;
     }, err => {
       this.isLoader = false;
+      this.groupService.goBack();
       this.toasterService.error(this.resourceService.messages.emsg.m002);
     });
   }
@@ -76,6 +85,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
   }
 
+
+  addTelemetry (id) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -1,7 +1,4 @@
-<div class="ui container" *ngIf="isLoader"> 
-  <app-loader></app-loader>
-</div>
-<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!adminGroupsList.length && !memberGroupsList.length && !isLoader">
+<div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
@@ -17,7 +14,7 @@
   </div>
 </div>
 
-<div *ngIf="(adminGroupsList.length || memberGroupsList.length )&& !isLoader" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf="groupsList.length&& !isLoader" [appTelemetryImpression]="telemetryImpression">
 
   <div class="sb-bg-color-white">
     <div class="ui container">
@@ -44,15 +41,19 @@
 
   <div class="ui container mt-24">
     <div class="sb-card-grid">
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of adminGroupsList">
-        <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
-      </div>
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of memberGroupsList">
+      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupsList">
         <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
     </div>
   </div>
+</div>
 
+<div class="ui container mt-24" *ngIf="isLoader">
+  <div class="sb-card-grid">
+    <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of [1,2,3,4,5,6,7,8]">
+      <sb-group-card [isLoading]="true"></sb-group-card>
+    </div>
+  </div>
 </div>
 <router-outlet></router-outlet>
 

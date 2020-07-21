@@ -1,3 +1,4 @@
+import { ProfileService } from '@sunbird/profile';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CourseProgressService } from './../course-progress/course-progress.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -18,7 +19,7 @@ describe('ReportService', () => {
   let baseReportService: BaseReportService;
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [ReportService, UsageService, UserService, PermissionService, BaseReportService, CourseProgressService],
+    providers: [ReportService, UsageService, UserService, PermissionService, BaseReportService, CourseProgressService, ProfileService],
     imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()]
   }));
 
@@ -513,6 +514,30 @@ describe('ReportService', () => {
         done();
       });
     });
+
+    it('should check for state parameter', done => {
+      const profileService = TestBed.get(ProfileService);
+      spyOn(profileService, 'getUserLocation').and.returnValue(of({
+        result: {
+          response: [{ name: 'Goa' }, { name: 'Sikkim' }]
+        }
+      }));
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({
+        rootOrg: { slug: 'sunbird' },
+        framework: { board: ['CBSE'] }, userLocations: [{ type: 'state', name: 'Goa' }]
+      });
+      const { value, masterData } = reportService.getParameterValues('$state');
+      expect(value).toBe('Goa');
+      masterData().subscribe(res => {
+        expect(res).toBeDefined();
+        expect(res.length).toBe(2);
+        expect(profileService.getUserLocation).toHaveBeenCalled();
+        expect(profileService.getUserLocation).toHaveBeenCalledWith({ 'filters': { 'type': 'state' } });
+
+        done();
+      });
+    });
+
   });
 
 });
