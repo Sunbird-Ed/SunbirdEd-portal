@@ -432,7 +432,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           event.data = data;
           const navigationExtras: NavigationExtras = {
             relativeTo: this.route,
-            queryParams: { contentType: this.contentType }
+            queryParams: { contentType: this.contentType, contentId: this.contentId }
           };
           this.router.navigate([], navigationExtras);
         }
