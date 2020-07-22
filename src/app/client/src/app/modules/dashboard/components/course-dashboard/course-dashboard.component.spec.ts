@@ -22,5 +22,6 @@ describe('CourseDashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    component.ngOnInit();
   });
 });
