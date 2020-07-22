@@ -73,5 +73,18 @@ describe('CourseDashboardComponent', () => {
     component.getEnrollmentAndCompletedCount();
   });
 
+  it('should assign enrollment and completed count', () => {
+    component.batchList = [{id: 1, completedCount: 1, participantCount: 5}];
+    component.getEnrollmentAndCompletedCount();
+  });
+
+  it('should assign enrollment and completed count', () => {
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
 
 });

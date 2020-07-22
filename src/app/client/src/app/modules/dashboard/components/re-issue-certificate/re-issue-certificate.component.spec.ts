@@ -1,3 +1,5 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReIssueCertificateComponent } from './re-issue-certificate.component';
@@ -9,7 +11,8 @@ describe('ReIssueCertificateComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReIssueCertificateComponent ]
+      declarations: [ ReIssueCertificateComponent ],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule]
     })
     .compileComponents();
   }));
@@ -22,5 +25,14 @@ describe('ReIssueCertificateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    component.ngOnInit();
+  });
+
+  it('should assign enrollment and completed count', () => {
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 });
