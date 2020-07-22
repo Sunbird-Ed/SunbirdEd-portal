@@ -56,3 +56,14 @@ export interface IBatchListData {
     status?: Number;
     updatedDate?: any;
 }
+
+export interface IDashboardItem {
+    title: string;
+    count: number;
+}
+
+export interface IDashboard {
+    totalBatches: IDashboardItem;
+    totalEnrollment: IDashboardItem;
+    totalCompleted: IDashboardItem;
+}
