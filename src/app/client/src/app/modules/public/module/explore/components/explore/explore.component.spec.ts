@@ -198,6 +198,7 @@ describe('ExploreComponent', () => {
     component.channelId = '123',
     component['contentSearchService']._frameworkId = '123456';
     const option = {filters: {},
+    fields: [ 'name', 'appIcon', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
     isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'
@@ -214,6 +215,7 @@ describe('ExploreComponent', () => {
     component.channelId = '123',
     component['contentSearchService']._frameworkId = '123456';
     const option = {filters: {},
+    fields: [ 'name', 'appIcon', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
     isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'

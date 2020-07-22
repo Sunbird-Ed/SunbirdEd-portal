@@ -30,4 +30,8 @@ export interface IPageSection {
     params?: object;
     organisationId?: string;
     sections?: object;
+     /**
+    * page fields
+    */
+   fields?: object;
 }

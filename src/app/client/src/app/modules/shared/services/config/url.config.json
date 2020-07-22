@@ -8,15 +8,23 @@
       "appIcon",
       "mimeType",
       "gradeLevel",
-      "identifier",
       "medium",
-      "pkgVersion",
       "board",
       "subject",
       "resourceType",
       "contentType",
-      "channel",
       "organisation"
+    ],
+    "CourseSearchField": [
+      "name",
+      "appIcon",
+      "medium",
+      "subject",
+      "resourceType",
+      "contentType",
+      "organisation",
+      "topic",
+      "mimeType"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"

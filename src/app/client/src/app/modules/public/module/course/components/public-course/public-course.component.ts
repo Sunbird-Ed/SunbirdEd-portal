@@ -135,6 +135,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Course',
       organisationId: this.hashTagId || '*',
       filters: filters,
+      fields: this.configService.urlConFig.params.CourseSearchField,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
       // exists: [],
