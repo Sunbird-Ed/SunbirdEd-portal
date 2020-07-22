@@ -1,6 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-sidebar',
@@ -9,7 +10,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 })
 export class DashboardSidebarComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService, public router: Router) { }
 
   ngOnInit() {
   }
