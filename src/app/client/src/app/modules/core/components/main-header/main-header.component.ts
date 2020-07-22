@@ -329,13 +329,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   toggleSideMenu(value: boolean) {
     this.showSideMenu = !this.showSideMenu;
-    console.log(this.showSideMenu);
     if (this.userService.loggedIn) {
       if (this.showSideMenu) {
         this.fetchManagedUsers();
       }
-    } else {
-
     }
   }
 
