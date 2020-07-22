@@ -29,12 +29,6 @@
       "Course"
     ]
   },
-  "old": {
-    "header": {
-    },
-    "footer": {
-    }
-  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
