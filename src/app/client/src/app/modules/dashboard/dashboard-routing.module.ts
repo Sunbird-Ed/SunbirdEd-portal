@@ -2,17 +2,47 @@ import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  ReportComponent, ListAllReportsComponent
+  ReportComponent, ListAllReportsComponent, CourseDashboardComponent, ReIssueCertificateComponent,
+  DashboardSidebarComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
+const telemetryEnv = 'course-dashboard';
 const routes: Routes = [
   {
-    path: '', component: CourseProgressComponent, canActivate: [AuthGuard],
+    path: '', component: DashboardSidebarComponent, canActivate: [AuthGuard],
     data: {
       roles: 'courseBatchRoles',
       telemetry: { env: 'Course', pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
-    }
+    },
+    children: [
+      {
+        path: 'course-stats', component: CourseDashboardComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'course-stats', uri: '/dashboard/course-stats',
+            type: 'view'
+          }
+        }
+      },
+      {
+        path: 'progress', component: CourseProgressComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'progress', uri: '/dashboard/progress',
+            type: 'view'
+          }
+        }
+      },
+      {
+        path: 'certificates', component: ReIssueCertificateComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
+            type: 'view'
+          }
+        }
+      },
+    ]
   },
   {
     path: 'myActivity', component: CourseConsumptionComponent,
