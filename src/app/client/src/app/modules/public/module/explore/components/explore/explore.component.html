@@ -17,7 +17,7 @@
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
-        <sb-library-cards-grid 
+        <sb-library-cards-grid [layoutConfig]="true"
           [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
           [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>

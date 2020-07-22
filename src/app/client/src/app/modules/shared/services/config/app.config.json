@@ -2,6 +2,11 @@
   "UrlLinks": {
     "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
   },
+  "layoutConfiguration": {
+    "source": "",
+    "name": "newLayout",
+    "options": ""
+  },
   "CommonSearch": {
     "contentType": [
       "Collection",
@@ -23,6 +28,12 @@
       "Resource",
       "Course"
     ]
+  },
+  "old": {
+    "header": {
+    },
+    "footer": {
+    }
   },
   "Home": {
     "contentApiQueryParams": {
