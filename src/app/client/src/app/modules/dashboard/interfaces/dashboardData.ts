@@ -57,19 +57,13 @@ export interface IBatchListData {
     updatedDate?: any;
 }
 
-export enum IDashboardTabs {
-    progress = 'Progress',
-    batches = 'Batches',
-    certificates = 'Certificates',
-}
-
-export interface IDashboardTabsData {
+export interface IDashboardItem {
     title: string;
     count: number;
 }
 
-export interface ICourseDetailsCount {
-    totalBatches: IDashboardTabsData;
-    totalEnrollment: IDashboardTabsData;
-    totalCompleted: IDashboardTabsData;
+export interface IDashboard {
+    totalBatches: IDashboardItem;
+    totalEnrollment: IDashboardItem;
+    totalCompleted: IDashboardItem;
 }

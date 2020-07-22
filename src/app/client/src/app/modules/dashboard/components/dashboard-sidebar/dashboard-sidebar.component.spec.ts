@@ -1,21 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReIssueCertificateComponent } from './re-issue-certificate.component';
+import { DashboardSidebarComponent } from './dashboard-sidebar.component';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('ReIssueCertificateComponent', () => {
-  let component: ReIssueCertificateComponent;
-  let fixture: ComponentFixture<ReIssueCertificateComponent>;
+describe('DashboardSidebarComponent', () => {
+  let component: DashboardSidebarComponent;
+  let fixture: ComponentFixture<DashboardSidebarComponent>;
   configureTestSuite();
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReIssueCertificateComponent ]
+      declarations: [ DashboardSidebarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReIssueCertificateComponent);
+    fixture = TestBed.createComponent(DashboardSidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,3 +10,4 @@ export * from './list-all-reports/list-all-reports.component';
 export * from './add-summary-modal/add-summary-modal.component';
 export * from './course-dashboard/course-dashboard.component';
 export * from './re-issue-certificate/re-issue-certificate.component';
+export * from './dashboard-sidebar/dashboard-sidebar.component';
