@@ -23,6 +23,5 @@ describe('DashboardSidebarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.ngOnInit();
   });
 });
