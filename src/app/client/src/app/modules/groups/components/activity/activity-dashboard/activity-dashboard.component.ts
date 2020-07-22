@@ -123,7 +123,8 @@ export class ActivityDashboardComponent implements OnInit {
       if (_.get(item, 'status') === 'active') {
         const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value') || 0;
         return {
-          title: _.get(item, 'name'),
+          title: _.get(item, 'userId') === this.userService.userid ?
+          `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
           progress: _.toString(Math.round((completedCount / this.leafNodesCount) * 100)),
           initial: _.get(item, 'name[0]'),
@@ -132,7 +133,6 @@ export class ActivityDashboardComponent implements OnInit {
       }
     });
 
-    this.members = _.orderBy(this.members, ['title'], ['asc']);
     this.memberListToShow = _.cloneDeep(this.members);
     this.getActivityInfo();
   }

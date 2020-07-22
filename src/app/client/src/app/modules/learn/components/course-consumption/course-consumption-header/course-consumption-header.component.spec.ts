@@ -204,8 +204,8 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call goBack and return to learn page', () => {
-    const router = TestBed.get(Router);
+    spyOn(component['navigationHelperService'], 'goBack');
     component.goBack();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn']);
+    expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
   });
 });
