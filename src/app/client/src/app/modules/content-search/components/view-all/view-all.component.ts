@@ -271,6 +271,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     const requestParams = {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
+      fields: this.configService.urlConFig.params.CourseSearchField,
       pageNumber: Number(request.params.pageNumber),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams

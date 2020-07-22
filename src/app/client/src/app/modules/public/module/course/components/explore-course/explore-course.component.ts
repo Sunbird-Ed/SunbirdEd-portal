@@ -123,6 +123,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         const option = {
             filters: filters,
             limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+            fields: this.configService.urlConFig.params.CourseSearchField,
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
             // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
