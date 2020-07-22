@@ -202,17 +202,26 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
       this.showLoader = false;
-      if (response.contentData.result.count && response.contentData.result.content) {
-        this.noResult = false;
-        this.totalCount = response.contentData.result.count;
-        this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
-        this.searchList = this.formatSearchresults(response);
+      if (this.sectionName === this.resourceService.frmelmnts.lbl.mytrainings) {
+        if (_.get(response, 'enrolledCourseData.enrolledCourses')) {
+          const enrolledCourseCount = _.get(response, 'enrolledCourseData.enrolledCourses').length;
+          this.noResult = false;
+          this.totalCount = enrolledCourseCount;
+          this.searchList = this.formatSearchresults(_.orderBy(_.get(response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']));
+        }
       } else {
-        this.noResult = true;
-        this.noResultMessage = {
-          'message': 'messages.stmsg.m0007',
-          'messageText': 'messages.stmsg.m0006'
-        };
+        if (response.contentData.result.count && response.contentData.result.content) {
+          this.noResult = false;
+          this.totalCount = response.contentData.result.count;
+          this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
+          this.searchList = this.formatSearchresults(response.contentData.result.content);
+        } else {
+          this.noResult = true;
+          this.noResultMessage = {
+            'message': 'messages.stmsg.m0007',
+            'messageText': 'messages.stmsg.m0006'
+          };
+        }
       }
     }, (error) => {
       this.showLoader = false;
@@ -291,15 +300,15 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  private formatSearchresults(response) {
-    _.forEach(response.contentData.result.content, (value, index) => {
+  private formatSearchresults(sectionData) {
+    _.forEach(sectionData, (value, index) => {
       const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
       const metaData = this.configService.appConfig.ViewAll.metaData;
       const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
-      response.contentData.result.content[index] = this.utilService.processContent(response.contentData.result.content[index],
+      sectionData[index] = this.utilService.processContent(sectionData[index],
         constantData, dynamicFields, metaData);
     });
-    return response.contentData.result.content;
+    return sectionData;
   }
 
   navigateToPage(page: number): undefined | void {

@@ -2,7 +2,7 @@ import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscript
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
-  ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
+  ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
   BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import {
@@ -231,7 +231,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchEnrolledCoursesSection() {
     return this.coursesService.enrolledCourseData$.pipe(map(({ enrolledCourses, err }) => {
-      this.enrolledCourses = enrolledCourses;
+      this.enrolledCourses = _.orderBy(enrolledCourses, ['enrolledDate'], ['desc']);
       const enrolledSection = {
         name: this.resourceService.frmelmnts.lbl.mytrainings,
         length: 0,
@@ -245,7 +245,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         return enrolledSection;
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
-      enrolledSection.contents = _.map(enrolledCourses, content => {
+      enrolledSection.contents = _.map(this.enrolledCourses, content => {
         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
         formatedContent.metaData.contentType = 'Course'; // to route to course page
@@ -290,7 +290,28 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public viewAll(event) {
-    const searchQuery = JSON.parse(event.searchQuery);
+    const userData = this.userService.userProfile;
+    const requestSearchQuery = JSON.stringify({
+      'request': {
+        'filters': {
+          'contentType': [
+            'Course'
+          ],
+          'objectType': [
+            'Content'
+          ],
+          'status': [
+            'Live'
+          ]
+        },
+        'sort_by': {
+          'lastPublishedOn': 'desc'
+        },
+        'limit': 10,
+        'organisationId': _.get(userData, 'organisationIds')
+      }
+    });
+    const searchQuery = _.get(event, 'searchQuery') ?  JSON.parse(event.searchQuery) : JSON.parse(requestSearchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {

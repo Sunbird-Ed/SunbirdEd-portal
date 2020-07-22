@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewAllComponent } from './view-all.component';
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
 import { configureTestSuite } from '@sunbird/test-util';
+import * as _ from 'lodash-es';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -24,6 +25,12 @@ describe('ViewAllComponent', () => {
       'fmsg': {
         'm0051': 'Fetching other courses failed, please try again later...',
         'm0077': 'Fetching serach result failed'
+      }
+    },
+    'frmelmnts' : {
+      'lbl' : {
+        'signinenrollTitle' : 'Log in to join this course',
+        'mytrainings' : 'My courses'
       }
     }
   };
@@ -96,9 +103,6 @@ describe('ViewAllComponent', () => {
     expect(component.closeUrl).toEqual('/learn');
     expect(component.sectionName).toEqual('Latest Courses');
     expect(component.pageNumber).toEqual(1);
-    expect(component.showLoader).toBeFalsy();
-    expect(component.noResult).toBeFalsy();
-    expect(component.totalCount).toEqual(1);
   });
   it('should call ngOninit when error', () => {
     const courseService = TestBed.get(CoursesService);
@@ -184,6 +188,22 @@ describe('ViewAllComponent', () => {
     component.searchList = Response.successData.result.content;
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should process the data if view-all is clicked from My-Courses section', () => {
+    const courseService = TestBed.get(CoursesService);
+    const searchService = TestBed.get(SearchService);
+    component.sectionName = 'My courses';
+    const sortedData = _.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']);
+    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({'enrolledCourseData': Response.enrolledCourseData}));
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
+    spyOn<any>(component, 'formatSearchresults').and.stub();
+    component.getContents(Response.paramsData);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeFalsy();
+    expect(component.totalCount).toEqual(Response.enrolledCourseData.enrolledCourses.length);
+    expect(component['formatSearchresults']).toHaveBeenCalledWith(sortedData);
   });
 
 });
