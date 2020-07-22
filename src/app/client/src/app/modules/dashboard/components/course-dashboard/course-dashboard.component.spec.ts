@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseDashboardComponent } from './course-dashboard.component';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CourseDashboardComponent', () => {
+xdescribe('CourseDashboardComponent', () => {
   let component: CourseDashboardComponent;
   let fixture: ComponentFixture<CourseDashboardComponent>;
   configureTestSuite();
