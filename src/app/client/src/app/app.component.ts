@@ -120,14 +120,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cacheService.removeAll();
   }
 
-  switchLayout() {
-    if (this.layoutConfiguration) {
-      this.layoutConfiguration = null;
-    } else {
-      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-    }
-  }
-
   handleHeaderNFooter() {
     this.router.events
       .pipe(
@@ -203,6 +195,14 @@ export class AppComponent implements OnInit, OnDestroy {
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  switchLayout() {
+    if (this.layoutConfiguration) {
+      this.layoutConfiguration = null;
+    } else {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    }
   }
 
   isLocationStatusRequired() {
