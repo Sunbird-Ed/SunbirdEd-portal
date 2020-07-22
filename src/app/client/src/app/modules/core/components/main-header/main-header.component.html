@@ -152,7 +152,9 @@
       <!--Avtar Dropdown-->
       <a class="profile-avtar computer only p-0" tabindex="0">
         <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-          <ngx-avatar [style]="avtarDesktopStyle" [size]="38" initialsSize="1" name="test">
+          <ngx-avatar (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                      [size]="38" initialsSize="1"
+                      name="test">
           </ngx-avatar>
         </div>
       </a>
@@ -162,7 +164,7 @@
 </div>
 
 
-<div class="overlay-sidebar" *ngIf="showSideMenu && userService.loggedIn">
+<div class="overlay-sidebar" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu">
     <div class="profile__info">
       <i class="icon-svg icon-svg--xs icon-close" (click)="toggleSideMenu(false)">
@@ -171,6 +173,7 @@
         </svg>
       </i>
 
+      <div *ngIf="userService.loggedIn">
       <div class="mb-16">
         <sb-member-card [config]=cardConfig
                         [initial]="userProfile?.firstName[0]"
@@ -208,7 +211,8 @@
         </div>
       </div>
     </div>
-
+    </div>
+    <div *ngIf="userService.loggedIn">
     <div class="profile__actions">
       <div class="add-user add-user--horizontal"
            *ngIf="totalUsersCount >=1"
@@ -277,6 +281,7 @@
           {{resourceService.frmelmnts?.lnk?.logout}}
         </li>
       </ul>
+    </div>
     </div>
   </div>
 </div>
