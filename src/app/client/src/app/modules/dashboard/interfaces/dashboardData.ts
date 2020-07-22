@@ -56,3 +56,19 @@ export interface IBatchListData {
     status?: Number;
     updatedDate?: any;
 }
+
+export interface ICountData {
+    title: string;
+    count: number;
+}
+export interface ICourseDetailsCount {
+    batches: ICountData;
+    participants: ICountData;
+    completed: ICountData;
+}
+
+export enum IDashboardTabs {
+    progress = 'Progress',
+    batches = 'Batches',
+    certificates = 'Certificates',
+}

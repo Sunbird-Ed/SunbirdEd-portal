@@ -17,7 +17,7 @@ import {
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent,
-  AddSummaryModalComponent
+  AddSummaryModalComponent, CourseDashboardComponent, CourseBatchesComponent, ReIssueCertificateComponent
 } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
@@ -40,7 +40,8 @@ import { OrderModule } from 'ngx-order-pipe';
     NgxDaterangepickerMd.forRoot()
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent],
+    DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent,
+    ReportComponent, AddSummaryModalComponent, CourseDashboardComponent, CourseBatchesComponent, ReIssueCertificateComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

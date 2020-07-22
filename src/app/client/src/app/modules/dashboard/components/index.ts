@@ -8,3 +8,6 @@ export * from './report/report.component';
 export * from './report-summary/report-summary.component';
 export * from './list-all-reports/list-all-reports.component';
 export * from './add-summary-modal/add-summary-modal.component';
+export * from './course-dashboard/course-dashboard.component';
+export * from './course-batches/course-batches.component';
+export * from './re-issue-certificate/re-issue-certificate.component';
