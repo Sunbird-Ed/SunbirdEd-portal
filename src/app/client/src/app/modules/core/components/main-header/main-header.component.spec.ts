@@ -85,26 +85,6 @@ describe('MainHeaderComponent', () => {
     expect(component.userProfile).toBeTruthy();
   });
 
-/*
-
-
-  it('should subscribe to user service', () => {
-    // devesh
-    const userService = TestBed.get(UserService);
-    const learnerService = TestBed.get(LearnerService);
-    const managedUserService = TestBed.get(ManagedUserService);
-    userService._authenticated = true;
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockData.userReadApiResponse));
-    userService.initialize(true);
-    managedUserService.fetchManagedUserList();
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData.userList));
-    spyOn(managedUserService, 'processUserList').and.returnValue(mockData.userList);
-    component.ngOnInit();
-    userService._userData$.next({err: null, userProfile: mockData.userReadApiResponse.result.response});
-    fixture.detectChanges();
-    expect(component.userProfile).toEqual(mockData.userReadApiResponse.result.response);
-  });
-*/
 
   it('Should subscribe to tenant service and update logo and tenant name', () => {
     spyOn(document, 'getElementById').and.returnValue('true');
