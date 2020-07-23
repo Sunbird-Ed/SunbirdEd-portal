@@ -101,6 +101,7 @@ export class ResourceService {
    * @returns HttpOptions
    */
   private getHeader(): HttpOptions['headers'] {
+    const _uuid = UUID.UUID();
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -109,8 +110,8 @@ export class ResourceService {
       'X-Org-code': '',
       'X-Source': 'web',
       'ts': dayjs().format(),
-      'X-msgid': UUID.UUID(),
-      'X-Request-ID': UUID.UUID()
+      'X-msgid': _uuid,
+      'X-Request-ID': _uuid
     };
   }
   /**
