@@ -317,7 +317,7 @@ const API_LIST = {
     },
     '/learner/user/v1/tnc/accept': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v1/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
