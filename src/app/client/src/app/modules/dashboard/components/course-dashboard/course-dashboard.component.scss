@@ -37,12 +37,13 @@ div.content {
   }
 
   .batch-card-number {
-    font-size: calculateRem(24px);
+    font-size: 2.5rem;
+    font-weight: bold;
   }
 }
 
 .completion-content{
-    height: calculateRem(195px);
+  max-height: 15.2875rem;
 }
 
 ::ng-deep {
