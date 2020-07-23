@@ -91,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+  layoutConfiguration;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -104,6 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -117,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
   }
+
   handleHeaderNFooter() {
     this.router.events
       .pipe(
@@ -192,6 +195,14 @@ export class AppComponent implements OnInit, OnDestroy {
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  switchLayout() {
+    if (this.layoutConfiguration) {
+      this.layoutConfiguration = null;
+    } else {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    }
   }
 
   isLocationStatusRequired() {
