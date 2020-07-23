@@ -171,7 +171,8 @@ describe('ReportComponent', () => {
       expect(res).toBeDefined();
       expect(res).toEqual([{
         label: 'Report Summary',
-        text: [mockLatestReportSummary[0].summary]
+        text: [mockLatestReportSummary[0].summary],
+        createdOn: mockLatestReportSummary[0].createdon
       }]);
       done();
     });

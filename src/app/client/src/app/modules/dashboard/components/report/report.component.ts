@@ -297,7 +297,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
           this._reportSummary = summary;
           return {
             label: _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
-            text: [summary]
+            text: [summary],
+            createdOn: _.get(summaryObj, 'createdon')
           };
         });
         return summaries;
@@ -449,7 +450,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         if (this.reportService.isUserSuperAdmin()) {
           return this.reportService.getMaterializedChildRows(reports).pipe(
             map(response => {
-              const reportObj = response[0];
+              const [reportObj] = response;
               return _.get(reportObj, 'children');
             })
           );
@@ -463,9 +464,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
   public handleParameterChange(val) {
     const { reportId } = this.activatedRoute.snapshot.params;
-    const hash = _.get(val, 'hashed_val');
-    const materialize = _.get(val, 'materialize') || false;
-    this.router.navigate(['/dashBoard/reports', reportId, hash], { queryParams: { ...materialize && { materialize } } }).then(() => {
+    const { hashed_val, materialize = false } = val;
+    this.router.navigate(['/dashBoard/reports', reportId, hashed_val], { queryParams: { ...materialize && { materialize } } }).then(() => {
       this.refreshComponent();
     });
   }

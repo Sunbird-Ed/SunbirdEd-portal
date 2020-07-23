@@ -422,7 +422,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
             this._chartSummary = summary;
             return {
               label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
-              text: [summary]
+              text: [summary],
+              createdOn: _.get(summaryObj, 'createdon')
             };
           });
         })

@@ -246,7 +246,7 @@ describe('ListAllReportsComponent', () => {
     it('should handle click event from dataTable when row is non parameterized or do not have child rows', fakeAsync(() => {
       component.reports = [{
         reportid: '123',
-        hash: 'hash',
+        hashed_val: 'hash',
         isParameterized: false,
         children: [{
           status: 'draft'
