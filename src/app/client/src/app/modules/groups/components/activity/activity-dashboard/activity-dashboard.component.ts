@@ -133,8 +133,22 @@ export class ActivityDashboardComponent implements OnInit {
       }
     });
 
-    this.memberListToShow = _.cloneDeep(this.members);
+    this.memberListToShow = this.getSortedMembers();
     this.getActivityInfo();
+  }
+
+  getSortedMembers() {
+    const sortMembersByProgress = [];
+    const sortMembersByName = [];
+    _.map(_.cloneDeep(this.members), member => {
+      if (_.get(member, 'identifier') !== this.userService.userid) {
+        _.get(member, 'progress') > 0 ? sortMembersByProgress.push(member) :  sortMembersByName.push(member);
+      }
+    });
+    const currentUser = _.find(this.members, {identifier: this.userService.userid});
+    const sortedMembers = _.sortBy(sortMembersByProgress, 'progress', 'dsc').concat(_.sortBy(sortMembersByName, 'title', 'asc'));
+    sortedMembers.unshift(currentUser);
+    return sortedMembers || [];
   }
 
   getActivityInfo() {
