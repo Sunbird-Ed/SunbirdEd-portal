@@ -17,10 +17,10 @@ a {
 }
 
 .course-participants-label {
-  flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .course-completed:last-child{
@@ -41,6 +41,10 @@ a {
   display: inline-block;
   width: calculateRem(14px);
   height: calculateRem(14px);
+}
+
+.sb-btn-link{
+  font-size: calculateRem(16px);
 }
 
 ::ng-deep {
@@ -93,4 +97,11 @@ a {
 }
 .CloseButtonFont {
   font-size: 1.5rem !important;
+}
+
+.progress-content{
+  margin-top: calculateRem(48px);
+  @include respond-below(sm){
+    margin-top: 0px;
+ }
 }
