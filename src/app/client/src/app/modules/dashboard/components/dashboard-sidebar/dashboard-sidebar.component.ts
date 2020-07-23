@@ -1,22 +1,36 @@
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { Component } from '@angular/core';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-dashboard-sidebar',
   templateUrl: './dashboard-sidebar.component.html',
   styleUrls: ['./dashboard-sidebar.component.scss']
 })
-export class DashboardSidebarComponent implements OnInit, OnDestroy {
-  public unsubscribe$ = new Subject<void>();
-  constructor(public resourceService: ResourceService) { }
+export class DashboardSidebarComponent {
 
-  ngOnInit() {
-  }
+  courseStatsEdata: IInteractEventEdata;
+  courseBatchesEdata: IInteractEventEdata;
+  courseCertificatesEdata: IInteractEventEdata;
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  constructor(public resourceService: ResourceService, public router: Router,
+    private activatedRoute: ActivatedRoute) {
+      this.courseStatsEdata = {
+        id: 'course-stats',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+      };
+      this.courseBatchesEdata = {
+        id: 'course-batches',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+      };
+      this.courseCertificatesEdata = {
+        id: 'course-certificates',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
+      };
+    }
 
 }

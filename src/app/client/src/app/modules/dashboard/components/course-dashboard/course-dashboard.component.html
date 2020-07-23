@@ -1,26 +1,19 @@
-<div class="content">
+<div class="content" [appTelemetryImpression]="telemetryImpression">
   <div class="ui stackable grid">
     <div class="five wide column">
-      <div class="batch-sbcard mb-16">
+      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoardSmallCards | keyvalue">
         <div class="d-flex flex-ai-center flex-jc-center flex-dc py-16">
-          <div class="batch-card-title">Total BATCHES</div>
-          <div class="batch-card-number">24</div>
+          <div class="batch-card-title">{{item?.value?.title}}</div>
+          <div class="batch-card-number">{{item?.value?.count || 0}}</div>
         </div>
       </div>
-
-      <div class="batch-sbcard">
-        <div class="d-flex flex-ai-center flex-jc-center flex-dc py-16">
-          <div class="batch-card-title">Total BATCHES</div>
-          <div class="batch-card-number">24</div>
-        </div>
-      </div>
-
     </div>
+
     <div class="seven wide column">
-      <div class="batch-sbcard">
+      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoardLargeCards | keyvalue">
         <div class="d-flex flex-ai-center flex-jc-center flex-dc py-16 completion-content">
-          <div class="batch-card-title">TOTAL COMPLETIONS</div>
-          <div class="batch-card-number">40</div>
+          <div class="batch-card-title">{{item?.value?.title}}</div>
+          <div class="batch-card-number">{{item?.value?.count || 0}}</div>
         </div>
       </div>
     </div>

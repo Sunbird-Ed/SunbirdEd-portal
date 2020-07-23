@@ -1,3 +1,4 @@
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -14,7 +15,8 @@ describe('DashboardSidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ DashboardSidebarComponent ],
-      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule],
+      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule],
+      providers: [ TelemetryService ]
     })
     .compileComponents();
   }));
@@ -27,15 +29,5 @@ describe('DashboardSidebarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.ngOnInit();
   });
-
-  it('should assign enrollment and completed count', () => {
-    spyOn(component.unsubscribe$, 'next');
-    spyOn(component.unsubscribe$, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.next).toHaveBeenCalled();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
-  });
-
 });

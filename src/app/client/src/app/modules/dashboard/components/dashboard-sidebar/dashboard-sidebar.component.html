@@ -2,9 +2,10 @@
   <div class="three wide column">
     <div class="sidebar py-24">
       <div class="dashboard-title m-0 mb-16">Dashboard</div>
-      <a class="active" href="#progress">Progress</a>
-      <a href="#batches">Batches</a>
-      <a href="#certificates">Certificates</a>
+      <a [routerLink]="['course-stats']" routerLinkActive="active" appTelemetryInteract [telemetryInteractEdata]="courseStatsEdata" >Progress</a>
+      <a [routerLink]="['progress']" [class.active]="router.url.includes('/dashboard/progress')" appTelemetryInteract [telemetryInteractEdata]="courseBatchesEdata">Batches</a>
+      <a [routerLink]="['certificates']" [class.active]="router.url.includes('/dashboard/certificates')" appTelemetryInteract [telemetryInteractEdata]="courseCertificatesEdata">Certificates</a>
+
     </div>
   </div>
   <div class="eight wide column">

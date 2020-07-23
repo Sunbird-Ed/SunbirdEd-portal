@@ -1,5 +1,6 @@
+import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../course-progress/course-progress.component.spec.data';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -9,18 +10,30 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { APP_BASE_HREF } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import { CourseProgressService } from '../../services';
+import { ActivatedRoute } from '@angular/router';
 
 describe('CourseDashboardComponent', () => {
   let component: CourseDashboardComponent;
   let fixture: ComponentFixture<CourseDashboardComponent>;
   let courseProgressService: CourseProgressService;
+  const fakeActivatedRoute = {
+    'params': of ({courseId: '123'}),
+    snapshot: {
+        data: {
+            telemetry: {
+                env: 'dashboard', pageid: 'course-dashboard', type: 'view', subtype: 'paginate'
+            }
+        }
+    }
+  };
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseDashboardComponent ],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, RouterTestingModule],
       providers: [CourseProgressService, TelemetryService,
         {provide: APP_BASE_HREF, value: '/'},
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
       ],
     })
     .compileComponents();
@@ -56,29 +69,25 @@ describe('CourseDashboardComponent', () => {
   it('should create', () => {
     const searchParamsCreator = {
       courseId: '123',
-      status: ['0', '1', '2']
+      status: ['0', '1', '2'],
     };
     spyOn(component['courseProgressService'], 'getBatches').and.returnValue(throwError ([]));
     component.getBatchList();
     courseProgressService.getBatches(searchParamsCreator).subscribe(data => {
     }, err => {
       expect(err).toEqual([]);
-      expect(component.batchList).toEqual([]);
     });
     expect(component['courseProgressService'].getBatches).toHaveBeenCalledWith(searchParamsCreator);
   });
 
   it('should assign enrollment and completed count', () => {
-    component.batchList = [{id: 1, completedCount: 1, participantCount: 5}];
-    component.getEnrollmentAndCompletedCount();
+    component.getEnrollmentAndCompletedCount({content: [mockUserData.currentBatchDataWithCount], count: 1});
+    expect(component.dashBoardSmallCards.totalBatches.count).toEqual(1);
+    expect(component.dashBoardSmallCards.totalEnrollment.count).toEqual(2);
+    expect(component.dashBoardLargeCards.totalCompleted.count).toEqual(4);
   });
 
-  it('should assign enrollment and completed count', () => {
-    component.batchList = [{id: 1, completedCount: 1, participantCount: 5}];
-    component.getEnrollmentAndCompletedCount();
-  });
-
-  it('should assign enrollment and completed count', () => {
+  it('should unsubscribe on destroy', () => {
     spyOn(component.unsubscribe$, 'next');
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();

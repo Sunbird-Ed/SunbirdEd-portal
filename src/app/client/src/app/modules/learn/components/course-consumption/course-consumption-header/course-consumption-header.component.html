@@ -93,7 +93,7 @@
             </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
         </div>
 
-          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse"
+          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && !router.url.includes('/dashboard')"
             appPermission [permission]="dashboardPermission">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
               [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
@@ -101,6 +101,16 @@
               {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
             </button>
           </div>
+
+          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && router.url.includes('/dashboard')"
+          appPermission [permission]="dashboardPermission">
+          <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+            [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
+            class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
+            Close dashboard
+          </button>
+        </div>
+
         </div>
       </div>
     </div>
