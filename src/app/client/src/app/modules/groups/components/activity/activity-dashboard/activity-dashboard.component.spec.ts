@@ -152,4 +152,24 @@ describe('ActivityDashboardComponent', () => {
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
     expect(groupService.addTelemetry).toHaveBeenCalled();
   });
+
+  it('should sort and return members', () => {
+    component['userService'].setUserId('1');
+    component.members = [
+      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0},
+      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0},
+      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0},
+      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0},
+      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0},
+    ];
+    const sortedMembers = [
+      { title: 'A', identifier: '1', progress: '0', initial: 'A', indexOfMember: 0},
+      { title: 'E', identifier: '3', progress: '100', initial: 'E', indexOfMember: 0},
+      { title: 'D', identifier: '2', progress: '80', initial: 'D', indexOfMember: 0},
+      { title: 'B', identifier: '5', progress: '0', initial: 'B', indexOfMember: 0},
+      { title: 'K', identifier: '4', progress: '0', initial: 'K', indexOfMember: 0},
+    ];
+    const members = component.getSortedMembers();
+    expect(members).toEqual(sortedMembers);
+  });
 });
