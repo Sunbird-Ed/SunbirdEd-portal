@@ -15,7 +15,8 @@ const ROLE = {
   CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
-  PUBLIC: 'PUBLIC'
+  PUBLIC: 'PUBLIC',
+  ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
 const API_LIST = {
@@ -239,7 +240,7 @@ const API_LIST = {
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -361,7 +362,7 @@ const API_LIST = {
     },
     '/learner/user/v2/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v2/accept/tnc': {
       checksNeeded: ['ROLE_CHECK'],

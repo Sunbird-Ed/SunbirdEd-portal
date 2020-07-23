@@ -70,7 +70,9 @@ const urlChecks = {
    * @since - release-3.1.0
    */
   ROLE_CHECK: (resolve, reject, req, rolesForURL) => {
-    if (_.intersection(rolesForURL, req.session['roles']).length > 0) {
+    if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
+      resolve();
+    } else if (_.intersection(rolesForURL, req.session['roles']).length > 0) {
       resolve();
     } else {
       return reject('User doesn\'t have appropriate roles');
