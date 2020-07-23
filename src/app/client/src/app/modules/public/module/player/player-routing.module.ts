@@ -15,10 +15,10 @@ const routes: Routes = [
     },
     {
         path: 'collection/:collectionId', component: PublicCollectionPlayerComponent, data: {
-            // routeReuse: {
-            //     reuse: true,
-            //     path: '/play/collection'
-            //   },
+            routeReuse: {
+                reuse: true,
+                path: '/play/collection'
+            },
             telemetry: {
                 env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
             }
