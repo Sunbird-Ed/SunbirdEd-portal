@@ -222,4 +222,16 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.getUserFeedData();
     expect(userService.getFeedData).not.toHaveBeenCalled();
   });
+
+  it('should switchLayout to new UI', () => {
+    component.layoutConfiguration = null;
+    component.switchLayout();
+    expect(component.layoutConfiguration).toEqual(configService.appConfig.layoutConfiguration);
+  });
+
+  it('should switchLayout to old UI', () => {
+    component.layoutConfiguration = configService.appConfig.layoutConfiguration;
+    component.switchLayout();
+    expect(component.layoutConfiguration).toBe(null);
+  });
 });

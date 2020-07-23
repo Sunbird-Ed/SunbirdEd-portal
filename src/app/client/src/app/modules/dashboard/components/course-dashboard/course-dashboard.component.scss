@@ -1,0 +1,59 @@
+@import 'variables';
+@import "mixins/mixins";
+
+div.content {
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    margin-top: calculateRem(48px);
+
+    @include respond-below(sm){
+        margin-left: 0px;
+        margin-top: 0px;
+    }
+
+    .batch-details{
+        .img-text{
+            color:var(--gray-200);
+        }
+    }
+
+  //cards css
+  .batch-sbcard {
+    width: 100%;
+    border-radius: calculateRem(2px);
+    background-color: var(--white);
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    border: 2px solid var(--white);
+    box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+  }
+
+  .batch-card-title {
+    font-size: calculateRem(14px);
+    color: var(--gray-100);
+  }
+
+  .batch-card-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+}
+
+.completion-content{
+  max-height: 15.2875rem;
+}
+
+::ng-deep {
+    .course-dashboard-select{
+     width: 300px;
+    }
+    .ui.selection.dropdown{
+      line-height: 1em;
+     }
+    .ui.search.dropdown.course-dashboard-select>.text {
+      margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
+    } 
+  }

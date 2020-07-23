@@ -535,20 +535,20 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.1.21":
-  version "3.1.22"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.22.tgz#a416a8e1112c4f311220d2e5246be1fd93ec815e"
-  integrity sha512-N7yeI/XOUH93u9Xl20RHWBMN8fypaa4ZGvaOeQ/x6GNfQZ/2nXwUUEDodRAHIfH/WXT7Msz5bHPY3AIlGFJxDw==
+"@project-sunbird/client-services@^3.1.24":
+  version "3.1.24"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.24.tgz#dfd80e6db1cb7a7a6accbe669b172aa9549d588d"
+  integrity sha512-7+Laaa96SGN5KA2n+cqDodItxd7fHKEAoinC+rh07ZZj6GuJOAxITGh6DPL12ARPwi8nrP4H98px9p3V6EBOpw==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.1.12":
-  version "3.1.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.12.tgz#f98d0b30c9c8a55823ab94f8f619f38fd818f58b"
-  integrity sha512-LykXxIF2mqpRJ7YElEBVs5rmrCv/PxiTpViowIQv/2xKSwQ4M1reviDsJLzk1yFhS3FsLnDeojsavx6C1eQLYg==
+"@project-sunbird/common-consumption@^3.1.20":
+  version "3.1.20"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.20.tgz#880c4da6e9a8e89790b9b656edc016ccf45a92da"
+  integrity sha512-P31ZYKS0BH8ikCxRR8pT60nB5Kn3QMAKKUsXwmcUV4ubbFtk5fdTr03BozJul3xBS1V2y12/KT2a1iKHW91mTA==
   dependencies:
     tslib "^1.9.0"
 
