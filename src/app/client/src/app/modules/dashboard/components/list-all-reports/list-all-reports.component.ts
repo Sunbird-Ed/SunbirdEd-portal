@@ -194,8 +194,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
       if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
-      const { reportid, hash, materialize } = rowData;
-      this.rowClickEventHandler(reportid, hash, materialize || false);
+      const { reportid, hashed_val, materialize } = rowData;
+      this.rowClickEventHandler(reportid, hashed_val, materialize || false);
     });
 
     const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
