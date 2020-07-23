@@ -120,6 +120,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cacheService.removeAll();
   }
 
+  isLocationStatusRequired() {
+    const url = location.href;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
   handleHeaderNFooter() {
     this.router.events
       .pipe(
@@ -203,11 +208,6 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     }
-  }
-
-  isLocationStatusRequired() {
-    const url = location.href;
-    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
   checkLocationStatus() {
@@ -379,20 +379,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * fetch device id using fingerPrint2 library.
-   */
-  public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-          this.fingerprintInfo = {deviceId, components, version};
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.deviceId = deviceId;
-          this.botObject['did'] = deviceId;
-        this.deviceRegisterService.setDeviceId();
-          observer.next(deviceId);
-          observer.complete();
-        }));
-  }
-  /**
    * set user details for loggedIn user.
    */
   private setUserDetails(): Observable<any> {
@@ -552,6 +538,22 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }
+  }
+
+
+  /**
+   * fetch device id using fingerPrint2 library.
+   */
+  public setDeviceId(): Observable<string> {
+    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+      this.fingerprintInfo = {deviceId, components, version};
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.deviceId = deviceId;
+      this.botObject['did'] = deviceId;
+      this.deviceRegisterService.setDeviceId();
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
 
   /** It will fetch user feed data if user is custodian as well as logged in. */
