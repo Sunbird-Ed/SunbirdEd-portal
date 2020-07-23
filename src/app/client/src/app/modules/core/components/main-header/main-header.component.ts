@@ -263,6 +263,29 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  getFeatureId(featureId, taskId) {
+    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
+  }
+
+  fetchManagedUsers() {
+    const requests = [this.managedUserService.managedUserList$];
+    if (this.userService.userProfile.managedBy) {
+      requests.push(this.managedUserService.getParentProfile());
+    }
+    zip(...requests).subscribe((data) => {
+        let userListToProcess = _.get(data[0], 'result.response.content');
+        if (data && data[1]) {
+          userListToProcess = [data[1]].concat(userListToProcess);
+        }
+        const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+        this.userListToShow = processedUserList.slice(0, 2);
+        this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      }
+    );
+  }
+
   setInteractEventData() {
     this.signUpInteractEdata = {
       id: 'signup',
@@ -296,44 +319,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     };
   }
 
-  getFeatureId(featureId, taskId) {
-    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
-  }
-
-  fetchManagedUsers() {
-    const requests = [this.managedUserService.managedUserList$];
-    if (this.userService.userProfile.managedBy) {
-      requests.push(this.managedUserService.getParentProfile());
-    }
-    zip(...requests).subscribe((data) => {
-        let userListToProcess = _.get(data[0], 'result.response.content');
-        if (data && data[1]) {
-          userListToProcess = [data[1]].concat(userListToProcess);
-        }
-        const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
-        this.userListToShow = processedUserList.slice(0, 2);
-        this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
-    );
-  }
-
   getLogoutInteractEdata() {
     return {
       id: 'logout',
       type: 'click',
       pageid: this.router.url.split('/')[1]
     };
-  }
-
-  toggleSideMenu(value: boolean) {
-    this.showSideMenu = !this.showSideMenu;
-    if (this.userService.loggedIn) {
-      if (this.showSideMenu) {
-        this.fetchManagedUsers();
-      }
-    }
   }
 
   logout() {
@@ -477,4 +468,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
   }
 
+  toggleSideMenu(value: boolean) {
+    this.showSideMenu = !this.showSideMenu;
+    if (this.userService.loggedIn) {
+      if (this.showSideMenu) {
+        this.fetchManagedUsers();
+      }
+    }
+  }
 }
