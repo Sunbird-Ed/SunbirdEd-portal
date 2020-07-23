@@ -61,6 +61,15 @@ const routes: Routes = [
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
     }
+  },
+  {
+    path: 'reports/:reportId/:hash', component: ReportComponent,
+    data: {
+      roles: 'reportViewerRole',
+      telemetry: { env: 'dashboard', pageid: 'report-page', type: 'view' },
+      breadcrumbs: [{ label: 'Home', url: '/home' },
+      { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
+    }
   }
 ];
 

@@ -1,13 +1,15 @@
 import { UserService } from '@sunbird/core';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { catchError, mergeMap, map, tap } from 'rxjs/operators';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import * as $ from 'jquery';
+import 'datatables.net';
 
 @Component({
   selector: 'app-list-all-reports',
@@ -15,6 +17,7 @@ import * as moment from 'moment';
   styleUrls: ['./list-all-reports.component.scss']
 })
 export class ListAllReportsComponent implements OnInit, AfterViewInit {
+  reports: any;
 
   constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService) { }
@@ -23,6 +26,11 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   public noResultFoundError: string;
   private _isUserReportAdmin: boolean;
   public telemetryImpression: IImpressionEventInput;
+
+  @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
+    if (!element) { return; }
+    this.prepareTable(element.nativeElement);
+  }
 
   ngOnInit() {
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
@@ -40,98 +48,32 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  /**s
+
+  private filterReportsBasedOnRoles = (reports: any[]) => {
+    if (this.reportService.isUserSuperAdmin()) {
+      return this.reportService.getMaterializedChildRows(reports);
+    } else if (this.reportService.isUserReportAdmin()) {
+      return of(reports);
+    } else {
+      return of(this.reportService.getFlattenedReports(reports));
+    }
+  }
+
+  /**
    * @private
    * @returns Observable with list of reports.
    * @memberof ListAllReportsComponent
    */
   private getReportsList(isUserReportAdmin: boolean) {
-    const filters = {
-      status: ['live', ...isUserReportAdmin ? ['draft', 'retired'] : []]
-    };
+    const filters = {};
     return this.reportService.listAllReports(filters).pipe(
-      map((apiResponse: { reports: any[], count: number }) => {
-        const reports = _.map(apiResponse.reports, report => {
-          return {
-            ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
-              'tags', 'updatefrequency'], ...isUserReportAdmin ? ['status'] : [])
-          };
-        });
-        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency',
-          ...isUserReportAdmin ? ['Status'] : []];
-        const result = {
-          table: {
-            header: headers || _.keys(reports[0]),
-            data: _.map(reports, report => _.values(report)),
-            defs: this.getColumnsDefs(),
-            options: {
-              searching: true
-            }
-          },
-          count: _.get(apiResponse, 'count')
-        };
-        return result;
+      mergeMap(res => this.filterReportsBasedOnRoles(res.reports)),
+      map(reports => {
+        this.reports = reports;
+        const count = _.get(reports, 'length');
+        return { count, reports };
       })
     );
-  }
-
-  /**
-   * @description returns columns defs to configure datatable.net
-   * @private
-   * @memberof ListAllReportsComponent
-   */
-  private getColumnsDefs() {
-    return [
-      {
-        targets: 0,
-        visible: false
-      },
-      {
-        targets: [1, 2],
-        width: '25%'
-      },
-      {
-        targets: [4],
-        width: '15%',
-        render: data => {
-          if (Array.isArray(data)) {
-            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${_.startCase(_.toLower(tag))}</div>`);
-          }
-          return _.startCase(_.toLower(data));
-        }
-      },
-      {
-        targets: [3, 5, 1, 2],
-        render: (data) => {
-          const date = moment(data);
-          if (date.isValid()) {
-            return `<td> ${moment(data).format('YYYY/MM/DD')} </td>`;
-          }
-          return _.startCase(_.toLower(data));
-        }
-      },
-      ...(this._isUserReportAdmin ? [{
-        targets: [6],
-        render: (data) => {
-          const icon = {
-            live: {
-              color: 'secondary',
-              icon: 'check'
-            },
-            draft: {
-              color: 'primary',
-              icon: 'edit'
-            },
-            retired: {
-              color: 'gray',
-              icon: 'close'
-            }
-          };
-          return `<button class="sb-btn sb-btn-${icon[_.toLower(data)].color} sb-btn-normal sb-btn-square">
-          <i class="icon ${icon[_.toLower(data)].icon} alternate"></i><span>${_.startCase(_.toLower(data))}</span></button>`;
-        }
-      }] : [])
-    ];
   }
 
   /**
@@ -139,9 +81,165 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
    * @param {*} event
    * @memberof ListAllReportsComponent
    */
-  public rowClickEventHandler(event) {
-    this.router.navigate(['/dashBoard/reports', event[0]]).catch(err => {
-      console.log({ err });
+  public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
+    this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])],
+      { queryParams: { ...(this.reportService.isUserReportAdmin() && { materialize }) } }).catch(err => {
+        console.log({ err });
+      });
+  }
+
+  private renderStatus(data, type, row) {
+
+    if (row.isParameterized && row.children && this.reportService.isUserReportAdmin()) {
+      if (_.every(row.children, child => _.toLower(child.status) === 'live')) {
+        data = 'live';
+      } else {
+        if (_.some(row.children, child => _.toLower(child.status) === 'live')) {
+          data = 'partially live';
+        } else {
+          data = 'draft';
+        }
+      }
+    }
+
+    const icon = {
+      live: { color: 'success-0', icon: 'check' },
+      draft: { color: 'warning-0', icon: 'edit' },
+      retired: { color: 'primary-100', icon: 'close' },
+      ['partially live']: { color: 'secondary-0', icon: 'check' }
+    };
+
+    const status = _.startCase(_.toLower(data));
+    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">
+    ${data === 'live' ? `<span class="sb-live"></span>` : ''} ${status}</span>`;
+    return spanElement;
+  }
+
+  private renderTags(data) {
+
+    if (Array.isArray(data)) {
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">${_.startCase(_.toLower(tag))}</span>`), ' ');
+      return `<div class="sb-filter-label"><div class="d-inline-flex m-0">${elements}</div></div>`;
+    }
+
+    return _.startCase(_.toLower(data));
+  }
+
+  /**
+   * @description initializes the datatables with relevant configurations
+   * @param {*} el
+   * @memberof ListAllReportsComponent
+   */
+  public prepareTable(el) {
+    const masterTable = $(el).DataTable({
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      order: [[1, 'desc']],
+      ordering: true,
+      info: true,
+      autoWidth: true,
+      data: this.reports,
+      columns: [
+        ...(this.reportService.isUserReportAdmin() ? [{
+          class: 'details-control',
+          orderable: false,
+          data: null,
+          render: (data, type, row) => {
+            const isParameterized = _.get(row, 'isParameterized') || false;
+            let count = 0;
+            if (isParameterized && row.children) {
+              count = _.filter(row.children, child => _.toLower(child.status) === 'live').length;
+            }
+            return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square">
+            <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'}
+            alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ''}</span></button>`;
+          },
+          defaultContent: ''
+        }] : []),
+        { title: 'Report Id', data: 'reportid', visible: false },
+        { title: 'Created On', data: 'createdon', visible: false },
+        {
+          title: 'Title', data: 'title', render: (data, type, row) => {
+            const { title, description } = row;
+            return `<div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                  ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
+          }
+        },
+        {
+          title: 'Last Updated Date', data: 'reportgenerateddate',
+          render: (data) => {
+            const date = moment(data);
+            if (date.isValid()) {
+              return `<td> ${moment(data).format('YYYY/MM/DD')} </td>`;
+            }
+            return _.startCase(_.toLower(data));
+          }
+        }, {
+          title: 'Tags',
+          data: 'tags',
+          render: this.renderTags
+        }, {
+          title: 'Update Frequency',
+          data: 'updatefrequency',
+          render: this.renderTags
+        },
+        ...(this._isUserReportAdmin ? [{
+          title: 'Status',
+          data: 'status',
+          render: this.renderStatus.bind(this)
+        }] : [])]
+    });
+
+    $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
+      const rowData = masterTable && masterTable.row(event.currentTarget).data();
+      if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
+      const { reportid, hash, materialize } = rowData;
+      this.rowClickEventHandler(reportid, hash, materialize || false);
+    });
+
+    const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
+
+    $(el).on('click', 'td.details-control', (event) => {
+      const tr = $(event.currentTarget).closest('tr');
+      const row = masterTable.row(tr);
+      const rowData = _.get(row, 'data')();
+      if (row.child.isShown()) {
+        row.child.hide();
+      } else {
+        if (!rowData.isParameterized) { return false; }
+        if (!_.has(rowData, 'children')) { return false; }
+        const id = rowData.reportid;
+        row.child(getChildTable(id)).show();
+        const childTable = $(`#${id}`).DataTable({
+          paging: true,
+          lengthChange: false,
+          searching: true,
+          ordering: false,
+          info: false,
+          autoWidth: false,
+          data: rowData.children,
+          columns: [{
+            title: 'Parameter',
+            data: 'hashed_val',
+            className: 'text-center',
+            render: data => {
+              const parameters = _.split(atob(data), '__');
+              return parameters;
+            }
+          }, {
+            title: 'Status',
+            data: 'status',
+            render: this.renderStatus.bind(this),
+            className: 'text-center'
+          }]
+        });
+
+        $(`#${id}`).on('click', 'td', e => {
+          const { reportid, hashed_val, materialize } = childTable.row(e.currentTarget).data();
+          this.rowClickEventHandler(reportid, hashed_val, materialize || false);
+        });
+      }
     });
   }
 

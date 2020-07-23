@@ -35,10 +35,6 @@ describe('ActivityListComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
-  class GroupServiceMock {
-    removeActivities() { return of({}); }
-  }
-
   const resourceBundle = {
     'messages': {
       'fmsg': {
@@ -64,7 +60,7 @@ describe('ActivityListComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
-        { provide: GroupsService, useClass: GroupServiceMock },
+        GroupsService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -88,6 +84,7 @@ describe('ActivityListComponent', () => {
     component.ngOnInit();
     expect(component.showLoader).toBe(true);
     expect(component.getActivities).toHaveBeenCalled();
+
   });
 
   it('should call getActivities', () => {
@@ -138,13 +135,16 @@ describe('ActivityListComponent', () => {
       identifier: 'do_1235232121343',
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
       organisation: ['Prod Custodian Organization'],
-      subject: 'Social Science'
+      subject: 'Social Science',
+      type: 'Course'
     };
+    spyOn(component['groupService'], 'emitMenuVisibility');
     spyOn(component, 'addTelemetry');
     component.getMenuData(eventData, member);
     expect(component.selectedActivity).toEqual(member);
     expect(component.showMenu).toBe(true);
     expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
+    expect(component['groupService'].emitMenuVisibility).toHaveBeenCalledWith('activity');
   });
 
   it('should call toggleModal', () => {

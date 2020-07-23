@@ -202,4 +202,10 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.addActivityToGroup();
     expect(toasterService.error).toHaveBeenCalledWith(`Unable to add activity, please try again`);
   });
+
+  it('should call goBack and return to learn page', () => {
+    spyOn(component['navigationHelperService'], 'goBack');
+    component.goBack();
+    expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
+  });
 });

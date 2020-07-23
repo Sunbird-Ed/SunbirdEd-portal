@@ -15,6 +15,7 @@ export interface IActivity {
   appIcon: string;
   organisation: string[];
   subject: string;
+  type: string;
 }
 @Component({
   selector: 'app-activity-list',
@@ -54,6 +55,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
           this.addTelemetry('activity-kebab-menu-close');
         }
       });
+
+    this.groupService.showMenu.subscribe(data => {
+      this.showMenu = data === 'activity';
+    });
   }
 
   getActivities() {
@@ -61,12 +66,11 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.activityList =  this.groupData.activities.map(item => item.activityInfo);
   }
 
-  openActivity(event: any, activity: IActivity) {
+  openActivity(event: any, activity) {
     this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
-    // TODO add telemetry here
-
+    const options = { relativeTo: this.activateRoute, queryParams: { contentType: activity.contentType } };
     if (_.get(this.groupData, 'isAdmin')) {
-      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], { relativeTo: this.activateRoute });
+      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], options);
     } else {
       this.router.navigate(['/learn/course', activity.identifier]);
     }
@@ -74,6 +78,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showMenu = !this.showMenu;
+    this.groupService.emitMenuVisibility('activity');
     this.selectedActivity = member;
     this.addTelemetry('activity-kebab-menu-open');
   }

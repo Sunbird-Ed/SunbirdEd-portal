@@ -15,7 +15,8 @@ const ROLE = {
   CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
-  PUBLIC: 'PUBLIC'
+  PUBLIC: 'PUBLIC',
+  ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
 const API_LIST = {
@@ -66,7 +67,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/content/v1/read': {
+    '/content/content/v1/read/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -239,7 +240,7 @@ const API_LIST = {
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -316,7 +317,7 @@ const API_LIST = {
     },
     '/learner/user/v1/tnc/accept': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v1/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -361,7 +362,7 @@ const API_LIST = {
     },
     '/learner/user/v2/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v2/accept/tnc': {
       checksNeeded: ['ROLE_CHECK'],
@@ -399,8 +400,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/certreg/v1/certs/validate': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     '/learner/otp/v1/verify': {
       checksNeeded: ['ROLE_CHECK'],
@@ -528,6 +528,7 @@ const API_LIST = {
     }
   },
   URL_PATTERN: [
+    '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',
     '/content/content/v1/reject/:do_id',
@@ -543,8 +544,7 @@ const API_LIST = {
     '/learner/user/v1/exists/email/:emailId',
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
-    '/learner/user/v2/exists/:key/:value',
-    '/learner/data/v1/group/activity/agg'
+    '/learner/user/v2/exists/:key/:value'
   ]
 };
 module.exports = API_LIST;

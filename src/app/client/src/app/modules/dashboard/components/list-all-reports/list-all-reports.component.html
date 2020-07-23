@@ -2,7 +2,7 @@
 
   <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
 
-    <div class="sb-pageSection-header" *ngIf="reportsList.count > 0">
+    <div class="sb-pageSection-header mb-0" *ngIf="reportsList.count > 0">
       <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8"> View All Reports</span>
       </h4>
     </div>
@@ -11,10 +11,10 @@
 
       <ng-container *ngIf="reportsList.count > 0 else noResult">
         <div class="ui bottom attached small p-0 b-0 no-bg py-24">
-          <app-data-table [options]="reportsList.table.options" [columnDefinations]="reportsList.table.defs"
-            (rowClickEvent)="rowClickEventHandler($event)" [tableId]="'list-all-reports'"
-            [headerData]="reportsList.table.header" [rowsData]="reportsList.table.data">
-          </app-data-table>
+
+          <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable br-0 width-100">
+          </table>
+
         </div>
       </ng-container>
 

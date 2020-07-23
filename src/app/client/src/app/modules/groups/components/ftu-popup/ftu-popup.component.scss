@@ -23,24 +23,6 @@
     
     }
   }
-  .sb-group-container__title {
-    color: var(--gray-800);
-    font-size: calculateRem(20px);
-    font-weight: bold;
-    letter-spacing: 0;
-    line-height: calculateRem(28px);
-    text-align: center;
-  }
-
-  .sb-group-container__img {
-    width:calculateRem(220px);
-  }
-
-  .sb-group-container__description {
-    color: var(--gray-800);
-  font-size: calculateRem(14px);
-  line-height: calculateRem(22px);
-  }
 
   h4 {
     color: var(--gray-800);

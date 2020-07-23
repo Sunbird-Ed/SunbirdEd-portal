@@ -170,7 +170,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     return combineLatest(
       this.batchService.getUserList(),
       this.batchService.getUpdateBatchDetails(this.batchId),
-      this.batchService.getParticipantList({'request': {'batch': {'batchId': this.batchId}}}),
       (userDetails, batchDetails, participants) => ({userDetails, batchDetails, participants})
     );
   }

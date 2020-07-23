@@ -177,3 +177,7 @@ input[type=number]::-webkit-inner-spin-button {
 .otp-label{
     line-height: 1.8;
 }
+.resend-disable {
+    background-color: var(--gray-100) !important;
+    color: var(--gray-200) !important;
+}
