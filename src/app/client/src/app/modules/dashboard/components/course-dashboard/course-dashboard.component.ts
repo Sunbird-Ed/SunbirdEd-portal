@@ -48,6 +48,8 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
 
   // To initialize the dashboard data
   initializeFields() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
+    .subscribe(item => {
     this.dashBoard = {
       totalBatches: {
         title: this.resourceService.frmelmnts.lbl.totalBatches,
@@ -65,6 +67,7 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
         count: 0
       }
     };
+    });
   }
 
 

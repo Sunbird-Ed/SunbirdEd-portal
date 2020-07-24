@@ -39,7 +39,8 @@ describe('CourseDashboardComponent', () => {
       emsg: {
         m0005: 'Something went wrong',
       }
-    }
+    },
+    languageSelected$: of({})
   };
 
   configureTestSuite();
