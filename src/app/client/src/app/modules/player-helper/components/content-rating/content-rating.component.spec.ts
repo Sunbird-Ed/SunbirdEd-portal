@@ -162,12 +162,14 @@ describe('ContentRatingComponent', () => {
     spyOn(component, 'ratingChange').and.callThrough();
     spyOn(component, 'changeOptions').and.callThrough();
     spyOn(component, 'submit').and.callThrough();
-    component.contentRating = 4;
+    const rating = Math.floor(Math.random() * 5);
+    component.contentRating = rating;
     component.changeOptions(mockData.feedbackResult[1]['options'][1]);
-    component.ratingChange(4);
+    component.ratingChange(rating);
+    component.feedbackObj[rating]['options'][0]['checked'] = true;
     component.submit();
     expect(component.enableSubmitBtn).toBeFalsy();
-    expect(component.contentRating).toEqual(4);
+    expect(component.contentRating).toEqual(rating);
   });
 
   it('should emit close event', () => {

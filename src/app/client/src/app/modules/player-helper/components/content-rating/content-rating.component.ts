@@ -97,24 +97,29 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
         },
         edata: { }
       };
-      _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
-        if (feedback['checked']) {
-          const feedbackTelemetryClone = _.clone(feedbackTelemetry);
-          feedbackTelemetryClone['edata'] = { };
-          feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
-          if (feedback['key'] === 'OTHER') {
-            feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
-          } else {
-            feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
+
+      const checkedOptions = this.feedbackObj[this.contentRating]['options'].filter(value => value.checked === true)
+      if (checkedOptions && checkedOptions.length !== 0) {
+        _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
+          if (feedback['checked']) {
+            const feedbackTelemetryClone = _.clone(feedbackTelemetry);
+            feedbackTelemetryClone['edata'] = {};
+            feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
+            if (feedback['key'] === 'OTHER') {
+              feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
+            } else {
+              feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
+            }
+            feedbackTelemetryClone['edata']['rating'] = this.contentRating
+            this.telemetryService.feedback(feedbackTelemetryClone);
           }
-          console.log(feedbackTelemetryClone);
-          this.telemetryService.feedback(feedbackTelemetryClone);
-        }
-      });
-      feedbackTelemetry['edata'] = {
-        rating: this.contentRating
-      };
-      this.telemetryService.feedback(feedbackTelemetry);
+        });
+      } else {
+        feedbackTelemetry['edata'] = {
+          rating: this.contentRating
+        };
+        this.telemetryService.feedback(feedbackTelemetry);
+      }
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
     }
     this.startext = this.resourceService.frmelmnts.lbl.defaultstar;
