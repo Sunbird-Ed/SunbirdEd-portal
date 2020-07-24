@@ -33,6 +33,7 @@ styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
+  @Input() layoutConfiguration;
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -109,6 +110,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   hideHeader = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
+  selected = [];
+  userTypes = [{id: 1, type: 'Teacher'}, {id: 2, type: 'Student'}];
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -325,10 +328,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSideMenu(value: boolean) {
-    if (value) {
-      this.fetchManagedUsers();
+    this.showSideMenu = !this.showSideMenu;
+    if (this.userService.loggedIn) {
+      if (this.showSideMenu) {
+        this.fetchManagedUsers();
+      }
     }
-    this.showSideMenu = value;
   }
 
   logout() {

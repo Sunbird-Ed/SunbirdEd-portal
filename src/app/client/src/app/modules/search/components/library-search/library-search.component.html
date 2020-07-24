@@ -15,7 +15,7 @@
         <div class="twelve wide column">
             <div  [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)"  *ngIf="!showLoader && contentList.length" class="sb-grid">
                 <div in-view-item [id]="i" [data]="content" class="sb-grid--item" *ngFor="let content of contentList;let i = index;">
-                    <sb-library-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
+                    <sb-library-card [layoutConfig]="true" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
                     [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'Content',ver:'1.0'}" (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || './assets/images/book.png'">
                     </sb-library-card>
                 </div>
@@ -45,7 +45,7 @@
             <div class="sb-grid">
                 <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                     *ngFor="let i of numberOfSections">
-                    <sb-library-card [isLoading]="true"></sb-library-card>
+                    <sb-library-card [layoutConfig]="true" [isLoading]="true"></sb-library-card>
                 </div>
             </div>
         </div>
