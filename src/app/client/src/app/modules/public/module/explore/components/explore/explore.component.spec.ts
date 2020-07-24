@@ -16,6 +16,7 @@ import { ExploreComponent } from './explore.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 
+
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
@@ -272,5 +273,12 @@ describe('ExploreComponent', () => {
       queryParams: {title: 'test'}
     });
     expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
+  });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.redoLayout(1);
   });
 });
