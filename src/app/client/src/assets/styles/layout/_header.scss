@@ -1,3 +1,35 @@
+@import './varsass';
+/* new header */
+.sbt-header-bar {
+  height:calculateRem(86px);
+  width: 100%;
+}
+.sbt-header-tool-bar {
+  background: var(--sbt-header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sbt-header-logo {
+  min-height: calculateRem(86px);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.sbt-header-menu-bar {
+  position: relative;
+  height:calculateRem(72px);
+}
+.sbt-header-menu-extension {
+  background: var(--sbt-header-bg);
+}
+.sbt-header-menu {
+  position: absolute;
+  left: 0px;right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .ui.menu {
   // position: sticky;
   z-index: 999;
@@ -19,7 +51,7 @@
 
   & > .container {
     @include respond-above(sm) {
-      padding: $base-block-space 0;
+      padding: var(--base-block-space) 0;
     }
   }
   @include respond-below(sm) {

@@ -77,3 +77,62 @@
   position: absolute;
   right: -.625rem;
 }
+
+/* new styles */
+.sb-linkmenu {
+  .item {
+    background: var(--white);
+    padding: 8px 16px;
+    border-radius: 6px;
+    box-shadow: 5px 5px 2px 0 rgba(var(--rc-rgba-black), 0.1);
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 24px;
+    height: 48px;
+    transition: all ease .3s;
+    display:flex;
+    align-items: center;
+    &.active, &:hover {
+      color: var(--white);
+    }
+    &:hover {
+      text-decoration: none;
+    }
+    &--textbook {
+      color: #E7800B;
+      &:hover, &.item.active {
+        background-color: #E7800B;
+      }
+    }
+    &--course {
+      color: #0531FF;
+      &:hover, &.item.active {
+        background-color: #0531FF;
+      }
+    }
+    &--test {
+      color: #E02020;
+      &:hover {
+        background-color: #E02020;
+      }
+    }
+    &--quiz {
+      color: #0C989B;
+      &:hover {
+        background-color: #0C989B;
+      }
+    }
+    &--stories {
+      color: #0531FF;
+      &:hover {
+        background-color: #0531FF;
+      }
+    }
+    &--poem {
+      color: #B620E0;
+      &:hover {
+        background-color: #B620E0;
+      }
+    }
+  }
+}

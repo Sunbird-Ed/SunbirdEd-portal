@@ -11,11 +11,10 @@
               [ngClass]="{'header-block': isFullScreenView}"></app-header>
   <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
   </app-install-app>
-  <button (click)="switchLayout()" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0">
-    Switch Layout
-  </button>
+ 
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
@@ -38,3 +37,43 @@
     </button>
   </div>
 </sui-modal>
+
+
+<div class="container2">
+  <ul>
+  <li>
+    <input type="radio" id="Default" checked value="Default" name="selector">
+    <label for="Default">Default</label>
+    <div class="check"><div class="inside"></div></div>
+  </li>
+  <li>
+    <input type="radio" id="Orange" value="Orange" name="selector">
+    <label for="Orange">Orange</label>
+    <div class="check"></div>
+  </li>
+  <!-- <li>
+    <input type="radio" id="Dark"  value="Dark" name="selector">
+    <label for="Dark">Dark</label>
+    <div class="check"><div class="inside"></div></div>
+  </li> -->
+  <li><button (click)="switchLayout()" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0">
+    Switch Layout
+  </button></li>
+</ul>
+</div>
+
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 91.05 86" style="enable-background:new 0 0 91.05 86;" xml:space="preserve" class="sbt-theme-bg-img">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;}
+	.st1{opacity:0.09;fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-miterlimit:10;}
+</style>
+<path id="Fill-15" class="st0" d="M22.21,79.65c0,0-20.3-19.1-19.1-27.4s12,2.5,12,2.5s-12.5-18-8.2-28.5c4.2-10.5,23,10.3,23,10.3
+	s-4-22,3.2-32.6s21.7,55.8,21.7,55.8s15.5-13.8,20.7-12c0,0,11.7,3.5-10.7,19.8c0,0,23,0,21.2,8.8c-1.7,8.8-26.5,2-26.5,2
+	L22.21,79.65z"/>
+<g>
+	<line class="st1" x1="37.12" y1="19.63" x2="45.53" y2="69.95"/>
+	<line class="st1" x1="14.85" y1="36.6" x2="37.05" y2="67.91"/>
+	<line class="st1" x1="71.65" y1="53.18" x2="54.96" y2="71.5"/>
+</g>
+</svg>

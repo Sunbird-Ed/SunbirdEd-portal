@@ -63,15 +63,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     width: '38px'
   };
   avtarDesktopStyle = {
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFE082',
     color: '#AAAAAA',
     fontFamily: 'inherit',
-    fontSize: '17px',
-    lineHeight: '38px',
-    border: '1px solid #e8e8e8',
+    fontSize: '24px',
+    lineHeight: '48px',
+    border: '1px solid #E8E8E8',
     borderRadius: '50%',
-    height: '38px',
-    width: '38px'
+    height: '48px',
+    width: '48px',
+    boxShadow: '6px 6px 2px 0 var(--sbt-box-shadow)'
   };
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
@@ -108,6 +109,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
+  multiSelect1;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
   selected = [];
@@ -419,6 +421,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.multiSelect1 = [  {name: 'Student'}, {name: 'Teacher'}, {name: 'Guest'}];
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
@@ -448,7 +451,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     });
     this.setInteractEventData();
     this.cdr.detectChanges();
-    this.setWindowConfig();
+    //this.setWindowConfig();
   }
 
   ngOnDestroy() {

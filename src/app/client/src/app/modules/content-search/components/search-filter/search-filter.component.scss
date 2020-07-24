@@ -1,19 +1,28 @@
-@import "variables";
 @import "mixins/mixins";
 
 .sb-header-filter-bar {
-  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
+  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
+  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
   position: relative;
+  border-radius: calculateRem(24px);
+  // overflow: hidden;
+  min-width: calculateRem(232px);
+  padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
+  margin-right: calculateRem(16px);
+  position: sticky;
+  top: calculateRem(86px);
+}
+.sbt-filter-scrollable {
+  height: calc(100vh - 388px);
+    overflow-y: auto;
+    padding-right: calculateRem(24px);
 }
 .state-medium-container {
   position: relative;
   z-index: 999;
-  height: calculateRem(64px);
   &__dropdown {
-    padding: calculateRem(16px) 0;
     z-index: 1;
   }
-
   &__separator {
     height: calculateRem(24px);
     width: calculateRem(1px);
@@ -23,7 +32,6 @@
       margin:0px calculateRem(8px) 0px calculateRem(8px);
     }
   }
-
   &__medium {
     overflow-x: auto;
     overflow-y: hidden;
@@ -36,13 +44,11 @@
 
 .sb-class-bar {
 }
-
 // state dropdown css
 .ui.selection.dropdown .menu > .item {
   font-size: calculateRem(12px);
   padding: 1em 1em !important;
 }
-
 .ui.selection.dropdown.state-medium {
   color: var(--primary-400);
   display: flex;
@@ -51,16 +57,13 @@
   background: none;
   min-width: calculateRem(100px);
   margin: 0;
-
   .medium-selection {
     min-width: calculateRem(120px);
   }
-
   &:hover {
     background: var(--rc-E5EDF5);
   }
 }
-
 .ui.selection.dropdown.state-selection {
   color: var(--primary-400);
   font-weight: bold;
@@ -78,7 +81,6 @@
     border-color: var(--primary-400);
     box-shadow: none;
   }
-
   &:hover {
     color: var(--primary-400) !important;
     box-sizing: border-box;
@@ -86,9 +88,7 @@
     background-color: var(--rc-E5EDF5);
     box-shadow: none;
   }
-  
 }
-
 .ui.selection.dropdown .menu {
   max-height: 20em;
 }
@@ -96,11 +96,58 @@
 .ui.dropdown:not(.button) > .default.text {
   color: var(--red-400);
 }
-
 :host ::ng-deep .dropdown:not(.button) > .default.text {
   color: var(--primary-400) !important;
 }
-
 :host ::ng-deep .sb-slider-pills-container .sb-pills-container{
     padding: 0.5rem 0 !important;
+}
+:host::ng-deep {
+  .sb-class-bar {
+    .sb-slider-pills-container {
+      .sb-grade-pills-container {
+        background: inherit !important;
+      }
+      .sb-pills-container {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .pill {
+          padding: calculateRem(8px) calculateRem(16px) !important;
+          color: #6236FF !important;
+          margin: 0 0 calculateRem(8px) 0 !important;
+          background-color: rgba(98,54,255,0.13) !important;
+          &.rounded {
+            font-size: 12px !important;
+          }
+          &.active, &:hover {
+            color: var(--white) !important;
+            background-color:  #6236FF!important;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.sbt-filter-switcher {
+  width: calculateRem(40px);
+  height: calculateRem(40px);
+  background-color: var(--primary-color);
+  box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: calculateRem(-20px);
+  border-radius: 100%;
+  color: var(--white);
+  position: absolute;
+  left: calculateRem(24px);
+  top: 0px;
+  i {
+    margin-top: calculateRem(-10px);
+    margin-left: calculateRem(3px);
+    font-size:calculateRem(20px);
+  }
 }
