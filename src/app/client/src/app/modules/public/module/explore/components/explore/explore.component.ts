@@ -1,9 +1,9 @@
 import { combineLatest, Subject } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
-import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, Input } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService
+  ResourceService, ToasterService, ConfigService, NavigationHelperService,LayoutService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -39,6 +39,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public isLoading = true;
   public cardData: Array<{}> = [];
   slideConfig: object = {};
+  layoutConfiguration:any;
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -47,11 +48,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, public layoutService: LayoutService) {
   }
 
   ngOnInit() {
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;
@@ -66,6 +68,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         this.navigationhelperService.goBack();
       });
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+      if(layoutConfig!=null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+      
+    });
+      
   }
 
   private windowScroll () {
@@ -303,6 +313,19 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       object: _.get(event, 'object')
     };
     this.telemetryService.interact(cardClickInteractData);
+  }
+
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      if(panelIndex == 0) {
+        return "sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3";
+      } else {
+        return "sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9";
+      }
+    } else {
+      return "sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12";
+      
+    }
   }
 
 }
