@@ -1,7 +1,10 @@
-<app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
-  [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
-
-<div class="ui container mt-16">
+<div class="sb-g">
+    <div [ngClass]="redoLayout(0)">
+      <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
+        [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
+    </div>
+    <div [ngClass]="redoLayout(1)">
+      <div class="ui container mt-16">
   <div class="content-grid">
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
         <div  class="sb-pageSection-header">
@@ -40,5 +43,7 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
+      </div>
+    </div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>

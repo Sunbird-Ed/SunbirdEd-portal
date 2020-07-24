@@ -52,6 +52,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
     }
     ngOnInit() {
+        this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.layoutService.switchableLayout().
           pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
             if(layoutConfig!=null) {

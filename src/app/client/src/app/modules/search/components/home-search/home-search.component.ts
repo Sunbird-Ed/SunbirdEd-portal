@@ -1,6 +1,7 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination
+  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
+  LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
@@ -41,6 +42,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
+  layoutConfiguration:any;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -48,7 +50,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
     public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService:LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -57,6 +59,13 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     this.initFilters = true;
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).pipe(first()).
     subscribe((data: Array<any>) => {
       this.enrolledSection = data[0];
@@ -231,5 +240,12 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         'message': 'messages.stmsg.m0007',
         'messageText': 'messages.stmsg.m0006'
       };
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }

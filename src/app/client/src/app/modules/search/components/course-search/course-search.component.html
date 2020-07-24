@@ -1,10 +1,14 @@
-<div *ngIf="showFilter"><app-data-driven-filter [enrichFilters]="facetsList" 
+<div class="sb-g">
+    <div [ngClass]="redoLayout(0)">
+        <div *ngIf="showFilter"><app-data-driven-filter [enrichFilters]="facetsList" 
 [pageId]="'course-search'" *ngIf="initFilters" 
 [ignoreQuery]="['key']" [filterEnv]="filterType" 
 [accordionDefaultOpen]=false [isShowFilterLabel]=true 
 [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"
-></app-data-driven-filter></div>
-<div class="ui container">
+        ></app-data-driven-filter></div>
+    </div>
+    <div [ngClass]="redoLayout(0)">
+        <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection">
             <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
@@ -39,6 +43,8 @@
         </div>
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
+        </div>
+    </div>
         </div>
     </div>
 </div>
