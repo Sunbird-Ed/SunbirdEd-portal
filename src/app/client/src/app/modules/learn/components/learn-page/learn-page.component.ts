@@ -1,9 +1,13 @@
 import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
-import { ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
-  BrowserCacheTtlService, NavigationHelperService } from '@sunbird/shared';
-import { UserService, OrgDetailsService, FrameworkService } from '@sunbird/core';
+import {
+  ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
+  BrowserCacheTtlService, NavigationHelperService
+} from '@sunbird/shared';
+import {
+  UserService, OrgDetailsService, FrameworkService
+} from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
