@@ -1,13 +1,9 @@
 import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
-import {
-  ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
-  BrowserCacheTtlService, NavigationHelperService
-} from '@sunbird/shared';
-import {
-  UserService, OrgDetailsService, FrameworkService
-} from '@sunbird/core';
+import { ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
+  BrowserCacheTtlService, NavigationHelperService } from '@sunbird/shared';
+import { UserService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -288,7 +284,11 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
   }
-
+  /**
+   * @since - release-3.2.0
+   * @param  {} event
+   * @description - It will navigate to view-all page.
+   */
   public viewAll(event) {
     const userData = this.userService.userProfile;
     const requestSearchQuery = JSON.stringify({
