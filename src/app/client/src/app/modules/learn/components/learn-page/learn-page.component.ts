@@ -288,11 +288,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
   }
-  /**
-   * @since - release-3.2.0
-   * @param  {} event
-   * @description - It will navigate to view-all page.
-   */
+
   public viewAll(event) {
     const userData = this.userService.userProfile;
     const requestSearchQuery = JSON.stringify({
