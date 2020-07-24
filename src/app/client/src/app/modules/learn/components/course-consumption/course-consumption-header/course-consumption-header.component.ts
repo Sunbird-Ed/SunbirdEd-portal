@@ -136,11 +136,21 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   showDashboard() {
-    this.router.navigateByUrl(`learn/course/${this.courseId}/dashboard/course-stats`);
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'course-stats'],
+      {
+        state: {
+          id: _.get(this.courseHierarchy, 'identifier'),
+          type: _.get(this.courseHierarchy, 'contentType'),
+          ver: _.get(this.courseHierarchy, 'pkgVersion')
+        }
+      });
   }
+
+  // To close the dashboard
   closeDashboard() {
     this.router.navigate(['learn/course', this.courseId]);
   }
+
   resumeCourse(showExtUrlMsg?: boolean) {
     this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);

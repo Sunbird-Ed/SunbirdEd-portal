@@ -67,6 +67,6 @@ export interface IDashboard {
     totalEnrollment: IDashboardItem;
 }
 
-export interface IDashBoardLarge {
+export interface IDashBoardItems {
     totalCompleted: IDashboardItem;
 }

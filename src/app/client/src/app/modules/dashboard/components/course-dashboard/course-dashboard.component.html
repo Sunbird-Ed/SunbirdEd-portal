@@ -1,7 +1,7 @@
 <div class="content" [appTelemetryImpression]="telemetryImpression">
   <div class="ui stackable grid">
     <div class="five wide column">
-      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoardSmallCards | keyvalue">
+      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoard | keyvalue">
         <div class="d-flex flex-ai-center flex-jc-center flex-dc py-16">
           <div class="batch-card-title">{{item?.value?.title}}</div>
           <div class="batch-card-number">{{item?.value?.count || 0}}</div>
@@ -10,7 +10,7 @@
     </div>
 
     <div class="seven wide column">
-      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoardLargeCards | keyvalue">
+      <div class="batch-sbcard mb-16" *ngFor="let item of dashBoardItems | keyvalue">
         <div class="d-flex flex-ai-center flex-jc-center flex-dc py-16 completion-content">
           <div class="batch-card-title">{{item?.value?.title}}</div>
           <div class="batch-card-number">{{item?.value?.count || 0}}</div>

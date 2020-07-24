@@ -202,4 +202,19 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.addActivityToGroup();
     expect(toasterService.error).toHaveBeenCalledWith(`Unable to add activity, please try again`);
   });
+
+  it('should call route to dashboard', () => {
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.courseId  = 'do_212347136096788480178';
+    component.showDashboard();
+    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId, 'dashboard', 'course-stats'],
+    {state: {id: 'do_212347136096788480178', type: 'Course', ver: undefined}});
+  });
+
+  it('should close the dashboard', () => {
+    component.courseId  = 'do_212347136096788480178';
+    component.closeDashboard();
+    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId]);
+  });
+
 });

@@ -12,7 +12,7 @@ const routes: Routes = [
     path: '', component: DashboardSidebarComponent, canActivate: [AuthGuard],
     data: {
       roles: 'courseBatchRoles',
-      telemetry: { env: 'Course', pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
+      telemetry: { env: 'Course', pageid: 'course-dashboard', type: 'view', object: { ver: '1.0', type: 'course' } }
     },
     children: [
       {
