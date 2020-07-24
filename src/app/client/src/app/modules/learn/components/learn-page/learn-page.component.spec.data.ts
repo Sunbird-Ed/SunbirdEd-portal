@@ -193,7 +193,50 @@ resourceBundle : {
           'm0001': 'Fetching enrolled course is failed, please try again later...'
       }
    }
-   }
+   },
+  viewAllEventData: {
+    'name': 'My courses',
+    'length': 0,
+    'count': 2,
+    'contents': [
+      {
+        'name': 'Swetha-physics(nested course test)-20-jul-2020',
+        'gradeLevel': '',
+        'contentType': 'Course',
+        'topic': '',
+        'subTopic': '',
+        'metaData': {
+          'batchId': '01306892379524300849',
+          'courseId': 'do_213068136968904704184',
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'contentType': 'Course'
+        },
+        'completionPercentage': 0,
+        'mimeTypesCount': 0,
+        'board': '',
+      },
+      {
+        'name': 'Copy of Book testing 1 - 0708',
+        'gradeLevel': '',
+        'contentType': 'Course',
+        'topic': '',
+        'subTopic': '',
+        'metaData': {
+          'batchId': '01306904167088128055',
+          'courseId': 'do_2130595997829611521527',
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'contentType': 'Course'
+        },
+        'completionPercentage': 0,
+        'mimeTypesCount': 0,
+        'board': ''
+      }
+    ]
+  },
+  userData: {
+    'firstName': 'Sourav',
+    'organisationIds' : ['ORG_001'],
+  },
 };
 
 export const custOrgDetails = {
