@@ -274,4 +274,11 @@ describe('ExploreComponent', () => {
     });
     expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
   });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.redoLayout(1);
+  });
 });
