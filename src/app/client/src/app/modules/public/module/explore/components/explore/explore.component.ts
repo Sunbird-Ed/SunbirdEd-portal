@@ -3,7 +3,7 @@ import { OrgDetailsService, UserService, SearchService, FrameworkService } from 
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, Input } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService,LayoutService
+  ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -68,13 +68,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         this.navigationhelperService.goBack();
       });
-    this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-      if(layoutConfig!=null) {
-        this.layoutConfiguration = layoutConfig.layout;
-      }
-      
-    });
+      this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
       
   }
 
@@ -317,14 +316,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   redoLayout(panelIndex) {
     if(this.layoutConfiguration) {
-      if(panelIndex == 0) {
-        return "sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3";
-      } else {
-        return "sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9";
-      }
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
     } else {
-      return "sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12";
-      
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
     }
   }
 

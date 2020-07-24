@@ -1,8 +1,11 @@
-<div [appTelemetryImpression]="telemetryImpression">
+<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+    <div [ngClass]="redoLayout(0)">
   <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
     [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [notToUseFramework]="toUseFrameWorkData"
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
+    </div>
+    <div [ngClass]="redoLayout(1)">
   <div class="ui container mt-24">
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
@@ -18,6 +21,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
