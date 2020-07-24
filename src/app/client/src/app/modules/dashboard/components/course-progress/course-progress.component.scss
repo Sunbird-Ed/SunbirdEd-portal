@@ -1,4 +1,3 @@
-@import 'variables';
 @import "mixins/mixins";
 
 .w-300 {
@@ -100,7 +99,7 @@ a {
 }
 
 .progress-content{
-  margin-top: calculateRem(48px);
+  margin-top: calculateRem(36px);
   @include respond-below(sm){
     margin-top: 0px;
  }

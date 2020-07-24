@@ -1,0 +1,37 @@
+@import "./mixins/mixins";
+
+.re-issue-content {
+  margin-top: calculateRem(36px);
+  @include respond-below(sm) {
+    margin-top: 0px;
+  }
+  .reissue-title {
+    color: var(--primary-color);
+    font-size: calculateRem(24px);
+  }
+  .certificate-id-info {
+    color: var(--gray-300);
+  }
+  .certificate-id-content {
+    margin-top: calculateRem(40px);
+    margin-bottom: 0px;
+
+    .user-id-label{
+        font-weight:normal;
+        font-size: calculateRem(14px);
+        color:var(--gray-800);
+    }
+
+    .user-id-input {
+      width: 450px;
+    }
+  }
+  .re-issue-label{
+      color:var(--gray-200);
+  }
+  .horizontal-border{
+      border: calculateRem(1px) solid var(--gray-100);
+      width: 100%;
+  }
+}
+

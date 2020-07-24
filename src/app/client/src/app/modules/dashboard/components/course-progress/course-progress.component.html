@@ -22,7 +22,7 @@
 <div class="ui container">
   <div class="ui grid">
     <div class="twelve wide column p-0">
-      <div class="p-16">
+      <div class="p-24">
         <!-- <div class="ui divider"></div> -->
         <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
           <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
@@ -135,12 +135,12 @@
 
           <!-- Select Batch image content start-->
 
-          <!-- <div class="d-flex flex-jc-center">
-            <div class="d-flex flex-dc flex-ai-center">
-              <div><img src="assets/images/batch-img.png"></div>
+           <div class="d-flex flex-jc-center">
+            <div class="d-flex flex-dc flex-ai-center pb-24">
+              <div><img src="assets/images/batch.png" width="329px" height="229px"></div>
               <p class="img-text">Select batch to view details</p>
             </div>
-          </div> -->
+          </div> 
 
           <!-- Select Batch image content end-->
 
@@ -187,11 +187,11 @@
         <div class="tweleve wide column" *ngIf="showLoader">
           <app-loader></app-loader>
         </div>
-        <!-- <div class="ui warning message tweleve wide column"
+        <div class="ui warning message tweleve wide column"
           *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
-        </div> -->
+        </div>
         <div class="ui grid" *ngIf="showNoBatch">
           <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
             <a (click)='redirect()' class="ui item basic icon circular float-ContentRight"

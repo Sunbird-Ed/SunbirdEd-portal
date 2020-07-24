@@ -1,11 +1,10 @@
-@import 'variables';
 @import "mixins/mixins";
 
 div.content {
     height: 100%;
     position: relative;
     z-index: 1;
-    margin-top: calculateRem(48px);
+    margin-top: calculateRem(36px);
 
     @include respond-below(sm){
         margin-left: 0px;
@@ -43,7 +42,7 @@ div.content {
 }
 
 .completion-content{
-  max-height: 15.2875rem;
+  min-height: 15.2875rem;
 }
 
 ::ng-deep {
