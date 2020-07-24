@@ -68,6 +68,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isFirst = false;
   addToGroup = false;
   isModuleExpanded = false;
+  isEnrolledCourseUpdated = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -175,6 +176,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           if (_.hasIn(this.enrolledBatchInfo, 'status') && this.contentIds.length) {
             this.getContentState();
           }
+          this.isCourseModifiedAfterEnrolment();
         } else if (this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.hasPreviewPermission = true;
@@ -479,5 +481,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  isCourseModifiedAfterEnrolment() {
+    this.coursesService.getEnrolledCourses().pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        const enrolledCourseInfo = _.find(_.get(data, 'result.courses'), (course) => course.courseId === this.courseId);
+        this.isEnrolledCourseUpdated = (this.enrolledCourse && enrolledCourseInfo && enrolledCourseInfo.enrolledDate
+          && (new Date(enrolledCourseInfo.enrolledDate).getTime() < new Date(this.courseHierarchy.lastUpdatedOn).getTime())) || false;
+      });
   }
 }
