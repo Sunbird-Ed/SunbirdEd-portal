@@ -506,3 +506,10 @@ app-workspace {
     opacity: 0.3;
   }
 }
+
+.sbt-sticky {
+  position: sticky;z-index: 999;
+} 
+.sbt-sticky-topbar {
+  top: 0;
+}
