@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewAllComponent } from './view-all.component';
-import {throwError as observableThrowError, of as observableOf } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';

@@ -1,7 +1,8 @@
 import { LearnPageComponent } from './learn-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+} from '@sunbird/shared';
 import { FrameworkService, PageApiService, UserService, CoursesService, CoreModule, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
