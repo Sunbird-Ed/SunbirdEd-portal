@@ -171,7 +171,7 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
 
     // Generic Editor
@@ -321,7 +321,7 @@ const API_LIST = {
     },
     '/learner/user/v1/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
+      ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {
         checks: [
           { entity: '__session__userId', params: [] }
