@@ -161,6 +161,7 @@ describe('PublicCourseComponent', () => {
     component.ngOnInit();
     component.redoLayout(0);
     component.layoutConfiguration = null;
+    component.ngOnInit();
     component.redoLayout(1);
   });
 });

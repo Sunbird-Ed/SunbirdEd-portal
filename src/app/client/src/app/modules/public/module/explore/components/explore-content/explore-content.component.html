@@ -1,8 +1,11 @@
-<app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
-  [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true [isShowFilterLabel]=true
-  [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-
-<div class="ui container">
+<div class="sb-g">
+    <div [ngClass]="redoLayout(0)">
+      <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
+        [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true [isShowFilterLabel]=true
+        [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+    </div>
+    <div [ngClass]="redoLayout(1)">
+      <div class="ui container">
   <div class="content-grid mt-24">
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
       <div class="sb-pageSection-header">
@@ -56,6 +59,8 @@
       </div>
     </div>
   </div>
+      </div>
+    </div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">

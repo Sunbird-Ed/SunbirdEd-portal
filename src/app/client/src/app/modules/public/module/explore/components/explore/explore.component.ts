@@ -1,7 +1,7 @@
 import { combineLatest, Subject } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
-import { Component, OnInit, OnDestroy, HostListener, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
@@ -53,7 +53,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
-    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;

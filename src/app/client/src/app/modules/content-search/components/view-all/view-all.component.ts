@@ -3,7 +3,8 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService, IPagination
+  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService, IPagination,
+  LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -136,6 +137,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
+  layoutConfiguration:any;
 
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
@@ -143,7 +145,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -158,6 +160,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     if (!this.userService.loggedIn) {
       this.getChannelId();
     } else {
@@ -198,6 +201,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
   }
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
@@ -400,5 +409,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     _.each(this.searchList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }
