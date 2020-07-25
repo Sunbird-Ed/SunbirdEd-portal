@@ -11,6 +11,7 @@ import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   templateUrl: './update-contact.component.html',
@@ -18,6 +19,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 })
 export class UpdateContactComponent implements OnInit, AfterViewInit {
   @ViewChild('contactDetailsForm') private contactDetailsForm;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public telemetryImpression;
   public tenantInfo: any = {};
   public showOtpComp = false;
@@ -43,6 +45,9 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   termsAndConditionLink: string;
   instance: string;
   showTncPopup = false;
+  googleCaptchaSiteKey: string;
+  isP1CaptchaEnabled: any;
+  captchaValidationFailed = false;
 
 
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
@@ -54,6 +59,13 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
     this.fetchTncConfiguration();
     this.setTenantInfo();
   }
@@ -148,13 +160,14 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  private checkUserExist() {
-    const uri = this.contactForm.type + '/' + this.contactForm.value;
+  private checkUserExist(captchaResponse?) {
+    const uri = this.contactForm.type + '/' + this.contactForm.value + '?captchaResponse=' + captchaResponse;
     combineLatest(this.userService.getUserByKey(uri), this.orgDetailsService.getCustodianOrgDetails())
     .pipe(map(data => ({
       userDetails: data[0], custOrgDetails: data[1]
     })))
     .subscribe(({userDetails, custOrgDetails}) => {
+        this.resetGoogleCaptcha();
         if (_.get(userDetails, 'result.response.rootOrgId') === _.get(custOrgDetails, 'result.response.value')) {
           this.userDetails = userDetails.result.response;
           this.disableSubmitBtn = false;
@@ -174,6 +187,11 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           this.disableSubmitBtn = true;
           return;
         }
+        if (_.get(err, 'error.params.status') && err.error.params.status === 'I\'m a teapot') {
+          this.disableSubmitBtn = true;
+          this.captchaValidationFailed = true;
+          return;
+        }
         this.generateOtp();
         this.disableSubmitBtn = false;
         this.userExist = false;
@@ -181,8 +199,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public onFormUpdate() {
-    this.checkUserExist();
+  public onFormUpdate(captchaResponse?) {
+    this.checkUserExist(captchaResponse);
     const cData = {
       env: 'sso-signup',
       cdata: []
@@ -295,5 +313,32 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
+  }
+
+  /**
+   * @param  {string} captchaResponse - reCaptcha token
+   * @description - Callback function for reCaptcha response
+   */
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.onFormUpdate(captchaResponse);
+    }
+  }
+
+  /**
+   * @description - Function to reset reCaptcha
+   */
+  resetGoogleCaptcha() {
+    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
+    element.click();
+  }
+
+  submitForm() {
+    if (this.isP1CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.captchaRef.execute();
+    } else {
+      this.onFormUpdate();
+    }
   }
 }

@@ -14,6 +14,8 @@ const validateRecaptcha = async (req, res, next) => {
     '/learner/user/v1/exists/email/:emailId': envHelper.sunbird_p1_reCaptcha_enabled,
     '/learner/user/v1/exists/phone/:phoneNumber': envHelper.sunbird_p1_reCaptcha_enabled,
     '/learner/user/v1/fuzzy/search': envHelper.sunbird_p1_reCaptcha_enabled,
+    '/learner/user/v1/get/phone/*': envHelper.sunbird_p1_reCaptcha_enabled,
+    '/learner/user/v1/get/email/*': envHelper.sunbird_p1_reCaptcha_enabled,
     '/learner/anonymous/otp/v1/generate': envHelper.sunbird_p2_reCaptcha_enabled
   };
   if (_.get(reCaptchaMapping, req.route.path)) {
