@@ -318,6 +318,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   /**
    * @param  {string} captchaResponse - reCaptcha token
    * @description - Callback function for reCaptcha response
+   * @since - release-3.1.0
    */
   resolved(captchaResponse: string) {
     if (captchaResponse) {
@@ -327,12 +328,17 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   /**
    * @description - Function to reset reCaptcha
+   * @since - release-3.1.0
    */
   resetGoogleCaptcha() {
     const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
     element.click();
   }
 
+  /**
+   * @description - Function to be called on form submit
+   * @since - release-3.1.0 
+   */
   submitForm() {
     if (this.isP1CaptchaEnabled === 'true') {
       this.resetGoogleCaptcha();
