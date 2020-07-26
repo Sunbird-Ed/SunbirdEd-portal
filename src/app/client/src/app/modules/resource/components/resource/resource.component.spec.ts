@@ -192,4 +192,12 @@ describe('ResourceComponent', () => {
     component.navigateToCourses(event);
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout(1);
+  });
 });

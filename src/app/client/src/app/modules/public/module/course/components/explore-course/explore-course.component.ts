@@ -1,6 +1,7 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination, 
+    LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
@@ -38,6 +39,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public loaderMessage: ILoaderMessage;
 
     public frameWorkName: string;
+    layoutConfiguration: any;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -45,11 +47,18 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
         private publicPlayerService: PublicPlayerService, public userService: UserService, public cacheService: CacheService,
         public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-        public navigationhelperService: NavigationHelperService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
     }
     ngOnInit() {
+        this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.layoutService.switchableLayout().
+          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+            if(layoutConfig!=null) {
+                this.layoutConfiguration = layoutConfig.layout;
+            }
+        });
         combineLatest(
             this.orgDetailsService.getOrgDetails(this.userService.slug),
             this.getFrameWork()
@@ -220,4 +229,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
             'messageText': 'messages.stmsg.m0006'
         };
     }
+    redoLayout(panelIndex) {
+        if(this.layoutConfiguration) {
+          return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        } else {
+          return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+        }
+      }
 }
