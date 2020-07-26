@@ -203,5 +203,14 @@ describe('LearnPageComponent', () => {
     component.viewAll(eventData);
     expect(router.navigate).toHaveBeenCalledWith(['/learn/view-all/My-courses', 1], {queryParams: queryParams});
     expect(cacheService.set).toHaveBeenCalledWith('viewAllQuery', searchQueryParams, {maxAge: 600});
+});
+it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout(1);
   });
+
 });

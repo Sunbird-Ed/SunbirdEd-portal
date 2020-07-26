@@ -2,8 +2,8 @@ import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscript
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
-  ResourceService, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
-  BrowserCacheTtlService, NavigationHelperService
+  ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
+  BrowserCacheTtlService, NavigationHelperService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import {
   UserService, OrgDetailsService, FrameworkService
@@ -44,6 +44,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public usersProfile: any;
   public toUseFrameWorkData = false;
   private resourceDataSubscription: Subscription;
+  layoutConfiguration:any;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -54,7 +55,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
-    public userService: UserService, public frameworkService: FrameworkService) {
+    public userService: UserService, public frameworkService: FrameworkService, public layoutService: LayoutService) {
     window.scroll({
       top: 0,
       left: 0,
@@ -71,6 +72,13 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.getLanguageChange();
     // TODO change the slug to 'Igot'
     if (this.userService.slug === this.slugForProminentFilter) {
@@ -364,5 +372,12 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }
