@@ -217,6 +217,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.noResult = false;
           this.totalCount = enrolledCourseCount;
           this.searchList = this.formatSearchresults(_.orderBy(_.get(response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']));
+        } else {
+          this.noResult = true;
+          this.noResultMessage = {
+            'message': 'messages.stmsg.m0007',
+            'messageText': 'messages.stmsg.m0006'
+          };
         }
       } else {
         if (response.contentData.result.count && response.contentData.result.content) {

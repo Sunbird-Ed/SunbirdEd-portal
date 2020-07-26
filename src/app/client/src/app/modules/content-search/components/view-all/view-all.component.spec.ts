@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService, PaginationService } from '@sunbird/shared';
 import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -198,18 +198,74 @@ describe('ViewAllComponent', () => {
 
   it('should process the data if view-all is clicked from My-Courses section', () => {
     const courseService = TestBed.get(CoursesService);
-    const searchService = TestBed.get(SearchService);
     component.sectionName = 'My courses';
     const sortedData = _.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']);
-    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({'enrolledCourseData': Response.enrolledCourseData}));
+    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
+      'enrolledCourseData': Response.enrolledCourseData,
+      'contentData': Response.successData
+    }));
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
     spyOn<any>(component, 'formatSearchresults').and.stub();
     component.getContents(Response.paramsData);
     expect(component.showLoader).toBeFalsy();
     expect(component.noResult).toBeFalsy();
     expect(component.totalCount).toEqual(Response.enrolledCourseData.enrolledCourses.length);
     expect(component['formatSearchresults']).toHaveBeenCalledWith(sortedData);
+  });
+
+  it('should process the data if view-all is clicked from any of the page section other than my courses', () => {
+    component.pageLimit = 20;
+    component.pageNumber = 1;
+    const pagenationService = TestBed.get(PaginationService);
+    const courseService = TestBed.get(CoursesService);
+    component.sectionName = 'Latest courses';
+    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
+      'enrolledCourseData': Response.enrolledCourseData,
+      'contentData': Response.successData
+    }));
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    spyOn<any>(component, 'formatSearchresults').and.stub();
+    spyOn(pagenationService, 'getPager').and.stub();
+    component.getContents(Response.paramsData);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.noResult).toBeFalsy();
+    expect(component.totalCount).toEqual(Response.successData.result.count);
+    expect(pagenationService.getPager).toHaveBeenCalledWith(Response.successData.result.count, 1, 20);
+    expect(component['formatSearchresults']).toHaveBeenCalledWith(Response.successData.result.content);
+  });
+
+  it('should show no result message if no content fount with the search query coming from other page section', () => {
+    const courseService = TestBed.get(CoursesService);
+    component.sectionName = 'Latest courses';
+    const noResultMessages = {
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
+    };
+    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
+      'enrolledCourseData': Response.enrolledCourseData,
+      'contentData': { 'result': { 'content': [], 'count': 0 } }
+    }));
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    component.getContents(Response.paramsData);
+    expect(component.noResult).toBeTruthy();
+    expect(component.noResultMessage).toEqual(noResultMessages);
+  });
+
+  it('should show no result message if no content fount with the search query coming from other my courses section', () => {
+    const courseService = TestBed.get(CoursesService);
+    component.sectionName = 'My courses';
+    const noResultMessages = {
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
+    };
+    spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
+      'enrolledCourseData': { ' enrolledCourses': [] },
+      'contentData': { 'result': { 'content': [], 'count': 0 } }
+    }));
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
+    component.getContents(Response.paramsData);
+    expect(component.noResult).toBeTruthy();
+    expect(component.noResultMessage).toEqual(noResultMessages);
   });
 
 });
