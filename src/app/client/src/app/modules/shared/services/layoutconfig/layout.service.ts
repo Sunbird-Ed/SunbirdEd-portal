@@ -55,4 +55,10 @@ export class LayoutService {
       
     }
   }
+  isLayoutAvailable(layoutConfigExternal) {
+    if(layoutConfigExternal!=null) {
+      return true;
+    }
+    return false;
+  }
 }

@@ -1,4 +1,5 @@
-<div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
+<ng-container *ngIf="!isLayoutAvailable()">
+    <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
     <!-- State and Medium sections -->
     <div class="d-flex state-medium-container sb-bg-color-white">
         <div class="ui container d-flex flex-ai-center">
@@ -30,4 +31,40 @@
         </div>
     </div>
     <!-- class section ends -->
-</div>
+    </div>
+</ng-container>
+<span class="theme" *ngIf="isLayoutAvailable()">
+        <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2 sb-bg-color-white">
+                <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+                <div class="sbt-filter-scrollable">
+                <!-- State and Medium sections -->
+                <div class="d-flex state-medium-container">
+                        <div *ngIf="boards?.length" class="w-100">
+                            <!-- state section -->
+                            <app-select-option-group class="w-100" *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
+                            <!-- state section ends -->
+                        </div>
+                        <!-- medium section -->
+                        <!-- <div *ngIf="boards?.length && mediums?.length" class="state-medium-container__separator"></div> -->
+                        <!-- <div class="state-medium-container__medium">
+                            <sb-library-filters [list]="mediums | sortBy:'':'asc'" [layout]="filterLayout.SQUARE" [selectedItems]="[selectedMediumIndex]"
+                                (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})" appTelemetryInteract
+                                [telemetryInteractEdata]="getMediumInteractEdata()"></sb-library-filters>
+                        </div> -->
+                        <!-- medium section ends -->
+                </div>
+                <!-- State and Medium sections ends-->
+                <!-- class section -->
+                <div class="sb-class-bar">
+                    <div>
+                        <label class="fmedium">Class</label>
+                        <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND" [selectedItems]="[selectedGradeLevelIndex]"
+                            (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
+                            [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+                    </div>
+                </div>
+                <!-- class section ends -->
+            </div>
+            </div>
+            
+        </span>

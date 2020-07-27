@@ -130,6 +130,25 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+  ngAfterViewInit(){
+    //themeing code
+    let trans = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+          document.documentElement.classList.remove('transition')
+      }, 1000)
+  }
+    var selector = document.querySelectorAll('input[name=selector]');
+    for(var i=0;i<selector.length;i++){
+      selector[i].addEventListener('change', function() {
+        if(this.checked) {
+           trans()
+           document.documentElement.setAttribute('data-theme', this.value)
+        }
+    })
+    }
+    //themeing code
+  }
   ngOnInit() {
     this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];

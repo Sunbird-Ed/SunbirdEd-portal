@@ -104,3 +104,71 @@
 :host ::ng-deep .sb-slider-pills-container .sb-pills-container{
     padding: 0.5rem 0 !important;
 }
+.theme {
+  .sb-header-filter-bar {
+    box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);	  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
+    box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    position: relative;	  position: relative;
+    border-radius: calculateRem(24px);
+    // overflow: hidden;
+    min-width: calculateRem(232px);
+    padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
+    margin-right: calculateRem(16px);
+    position: sticky;
+    top: calculateRem(188px);
+  }
+  .sbt-filter-scrollable {
+      height: calc(100vh - 388px);
+      overflow-y: auto;
+      padding-right: calculateRem(24px);
+  }	
+ 
+    .sb-class-bar {
+      .sb-slider-pills-container {
+        .sb-grade-pills-container {
+          background : inherit !important;
+        }
+        .sb-pills-container {
+          display: flex !important;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          .pill {
+            padding: calculateRem(8px) calculateRem(16px) !important;
+            color: #6236FF !important;
+            margin: 0 0 calculateRem(8px) 0 !important;
+            background-color: rgba(98,54,255,0.13) !important;
+            &.rounded {
+              font-size: 12px !important;
+            }
+            &.active, &:hover {
+              color: var(--white) !important;
+              background-color:  #6236FF!important;
+            }
+          }
+        }
+      }
+    }
+  
+  
+  
+   .sbt-filter-switcher {
+    width: calculateRem(40px);
+    height: calculateRem(40px);
+    background-color: var(--primary-color);
+    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: calculateRem(-20px);
+    border-radius: 100%;
+    color: var(--white);
+    position: absolute;
+    left: calculateRem(24px);
+    top: 0px;
+    i {
+      margin-top: calculateRem(-10px);
+      margin-left: calculateRem(3px);
+      font-size:calculateRem(20px);
+    }
+  }
+}
