@@ -3,7 +3,7 @@ import { SearchFilterComponent } from './search-filter.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { OrgDetailsService, TenantService, ChannelService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -60,7 +60,8 @@ describe('SearchFilterComponent', () => {
                 BrowserCacheTtlService,
                 TenantService,
                 ToasterService,
-                ChannelService
+                ChannelService,
+                LayoutService
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
@@ -88,5 +89,9 @@ describe('SearchFilterComponent', () => {
         component.selectedGroupOption(inputData);
         expect(component.type).toBe('Publisher');
         expect(component.selectedChannel).toBe(inputData);
+    });
+    it('should check for layout option', () => {
+        component.isLayoutAvailable();
+        expect(component).toBeTruthy();
     });
 });
