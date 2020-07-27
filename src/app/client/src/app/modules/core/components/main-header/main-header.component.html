@@ -150,9 +150,13 @@
             <!--Avtar Dropdown-->
             <a class="profile-avtar computer only p-0" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <ngx-avatar (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
-                  name="test">
+                <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
+                  name="Guest">
                 </ngx-avatar>
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                              [size]="38" initialsSize="1"
+                              name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
               </div>
             </a>
             <!--/Avtar Dropdown-->
