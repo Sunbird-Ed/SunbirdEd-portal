@@ -1,5 +1,5 @@
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService } from '@sunbird/shared';
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -74,7 +74,7 @@ export class MainMenuComponent implements OnInit {
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
-    private programsService: ProgramsService) {
+    private programsService: ProgramsService, public layoutService: LayoutService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -207,5 +207,8 @@ export class MainMenuComponent implements OnInit {
 
   navigateToGroups() {
     return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+  }
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }
