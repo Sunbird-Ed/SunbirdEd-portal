@@ -487,9 +487,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.coursesService.getEnrolledCourses().pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
-        const enrolledCourseInfo = _.find(_.get(data, 'result.courses'), (course) => course.courseId === this.courseId);
-        this.isEnrolledCourseUpdated = (this.enrolledCourse && enrolledCourseInfo && enrolledCourseInfo.enrolledDate
-          && (new Date(enrolledCourseInfo.enrolledDate).getTime() < new Date(this.courseHierarchy.lastUpdatedOn).getTime())) || false;
+        const enrolledCourse = _.find(_.get(data, 'result.courses'), (course) => course.courseId === this.courseId);
+        const enrolledCourseDateTime = new Date(enrolledCourse.enrolledDate).getTime();
+        const courseLastUpdatedOn = new Date(this.courseHierarchy.lastUpdatedOn).getTime();
+        this.isEnrolledCourseUpdated = (enrolledCourse && enrolledCourse.enrolledDate &&
+                                        (enrolledCourseDateTime < courseLastUpdatedOn)) || false;
       });
   }
 }
