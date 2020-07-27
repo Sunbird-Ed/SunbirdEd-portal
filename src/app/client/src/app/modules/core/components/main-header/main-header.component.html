@@ -87,7 +87,7 @@
                 <!--/Explore Pages-->
                 <!--/Search Box-->
                 <!--Language Dropdown-->
-                <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
+                <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages' class="computer only ml-auto"
                     *ngIf="languages && showLanguageDropdown()">
                 </app-language-dropdown>
                 <!--/Language Dropdown-->
@@ -110,7 +110,7 @@
             </button>
             <!--/QR Button-->
             <!--Language Dropdown-->
-            <app-language-dropdown [languageRange]='languages' class="mobile only"
+            <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages' class="mobile only"
                 *ngIf="languages && !router.isActive('workspace', false)">
             </app-language-dropdown>
             <!--/Language Dropdown-->
@@ -144,11 +144,9 @@
                    </sui-select-option>
                  </sui-select> 
             <!-- language dropdown -->
-              <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-green--bg mr-16" [(ngModel)]="selected" [options]="userTypes"
-                [placeholder]="'English'" labelField="type" [isSearchable]="false" #select>
-                <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
-                </sui-select-option>
-              </sui-select>
+            <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
+              *ngIf="languages && showLanguageDropdown()">
+            </app-language-dropdown>
             <!--Avtar Dropdown-->
             <a class="profile-avtar computer only p-0" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
