@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
+import { SearchService, PlayerService, UserService, FrameworkService, FormService } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -47,7 +47,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService) {
+        public navigationhelperService: NavigationHelperService, private formService: FormService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -101,40 +101,55 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-        if (_.isEmpty(filters)) {
-            filters = _.omit(this.frameworkData, ['id']);
-        }
-        filters.channel = this.hashTagId;
-        filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
-        const option: any = {
-          filters: filters,
-          fields: this.configService.urlConFig.params.LibrarySearchField,
-          limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-          pageNumber: this.paginationDetails.currentPage,
-          query: this.queryParams.key,
-          mode: 'soft',
-          facets: this.facets,
-          params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+        const formServiceInputParams = {
+            formType: 'contentcategory',
+            formAction: 'menubar',
+            contentType: 'global'
         };
-        if (this.frameworkId) {
-          option.params.framework = this.frameworkId;
-        }
-        this.searchService.contentSearch(option)
-            .subscribe(data => {
-                this.showLoader = false;
-                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.contentList = this.getOrderedData(_.get(data, 'result.content'));
-            }, err => {
-                this.showLoader = false;
-                this.contentList = [];
-                this.facetsList = [];
-                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-            });
+        this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+            const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+            let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+            if (_.isEmpty(filters)) {
+                filters = _.omit(this.frameworkData, ['id']);
+            }
+            filters.channel = this.hashTagId;
+            filters.contentType = contentType;
+            const option: any = {
+                filters: filters,
+                fields: this.configService.urlConFig.params.LibrarySearchField,
+                limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+                pageNumber: this.paginationDetails.currentPage,
+                query: this.queryParams.key,
+                mode: 'soft',
+                facets: this.facets,
+                params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+            };
+            if (this.frameworkId) {
+                option.params.framework = this.frameworkId;
+            }
+            this.searchService.contentSearch(option)
+                .subscribe(data => {
+                    this.showLoader = false;
+                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    this.contentList = this.getOrderedData(_.get(data, 'result.content'));
+                }, err => {
+                    this.showLoader = false;
+                    this.contentList = [];
+                    this.facetsList = [];
+                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+                });
+        }, (err: any) => {
+            this.showLoader = false;
+            this.contentList = [];
+            this.facetsList = [];
+            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                this.configService.appConfig.SEARCH.PAGE_LIMIT);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
     }
 
     getOrderedData(contents) {

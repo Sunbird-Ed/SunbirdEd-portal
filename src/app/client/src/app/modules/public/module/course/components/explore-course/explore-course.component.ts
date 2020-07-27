@@ -125,31 +125,47 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
     private fetchContents() {
-        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        // filters.channel = this.hashTagId;
-        // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-        const option = {
-            filters: filters,
-            limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-            fields: this.configService.urlConFig.params.CourseSearchField,
-            pageNumber: this.paginationDetails.currentPage,
-            query: this.queryParams.key,
-            // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-            facets: this.facets,
-            params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+        const formServiceInputParams = {
+            formType: 'contentcategory',
+            formAction: 'menubar',
+            contentType: 'global'
         };
-        if (this.frameWorkName) {
-            option.params.framework = this.frameWorkName;
-        }
-        this.searchService.courseSearch(option)
-        .subscribe(data => {
-            this.showLoader = false;
-            this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-            this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
-            this.contentList = this.utilService.getDataForCard(data.result.course, constantData, dynamicFields, metaData);
+        this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+            const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+            let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+            // filters.channel = this.hashTagId;
+            // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+            filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+            filters.contentType = contentType;
+            const option = {
+                filters: filters,
+                limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+                fields: this.configService.urlConFig.params.CourseSearchField,
+                pageNumber: this.paginationDetails.currentPage,
+                query: this.queryParams.key,
+                // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
+                facets: this.facets,
+                params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+            };
+            if (this.frameWorkName) {
+                option.params.framework = this.frameWorkName;
+            }
+            this.searchService.contentSearch(option)
+                .subscribe(data => {
+                    this.showLoader = false;
+                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
+                    this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+                }, err => {
+                    this.showLoader = false;
+                    this.contentList = [];
+                    this.facetsList = [];
+                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+                });
         }, err => {
             this.showLoader = false;
             this.contentList = [];

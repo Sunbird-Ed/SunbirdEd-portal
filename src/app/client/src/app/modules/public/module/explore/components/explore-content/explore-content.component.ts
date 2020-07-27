@@ -2,7 +2,7 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
+import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService, FormService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
@@ -50,7 +50,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
     public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
     public userService: UserService, public frameworkService: FrameworkService,
-    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
+    private formService: FormService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -110,49 +111,64 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-    filters.channel = this.hashTagId;
-    filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
-    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
-    if (this.queryParams.key) {
-      delete softConstraints['board'];
-    }
-    const option: any = {
-      filters: filters,
-      fields: this.configService.urlConFig.params.LibrarySearchField,
-      limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-      pageNumber: this.paginationDetails.currentPage,
-      query: this.queryParams.key,
-      mode: 'soft',
-      softConstraints: softConstraints,
-      facets: this.facets,
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
     };
-    if (this.queryParams.softConstraints) {
-      try {
-        option.softConstraints = JSON.parse(this.queryParams.softConstraints);
-      } catch {
-
+    this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+      const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+      const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+      filters.channel = this.hashTagId;
+      filters.contentType = contentType;
+      const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+      if (this.queryParams.key) {
+        delete softConstraints['board'];
       }
-    }
-    if (this.frameworkId) {
-      option.params.framework = this.frameworkId;
-    }
-    this.searchService.contentSearch(option)
-      .subscribe(data => {
-        this.showLoader = false;
-        this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.contentList = data.result.content || [];
-      }, err => {
+      const option: any = {
+        filters: filters,
+        fields: this.configService.urlConFig.params.LibrarySearchField,
+        limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+        pageNumber: this.paginationDetails.currentPage,
+        query: this.queryParams.key,
+        mode: 'soft',
+        softConstraints: softConstraints,
+        facets: this.facets,
+        params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+      };
+      if (this.queryParams.softConstraints) {
+        try {
+          option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+        } catch {
+
+        }
+      }
+      if (this.frameworkId) {
+        option.params.framework = this.frameworkId;
+      }
+      this.searchService.contentSearch(option)
+        .subscribe(data => {
+          this.showLoader = false;
+          this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+          this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.contentList = data.result.content || [];
+        }, err => {
+          this.showLoader = false;
+          this.contentList = [];
+          this.facetsList = [];
+          this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
+   }, err => {
         this.showLoader = false;
         this.contentList = [];
         this.facetsList = [];
         this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      });
+    });
   }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
