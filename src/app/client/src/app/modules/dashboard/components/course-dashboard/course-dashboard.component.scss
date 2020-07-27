@@ -1,11 +1,10 @@
-@import 'variables';
 @import "mixins/mixins";
 
 div.content {
     height: 100%;
     position: relative;
     z-index: 1;
-    margin-top: calculateRem(48px);
+    margin-top: calculateRem(36px);
 
     @include respond-below(sm){
         margin-left: 0px;
@@ -37,13 +36,18 @@ div.content {
   }
 
   .batch-card-number {
-    font-size: 2.5rem;
+    font-size: calculateRem(36px);
+    font-weight: bold;
+  }
+
+  .batch-card-total-number {
+    font-size: calculateRem(72px);
     font-weight: bold;
   }
 }
 
 .completion-content{
-  max-height: 15.2875rem;
+  min-height: calculateRem(231px);
 }
 
 ::ng-deep {

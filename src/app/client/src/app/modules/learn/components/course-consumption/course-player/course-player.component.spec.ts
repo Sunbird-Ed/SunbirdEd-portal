@@ -12,7 +12,7 @@ import { assessmentPlayerMockData } from '../assessment-player/assessment-player
 import { CoursesService } from './../../../../core/services/course/course.service';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CoursePlayerComponent } from './course-player.component';
-import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged, telemetryInteractMockData } from './course-player.component.mock.data';
+import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged, telemetryInteractMockData, enrolledCourseMockData } from './course-player.component.mock.data';
 
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
@@ -540,5 +540,25 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.collapsedChange(false, 0);
     expect(component.courseHierarchy.children[0].collapsed).toBeFalsy();
+  });
+
+  it('should show course last updated on warning message', () => {
+    const courseService = TestBed.get(CoursesService);
+    spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component['courseId'] = 'do_212347136096788480178';
+    component.courseHierarchy.lastUpdatedOn = new Date();
+    component.isCourseModifiedAfterEnrolment();
+    expect(component.isEnrolledCourseUpdated).toBeTruthy();
+  });
+
+  it('should not show course last updated on warning message if course is not enrolled', () => {
+    const courseService = TestBed.get(CoursesService);
+    spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component['courseId'] = 'do_212347136096788480178';
+    component.courseHierarchy.lastUpdatedOn = '2019-05-04 09:57:34:907+0000';
+    component.isCourseModifiedAfterEnrolment();
+    expect(component.isEnrolledCourseUpdated).toBeFalsy();
   });
 });

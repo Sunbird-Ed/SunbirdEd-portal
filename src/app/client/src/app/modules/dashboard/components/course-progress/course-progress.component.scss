@@ -1,4 +1,3 @@
-@import 'variables';
 @import "mixins/mixins";
 
 .w-300 {
@@ -23,7 +22,7 @@ a {
   width: 100%;
 }
 
-.course-completed:last-child{
+.course-completed:last-child {
   flex: unset;
 }
 
@@ -43,14 +42,15 @@ a {
   height: calculateRem(14px);
 }
 
-.sb-btn-link{
+.sb-btn-link {
   font-size: calculateRem(16px);
 }
 
 ::ng-deep {
-  .ui.selection.dropdown{
+  .ui.selection.dropdown {
     line-height: 1em;
-   }
+  }
+
   .ui.search.dropdown.course-dashboard-select>.text {
     margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
     // width: 136px;
@@ -60,48 +60,76 @@ a {
   }
 
 }
-@include respond-below(lg){
-  .course-completed:last-child{
-    margin-top:calculateRem(8px);
+
+@include respond-below(lg) {
+  .course-completed:last-child {
+    margin-top: calculateRem(8px);
   }
 }
-@include respond-below(sm){
+
+@include respond-below(sm) {
   .course-participants-label {
     width: 100%;
     margin-bottom: calculateRem(8px);
   }
-  .course-participants-label{
+
+  .course-participants-label {
     &:nth-child(3) {
       padding-left: 0 !important;
     }
-    &:nth-child(5){
+
+    &:nth-child(5) {
       padding-left: 0 !important;
       width: 100%;
       margin-bottom: 0;
     }
   }
+
   [dir=rtl] {
-    .course-participants-label{
+    .course-participants-label {
       &:nth-child(3) {
         padding-right: 0 !important;
       }
-      &:nth-child(5){
+
+      &:nth-child(5) {
         padding-right: 0 !important;
       }
     }
   }
 }
-.table-headerDashboard{
+
+.table-headerDashboard {
   color: var(--primary-color);
   font-weight: bold;
 }
+
 .CloseButtonFont {
   font-size: 1.5rem !important;
 }
 
-.progress-content{
-  margin-top: calculateRem(48px);
-  @include respond-below(sm){
+.progress-content {
+  margin-top: calculateRem(36px);
+
+  @include respond-below(sm) {
     margin-top: 0px;
- }
+  }
+}
+
+.progress-report-content {
+  @include respond-below(sm) {
+    flex-direction: column;
+  }
+
+  .report-buttons {
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: calculateRem(32px);
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .report-buttons {
+    flex-direction: column;
+    margin-top: calculateRem(8px);
+  }
 }

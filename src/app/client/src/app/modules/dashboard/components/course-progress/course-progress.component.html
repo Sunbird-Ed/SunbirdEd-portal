@@ -22,7 +22,7 @@
 <div class="ui container">
   <div class="ui grid">
     <div class="twelve wide column p-0">
-      <div class="p-16">
+      <div class="p-24">
         <!-- <div class="ui divider"></div> -->
         <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
           <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
@@ -34,7 +34,7 @@
               </a>
             </div>
           </div>
-          <div class="d-flex flex-ai-center">
+          <div class="d-flex flex-ai-center progress-report-content">
               <div class="d-flex w-300 mr-auto flex-dc">
                 <label class="fnormal font-weight-normal pl-4">Select Batch</label>
                   <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
@@ -50,7 +50,7 @@
               <!-- below needs to be done score card -->
              
               <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
-              <div class="d-flex" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
+              <div class="d-flex report-buttons" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
                   <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16 download-report d-flex flex-ai-center"
                   href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
                   [telemetryInteractObject]="interactObject"
@@ -71,8 +71,8 @@
             
           </div>
           <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
-   
-           <div class="d-flex my-16 sb-course-progress-status d-flex flex-w-wrap flex-ai-center"
+
+       <div class="d-flex my-16 sb-course-progress-status d-flex flex-w-wrap flex-ai-center"
            *ngIf="currentBatch">
            <div class="sb-course-progress-status-label">
              <span class="course-start-dt course-participants-label pr-16">
@@ -98,7 +98,7 @@
              </span>
  
              <!-- TODO: Need to revert when changes are done from KP side-->
-              <span *ngIf="currentBatch.certificateCount!==null"
+         <span *ngIf="currentBatch.certificateCount!==null"
                class="course-participants course-participants-label  px-16">
                <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
                </span>
@@ -127,20 +127,20 @@
              <!-- TODO: Need to revert when changes are done from KP side-->
               <span *ngIf="currentBatch.certificateCount!==null"
                class="course-participants course-participants-label px-16">
-               <span class="font-weight-bold"> 0 {{currentBatch.certificateCount}}</span>
+               <span class="font-weight-bold">{{currentBatch.certificateCount}}</span>
              </span> 
            </div>
  
-          </div> 
+          </div>  
 
           <!-- Select Batch image content start-->
 
-          <!-- <div class="d-flex flex-jc-center">
-            <div class="d-flex flex-dc flex-ai-center">
-              <div><img src="assets/images/batch-img.png"></div>
+           <div class="d-flex flex-jc-center">
+            <div class="d-flex flex-dc flex-ai-center pb-24">
+              <div><img src="assets/images/batch.png" width="329px" height="229px"></div>
               <p class="img-text">Select batch to view details</p>
             </div>
-          </div> -->
+          </div> 
 
           <!-- Select Batch image content end-->
 
@@ -187,11 +187,11 @@
         <div class="tweleve wide column" *ngIf="showLoader">
           <app-loader></app-loader>
         </div>
-        <!-- <div class="ui warning message tweleve wide column"
+        <div class="ui warning message tweleve wide column"
           *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
-        </div> -->
+        </div>
         <div class="ui grid" *ngIf="showNoBatch">
           <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
             <a (click)='redirect()' class="ui item basic icon circular float-ContentRight"
