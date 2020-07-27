@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FrameworkService, PlayerService, CoursesService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
@@ -34,6 +34,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public cardData: Array<{}> = [];
   public isLoading = true;
+  layoutConfiguration:any;
   slideConfig: object = {};
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -43,10 +44,17 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
-    private coursesService: CoursesService
+    private coursesService: CoursesService, public layoutService: LayoutService
     ) {
   }
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
@@ -308,5 +316,11 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   this.telemetryService.interact(cardClickInteractData);
 }
-
+redoLayout(panelIndex) {
+  if(this.layoutConfiguration) {
+    return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+  } else {
+    return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+  }
+}
 }

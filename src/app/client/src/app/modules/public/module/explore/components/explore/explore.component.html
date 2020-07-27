@@ -1,6 +1,9 @@
-<div [appTelemetryImpression]="telemetryImpression">
+<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+  <div [ngClass]="redoLayout(0)">
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
+  </div>
+  <div [ngClass]="redoLayout(1)">
   <div *ngIf="cardData.length > 0">
   <div class="sb-bg-color-white py-16">
     <div class="ui container">
@@ -29,6 +32,7 @@
         <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
 [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton" [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
       </div>
+  </div>
   </div>
 </div>
 <app-offline-banner [slug]="userService.slug"></app-offline-banner>

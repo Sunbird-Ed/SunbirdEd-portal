@@ -213,4 +213,12 @@ describe('CourseSearchComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout(1);
+  });
 });
