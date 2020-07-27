@@ -24,6 +24,13 @@
           </div>
         </ng-template> -->
 
+        <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
+          <div class="sb-no-course-found my-16 d-flex flex-ai-center">
+            <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
+            <div class="ml-8">{{ resourceService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+          </div>
+        </div>
+
         <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
@@ -124,6 +131,13 @@
             </div>
           </div>
         </ng-template> -->
+
+        <div *ngIf="isEnrolledCourseUpdated" class="computer only">
+          <div class="sb-no-course-found my-16 d-flex flex-ai-center">
+            <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
+            <div class="ml-8">{{ resourceService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+          </div>
+        </div>
 
         <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">

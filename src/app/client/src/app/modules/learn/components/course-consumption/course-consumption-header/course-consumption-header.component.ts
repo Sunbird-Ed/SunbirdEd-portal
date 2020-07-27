@@ -136,14 +136,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   showDashboard() {
-    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'course-stats'],
-      {
-        state: {
-          id: _.get(this.courseHierarchy, 'identifier'),
-          type: _.get(this.courseHierarchy, 'contentType'),
-          ver: _.get(this.courseHierarchy, 'pkgVersion')
-        }
-      });
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'course-stats']);
   }
 
   // To close the dashboard

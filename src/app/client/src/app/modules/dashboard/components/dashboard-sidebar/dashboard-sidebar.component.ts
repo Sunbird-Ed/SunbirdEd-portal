@@ -14,11 +14,9 @@ export class DashboardSidebarComponent {
   courseBatchesEdata: IInteractEventEdata;
   courseCertificatesEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  state: {};
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute) {
-      this.state = history.state;
       this.courseStatsEdata = {
         id: 'stats',
         type: 'click',
@@ -35,9 +33,9 @@ export class DashboardSidebarComponent {
         pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
       };
       this.telemetryInteractObject = {
-        id: _.get(this.activatedRoute.snapshot, 'params.courseId') || _.get(this.state, 'id'),
-        type: _.get(this.state, 'type'),
-        ver: `${_.get(this.state, 'ver')}` || '1.0',
+        id: _.get(this.activatedRoute.snapshot, 'params.courseId'),
+        type: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.type'),
+        ver: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.ver'),
       };
     }
 

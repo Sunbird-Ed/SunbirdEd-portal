@@ -30,7 +30,7 @@
   }
   
   .sidebar a.active {
-      border-left:calculateRem(4px) solid var(--secondary-color);
+      border-left:calculateRem(4px) solid var(--primary-400);
       background: var(--primary-100);
       color:var(--primary-color);
       font-weight: bold;

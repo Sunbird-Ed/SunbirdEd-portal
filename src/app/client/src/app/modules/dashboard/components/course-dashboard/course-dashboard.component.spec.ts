@@ -18,7 +18,7 @@ describe('CourseDashboardComponent', () => {
   let fixture: ComponentFixture<CourseDashboardComponent>;
   let courseProgressService: CourseProgressService;
   const fakeActivatedRoute = {
-    'params': of ({courseId: '123'}),
+    parent: {params: of ({courseId: '123'}), queryParams: {} },
     snapshot: {
         data: {
             telemetry: {
@@ -66,15 +66,11 @@ describe('CourseDashboardComponent', () => {
 
   it('should call getBatchList', () => {
     spyOn(component, 'getBatchList');
-    spyOn(component, 'initializeFields');
     spyOn(component, 'setImpressionEvent');
+    spyOn(component['activatedRoute'].parent, 'params');
     expect(component).toBeTruthy();
     component.ngOnInit();
     expect(component.getBatchList).toHaveBeenCalled();
-    expect(component.initializeFields).toHaveBeenCalled();
-    expect(component.dashBoardItems.totalCompleted.title).toEqual(resourceBundle.frmelmnts.lbl.totalCompletions);
-    expect(component.dashBoardItems.totalBatches.title).toEqual(resourceBundle.frmelmnts.lbl.totalBatches);
-    expect(component.dashBoardItems.totalEnrollment.title).toEqual(resourceBundle.frmelmnts.lbl.totalEnrollments);
     expect(component.setImpressionEvent).toHaveBeenCalled();
   });
 
@@ -83,12 +79,12 @@ describe('CourseDashboardComponent', () => {
       courseId: '123',
       status: ['0', '1', '2']
     };
-    spyOn(component, 'getEnrollmentAndCompletedCount');
+    spyOn(component, 'getDashboardData');
     spyOn(component['courseProgressService'], 'getBatches').and.returnValue(of (mockUserData.getBatchRes));
     component.getBatchList();
     courseProgressService.getBatches(searchParamsCreator).subscribe(data => {
       expect(data).toEqual(mockUserData.getBatchRes);
-      expect(component.getEnrollmentAndCompletedCount).toHaveBeenCalledWith(_.get(data, 'result.response'));
+      expect(component.getDashboardData).toHaveBeenCalledWith(_.get(data, 'result.response'));
     });
     expect(component['courseProgressService'].getBatches).toHaveBeenCalledWith(searchParamsCreator);
   });
@@ -101,7 +97,7 @@ describe('CourseDashboardComponent', () => {
       status: ['0', '1', '2'],
     };
     spyOn(component['courseProgressService'], 'getBatches').and.returnValue(throwError ([]));
-    spyOn(component, 'getEnrollmentAndCompletedCount');
+    spyOn(component, 'getDashboardData');
     spyOn(component['toasterService'], 'error');
     component.getBatchList();
     courseProgressService.getBatches(searchParamsCreator).subscribe(data => {
@@ -109,13 +105,6 @@ describe('CourseDashboardComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
     });
     expect(component['courseProgressService'].getBatches).toHaveBeenCalledWith(searchParamsCreator);
-  });
-
-  it('should assign enrollment and completed count', () => {
-    component.getEnrollmentAndCompletedCount({content: [mockUserData.currentBatchDataWithCount], count: 1});
-    expect(component.dashBoardItems.totalBatches.count).toEqual(1);
-    expect(component.dashBoardItems.totalEnrollment.count).toEqual(2);
-    expect(component.dashBoardItems.totalCompleted.count).toEqual(4);
   });
 
   it('should unsubscribe on destroy', () => {
@@ -126,5 +115,15 @@ describe('CourseDashboardComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
+  it('should call updateDashBoardItems', () => {
+    spyOn(component, 'updateDashBoardItems');
+    component.getDashboardData({content: [mockUserData.currentBatchDataWithCount], count: 1});
+    expect(component.updateDashBoardItems).toHaveBeenCalled();
+  });
+
+  it('should push data to dashBoardItems', () => {
+    component.updateDashBoardItems(resourceBundle.frmelmnts.lbl.totalCompletions, 25, 'small');
+    expect(component.dashBoardItems).toContain({title: resourceBundle.frmelmnts.lbl.totalCompletions, count: 25, type: 'small'});
+  });
 
 });

@@ -1,9 +1,9 @@
 import { NavigationHelperService, ResourceService, ToasterService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { IDashboard } from '../../interfaces';
+import { IDashboardItems } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { CourseProgressService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,13 +18,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CourseDashboardComponent implements OnInit, OnDestroy {
 
-  public dashBoardItems: IDashboard;
-
-  public unsubscribe$ = new Subject<void>();
+  public dashBoardItems: Array<IDashboardItems> = [];
   courseId: string;
-  queryParams: {};
   telemetryImpression: IImpressionEventInput;
-  state: {};
+  public unsubscribe$ = new Subject<void>();
 
   constructor(
     private courseProgressService: CourseProgressService,
@@ -37,38 +34,12 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.state = history.state;
-    this.initializeFields();
-    this.courseId = _.get(this.activatedRoute.snapshot.params, 'courseId') || _.get(this.state, 'id');
-    this.queryParams = this.activatedRoute.snapshot.queryParams;
-    this.getBatchList();
-    this.setImpressionEvent();
+    this.activatedRoute.parent.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
+        this.courseId = _.get(params, 'courseId');
+        this.getBatchList();
+        this.setImpressionEvent();
+      });
   }
-
-  // To initialize the dashboard data
-  initializeFields() {
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-    .subscribe(item => {
-    this.dashBoardItems = {
-      totalBatches: {
-        title: this.resourceService.frmelmnts.lbl.totalBatches,
-        count: 0,
-        type: 'small',
-      },
-      totalEnrollment: {
-        title: this.resourceService.frmelmnts.lbl.totalEnrollments,
-        count: 0,
-        type: 'small',
-      },
-      totalCompleted: {
-        title: this.resourceService.frmelmnts.lbl.totalCompletions,
-        count: 0,
-        type: 'large'
-      }
-    };
-    });
-  }
-
 
   // To set telemetry impression
   setImpressionEvent() {
@@ -84,8 +55,8 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
       },
       object: {
           id: this.courseId,
-          type: _.get(this.state, 'type'),
-          ver: `${_.get(this.state, 'ver')}` || '1.0',
+          type: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.type'),
+          ver: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.ver'),
       }
     };
   }
@@ -98,7 +69,7 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
       createdBy: this.userService.userid
     };
     this.courseProgressService.getBatches(searchParams).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.getEnrollmentAndCompletedCount(_.get(data, 'result.response'));
+      this.getDashboardData(_.get(data, 'result.response'));
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
@@ -106,13 +77,31 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
   }
 
   // To get the user enrolled/completed  count for the Course
-  getEnrollmentAndCompletedCount(batchList) {
+  getDashboardData(batchList) {
     const batches = _.get(batchList, 'content');
     if (batches) {
-      this.dashBoardItems.totalBatches.count = _.get(batchList, 'count');
+      this.dashBoardItems.push({
+        title: this.resourceService.frmelmnts.lbl.totalBatches,
+        count: _.get(batchList, 'count'),
+        type: 'small',
+      });
       _.forEach(batches, batch => {
-        this.dashBoardItems.totalCompleted.count += _.get(batch, 'completedCount');
-        this.dashBoardItems.totalEnrollment.count += _.get(batch, 'participantCount');
+        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalEnrollments, _.get(batch, 'participantCount'), 'small');
+        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalCompletions, _.get(batch, 'completedCount'), 'large');
+        });
+    }
+  }
+
+  // To update the dashboardItems count
+  updateDashBoardItems(title: string, count: number, type: string) {
+    const enrollmentCount = _.find(this.dashBoardItems, { title: title });
+    if (enrollmentCount) {
+      enrollmentCount.count += count;
+    } else {
+      this.dashBoardItems.push({
+        title: title,
+        count: count,
+        type: type,
       });
     }
   }

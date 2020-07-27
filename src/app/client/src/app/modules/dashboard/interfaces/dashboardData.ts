@@ -57,14 +57,8 @@ export interface IBatchListData {
     updatedDate?: any;
 }
 
-export interface IDashboardItem {
+export interface IDashboardItems {
     title: string;
     count: Number;
     type: string;
-}
-
-export interface IDashboard {
-    totalBatches: IDashboardItem;
-    totalEnrollment: IDashboardItem;
-    totalCompleted: IDashboardItem;
 }
