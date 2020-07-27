@@ -49,7 +49,7 @@ export class MainMenuComponent implements OnInit {
   private router: Router;
 
   @Input()
-  private layoutConfiguration: any;
+  public layoutConfiguration: any;
   homeMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
