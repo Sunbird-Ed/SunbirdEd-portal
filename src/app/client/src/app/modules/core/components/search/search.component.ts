@@ -1,9 +1,8 @@
-
 import { filter } from 'rxjs/operators';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
-import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile,LayoutService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -76,6 +75,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
   */
+  @Input() layoutConfiguration:any;
   private activatedRoute: ActivatedRoute;
   /**
      * Constructor to create injected service(s) object
@@ -85,7 +85,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   constructor(route: Router, activatedRoute: ActivatedRoute, userService: UserService,
     resourceService: ResourceService, config: ConfigService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public layoutService: LayoutService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -222,5 +222,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       };
     }
     return searchInteractEdata;
+  }
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }
