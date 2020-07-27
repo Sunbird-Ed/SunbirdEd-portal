@@ -1,6 +1,7 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination
+  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination, 
+  LayoutService, COLUMN_TYPE 
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -43,6 +44,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
   public showFilter = true;
+  layoutConfiguration;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -54,13 +56,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
     public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.courses.filterType;
     this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
         this.enrolledSection = data[0];
@@ -85,6 +88,12 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       error => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -267,5 +276,12 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }

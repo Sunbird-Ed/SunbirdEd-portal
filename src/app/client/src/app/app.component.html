@@ -6,7 +6,12 @@
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
   <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
 [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-  <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$" [ngClass]="{'header-block': isFullScreenView}"></app-header>
+  <button (click)="switchLayout()" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0">
+    Switch Layout
+  </button>
+  <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration"
+              [routerEvents]="routeData$"
+              [ngClass]="{'header-block': isFullScreenView}"></app-header>
   <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
@@ -15,7 +20,7 @@
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
-<app-footer *ngIf="!hideHeaderNFooter"></app-footer>
+<app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
   <div class="sb-modal-header">

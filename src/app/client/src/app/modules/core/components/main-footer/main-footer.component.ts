@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit, Input} from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./main-footer.component.scss']
 })
 export class MainFooterComponent implements OnInit, AfterViewInit {
+  @Input() layoutConfiguration;
   @ViewChild('footerFix') footerFix: ElementRef;
   /**
    * reference of resourceService service.

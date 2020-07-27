@@ -1,8 +1,12 @@
-<app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
-        *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
-        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
-        [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-<div class="ui container">
+<div class="sb-g">
+    <div [ngClass]="redoLayout(0)">
+        <app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
+            *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
+            [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
+            [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+    </div>
+    <div [ngClass]="redoLayout(1)">
+        <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
             <div  class="sb-pageSection-header">
@@ -39,6 +43,8 @@
                         class="sb-item ">&raquo;</a>
                 </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-  NavigationHelperService, ConfigService, BrowserCacheTtlService
+  NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
@@ -91,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+  layoutConfiguration;  
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -101,9 +102,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    public changeDetectorRef: ChangeDetectorRef) {
+    public changeDetectorRef: ChangeDetectorRef,public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -117,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
   }
+
   handleHeaderNFooter() {
     this.router.events
       .pipe(
@@ -192,6 +195,15 @@ export class AppComponent implements OnInit, OnDestroy {
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  switchLayout() {
+    if (this.layoutConfiguration) {
+      this.layoutConfiguration = null;
+    } else {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    }
+    this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }
 
   isLocationStatusRequired() {

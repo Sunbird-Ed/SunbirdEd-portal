@@ -1,5 +1,5 @@
 <div class="ui stackable grid">
-  <div class="three wide column">
+  <div class="three wide column pl-0 pr-0">
     <div class="sidebar py-24">
       <a [routerLink]="['course-stats']" routerLinkActive="active" appTelemetryInteract  [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseStatsEdata" >{{resourceService?.frmelmnts?.lbl?.dashBoardTitle}}</a>
       <a [routerLink]="['progress']" [class.active]="router.url.includes('/dashboard/progress')" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseBatchesEdata">{{resourceService?.frmelmnts?.lbl?.batches}}</a>
@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="eight wide column">
-    <div class="ui container">
+    <div>
       <router-outlet></router-outlet>
     </div>
   </div>
