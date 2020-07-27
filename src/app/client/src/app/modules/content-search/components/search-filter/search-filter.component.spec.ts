@@ -70,6 +70,7 @@ describe('SearchFilterComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(SearchFilterComponent);
         component = fixture.componentInstance;
+        component.layoutConfiguration = {};
         fixture.detectChanges();
     });
     it('should create', () => {

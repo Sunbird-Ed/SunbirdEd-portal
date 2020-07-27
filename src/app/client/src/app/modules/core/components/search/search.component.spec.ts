@@ -40,7 +40,7 @@ describe('SearchComponent', () => {
       declarations: [ ],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),
         CoreModule, SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, LayoutService, BrowserCacheTtlService, UserService, LearnerService,
+      providers: [ResourceService, ConfigService, CacheService, LayoutService, BrowserCacheTtlService, UserService, LearnerService, LayoutService,
       ContentService, { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {
           subscribe: (fn: (value: Params) => void) => fn({
@@ -55,6 +55,7 @@ describe('SearchComponent', () => {
     location = TestBed.get(Location);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    component.layoutConfiguration = {};
   });
   it('should create', () => {
     expect(component).toBeTruthy();

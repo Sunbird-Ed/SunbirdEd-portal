@@ -1,6 +1,6 @@
 import { UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, SharedModule, LayoutServcie } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
@@ -23,7 +23,7 @@ describe('MainMenuComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
-      providers: [HttpClient, ResourceService, ConfigService, UserService,
+      providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutServcie,
         LearnerService, ContentService, { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -33,6 +33,7 @@ describe('MainMenuComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainMenuComponent);
     component = fixture.componentInstance;
+    component.layoutConfiguration = {};
   });
 
   it('should create', () => {
@@ -45,4 +46,8 @@ describe('MainMenuComponent', () => {
       expect(result).toEqual([{ id: 'user:program:contribute', type: 'Feature' }, { id: 'SB-15591', type: 'Task' }]);
     });
   });
+  it('should create with layout config', () => {
+    component.layoutConfiguration ={};
+    expect(component).toBeTruthy();
+  })
 });
