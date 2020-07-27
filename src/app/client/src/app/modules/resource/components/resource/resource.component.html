@@ -1,3 +1,14 @@
+<div class="sbt-fluid-header-bg" *ngIf="layoutConfiguration">
+    <div class="sb-g sbt-container sbt-page-header">
+    <div [ngClass]="redoLayout(0)">
+    </div>
+    <div [ngClass]="redoLayout(1)">
+        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-page-header-content pl-24">
+            <h1>Textbooks</h1>
+          </div>
+    </div>
+    </div>
+</div>
 <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="redoLayout(0)">
     <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">

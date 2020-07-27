@@ -206,22 +206,27 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item py-8 pl-0 pr-24"
-			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
-			*ngIf="!router.isActive('', true)" [routerLink]="['/explore']"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata">
-			{{resourceService?.frmelmnts?.tab?.resources}}
+		<a class="item item--textbook" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [routerLink]="['/explore']">
+			<i class="icon-svg icon-svg--md icon-textbook mr-4" aria-hidden="true">
+				<svg class="icon icon-svg--white">
+				  <use xlink:href="./assets/images/sprite.svg#textbook"></use>
+				</svg>
+			  </i>{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item py-8 pl-0 pr-24"
-			[class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
-			*ngIf="!router.isActive('', true)" [routerLink]="['/explore-course']"
-			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
-			{{resourceService?.frmelmnts?.tab?.courses}}
+		<a class="item item--course" [class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
+			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [routerLink]="['/explore-course']">
+			<i class="icon-svg icon-svg--md icon-course mr-4" aria-hidden="true">
+				<svg class="icon icon-svg--white">
+				  <use xlink:href="./assets/images/sprite.svg#courses"></use>
+				</svg>
+			  </i>{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.explore)" 
 		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 		[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-		<span class="item divider">|</span>
+
 		<a class="item font-weight-bold sb-color-primary pr-0" href={{hrefPath}} appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}
@@ -253,9 +258,10 @@
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
-			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
+			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
+		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
+		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
+			</a>
 			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
@@ -299,6 +305,7 @@
 			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
+			
 			</ng-container>
 		<!--/Not Logged in user-->
 	</div>
