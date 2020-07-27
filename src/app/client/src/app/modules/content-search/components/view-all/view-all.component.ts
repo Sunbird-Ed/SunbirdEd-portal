@@ -212,18 +212,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getContentList(data).subscribe((response: any) => {
       this.showLoader = false;
       if (this.sectionName === this.resourceService.frmelmnts.lbl.mytrainings) {
-        if (_.get(response, 'enrolledCourseData.enrolledCourses')) {
-          const enrolledCourseCount = _.get(response, 'enrolledCourseData.enrolledCourses').length;
-          this.noResult = false;
-          this.totalCount = enrolledCourseCount;
-          this.searchList = this.formatSearchresults(_.orderBy(_.get(response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']));
-        } else {
-          this.noResult = true;
-          this.noResultMessage = {
-            'message': 'messages.stmsg.m0007',
-            'messageText': 'messages.stmsg.m0006'
-          };
-        }
+       this.processEnrolledCourses(_.get(response, 'enrolledCourseData'));
       } else {
         if (response.contentData.result.count && response.contentData.result.content) {
           this.noResult = false;
@@ -430,6 +419,22 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
     } else {
       return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
+  }
+
+  processEnrolledCourses(courseData) {
+    console.log(courseData);
+    if (_.get(courseData, 'enrolledCourses')) {
+      const enrolledCourseCount = _.get(courseData, 'enrolledCourses').length;
+      this.noResult = false;
+      this.totalCount = enrolledCourseCount;
+      this.searchList = this.formatSearchresults(_.orderBy(_.get(courseData, 'enrolledCourses'), ['enrolledDate'], ['desc']));
+    } else {
+      this.noResult = true;
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0006'
+      };
     }
   }
 }

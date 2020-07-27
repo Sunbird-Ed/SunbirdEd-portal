@@ -44,7 +44,27 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public usersProfile: any;
   public toUseFrameWorkData = false;
   private resourceDataSubscription: Subscription;
-  layoutConfiguration:any;
+  layoutConfiguration: any;
+  private myCoursesSearchQuery = JSON.stringify({
+    'request': {
+      'filters': {
+        'contentType': [
+          'Course'
+        ],
+        'objectType': [
+          'Content'
+        ],
+        'status': [
+          'Live'
+        ]
+      },
+      'sort_by': {
+        'lastPublishedOn': 'desc'
+      },
+      'limit': 10,
+      'organisationId': _.get(this.userService.userProfile, 'organisationIds')
+    }
+  });
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -298,28 +318,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public viewAll(event) {
-    const userData = this.userService.userProfile;
-    const requestSearchQuery = JSON.stringify({
-      'request': {
-        'filters': {
-          'contentType': [
-            'Course'
-          ],
-          'objectType': [
-            'Content'
-          ],
-          'status': [
-            'Live'
-          ]
-        },
-        'sort_by': {
-          'lastPublishedOn': 'desc'
-        },
-        'limit': 10,
-        'organisationId': _.get(userData, 'organisationIds')
-      }
-    });
-    const searchQuery = _.get(event, 'searchQuery') ?  JSON.parse(event.searchQuery) : JSON.parse(requestSearchQuery);
+    const searchQuery = _.get(event, 'searchQuery') ?  JSON.parse(event.searchQuery) : JSON.parse(this.myCoursesSearchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {
