@@ -54,6 +54,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
+    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
