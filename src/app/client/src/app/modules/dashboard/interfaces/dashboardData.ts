@@ -60,13 +60,11 @@ export interface IBatchListData {
 export interface IDashboardItem {
     title: string;
     count: Number;
+    type: string;
 }
 
 export interface IDashboard {
     totalBatches: IDashboardItem;
     totalEnrollment: IDashboardItem;
-}
-
-export interface IDashBoardItems {
     totalCompleted: IDashboardItem;
 }

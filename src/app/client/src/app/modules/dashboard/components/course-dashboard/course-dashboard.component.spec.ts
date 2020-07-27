@@ -73,8 +73,8 @@ describe('CourseDashboardComponent', () => {
     expect(component.getBatchList).toHaveBeenCalled();
     expect(component.initializeFields).toHaveBeenCalled();
     expect(component.dashBoardItems.totalCompleted.title).toEqual(resourceBundle.frmelmnts.lbl.totalCompletions);
-    expect(component.dashBoard.totalBatches.title).toEqual(resourceBundle.frmelmnts.lbl.totalBatches);
-    expect(component.dashBoard.totalEnrollment.title).toEqual(resourceBundle.frmelmnts.lbl.totalEnrollments);
+    expect(component.dashBoardItems.totalBatches.title).toEqual(resourceBundle.frmelmnts.lbl.totalBatches);
+    expect(component.dashBoardItems.totalEnrollment.title).toEqual(resourceBundle.frmelmnts.lbl.totalEnrollments);
     expect(component.setImpressionEvent).toHaveBeenCalled();
   });
 
@@ -113,8 +113,8 @@ describe('CourseDashboardComponent', () => {
 
   it('should assign enrollment and completed count', () => {
     component.getEnrollmentAndCompletedCount({content: [mockUserData.currentBatchDataWithCount], count: 1});
-    expect(component.dashBoard.totalBatches.count).toEqual(1);
-    expect(component.dashBoard.totalEnrollment.count).toEqual(2);
+    expect(component.dashBoardItems.totalBatches.count).toEqual(1);
+    expect(component.dashBoardItems.totalEnrollment.count).toEqual(2);
     expect(component.dashBoardItems.totalCompleted.count).toEqual(4);
   });
 

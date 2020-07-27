@@ -3,7 +3,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { IDashboard, IDashBoardItems } from '../../interfaces';
+import { IDashboard } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { CourseProgressService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CourseDashboardComponent implements OnInit, OnDestroy {
 
-  public dashBoard: IDashboard;
-  public dashBoardItems: IDashBoardItems;
+  public dashBoardItems: IDashboard;
 
   public unsubscribe$ = new Subject<void>();
   courseId: string;
@@ -50,21 +49,21 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
   initializeFields() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
     .subscribe(item => {
-    this.dashBoard = {
+    this.dashBoardItems = {
       totalBatches: {
         title: this.resourceService.frmelmnts.lbl.totalBatches,
-        count: 0
+        count: 0,
+        type: 'small',
       },
       totalEnrollment: {
         title: this.resourceService.frmelmnts.lbl.totalEnrollments,
-        count: 0
-      }
-    };
-
-     this.dashBoardItems = {
+        count: 0,
+        type: 'small',
+      },
       totalCompleted: {
         title: this.resourceService.frmelmnts.lbl.totalCompletions,
-        count: 0
+        count: 0,
+        type: 'large'
       }
     };
     });
@@ -110,10 +109,10 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
   getEnrollmentAndCompletedCount(batchList) {
     const batches = _.get(batchList, 'content');
     if (batches) {
-      this.dashBoard.totalBatches.count = _.get(batchList, 'count');
+      this.dashBoardItems.totalBatches.count = _.get(batchList, 'count');
       _.forEach(batches, batch => {
         this.dashBoardItems.totalCompleted.count += _.get(batch, 'completedCount');
-        this.dashBoard.totalEnrollment.count += _.get(batch, 'participantCount');
+        this.dashBoardItems.totalEnrollment.count += _.get(batch, 'participantCount');
       });
     }
   }
