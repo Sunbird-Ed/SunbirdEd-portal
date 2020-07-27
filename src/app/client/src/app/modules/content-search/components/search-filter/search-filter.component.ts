@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService,LayoutService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -38,8 +38,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<{status: string, filters?: any}> = new EventEmitter();
   @Output() fetchingFilters: EventEmitter<any> = new EventEmitter();
+  @Input() layoutConfiguration;
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
-    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
+    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, public layoutService:LayoutService) {
   }
   ngOnInit() {
     this.type = this.optionLabel.Board;
@@ -255,5 +256,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
+  }
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }
