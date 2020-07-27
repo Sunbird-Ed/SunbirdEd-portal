@@ -422,8 +422,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * @since - release-3.2.0-SH-652
+   * @param  {} courseData
+   * @description - It will process the enrolled course data if user comes to this page from My courses section
+   */
   processEnrolledCourses(courseData) {
-    console.log(courseData);
     if (_.get(courseData, 'enrolledCourses')) {
       const enrolledCourseCount = _.get(courseData, 'enrolledCourses').length;
       this.noResult = false;
