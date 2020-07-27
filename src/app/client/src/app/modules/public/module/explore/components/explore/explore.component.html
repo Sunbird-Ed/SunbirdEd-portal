@@ -1,6 +1,9 @@
-<div [appTelemetryImpression]="telemetryImpression">
+<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+  <div [ngClass]="redoLayout(0)">
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
+  </div>
+  <div [ngClass]="redoLayout(1)">
   <div *ngIf="cardData.length > 0">
   <div class="sb-bg-color-white py-16">
     <div class="ui container">
@@ -17,7 +20,7 @@
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
-        <sb-library-cards-grid 
+        <sb-library-cards-grid [layoutConfig]="true"
           [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
           [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
@@ -29,6 +32,7 @@
         <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
 [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton" [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
       </div>
+  </div>
   </div>
 </div>
 <app-offline-banner [slug]="userService.slug"></app-offline-banner>

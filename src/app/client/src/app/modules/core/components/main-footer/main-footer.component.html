@@ -1,6 +1,6 @@
 <footer class="footer 
 " *ngIf="showFooter" #footerFix>
-  <div class="ui container">
+  <div *ngIf="!layoutConfiguration" class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
         <!-- default links if tenant settings is not available -->
@@ -70,5 +70,9 @@
         </label>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="layoutConfiguration" class="ui container">
+    New footer
   </div>
 </footer>

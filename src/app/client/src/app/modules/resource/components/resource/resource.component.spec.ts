@@ -77,6 +77,7 @@ describe('ResourceComponent', () => {
       component['contentSearchService']._frameworkId = '123456';
     const option = {
       filters: {},
+      fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
       isCustodianOrg: true,
       channelId: '123',
       frameworkId: '123456'
@@ -95,6 +96,7 @@ describe('ResourceComponent', () => {
       component['contentSearchService']._frameworkId = '123456';
     const option = {
       filters: {},
+      fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
       isCustodianOrg: true,
       channelId: '123',
       frameworkId: '123456'
@@ -189,5 +191,13 @@ describe('ResourceComponent', () => {
     const event = { data: { title: 'test', contents: [{ identifier: '1234' }] } };
     component.navigateToCourses(event);
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+  });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout(1);
   });
 });

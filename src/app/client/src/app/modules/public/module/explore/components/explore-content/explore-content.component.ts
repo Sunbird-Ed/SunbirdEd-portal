@@ -1,6 +1,6 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
+  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
@@ -43,17 +43,19 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   contentName: string;
   showDownloadLoader = false;
   frameworkId;
+  layoutConfiguration;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
     public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
     public userService: UserService, public frameworkService: FrameworkService,
-    public cacheService: CacheService, public navigationhelperService: NavigationHelperService) {
+    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
         this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
@@ -74,6 +76,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['']);
       }
     );
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
   }
   public getFilters(filters) {
     this.facets = filters.map(element => element.code);
@@ -230,5 +238,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     _.each(this.contentList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }

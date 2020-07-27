@@ -1,0 +1,45 @@
+@import 'variables';
+@import "mixins/mixins";
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    background-color: var(--white);
+    height: 100vh;
+    overflow: auto;
+    padding-left: 40%;
+  }
+  
+  .sidebar a ,.dashboard-title{
+    display: block;
+    color: var(--gray-200);
+    padding: calculateRem(8px);
+    text-decoration: none;
+    font-size: calculateRem(16px);
+    margin:calculateRem(16px) 0px;
+    
+    &:hover{
+        color:var(--black);
+        font-weight: bold;
+    }
+  }
+  .sidebar a.active {
+      border-left:calculateRem(4px) solid var(--secondary-color);
+      background: var(--primary-100);
+      color:var(--primary-color);
+      font-weight: bold;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      padding-left: 0;
+    }
+  
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  
+  }

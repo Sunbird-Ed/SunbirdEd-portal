@@ -16,6 +16,7 @@ import { ExploreComponent } from './explore.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 
+
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
@@ -198,6 +199,7 @@ describe('ExploreComponent', () => {
     component.channelId = '123',
     component['contentSearchService']._frameworkId = '123456';
     const option = {filters: {},
+    fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
     isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'
@@ -214,6 +216,7 @@ describe('ExploreComponent', () => {
     component.channelId = '123',
     component['contentSearchService']._frameworkId = '123456';
     const option = {filters: {},
+    fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
     isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'
@@ -270,5 +273,12 @@ describe('ExploreComponent', () => {
       queryParams: {title: 'test'}
     });
     expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
+  });
+  it('should redo layout on render',() => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout(0);
+    component.layoutConfiguration = null;
+    component.redoLayout(1);
   });
 });

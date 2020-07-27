@@ -3,7 +3,7 @@ import { PageApiService, OrgDetailsService, FormService, UserService } from '@su
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse,
-  NavigationHelperService
+  NavigationHelperService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -36,6 +36,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
+  layoutConfiguration:any;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
@@ -50,13 +51,20 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.exploreCourse.filterType;
     this.setTelemetryData();
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     combineLatest(
       this.orgDetailsService.getOrgDetails(this.userService.slug),
       this.getFrameWork()
@@ -135,6 +143,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Course',
       organisationId: this.hashTagId || '*',
       filters: filters,
+      fields: this.configService.urlConFig.params.CourseSearchField,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
       // exists: [],
@@ -242,5 +251,12 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+  redoLayout(panelIndex) {
+    if(this.layoutConfiguration) {
+      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    } else {
+      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+    }
   }
 }

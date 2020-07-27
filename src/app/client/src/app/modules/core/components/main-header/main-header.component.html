@@ -4,6 +4,7 @@
 <div *ngIf="showAccountMergemodal">
     <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
+<div *ngIf="!layoutConfiguration">
 <div class="ui relative main menu bs-0 d-block">
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
@@ -118,8 +119,52 @@
     <!--/Mobile-->
     <!--/Header Blue Section-->
 </div>
+</div>
 
-<div class="overlay-sidebar" *ngIf="showSideMenu && userService.loggedIn">
+<div *ngIf="layoutConfiguration">
+  <div class="ui relative main menu bs-0 d-block">
+    <!--Header White Section-->
+    <div class="ui container sb-header-ui-container">
+      <div class="ui grid padded">
+        <div class="six wide column p-0">
+          <!--Logo-->
+          <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
+            <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
+                 src="{{tenantInfo.logo}}">
+          </a>
+          <!--/Logo-->
+        </div>
+      </div>
+      <!--Search Box-->
+      <app-search class="sb-search-box mr-auto"
+                  [ngClass]="{'ml-7': searchBox.center, 'ml-7': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+      </app-search>
+
+      <div class="d-flex flex-ai-center language-selector">
+        <sui-select class="selection form-control" [(ngModel)]="selected"
+                    [options]="userTypes" [placeholder]="'Select Your User Type'"
+                    labelField="type" [isSearchable]="false" #select>
+          <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
+          </sui-select-option>
+        </sui-select>
+      </div>
+
+      <!--Avtar Dropdown-->
+      <a class="profile-avtar computer only p-0" tabindex="0">
+        <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+          <ngx-avatar (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                      [size]="38" initialsSize="1"
+                      name="test">
+          </ngx-avatar>
+        </div>
+      </a>
+      <!--/Avtar Dropdown-->
+    </div>
+  </div>
+</div>
+
+
+<div class="overlay-sidebar" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu">
     <div class="profile__info">
       <i class="icon-svg icon-svg--xs icon-close" (click)="toggleSideMenu(false)">
@@ -128,6 +173,7 @@
         </svg>
       </i>
 
+      <div *ngIf="userService.loggedIn">
       <div class="mb-16">
         <sb-member-card [config]=cardConfig
                         [initial]="userProfile?.firstName[0]"
@@ -165,7 +211,8 @@
         </div>
       </div>
     </div>
-
+    </div>
+    <div *ngIf="userService.loggedIn">
     <div class="profile__actions">
       <div class="add-user add-user--horizontal"
            *ngIf="totalUsersCount >=1"
@@ -234,6 +281,7 @@
           {{resourceService.frmelmnts?.lnk?.logout}}
         </li>
       </ul>
+    </div>
     </div>
   </div>
 </div>

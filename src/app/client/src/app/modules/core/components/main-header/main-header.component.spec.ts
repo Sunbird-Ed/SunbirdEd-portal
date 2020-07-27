@@ -182,6 +182,9 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should turn on the side menu', () => {
+    component.showSideMenu = false;
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
     spyOn(component, 'fetchManagedUsers');
     component.toggleSideMenu(true);
     expect(component.showSideMenu).toEqual(true);
@@ -189,8 +192,13 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should not turn on the side menu', () => {
+    component.showSideMenu = true;
+    const userService = TestBed.get(UserService);
+    spyOn(component, 'fetchManagedUsers');
+    userService._authenticated = false;
     component.toggleSideMenu(false);
     expect(component.showSideMenu).toEqual(false);
+    expect(component.fetchManagedUsers).not.toHaveBeenCalled();
   });
 
   xit('should switch selected user', () => {
