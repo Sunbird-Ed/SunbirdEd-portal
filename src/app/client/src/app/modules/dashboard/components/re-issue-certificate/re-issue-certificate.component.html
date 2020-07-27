@@ -1,3 +1,82 @@
-<p>
-  re-issue-certificate works!
-</p>
+<div class="ui stackable grid re-issue-content">
+  <div class="twelve wide column pt-0">
+    <div class="sb-bg-color-white p-16 pb-24">
+      <div class="d-flex flex-jc-space-between flex-ai-center">
+        <div class="reissue-title text-left font-weight-bold"> Re-issue Certificates </div>
+        <div class="cursor-pointer fsmall certificate-id-info" suiPopup popupHeader="Short text Discription">
+          <span>What is certificate ID / What is User ID?
+            <i class="icon-svg icon-svg--xs icon-info ml-4">
+              <svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#info"></use>
+              </svg></i></span></div>
+      </div>
+      <div class="sb-field certificate-id-content">
+        <label class="d-inline-flex flex-ai-center flex-jc-space-between w-100 user-id-label" for="id">
+          <span>Enter certificate ID / User ID ?</span></label>
+        <div class="d-flex">
+          <div class="user-id-input">
+            <input class="sb-form-control font-weight-bold" name="id" placeholder="Enter user ID" type="id">
+            <small class="message sb-color-error font-weight-bold mt-8"></small></div>
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-jc-flex-end w-100">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" type="button">Re-issue
+      Certificate</button>
+  </div>
+
+  <div class="twelve wide column">
+    <div class="sb-bg-color-white px-16 py-24">
+    <div class="d-flex">
+      <div class="sb-checkbox sb-checkbox-primary pt-4">
+        <input id="check1" name="example" type="checkbox">
+        <label for="check1"></label>
+      </div>
+      <div class="d-flex flex-dc w-100">
+        <div class="ui stackable grid">
+          <div class="three wide column">
+            <div class="re-issue-label">User External ID</div>
+            <div>123456</div>
+          </div>
+          <div class="three wide column">
+            <div class="re-issue-label">User Name</div>
+            <div>Kunwar Singh</div>
+          </div>
+          <div class="three wide column">
+            <div class="re-issue-label">User District</div>
+            <div>Bangalore</div>
+          </div>
+          <div class="three wide column">
+            <a href="#preview" class="font-weight-bold">Preview Certificate</a></div>
+        </div>
+        <div class="ui stackable grid">
+          <div class="three wide column">
+            <div class="re-issue-label">Batch Name</div>
+            <div>Organisms and their ecosystems</div>
+            <div>( cbse batchID 2376590 )</div>
+          </div>
+          <div class="three wide column">
+            <div class="re-issue-label">Course Name</div>
+            <div>Diversity in living organisms and their ecosystems</div>
+          </div>
+          <div class="three wide column">
+            <div class="re-issue-label">Course Progress</div>
+            <div>Completed</div>
+          </div>
+          <div class="three wide column">
+            <div class="re-issue-label">Certificate</div>
+            <div>Issued</div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="d-flex flex-dc w-100 pt-16">
+        <div class="horizontal-border"></div>
+        <div class="re-issue-label pt-16">Showing 1 of 1 records</div>
+      </div>
+    </div>
+  </div>
+</div>
