@@ -1,6 +1,6 @@
 <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="redoLayout(0)">
-  <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
+  <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
   </div>
   <div [ngClass]="redoLayout(1)">

@@ -21,7 +21,7 @@
                 <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
                 <!--/Hamburger Icon-->
                 <!--Main Menu-->
-                <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
+                <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto"></app-main-menu>
                 <!--/Main Menu-->
               <!--Avtar Dropdown-->
               <a class="profile-avtar computer only p-0" *ngIf="userService.loggedIn" tabindex="0">
@@ -63,7 +63,7 @@
                 <!--/Divider-->
                 <!--Search Box-->
                 <!--Logged in Pages-->
-                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent && !hideHeader"
+                <app-search [layoutConfiguration]="layoutConfiguration" class="sb-search-box b-0 mr-auto" *ngIf="!showExploreComponent && !hideHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 </app-search>
                 <!--/Logged in Pages-->
@@ -121,46 +121,57 @@
 </div>
 </div>
 
-<div *ngIf="layoutConfiguration">
-  <div class="ui relative main menu bs-0 d-block">
-    <!--Header White Section-->
-    <div class="ui container sb-header-ui-container">
-      <div class="ui grid padded">
-        <div class="six wide column p-0">
-          <!--Logo-->
-          <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
-            <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
-                 src="{{tenantInfo.logo}}">
-          </a>
-          <!--/Logo-->
+<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar">
+    <div class="sbt-header sbt-fluid-header-bg">
+      <div class="sbt-container">
+        <!--Header section-->
+        <div class="sbt-header-bar sb-g">
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sbt-header-logo">
+            <!--Logo-->
+            <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
+              <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
+                src="{{tenantInfo.logo}}">
+            </a>
+            <!--/Logo-->
+          </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-tool-bar">
+            <app-search [layoutConfiguration]="layoutConfiguration"class="sb-search-box large mx-24">
+            </app-search>
+            <div class="d-flex flex-ai-center">
+            <!-- student dropdown -->
+                <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-purple--bg mr-16" placeholder="Student" labelField="name" #multiSelect>
+                   <sui-select-option  *ngFor="let option of multiSelect1" [value]="option">
+                   </sui-select-option>
+                 </sui-select> 
+            <!-- language dropdown -->
+              <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-green--bg mr-16" [(ngModel)]="selected" [options]="userTypes"
+                [placeholder]="'English'" labelField="type" [isSearchable]="false" #select>
+                <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
+                </sui-select-option>
+              </sui-select>
+            <!--Avtar Dropdown-->
+            <a class="profile-avtar computer only p-0" tabindex="0">
+              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <ngx-avatar (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
+                  name="test">
+                </ngx-avatar>
+              </div>
+            </a>
+            <!--/Avtar Dropdown-->
+          </div>
+          </div>
+        </div>
+  
+        <!--Main Menu-->
+        <div class="sbt-header-menu-bar sb-g">
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
+          <div class="sbt-header-menu">
+            <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
+          </div>
         </div>
       </div>
-      <!--Search Box-->
-      <app-search class="sb-search-box mr-auto"
-                  [ngClass]="{'ml-7': searchBox.center, 'ml-7': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
-      </app-search>
-
-      <div class="d-flex flex-ai-center language-selector">
-        <sui-select class="selection form-control" [(ngModel)]="selected"
-                    [options]="userTypes" [placeholder]="'Select Your User Type'"
-                    labelField="type" [isSearchable]="false" #select>
-          <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
-          </sui-select-option>
-        </sui-select>
-      </div>
-
-      <!--Avtar Dropdown-->
-      <a class="profile-avtar computer only p-0" tabindex="0">
-        <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-          <ngx-avatar (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
-                      [size]="38" initialsSize="1"
-                      name="test">
-          </ngx-avatar>
-        </div>
-      </a>
-      <!--/Avtar Dropdown-->
-    </div>
-  </div>
+</div>
 </div>
 
 
