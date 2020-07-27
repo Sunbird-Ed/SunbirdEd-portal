@@ -547,7 +547,6 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component['courseId'] = 'do_212347136096788480178';
-    component.enrolledCourse = true;
     component.courseHierarchy.lastUpdatedOn = new Date();
     component.isCourseModifiedAfterEnrolment();
     expect(component.isEnrolledCourseUpdated).toBeTruthy();
@@ -557,8 +556,8 @@ describe('CoursePlayerComponent', () => {
     const courseService = TestBed.get(CoursesService);
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
-    component['courseId'] = 'do_212347136096788480173';
-    component.enrolledCourse = true;
+    component['courseId'] = 'do_212347136096788480178';
+    component.courseHierarchy.lastUpdatedOn = '2019-05-04 09:57:34:907+0000';
     component.isCourseModifiedAfterEnrolment();
     expect(component.isEnrolledCourseUpdated).toBeFalsy();
   });
