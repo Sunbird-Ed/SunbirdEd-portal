@@ -1,0 +1,5 @@
+<div *ngFor="let contentType of contentTypes">
+  <button *ngIf="contentType.isEnabled" (click)="showContentType(contentType)">
+    {{getTitle(contentType)}}
+  </button>
+</div>

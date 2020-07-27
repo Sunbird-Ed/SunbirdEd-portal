@@ -1,5 +1,13 @@
-import { Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, FrameworkService, PlayerService, CoursesService } from '@sunbird/core';
+import {forkJoin, Subject} from 'rxjs';
+import {
+  OrgDetailsService,
+  UserService,
+  SearchService,
+  FrameworkService,
+  PlayerService,
+  CoursesService,
+  FormService
+} from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
@@ -36,6 +44,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public isLoading = true;
   layoutConfiguration:any;
   slideConfig: object = {};
+  formData: any;
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -43,7 +52,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService,
+    public telemetryService: TelemetryService, public formService: FormService,
     private coursesService: CoursesService, public layoutService: LayoutService
     ) {
   }
@@ -53,18 +62,24 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
         if(layoutConfig!=null) {
           this.layoutConfiguration = layoutConfig.layout;
-        } 
+        }
       });
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
     }
-    this.getChannelId().pipe(
-      mergeMap(({ channelId, custodianOrg }) => {
-        this.channelId = channelId;
-        this.custodianOrg = custodianOrg;
-        return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    forkJoin([this.getChannelId(), this.formService.getFormData(formServiceInputParams)]).pipe(
+      mergeMap((data) => {
+        this.channelId = data[0].channelId;
+        this.custodianOrg = data[0].custodianOrg;
+        this.formData = data[1];
+        return this.contentSearchService.initialize(this.channelId, this.custodianOrg, this.defaultFilters.board[0]);
       }),
       takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -92,26 +107,33 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }));
   }
+
+  public getPageData(fieldType) {
+    return _.find(this.formData, (o) => o.fieldType === fieldType);
+  }
+
   public getFilters({filters, status}) {
     this.showLoader = true;
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
+    const currentPageData = this.getPageData(this.activatedRoute.snapshot.queryParams.selectedTab || 'textbooks');
+    this.selectedFilters = _.pick(filters, currentPageData.search.filtersToSelect);
     this.apiContentList = [];
     this.pageSections = [];
-    this.fetchContents();
-    this.fetchCourses();
+    this.fetchContents(currentPageData);
+    this.fetchCourses(currentPageData);
   }
-  private fetchContents() {
+  private fetchContents(currentPageData) {
     const request = {
       filters: this.selectedFilters,
-      fields: this.configService.urlConFig.params.LibrarySearchField,
+      fields: currentPageData.search.fields,
       isCustodianOrg: this.custodianOrg,
       channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
+      frameworkId: this.contentSearchService.frameworkId,
+      limit: currentPageData.limit
     };
-    const option = this.searchService.getSearchRequest(request, ['TextBook']);
+    const option = this.searchService.getSearchRequest(request, currentPageData.search.contentSearch.contentType);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -160,17 +182,18 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private  fetchCourses() {
+  private fetchCourses(currentPageData) {
     this.cardData = [];
     this.isLoading = true;
     const request = {
       filters: this.selectedFilters,
-      fields: this.configService.urlConFig.params.LibrarySearchField,
+      fields: currentPageData.search.fields,
       isCustodianOrg: this.custodianOrg,
       channelId: this.channelId,
       frameworkId: this.contentSearchService.frameworkId
     };
-    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+    this.searchService.fetchCourses(request, currentPageData.search.courseSearch.contentType)
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
     this.isLoading = false;
 
     this.cardData = _.sortBy(cardData, ['title']);
