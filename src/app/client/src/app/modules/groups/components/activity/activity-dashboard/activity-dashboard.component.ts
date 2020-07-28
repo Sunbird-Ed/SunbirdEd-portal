@@ -116,7 +116,7 @@ export class ActivityDashboardComponent implements OnInit {
     this.enrolmentCount = _.get(enrolmentInfo, 'value');
     this.leafNodesCount = _.get(leafNodesInfo, 'value');
     this.membersCount = _.get(aggResponse, 'members.length');
-    this.memberListUpdatedOn = _.get(_.find(aggResponse.members[0].agg, { metric: 'completedCount' }), 'lastUpdatedOn');
+    this.memberListUpdatedOn = _.max(_.get(aggResponse, 'activity.agg').map(agg => agg.lastUpdatedOn))
 
     this.members = aggResponse.members.map((item, index) => {
       /* istanbul ignore else */

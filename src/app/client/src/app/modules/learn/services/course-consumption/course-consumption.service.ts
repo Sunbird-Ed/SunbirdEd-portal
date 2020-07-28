@@ -142,7 +142,10 @@ getAllOpenBatches(contents) {
   setCoursePagePreviousUrl() {
     const urlToNavigate = this.navigationHelperService.getPreviousUrl();
    /* istanbul ignore else */
-    if (urlToNavigate && (urlToNavigate.url.indexOf('/enroll/batch/') < 0) && (urlToNavigate.url.indexOf('/unenroll/batch/') < 0)) {
+    if (urlToNavigate &&
+        (urlToNavigate.url.indexOf('/enroll/batch/') < 0) &&
+        (urlToNavigate.url.indexOf('/unenroll/batch/') < 0) &&
+        (urlToNavigate.url.indexOf('/course/play/') < 0) ) {
       this.coursePagePreviousUrl = urlToNavigate;
     }
   }
