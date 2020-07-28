@@ -19,6 +19,7 @@ describe('LibrarySearchComponent', () => {
   let toasterService, userService, searchService, activatedRoute;
   const mockSearchData: any = Response.successData;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -68,6 +69,13 @@ describe('LibrarySearchComponent', () => {
     searchService = TestBed.get(SearchService);
     activatedRoute = TestBed.get(ActivatedRoute);
     sendSearchResult = true;
+    sendFormResult = true;
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
+      }
+      return throwError({});
+    });
     spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(mockSearchData);
@@ -161,7 +169,7 @@ describe('LibrarySearchComponent', () => {
     expect(contents.length).toEqual(0);
    });
 
-  it('getOrderedData() should return ordered empty[]', () => {
+   it('getOrderedData() should return ordered empty[]', () => {
     component.frameworkData = {board: ['Test 2']};
     const contents: object[] = component.getOrderedData(Response.successData.result.content);
     expect(contents.length).toEqual(2);
@@ -169,6 +177,15 @@ describe('LibrarySearchComponent', () => {
     expect(contents[1]['board']).toEqual('Test 1');
    });
 
-
-
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });
