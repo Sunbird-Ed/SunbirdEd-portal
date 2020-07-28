@@ -1,4 +1,5 @@
-<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+<div [ngClass]="!layoutConfiguration ? 'footer-fix' : ''">
+<div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
@@ -6,9 +7,6 @@
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
   <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
 [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-  <button (click)="switchLayout()" class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0">
-    Switch Layout
-  </button>
   <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration"
               [routerEvents]="routeData$"
               [ngClass]="{'header-block': isFullScreenView}"></app-header>
@@ -16,6 +14,7 @@
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+</div>
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>

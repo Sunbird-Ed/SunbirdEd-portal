@@ -110,49 +110,59 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-    filters.channel = this.hashTagId;
-    filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
-    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
-    if (this.queryParams.key) {
-      delete softConstraints['board'];
-    }
-    const option: any = {
-      filters: filters,
-      fields: this.configService.urlConFig.params.LibrarySearchField,
-      limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-      pageNumber: this.paginationDetails.currentPage,
-      query: this.queryParams.key,
-      mode: 'soft',
-      softConstraints: softConstraints,
-      facets: this.facets,
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
-    };
-    if (this.queryParams.softConstraints) {
-      try {
-        option.softConstraints = JSON.parse(this.queryParams.softConstraints);
-      } catch {
-
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+      filters.channel = this.hashTagId;
+      filters.contentType = _.get(allTabData, 'search.filters.contentType');
+      const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+      if (this.queryParams.key) {
+        delete softConstraints['board'];
       }
-    }
-    if (this.frameworkId) {
-      option.params.framework = this.frameworkId;
-    }
-    this.searchService.contentSearch(option)
-      .subscribe(data => {
-        this.showLoader = false;
-        this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.contentList = data.result.content || [];
-      }, err => {
-        this.showLoader = false;
-        this.contentList = [];
-        this.facetsList = [];
-        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      });
+      const option: any = {
+        filters: filters,
+        fields: _.get(allTabData, 'search.fields'),
+        limit: _.get(allTabData, 'search.limit'),
+        pageNumber: this.paginationDetails.currentPage,
+        query: this.queryParams.key,
+        mode: 'soft',
+        softConstraints: softConstraints,
+        facets: this.facets,
+        params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+      };
+      if (this.queryParams.softConstraints) {
+        try {
+          option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+        } catch {
+
+        }
+      }
+      if (this.frameworkId) {
+        option.params.framework = this.frameworkId;
+      }
+      this.searchService.contentSearch(option)
+        .subscribe(data => {
+          this.showLoader = false;
+          this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+          this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.contentList = data.result.content || [];
+        }, err => {
+          this.showLoader = false;
+          this.contentList = [];
+          this.facetsList = [];
+          this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
+    }, err => {
+      this.showLoader = false;
+      this.contentList = [];
+      this.facetsList = [];
+      this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+    });
   }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {

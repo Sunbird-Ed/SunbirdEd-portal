@@ -312,7 +312,7 @@ app-workspace {
 
 .sbt-container {
   width: 100%;
-  padding: 0 2%;
+  padding: 0 5%;
 }
 
 .sbt-page-header {
@@ -327,6 +327,7 @@ app-workspace {
   display: flex;
   align-items: flex-end;
   border-radius: 0 0 0 calculateRem(40px);
+  height: calculateRem(112px);
 
   html[dir="rtl"] & {
     border-radius: 0px 0px calculateRem(40px) 0px;
@@ -353,9 +354,7 @@ app-workspace {
 
 .sbt-page-content {
   position: relative;
-  width: 100%;
-  padding: 0px 5%;
-  min-height: calc(100vh - 308px);
+  min-height: calc(100vh - 320px);
 }
 
 .sbt-filter-sidebar {
@@ -365,6 +364,8 @@ app-workspace {
 .sbt-page-content-area {
   background: var(--sbt-body-bg2);
   border-radius: calculateRem(40px) 0 0 0;
+  height:100%;
+  padding:calculateRem(24px);
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
   }
@@ -481,32 +482,50 @@ app-workspace {
 
 .sbt-theme-bg-img {
   position: fixed;
-  left: calculateRem(-100px);
+  left: calculateRem(-106px);
   top: 45%;
-  width: calculateRem(420px);
-  transform: rotate(48deg);
+  width: calculateRem(332px);
   opacity: 0.4;
   .st0 {
     fill:var(--sbt-header-bg);
   }
-  &--right {
-    right: calculateRem(-100px);
-    left: inherit;
-    transform: rotate(-67deg);
-    z-index: 1;
-    .st0 {
-      fill:var(--white);
-    }
-  }
+  // &--right {
+  //   right: calculateRem(-100px);
+  //   left: inherit;
+  //   transform: rotate(-67deg);
+  //   z-index: 1;
+  //   .st0 {
+  //     fill:var(--white);
+  //   }
+  // }
 }
-
 .sbt-textbook-img {
-  .st2 {
-    fill: var(--primary-color);
-    opacity: 0.3;
-  }
+  // .st2 {
+  //   fill: var(--primary-color);
+  //   opacity: 0.3;
+  // }
 }
-
+.sbt-page-header-img {
+  position: absolute;
+  bottom: calculateRem(-12px);
+  width: calculateRem(248px);
+  right: calculateRem(24px);
+}
+.sbt-page-header-line-img {
+  position: absolute;
+  bottom: calculateRem(-5px);
+  width: 80%;
+  left: calculateRem(0px);
+  // height: calculateRem(112px);
+}
+.sbt-theme-right-flower {
+  position: fixed;
+  bottom:calculateRem(88px);
+  width: calculateRem(288px);
+  right:calculateRem(-106px);
+  opacity: 0.75;
+  z-index: 99;
+}
 .sbt-sticky {
   position: sticky;z-index: 999;
 } 

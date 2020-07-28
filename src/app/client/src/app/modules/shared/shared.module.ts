@@ -10,7 +10,7 @@ import {
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
-  OfflineCardService, RecaptchaService,LayoutService
+  OfflineCardService, RecaptchaService, LayoutService
 } from './services';
 import { ContentDirectionDirective } from './directives';
 import { CommonModule } from '@angular/common';
@@ -22,6 +22,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
+import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
 
 @NgModule({
   imports: [
@@ -37,11 +38,12 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent,
-    SelectOptionGroupComponent],
+    SelectOptionGroupComponent,
+    AppLandingSectionComponent],
   exports: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent, SelectOptionGroupComponent,
+    ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent]
 })
