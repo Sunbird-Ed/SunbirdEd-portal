@@ -20,6 +20,7 @@ describe('ExploreContentComponent', () => {
   const mockSearchData: any = Response.successData;
   let sendOrgDetails = true;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -80,9 +81,16 @@ describe('ExploreContentComponent', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
     sendSearchResult = true;
+    sendFormResult = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
         return of({hashTagId: '123'});
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
       }
       return throwError({});
     });

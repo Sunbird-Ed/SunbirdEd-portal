@@ -111,7 +111,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         facets: this.facets,
         params: this.configService.appConfig.Course.contentApiQueryParams
       };
-      this.searchService.compositeSearch(option)
+      this.searchService.contentSearch(option)
         .subscribe(data => {
           this.showLoader = false;
           this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));

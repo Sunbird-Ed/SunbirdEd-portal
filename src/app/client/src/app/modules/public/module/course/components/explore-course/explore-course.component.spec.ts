@@ -21,6 +21,7 @@ describe('ExploreCourseComponent', () => {
   const mockSearchData: any = Response.successData;
   let sendOrgDetails = true;
   let sendSearchResult = true;
+  let sendFormResult = true;
   let sendFormApi = true;
 
   class RouterStub {
@@ -78,7 +79,14 @@ describe('ExploreCourseComponent', () => {
       }
       return throwError({});
     });
-    spyOn(searchService, 'courseSearch').and.callFake((options) => {
+    sendFormResult = true;
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(mockSearchData);
       }
@@ -153,38 +161,38 @@ describe('ExploreCourseComponent', () => {
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.courseSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
     sendSearchResult = false;

@@ -19,6 +19,7 @@ describe('LibrarySearchComponent', () => {
   let toasterService, userService, searchService, activatedRoute;
   const mockSearchData: any = Response.successData;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -68,6 +69,13 @@ describe('LibrarySearchComponent', () => {
     searchService = TestBed.get(SearchService);
     activatedRoute = TestBed.get(ActivatedRoute);
     sendSearchResult = true;
+    sendFormResult = true;
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
+      }
+      return throwError({});
+    });
     spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(mockSearchData);
