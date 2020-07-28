@@ -69,7 +69,7 @@
     .sb-modal-content{
       .self-users-list{
         line-height: normal;
-        font-size: 14px;
+        font-size: calculateRem(14px);
       }
       .upload-btn{
         position: absolute;
