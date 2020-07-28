@@ -594,7 +594,7 @@ const ssoValidations = async (req, res) => {
       statusCode = 500
     }
     logger.error({
-      msg: 'sso session create v2 api failed',
+      msg: 'ssoValidations failed',
       "error": JSON.stringify(error),
       additionalInfo: {
         errorType: errType,

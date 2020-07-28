@@ -8,6 +8,7 @@ import { CourseProgressService } from '../courseProgress/course-progress.service
 import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
 import { NavigationExtras, Router } from '@angular/router';
+import { NavigationHelperService } from '@sunbird/shared';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,11 @@ export class CourseConsumptionService {
   updateContentState = new EventEmitter<any>();
   showJoinCourseModal = new EventEmitter<any>();
   enableCourseEntrollment = new EventEmitter();
-
+  coursePagePreviousUrl: any;
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
-    private toasterService: ToasterService, private resourceService: ResourceService, private router: Router) { }
+    private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,
+    private navigationHelperService: NavigationHelperService) {
+    }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
@@ -134,5 +137,20 @@ getAllOpenBatches(contents) {
       if (i > 0) { prev = children[i - 1]; }
       return { prev, next };
     }
+  }
+
+  setCoursePagePreviousUrl() {
+    const urlToNavigate = this.navigationHelperService.getPreviousUrl();
+   /* istanbul ignore else */
+    if (urlToNavigate &&
+        (urlToNavigate.url.indexOf('/enroll/batch/') < 0) &&
+        (urlToNavigate.url.indexOf('/unenroll/batch/') < 0) &&
+        (urlToNavigate.url.indexOf('/course/play/') < 0) ) {
+      this.coursePagePreviousUrl = urlToNavigate;
+    }
+  }
+
+  get getCoursePagePreviousUrl()  {
+    return this.coursePagePreviousUrl;
   }
 }
