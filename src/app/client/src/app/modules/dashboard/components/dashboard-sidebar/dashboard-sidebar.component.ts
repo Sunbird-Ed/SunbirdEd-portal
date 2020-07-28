@@ -20,6 +20,10 @@ export class DashboardSidebarComponent implements OnInit {
     }
 
     ngOnInit() {
+      this.setTelemetryData();
+    }
+
+    setTelemetryData() {
       this.courseStatsEdata = {
         id: 'course-dashboard',
         type: 'click',

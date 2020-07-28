@@ -59,6 +59,6 @@ export interface IBatchListData {
 
 export interface IDashboardItems {
     title: string;
-    count: Number;
+    count: number;
     type: string;
 }
