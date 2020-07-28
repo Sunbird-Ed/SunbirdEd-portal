@@ -27,7 +27,7 @@ export class ContentTypeComponent implements OnInit {
       formAction: 'menubar',
       contentType: 'global'
     };
-    this.formService.getFormData(formServiceInputParams).subscribe((data: any) => {
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
       this.processFormData(data);
     });
   }
