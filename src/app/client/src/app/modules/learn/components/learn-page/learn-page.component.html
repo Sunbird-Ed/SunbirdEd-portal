@@ -1,3 +1,5 @@
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.mytrainings" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div class="sb-g">
     <div [ngClass]="redoLayout(0)">
       <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 

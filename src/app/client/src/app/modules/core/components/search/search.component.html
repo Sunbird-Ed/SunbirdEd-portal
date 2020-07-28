@@ -17,6 +17,6 @@
           placeholder="{{!searchPlaceHolderValue ? resourceService.frmelmnts?.lbl?.search : resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
           (keyup.enter)="onEnter(key)" [disabled]="!showInput"
           [ngClass]="{'disabled': !showInput }" />
+          <button class="sb-btn sb-btn-md" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>	      
       </div>
-    <button class="sb-btn sb-btn-md" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
 </ng-container>
