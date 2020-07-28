@@ -16,8 +16,8 @@
         </div>
         
       </div>
-      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal" 
-      (click) = "showUploadUserModal = !showUploadUserModal">Upload Validation Status</button>
+      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal">Upload Validation Status</button>
+      <!-- (click) = "showUploadUserModal = !showUploadUserModal" -->
     </div>
   </div>
 
@@ -163,7 +163,8 @@
 </div>
 
 <!-- Upload validation status modal -->
-<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+
+<!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
 [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showUploadUserModal = !showUploadUserModal" #modal>
 <div class="sb-modal-header">
   Uploading Validation Status For Self Declared User Information
@@ -203,4 +204,4 @@
     Upload Users CSV
   </button>
 </div>
-</sui-modal>
+</sui-modal> -->
