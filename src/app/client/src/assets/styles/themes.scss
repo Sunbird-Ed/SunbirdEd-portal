@@ -143,8 +143,9 @@ html[data-theme='Default'] {
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
 }
 html[data-theme='Orange'] {
-  --primary-color:#E7800B;
-  --primary-300:#FFB561;
+  --primary-hs:32,91%;
+  --primary-color: hsl(var(--primary-hs), 47%); // #E7800B;
+  --primary-300: hsl(var(--primary-hs), 67%); // #FFB561;
   --primary-200:#D4A56F;
   --primary-100:#ffe081;
   --sbt-body-bg:#EAE1D7;

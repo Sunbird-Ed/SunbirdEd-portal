@@ -55,7 +55,7 @@
                 </div>
                 <!-- State and Medium sections ends-->
                 <!-- class section -->
-                <div class="sbt-class-bar">
+                <div class="sbt-class-bar text-left">
                         <label class="fmedium">Class</label>
                         <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND" [selectedItems]="[selectedGradeLevelIndex]"
                             (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract

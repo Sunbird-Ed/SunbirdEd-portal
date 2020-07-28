@@ -258,15 +258,3 @@
     position: absolute;
     right: -.625rem;
   }
-
-  /* new search */
-.sbt-search-box {
-    display: flex;
-    align-items: center;
-    border: calculateRem(1px) solid var(--primary-300);
-    border-radius: calculateRem(28px);
-    max-width: 100%;
-    width: 100%;
-    box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
-    box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
-}
