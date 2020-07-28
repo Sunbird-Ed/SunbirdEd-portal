@@ -55,6 +55,11 @@ module.exports = (app) => {
           }
         })
       } else {
+        const dataToEncrypt = {
+          identifier: (userDetails && userDetails.id) ? userDetails.id : ''
+        };
+        errType = 'ERROR_ENCRYPTING_DATA_SESSION_CREATE';
+        req.session.userEncryptedInfo = encrypt(JSON.stringify(dataToEncrypt));
         redirectUrl = updateContactUrl; // verify phone then create user
         logger.info({
           msg:'sso session create v2 api, successfully redirected to update phone page',
@@ -91,7 +96,13 @@ module.exports = (app) => {
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
+    const decryptedData = decrypt(req.session.userEncryptedInfo);
     try {
+      // If data encrypted in session create route; `identifier` should match with the incoming request session user `identifier`
+      if (_.get(decryptedData, 'identifier') !== '' && _.get(decryptedData, 'identifier') !== userDetails.identifier) {
+        errType = 'FORBIDDEN';
+        throw 'Access Forbidden - User identifier mismatch';
+      }
       if (_.isEmpty(jwtPayload) && ((!['phone', 'email', 'tncVersion', 'tncAccepted'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
@@ -272,6 +283,12 @@ module.exports = (app) => {
     let response, errType, jwtPayload, redirectUrl, userDetails;
     jwtPayload = req.session.jwtPayload; // fetch from session
     try {
+      const decryptedData = decrypt(req.session.userEncryptedInfo);
+      // If data encrypted in session create route; `identifier` should match with the incoming request session user `identifier`
+      if (_.get(decryptedData, 'identifier') !== '' && _.get(decryptedData, 'identifier') !== req.query.userId) {
+        errType = 'FORBIDDEN';
+        throw 'Access Forbidden - User identifier mismatch';
+      }
       if (!req.query.userId || !req.query.identifier || !req.query.identifierValue
         || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
