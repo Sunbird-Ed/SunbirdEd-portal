@@ -520,7 +520,7 @@ app-workspace {
 }
 .sbt-theme-right-flower {
   position: absolute;
-  bottom:24%;
+  bottom:calculateRem(340px);
   width: calculateRem(288px);
   right:calculateRem(-106px);
   opacity: 0.75;

@@ -130,7 +130,8 @@
   margin-top:calculateRem(-72px);
 
   .sbt-filter-scrollable {
-    height: calc(100vh - 388px);
+    max-height: calc(100vh - 388px);
+    height: auto;
       overflow-y: auto;
       padding-right: calculateRem(24px);
   }

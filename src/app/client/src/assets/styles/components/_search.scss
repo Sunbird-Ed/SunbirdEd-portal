@@ -234,11 +234,11 @@ select:-internal-autofill-selected {
     font-size: var(--font-size-sm);
     min-height: calculateRem(48px);
     border: 0;
-    border-right: calculateRem(0.5px) solid var(--primary-300);
+    // border-right: calculateRem(0.5px) solid var(--primary-300);
     outline: 0;
     border-radius: 0px;
-    padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) calculateRem(40px);
-    border-radius: calculateRem(28px) 0 0 calculateRem(28px);
+    padding: calculateRem(4px) calculateRem(88px) calculateRem(4px) calculateRem(40px);
+    border-radius:calculateRem(28px);
     line-height: normal;
     background: var(--white);
     color: var(--gray-200);
@@ -251,21 +251,25 @@ select:-internal-autofill-selected {
   }
 
   .sb-btn {
-    background: var(--primary-100);
+    background: var(--gray-800);
     border: 0;
     min-width: auto;
     white-space: nowrap;
-    border-radius: 0 calculateRem(28px) calculateRem(28px) 0;
-    color: var(--primary-400);
+    border-radius: calculateRem(28px);
+    color: var(--white);
     font-size: $font-size-sm;
-    font-weight: bold;
     margin: 0 !important;
-    padding-right:calculateRem(24px);
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     html[dir="rtl"] & {
       border-radius: calculateRem(3px) 0 0 calculateRem(3px);
     }
   }
-
+  .sb-btn-md {
+    height: calculateRem(40px);
+  }
   .icon {
     position: absolute;
     margin: 0;
@@ -277,6 +281,7 @@ select:-internal-autofill-selected {
       top: 50%;
       left: calculateRem(12px);
       transform: translateY(-50%);
+      z-index: 99;
       html[dir="rtl"] & {
         right: calculateRem(12px);
         left:unset;
