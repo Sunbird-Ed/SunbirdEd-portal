@@ -1,7 +1,7 @@
 import { Observable, of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -58,7 +58,7 @@ describe('CourseConsumptionService', () => {
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        {provide: ResourceService, useValue: resourceBundle}
+        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService
       ]
     });
   });
@@ -137,5 +137,22 @@ describe('CourseConsumptionService', () => {
     const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
     expect(returnVal.next).toBeUndefined();
     expect(returnVal.prev).toBeDefined();
+  });
+
+  it('should set course page previous url', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
+    service.setCoursePagePreviousUrl();
+    expect(service.coursePagePreviousUrl).toEqual({ url: '/learn' });
+  });
+
+  it('should return course page previous url', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
+    service.setCoursePagePreviousUrl();
+    const previousPageUrl = service.getCoursePagePreviousUrl;
+    expect(service.coursePagePreviousUrl).toEqual(previousPageUrl);
   });
 });
