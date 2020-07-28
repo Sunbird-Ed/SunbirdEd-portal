@@ -1,14 +1,5 @@
-<div class="sbt-fluid-header-bg" *ngIf="layoutConfiguration">
-    <div class="sb-g sbt-container sbt-page-header">
-    <div [ngClass]="redoLayout(0)">
-    </div>
-    <div [ngClass]="redoLayout(1)">
-        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-page-header-content pl-24">
-            <h1>Textbooks</h1>
-          </div>
-    </div>
-    </div>
-</div>
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.textbooks" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="redoLayout(0)">
     <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
@@ -31,12 +22,12 @@
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
-        <sb-library-cards-grid [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
+        <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
           [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">
-          <sb-library-cards-grid *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
+          <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
       </div>
 
       <div *ngIf="apiContentList.length === 0 && !showLoader">
