@@ -1,10 +1,22 @@
-<div class="content" [appTelemetryImpression]="telemetryImpression">
+<div class="content">
   <div class="batch-content-area">
-      <div class="batch-sbcard" *ngFor="let item of dashBoardItems | keyvalue">
-       <div class="d-flex flex-ai-center flex-jc-center p-16 batch-sbcard-content" >
-          <div class="batch-card-title">{{item?.value?.title}}</div>
-          <div class="batch-card-number" [ngClass]="{'batch-card-total-number': item?.value?.type === 'large'}">{{item?.value?.count || 0}}</div>
+      <div class="batch-sbcard">
+       <div class="d-flex flex-ai-center flex-jc-center flex-dc p-16 batch-sbcard-content" >
+          <div class="batch-card-title">Total Batches</div>
+          <div class="batch-card-number">24</div>
         </div>
       </div>
+      <div class="batch-sbcard">
+        <div class="d-flex flex-ai-center flex-jc-center flex-dc p-16 batch-sbcard-content" >
+           <div class="batch-card-title">Total Enrollments</div>
+           <div class="batch-card-number">36</div>
+         </div>
+       </div>
+       <div class="batch-sbcard">
+        <div class="d-flex flex-ai-center flex-jc-center flex-dc p-16 batch-sbcard-content" >
+           <div class="batch-card-title">Total Completions</div>
+           <div class="batch-card-number">24</div>
+         </div>
+       </div>
   </div>
 </div> 

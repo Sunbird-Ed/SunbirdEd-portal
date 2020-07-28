@@ -74,11 +74,12 @@ a {
   }
 
   .progress-report-content {
-    min-height: calculateRem(64px);
+    height: calculateRem(64px);
     align-items: center;
 
     @include respond-below(sm) {
       flex-direction: column;
+      height: auto;
     }
 
     .report-buttons {
