@@ -92,7 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
-  title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle')? _.get(this.resourceService, 'frmelmnts.btn.botTitle'):'Ask Tara';
+  title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle'):'Ask Tara';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
