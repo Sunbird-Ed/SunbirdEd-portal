@@ -243,10 +243,7 @@ select:-internal-autofill-selected {
     background: var(--white);
     color: var(--gray-200);
     html[dir="rtl"] & {
-      border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-      border-left: calculateRem(0.5px) solid var(--primary-300);
-      border-right: 0px;
-      padding: calculateRem(4px) calculateRem(32px) calculateRem(4px) calculateRem(4px);
+      padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
     }
   }
 
@@ -264,7 +261,8 @@ select:-internal-autofill-selected {
     top: 50%;
     transform: translateY(-50%);
     html[dir="rtl"] & {
-      border-radius: calculateRem(3px) 0 0 calculateRem(3px);
+      left: 8px;
+    right: inherit;
     }
   }
   .sb-btn-md {
