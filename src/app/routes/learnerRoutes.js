@@ -111,12 +111,14 @@ module.exports = function (app) {
       }
     }))
   
-  app.all('/learner/user/v1/get/phone/*',
+  app.get('/learner/user/v1/get/phone/*',
+    googleService.validateRecaptcha,
     permissionsHelper.checkPermission(),
     proxyObj()
   )
 
-  app.all('/learner/user/v1/get/email/*',
+  app.get('/learner/user/v1/get/email/*',
+    googleService.validateRecaptcha,
     permissionsHelper.checkPermission(),
     proxyObj()
   )

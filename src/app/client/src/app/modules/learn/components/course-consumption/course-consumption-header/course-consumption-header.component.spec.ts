@@ -172,40 +172,56 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call addActivityToGroup', () => {
     const groupService = TestBed.get(GroupsService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
     groupService.groupData = { memberRole: 'admin' };
     component.courseId = 'do_113016540611043328128';
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'success');
     spyOn(groupService, 'addActivities').and.returnValue(of(true));
+    courseConsumptionService.coursePagePreviousUrl = { url: '/my-groups/group-details/dc423bed-67c1-4475-92b7-84c58c663204/add-activity-to-group/courses/1' };
     component.addActivityToGroup();
     expect(toasterService.success).toHaveBeenCalledWith('Activity added successfully');
   });
 
   it('should call addActivityToGroup on error', () => {
     const groupService = TestBed.get(GroupsService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseId = 'do_113016540611043328128';
     groupService.groupData = { memberRole: 'admin' };
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
+    courseConsumptionService.coursePagePreviousUrl = { url: '/my-groups/group-details/dc423bed-67c1-4475-92b7-84c58c663204/add-activity-to-group/courses/1' };
     component.addActivityToGroup();
     expect(toasterService.error).toHaveBeenCalledWith('Unable to add activity, please try again');
   });
 
   it('should call show error for non admin user', () => {
     const groupService = TestBed.get(GroupsService);
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseId = 'do_113016540611043328128';
     groupService.groupData = { memberRole: 'member' };
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(groupService, 'addActivities').and.returnValue(throwError({}));
+    courseConsumptionService.coursePagePreviousUrl = { url: '/my-groups/group-details/dc423bed-67c1-4475-92b7-84c58c663204/add-activity-to-group/courses/1' };
     component.addActivityToGroup();
     expect(toasterService.error).toHaveBeenCalledWith(`Unable to add activity, please try again`);
   });
 
   it('should call goBack and return to learn page', () => {
-    spyOn(component['navigationHelperService'], 'goBack');
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const router = TestBed.get(Router);
+    courseConsumptionService.coursePagePreviousUrl = { url: '/learn' };
     component.goBack();
-    expect(component['navigationHelperService'].goBack).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/learn']);
+  });
+
+  it('should call goBack and return to previous page with query params', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const router = TestBed.get(Router);
+    courseConsumptionService.coursePagePreviousUrl = { url: '/search/Courses/1', queryParams: {key: 'misc course'} };
+    component.goBack();
+    expect(router.navigate).toHaveBeenCalledWith(['/search/Courses/1'], {queryParams:  {key: 'misc course'} });
   });
 });
