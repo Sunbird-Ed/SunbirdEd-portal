@@ -1,8 +1,8 @@
 import { NavigationHelperService, ResourceService, ToasterService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
-import { Subject, combineLatest } from 'rxjs';
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IDashboardItems } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { CourseProgressService } from '../../services';
@@ -72,8 +72,8 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
       this.getDashboardData(_.get(data, 'result.response'));
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      console.log('');
     });
-
   }
 
   // To get the user enrolled/completed  count for the Course
@@ -86,8 +86,9 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
         type: 'small',
       });
       _.forEach(batches, batch => {
-        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalEnrollments, _.get(batch, 'participantCount'), 'small');
         this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalCompletions, _.get(batch, 'completedCount'), 'large');
+        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalEnrollments, _.get(batch, 'participantCount'), 'small');
+        console.log('');
         });
     }
   }

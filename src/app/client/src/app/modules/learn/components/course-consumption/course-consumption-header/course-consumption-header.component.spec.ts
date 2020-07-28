@@ -1,6 +1,6 @@
-import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { TelemetryModule } from '@sunbird/telemetry';
 
-import { of as observableOf, Observable, of, throwError } from 'rxjs';
+import { of as observableOf, of, throwError } from 'rxjs';
 import {
   CourseHierarchyGetMockResponse,
   CourseHierarchyGetMockResponseFlagged
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
 import { CoreModule, CoursesService, PermissionService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, WindowScrollService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
@@ -21,7 +21,8 @@ const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong', activityAddedSuccess: 'Activity added successfully' },
     stmsg: { m0009: 'error', activityAddFail: 'Unable to add activity, please try again' },
-    emsg: { m0005: 'error', noAdminRole: `You don't have permission to add activity to the group` }
+    emsg: { m0005: 'error', noAdminRole: `You don't have permission to add activity to the group` },
+    smsg: { m0042: ''},
   },
   frmelmnts: {
     btn: {
@@ -130,8 +131,10 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.showResumeCourse).toBeTruthy();
   });
   it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe, 'next');
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
+    expect(component.unsubscribe.next).toHaveBeenCalled();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
   it('should call  getBatchStatus and return true if batch status is  "2" and course is not completed', () => {
@@ -214,6 +217,19 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.courseId  = 'do_212347136096788480178';
     component.closeDashboard();
     expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId]);
+  });
+
+  it('should close the dashboard', () => {
+    component.resourceService.messages = resourceServiceMockData.messages;
+    spyOn(component.copyContentService, 'copyContent').and.returnValue(of ({content: {}}));
+    spyOn(component.toasterService, 'success');
+    let content: ContentData;
+    component.copyContent(content);
+    expect(component.copyContentService.copyContent).toHaveBeenCalled();
+    component.copyContentService.copyContent(content).subscribe(data => {
+      expect(component.toasterService.success).toHaveBeenCalled();
+      expect(component.showCopyLoader).toBeFalsy();
+    });
   });
 
 });

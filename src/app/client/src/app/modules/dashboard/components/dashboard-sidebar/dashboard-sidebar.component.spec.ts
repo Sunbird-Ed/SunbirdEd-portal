@@ -29,5 +29,9 @@ describe('DashboardSidebarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    component.ngOnInit();
+    expect(component.courseStatsEdata.id).toEqual('course-dashboard');
+    expect(component.courseBatchesEdata.id).toEqual('course-batches');
+    expect(component.courseCertificatesEdata.id).toEqual('course-reissue-cert');
   });
 });

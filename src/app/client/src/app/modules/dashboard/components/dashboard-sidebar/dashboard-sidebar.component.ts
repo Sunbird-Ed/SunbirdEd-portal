@@ -1,14 +1,14 @@
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-dashboard-sidebar',
   templateUrl: './dashboard-sidebar.component.html',
   styleUrls: ['./dashboard-sidebar.component.scss']
 })
-export class DashboardSidebarComponent {
+export class DashboardSidebarComponent implements OnInit {
 
   courseStatsEdata: IInteractEventEdata;
   courseBatchesEdata: IInteractEventEdata;
@@ -17,8 +17,11 @@ export class DashboardSidebarComponent {
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute) {
+    }
+
+    ngOnInit() {
       this.courseStatsEdata = {
-        id: 'stats',
+        id: 'course-dashboard',
         type: 'click',
         pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
       };
@@ -28,7 +31,7 @@ export class DashboardSidebarComponent {
         pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
       };
       this.courseCertificatesEdata = {
-        id: 'course-certificates',
+        id: 'course-reissue-cert',
         type: 'click',
         pageid: _.get(this.activatedRoute.snapshot, 'data.telemetry.pageid'),
       };
@@ -38,5 +41,4 @@ export class DashboardSidebarComponent {
         ver: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.ver'),
       };
     }
-
 }

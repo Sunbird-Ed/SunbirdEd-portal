@@ -22,7 +22,7 @@ describe('CourseDashboardComponent', () => {
     snapshot: {
         data: {
             telemetry: {
-                env: 'dashboard', pageid: 'course-dashboard', type: 'view', subtype: 'paginate'
+                env: 'dashboard', pageid: 'course-dashboard', type: 'view', subtype: 'paginate', object: {type: 'course', ver: '1.0'}
             }
         }
     }
@@ -47,7 +47,7 @@ describe('CourseDashboardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CourseDashboardComponent ],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, RouterTestingModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       providers: [CourseProgressService, TelemetryService,
         {provide: APP_BASE_HREF, value: '/'},
         {provide: ActivatedRoute, useValue: fakeActivatedRoute},
@@ -74,7 +74,21 @@ describe('CourseDashboardComponent', () => {
     expect(component.setImpressionEvent).toHaveBeenCalled();
   });
 
-  it('should create', () => {
+  it('should assign impression data', () => {
+    component.courseId = '123';
+    spyOn(component['navigationhelperService'], 'getPageLoadTime').and.returnValue(0.90);
+    component.setImpressionEvent();
+    const obj = {
+      context: { env: 'dashboard'},
+      edata: {type: 'view', pageid: 'course-dashboard', uri: '/', duration: 0.90},
+      object: { id: '123', type: 'course', ver: '1.0' }
+    };
+    expect(component['navigationhelperService'].getPageLoadTime).toHaveBeenCalled();
+    expect(component.telemetryImpression).toEqual(obj);
+
+  });
+
+  it('should return data', () => {
     const searchParamsCreator = {
       courseId: '123',
       status: ['0', '1', '2']
@@ -89,7 +103,7 @@ describe('CourseDashboardComponent', () => {
     expect(component['courseProgressService'].getBatches).toHaveBeenCalledWith(searchParamsCreator);
   });
 
-  it('should create', () => {
+  it('should throw error', () => {
     component.courseId = '123';
     component['userService'].setUserId('12');
     const searchParamsCreator = {
@@ -104,7 +118,35 @@ describe('CourseDashboardComponent', () => {
     }, (err) => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
     });
-    expect(component['courseProgressService'].getBatches).toHaveBeenCalledWith(searchParamsCreator);
+  });
+
+  it('should call updateDashBoardItems for totalCompletions', () => {
+    component.dashBoardItems = [];
+    spyOn(component, 'updateDashBoardItems');
+    component.getDashboardData({content: [{ participantCount: 2}], count: 1});
+    expect(component.updateDashBoardItems).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.totalEnrollments, 2, 'small');
+    expect(component.updateDashBoardItems).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call updateDashBoardItems for totalEnrollments', () => {
+    component.dashBoardItems = [];
+    spyOn(component, 'updateDashBoardItems');
+    component.getDashboardData({content: [{completedCount: 2, participantCount: 0}], count: 1});
+    expect(component.updateDashBoardItems).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.totalCompletions, 2, 'large');
+    expect(component.updateDashBoardItems).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.totalEnrollments, 0, 'small');
+    expect(component.updateDashBoardItems).toHaveBeenCalledTimes(2);
+  });
+
+  it('should push data to dashBoardItems for completed count', () => {
+    component.dashBoardItems = [];
+    component.updateDashBoardItems(resourceBundle.frmelmnts.lbl.totalCompletions, 25, 'large');
+    expect(component.dashBoardItems).toContain({title: resourceBundle.frmelmnts.lbl.totalCompletions, count: 25, type: 'large'});
+  });
+
+  it('should push data to dashBoardItems for enrollment', () => {
+    component.dashBoardItems = [];
+    component.updateDashBoardItems(resourceBundle.frmelmnts.lbl.totalEnrollments, 25, 'small');
+    expect(component.dashBoardItems).toContain({title: resourceBundle.frmelmnts.lbl.totalEnrollments, count: 25, type: 'small'});
   });
 
   it('should unsubscribe on destroy', () => {
@@ -113,17 +155,6 @@ describe('CourseDashboardComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
-  });
-
-  it('should call updateDashBoardItems', () => {
-    spyOn(component, 'updateDashBoardItems');
-    component.getDashboardData({content: [mockUserData.currentBatchDataWithCount], count: 1});
-    expect(component.updateDashBoardItems).toHaveBeenCalled();
-  });
-
-  it('should push data to dashBoardItems', () => {
-    component.updateDashBoardItems(resourceBundle.frmelmnts.lbl.totalCompletions, 25, 'small');
-    expect(component.dashBoardItems).toContain({title: resourceBundle.frmelmnts.lbl.totalCompletions, count: 25, type: 'small'});
   });
 
 });

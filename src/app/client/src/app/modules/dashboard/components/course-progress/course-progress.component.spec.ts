@@ -257,4 +257,12 @@ describe('CourseProgressComponent', () => {
     expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
     expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
   });
+
+  it ( 'should set filterText', () => {
+     fakeActivatedRoute.queryParams.subscribe(data => {
+      component.queryParams = data;
+    });
+    component.setFilterDescription();
+    expect(component.filterText).toEqual('Stats for last 7 days');
+  });
 });
