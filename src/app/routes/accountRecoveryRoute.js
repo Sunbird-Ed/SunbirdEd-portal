@@ -6,7 +6,7 @@ const uuidv1 = require('uuid/v1');
 const proxy = require('express-http-proxy');
 const proxyUtils = require('../proxy/proxyUtils.js');
 const logger = require('sb_logger_util_v2');
-const { encriptWithTime } = require('../helpers/crypto');
+const { encriptWithTime, encrypt } = require('../helpers/crypto');
 const { decodeNChkTime } = require('../helpers/utilityService');
 const googleService = require('../helpers/googleService');
 
@@ -70,14 +70,18 @@ module.exports = (app) => {
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (data.responseCode === 'OK') {
             req.session.otpVerifiedFor = req.body;
-            const encrypt = {
+            const _encrypt = {
               key: req.body.request.key
             }
             if (req.body.request.userId) {
-              encrypt['id'] = req.body.request.userId
+              _encrypt['id'] = req.body.request.userId
             }
             var timeInMin = 5;
-            var validator = encriptWithTime(encrypt, timeInMin);
+            var validator = encriptWithTime(_encrypt, timeInMin);
+            const reqType = req.body.request.type;
+            const dataToEncrypt = {};
+            dataToEncrypt[reqType] = req.body.request.key;
+            req.session.otpEncryptedInfo = encrypt(JSON.stringify(dataToEncrypt));
             data['reqData'] = validator;
           }
           return data;

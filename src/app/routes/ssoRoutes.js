@@ -96,16 +96,29 @@ module.exports = (app) => {
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
-    const decryptedData = decrypt(req.session.userEncryptedInfo);
     try {
+      let decryptedData;
+      let otpDecryptedData;
+      if (_.get(req, 'session.userEncryptedInfo')) {
+        decryptedData = decrypt(req.session.userEncryptedInfo);
+        decryptedData = JSON.parse(decryptedData);
+      }
+      if (_.get(req, 'session.otpEncryptedInfo')) {
+        otpDecryptedData = decrypt(req.session.otpEncryptedInfo);
+        otpDecryptedData = JSON.parse(otpDecryptedData);
+      }
       // If data encrypted in session create route; `identifier` should match with the incoming request session user `identifier`
       if (_.get(decryptedData, 'identifier') !== '' && _.get(decryptedData, 'identifier') !== userDetails.identifier) {
         errType = 'FORBIDDEN';
-        throw 'Access Forbidden - User identifier mismatch';
+        throw 'Access Forbidden - User identifier mismatch with session create payload';
       }
       if (_.isEmpty(jwtPayload) && ((!['phone', 'email', 'tncVersion', 'tncAccepted'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
+      }
+      if (_.get(otpDecryptedData, req.query.type) !== req.query.value) {
+        errType = 'FORBIDDEN';
+        throw 'Access Forbidden - User identifier mismatch with OTP payload';
       }
       if (!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
         errType = 'UPDATE_CONTACT_DETAILS';
@@ -283,16 +296,29 @@ module.exports = (app) => {
     let response, errType, jwtPayload, redirectUrl, userDetails;
     jwtPayload = req.session.jwtPayload; // fetch from session
     try {
-      const decryptedData = decrypt(req.session.userEncryptedInfo);
+      let decryptedData;
+      let otpDecryptedData;
+      if (_.get(req, 'session.userEncryptedInfo')) {
+        decryptedData = decrypt(req.session.userEncryptedInfo);
+        decryptedData = JSON.parse(decryptedData);
+      }
+      if (_.get(req, 'session.otpEncryptedInfo')) {
+        otpDecryptedData = decrypt(req.session.otpEncryptedInfo);
+        otpDecryptedData = JSON.parse(otpDecryptedData);
+      }
       // If data encrypted in session create route; `identifier` should match with the incoming request session user `identifier`
       if (_.get(decryptedData, 'identifier') !== '' && _.get(decryptedData, 'identifier') !== req.query.userId) {
         errType = 'FORBIDDEN';
-        throw 'Access Forbidden - User identifier mismatch';
+        throw 'Access Forbidden - User identifier mismatch with session create payload';
       }
       if (!req.query.userId || !req.query.identifier || !req.query.identifierValue
         || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
+      }
+      if (_.get(otpDecryptedData, req.query.identifier) !== req.query.identifierValue) {
+        errType = 'FORBIDDEN';
+        throw 'Access Forbidden - User identifier mismatch with OTP payload';
       }
       if (req.query.freeUser === 'true') {
         errType = 'FREE_UP_USER';
