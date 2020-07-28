@@ -126,16 +126,16 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     private fetchContents() {
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-            const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+            const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
             // filters.channel = this.hashTagId;
             // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
             filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-            filters.contentType = contentType;
+            filters.contentType = _.get(allTabData, 'search.filters.contentType');
             const option = {
                 filters: filters,
-                limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-                fields: this.configService.urlConFig.params.CourseSearchField,
+                fields: _.get(allTabData, 'search.fields'),
+                limit: _.get(allTabData, 'search.limit'),
                 pageNumber: this.paginationDetails.currentPage,
                 query: this.queryParams.key,
                 // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },

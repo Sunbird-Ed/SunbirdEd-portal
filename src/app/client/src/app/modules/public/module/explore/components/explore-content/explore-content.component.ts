@@ -111,18 +111,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   private fetchContents() {
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-      const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+      const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
       filters.channel = this.hashTagId;
-      filters.contentType = contentType;
+      filters.contentType = _.get(allTabData, 'search.filters.contentType');
       const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
       if (this.queryParams.key) {
         delete softConstraints['board'];
       }
       const option: any = {
         filters: filters,
-        fields: this.configService.urlConFig.params.LibrarySearchField,
-        limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+        fields: _.get(allTabData, 'search.fields'),
+        limit: _.get(allTabData, 'search.limit'),
         pageNumber: this.paginationDetails.currentPage,
         query: this.queryParams.key,
         mode: 'soft',
