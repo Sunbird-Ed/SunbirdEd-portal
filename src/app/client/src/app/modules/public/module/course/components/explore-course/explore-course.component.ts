@@ -125,12 +125,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
     private fetchContents() {
-        const formServiceInputParams = {
-            formType: 'contentcategory',
-            formAction: 'menubar',
-            contentType: 'global'
-        };
-        this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
             let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
             // filters.channel = this.hashTagId;

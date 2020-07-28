@@ -2,7 +2,7 @@ import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService, FormService } from '@sunbird/core';
+import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
@@ -50,8 +50,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
     public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
     public userService: UserService, public frameworkService: FrameworkService,
-    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    private formService: FormService) {
+    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -111,12 +110,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    const formServiceInputParams = {
-      formType: 'contentcategory',
-      formAction: 'menubar',
-      contentType: 'global'
-    };
-    this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
       const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
       filters.channel = this.hashTagId;
@@ -161,13 +155,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.configService.appConfig.SEARCH.PAGE_LIMIT);
           this.toasterService.error(this.resourceService.messages.fmsg.m0051);
         });
-   }, err => {
-        this.showLoader = false;
-        this.contentList = [];
-        this.facetsList = [];
-        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+    }, err => {
+      this.showLoader = false;
+      this.contentList = [];
+      this.facetsList = [];
+      this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
   }
   public navigateToPage(page: number): void {

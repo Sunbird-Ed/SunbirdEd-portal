@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService, FormService } from '@sunbird/core';
+import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -47,7 +47,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService, private formService: FormService) {
+        public navigationhelperService: NavigationHelperService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -101,12 +101,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        const formServiceInputParams = {
-            formType: 'contentcategory',
-            formAction: 'menubar',
-            contentType: 'global'
-        };
-        this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
             let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
             if (_.isEmpty(filters)) {

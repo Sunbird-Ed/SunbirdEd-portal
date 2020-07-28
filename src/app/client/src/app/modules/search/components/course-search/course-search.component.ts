@@ -114,53 +114,48 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchContents() {
-    const formServiceInputParams = {
-      formType: 'contentcategory',
-      formAction: 'menubar',
-      contentType: 'global'
-    };
-    this.formService.getFormConfig(formServiceInputParams, '*').subscribe((formData: any) => {
-        const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
-        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-        filters.contentType = contentType;
-        const option = {
-          filters: filters,
-          limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-          pageNumber: this.paginationDetails.currentPage,
-          query: this.queryParams.key,
-          sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
-          facets: this.facets,
-          params: this.configService.appConfig.Course.contentApiQueryParams
-        };
-        if (this.frameWorkName) {
-          option.params.framework = this.frameWorkName;
-        }
-        this.searchService.contentSearch(option)
-          .subscribe(data => {
-            this.showLoader = false;
-            this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-            this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-              this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-            this.contentList = _.map(data.result.content, (content: any) =>
-              this.utilService.processContent(content, constantData, dynamicFields, metaData));
-          }, err => {
-            this.showLoader = false;
-            this.contentList = [];
-            this.facetsList = [];
-            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-              this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-          });
-      }, err => {
-        this.showLoader = false;
-        this.contentList = [];
-        this.facetsList = [];
-        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      });
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      const contentType = _.get(_.find(formData, (o) => o.title === 'frmelmnts.tab.all'), 'search.filters.contentType');
+      let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+      filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+      filters.contentType = contentType;
+      const option = {
+        filters: filters,
+        limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+        pageNumber: this.paginationDetails.currentPage,
+        query: this.queryParams.key,
+        sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+        facets: this.facets,
+        params: this.configService.appConfig.Course.contentApiQueryParams
+      };
+      if (this.frameWorkName) {
+        option.params.framework = this.frameWorkName;
+      }
+      this.searchService.contentSearch(option)
+        .subscribe(data => {
+          this.showLoader = false;
+          this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+          this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
+          this.contentList = _.map(data.result.content, (content: any) =>
+            this.utilService.processContent(content, constantData, dynamicFields, metaData));
+        }, err => {
+          this.showLoader = false;
+          this.contentList = [];
+          this.facetsList = [];
+          this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
+    }, err => {
+      this.showLoader = false;
+      this.contentList = [];
+      this.facetsList = [];
+      this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+    });
   }
   public getFilters(filters) {
     this.facets = filters.map(element => element.code);
