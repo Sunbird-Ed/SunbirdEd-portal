@@ -1,14 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@sunbird/shared';
 import { AppLandingSectionComponent } from './app-landing-section.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('AppLandingSectionComponent', () => {
   let component: AppLandingSectionComponent;
   let fixture: ComponentFixture<AppLandingSectionComponent>;
 
+  const resourceBundle = {
+    'messages': {
+      'fmsg': {},
+      'emsg': {},
+      'stmsg': {}
+    }
+  };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppLandingSectionComponent ]
+      imports:[SharedModule.forRoot()],
+      providers: []
     })
     .compileComponents();
   }));
@@ -20,6 +30,9 @@ describe('AppLandingSectionComponent', () => {
   });
 
   it('should create', () => {
+    component.redoLayout(0);
+    expect(component).toBeTruthy();
+    component.redoLayout(1);
     expect(component).toBeTruthy();
   });
 });
