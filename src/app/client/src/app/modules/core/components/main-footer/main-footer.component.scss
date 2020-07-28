@@ -25,6 +25,7 @@
       left:5%;
       position:absolute;
       top:calculateRem(24px);
+      z-index:9;
       .item-title{
         font-size: calculateRem(16px);
         color: var(--gray-800);
