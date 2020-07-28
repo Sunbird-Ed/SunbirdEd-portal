@@ -149,53 +149,32 @@
 	<ng-container *ngIf="userService.loggedIn">
 		<a class="item item--textbook" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
-			<i class="icon-svg icon-svg--md icon-textbook mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#textbook"></use>
-				</svg>
-			  </i>{{resourceService?.frmelmnts?.tab?.resources}}
+			<span class="sb-icon sb-icon__textbook sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
 		<a class="item item--course" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
-			<i class="icon-svg icon-svg--md icon-course mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#courses"></use>
-				</svg>
-			  </i>{{resourceService?.frmelmnts?.tab?.courses}}
+			<span class="sb-icon sb-icon__course sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<a class="item item--test d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
-		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]"><i class="icon-svg icon-svg--md icon-checklist mr-4" aria-hidden="true">
-			<svg class="icon icon-svg--white">
-			  <use xlink:href="./assets/images/sprite.svg#test"></use>
-			</svg>
-		  </i>
-		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
+		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
+		<span class="sb-icon sb-icon__test sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
 		</a>
 		<a *ngIf="showContributeTab" class="item item--quiz" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')"><i class="icon-svg icon-svg--md icon-quiz mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#quiz"></use>
-				</svg>
-			  </i>
+			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
+			<span class="sb-icon sb-icon__quiz sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.contribute}}
 		</a>
 		<a class="item item--stories" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
-			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0"><i class="icon-svg icon-svg--md icon-stories mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#stories"></use>
-				</svg>
-			  </i>
+			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+			<span class="sb-icon sb-icon__stories sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
 		<a class="item item--poem" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
 			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
-			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank"><i class="icon-svg icon-svg--md icon-poem mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#poem"></use>
-				</svg>
-			  </i>
+			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+			<span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.help}}
 		</a>
 	</ng-container>
@@ -208,28 +187,22 @@
 		</button>
 		<a class="item item--textbook" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [routerLink]="['/explore']">
-			<i class="icon-svg icon-svg--md icon-textbook mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#textbook"></use>
-				</svg>
-			  </i>{{resourceService?.frmelmnts?.tab?.resources}}
+			<span class="sb-icon sb-icon__textbook sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
 		<a class="item item--course" [class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [routerLink]="['/explore-course']">
-			<i class="icon-svg icon-svg--md icon-course mr-4" aria-hidden="true">
-				<svg class="icon icon-svg--white">
-				  <use xlink:href="./assets/images/sprite.svg#courses"></use>
-				</svg>
-			  </i>{{resourceService?.frmelmnts?.tab?.courses}}
+			<span class="sb-icon sb-icon__course sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.explore)" 
+		<a class="item item--poem" [class.active]="router.isActive(routerLinks?.explore)" 
 		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-		[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
+		[routerLink]="[navigateToGroups()]">
+		<span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
+		{{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
-		<a class="item font-weight-bold sb-color-primary pr-0" href={{hrefPath}} appTelemetryInteract
+		<a class="item item--stories" href={{hrefPath}} appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
-			{{resourceService.frmelmnts?.btn?.login}}
+			<span class="sb-icon sb-icon__stories sb-icon--md mr-4"></span>{{resourceService.frmelmnts?.btn?.login}}
 		</a>
 	</ng-container>
 	<!--/Not Logged in user-->

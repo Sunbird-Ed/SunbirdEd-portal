@@ -1,33 +1,33 @@
-<div class="sbt-fluid-header-bg" *ngIf="layoutConfiguration">
+<div class="sbt-fluid-header-bg mb-8" *ngIf="layoutConfiguration">
     <div class="sb-g sbt-container sbt-page-header">
     <div [ngClass]="redoLayout(0)">
     </div>
-    <div [ngClass]="redoLayout(1)">
-        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-page-header-content pl-24">
+    <div [ngClass]="redoLayout(1)" class="relative">
+      <img class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="Textbooks">
+        <div class="sbt-page-header-content pl-24">
             <h1>Textbooks</h1>
           </div>
+          <img class="sbt-page-header-img" src="./assets/images/book-bg.svg" alt="Textbooks">
     </div>
     </div>
 </div>
-<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+
+<div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="redoLayout(0)">
     <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
     </app-search-filter>
   </div>
   <div [ngClass]="redoLayout(1)">
+  <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
     <div *ngIf="cardData.length > 0">
-  <div class="sb-bg-color-white py-16">
-    <div class="ui container">
         <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
         <ngx-slick  class="carousel" #slickModal="slick-modal" [config]="slideConfig">
           <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
             <sb-course-curiculum-card [index]="index" [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
           </div>
       </ngx-slick>
-      </div>
-      </div>
     </div>
-    <div class="ui container mt-24 sb-library-cards">
+    <div class="sb-library-cards">
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
@@ -45,6 +45,12 @@
       </div>
 
     </div>
+    
+  </div>
   </div>
 
+</div>
+
+<div *ngIf="layoutConfiguration">
+<img class="sbt-theme-right-flower" src="./assets/images/sbt-right-flower.svg" />
 </div>

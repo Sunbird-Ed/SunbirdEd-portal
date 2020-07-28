@@ -1,3 +1,92 @@
 @import "variables";
 @import "./mixins/mixins";
 @import "layout/footer";
+
+
+.new-layout-footer{
+    // margin-top: 2.125rem;
+    // padding: 0;
+    .sbt-footer-container {
+        height: calculateRem(344px);
+        width: 100%;
+        padding: 0% 5%;
+    }
+    .sbt-page-content-area {
+        border-radius: 0rem 0 0 0;
+    }
+    .sbt-container{
+      width: 90%;
+      padding: 0;
+      margin: 0 auto;
+      padding-top: calculateRem(135px);
+      border-radius: calculateRem(40px) calculateRem(40px) 0 0;
+      background-color: var(--white);
+      box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 rgba(var(--rc-rgba-black), 0.1);
+      left:5%;
+      position:absolute;
+      top:calculateRem(24px);
+      .item-title{
+        font-size: calculateRem(16px);
+        color: var(--gray-800);
+        padding: 0 calculateRem(24px);
+      }
+      .download-mobile-app{
+        right: auto;
+        left: 14%;
+        width: calculateRem(215px);
+        border: calculateRem(1.18px) solid var(--rc-979797);
+        border-radius: calculateRem(22px) calculateRem(22px) 0 0;
+        background-color: var(--black);
+        box-shadow: none;
+        html[dir="rtl"] & {
+          left: auto;
+          right: 14%;
+        }
+        .download-mobile-app-logo{
+          border-radius: calculateRem(13px) calculateRem(13px) 0 0;
+          padding: calculateRem(40px) 0;
+          min-height: auto !important;
+          .mobile-circles{
+            html[dir="rtl"] & {
+              flex-direction: row-reverse;
+            }
+            .big-box{
+              border: calculateRem(1px) solid var(--rc-4a4a4a);
+              background-color: var(--black);
+            }
+            .oval-box{
+              background: none;
+              border: calculateRem(1px) solid var(--rc-4a4a4a);
+              border-radius: 3px;
+            }
+            .small-box{
+              border: calculateRem(1px) solid var(--rc-4a4a4a);
+              background-color: var(--black);
+            }
+          }
+          .playStore-img{
+            width: calculateRem(164px);
+          }
+        }
+      }
+    }
+    .help-center{
+      color: var(--gray-800);
+      font-size: calculateRem(14px);
+    }
+    .footer-info{
+      color: var(--gray-800);
+      font-size: calculateRem(14px);
+      font-weight: bold;
+    }
+    a{
+      color: var(--gray-800) !important;
+      font-size: calculateRem(14px);
+    }
+    .footer-bg{
+      img{
+        height: calculateRem(185px);
+        width: calculateRem(380px);
+      }
+    }
+  }
