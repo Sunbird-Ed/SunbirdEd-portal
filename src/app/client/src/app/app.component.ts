@@ -187,7 +187,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
 
     this.botObject['imageUrl'] = image.imageUrl;
-    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
+    this.botObject['title'] = this.botObject['header'] = 'Ask Tara'
   }
 
   isBotdisplayforRoute () {
