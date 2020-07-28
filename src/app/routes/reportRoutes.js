@@ -2,7 +2,7 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
+const { REPORT_SERVICE_URL, sunbird_api_request_timeout } = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const { getUserDetailsV2 } = require('../helpers/userHelper');
@@ -12,8 +12,9 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
@@ -33,6 +34,7 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
             proxyReqPathResolver: function (req) {
@@ -61,8 +63,9 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
