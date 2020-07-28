@@ -1,4 +1,5 @@
-<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+<div [ngClass]="!layoutConfiguration ? 'footer-fix' : ''">
+<div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
@@ -13,6 +14,7 @@
   </app-install-app>
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+</div>
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>

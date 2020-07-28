@@ -519,8 +519,8 @@ app-workspace {
   // height: calculateRem(112px);
 }
 .sbt-theme-right-flower {
-  position: absolute;
-  bottom:24%;
+  position: fixed;
+  bottom:calculateRem(88px);
   width: calculateRem(288px);
   right:calculateRem(-106px);
   opacity: 0.75;

@@ -117,20 +117,21 @@
 /* new theme css */
 
 .sbt-header-filter-bar {
-  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
+  background:var(--white);
   box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
   position: relative;
   border-radius: calculateRem(24px);
   // overflow: hidden;
   min-width: calculateRem(232px);
   padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
-  margin-right: calculateRem(16px);
   position: sticky;
   top: calculateRem(188px);
   margin-top:calculateRem(-72px);
+  z-index: 2;
 
   .sbt-filter-scrollable {
-    height: calc(100vh - 388px);
+    max-height: calc(100vh - 388px);
+    height: auto;
       overflow-y: auto;
       padding-right: calculateRem(24px);
   }
