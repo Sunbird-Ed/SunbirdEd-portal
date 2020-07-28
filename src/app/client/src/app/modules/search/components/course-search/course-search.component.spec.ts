@@ -229,4 +229,14 @@ describe('CourseSearchComponent', () => {
     component.ngOnInit();
     component.redoLayout(1);
   });
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    coursesService.initialize();
+    sendSearchResult = false;
+    component.ngOnInit();
+    tick(100);
+    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

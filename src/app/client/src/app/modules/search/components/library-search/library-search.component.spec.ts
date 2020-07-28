@@ -169,7 +169,7 @@ describe('LibrarySearchComponent', () => {
     expect(contents.length).toEqual(0);
    });
 
-  it('getOrderedData() should return ordered empty[]', () => {
+   it('getOrderedData() should return ordered empty[]', () => {
     component.frameworkData = {board: ['Test 2']};
     const contents: object[] = component.getOrderedData(Response.successData.result.content);
     expect(contents.length).toEqual(2);
@@ -177,6 +177,15 @@ describe('LibrarySearchComponent', () => {
     expect(contents[1]['board']).toEqual('Test 1');
    });
 
-
-
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

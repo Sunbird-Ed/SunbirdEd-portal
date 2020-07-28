@@ -220,4 +220,15 @@ describe('ExploreCourseComponent', () => {
     component.layoutConfiguration = null;
     component.redoLayout(1);
   });
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    component.ngOnInit();
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.frameWorkName).toEqual('TPD');
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

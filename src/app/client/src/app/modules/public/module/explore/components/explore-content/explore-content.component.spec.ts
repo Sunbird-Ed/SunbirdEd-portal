@@ -212,4 +212,16 @@ describe('ExploreContentComponent', () => {
     component.layoutConfiguration = null;
     component.redoLayout(1);
   });
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });
