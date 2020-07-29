@@ -102,8 +102,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public getPageData(fieldType) {
-    return _.find(this.formData, (o) => o.fieldType === fieldType);
+  public getPageData(data) {
+    return _.find(this.formData, (o) => o.contentType === data);
   }
 
   public getFilters({filters, status}) {
@@ -111,8 +111,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbooks');
-    this.selectedFilters = _.pick(filters, currentPageData.search.filtersToSelect);
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents(currentPageData);
