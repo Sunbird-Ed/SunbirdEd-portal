@@ -19,11 +19,8 @@
 
 <!-- Updated code as per new design for semantic datatable-->
 <div class="sb-bg-color-white p-16 progress-content">
-<div class="ui container">
-  <div class="ui grid">
-    <div class="twelve wide column p-0">
-      <div class="p-24">
-        <!-- <div class="ui divider"></div> -->
+<div>
+      <!-- <div class="ui divider"></div> -->
         <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
           <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
             <div class="d-flex ml-auto">
@@ -34,9 +31,10 @@
               </a>
             </div>
           </div>
-          <div class="d-flex flex-ai-center progress-report-content">
-              <div class="d-flex w-300 mr-auto flex-dc">
-                <label class="fnormal font-weight-normal pl-4">Select Batch</label>
+
+          <div class="d-flex  progress-report-content">
+              <div class="d-flex w-300 flex-dc">
+                <label class="fnormal font-weight-normal pl-4 text-left">Select Batch</label>
                   <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
                     [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id"
                     [isSearchable]="true" #select>
@@ -50,7 +48,7 @@
               <!-- below needs to be done score card -->
              
               <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
-              <div class="d-flex report-buttons" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
+              <div class="d-flex ml-auto report-buttons" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
                   <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16 download-report d-flex flex-ai-center"
                   href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
                   [telemetryInteractObject]="interactObject"
@@ -59,6 +57,7 @@
                     class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
                     <span class="info-outline-img ml-8" suiPopup popupText="{{scoreReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"></span>
                 </button>
+                <div class="report-buttons__divider"></div>
                 <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-report d-flex flex-ai-center"
                   href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
                   [telemetryInteractObject]="interactObject"
@@ -72,70 +71,73 @@
           </div>
           <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
 
-       <div class="d-flex my-16 sb-course-progress-status d-flex flex-w-wrap flex-ai-center"
-           *ngIf="currentBatch">
-           <div class="sb-course-progress-status-label">
-             <span class="course-start-dt course-participants-label pr-16">
-               <span *ngIf="currentBatch.startDate">
-                 {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
-               </span>
-             </span>
- 
-             <span class="course-end-dt course-participants-label px-16">
-               <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
-               </span>
-             </span>
- 
-             <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label  px-16">
-               <span>{{resourceService?.frmelmnts?.lbl?.participants}}
-               </span> 
-             </span>
- 
-             <span *ngIf="currentBatch.completedCount !== null"
-               class="course-participants course-participants-label  px-16">
-               <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
-               </span>
-             </span>
- 
-             <!-- TODO: Need to revert when changes are done from KP side-->
-         <span *ngIf="currentBatch.certificateCount!==null"
-               class="course-participants course-participants-label  px-16">
-               <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
-               </span>
-             </span> 
-           </div>
- 
-           <div class="sb-bg-color-white sb-course-progress-status-result">
-             <span class="course-start-dt course-participants-label pr-16">
-              <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
-             </span>
- 
-             <span class="course-end-dt course-participants-label px-16">
-               <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat :'DD/MM/YYYY'}}</span>
-               <span *ngIf="!currentBatch.endDate">-</span>
-             </span>
- 
-             <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label  px-16">
-               <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
-             </span>
- 
-             <span *ngIf="currentBatch.completedCount !== null"
-               class="course-participants course-participants-label  px-16">
-               <span class="font-weight-bold">{{currentBatch.completedCount}}</span>
-             </span>
- 
-             <!-- TODO: Need to revert when changes are done from KP side-->
-              <span *ngIf="currentBatch.certificateCount!==null"
-               class="course-participants course-participants-label px-16">
-               <span class="font-weight-bold">{{currentBatch.certificateCount}}</span>
-             </span> 
-           </div>
- 
-          </div>  
+          <div class="d-flex current-batch-list">
+            <div class="d-flex flex-dc my-16 sb-course-progress-status"
+            *ngIf="currentBatch">
+            <div class="sb-course-progress-status-label">
+              <span class="course-start-dt course-participants-label">
+                <span *ngIf="currentBatch.startDate">
+                  {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
+                </span>
+              </span>
+  
+              <span class="course-end-dt course-participants-label">
+                <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
+                </span>
+              </span>
+  
+              <span *ngIf="currentBatch.participantCount !== null" 
+              class="course-participants course-participants-label">
+                <span>{{resourceService?.frmelmnts?.lbl?.participants}}
+                </span> 
+              </span>
+  
+              <span *ngIf="currentBatch.completedCount !== null"
+                class="course-participants course-participants-label">
+                <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
+                </span>
+              </span>
+  
+              <!-- TODO: Need to revert when changes are done from KP side-->
+               <span *ngIf="currentBatch.certificateCount!==null"
+                class="course-participants course-participants-label">
+                <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
+                </span>
+              </span> 
+            </div>
+  
+            <div class="sb-bg-color-white sb-course-progress-status-result">
+              <span class="course-start-dt course-participants-label">
+               <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
+              </span>
+  
+              <span class="course-end-dt course-participants-label">
+                <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat :'DD/MM/YYYY'}}</span>
+                <span *ngIf="!currentBatch.endDate">-</span>
+              </span>
+  
+              <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label">
+                <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
+              </span>
+  
+              <span *ngIf="currentBatch.completedCount !== null"
+                class="course-participants course-participants-label">
+                <span class="font-weight-bold">{{currentBatch.completedCount}}</span>
+              </span>
+  
+              <!-- TODO: Need to revert when changes are done from KP side-->
+               <span *ngIf="currentBatch.certificateCount!==null"
+                class="course-participants course-participants-label">
+                <span class="font-weight-bold">{{currentBatch.certificateCount}}</span>
+              </span> 
+            </div>
+  
+           </div> 
+          </div>
 
           <!-- Select Batch image content start-->
 
-           <div class="d-flex flex-jc-center">
+           <div class="d-flex flex-jc-center" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
             <div class="d-flex flex-dc flex-ai-center pb-24">
               <div><img src="assets/images/batch.png" width="329px" height="229px"></div>
               <p class="img-text">Select batch to view details</p>
@@ -145,6 +147,7 @@
           <!-- Select Batch image content end-->
 
         </div>
+
         <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding"
           *ngIf="currentBatch &&  currentBatch.count>10000">
           <div class="sb-toast-body">
@@ -212,10 +215,6 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-</div>
+
 
 <!-- This is the updated code for semantic datatable -->
-
-

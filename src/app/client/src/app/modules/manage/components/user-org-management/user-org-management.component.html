@@ -1,18 +1,23 @@
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows py-16">
-    <div class="d-flex flex-ai-center ui container">
-      <h4 class="sb-manage-section-title m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
-      <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
-              [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
-              type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
-              (click)="downloadFile(userDeclaredDetailsUrl)">
-        {{resourceService.frmelmnts?.btn?.download}}
-      </button>
-      <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
-      <div class="d-flex" *ngIf="!userDeclaredDetailsUrl">
-        <img src="./assets/images/icon-info.svg" height="16px" class="m-8">
-        <label class="no-data-label font-weight-normal">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+    <div class="d-flex flex-ai-center flex-jc-space-between ui container">
+      <div class="d-flex flex-ai-center">
+        <h4 class="sb-manage-section-title m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
+        <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
+                [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
+                type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
+                (click)="downloadFile(userDeclaredDetailsUrl)">
+          {{resourceService.frmelmnts?.btn?.download}}
+        </button>
+        <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
+        <div class="d-flex flex-ai-center ml-8" *ngIf="!userDeclaredDetailsUrl">
+          <img src="./assets/images/icon-info.svg" height="16px">
+          <label class="no-data-label font-weight-normal ml-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+        </div>
+        
       </div>
+      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal">Upload Validation Status</button>
+      <!-- (click) = "showUploadUserModal = !showUploadUserModal" -->
     </div>
   </div>
 
@@ -157,3 +162,46 @@
 
 </div>
 
+<!-- Upload validation status modal -->
+
+<!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showUploadUserModal = !showUploadUserModal" #modal>
+<div class="sb-modal-header">
+  Uploading Validation Status For Self Declared User Information
+</div>
+<div class="sb-modal-content">
+  <div class="m-0">
+    <span class="m-0 mr-16">Please upload the CSV file</span>
+  </div>
+
+  <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
+    Select CSV file for Upload
+    <input type="file" class="sb-btn-upload upload-btn" name="file" />
+  </div>
+  <div class="ui info message">
+    <div class="header">
+      Instructions:
+    </div>
+    <ol class="ui list">
+      <li class="self-users-list">Download the list of Self declared teachers from the portal using the "Download User Details" button alongside (This data is updated every 24 hours) </li>
+      <li class="self-users-list">Update the column "STATUS" for this file - the state records for the user should be matched
+        with BOTH the Phone number and State ID in the downloaded data, if a record is to updated as validated. 
+        The STATUS for all records has to be updated in the file accordingly.The values for this column can be (STATUS = VALIDATED/REJECTED/ERROR).
+      </li>
+      <li class="self-users-list">Add new col. ERROR TYPE to the file, if there are records that have STATUS = ERROR</li>
+      <li class="self-users-list">For rows where STATUS = ERROR, add value for ERROR TYPE (ERROR TYPE = ERROR-DISTRICT/ERROR-PHONE/ERROR-EMAIL/ERROR-SCHOOL ORG NAME/ERROR-SCHOOL ORG ID/ERROR-ID/ERROR-NAME)
+        based on what the error on the record is </li>
+        <li class="self-users-list">This file has be saved in the .CSV format for upload into the system.</li>
+        <li class="self-users-list">Re-upload list into portal,after filling the STATUS & ERROR TYPE (if applicable) value for each Record in the file.
+          Use the "Select CSV file for Upload" button above to do this.
+        </li>
+    </ol>
+
+  </div>
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary">
+    Upload Users CSV
+  </button>
+</div>
+</sui-modal> -->

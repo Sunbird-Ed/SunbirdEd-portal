@@ -101,40 +101,50 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-        if (_.isEmpty(filters)) {
-            filters = _.omit(this.frameworkData, ['id']);
-        }
-        filters.channel = this.hashTagId;
-        filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
-        const option: any = {
-          filters: filters,
-          fields: this.configService.urlConFig.params.LibrarySearchField,
-          limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-          pageNumber: this.paginationDetails.currentPage,
-          query: this.queryParams.key,
-          mode: 'soft',
-          facets: this.facets,
-          params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
-        };
-        if (this.frameworkId) {
-          option.params.framework = this.frameworkId;
-        }
-        this.searchService.contentSearch(option)
-            .subscribe(data => {
-                this.showLoader = false;
-                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.contentList = this.getOrderedData(_.get(data, 'result.content'));
-            }, err => {
-                this.showLoader = false;
-                this.contentList = [];
-                this.facetsList = [];
-                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-            });
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+            let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+            if (_.isEmpty(filters)) {
+                filters = _.omit(this.frameworkData, ['id']);
+            }
+            filters.channel = this.hashTagId;
+            filters.contentType = _.get(allTabData, 'search.filters.contentType');
+            const option: any = {
+                filters: filters,
+                fields: _.get(allTabData, 'search.fields'),
+                limit: _.get(allTabData, 'search.limit'),
+                pageNumber: this.paginationDetails.currentPage,
+                query: this.queryParams.key,
+                mode: 'soft',
+                facets: this.facets,
+                params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+            };
+            if (this.frameworkId) {
+                option.params.framework = this.frameworkId;
+            }
+            this.searchService.contentSearch(option)
+                .subscribe(data => {
+                    this.showLoader = false;
+                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    this.contentList = this.getOrderedData(_.get(data, 'result.content'));
+                }, err => {
+                    this.showLoader = false;
+                    this.contentList = [];
+                    this.facetsList = [];
+                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+                });
+        }, (err: any) => {
+            this.showLoader = false;
+            this.contentList = [];
+            this.facetsList = [];
+            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                this.configService.appConfig.SEARCH.PAGE_LIMIT);
+            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        });
     }
 
     getOrderedData(contents) {
