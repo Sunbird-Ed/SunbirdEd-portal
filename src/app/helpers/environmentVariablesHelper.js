@@ -168,7 +168,9 @@ let envVariables = {
     phrase_project: env.phrase_project || 'DIKSHA Portal,Sunbird Creation',
     phrase_locale: env.phrase_locale || ['en-IN', 'bn-IN', 'hi-IN', 'kn-IN', 'mr-IN', 'ur-IN', 'te-IN', 'ta-IN'],
     phrase_fileformat: env.phrase_fileformat || 'json'
-  }
+  },
+  // Temporary Variable
+  sunbird_enable_sso: env.sunbird_enable_sso
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
