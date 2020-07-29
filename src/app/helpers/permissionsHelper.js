@@ -161,7 +161,7 @@ let PERMISSIONS_HELPER = {
       if (error) {
         logger.error({msg: 'error while user/v1/read', error});
         callback(error, null)
-      } else if (!error && body) {
+      } else if (!error && body && body.responseCode === 'OK') {
         module.exports.setUserSessionData(reqObj, body);
         logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
         reqObj.session.save(function (error) {
@@ -171,6 +171,9 @@ let PERMISSIONS_HELPER = {
             callback(null, body)
           }
         });
+      } else if (body.responseCode !== 'OK') {
+        logger.error({msg: 'getCurrentUserRoles :: Error while reading user/v1/read', body});
+        callback(body, null);
       } else {
         logger.error({msg: 'error while user/v1/read', error});
         callback(error, null)
