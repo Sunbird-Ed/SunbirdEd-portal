@@ -209,52 +209,6 @@ describe('ExploreComponent', () => {
     expect(component.getInteractEdata).toHaveBeenCalled();
   });
 
-  it('should return  data from search', () => {
-    const formService = TestBed.get(FormService);
-    component.formData = RESPONSE.formData;
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
-    component.channelId = '123';
-    component['contentSearchService']._frameworkId = '123456';
-    const option = {
-      filters: {},
-      fields: ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
-        'pkgVersion', 'board',
-        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
-    isCustodianOrg: true,
-    channelId: '123',
-    frameworkId: '123456'
-    };
-    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
-    ));
-    component['fetchCourses'](RESPONSE.mockCurrentPageData);
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
-    expect(component.cardData.length).toEqual(2);
-
-  });
-
-  it('should return empty data from search', () => {
-    const formService = TestBed.get(FormService);
-    component.formData = RESPONSE.formData;
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
-    component.channelId = '123';
-    component['contentSearchService']._frameworkId = '123456';
-    const option = {
-      filters: {},
-      fields: ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
-        'pkgVersion', 'board',
-        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
-      isCustodianOrg: true,
-    channelId: '123',
-    frameworkId: '123456'
-    };
-    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
-    ));
-    component['fetchCourses'](RESPONSE.mockCurrentPageData);
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
-    expect(component.cardData.length).toEqual(0);
-
-  });
-
 
   it('should call telemetry.interact()', () => {
     spyOn(component.telemetryService, 'interact');

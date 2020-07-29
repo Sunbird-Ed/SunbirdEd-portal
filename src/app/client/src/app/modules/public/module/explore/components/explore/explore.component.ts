@@ -116,7 +116,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents(currentPageData);
-    this.fetchCourses(currentPageData);
   }
 
   private fetchContents(currentPageData) {
@@ -130,7 +129,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if ( _.get(this.selectedFilters, 'channel') && (_.get(this.selectedFilters, 'channel')).length > 0) {
       request.channelId = this.selectedFilters['channel'];
     }
-    const option = this.searchService.getSearchRequest(request, currentPageData.search.contentSearch.contentType);
+    const option = this.searchService.getSearchRequest(request, currentPageData.search.filters.contentType);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
@@ -177,27 +176,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0005);
       });
-  }
-
-  private fetchCourses(currentPageData) {
-    this.cardData = [];
-    this.isLoading = true;
-    const request = {
-      filters: this.selectedFilters,
-      fields: currentPageData.search.fields,
-      isCustodianOrg: this.custodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
-    };
-    this.searchService.fetchCourses(request, currentPageData.search.courseSearch.contentType)
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
-    this.isLoading = false;
-    this.cardData = _.sortBy(cardData, ['title']);
-  }, err => {
-      this.isLoading = false;
-      this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
-  });
   }
 
   private prepareVisits(event) {

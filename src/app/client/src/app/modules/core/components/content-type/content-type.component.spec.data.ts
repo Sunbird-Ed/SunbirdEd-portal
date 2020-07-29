@@ -53,18 +53,6 @@ export const mockData = {
           'contentType': [
             'TextBook'
           ]
-        },
-        'contentSearch': {
-          'contentType': [
-            'TextBook',
-            'TextBook1'
-          ]
-        },
-        'courseSearch': {
-          'contentType': [
-            'Course',
-            'Course2222'
-          ]
         }
       },
       anonumousUserRoute: {

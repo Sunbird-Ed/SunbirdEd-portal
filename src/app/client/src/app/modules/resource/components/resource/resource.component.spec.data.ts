@@ -21,16 +21,6 @@ export const Response = {
         'contentType': [
           'TextBook'
         ]
-      },
-      'contentSearch': {
-        'contentType': [
-          'TextBook'
-        ]
-      },
-      'courseSearch': {
-        'contentType': [
-          'Course'
-        ]
       }
     },
     anonumousUserRoute: {

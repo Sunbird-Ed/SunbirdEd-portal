@@ -40,6 +40,10 @@ export class ContentTypeComponent implements OnInit {
     return _.get(this.resourceService, _.get(contentType, 'title'));
   }
 
+  getIcon(contentType) {
+    return _.get(contentType, 'theme.className');
+  }
+
 
   showContentType(data) {
     if (this.userService.loggedIn) {
