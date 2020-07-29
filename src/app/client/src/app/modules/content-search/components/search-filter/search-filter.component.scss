@@ -191,14 +191,15 @@
       .sb-pills-container {
         display: flex !important;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content:flex-start;
         .pill {
           padding: calculateRem(8px) calculateRem(16px) !important;
           color: #6236FF !important;
-          margin: 0 0 calculateRem(8px) 0 !important;
+          margin: 0 calculateRem(8px) calculateRem(8px) 0 !important;
           background-color: rgba(98,54,255,0.13) !important;
-          &.rounded {
-            font-size: 12px !important;
+          font-size: 12px !important;
+          html[dir="rtl"] & {
+            margin: 0 0 calculateRem(8px) calculateRem(8px) !important;
           }
           &.active, &:hover {
             color: var(--white) !important;
@@ -266,3 +267,9 @@
 :host ::ng-deep .dropdown:not(.button) > .default.text {
   color: var(--primary-400) !important;
 }
+
+
+
+
+
+
