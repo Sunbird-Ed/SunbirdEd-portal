@@ -79,4 +79,14 @@ describe('ContentTypeComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(
       ['/explore'], {queryParams: {selectedTab: 'textbooks'}});
   });
+
+  it('should get Icon', () => {
+    const icon = component.getIcon({
+      theme: {
+        className: 'textbook'
+      }
+    });
+    expect(icon).toEqual('textbook');
+  });
+
 });

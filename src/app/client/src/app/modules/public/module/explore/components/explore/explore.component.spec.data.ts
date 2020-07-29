@@ -1663,16 +1663,6 @@ export const RESPONSE = {
         'contentType': [
           'TextBook'
         ]
-      },
-      'contentSearch': {
-        'contentType': [
-          'TextBook'
-        ]
-      },
-      'courseSearch': {
-        'contentType': [
-          'Course'
-        ]
       }
     },
     anonumousUserRoute: {
@@ -1738,18 +1728,6 @@ export const RESPONSE = {
             'TextBook'
           ]
         },
-        'contentSearch': {
-          'contentType': [
-            'TextBook',
-            'TextBook1'
-          ]
-        },
-        'courseSearch': {
-          'contentType': [
-            'Course',
-            'Course2222'
-          ]
-        }
       },
       anonumousUserRoute: {
         route: '/explore',

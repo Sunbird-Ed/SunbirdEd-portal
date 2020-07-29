@@ -164,10 +164,14 @@
           </div>
         </div>
 
-        <!--Content types-->
-        <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
-        <!--/Content types-->
-
+        <div class="sbt-header-menu-bar sb-g">
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
+          <div class="sbt-header-menu">
+            <app-main-menu [layoutConfiguration]="layoutConfiguration"
+                           class="d-flex computer only ml-auto"></app-main-menu>
+          </div>
+        </div>
       </div>
 </div>
 </div>

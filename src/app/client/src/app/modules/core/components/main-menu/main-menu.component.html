@@ -146,17 +146,10 @@
 <!--Computer-->
 <div class="sb-linkmenu m-0 d-flex o-auto flex-ai-center computer only">
 	<!--Logged in user-->
-	<ng-container *ngIf="userService.loggedIn">
-		<a class="item item--textbook" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
-			<span class="sb-icon sb-icon__textbook sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.resources}}
-		</a>
-		<a class="item item--course" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
-			<span class="sb-icon sb-icon__course sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.courses}}
-		</a>
+  <ng-container *ngIf="userService.loggedIn">
+
+    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+
 		<a class="item item--test d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
 		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
 		<span class="sb-icon sb-icon__tv sb-icon--md mr-4"></span>
@@ -184,26 +177,14 @@
 	<!--/Logged in user-->
 	<!--Not Logged in user-->
 	<ng-container *ngIf="!userService.loggedIn">
-		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
-			tabindex="0" [routerLink]="'/explore'">
-			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
-		</button>
-		<a class="item item--textbook" [class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" [routerLink]="['/explore']">
-			<span class="sb-icon sb-icon__textbook sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.resources}}
-		</a>
-		<a class="item item--course" [class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
-			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" [routerLink]="['/explore-course']">
-			<span class="sb-icon sb-icon__course sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.courses}}
-		</a>
-		
-		<a class="item item--poem" [class.active]="router.isActive(routerLinks?.explore)" 
-		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+
+    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+
+ <!--   <a class="item item&#45;&#45;poem" [class.active]="router.isActive(routerLinks?.explore)"
+       *ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 		[routerLink]="[navigateToGroups()]">
-		<span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
-		{{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
+		<span class="sb-icon sb-icon__poem sb-icon&#45;&#45;md mr-4"></span>
+		{{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>-->
 
 		<a class="item item--story" href={{hrefPath}} appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
@@ -218,7 +199,10 @@
 	<div class="ui sidebar right vertical menu">
 		<!--Logged in user-->
 		<ng-container *ngIf="userService.loggedIn">
-			<div class="item font-weight-bold" *ngIf='userProfile'>
+
+      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+
+      <div class="item font-weight-bold" *ngIf='userProfile'>
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
 					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
 				<div class="ellipsis">
@@ -257,7 +241,10 @@
 		<!--/Logged in user-->
 		<!--Not Logged in user-->
 		<ng-container *ngIf="!userService.loggedIn">
-			<div class="item active">
+
+      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+
+      <div class="item active">
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
 					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>
 				<a href="/resources">
