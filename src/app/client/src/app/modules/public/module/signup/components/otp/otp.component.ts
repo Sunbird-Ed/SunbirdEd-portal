@@ -96,7 +96,7 @@ resendOtpEnablePostTimer() {
         'key': this.mode === 'phone' ? this.signUpdata.controls.phone.value.toString() :
           this.signUpdata.controls.email.value,
         'type': this.mode,
-        'otp': this.otpForm.controls.otp.value
+        'otp': _.trim(this.otpForm.controls.otp.value)
       }
     };
     this.signupService.verifyOTP(request).subscribe(
