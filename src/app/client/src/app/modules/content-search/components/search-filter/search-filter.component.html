@@ -33,8 +33,8 @@
     <!-- class section ends -->
     </div>
 </ng-container>
-<span class="theme" *ngIf="isLayoutAvailable()">
-        <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2 sb-bg-color-white">
+<span *ngIf="isLayoutAvailable()">
+        <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-header-filter-bar mr-16">
                 <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
                 <div class="sbt-filter-scrollable">
                 <!-- State and Medium sections -->
@@ -55,13 +55,11 @@
                 </div>
                 <!-- State and Medium sections ends-->
                 <!-- class section -->
-                <div class="sb-class-bar">
-                    <div>
+                <div class="sbt-class-bar text-left">
                         <label class="fmedium">Class</label>
                         <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND" [selectedItems]="[selectedGradeLevelIndex]"
                             (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
                             [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
-                    </div>
                 </div>
                 <!-- class section ends -->
             </div>

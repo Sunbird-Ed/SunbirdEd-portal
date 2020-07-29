@@ -20,6 +20,7 @@ describe('ExploreContentComponent', () => {
   const mockSearchData: any = Response.successData;
   let sendOrgDetails = true;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -80,9 +81,16 @@ describe('ExploreContentComponent', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
     sendSearchResult = true;
+    sendFormResult = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
         return of({hashTagId: '123'});
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
       }
       return throwError({});
     });
@@ -204,4 +212,16 @@ describe('ExploreContentComponent', () => {
     component.layoutConfiguration = null;
     component.redoLayout(1);
   });
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

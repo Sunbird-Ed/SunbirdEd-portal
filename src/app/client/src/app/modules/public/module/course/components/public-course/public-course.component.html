@@ -1,3 +1,5 @@
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.course" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div class="sb-g" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="redoLayout(0)">
   <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
