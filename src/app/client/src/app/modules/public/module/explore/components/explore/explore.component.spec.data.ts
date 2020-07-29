@@ -1640,5 +1640,147 @@ export const RESPONSE = {
       // tslint:disable-next-line:max-line-length
       'cardImg': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212916581536096256131/artifact/api2_1530687542792.thumb.png'
     }
-  }
+  },
+  mockCurrentPageData: {
+    'index': 0,
+    'title': 'frmelmnts.lbl.textbooks',
+    'desc': 'frmelmnts.lbl.textbooks',
+    'menuType': 'Content',
+    'fieldType': 'textbooks',
+    'isEnabled': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+      'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+        'pkgVersion', 'board',
+        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      'filtersToSelect': ['board', 'medium', 'gradeLevel', 'channel'],
+      'filters': {
+        'contentType': [
+          'TextBook'
+        ]
+      },
+      'contentSearch': {
+        'contentType': [
+          'TextBook'
+        ]
+      },
+      'courseSearch': {
+        'contentType': [
+          'Course'
+        ]
+      }
+    },
+    anonumousUserRoute: {
+      route: '/explore',
+      queryParam: 'textbooks'
+    },
+    loggedInUserRoute: {
+      route: '/resources',
+      queryParam: 'textbooks'
+    }
+  },
+  formData: [
+    {
+      'index': 1,
+      'title': 'frmelmnts.tab.courses',
+      'desc': 'frmelmnts.tab.courses',
+      'menuType': 'Content',
+      'fieldType': 'courses',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': ''
+      },
+      'search': {
+        'facets': ['topic', 'purpose', 'medium', 'gradeLevel', 'subject', 'channel'],
+        'fields': [],
+        'filters': {
+          'contentType': [
+            'Course'
+          ]
+        }
+      },
+      anonumousUserRoute: {
+        route: '/explore-course',
+        queryParam: 'courses'
+      },
+      loggedInUserRoute: {
+        route: '/learn',
+        queryParam: 'courses'
+      }
+    },
+    {
+      'index': 0,
+      'title': 'frmelmnts.lbl.textbooks',
+      'desc': 'frmelmnts.lbl.textbooks',
+      'menuType': 'Content',
+      'fieldType': 'textbooks',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': ''
+      },
+      'search': {
+        'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+        'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+          'pkgVersion', 'board',
+          'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+        'filtersToSelect': ['board', 'medium', 'gradeLevel', 'channel'],
+        'filters': {
+          'contentType': [
+            'TextBook'
+          ]
+        },
+        'contentSearch': {
+          'contentType': [
+            'TextBook',
+            'TextBook1'
+          ]
+        },
+        'courseSearch': {
+          'contentType': [
+            'Course',
+            'Course2222'
+          ]
+        }
+      },
+      anonumousUserRoute: {
+        route: '/explore',
+        queryParam: 'textbooks'
+      },
+      loggedInUserRoute: {
+        route: '/resources',
+        queryParam: 'textbooks'
+      }
+    },
+    {
+      'index': 2,
+      'title': 'frmelmnts.tab.all',
+      'desc': 'frmelmnts.tab.all',
+      'menuType': 'Content',
+      'isEnabled': false,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': ''
+      },
+      'search': {
+        'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+        'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier',
+          'medium', 'pkgVersion', 'board', 'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+        'filters': {
+          'contentType': [
+            'Collection', 'TextBook', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource', 'LearningOutcomeDefinition', 'ExplanationResource', 'CurriculumCourse', 'Course'
+          ]
+        }
+      }
+    }
+  ]
 };

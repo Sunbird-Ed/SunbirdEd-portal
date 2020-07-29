@@ -1,5 +1,48 @@
 export const Response = {
-    successData: {
+  mockCurrentPageData: {
+    'index': 0,
+    'title': 'frmelmnts.lbl.textbooks',
+    'desc': 'frmelmnts.lbl.textbooks',
+    'menuType': 'Content',
+    'fieldType': 'textbooks',
+    'isEnabled': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+      'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+        'pkgVersion', 'board',
+        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      'filtersToSelect': ['board', 'medium', 'gradeLevel', 'channel'],
+      'filters': {
+        'contentType': [
+          'TextBook'
+        ]
+      },
+      'contentSearch': {
+        'contentType': [
+          'TextBook'
+        ]
+      },
+      'courseSearch': {
+        'contentType': [
+          'Course'
+        ]
+      }
+    },
+    anonumousUserRoute: {
+      route: '/explore',
+      queryParam: 'textbooks'
+    },
+    loggedInUserRoute: {
+      route: '/resources',
+      queryParam: 'textbooks'
+    }
+  },
+  successData: {
        ' id': 'api.page.assemble',
        ' params': {
             'err': null,
