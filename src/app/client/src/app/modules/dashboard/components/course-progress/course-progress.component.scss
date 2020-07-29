@@ -43,7 +43,7 @@ a {
 }
 
 .sb-btn-link {
-  font-size: calculateRem(16px);
+  font-size: calculateRem(14px);
 }
 
 ::ng-deep {
@@ -53,49 +53,8 @@ a {
 
   .ui.search.dropdown.course-dashboard-select>.text {
     margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
-    // width: 136px;
-    // text-overflow: ellipsis;
-    // overflow: hidden;
-    // white-space: nowrap;
   }
 
-}
-
-@include respond-below(lg) {
-  .course-completed:last-child {
-    margin-top: calculateRem(8px);
-  }
-}
-
-@include respond-below(sm) {
-  .course-participants-label {
-    width: 100%;
-    margin-bottom: calculateRem(8px);
-  }
-
-  .course-participants-label {
-    &:nth-child(3) {
-      padding-left: 0 !important;
-    }
-
-    &:nth-child(5) {
-      padding-left: 0 !important;
-      width: 100%;
-      margin-bottom: 0;
-    }
-  }
-
-  [dir=rtl] {
-    .course-participants-label {
-      &:nth-child(3) {
-        padding-right: 0 !important;
-      }
-
-      &:nth-child(5) {
-        padding-right: 0 !important;
-      }
-    }
-  }
 }
 
 .table-headerDashboard {
@@ -113,23 +72,39 @@ a {
   @include respond-below(sm) {
     margin-top: 0px;
   }
-}
 
-.progress-report-content {
-  @include respond-below(sm) {
-    flex-direction: column;
+  .progress-report-content {
+    height: calculateRem(64px);
+    align-items: center;
+
+    @include respond-below(sm) {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .report-buttons {
+      align-items: flex-end;
+      height: 100%;
+
+      @include respond-below(sm) {
+        flex-direction: column;
+        margin-top: calculateRem(8px);
+      }
+
+      &__divider {
+        width: calculateRem(1px);
+        border-left: calculateRem(1px) solid #cccccc;
+        height: calculateRem(32px);
+        margin: 0 calculateRem(16px);
+        @include respond-below(sm) {
+          display: none;
+        }
+      }
+    }
   }
 
-  .report-buttons {
-    justify-content: flex-end;
-    width: 100%;
-    margin-top: calculateRem(32px);
+  .current-batch-list {
+    overflow: auto;
   }
-}
 
-@media screen and (max-width: 850px) {
-  .report-buttons {
-    flex-direction: column;
-    margin-top: calculateRem(8px);
-  }
 }
