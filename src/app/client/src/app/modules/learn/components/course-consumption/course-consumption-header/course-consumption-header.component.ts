@@ -3,7 +3,7 @@ import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import {
@@ -13,7 +13,6 @@ import {
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
-import { Location } from '@angular/common';
 import { NavigationHelperService } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
@@ -136,9 +135,14 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   showDashboard() {
-    this.router.navigate(['learn/course', this.courseId, 'dashboard']);
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'course-stats']);
   }
-  
+
+  // To close the dashboard
+  closeDashboard() {
+    this.router.navigate(['learn/course', this.courseId]);
+  }
+
   resumeCourse(showExtUrlMsg?: boolean) {
     this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);

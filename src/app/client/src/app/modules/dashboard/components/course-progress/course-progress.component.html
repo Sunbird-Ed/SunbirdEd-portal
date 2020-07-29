@@ -22,7 +22,7 @@
 <div>
       <!-- <div class="ui divider"></div> -->
         <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
-          <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
+          <!-- <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
             <div class="d-flex ml-auto">
               <a class="ui item basic icon circular float-ContentRight mouse-pointer" data-tooltip="Close  Dashboard"
                 appTelemetryInteract [telemetryInteractObject]="interactObject"
@@ -190,20 +190,20 @@
         <div class="tweleve wide column" *ngIf="showLoader">
           <app-loader></app-loader>
         </div>
-        <div class="ui warning message tweleve wide column"
+        <!-- <div class="ui warning message tweleve wide column"
           *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
           <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
           {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
-        </div>
+        </div> -->
         <div class="ui grid" *ngIf="showNoBatch">
-          <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
+          <!-- <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
             <a (click)='redirect()' class="ui item basic icon circular float-ContentRight"
               data-tooltip="Close  Dashboard" appTelemetryInteract [telemetryInteractObject]="interactObject"
               [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"
               [telemetryInteractCdata]="telemetryCdata">
               <i class="ui remove icon CloseButtonFont mt-16"></i>
             </a>
-          </div>
+          </div> -->
           <div class="twelve wide column">
             <div class="ui info message">
               <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
@@ -214,7 +214,6 @@
           </div>
         </div>
       </div>
-    </div>
 
 
 <!-- This is the updated code for semantic datatable -->

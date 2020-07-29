@@ -463,14 +463,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
-        this.paramSubcription = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
-          (params: any, queryParams: any) => {
+        this.paramSubcription = combineLatest(this.activatedRoute.parent.params ,
+          this.activatedRoute.params, this.activatedRoute.queryParams,
+          (parentParams: any, params: any, queryParams: any) => {
             return {
-              params: params,
+              params: parentParams || params,
               queryParams: queryParams
             };
           })
           .subscribe(bothParams => {
+            console.log('paramsmssm', bothParams);
             this.courseId = bothParams.params.courseId;
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
