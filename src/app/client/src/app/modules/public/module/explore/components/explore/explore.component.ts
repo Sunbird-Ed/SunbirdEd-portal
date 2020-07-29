@@ -111,7 +111,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    const currentPageData = this.getPageData(this.activatedRoute.snapshot.queryParams.selectedTab || 'textbooks');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbooks');
     this.selectedFilters = _.pick(filters, currentPageData.search.filtersToSelect);
     this.apiContentList = [];
     this.pageSections = [];

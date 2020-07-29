@@ -1,9 +1,9 @@
 import { SlickModule } from 'ngx-slick';
-import { BehaviorSubject, throwError, of} from 'rxjs';
+import {BehaviorSubject, throwError, of, of as observableOf} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
+import {SearchService, OrgDetailsService, CoreModule, UserService, FormService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -71,6 +71,7 @@ describe('ExploreComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ExploreComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
+        FormService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -100,6 +101,8 @@ describe('ExploreComponent', () => {
     });
   });
   it('should get channel id if slug is not available', () => {
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
     spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
@@ -111,6 +114,8 @@ describe('ExploreComponent', () => {
   });
 
   it('should get channel id if slug is available', () => {
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = 'tn';
     spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
@@ -149,6 +154,9 @@ describe('ExploreComponent', () => {
   }));
 
   it('should fetch the filters and set to default values', () => {
+    const formService = TestBed.get(FormService);
+    component.formData = RESPONSE.formData;
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     spyOn<any>(component, 'fetchContents');
     component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
     expect(component.showLoader).toBe(true);
@@ -171,12 +179,18 @@ describe('ExploreComponent', () => {
   });
 
   it('should fetch contents and disable loader', () => {
+    const formService = TestBed.get(FormService);
+    component.formData = RESPONSE.formData;
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     sendPageApi = true;
     component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
     expect(component.showLoader).toBe(false);
   });
 
   it('should fetch contents, disable the loader and set values to default', () => {
+    const formService = TestBed.get(FormService);
+    component.formData = RESPONSE.formData;
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
     sendPageApi = false;
     spyOn<any>(toasterService, 'error');
     component.getFilters({ filters: RESPONSE.selectedFilters, status: 'FETCHED'});
@@ -196,34 +210,46 @@ describe('ExploreComponent', () => {
   });
 
   it('should return  data from search', () => {
-    component.channelId = '123',
+    const formService = TestBed.get(FormService);
+    component.formData = RESPONSE.formData;
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
+    component.channelId = '123';
     component['contentSearchService']._frameworkId = '123456';
-    const option = {filters: {},
-    fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
+    const option = {
+      filters: {},
+      fields: ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+        'pkgVersion', 'board',
+        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
     isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'
     };
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
     ));
-    component['fetchCourses']();
+    component['fetchCourses'](RESPONSE.mockCurrentPageData);
     expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(2);
 
   });
 
   it('should return empty data from search', () => {
-    component.channelId = '123',
+    const formService = TestBed.get(FormService);
+    component.formData = RESPONSE.formData;
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
+    component.channelId = '123';
     component['contentSearchService']._frameworkId = '123456';
-    const option = {filters: {},
-    fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
-    isCustodianOrg: true,
+    const option = {
+      filters: {},
+      fields: ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+        'pkgVersion', 'board',
+        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      isCustodianOrg: true,
     channelId: '123',
     frameworkId: '123456'
     };
     spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
     ));
-    component['fetchCourses']();
+    component['fetchCourses'](RESPONSE.mockCurrentPageData);
     expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  ['Course']);
     expect(component.cardData.length).toEqual(0);
 
@@ -274,7 +300,7 @@ describe('ExploreComponent', () => {
     });
     expect(component['searchService'].subjectThemeAndCourse).toEqual(event.data);
   });
-  it('should redo layout on render',() => {
+  it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout(0);
