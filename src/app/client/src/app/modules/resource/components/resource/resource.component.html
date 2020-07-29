@@ -1,10 +1,13 @@
-<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.textbooks" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="redoLayout(0)">
-    <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
+    <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
     </app-search-filter>
   </div>
   <div [ngClass]="redoLayout(1)">
-    <div *ngIf="cardData.length > 0">
+      <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        <div *ngIf="cardData.length > 0">
   <div class="sb-bg-color-white py-16">
     <div class="ui container">
         <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
@@ -15,17 +18,17 @@
       </ngx-slick>
       </div>
       </div>
-    </div>
-    <div class="ui container mt-24 sb-library-cards">
+        </div>
+        <div class="mt-24 sb-library-cards">
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
-        <sb-library-cards-grid [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
+        <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
           [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">
-          <sb-library-cards-grid *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
+          <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
       </div>
 
       <div *ngIf="apiContentList.length === 0 && !showLoader">
@@ -33,7 +36,11 @@
 [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
       </div>
 
+        </div>
     </div>
+    
   </div>
-
+</div>
+<div *ngIf="layoutConfiguration">
+<img class="sbt-theme-right-flower" src="./assets/images/sbt-right-flower.svg" />
 </div>

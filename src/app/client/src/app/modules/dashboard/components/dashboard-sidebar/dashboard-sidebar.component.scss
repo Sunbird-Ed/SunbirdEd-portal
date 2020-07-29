@@ -36,7 +36,7 @@
       font-weight: bold;
       [dir="rtl"] & {
         border-left:none;
-        border-right:calculateRem(4px) solid var(--secondary-color);
+        border-right:calculateRem(4px) solid var(--primary-400);
       }
   }
   
@@ -45,6 +45,9 @@
       width: 100%;
       height: auto;
       padding-left: 0;
+      [dir="rtl"] & {
+        padding-right:0px;
+      }
     }
   
     .sidebar a ,.dashboard-title{

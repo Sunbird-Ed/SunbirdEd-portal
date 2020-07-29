@@ -9,6 +9,7 @@ import { SearchParam } from './../../interfaces/search';
 import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
+import { FormService } from './../form/form.service';
 /**
  * Service to search content
  */
@@ -57,7 +58,7 @@ export class SearchService {
    */
   constructor(user: UserService, content: ContentService, config: ConfigService,
     learnerService: LearnerService, publicDataService: PublicDataService,
-    resourceService: ResourceService) {
+    resourceService: ResourceService, private formService: FormService) {
     this.user = user;
     this.content = content;
     this.config = config;
@@ -444,6 +445,17 @@ export class SearchService {
         icon: './../../../../../assets/images/sub_geography.svg'
       }
     };
+  }
+
+  getContentTypes() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, '*').pipe(map((response) => {
+      return response;
+    }));
   }
 
 }
