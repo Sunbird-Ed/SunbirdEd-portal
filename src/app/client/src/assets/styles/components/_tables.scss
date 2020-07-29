@@ -246,11 +246,15 @@
 }
 
 .sb-course-progress-status {
-  width: 100%;
+  width:100%;
   border-radius:calculateRem(8px) calculateRem(8px) 0 0;
   min-height: calculateRem(40px);
   border: calculateRem(1px) solid var(--gray-100);
+  border-bottom:none;
   justify-content: space-between;
+  @include respond-below(sm){
+    width:auto;
+  }
 
   .sb-course-progress-status-label{
     background: var(--primary-100);
@@ -266,6 +270,7 @@
     justify-content: space-between;
     display: flex;
     padding: calculateRem(8px) calculateRem(16px);
+    border-bottom: 0.0625rem solid var(--gray-100);
   }
 
   .sb-course-progress-name {
