@@ -92,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+  title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle'):'Ask Tara';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -187,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
 
     this.botObject['imageUrl'] = image.imageUrl;
-    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
+    this.botObject['title'] = this.botObject['header'] = this.title;
   }
 
   isBotdisplayforRoute () {
