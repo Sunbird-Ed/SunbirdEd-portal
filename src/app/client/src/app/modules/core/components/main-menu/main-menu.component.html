@@ -177,6 +177,7 @@
 	<!--/Logged in user-->
 	<!--Not Logged in user-->
 	<ng-container *ngIf="!userService.loggedIn">
+    <!-- TODO: remove the extra content-type componenet and handle gracefully for logged in and non logged in cases-->
 
     <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
 
