@@ -170,12 +170,12 @@
     height: var(--icon-svg-xl);
   }
   &__textbook {
-    -webkit-mask-image: url(../../../../../assets/images/mask-image/Textbook.svg);
-    mask-image: url(../../../../../assets/images/mask-image/Textbook.svg);
+    -webkit-mask-image: url(../../../../../assets/images/mask-image/textbook.svg);
+    mask-image: url(../../../../../assets/images/mask-image/textbook.svg);
   }
   &__course {
-    -webkit-mask-image: url(../../../../../assets/images/mask-image/Courses.svg);
-    mask-image: url(../../../../../assets/images/mask-image/Courses.svg);
+    -webkit-mask-image: url(../../../../../assets/images/mask-image/courses.svg);
+    mask-image: url(../../../../../assets/images/mask-image/courses.svg);
   }
   &__quiz {
     -webkit-mask-image: url(../../../../../assets/images/mask-image/quiz.svg);
@@ -195,7 +195,7 @@
   }
   &__tv {
     -webkit-mask-image: url(../../../../../assets/images/mask-image/tv.svg);
-    mask-image: url(../../../../../assets/images/mask-image/Textbook.svg);
+    mask-image: url(../../../../../assets/images/mask-image/tv.svg);
   }
   &__podcasts {
     -webkit-mask-image: url(../../../../../assets/images/mask-image/podcasts.svg);

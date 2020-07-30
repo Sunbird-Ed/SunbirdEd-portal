@@ -313,6 +313,7 @@ app-workspace {
 .sbt-container {
   width: 100%;
   padding: 0 5%;
+  margin:0 auto;
 }
 
 .sbt-page-header {
@@ -486,6 +487,7 @@ app-workspace {
   top: 38%;
   width: calculateRem(332px);
   opacity: 0.5;
+  z-index: -1;
   html[dir="rtl"] & {
     right: calculateRem(-106px);
     left:inherit;

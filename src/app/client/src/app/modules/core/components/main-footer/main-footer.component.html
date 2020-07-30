@@ -73,11 +73,12 @@
     </div>
   </footer>
   
-  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration">
-    <div class="sb-g sbt-fluid-content-bg sbt-footer-container relative">
+  <footer class="new-layout-footer sbt-fluid-content-bg" #footerFix *ngIf="layoutConfiguration">
+  
+    <div class="sb-g sbt-container-footer sbt-container relative">
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-page-content-area"></div>
-      <div class="sbt-container">
+      <div class="sbt-footer-container">
         <div class="ui grid stackable px-72 m-0">
           <div class="six wide column p-0 d-flex">
             <div class="footer-bg">
@@ -146,5 +147,6 @@
         </div>
       </div>
     </div>
+
   </footer>
   </div>

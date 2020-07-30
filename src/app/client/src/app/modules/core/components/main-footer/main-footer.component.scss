@@ -6,26 +6,25 @@
 .new-layout-footer{
     // margin-top: 2.125rem;
     // padding: 0;
-    .sbt-footer-container {
+    .sbt-container-footer {
         height: calculateRem(296px);
-        width: 100%;
-        padding: 0% 5%;
     }
     .sbt-page-content-area {
         border-radius: 0rem 0 0 0;
     }
-    .sbt-container{
+    .sbt-footer-container{
       width: 90%;
       padding: 0;
       margin: 0 auto;
       padding-top: calculateRem(88px);
       border-radius: calculateRem(40px) calculateRem(40px) 0 0;
       background-color: var(--white);
-      box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
       left:5%;
       position:absolute;
       top:calculateRem(24px);
       z-index:9;
+      right:5%;
       .item-title{
         font-size: calculateRem(16px);
         color: var(--gray-800);
