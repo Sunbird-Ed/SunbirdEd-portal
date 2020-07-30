@@ -1,6 +1,6 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, mergeMap, first, takeUntil, delay } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,13 +21,16 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public enrolledBatchInfo: any;
   public groupId: string;
   public showAddGroup = null;
+  layoutConfiguration;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
-    public navigationHelperService: NavigationHelperService, public permissionService: PermissionService) {
+    public navigationHelperService: NavigationHelperService, public permissionService: PermissionService,
+    public layoutService: LayoutService) {
   }
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.coursesService.enrolledCourseData$.pipe(first(),
       mergeMap(({ enrolledCourses }) => {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
