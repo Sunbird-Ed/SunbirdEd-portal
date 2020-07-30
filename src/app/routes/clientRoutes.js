@@ -196,6 +196,7 @@ function getLocals(req) {
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.enableSSO = envHelper.sunbird_enable_sso;
   return locals
 }
 
