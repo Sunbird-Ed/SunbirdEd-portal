@@ -1,10 +1,22 @@
-@import "variables";
 @import "mixins/mixins";
 
 
 .sb-header-filter-bar {
-  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
+  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
+  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
   position: relative;
+  border-radius: calculateRem(24px);
+  // overflow: hidden;
+  min-width: calculateRem(232px);
+  padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
+  margin-right: calculateRem(16px);
+  position: sticky;
+  top: calculateRem(188px);
+}
+.sbt-filter-scrollable {
+  height: calc(100vh - 388px);
+    overflow-y: auto;
+    padding-right: calculateRem(24px);
 }
 
 .state-medium-container {
@@ -13,10 +25,8 @@
   height: calculateRem(64px);
 
   &__dropdown {
-    padding: calculateRem(16px) 0;
     z-index: 1;
   }
-
   &__separator {
     height: calculateRem(24px);
     width: calculateRem(1px);
@@ -27,7 +37,6 @@
       margin: 0px calculateRem(8px) 0px calculateRem(8px);
     }
   }
-
   &__medium {
     overflow-x: auto;
     overflow-y: hidden;
@@ -46,7 +55,6 @@
   font-size: calculateRem(12px);
   padding: 1em 1em !important;
 }
-
 .ui.selection.dropdown.state-medium {
   color: var(--primary-400);
   display: flex;
@@ -55,16 +63,13 @@
   background: none;
   min-width: calculateRem(100px);
   margin: 0;
-
   .medium-selection {
     min-width: calculateRem(120px);
   }
-
   &:hover {
     background: var(--rc-E5EDF5);
   }
 }
-
 .ui.selection.dropdown.state-selection {
   color: var(--primary-400);
   font-weight: bold;
@@ -85,7 +90,6 @@
     border-color: var(--primary-400);
     box-shadow: none;
   }
-
   &:hover {
     color: var(--primary-400) !important;
     box-sizing: border-box;
@@ -93,9 +97,7 @@
     background-color: var(--rc-E5EDF5);
     box-shadow: none;
   }
-
 }
-
 .ui.selection.dropdown .menu {
   max-height: 20em;
 }

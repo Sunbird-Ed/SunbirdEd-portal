@@ -1,38 +1,41 @@
 <ng-container *ngIf="!isLayoutAvailable()">
 <!--Computer-->
-<div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
+<div class="sb-linkmenu m-0 d-flex o-auto flex-ai-center computer only">
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
+		<a class="item item--textbook" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
-			{{resourceService?.frmelmnts?.tab?.resources}}
+			<span class="sb-icon sb-icon__textbook sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
+		<a class="item item--course" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
-			{{resourceService?.frmelmnts?.tab?.courses}}
+			<span class="sb-icon sb-icon__course sb-icon--md mr-4"></span>{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
+		<a class="item item--test d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
 		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
+			<span class="sb-icon sb-icon__test sb-icon--md mr-4"></span>
 		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
 		</a>
-		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
+		<a *ngIf="showContributeTab" class="item item--quiz" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
+				<span class="sb-icon sb-icon__quiz sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.contribute}}
 		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+		<a class="item item--story" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+				<span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
-		<a class="item py-8 pl-0 pr-24" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+		<a class="item item--poem" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
 			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
 			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+				<span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
 			{{resourceService?.frmelmnts?.tab?.help}}
 		</a>
 	</ng-container>
 	<!--/Logged in user-->
-
 	<!--Not Logged in user-->
 	<ng-container *ngIf="!userService.loggedIn">
 		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
@@ -61,10 +64,8 @@
 		</a>
 	</ng-container>
 	<!--/Not Logged in user-->
-
 </div>
 <!--Computer-->
-
 <!--Mobile-->
 <div class="mobile only">
 	<div class="ui sidebar right vertical menu">
@@ -91,7 +92,6 @@
 			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
-			
 			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
@@ -107,7 +107,6 @@
 			</a>
 		</ng-container>
 		<!--/Logged in user-->
-
 		<!--Not Logged in user-->
 		<ng-container *ngIf="!userService.loggedIn">
 			<div class="item active">

@@ -1,6 +1,6 @@
-@import "variables";
 @import "mixins/mixins";
 @import "layout/header";
+
 
 .overlay-sidebar, .overlay-sidebar__menu {
     position: fixed;
@@ -114,7 +114,7 @@
         }
     }
     &__label {
-        font-size: $font-size-base;
+        font-size: var(--font-size-base);
         margin-top: calculateRem(8px);
     }
 }

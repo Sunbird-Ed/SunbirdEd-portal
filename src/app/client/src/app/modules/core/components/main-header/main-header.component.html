@@ -1,11 +1,11 @@
 <div *ngIf="showQrmodal">
-    <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
+  <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
 <div *ngIf="showAccountMergemodal">
-    <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
+  <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
 <div *ngIf="!layoutConfiguration">
-<div class="ui relative main menu bs-0 d-block">
+  <div class="ui relative main menu bs-0 d-block">
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
         <div class="ui grid padded width-100">
@@ -34,7 +34,10 @@
                 </a>
                 <!--/Avtar Dropdown-->
             </div>
+          </a>
+          <!--/Avtar Dropdown-->
         </div>
+      </div>
     </div>
     <!--Header White Section-->
     <!--Header Blue Section-->
@@ -92,7 +95,20 @@
                 </app-language-dropdown>
                 <!--/Language Dropdown-->
             </div>
-        </ng-template>
+            <button appTelemetryInteract [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
+              class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
+              title="{{resourceService?.frmelmnts?.prmpt?.search}}"
+              tabindex="0">{{resourceService.frmelmnts?.lbl?.search}}</button>
+          </div>
+          <!--/Explore Pages-->
+          <!--/Search Box-->
+          <!--Language Dropdown-->
+          <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
+            *ngIf="languages && showLanguageDropdown()">
+          </app-language-dropdown>
+          <!--/Language Dropdown-->
+        </div>
+      </ng-template>
     </div>
     <!--/Computer-->
     <!--Mobile-->
@@ -118,7 +134,7 @@
     </div>
     <!--/Mobile-->
     <!--/Header Blue Section-->
-</div>
+  </div>
 </div>
 
 <div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar">
@@ -191,103 +207,93 @@
 </div>
 
 
-<div class="overlay-sidebar" *ngIf="showSideMenu">
-  <div class="overlay-sidebar__menu">
-    <div class="profile__info">
-      <i class="icon-svg icon-svg--xs icon-close" (click)="toggleSideMenu(false)">
-        <svg class="icon icon-svg--gray">
-          <use xlink:href="./assets/images/sprite.svg#close"></use>
-        </svg>
-      </i>
+  <div class="overlay-sidebar" *ngIf="showSideMenu">
+    <div class="overlay-sidebar__menu">
+      <div class="profile__info">
+        <i class="icon-svg icon-svg--xs icon-close" (click)="toggleSideMenu(false)">
+          <svg class="icon icon-svg--gray">
+            <use xlink:href="./assets/images/sprite.svg#close"></use>
+          </svg>
+        </i>
 
-      <div *ngIf="userService.loggedIn">
-      <div class="mb-16">
-        <sb-member-card [config]=cardConfig
-                        [initial]="userProfile?.firstName[0]"
-                        [title]="userProfile?.firstName"
-                        [isMenu]="false">
-        </sb-member-card>
-      </div>
-      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
-        {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
-      </div>
+        <div *ngIf="userService.loggedIn">
+          <div class="mb-16">
+            <sb-member-card [config]=cardConfig [initial]="userProfile?.firstName[0]" [title]="userProfile?.firstName"
+              [isMenu]="false">
+            </sb-member-card>
+          </div>
+          <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
+            {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
+          </div>
 
-      <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')"
-           class="add-user mb-16"
-           *ngIf="totalUsersCount <1">
-        <div class="add-user__icon">
-          <img src="assets/images/user-circle.svg" alt="Add user">
-        </div>
-        <div class="add-user__label fnormal sb-color-secondary">
-          {{resourceService.frmelmnts?.lbl?.addUser}}
-        </div>
-      </div>
+          <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')" class="add-user mb-16"
+            *ngIf="totalUsersCount <1">
+            <div class="add-user__icon">
+              <img src="assets/images/user-circle.svg" alt="Add user">
+            </div>
+            <div class="add-user__label fnormal sb-color-secondary">
+              {{resourceService.frmelmnts?.lbl?.addUser}}
+            </div>
+          </div>
 
-      <div class="d-flex flex-w-wrap">
-        <sb-member-list [layoutConfig]=memberCardConfig
-                        [memberList]="userListToShow"
-                        [isMenu]="false"
-                        (cardClick)="switchUser($event)">
-        </sb-member-list>
-        <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2"
-             (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
-          <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
-          <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
-            ({{totalUsersCount - userListToShow.length}})
+          <div class="d-flex flex-w-wrap">
+            <sb-member-list [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
+              (cardClick)="switchUser($event)">
+            </sb-member-list>
+            <div class="more-user ml-16 mt-8" *ngIf="totalUsersCount >2"
+              (click)="toggleSideMenu(false);navigate('/profile/choose-managed-user')">
+              <div class="more-user__btn"><img src="/assets/images/more.svg" alt="More"></div>
+              <div class="more-user__label"> {{resourceService.frmelmnts?.lbl?.more}}
+                ({{totalUsersCount - userListToShow.length}})
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    </div>
-    <div *ngIf="userService.loggedIn">
-    <div class="profile__actions">
-      <div class="add-user add-user--horizontal"
-           *ngIf="totalUsersCount >=1"
-           (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
-        <div class="add-user__icon">
-          <img src="assets/images/user-circle.svg" alt="Add user">
-        </div>
-        <div class="add-user__label fnormal sb-color-secondary">
-          {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
-        </div>
-      </div>
-      <ul class="profile__actions__list">
-        <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
-          <img src="assets/images/profileuser.svg" alt="">
-          {{resourceService.frmelmnts?.lnk?.profile}}
-        </li>
-        <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='adminDashboard' (click)="toggleSideMenu(false)"
-            routerLink="dashBoard/organization">
-          {{resourceService.frmelmnts?.lnk?.dashboard}}
-        </li>
-        <li class="list-item" (click)="toggleSideMenu(false)"
-            *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='orgSetupRole' routerLink="org/orgType">
-          {{resourceService.frmelmnts?.lbl?.orgtypes}}
-        </li>
-        <li class="list-item" *ngIf='!isValidCustodianOrgUser'
-            (click)="toggleSideMenu(false);showAccountMergemodal = true;">
-          <img src="assets/images/membersuser.svg" alt="">
-          {{resourceService.frmelmnts?.lbl?.mergeAccount}}
-        </li>
-        <li class="list-item" (click)="toggleSideMenu(false)"
-            *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='orgAdminRole' routerLink="manage">
-          {{resourceService.frmelmnts?.lbl?.manage}}
-        </li>
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-            appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
-            [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-            routerLink="/resources">
-          {{resourceService?.frmelmnts?.tab?.resources}}
-        </li>
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-            appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
-            routerLink="/learn">
-          {{resourceService?.frmelmnts?.tab?.courses}}
-        </li>
+      <div *ngIf="userService.loggedIn">
+        <div class="profile__actions">
+          <div class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
+            (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
+            <div class="add-user__icon">
+              <img src="assets/images/user-circle.svg" alt="Add user">
+            </div>
+            <div class="add-user__label fnormal sb-color-secondary">
+              {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
+            </div>
+          </div>
+          <ul class="profile__actions__list">
+            <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
+              <img src="assets/images/profileuser.svg" alt="">
+              {{resourceService.frmelmnts?.lnk?.profile}}
+            </li>
+            <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
+              [permission]='adminDashboard' (click)="toggleSideMenu(false)" routerLink="dashBoard/organization">
+              {{resourceService.frmelmnts?.lnk?.dashboard}}
+            </li>
+            <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='permissionService.permissionAvailable'
+              appPermission [permission]='orgSetupRole' routerLink="org/orgType">
+              {{resourceService.frmelmnts?.lbl?.orgtypes}}
+            </li>
+            <li class="list-item" *ngIf='!isValidCustodianOrgUser'
+              (click)="toggleSideMenu(false);showAccountMergemodal = true;">
+              <img src="assets/images/membersuser.svg" alt="">
+              {{resourceService.frmelmnts?.lbl?.mergeAccount}}
+            </li>
+            <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='permissionService.permissionAvailable'
+              appPermission [permission]='orgAdminRole' routerLink="manage">
+              {{resourceService.frmelmnts?.lbl?.manage}}
+            </li>
+            <li class="list-item mobile only" (click)="toggleSideMenu(false)" appTelemetryInteract
+              [telemetryInteractEdata]="libraryMenuIntractEdata"
+              [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
+              routerLink="/resources">
+              {{resourceService?.frmelmnts?.tab?.resources}}
+            </li>
+            <li class="list-item mobile only" (click)="toggleSideMenu(false)"
+              [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')" appTelemetryInteract
+              [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
+              {{resourceService?.frmelmnts?.tab?.courses}}
+            </li>
 
         <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
         [class.active]="router.isActive(routerLinks?.groups)"
@@ -348,4 +354,3 @@
       </div>
     </ng-container>
   </div>
-</div>

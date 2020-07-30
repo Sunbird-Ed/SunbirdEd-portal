@@ -211,6 +211,26 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
   }
 
+  ngAfterViewInit(){
+    //themeing code
+    let trans = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+          document.documentElement.classList.remove('transition')
+      }, 1000)
+  }
+    var selector = document.querySelectorAll('input[name=selector]');
+    for(var i=0;i<selector.length;i++){
+      selector[i].addEventListener('change', function() {
+        if(this.checked) {
+           trans()
+           document.documentElement.setAttribute('data-theme', this.value)
+        }
+    })
+    }
+    //themeing code
+  }
+  
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));

@@ -108,6 +108,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
+  multiSelect1;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
   selected = [];
@@ -501,7 +502,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     });
     this.setInteractEventData();
     this.cdr.detectChanges();
-    this.setWindowConfig();
+    //this.setWindowConfig();
   }
 
   ngOnDestroy() {
