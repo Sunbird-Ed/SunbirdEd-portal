@@ -168,8 +168,11 @@ select:-internal-autofill-selected {
 .sbt-search-box {
   display: flex;
   align-items: center;
-  border: calculateRem(1px) solid var(--primary-300);
   border-radius: calculateRem(28px);
+  margin:-1.5rem calculateRem(0px) calculateRem(16px);
+  @include respond-above(sm) {
+    margin:0 calculateRem(24px);
+  }
   // max-width: 100%;
   width: 100%;
   box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);

@@ -46,9 +46,10 @@ export class LayoutService {
   }
   redoLayoutCSS(panelIndex,layoutConfigExternal,columnType) {
     let total = 12;
+    let xxxltotal = panelIndex == 0 ? 4 : 12;
     let resultLayout= columnType[panelIndex];
     if(layoutConfigExternal) {
-        return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout;
+        return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout+" sb-g-col-xxxl-"+xxxltotal;
     } else {
       return "sb-g-col-xs-"+total+" sb-g-col-md-"+total+" sb-g-col-lg-"+total;
       

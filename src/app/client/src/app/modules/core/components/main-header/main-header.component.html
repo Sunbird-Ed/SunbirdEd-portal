@@ -126,20 +126,35 @@
       <div class="sbt-container">
         <!--Header section-->
         <div class="sbt-header-bar sb-g">
-          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sbt-header-logo">
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
+            <div class="d-flex flex-ai-center flex-jc-space-between w-100">
             <!--Logo-->
             <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
               <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                 src="{{tenantInfo.logo}}">
             </a>
             <!--/Logo-->
+            <!--Avtar Dropdown-->
+            <a class="profile-avtar p-0" tabindex="0">
+              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
+                  name="Guest">
+                </ngx-avatar>
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                              [size]="48" initialsSize="1"
+                              name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
+              </div>
+            </a>
+            <!--/Avtar Dropdown-->
           </div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-tool-bar">
-            <app-search [layoutConfiguration]="layoutConfiguration"class="sbt-search-box large mx-24">
+          </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-header-tool-bar">
+            <app-search [layoutConfiguration]="layoutConfiguration"class="sbt-search-box large">
             </app-search>
             <div class="d-flex flex-ai-center">
             <!-- student dropdown -->
-                <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-purple--bg mr-16" placeholder="Student" labelField="name" #multiSelect>
+                <sui-select [optionTemplate]="optionTemplate" class="selection sbt-dropdown sbt-dropdown--md sbt-purple--bg mr-16" placeholder="Student" labelField="name" #multiSelect>
                    <sui-select-option  *ngFor="let option of multiSelect1" [value]="option">
                    </sui-select-option>
                  </sui-select>
@@ -148,13 +163,13 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!--Avtar Dropdown-->
-            <a class="profile-avtar p-0" tabindex="0">
+            <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
                   name="Guest">
                 </ngx-avatar>
                 <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
-                              [size]="38" initialsSize="1"
+                              [size]="48" initialsSize="1"
                               name="{{userProfile?.firstName}}">
                   </ngx-avatar>
               </div>
@@ -165,8 +180,8 @@
         </div>
 
         <div class="sbt-header-menu-bar sb-g">
-          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-header-menu-extension"></div>
           <div class="sbt-header-menu">
             <app-main-menu [layoutConfiguration]="layoutConfiguration"></app-main-menu>
           </div>

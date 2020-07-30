@@ -208,6 +208,9 @@
           html[dir="rtl"] & {
             margin: 0 0 calculateRem(8px) calculateRem(8px) !important;
           }
+          &:last-child{
+            flex:inherit;
+          }
           &.active, &:hover {
             color: var(--white) !important;
             background-color: var(--sbt-pill-bg-active)!important;
