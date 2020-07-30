@@ -5,7 +5,7 @@ export const mockData = {
       'title': 'frmelmnts.tab.courses',
       'desc': 'frmelmnts.tab.courses',
       'menuType': 'Content',
-      'fieldType': 'courses',
+      'contentType': 'course',
       'isEnabled': true,
       'theme': {
         'baseColor': '',
@@ -23,11 +23,11 @@ export const mockData = {
       },
       anonumousUserRoute: {
         route: '/explore-course',
-        queryParam: 'courses'
+        queryParam: 'course'
       },
       loggedInUserRoute: {
         route: '/learn',
-        queryParam: 'courses'
+        queryParam: 'course'
       },
       limit: 20,
     },
@@ -36,7 +36,7 @@ export const mockData = {
       'title': 'frmelmnts.lbl.textbooks',
       'desc': 'frmelmnts.lbl.textbooks',
       'menuType': 'Content',
-      'fieldType': 'textbooks',
+      'contentType': 'textbook',
       'isEnabled': true,
       'theme': {
         'baseColor': '',
@@ -48,7 +48,6 @@ export const mockData = {
         'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
           'pkgVersion', 'board',
           'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
-        'filtersToSelect': ['board', 'medium', 'gradeLevel', 'channel'],
         'filters': {
           'contentType': [
             'TextBook'
@@ -57,11 +56,11 @@ export const mockData = {
       },
       anonumousUserRoute: {
         route: '/explore',
-        queryParam: 'textbooks'
+        queryParam: 'textbook'
       },
       loggedInUserRoute: {
         route: '/resources',
-        queryParam: 'textbooks'
+        queryParam: 'textbook'
       },
       limit: 100,
     },

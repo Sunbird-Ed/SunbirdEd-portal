@@ -4,7 +4,7 @@ export const Response = {
     'title': 'frmelmnts.lbl.textbooks',
     'desc': 'frmelmnts.lbl.textbooks',
     'menuType': 'Content',
-    'fieldType': 'textbooks',
+    'contentType': 'textbook',
     'isEnabled': true,
     'theme': {
       'baseColor': '',
@@ -16,7 +16,6 @@ export const Response = {
       'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
         'pkgVersion', 'board',
         'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
-      'filtersToSelect': ['board', 'medium', 'gradeLevel', 'channel'],
       'filters': {
         'contentType': [
           'TextBook'
@@ -25,11 +24,11 @@ export const Response = {
     },
     anonumousUserRoute: {
       route: '/explore',
-      queryParam: 'textbooks'
+      queryParam: 'textbook'
     },
     loggedInUserRoute: {
       route: '/resources',
-      queryParam: 'textbooks'
+      queryParam: 'textbook'
     }
   },
   successData: {
