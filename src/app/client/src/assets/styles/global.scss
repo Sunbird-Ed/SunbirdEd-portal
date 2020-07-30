@@ -449,7 +449,7 @@ app-workspace {
     &--bg {
       background: var(--sbt-theme-green-selectbox);
       @include respond-below(sm) {
-        min-width: 13em;
+        min-width: 12em;
       }
       .default.text {
         color:var(--white);
@@ -584,4 +584,10 @@ app-workspace {
   @include respond-below(sm) {
     position: inherit;
   }
+}
+.new-footer {
+  min-height: calc(100vh - 320px);
+}
+.footer-fix {
+  min-height: calc(100vh - 100px);
 }

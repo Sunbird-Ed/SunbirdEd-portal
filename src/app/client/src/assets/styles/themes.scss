@@ -189,5 +189,47 @@ html[layout='joy'] {
   .sb-btn {
   border-radius: 100rem;
   box-shadow: 6px 6px 2px 0 var(--sbt-box-shadow-black);
+  height: 2.5rem;
   }
+  .sb-form-control {
+    border-radius: 16px;
+  }
+  /* modal */
+  .sb-modal {
+    .ui.modal{
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+      border-radius: calculateRem(24px);
+      background-color: #F2F4F6;
+      .sb-modal-header{
+        background-color: #F2F4F6;
+        color: var(--black);
+        border-radius: calculateRem(24px) calculateRem(24px) 0 0;
+        padding: calculateRem(24px) calculateRem(24px) calculateRem(8px) calculateRem(24px);
+    }
+    .sb-modal-content{
+        min-height: 100px;
+        padding: calculateRem(16px) calculateRem(24px);
+        overflow-y: auto;
+        background: #F2F4F6;
+    }
+    .sb-modal-actions {
+      padding: calculateRem(8px) calculateRem(24px) calculateRem(8px);
+      background: #F2F4F6;
+      border-top: calculateRem(0px) solid var(--gray-100);
+      border-radius: 0 0 calculateRem(24px) calculateRem(24px);
+    }
+    & > .close {
+      // right: auto !important;
+      // left: calculateRem(12px);
+      background: var(--white);
+      border-radius: 100%;
+      color:var(--red);
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+      right: 10px;
+      top: 8px;
+    }
+    }
+  }
+
+  //end
 }
