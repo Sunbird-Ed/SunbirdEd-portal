@@ -3,6 +3,9 @@
 
 /* new styles */
 .sb-linkmenu {
+  overflow: auto;
+  padding: 8px 0;
+
   .item {
     background: var(--white);
     padding: 8px 16px;
@@ -72,6 +75,22 @@
       color: #B620E0;
 
       &:hover, &.item.active, .sb-icon__poem {
+        background-color: #B620E0;
+      }
+    }
+
+    &--tv {
+      color: #E02020;
+
+      &:hover, &.item.active, .sb-icon__tv {
+        background-color: #E02020;
+      }
+    }
+
+    &--all {
+      color: #B620E0;
+
+      &:hover, &.item.active, .sb-icon__all {
         background-color: #B620E0;
       }
     }
@@ -148,7 +167,7 @@
 
   &__tv {
     -webkit-mask-image: url(../../../../../assets/images/mask-image/tv.svg);
-    mask-image: url(../../../../../assets/images/mask-image/Textbook.svg);
+    mask-image: url(../../../../../assets/images/mask-image/tv.svg);
   }
 
   &__podcasts {
