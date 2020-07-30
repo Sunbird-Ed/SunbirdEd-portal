@@ -10,7 +10,8 @@ import {
   ToasterService,
   SharedModule,
   BrowserCacheTtlService,
-  UtilService
+  UtilService,
+  LayoutService
 } from '@sunbird/shared';
 import {
   UserService,
@@ -60,7 +61,7 @@ describe('MainHeaderComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
-        PermissionService, ManagedUserService, UtilService,
+        PermissionService, ManagedUserService, UtilService, LayoutService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
         LearnerService, CoursesService]
@@ -229,6 +230,50 @@ describe('MainHeaderComponent', () => {
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
     component.switchUser({data: {data: mockData.selectedUser}});
     expect(telemetryService.initialize).toHaveBeenCalled();
+  });
+
+  it('should give login redirection path for explore course', () => {
+    component.updateHrefPath('/explore-course');
+    expect(component.hrefPath).toBe('/learn');
+  });
+
+  it('should give login redirection path for explore', () => {
+    component.updateHrefPath('/explore');
+    expect(component.hrefPath).toBe('/resources');
+  });
+
+  it('should give login redirection path for play content', () => {
+    component.updateHrefPath('/play');
+    expect(component.hrefPath).toBe('/resources/play');
+  });
+
+  it('should give login redirection path for default cases', () => {
+    component.updateHrefPath('/some_random_url');
+    expect(component.hrefPath).toBe('/resources');
+  });
+
+  it('should set telemetry data on init', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
+    const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
+    service.getTenantInfo('Sunbird');
+    component.ngOnInit();
+    expect(component.groupsMenuIntractEdata).toEqual({
+      id: 'groups-tab', type: 'click', pageid: 'groups'
+    });
+    expect(component.workspaceMenuIntractEdata).toEqual({
+      id: 'workspace-menu-button', type: 'click', pageid: 'workspace'
+    });
+    expect(component.helpMenuIntractEdata).toEqual({
+      id: 'help-menu-tab', type: 'click', pageid: 'help'
+    });
+  });
+
+  it('should tell is layout is available', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
+    const layoutData = component.isLayoutAvailable();
+    expect(layoutData).toBe(true);
   });
 
 });
