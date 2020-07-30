@@ -114,6 +114,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.subscribeToQueryParam();
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
