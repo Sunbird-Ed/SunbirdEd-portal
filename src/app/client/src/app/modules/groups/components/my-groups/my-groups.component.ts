@@ -2,7 +2,7 @@ import { UserService } from '@sunbird/core';
 import { IGroupSearchRequest, IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../../interfaces';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, LayoutService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -21,14 +21,17 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   telemetryImpression: IImpressionEventInput;
   isLoader = true;
+  layoutConfiguration;
   constructor(public groupService: GroupsService,
     public router: Router,
     public resourceService: ResourceService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private layoutService: LayoutService
     ) { }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.getMyGroupList();
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {

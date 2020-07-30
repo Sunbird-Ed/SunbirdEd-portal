@@ -46,7 +46,6 @@ export class LayoutService {
   }
   redoLayoutCSS(panelIndex,layoutConfigExternal,columnType) {
     let total = 12;
-    console.log(columnType[panelIndex]);
     let resultLayout= columnType[panelIndex];
     if(layoutConfigExternal) {
         return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout;
