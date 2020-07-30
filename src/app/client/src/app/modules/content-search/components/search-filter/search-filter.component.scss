@@ -164,7 +164,7 @@
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--primary-color);
-    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    box-shadow: calculateRem(3px) calculateRem(3px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,6 +185,7 @@
 :host::ng-deep {
   .sbt-class-bar {
     .sb-slider-pills-container {
+      overflow-x: inherit !important;
       .sb-grade-pills-container {
         background: inherit !important;
       }
@@ -192,18 +193,28 @@
         display: flex !important;
         flex-wrap: wrap;
         justify-content:flex-start;
+        margin:0px calculateRem(-8px) 0px 0;
+        html[dir="rtl"] & {
+          margin:0px 0 0px calculateRem(-8px) !important;
+        }
         .pill {
           padding: calculateRem(8px) calculateRem(16px) !important;
-          color: #6236FF !important;
+          color: var(--sbt-pill-bg-active) !important;
           margin: 0 calculateRem(8px) calculateRem(8px) 0 !important;
-          background-color: rgba(98,54,255,0.13) !important;
+          background-color: var(--sbt-pill-bg) !important;
           font-size: 12px !important;
+          flex: 1;
+          display: unset !important;
           html[dir="rtl"] & {
             margin: 0 0 calculateRem(8px) calculateRem(8px) !important;
           }
+          &:last-child{
+            flex:inherit;
+          }
           &.active, &:hover {
             color: var(--white) !important;
-            background-color:  #6236FF!important;
+            background-color: var(--sbt-pill-bg-active)!important;
+            box-shadow:calculateRem(3px) calculateRem(3px) calculateRem(2px) 0 var(--sbt-box-shadow-black) !important;
           }
         }
       }
@@ -267,9 +278,3 @@
 :host ::ng-deep .dropdown:not(.button) > .default.text {
   color: var(--primary-400) !important;
 }
-
-
-
-
-
-

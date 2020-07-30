@@ -41,7 +41,7 @@
                 <div class="d-flex state-medium-container">
                         <div *ngIf="boards?.length" class="w-100">
                             <!-- state section -->
-                            <app-select-option-group class="w-100" *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
+                            <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
                             <!-- state section ends -->
                         </div>
                         <!-- medium section -->
