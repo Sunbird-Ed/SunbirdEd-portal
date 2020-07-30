@@ -6,7 +6,7 @@ $screen_viewport_md: 768px;
 $screen_viewport_lg: 992px;
 $screen_viewport_xl: 1280px;
 $screen_viewport_xxl: 1600px;
-$screen_viewport_xxxl: 1920px;
+$screen_viewport_xxxl: 1900px;
 
 // Grid array (used for generating the grid)
 $grid_arr: ((xs, $screen_viewport_xs),
@@ -25,6 +25,9 @@ $grid_arr: ((xs, $screen_viewport_xs),
   grid-column-gap: $grid_gutter;
   &--gap24{
     grid-column-gap: ($grid_gutter * 1.5);
+  }
+  @include respond-above(xxxl) {
+    grid-template-columns: repeat(16, 1fr);
   }
 }
 

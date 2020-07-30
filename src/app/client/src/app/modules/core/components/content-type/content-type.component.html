@@ -2,7 +2,7 @@
   <ng-container *ngFor="let contentType of contentTypes">
     <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
        [ngClass]="'item item--' + getIcon(contentType)">
-      <span [ngClass]="'sb-icon sb-icon--md mr-4 sb-icon__'+ getIcon(contentType)"></span>
+      <span [ngClass]="'sb-icon sb-icon--sm mr-4 sb-icon__'+ getIcon(contentType)"></span>
       {{getTitle(contentType)}}
     </a>
   </ng-container>

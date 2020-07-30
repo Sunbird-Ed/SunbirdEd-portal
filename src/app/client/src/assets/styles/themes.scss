@@ -141,6 +141,9 @@ html[data-theme='Default'] {
   --sbt-theme-green-selectbox:#008840;
   --sbt-theme-purple-selectbox-lbg:#E5EDF5;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-pill-hs:253, 100%;
+  --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
+  --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
 }
 html[data-theme='Orange'] {
   --primary-hs:32,91%;
@@ -159,6 +162,9 @@ html[data-theme='Orange'] {
   --sbt-theme-green-selectbox:#008840;
   --sbt-theme-purple-selectbox-lbg:#E5EDF5;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-pill-hs:253, 100%;
+  --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
+  --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
 }
 
 input[type=radio]:checked ~ .check {
@@ -177,4 +183,11 @@ input[value]:checked ~ .check::before{
 }
 input[value]:checked ~ label{
   color: var(--primary-color);
+}
+html[layout='joy'] {
+  /* new button style */
+  .sb-btn {
+  border-radius: 100rem;
+  box-shadow: 6px 6px 2px 0 var(--sbt-box-shadow-black);
+  }
 }
