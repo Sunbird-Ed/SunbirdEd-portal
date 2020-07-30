@@ -148,7 +148,7 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!--Avtar Dropdown-->
-            <a class="profile-avtar computer only p-0" tabindex="0">
+            <a class="profile-avtar p-0" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
                   name="Guest">
@@ -168,8 +168,7 @@
           <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
           <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
           <div class="sbt-header-menu">
-            <app-main-menu [layoutConfiguration]="layoutConfiguration"
-                           class="d-flex computer only ml-auto"></app-main-menu>
+            <app-main-menu [layoutConfiguration]="layoutConfiguration"></app-main-menu>
           </div>
         </div>
       </div>
@@ -275,17 +274,30 @@
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
 
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-        [class.active]="router.isActive(routerLinks?.groups)" 
+        <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
+        [class.active]="router.isActive(routerLinks?.groups)"
         *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
         </li>
 
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
+        <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
             *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
           {{resourceService?.frmelmnts?.tab?.contribute}}
+        </li>
+        <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+            [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
+            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable'
+            appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+          {{resourceService?.frmelmnts?.tab?.workspace}}
+        </li>
+        <li class="item item--poem" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
+            appPermission (click)="toggleSideMenu(false)"
+            [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+        <span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
+          {{resourceService?.frmelmnts?.tab?.help}}
         </li>
         <li class="list-item" appTelemetryInteract
             [telemetryInteractEdata]="getLogoutInteractEdata()"
@@ -296,5 +308,29 @@
       </ul>
     </div>
     </div>
+    <ng-container *ngIf="isLayoutAvailable()">
+
+      <div *ngIf="!userService.loggedIn">
+
+        <div class="profile__actions">
+          <ul class="profile__actions__list">
+            <li class="list-item" (click)="toggleSideMenu(false)"
+                [class.active]="router.isActive(routerLinks?.explore)"
+                *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]"
+                appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
+              {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
+            </li>
+
+            <li class="list-item" (click)="toggleSideMenu(false)" appTelemetryInteract
+                [telemetryInteractEdata]="signInIntractEdata">
+              <a href={{hrefPath}}>
+                <span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>
+                {{resourceService.frmelmnts?.btn?.login}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
