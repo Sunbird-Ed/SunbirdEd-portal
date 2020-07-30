@@ -552,3 +552,7 @@ app-workspace {
 .sbt-sticky-topbar {
   top: 0;
 }
+
+.ui.selection.sbt-dropdown.visible.dropdown>.text:not(.default){
+  color:var(--white);
+}

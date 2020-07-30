@@ -78,38 +78,24 @@
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-page-content-area"></div>
       <div class="sbt-container">
-        <div class="ui grid stackable px-72 m-0">
-          <div class="six wide column p-0 d-flex">
-            <div class="footer-bg">
-              <img class="playStore-img cursor-pointer" src="/assets/images/Combined-footer-Shape.svg" alt="">
-            </div>
-            <div class="download-mobile-app">
-              <div class="download-mobile-app-logo">
-                <div class="mobile-circles">
-                  <div class="big-box border-round border-r50"></div>
-                  <div class="oval-box border-round ml-16"></div>
-                  <div class="small-box border-round border-r50 ml-16 mr-8"></div>
-                  <div class="small-box border-round border-r50"></div>
-                </div>
-                <label class="d-block text-center font-weight-bold item-title">Download DIKSHA</label>
-                <a class="d-block app-download" (click)="redirectToMobileApp()">
-                  <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
-                    alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="six wide column contantDetails">
-            <div class="footerMenu text-right">
+        <div class="sbt-skyline-path d-flex">
+          <img src="/assets/images/line-path.svg" alt="line path">
+        </div>
+        <div class="sbt-footer-shade">
+          <img src="/assets/images/Combined-Shape.svg" alt="shade">
+        </div>
+        <div class="ui grid stackable px-72">
+          <div class="six wide column contantDetails px-0">
+            <div class="footerMenu text-left">
               <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
-                <li class="mb-24 help-center">
+                <li class="help-center">
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                     href="{{defaultFooterConfig.helpCenterLink}}">
                     {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
                   </a>
                 </li>
-                <li>
-                  <label class="d-block footer-info">
+                <li class="contact-info">
+                  <label class="d-block contact-info-title">
                     {{resourceService.frmelmnts?.lnk?.footerContact}}
                   </label>
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
@@ -118,16 +104,15 @@
                   </a>
                 </li>
               </ul>
-      
               <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
-                <li class="mb-16r" *ngIf="tenantFooter?.helpCenterLink">
+                <li class="mb-16 help-cente" *ngIf="tenantFooter?.helpCenterLink">
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                     href="{{tenantFooter?.helpCenterLink}}">
                     {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
                   </a>
                 </li>
-                <li *ngIf="tenantFooter?.helpDeskEmail">
-                  <label class="d-block mb-0">
+                <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
+                  <label class="d-block contact-info-title mb-0">
                     {{resourceService.frmelmnts?.lnk?.footerContact}}
                   </label>
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
@@ -135,13 +120,23 @@
                 </li>
               </ul>
             </div>
-            <label class="d-block footer-info">
+            <label class="d-block footer-terms-info text-left">
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">
                 {{resourceService.frmelmnts?.lnk?.footerTnC}}
               </a>
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
+          </div>
+          <div class="six wide column p-0 d-flex sbt-footer-download-app">
+            <div class="sbt-footer-bg relative">
+              <img class="sbt-footer-bg-img cursor-pointer" src="/assets/images/Combined-footer-Shape-1.svg" alt="">
+              <label class="d-block text-center font-weight-bold sbt-footer-title">Download DIKSHA</label>
+              <a class="d-block app-download" (click)="redirectToMobileApp()">
+                <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
+                  alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
+              </a>
+            </div>
           </div>
         </div>
       </div>
