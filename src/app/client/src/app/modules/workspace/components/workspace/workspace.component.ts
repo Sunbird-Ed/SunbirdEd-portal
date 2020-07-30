@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {LayoutService} from '@sunbird/shared';
+import { LayoutService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-workspace',
