@@ -128,7 +128,10 @@
   top: calculateRem(188px);
   margin-top:calculateRem(-72px);
   z-index: 2;
-
+  display: none;
+  @include respond-above(sm){
+    display: block;
+  }
   .sbt-filter-scrollable {
     max-height: calc(100vh - 388px);
     height: auto;
