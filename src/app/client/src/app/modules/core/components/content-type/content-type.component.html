@@ -1,0 +1,9 @@
+<div class="sb-linkmenu m-0 d-flex o-auto flex-ai-center">
+  <ng-container *ngFor="let contentType of contentTypes">
+    <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
+       [ngClass]="'item item--' + getIcon(contentType)">
+      <span [ngClass]="'sb-icon sb-icon--md mr-4 sb-icon__'+ getIcon(contentType)"></span>
+      {{getTitle(contentType)}}
+    </a>
+  </ng-container>
+</div>

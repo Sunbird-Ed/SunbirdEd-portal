@@ -142,7 +142,7 @@
                 <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-purple--bg mr-16" placeholder="Student" labelField="name" #multiSelect>
                    <sui-select-option  *ngFor="let option of multiSelect1" [value]="option">
                    </sui-select-option>
-                 </sui-select> 
+                 </sui-select>
             <!-- language dropdown -->
             <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
               *ngIf="languages && showLanguageDropdown()">
@@ -163,13 +163,13 @@
           </div>
           </div>
         </div>
-  
-        <!--Main Menu-->
+
         <div class="sbt-header-menu-bar sb-g">
           <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
           <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
           <div class="sbt-header-menu">
-            <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto"></app-main-menu>
+            <app-main-menu [layoutConfiguration]="layoutConfiguration"
+                           class="d-flex computer only ml-auto"></app-main-menu>
           </div>
         </div>
       </div>

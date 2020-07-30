@@ -14,6 +14,8 @@ export class AppLandingSectionComponent implements OnInit {
 
   @Input() layoutConfiguration;
 
+  @Input() noTitle;
+
   constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {

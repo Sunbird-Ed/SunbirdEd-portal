@@ -1,3 +1,5 @@
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->

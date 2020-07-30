@@ -312,7 +312,7 @@ app-workspace {
 
 .sbt-container {
   width: 100%;
-  padding: 0 5%;
+  padding: 0 2%;
 }
 
 .sbt-page-header {
@@ -482,6 +482,7 @@ app-workspace {
 
 .sbt-theme-bg-img {
   position: fixed;
+  z-index: -50;
   left: calculateRem(-106px);
   top: 38%;
   width: calculateRem(332px);

@@ -19,6 +19,7 @@ import { CacheService } from 'ng2-cache-service';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { ContentTypeComponent } from './components/content-type/content-type.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective,
-    ErrorPageComponent, LanguageDropdownComponent],
+    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     TelemetryModule, LanguageDropdownComponent],
   providers: [CacheService, AuthGuard, {

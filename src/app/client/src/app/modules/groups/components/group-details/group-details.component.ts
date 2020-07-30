@@ -1,7 +1,7 @@
 import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,6 +25,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   members: IGroupMember[] = [];
   isLoader = true;
   isAdmin = false;
+  layoutConfiguration:any;
+  
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
@@ -39,11 +41,13 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     public resourceService: ResourceService,
     private userService: UserService,
+    public layoutService: LayoutService
   ) {
     this.groupService = groupService;
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
     this.getGroupData();
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {

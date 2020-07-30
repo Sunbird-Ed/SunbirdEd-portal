@@ -1,13 +1,13 @@
 <app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.mytrainings" 
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div class="sb-g">
+<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'">
     <div [ngClass]="redoLayout(0)">
       <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
         [accordionDefaultOpen]=true [isShowFilterLabel]=true [notToUseFramework]="toUseFrameWorkData" [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
     </div>
     <div [ngClass]="redoLayout(1)">
       <div class="ui container mt-8">
-  <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" class="ui grid stackable my-0">
+  <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui grid stackable my-0'">
     <div class="twelve wide column" *ngIf="enrolledSection?.contents?.length">
       <app-page-section *ngIf="enrolledSection?.contents?.length" [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>
