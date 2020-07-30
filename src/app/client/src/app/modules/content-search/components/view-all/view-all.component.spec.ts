@@ -189,7 +189,7 @@ describe('ViewAllComponent', () => {
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
-  it('should redo layout on render',() => {
+  it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.redoLayout(0);
     component.layoutConfiguration = null;
@@ -199,7 +199,11 @@ describe('ViewAllComponent', () => {
   it('should process the data if view-all is clicked from My-Courses section', () => {
     const courseService = TestBed.get(CoursesService);
     component.sectionName = 'My courses';
-    const sortedData = _.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']);
+    const sortedData = _.map(_.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
+      const value = _.get(val, 'content');
+      value['mimeType'] = 'application/vnd.ekstep.content-collection';
+      return value;
+    });
     spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
       'enrolledCourseData': Response.enrolledCourseData,
       'contentData': Response.successData
