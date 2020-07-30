@@ -201,7 +201,6 @@ describe('ViewAllComponent', () => {
     component.sectionName = 'My courses';
     const sortedData = _.map(_.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
       const value = _.get(val, 'content');
-      value['mimeType'] = 'application/vnd.ekstep.content-collection';
       return value;
     });
     spyOn<any>(component, 'getContentList').and.returnValue(observableOf({

@@ -434,7 +434,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.totalCount = enrolledCourseCount;
       const sortedData = _.map(_.orderBy(_.get(courseData, 'enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
         const value = _.get(val, 'content');
-        value['mimeType'] = 'application/vnd.ekstep.content-collection';
         return value;
       });
       this.searchList = this.formatSearchresults(sortedData);
