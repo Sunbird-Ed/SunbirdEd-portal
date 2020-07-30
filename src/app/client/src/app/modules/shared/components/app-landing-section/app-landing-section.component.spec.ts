@@ -26,6 +26,7 @@ describe('AppLandingSectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppLandingSectionComponent);
     component = fixture.componentInstance;
+    component.noTitle = false;
     fixture.detectChanges();
   });
 
