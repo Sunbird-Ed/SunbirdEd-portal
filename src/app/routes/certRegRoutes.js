@@ -5,48 +5,18 @@ const certRegURL = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const logger = require('sb_logger_util_v2')
-_ = require('lodash')
+const _ = require('lodash')
 const bodyParser = require('body-parser');
 const { getUserCertificates } = require('./../helpers/certHelper');
+
+
 var certRegServiceApi = {
   searchCertificate : 'certreg/v1/certs/search',
-  reIssueCert: '/certreg/v1/user/search',
+  reIssueCertificate: '/certreg/v1/user/search',
   searchUser: '/user/v1/search'
 };
 
 module.exports = function (app) {
-
-  let courseId;
-  app.post(certRegServiceApi.reIssueCert,
-    bodyParser.json({ limit: '10mb' }),
-    permissionsHelper.checkPermission(),
-    proxy(certRegURL, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-      proxyReqPathResolver: function (req) {
-        logger.debug({msg: `${certRegServiceApi.reIssueCert} is called with request: ${JSON.stringify(_.get(req, 'body'))}`});
-        courseId = _.get(req, 'body.request.filters.courseId');
-        delete req.body.request.filters['courseId'];
-        return require('url').parse(certRegURL + certRegServiceApi.searchUser).path;
-      },
-      userResDecorator: async (proxyRes, proxyResData, req, res) => {
-        try {
-          const data = JSON.parse(proxyResData.toString('utf8'));
-          logger.info({msg: `getUserCertificates() is calling from certRegRoutes `});
-          const certificates = await getUserCertificates(data, courseId);
-          if (data) {
-          data.result.response = certificates;
-          return data;
-          }
-          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-        } catch (err) {
-          logger.error({msg: `Error occured while searching userData with: ${certRegServiceApi.searchUser}, Error: ${err}`});
-          let data = JSON.parse(proxyResData.toString('utf8'));
-          data.result.response = {err: err};
-          return proxyUtils.handleSessionExpiry(proxyRes, data, req, res);
-        }
-      },
-    })
-  );
 
     app.all(`/+${certRegServiceApi.searchCertificate}`,
     permissionsHelper.checkPermission(),
@@ -68,4 +38,36 @@ module.exports = function (app) {
         }
       }
     }))
+
+    let courseId;
+    app.post(certRegServiceApi.reIssueCertificate,
+      bodyParser.json({ limit: '10mb' }),
+      permissionsHelper.checkPermission(),
+      proxy(certRegURL, {
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+        proxyReqPathResolver: function (req) {
+          logger.debug({msg: `${certRegServiceApi.reIssueCertificate} is called with request: ${JSON.stringify(_.get(req, 'body'))}`});
+          courseId = _.get(req, 'body.request.filters.courseId');
+          delete req.body.request.filters['courseId'];
+          return require('url').parse(certRegURL + certRegServiceApi.searchUser).path;
+        },
+        userResDecorator: async (proxyRes, proxyResData, req, res) => {
+          try {
+            const data = JSON.parse(proxyResData.toString('utf8'));
+            logger.info({msg: `getUserCertificates() is calling from certRegRoutes `});
+            const certificates = await getUserCertificates(data, courseId);
+            if (data) {
+            data.result.response = certificates;
+            return data;
+            }
+            else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+          } catch (err) {
+            logger.error({msg: `Error occured while searching userData with: ${certRegServiceApi.searchUser}, Error: ${err}`});
+            let data = JSON.parse(proxyResData.toString('utf8'));
+            data.result.response = {err: err};
+            return proxyUtils.handleSessionExpiry(proxyRes, data, req, res);
+          }
+        },
+      })
+    );
 };

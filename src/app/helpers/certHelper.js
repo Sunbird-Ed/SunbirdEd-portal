@@ -2,6 +2,7 @@ const { HTTPService } = require('@project-sunbird/ext-framework-server/services'
 const envHelper = require('./environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const logger = require('sb_logger_util_v2')
+const _ = require('lodash')
 
 var certRegServiceApi = {
     searchCertificate : 'certreg/v1/certs/search',
@@ -22,11 +23,11 @@ var certRegServiceApi = {
                 match_phrase: {
                   'recipient.id': _.get(userData, 'identifier'),
                 },
-              },
-            ],
-          },
-        },
-      },
+              }
+            ]
+          }
+        }
+      }
     };
 
     const appConfig = {
@@ -54,17 +55,24 @@ var certRegServiceApi = {
     return  resObj;
   }
 
+  // To get Certificate details and course details
   const getCertList =  (courses, certList)  => {
     logger.debug({msg: `getCertList() is called with course[]  and cert[]`});
     const courseList = [];
     _.forEach (courses, course => {
-      const batchList = _.get(course, 'batches') ?  isJSON(_.get(course, 'batches')) : [] ;
-        const batches = _.map(certList, cert => {
-            const batch = _.find(batchList, {batchId: _.get(cert, '_source.related.batchId')});
-            if (batch) {
-                batch.certificate = _.omit(cert, ['_index', '_type']);
-                return batch;
-            }
+      const courseId = _.get(course, 'identifier');
+
+      const existingCourse = _.find(courseList, {courseId: courseId});
+
+      let batchList = existingCourse ? _.get(existingCourse, 'batches') : _.get(course, 'batches');
+        batchList = !_.isEmpty(batchList) ? isJSON(batchList) : [] ;
+
+      const batches = _.map(certList, cert => {
+      const batch = _.find(batchList, {batchId: _.get(cert, '_source.related.batchId')});
+        if (batch) {
+          batch.hasOwnProperty('certificates') ? batch.certificates.push(_.omit(cert, ['_index', '_type'])) : batch.certificates = [_.omit(cert, ['_index', '_type'])];
+          return batch;
+        }
         });
         courseList.push({
             courseId: _.get(course, 'identifier'),
@@ -72,19 +80,21 @@ var certRegServiceApi = {
             batches: _.compact(batches)
         });
     });
-    logger.info({msg: `returning courseList with batches and certificates , ${courseList}`});
+    logger.info({msg: `returning courseList with batches and certificates from getCertList(), ${JSON.stringify(courseList)}`});
     return courseList;
   }
 
 
   isJSON = (batches) => {
-    logger.debug({msg: `isJSON() is called`});
+    let parsedBatches = [];
+    logger.debug({msg: `isJSON() is called `});
     try {
-        return JSON.parse(batches);
+      parsedBatches = JSON.parse(batches);
     } catch (e) {
-        logger.error({msg: `Error occured in isJSON, ${e}`});
-        return batches;
+      parsedBatches = batches;
     }
+    logger.info({msg: `returning parsed JSON from isJSON() ${parsedBatches}`});
+    return parsedBatches;
   }
 
   module.exports = { getUserCertificates };
