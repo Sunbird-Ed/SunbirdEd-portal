@@ -12,9 +12,6 @@ const bodyParser = require('body-parser')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = (app) => {
-    // Generate telemetry fot proxy service
-    app.all('/content/*', telemetryHelper.generateTelemetryForContentService,
-        telemetryHelper.generateTelemetryForProxy)
 
     app.all('/content/course/v1/search',
         healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
@@ -39,10 +36,14 @@ module.exports = (app) => {
         }))
 
     app.all('/content/*',
-    bodyParser.json(),
-    healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
-    proxyUtils.verifyToken(),
-    isAPIWhitelisted.isAllowed(),
+        // Generate telemetry for content service
+        telemetryHelper.generateTelemetryForContentService,
+        // Generate telemetry for proxy service
+        telemetryHelper.generateTelemetryForProxy,
+        bodyParser.json(),
+        healthService.checkDependantServiceHealth(['CONTENT', 'CASSANDRA']),
+        proxyUtils.verifyToken(),
+        isAPIWhitelisted.isAllowed(),
         permissionsHelper.checkPermission(),
         proxy(contentURL, {
             limit: reqDataLimitOfContentUpload,
@@ -58,14 +59,15 @@ module.exports = (app) => {
             },
             userResDecorator: (proxyRes, proxyResData, req, res) => {
                 try {
-                    logger.info({msg: '/content/* called'});
+                    logger.info({ msg: '/content/* called - ' + req.method + ' - ' + req.url });
                     const data = JSON.parse(proxyResData.toString('utf8'));
                     if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                     else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data)
                 } catch (err) {
-                    logger.error({msg: 'content api user res decorator json parse error', proxyResData});
+                    logger.error({ msg: 'content api user res decorator json parse error', proxyResData });
                     return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res)
                 }
             }
-        }))
+        })
+    )
 }
