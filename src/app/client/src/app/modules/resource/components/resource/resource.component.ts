@@ -148,7 +148,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
 
@@ -168,7 +168,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }, err => {
       this.isLoading = false;
       this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0005);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
   });
   }
 
