@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.course" 
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div class="sb-g" [appTelemetryImpression]="telemetryImpression">
+<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="redoLayout(0)">
   <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
@@ -8,7 +8,7 @@
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
     </div>
     <div [ngClass]="redoLayout(1)">
-  <div class="ui container mt-24">
+  <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
