@@ -156,7 +156,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showLoader = false;
         this.carouselMasterData = [];
         this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0005);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
     });
   }
   private prepareCarouselData(sections = []) {

@@ -114,6 +114,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   showInvalidUser () {
     this.isInvalidUser = true;
+    this.showLoader = false;
     this.captchaRef.reset();
   }
 
