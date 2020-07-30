@@ -132,7 +132,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchPageData() {
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-      if ( key === 'appliedFilters') {
+      if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
       }
       return value.length;

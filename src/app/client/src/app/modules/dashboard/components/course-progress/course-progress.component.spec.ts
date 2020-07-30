@@ -54,6 +54,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
+    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
@@ -255,5 +256,13 @@ describe('CourseProgressComponent', () => {
     component.setCounts(component.currentBatch);
     expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
     expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
+  });
+
+  it ( 'should set filterText', () => {
+     fakeActivatedRoute.queryParams.subscribe(data => {
+      component.queryParams = data;
+    });
+    component.setFilterDescription();
+    expect(component.filterText).toEqual('Stats for last 7 days');
   });
 });
