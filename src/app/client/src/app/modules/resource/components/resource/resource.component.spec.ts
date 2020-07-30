@@ -1,8 +1,8 @@
 import { SlickModule } from 'ngx-slick';
-import { BehaviorSubject, of } from 'rxjs';
+import {BehaviorSubject, of as observableOf, of} from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
-import { CoreModule, CoursesService, PlayerService } from '@sunbird/core';
+import {CoreModule, CoursesService, PlayerService, FormService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ResourceComponent } from './resource.component';
 import { configureTestSuite } from '@sunbird/test-util';
+import {Response} from './resource.component.spec.data';
 
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
@@ -60,6 +61,7 @@ describe('ResourceComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ResourceComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
+        FormService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -70,43 +72,6 @@ describe('ResourceComponent', () => {
     fixture = TestBed.createComponent(ResourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should return  data from search', () => {
-    component.channelId = '123',
-      component['contentSearchService']._frameworkId = '123456';
-    const option = {
-      filters: {},
-      fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
-      isCustodianOrg: true,
-      channelId: '123',
-      frameworkId: '123456'
-    };
-    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of([{ title: 'English', count: 2 }, { title: 'Social', count: 1 }]
-    ));
-    component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option, ['Course']);
-    expect(component.cardData.length).toEqual(2);
-
-  });
-
-
-  it('should return empty data from search', () => {
-    component.channelId = '123',
-      component['contentSearchService']._frameworkId = '123456';
-    const option = {
-      filters: {},
-      fields: [ 'name', 'appIcon', 'mimeType', 'gradeLevel', 'medium', 'board', 'subject', 'resourceType', 'contentType', 'organisation' ],
-      isCustodianOrg: true,
-      channelId: '123',
-      frameworkId: '123456'
-    };
-    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of([]
-    ));
-    component['fetchCourses']();
-    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option, ['Course']);
-    expect(component.cardData.length).toEqual(0);
-
   });
 
   it('should call telemetry.interact()', () => {
@@ -192,7 +157,7 @@ describe('ResourceComponent', () => {
     component.navigateToCourses(event);
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
-  it('should redo layout on render',() => {
+  it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout(0);

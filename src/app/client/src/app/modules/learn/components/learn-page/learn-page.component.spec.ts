@@ -3,7 +3,7 @@ import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { FrameworkService, PageApiService, CoursesService, CoreModule, PlayerService, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
+import { FrameworkService, PageApiService, UserService, CoursesService, CoreModule, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ describe('LearnPageComponent', () => {
   let sendFormApi = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = jasmine.createSpy('url');
+    url = '/learn';
   }
   const resourceBundle = {
     'messages': {
@@ -178,7 +178,33 @@ describe('LearnPageComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should redo layout on render',() => {
+
+  it('should redirect to view-all page' , () => {
+    const userService = TestBed.get(UserService);
+    const router = TestBed.get(Router);
+    const eventData = Response.viewAllEventData;
+    userService._userProfile = Response.userData;
+    const searchQueryParams = {
+      'contentType': [
+        'Course'
+      ],
+      'objectType': [
+        'Content'
+      ],
+      'status': [
+        'Live'
+      ],
+      'defaultSortBy': '{\"lastPublishedOn\":\"desc\"}',
+      'exists': undefined
+    };
+    component.queryParams = {};
+    const queryParams = {...component.queryParams, ...searchQueryParams};
+    spyOn(cacheService, 'set').and.stub();
+    component.viewAll(eventData);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/view-all/My-courses', 1], {queryParams: queryParams});
+    expect(cacheService.set).toHaveBeenCalledWith('viewAllQuery', searchQueryParams, {maxAge: 600});
+});
+it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout(0);
@@ -186,4 +212,5 @@ describe('LearnPageComponent', () => {
     component.ngOnInit();
     component.redoLayout(1);
   });
+
 });
