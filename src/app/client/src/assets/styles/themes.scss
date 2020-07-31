@@ -141,6 +141,9 @@ html[data-theme='Default'] {
   --sbt-theme-green-selectbox:#008840;
   --sbt-theme-purple-selectbox-lbg:#E5EDF5;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-pill-hs:253, 100%;
+  --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
+  --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
 }
 html[data-theme='Orange'] {
   --primary-hs:32,91%;
@@ -159,6 +162,9 @@ html[data-theme='Orange'] {
   --sbt-theme-green-selectbox:#008840;
   --sbt-theme-purple-selectbox-lbg:#E5EDF5;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-pill-hs:253, 100%;
+  --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
+  --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
 }
 
 input[type=radio]:checked ~ .check {
@@ -177,4 +183,53 @@ input[value]:checked ~ .check::before{
 }
 input[value]:checked ~ label{
   color: var(--primary-color);
+}
+html[layout='joy'] {
+  /* new button style */
+  .sb-btn {
+  border-radius: 100rem;
+  box-shadow: 6px 6px 2px 0 var(--sbt-box-shadow-black);
+  height: 2.5rem;
+  }
+  .sb-form-control {
+    border-radius: 16px;
+  }
+  /* modal */
+  .sb-modal {
+    .ui.modal{
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+      border-radius: calculateRem(24px);
+      background-color: #F2F4F6;
+      .sb-modal-header{
+        background-color: #F2F4F6;
+        color: var(--black);
+        border-radius: calculateRem(24px) calculateRem(24px) 0 0;
+        padding: calculateRem(24px) calculateRem(24px) calculateRem(8px) calculateRem(24px);
+    }
+    .sb-modal-content{
+        min-height: 100px;
+        padding: calculateRem(16px) calculateRem(24px);
+        overflow-y: auto;
+        background: #F2F4F6;
+    }
+    .sb-modal-actions {
+      padding: calculateRem(8px) calculateRem(24px) calculateRem(8px);
+      background: #F2F4F6;
+      border-top: calculateRem(0px) solid var(--gray-100);
+      border-radius: 0 0 calculateRem(24px) calculateRem(24px);
+    }
+    & > .close {
+      // right: auto !important;
+      // left: calculateRem(12px);
+      background: var(--white);
+      border-radius: 100%;
+      color:var(--red);
+      box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+      right: 10px;
+      top: 8px;
+    }
+    }
+  }
+
+  //end
 }

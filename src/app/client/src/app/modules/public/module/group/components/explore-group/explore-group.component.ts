@@ -1,9 +1,11 @@
 import { MY_GROUPS } from '../routerLinks';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-explore-group',
   templateUrl: './explore-group.component.html',
@@ -12,9 +14,11 @@ import * as _ from 'lodash-es';
 export class ExploreGroupComponent implements OnInit {
   showWelcomePopup = true;
   telemetryImpression: IImpressionEventInput;
-
+  layoutConfiguration;
+  public unsubscribe$ = new Subject<void>();
   constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute,
-    private telemetryService: TelemetryService, private router: Router, private navigationhelperService: NavigationHelperService) { }
+    private telemetryService: TelemetryService, private router: Router, 
+    private navigationhelperService: NavigationHelperService, public layoutService:LayoutService) { }
 
   redirectTologin() {
     window.location.href = MY_GROUPS;
@@ -26,6 +30,13 @@ export class ExploreGroupComponent implements OnInit {
 
   ngOnInit() {
     this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.telemetryImpression = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env')
@@ -53,6 +64,10 @@ export class ExploreGroupComponent implements OnInit {
       },
     };
     this.telemetryService.interact(interactData);
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

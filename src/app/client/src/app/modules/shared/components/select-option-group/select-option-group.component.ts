@@ -11,6 +11,7 @@ export class SelectOptionGroupComponent implements OnInit {
   @Input() selectedOption: { label: string, value: string, selectedOption: string };
   @Output() selectedValue = new EventEmitter<{ label: string, value: string, selectedOption: string }>();
   public preSelectedValue: string;
+  @Input() layoutConfiguration;
 
   ngOnInit() {
     this.choosedValue();
