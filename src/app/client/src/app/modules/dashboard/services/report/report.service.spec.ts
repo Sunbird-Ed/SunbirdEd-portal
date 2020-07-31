@@ -538,6 +538,18 @@ describe('ReportService', () => {
       });
     });
 
+    it('check for channel parameter', done => {
+      const searchService = TestBed.get(SearchService);
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: 'sunbird', hashTagId: '123' }, framework: { board: ['CBSE'] } });
+      spyOn(searchService, 'orgSearch').and.returnValue(of({ result: { response: { content: [{ id: 'sunbird' }, { id: 'rj' }] } } }));
+      const { value, masterData } = reportService.getParameterValues('$channel');
+      expect(value).toBe('123');
+      masterData().subscribe(res => {
+        expect(res).toBeDefined();
+        done();
+      });
+    });
+
   });
 
 });
