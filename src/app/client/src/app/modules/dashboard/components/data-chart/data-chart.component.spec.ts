@@ -74,6 +74,7 @@ describe('DataChartComponent', () => {
         expect(component.filters).toBe(mockChartData.chartConfig.filters);
         expect(spy).toHaveBeenCalled();
         expect(component.chartLabels).toEqual([
+            'Class 1',
             'Class 2',
             'Class 3',
             'Class 4',
@@ -82,12 +83,12 @@ describe('DataChartComponent', () => {
             'Class 7',
             'Class 8',
             'Class 9',
-            'Class 10',
-            'Class 1'
+            'Class 10'
         ]);
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
             data: [
+                115,
                 1158,
                 3532,
                 980,
@@ -96,8 +97,7 @@ describe('DataChartComponent', () => {
                 737,
                 208,
                 819,
-                750,
-                115
+                750
             ],
             hidden: false,
             fill: true
@@ -243,6 +243,30 @@ describe('DataChartComponent', () => {
         component.chartConfig.labels = ['test'];
         component['setChartLabels']({ name: 2 });
         expect(component.chartLabels).toEqual(['Test']);
+    });
+
+    it('should fill chart data with goal value', () => {
+        const input = [1, 2, 3];
+        const goalValue = 22;
+        const result = component['getGoalsDataset'](input, goalValue);
+        expect(result).toBeDefined();
+        expect(result).toEqual([22, 22, 22]);
+    });
+
+    it('should sort data in ascending order based on key', () => {
+        const inputData = [{ slug: 'ap' }, { slug: 'rj' }, { slug: 'gj' }];
+        const key = 'slug';
+        const result = component['sortData'](inputData, key);
+        expect(result).toBeDefined();
+        expect(result).toEqual([{ slug: 'ap' }, { slug: 'gj' }, { slug: 'rj' }]);
+    });
+
+    it('should sort data in ascending order based on Date key', () => {
+        const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
+        const key = 'date';
+        const result = component['sortData'](inputData, key);
+        expect(result).toBeDefined();
+        expect(result).toEqual([{ slug: 'gj', date: '01-01-2017' }, { slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }]);
     });
 
 });
