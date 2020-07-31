@@ -5,7 +5,7 @@ import { UserService, PlayerService, CopyContentService, PermissionService } fro
 import * as _ from 'lodash-es';
 import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
-  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
+  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
@@ -91,6 +91,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
   playerOption: any;
   showLoader = true;
   isFullScreenView = false;
+  layoutConfiguration;
   public unsubscribe = new Subject<void>();
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -98,7 +99,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
-    private configService: ConfigService, public navigationhelperService: NavigationHelperService) {
+    private configService: ConfigService, public navigationhelperService: NavigationHelperService,
+    public layoutService: LayoutService) {
       this.playerOption = {
         showContentRating: true
       };
@@ -108,6 +110,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false; // show loader when till content data is fetched
       this.contentId = params.contentId;
@@ -119,6 +122,15 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
   setTelemetryData() {
     this.telemetryImpression = {
