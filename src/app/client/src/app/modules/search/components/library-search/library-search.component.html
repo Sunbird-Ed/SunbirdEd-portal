@@ -1,4 +1,4 @@
-<app-global-search [globalSearchFacets]="globalSearchFacets" *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
+<app-global-search [contentTypes]="allTabData?.search?.filters?.contentType" [globalSearchFacets]="globalSearchFacets" *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
 </app-global-search>
 
 <div class="ui container">

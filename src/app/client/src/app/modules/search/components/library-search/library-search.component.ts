@@ -154,7 +154,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
-        filters.channel = this.channelId;
+        if (!filters.channel) {
+            filters.channel = this.channelId;
+        }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
         const option: any = {
             filters: filters,
@@ -175,7 +177,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.contentList = this.getOrderedData(_.get(data, 'result.content'));
+                this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];

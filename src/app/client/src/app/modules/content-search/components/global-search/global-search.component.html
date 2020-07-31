@@ -1,41 +1,70 @@
 <ng-container>
-  <div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
-    <!-- State and Medium sections -->
+  <div *ngIf="boards?.length && refresh" class="sb-header-filter-bar zindex-2">
     <div class="d-flex state-medium-container sb-bg-color-white">
       <div class="ui container d-flex flex-ai-center">
-        
-        <div *ngIf="boards?.length && showFields('board')" class="state-medium-container__dropdown">
+        <!-- Add showFields('board') -->
+
+        <!-- Board section -->
+        <div class="state-medium-container__dropdown" *ngIf="showFields('board')">
           <span>Board: </span>
-          <!-- state section -->
-          <div class="sb-field mb-0">
-            <app-select-option-group *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption"
-              (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
-          </div>
-          <!-- state section ends -->
-        </div>
-        <!-- medium section -->
-        
-        <div class="state-medium-container__dropdown" *ngIf="showFields('medium')">
-          <span>Medium: </span>
-          <sui-select placeholder="Select Medium" class="selection" [options]="mediums" [(ngModel)]="selectedMedium"
+          <sui-select placeholder="Select board" class="selection" [options]="boards" [(ngModel)]="selectedBoard"
             #select>
-            <sui-select-option *ngFor="let medium of mediums" [value]="medium"
-              (click)="filterChangeEvent.next({ event: medium, type: 'medium'});">
-            </sui-select-option >
+            <sui-select-option *ngFor="let board of boards" [value]="board"
+              (click)="filterChangeEvent.next({ event: board, type: 'board'});">
+            </sui-select-option>
           </sui-select>
         </div>
-        <!-- medium section ends -->
+
+        <!-- medium section -->
+        <div class="state-medium-container__dropdown" *ngIf="mediums?.length && showFields('board');">
+          <span>Medium: </span>
+          <sui-multi-select placeholder="Select medium" class="selection" [(ngModel)]="selectedMediums" [options]="mediums"
+            (ngModelChange)="filterChangeEvent.next({ event: selectedMediums, type: 'medium'});" #medium>
+            <sui-select-option *ngFor="let medium of medium.filteredOptions" [value]="medium">
+            </sui-select-option>
+          </sui-multi-select>
+        </div>
+
+        <!-- class section -->
+        <!-- <div class="state-medium-container__dropdown" *ngIf="gradeLevels?.length">
+          <span>Class: </span>
+          <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
+            [selectedItems]="[selectedGradeLevelIndex]"
+            (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
+            [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+        </div> -->
+
+        <!-- subject section -->
+        <div class="state-medium-container__dropdown" *ngIf="subjects?.length">
+          <span>Subject: </span>
+          <sui-multi-select placeholder="Select subject" class="selection" [(ngModel)]="selectedSubjects" [options]="subjects"
+            (ngModelChange)="filterChangeEvent.next({ event: selectedSubjects, type: 'subject'});" #subject>
+            <sui-select-option *ngFor="let subject of subject.filteredOptions" [value]="subject">
+            </sui-select-option>
+          </sui-multi-select>
+        </div>
+
+        <!-- Publishers section -->
+        <div class="state-medium-container__dropdown" *ngIf="publishers?.length">
+          <span>Publisher: </span>
+          <sui-select labelField="name" valueField="value" placeholder="Select publisher" class="selection" [options]="publishers" [(ngModel)]="selectedPublisher"
+            #select>
+            <sui-select-option *ngFor="let publisher of publishers" [value]="publisher"
+              (click)="filterChangeEvent.next({ event: publisher, type: 'publisher'});">
+            </sui-select-option>
+          </sui-select>
+        </div>
+
+        <!-- Content type section -->
+        <div class="state-medium-container__dropdown" *ngIf="contentTypes?.length">
+          <span>Content type: </span>
+          <sui-multi-select placeholder="Select content types" class="selection" [(ngModel)]="selectedContentTypes" [options]="contentTypes"
+            (ngModelChange)="filterChangeEvent.next({ event: selectedContentTypes, type: 'contentType'});" #contentType>
+            <sui-select-option *ngFor="let contentType of contentType.filteredOptions" [value]="contentType">
+            </sui-select-option>
+          </sui-multi-select>
+        </div>
       </div>
     </div>
-    <!-- State and Medium sections ends-->
-    <!-- class section -->
-    <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="showFields('gradeLevel')">
-      <span>Class: </span>
-      <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
-          [selectedItems]="[selectedGradeLevelIndex]"
-          (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
-          [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
-    </div>
-    <!-- class section ends -->
   </div>
 </ng-container>
