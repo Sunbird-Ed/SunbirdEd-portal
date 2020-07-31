@@ -44,6 +44,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   showDownloadLoader = false;
   frameworkId;
   layoutConfiguration;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
