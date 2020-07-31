@@ -158,12 +158,12 @@ export class GlobalSearchComponent implements OnInit, OnDestroy {
 
   private getSelectedFilter() {
     const filters = {
-      board: this.selectedBoard ? [this.selectedBoard] : [],
-      medium: !_.isEmpty(this.selectedMediums) ? this.selectedMediums : [],
-      gradeLevel: this.gradeLevels[this.selectedGradeLevelIndex] ? [this.gradeLevels[this.selectedGradeLevelIndex]] : [],
-      subject: !_.isEmpty(this.selectedSubjects) ? this.selectedSubjects : [],
-      channel: this.selectedPublisher ? this.selectedPublisher : [],
-      contentType: this.selectedContentTypes ? this.selectedContentTypes : [],
+      board: this.selectedBoard ? [this.selectedBoard] : undefined,
+      medium: !_.isEmpty(this.selectedMediums) ? this.selectedMediums : undefined,
+      gradeLevel: this.gradeLevels[this.selectedGradeLevelIndex] ? [this.gradeLevels[this.selectedGradeLevelIndex]] : undefined,
+      subject: !_.isEmpty(this.selectedSubjects) ? this.selectedSubjects : undefined,
+      channel: this.selectedPublisher ? this.selectedPublisher : undefined,
+      contentType: this.selectedContentTypes ? this.selectedContentTypes : undefined,
 
     };
     return filters;
