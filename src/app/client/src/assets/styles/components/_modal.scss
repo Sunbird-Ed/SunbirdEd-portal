@@ -240,3 +240,23 @@
     }
 }
 
+.sb-batch-update-modal{
+  .checkbox-img {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    display: inline;
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--rc-009D53);
+    -webkit-mask-image: url(assets/images/checkbox-icon.svg);
+    mask-image: url(assets/images/checkbox-icon.svg);
+    -webkit-mask-size: contain;
+    -webkit-mask-position: 50% 50%;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+  }
+}

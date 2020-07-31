@@ -13,8 +13,8 @@
     color: var(--gray-300);
   }
   .certificate-id-content {
-    margin-top: calculateRem(40px);
-    margin-bottom: 0px;
+    margin-top: calculateRem(32px);
+    margin-bottom: calculateRem(8px);
 
     .user-id-label{
         font-weight:normal;
@@ -23,15 +23,31 @@
     }
 
     .user-id-input {
-      width: 450px;
+      width: 100%;
     }
   }
   .re-issue-label{
-      color:var(--gray-200);
+    color: var(--gray-400);
+    font-weight: bold;
+    font-size: calculateRem(14px);
   }
-  .horizontal-border{
-      border: calculateRem(1px) solid var(--gray-100);
-      width: 100%;
+  .re-issue-status{
+    font-size: calculateRem(14px);
+  }
+  .re-issue-list-content{
+    border:calculateRem(0.5px) solid var(--gray-100);
+    border-radius:calculateRem(1px);
+    flex-direction: column;
+    @include respond-below(sm){
+      flex-direction: row;
+    }
+    &__labels{
+      background: var(--primary-100);
+    }
+  }
+  .records-count-label{
+    color:var(--gray-300);
+    font-size: calculateRem(14px);
   }
 }
 
