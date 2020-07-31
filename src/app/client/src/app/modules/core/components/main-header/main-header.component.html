@@ -133,8 +133,7 @@
               <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                 src="{{tenantInfo.logo}}">
             </a>
-           </div>
-            <!--/Logo-->
+             <!--/Logo-->
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
@@ -148,9 +147,11 @@
               </div>
             </a>
             <!--/Avtar Dropdown-->
+           </div>
+           
           </div>
           <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-header-tool-bar">
-            <app-search [layoutConfiguration]="layoutConfiguration"class="sbt-search-box large mx-24">
+            <app-search [layoutConfiguration]="layoutConfiguration" class="sbt-search-box large">
             </app-search>
             <div class="d-flex flex-ai-center">
             <!-- student dropdown -->
@@ -307,13 +308,12 @@
             appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
           {{resourceService?.frmelmnts?.tab?.workspace}}
         </li>
-        <li class="item item--poem" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+        <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
             *ngIf='isLayoutAvailable() && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
             appPermission (click)="toggleSideMenu(false)"
             [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
-        <span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
-          {{resourceService?.frmelmnts?.tab?.help}}
-        </li>
+                {{resourceService?.frmelmnts?.tab?.help}}
+              </li>
         <li class="list-item" appTelemetryInteract
             [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">

@@ -38,7 +38,7 @@
                 <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
                 <div class="sbt-filter-scrollable">
                 <!-- State and Medium sections -->
-                <div class="d-flex state-medium-container">
+                <div>
                         <div *ngIf="boards?.length" class="w-100">
                             <!-- state section -->
                             <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" *ngIf="optionData" [optionData]="optionData" [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);"></app-select-option-group>

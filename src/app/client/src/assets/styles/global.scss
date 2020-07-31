@@ -308,10 +308,13 @@ app-workspace {
 }
 
 .sbt-fluid-content-bg {
+  background: none;
+  @include respond-above(sm) {
   background: linear-gradient(to right, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
   html[dir="rtl"] & {
     background: linear-gradient(to left, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
   }
+}
 }
 
 .sbt-container {
@@ -374,7 +377,10 @@ app-workspace {
 }
 
 .sbt-page-content-area {
-  background: var(--sbt-body-bg2);
+  background: none;
+  @include respond-above(sm) {
+    background: var(--sbt-body-bg2);
+  }
   border-radius: calculateRem(40px) 0 0 0;
   height:100%;
   padding:calculateRem(24px);
@@ -449,7 +455,7 @@ app-workspace {
     &--bg {
       background: var(--sbt-theme-green-selectbox);
       @include respond-below(sm) {
-        min-width: 13em;
+        min-width: 12em;
       }
       .default.text {
         color:var(--white);
@@ -584,4 +590,11 @@ app-workspace {
   @include respond-below(sm) {
     position: inherit;
   }
+}
+.new-footer {
+  min-height: calc(100vh - 296px);
+}
+.footer-fix {
+  padding-bottom: calculateRem(160px);
+  min-height: calc(100vh - 100px);
 }

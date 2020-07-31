@@ -10,7 +10,9 @@
   left: 0;
   margin: 0 auto;
   z-index: 9;
-
+  @include respond-below(xs){
+    bottom: 222.516px;
+  }
   .download-mobile-app-logo {
     background: $white;
     color: $black;
@@ -127,6 +129,7 @@
 
     .download-mobile-app-logo {
       height: auto;
+      min-height: inherit;
     }
 
     .app-download {
