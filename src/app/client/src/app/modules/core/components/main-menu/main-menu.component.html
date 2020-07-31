@@ -55,7 +55,7 @@
 		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 		[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 		<span class="item divider">|</span>
-		<a class="item font-weight-bold sb-color-primary pr-0" href={{hrefPath}} appTelemetryInteract
+		<a class="item font-weight-bold sb-color-primary pr-0" href="{{hrefPath}}" appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}
 		</a>
@@ -142,66 +142,17 @@
 </div>
 <!--/Mobile-->
 </ng-container>
+
+
 <ng-container *ngIf="isLayoutAvailable()">
-<!--Computer-->
-<div class="sb-linkmenu m-0 d-flex o-auto flex-ai-center computer only">
-	<!--Logged in user-->
-  <ng-container *ngIf="userService.loggedIn">
 
-    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+  <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
 
-		<a class="item item--test d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
-		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
-		<span class="sb-icon sb-icon__tv sb-icon--md mr-4"></span>
-		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
-		</a>
-		<a *ngIf="showContributeTab" class="item item--quiz" [class.active]="router.isActive('/contribute')"
-			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
-			<span class="sb-icon sb-icon__tv sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.contribute}}
-		</a>
-		<a class="item item--story" [class.active]="router.isActive('/workspace')" appTelemetryInteract
-			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
-			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
-			<span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.workspace}}
-		</a>
-		<a class="item item--poem" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
-			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
-			<span class="sb-icon sb-icon__poem sb-icon--md mr-4"></span>
-			{{resourceService?.frmelmnts?.tab?.help}}
-		</a>
-	</ng-container>
-	<!--/Logged in user-->
-	<!--Not Logged in user-->
-	<ng-container *ngIf="!userService.loggedIn">
-    <!-- TODO: remove the extra content-type componenet and handle gracefully for logged in and non logged in cases-->
-
-    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
-
- <!--   <a class="item item&#45;&#45;poem" [class.active]="router.isActive(routerLinks?.explore)"
-       *ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-		[routerLink]="[navigateToGroups()]">
-		<span class="sb-icon sb-icon__poem sb-icon&#45;&#45;md mr-4"></span>
-		{{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>-->
-
-		<a class="item item--story" href={{hrefPath}} appTelemetryInteract
-			[telemetryInteractEdata]="signInIntractEdata">
-			<span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>{{resourceService.frmelmnts?.btn?.login}}
-		</a>
-	</ng-container>
-	<!--/Not Logged in user-->
-</div>
-<!--Computer-->
-<!--Mobile-->
+  <!--Mobile-->
 <div class="mobile only">
 	<div class="ui sidebar right vertical menu">
 		<!--Logged in user-->
 		<ng-container *ngIf="userService.loggedIn">
-
-      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
 
       <div class="item font-weight-bold" *ngIf='userProfile'>
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
@@ -242,8 +193,6 @@
 		<!--/Logged in user-->
 		<!--Not Logged in user-->
 		<ng-container *ngIf="!userService.loggedIn">
-
-      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
 
       <div class="item active">
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"

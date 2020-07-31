@@ -1,5 +1,5 @@
 
-import { mergeMap, filter, map, catchError } from 'rxjs/operators';
+import { mergeMap, filter, map, catchError, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import { Observable, Subscription, Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService } from '@sunbird/shared';
+  ExternalUrlPreviewService, LayoutService } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -134,6 +134,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   isCopyAsCourseClicked: Boolean =  false;
   selectAll: Boolean = false;
   selectedItems = [];
+  layoutConfiguration;
 
   constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -141,7 +142,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService,
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
+    public layoutService: LayoutService) {
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
@@ -161,6 +163,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();

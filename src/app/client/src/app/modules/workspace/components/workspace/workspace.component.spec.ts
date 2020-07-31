@@ -4,6 +4,8 @@ import { WorkspaceComponent } from './workspace.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from '@sunbird/test-util';
+import { SharedModule } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('WorkspaceComponent', () => {
   let component: WorkspaceComponent;
@@ -17,7 +19,7 @@ describe('WorkspaceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule,SharedModule.forRoot(), HttpClientTestingModule,]
     })
     .compileComponents();
   }));

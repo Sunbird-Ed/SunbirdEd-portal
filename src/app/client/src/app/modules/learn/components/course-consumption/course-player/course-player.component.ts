@@ -4,7 +4,7 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { CoursesService, PermissionService, UserService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
-  ResourceService, ToasterService, WindowScrollService, ITelemetryShare
+  ResourceService, ToasterService, WindowScrollService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -69,6 +69,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   addToGroup = false;
   isModuleExpanded = false;
   isEnrolledCourseUpdated = false;
+  layoutConfiguration;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -90,12 +91,20 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private courseProgressService: CourseProgressService,
     private deviceDetectorService: DeviceDetectorService,
     public telemetryService: TelemetryService,
-    private contentUtilsServiceService: ContentUtilsServiceService
+    private contentUtilsServiceService: ContentUtilsServiceService,
+    public layoutService: LayoutService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {

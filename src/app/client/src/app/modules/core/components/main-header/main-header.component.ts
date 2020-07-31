@@ -1,4 +1,4 @@
-import {first, takeUntil} from 'rxjs/operators';
+import {filter, first, takeUntil} from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -14,7 +14,7 @@ import {
   IUserProfile,
   UtilService,
   ToasterService,
-  IUserData,
+  IUserData, LayoutService,
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -63,15 +63,15 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     width: '38px'
   };
   avtarDesktopStyle = {
-    backgroundColor: 'transparent',
-    color: '#AAAAAA',
+    backgroundColor: '#ffffff',
+    color: '#333333',
     fontFamily: 'inherit',
-    fontSize: '17px',
-    lineHeight: '38px',
-    border: '1px solid #e8e8e8',
+    fontSize: '24px',
+    lineHeight: '48px',
+    border: '1px solid #E8E8E8',
     borderRadius: '50%',
-    height: '38px',
-    width: '38px'
+    height: '48px',
+    width: '48px'
   };
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
@@ -112,13 +112,23 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   selected = [];
   userTypes = [{id: 1, type: 'Teacher'}, {id: 2, type: 'Student'}];
+  groupsMenuIntractEdata: IInteractEventEdata;
+  workspaceMenuIntractEdata: IInteractEventEdata;
+  helpMenuIntractEdata: IInteractEventEdata;
+  signInIntractEdata: IInteractEventEdata;
+  hrefPath = '/resources';
+  helpLinkVisibility: string;
+  /**
+   * Workspace access roles
+   */
+  workSpaceRole: Array<string>;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
-    private courseService: CoursesService, private utilService: UtilService,
+    private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -131,8 +141,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+      this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+      this.updateHrefPath(this.router.url);
+      router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: NavigationEnd) => {
+        this.updateHrefPath(event.url);
+      });
   }
 
+  updateHrefPath(url) {
+    if (url.indexOf('explore-course') >= 0) {
+      this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore') >= 0) {
+      this.hrefPath = url.replace('explore', 'resources');
+    } else if (url.indexOf('play') >= 0) {
+      this.hrefPath = '/resources' + url;
+    } else {
+      this.hrefPath = '/resources';
+    }
+  }
   getTelemetryContext() {
     const userProfile = this.userService.userProfile;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -264,6 +292,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   setInteractEventData() {
+    this.groupsMenuIntractEdata = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
+    this.signInIntractEdata = {
+      id: ' signin-tab',
+      type: 'click',
+      pageid: this.router.url
+    };
+    this.workspaceMenuIntractEdata = {
+      id: 'workspace-menu-button',
+      type: 'click',
+      pageid: 'workspace'
+    };
+    this.helpMenuIntractEdata = {
+      id: 'help-menu-tab',
+      type: 'click',
+      pageid: 'help'
+    };
     this.signUpInteractEdata = {
       id: 'signup',
       type: 'click',
@@ -419,6 +467,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    try {
+      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+    } catch (error) {
+      this.helpLinkVisibility = 'false';
+    }
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
@@ -477,4 +530,14 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
   }
 
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      return authroles.url;
+    }
+  }
 }

@@ -1,33 +1,70 @@
 @import './varsass';
-/* new header */
+
 .sbt-header-bar {
-  height:calculateRem(86px);
   width: 100%;
+  @include respond-above(sm) {
+  height:calculateRem(86px);
+  }
 }
 .sbt-header-tool-bar {
   background: var(--sbt-header-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0px calculateRem(16px);
+  @include respond-above(sm) {
+    flex-wrap: nowrap;
+    padding: 0px 0px;
+    }
+    .profile-avtar {
+      display: none;
+      @include respond-above(sm) {
+        display: block;
+        }
+    }
 }
 .sbt-header-logo {
-  min-height: calculateRem(86px);
+  min-height: calculateRem(128px);
   position: relative;
-  display: flex;
-  align-items: center;
+  display: flex;    
+  align-items: flex-start;
+  padding: calculateRem(24px) calculateRem(16px) calculateRem(0px) calculateRem(16px);
+  @include respond-above(sm) {
+    padding: 0px 0px;
+    min-height: calculateRem(86px);
+    align-items: center;
+    }
+    .profile-avtar {
+      @include respond-above(sm) {
+        display: none;
+      }
+    }
 }
 .sbt-header-menu-bar {
   position: relative;
-  height:calculateRem(72px);
+  background: var(--sbt-header-bg);
+  @include respond-below(sm) {
+  overflow-x: auto;
+  padding: calculateRem(8px) calculateRem(16px);
+  }
+  @include respond-above(sm) {
+    height:calculateRem(72px);
+    background: none;
+    padding: 0px;
+    }
 }
 .sbt-header-menu-extension {
   background: var(--sbt-header-bg);
 }
 .sbt-header-menu {
+  @include respond-above(sm) {
   position: absolute;
-  left: 0px;right: 0px;
+  left: 0px;
+  right: 0px;
   top: 50%;
   transform: translateY(-50%);
+  }
 }
 
 .ui.menu {

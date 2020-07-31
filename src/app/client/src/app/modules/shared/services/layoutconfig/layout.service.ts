@@ -46,10 +46,10 @@ export class LayoutService {
   }
   redoLayoutCSS(panelIndex,layoutConfigExternal,columnType) {
     let total = 12;
-    console.log(columnType[panelIndex]);
     let resultLayout= columnType[panelIndex];
+    let xxxltotal = panelIndex == 0 ? 4 : 12;
     if(layoutConfigExternal) {
-        return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout;
+        return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout+" sb-g-col-xxxl-"+xxxltotal;
     } else {
       return "sb-g-col-xs-"+total+" sb-g-col-md-"+total+" sb-g-col-lg-"+total;
       

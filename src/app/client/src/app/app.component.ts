@@ -219,8 +219,10 @@ export class AppComponent implements OnInit, OnDestroy {
   switchLayout() {
     if (this.layoutConfiguration) {
       this.layoutConfiguration = null;
+      document.documentElement.setAttribute('layout', '');
     } else {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+      document.documentElement.setAttribute('layout', 'joy');
     }
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }

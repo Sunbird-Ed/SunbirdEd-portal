@@ -21,7 +21,7 @@
       <div class="sb-grid">
         <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
           *ngFor="let content of contentList;let i = index;">
-          <sb-library-card [layoutConfig]="true" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+          <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
           [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
            (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
           </sb-library-card>

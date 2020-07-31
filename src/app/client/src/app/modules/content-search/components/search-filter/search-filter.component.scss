@@ -115,7 +115,6 @@
 
 
 /* new theme css */
-
 .sbt-header-filter-bar {
   background:var(--white);
   box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
@@ -124,11 +123,21 @@
   // overflow: hidden;
   min-width: calculateRem(232px);
   padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
-  position: sticky;
-  top: calculateRem(188px);
-  margin-top:calculateRem(-72px);
+  position: inherit;
+  top: inherit;
+  margin-top:calculateRem(0px);
+  margin-bottom:calculateRem(16px);
   z-index: 2;
-
+  @include respond-above(sm){
+    position: sticky;
+    top: calculateRem(188px);
+    margin-top:calculateRem(-72px);
+  }
+  &.mr-16{
+    @include respond-below(sm){
+      margin-right: 0 !important;
+    }
+  }
   .sbt-filter-scrollable {
     max-height: calc(100vh - 388px);
     height: auto;
@@ -164,7 +173,7 @@
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--primary-color);
-    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    box-shadow: calculateRem(3px) calculateRem(3px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -185,6 +194,7 @@
 :host::ng-deep {
   .sbt-class-bar {
     .sb-slider-pills-container {
+      overflow-x: inherit !important;
       .sb-grade-pills-container {
         background: inherit !important;
       }
@@ -192,18 +202,30 @@
         display: flex !important;
         flex-wrap: wrap;
         justify-content:flex-start;
+        margin:0px calculateRem(-8px) 0px 0;
+        html[dir="rtl"] & {
+          margin:0px 0 0px calculateRem(-8px) !important;
+        }
         .pill {
           padding: calculateRem(8px) calculateRem(16px) !important;
-          color: #6236FF !important;
+          color: var(--sbt-pill-bg-active) !important;
           margin: 0 calculateRem(8px) calculateRem(8px) 0 !important;
-          background-color: rgba(98,54,255,0.13) !important;
+          background-color: var(--sbt-pill-bg) !important;
           font-size: 12px !important;
+          display: unset !important;
+          width: 100px;
+          flex-basis: 100px;
+          flex-grow: 1;
           html[dir="rtl"] & {
             margin: 0 0 calculateRem(8px) calculateRem(8px) !important;
           }
+          // &:last-child{
+          //   flex:inherit;
+          // }
           &.active, &:hover {
             color: var(--white) !important;
-            background-color:  #6236FF!important;
+            background-color: var(--sbt-pill-bg-active)!important;
+            box-shadow:calculateRem(3px) calculateRem(3px) calculateRem(2px) 0 var(--sbt-box-shadow-black) !important;
           }
         }
       }
@@ -267,9 +289,3 @@
 :host ::ng-deep .dropdown:not(.button) > .default.text {
   color: var(--primary-400) !important;
 }
-
-
-
-
-
-
