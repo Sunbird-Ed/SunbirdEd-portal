@@ -17,7 +17,6 @@ const bodyParser = require('body-parser')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = (app) => {
-
     app.all('/content/course/v1/search',
         proxy(contentURL, {
             proxyReqPathResolver: (req) => {
