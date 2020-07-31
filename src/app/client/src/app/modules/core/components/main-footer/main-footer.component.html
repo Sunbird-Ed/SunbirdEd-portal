@@ -75,8 +75,8 @@
   
   <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration">
     <div class="sb-g sbt-fluid-content-bg sbt-footer-container relative">
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-page-content-area"></div>
+      <div [ngClass]="FIRST_PANEL_LAYOUT"></div>
+      <div [ngClass]="SECOND_PANEL_LAYOUT"></div>
       <div class="sbt-container">
         <img src="/assets/images/footer-line.svg" class="sbt-skyline-path" alt="line path">
         <div class="sbt-footer-shade">

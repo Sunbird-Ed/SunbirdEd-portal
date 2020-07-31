@@ -43,8 +43,11 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public cardData: Array<{}> = [];
   public isLoading = true;
   layoutConfiguration:any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
   slideConfig: object = {};
   formData: any;
+
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -57,13 +60,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
   }
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        }
-      });
+    this.initLayout();
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
@@ -89,6 +86,26 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         this.navigationhelperService.goBack();
     });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
+  redoLayout() {
+      if(this.layoutConfiguration!=null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      }
   }
 
   private windowScroll() {
@@ -315,12 +332,5 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     object: _.get(event, 'object')
   };
   this.telemetryService.interact(cardClickInteractData);
-}
-redoLayout(panelIndex) {
-  if(this.layoutConfiguration) {
-    return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-  } else {
-    return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
-  }
 }
 }

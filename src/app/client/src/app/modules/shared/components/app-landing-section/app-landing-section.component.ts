@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LayoutService, COLUMN_TYPE } from '../../services/layoutconfig/layout.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-landing-section',
@@ -15,17 +17,38 @@ export class AppLandingSectionComponent implements OnInit {
   @Input() layoutConfiguration;
 
   @Input() noTitle;
+  
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.initLayout();
   }
-  redoLayout(panelIndex) {
-    if(this.layoutConfiguration) {
-      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-    } else {
-      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
-    }
+  initLayout() {
+    this.redoLayout();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
+  redoLayout() {
+      if(this.layoutConfiguration!=null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      }
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
