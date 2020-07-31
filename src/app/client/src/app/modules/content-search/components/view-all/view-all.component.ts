@@ -162,6 +162,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.initLayout();
     if (!this.userService.loggedIn) {
       this.getChannelId();
     } else {
@@ -211,8 +212,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
     if(layoutConfig!=null) {
       this.layoutConfiguration = layoutConfig.layout;
-    } else {
-      this.layoutConfiguration = null;
     }
     this.redoLayout();
    });
