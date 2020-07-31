@@ -266,7 +266,8 @@ describe('DataChartComponent', () => {
         const key = 'date';
         const result = component['sortData'](inputData, key);
         expect(result).toBeDefined();
-        expect(result).toEqual([{ slug: 'gj', date: '01-01-2017' }, { slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }]);
+        expect(result).toEqual([{ slug: 'gj', date: '01-01-2017' }, { slug: 'ap', date: '01-01-2018' },
+        { slug: 'rj', date: '01-02-2018' }]);
     });
 
 });
