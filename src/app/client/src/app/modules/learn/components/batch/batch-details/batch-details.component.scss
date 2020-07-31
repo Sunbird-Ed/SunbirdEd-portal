@@ -28,6 +28,10 @@
     }
   }
 
+  .text-disabled{
+    color:var(--gray-100);
+  }
+
   ::ng-deep {
   .ui.accordion .active.title .chevron.down.icon {
       margin-top:calculateRem(6px);
