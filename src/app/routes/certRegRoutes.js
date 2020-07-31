@@ -12,9 +12,8 @@ const { getUserCertificates } = require('./../helpers/certHelper');
 
 var certRegServiceApi = {
   searchCertificate : 'certreg/v1/certs/search',
-  reIssueCertificate: '/certreg/v1/user/search',
-  searchUser: '/user/v1/search'
-};
+  getUserDetails: '/certreg/v1/user/search',
+  searchUser: '/user/v1/search'};
 
 module.exports = function (app) {
 
@@ -37,16 +36,16 @@ module.exports = function (app) {
             return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       }
-    }))
+    })) 
 
     let courseId;
-    app.post(certRegServiceApi.reIssueCertificate,
+    app.post(certRegServiceApi.getUserDetails,
       bodyParser.json({ limit: '10mb' }),
       permissionsHelper.checkPermission(),
       proxy(certRegURL, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
         proxyReqPathResolver: function (req) {
-          logger.debug({msg: `${certRegServiceApi.reIssueCertificate} is called with request: ${JSON.stringify(_.get(req, 'body'))}`});
+          logger.info({msg: `${certRegServiceApi.getUserDetails} is called with request: ${JSON.stringify(_.get(req, 'body'))}`});
           courseId = _.get(req, 'body.request.filters.courseId');
           delete req.body.request.filters['courseId'];
           return require('url').parse(certRegURL + certRegServiceApi.searchUser).path;
@@ -62,7 +61,7 @@ module.exports = function (app) {
             }
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
           } catch (err) {
-            logger.error({msg: `Error occured while searching userData with: ${certRegServiceApi.searchUser}, Error: ${err}`});
+            logger.error({msg: `Error occured while searching userData with: ${certRegServiceApi.searchUser}, Error: ${err} ,Payload: ${JSON.stringify(_.get(req, 'body'))}`});
             let data = JSON.parse(proxyResData.toString('utf8'));
             data.result.response = {err: err};
             return proxyUtils.handleSessionExpiry(proxyRes, data, req, res);

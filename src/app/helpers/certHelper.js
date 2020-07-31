@@ -7,6 +7,7 @@ const _ = require('lodash')
 var certRegServiceApi = {
     searchCertificate : 'certreg/v1/certs/search',
     getCourse: 'content/v1/read',
+    searchLocation: 'data/v1/location/search',
   };
 
 // To get Certificate details and course details
@@ -30,28 +31,40 @@ var certRegServiceApi = {
       }
     };
 
-    const appConfig = {
-      headers: {
-        authorization: `Bearer ${envHelper.PORTAL_API_AUTH_TOKEN}`,
-        'content-type': 'application/json',
-      },
-    };
+
     logger.info({msg: `searchCertificate HTTP request is called to get certificates for userId: ${_.get(userData, 'identifier')}`});
-    let certList = await HTTPService.post( certRegURL + certRegServiceApi.searchCertificate, options, appConfig ).toPromise();
+    let certList = await HTTPService.post( certRegURL + certRegServiceApi.searchCertificate, options, getHeaders() ).toPromise().catch(err => {
+      logger.error({msg: `Error occured in  getUserCertificates() while fetching certificates error :  ${JSON.stringify(err.response.data)}`});
+    });
 
     certList = _.get(certList, 'data.result.response.content');
     logger.info({msg: `getCourse HTTP request is called to get coursedata for courseId: ${courseId}`});
 
-    const response = await HTTPService.get( `${certRegURL + certRegServiceApi.getCourse}/${courseId}`, {} ).toPromise();
+    const response = await HTTPService.get( `${certRegURL + certRegServiceApi.getCourse}/${courseId}`, {} ).toPromise().catch(err => {
+      logger.error({msg: `Error occured in getUserCertificates() while fetching course error:  ${JSON.stringify(err.response.data)}`});
+    });
   
     const courses = getCertList ([_.get(response, 'data.result.content')], certList);
+    const requestParams = {
+      request: {
+        filters: {
+          id: _.get(userData, 'locationIds[0]'),
+          type: 'district'
+        }
+      }
+    }
+    let district = await getDistrict( requestParams); 
+    if (_.isEmpty(district) && locationIds.length > 1) {
+      requestParams.request.filters.id = _.get(userData, 'locationIds[1]');
+      district = await getDistrict( requestParams);
+    }
     const resObj = {
         userId: _.get(userData, 'identifier'),
         userName: _.get(userData, 'userName'),
+        district: district,
         courses: _.compact(courses)
     };
-    logger.info({msg: `returning response from getUserCertificates() ${resObj}`});
-
+    logger.info({msg: `returning response from getUserCertificates() ${JSON.stringify(resObj)}`});
     return  resObj;
   }
 
@@ -84,6 +97,23 @@ var certRegServiceApi = {
     return courseList;
   }
 
+  getDistrict = async (requestParams) => {
+  logger.debug({msg: `getDistrict() is called with ${requestParams}`})
+  const response = await HTTPService.post( `${certRegURL + certRegServiceApi.searchLocation}`, requestParams, getHeaders() ).toPromise().catch(err => {
+    logger.error({msg: `Error occured in  getLocation() error:  ${JSON.stringify(err.response.data)}`});
+  })
+  logger.info({msg: `getDistrict() is returning data ${_.get(response, 'data.result.response[0].name')}`})
+  return (_.get(response, 'data.result.response[0].name'));
+};
+
+  getHeaders = () => {
+    return {
+      headers: {
+        authorization: `Bearer ${envHelper.PORTAL_API_AUTH_TOKEN}`,
+        'content-type': 'application/json',
+      },
+    };
+  }
 
   isJSON = (batches) => {
     let parsedBatches = [];
