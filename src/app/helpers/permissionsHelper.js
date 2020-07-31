@@ -177,6 +177,11 @@ let PERMISSIONS_HELPER = {
       }
     })
   },
+  
+  /**
+   * @deprecated
+   * @since - release-3.2.0
+   */
   checkPermission: function () {
     return function (req, res, next) {
       if (enablePermissionCheck && req.session['roles'] && req.session['roles'].length) {
