@@ -115,7 +115,6 @@
 
 
 /* new theme css */
-
 .sbt-header-filter-bar {
   background:var(--white);
   box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
@@ -124,13 +123,20 @@
   // overflow: hidden;
   min-width: calculateRem(232px);
   padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
-  position: sticky;
-  top: calculateRem(188px);
-  margin-top:calculateRem(-72px);
+  position: inherit;
+  top: inherit;
+  margin-top:calculateRem(0px);
+  margin-bottom:calculateRem(16px);
   z-index: 2;
-  display: none;
   @include respond-above(sm){
-    display: block;
+    position: sticky;
+    top: calculateRem(188px);
+    margin-top:calculateRem(-72px);
+  }
+  &.mr-16{
+    @include respond-below(sm){
+      margin-right: 0 !important;
+    }
   }
   .sbt-filter-scrollable {
     max-height: calc(100vh - 388px);
