@@ -31,6 +31,7 @@ export class AppLandingSectionComponent implements OnInit {
     this.redoLayout();
     this.layoutService.switchableLayout().
         pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+          console.log(layoutConfig);
         if(layoutConfig!=null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
