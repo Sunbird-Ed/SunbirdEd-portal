@@ -159,7 +159,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
         const option: any = {
-            filters: filters,
+            filters,
             fields: _.get(this.allTabData, 'search.fields'),
             limit: _.get(this.allTabData, 'search.limit'),
             pageNumber: this.paginationDetails.currentPage,
