@@ -1,4 +1,5 @@
-<app-data-driven-filter [enrichFilters]="facetsList" (dataDrivenFilter)="getFilters($event)" [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="initFilters" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
+<app-global-search [globalSearchFacets]="globalSearchFacets" *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
+</app-global-search>
 
 <div class="ui container">
     <div class="content-grid mt-24">

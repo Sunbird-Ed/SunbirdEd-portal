@@ -2,14 +2,17 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
-import { combineLatest, Subject } from 'rxjs';
+import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, FormService } from '@sunbird/core';
+import { combineLatest, Subject, forkJoin } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { ContentSearchService } from '@sunbird/content-search';
+
+const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
     templateUrl: './library-search.component.html',
     styleUrls: ['./library-search.component.scss']
@@ -20,7 +23,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public noResultMessage;
     public filterType: string;
     public queryParams: any;
-    public hashTagId: string;
+    public channelId: string;
     public unsubscribe$ = new Subject<void>();
     public telemetryImpression: IImpressionEventInput;
     public inViewLogs = [];
@@ -40,6 +43,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public frameworkId;
     public closeIntractEdata;
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
+    public globalSearchFacets: Array<string>;
+    public allTabData;
+    public defaultFilters = {
+        board: [DEFAULT_FRAMEWORK],
+        gradeLevel: [],
+        medium: []
+      };
+      public custodianOrg = true;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -47,24 +58,63 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService) {
+        public navigationhelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
+        public formService: FormService, private contentSearchService: ContentSearchService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
+
+    private getChannelId() {
+        return this.orgDetailsService.getCustodianOrgDetails().pipe(map(custodianOrg => {
+          if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
+            return { channelId: this.userService.hashTagId, custodianOrg: true};
+          } else {
+            return { channelId: this.userService.hashTagId, custodianOrg: false };
+          }
+        }));
+      }
+
     ngOnInit() {
+        const formServiceInputParams = {
+            formType: 'contentcategory',
+            formAction: 'menubar',
+            contentType: 'global'
+        };
+        forkJoin([this.getChannelId(), this.formService.getFormConfig(formServiceInputParams)]).pipe(
+            mergeMap((data: any) => {
+                this.channelId = data[0].channelId;
+                this.custodianOrg = data[0].custodianOrg;
+                const formData = data[1];
+                this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+                this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+                return this.contentSearchService.initialize(this.channelId, this.custodianOrg, this.defaultFilters.board[0]);
+            }),
+            takeUntil(this.unsubscribe$))
+            .subscribe(() => {
+                this.setNoResultMessage();
+                this.initFilters = true;
+            }, (error) => {
+                this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+                this.navigationhelperService.goBack();
+            });
+
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
-              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+                this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
             }
-          });
+        });
+
+        if (_.get(this.userService, 'userProfile.framework')) {
+            const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
+            this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
+        }
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
             }
-          });
-        this.initFilters = true;
+        });
         this.dataDrivenFilterEvent.pipe(first()).
             subscribe((filters: any) => {
                 this.dataDrivenFilters = filters;
@@ -73,7 +123,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     public getFilters(filters) {
-        this.facets = filters.map(element => element.code);
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
                 collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -101,50 +150,40 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-            const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-            let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-            if (_.isEmpty(filters)) {
-                filters = _.omit(this.frameworkData, ['id']);
-            }
-            filters.channel = this.hashTagId;
-            filters.contentType = _.get(allTabData, 'search.filters.contentType');
-            const option: any = {
-                filters: filters,
-                fields: _.get(allTabData, 'search.fields'),
-                limit: _.get(allTabData, 'search.limit'),
-                pageNumber: this.paginationDetails.currentPage,
-                query: this.queryParams.key,
-                mode: 'soft',
-                facets: this.facets,
-                params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
-            };
-            if (this.frameworkId) {
-                option.params.framework = this.frameworkId;
-            }
-            this.searchService.contentSearch(option)
-                .subscribe(data => {
-                    this.showLoader = false;
-                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    this.contentList = this.getOrderedData(_.get(data, 'result.content'));
-                }, err => {
-                    this.showLoader = false;
-                    this.contentList = [];
-                    this.facetsList = [];
-                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-                });
-        }, (err: any) => {
-            this.showLoader = false;
-            this.contentList = [];
-            this.facetsList = [];
-            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        });
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        if (_.isEmpty(filters)) {
+            filters = _.omit(this.frameworkData, ['id']);
+        }
+        filters.channel = this.channelId;
+        filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        const option: any = {
+            filters: filters,
+            fields: _.get(this.allTabData, 'search.fields'),
+            limit: _.get(this.allTabData, 'search.limit'),
+            pageNumber: this.paginationDetails.currentPage,
+            query: this.queryParams.key,
+            mode: 'soft',
+            facets: this.globalSearchFacets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+        };
+        if (this.frameworkId) {
+            option.params.framework = this.frameworkId;
+        }
+        this.searchService.contentSearch(option)
+            .subscribe(data => {
+                this.showLoader = false;
+                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.contentList = this.getOrderedData(_.get(data, 'result.content'));
+            }, err => {
+                this.showLoader = false;
+                this.contentList = [];
+                this.facetsList = [];
+                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+            });
     }
 
     getOrderedData(contents) {
