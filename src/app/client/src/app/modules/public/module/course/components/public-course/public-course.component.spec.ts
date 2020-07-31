@@ -159,9 +159,9 @@ describe('PublicCourseComponent', () => {
   it('should redo layout on render',() => {
     component.layoutConfiguration = {};
     component.ngOnInit();
-    component.redoLayout(0);
+    component.redoLayout();
     component.layoutConfiguration = null;
     component.ngOnInit();
-    component.redoLayout(1);
+    component.redoLayout();
   });
 });
