@@ -6,6 +6,7 @@ import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { RecaptchaComponent } from "ng-recaptcha";
+import { CacheService } from 'ng2-cache-service';
 
 @Component({
   templateUrl: './verify-account-identifier.component.html',
@@ -33,12 +34,14 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   googleCaptchaSiteKey: string;
   isCaptchaEnabled: boolean = true;
   isP2CaptchaEnabled: any;
-  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
+  selectedLanguage : boolean;
+  constructor(public cacheService: CacheService,public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public utilService: UtilService, public configService: ConfigService) {
   }
 
   ngOnInit() {
+    this.selectedLanguage = this.cacheService.get('portalLanguage') ==='ta' ? true : false;
     if (this.verifyState()) {
       this.initializeForm();
     }
