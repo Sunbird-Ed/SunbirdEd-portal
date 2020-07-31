@@ -114,7 +114,7 @@
         }
     }
     &__label {
-        font-size: $font-size-base;
+        font-size: var(--font-size-base);;
         margin-top: calculateRem(8px);
     }
 }

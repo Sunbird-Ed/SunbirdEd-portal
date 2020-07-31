@@ -2,92 +2,155 @@
 @import "./mixins/mixins";
 @import "layout/footer";
 
-
-.new-layout-footer{
-    // margin-top: 2.125rem;
-    // padding: 0;
+:host ::ng-deep{
+  .new-layout-footer{
     .sbt-footer-container {
-        height: calculateRem(296px);
-        width: 100%;
-        padding: 0% 5%;
+      height: calculateRem(296px);
+      width: 100%;
+      padding: 0% 2%;
     }
     .sbt-page-content-area {
-        border-radius: 0rem 0 0 0;
+      border-radius: 0rem 0 0 0;
     }
     .sbt-container{
-      width: 90%;
+      width:calc(100% - 4%);
       padding: 0;
       margin: 0 auto;
-      padding-top: calculateRem(88px);
+      padding-top: calculateRem(60px);
       border-radius: calculateRem(40px) calculateRem(40px) 0 0;
       background-color: var(--white);
       box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
-      left:5%;
+      left:0;
       position:absolute;
       top:calculateRem(24px);
+      bottom: 0;
+      right:0;
       z-index:9;
-      .item-title{
-        font-size: calculateRem(16px);
-        color: var(--gray-800);
-        padding: 0 calculateRem(24px);
+      @include respond-below(sm){
+        bottom: auto;
       }
-      .download-mobile-app{
-        right: auto;
-        left: 14%;
-        width: calculateRem(215px);
-        border: calculateRem(1.18px) solid var(--rc-979797);
-        border-radius: calculateRem(22px) calculateRem(22px) 0 0;
-        background-color: var(--black);
-        box-shadow: none;
+      .sbt-skyline-path{
+        position: absolute;
+        bottom: 0%;
+        overflow: hidden;
+        width: 88%;
+        html[dir="rtl"] & {
+          -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+        }
+        @include respond-below(sm){
+          display: none;
+        }
+      }
+      .sbt-footer-shade{
+        position: absolute;
+        bottom: 0;
+        left: calculateRem(40px);
         html[dir="rtl"] & {
           left: auto;
-          right: 14%;
+          right: calculateRem(40px);
+          -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
         }
-        .download-mobile-app-logo{
-          border-radius: calculateRem(13px) calculateRem(13px) 0 0;
-          padding: calculateRem(40px) 0;
-          min-height: auto !important;
-          .mobile-circles{
-            html[dir="rtl"] & {
-              flex-direction: row-reverse;
+        @include respond-below(sm){
+          display: none;
+        }
+      }
+      .footerMenu {
+        .help-center{
+          margin-bottom: calculateRem(24px);
+          @include respond-below(sm) {
+            margin-bottom: calculateRem(16px);
+          }
+          a{
+            color: #0531FF;
+            font-size: calculateRem(14px);
+            font-weight: bold;
+          }
+        }
+        .contact-info{
+          @include respond-below(sm) {
+            margin-bottom: calculateRem(16px);
+          }
+          a{
+            color: #6236FF;
+            font-size: calculateRem(14px);
+          }
+          .contact-info-title{
+            color: #6236FF;
+            font-weight: bold;
+            font-size: calculateRem(14px);
+            margin-bottom: calculateRem(8px);
+            @include respond-below(sm){
+              margin-bottom: calculateRem(4px);
             }
-            .big-box{
-              border: calculateRem(1px) solid var(--rc-4a4a4a);
-              background-color: var(--black);
+          }
+        }
+      }
+      .footer-terms-info{
+        a{
+          color: var(--green);
+          font-size: calculateRem(14px);
+          font-weight: bold
+        }
+        color: var(--green);
+        font-size: calculateRem(14px);
+        font-weight: bold
+      }
+      .sbt-footer-download-app{
+        justify-content: flex-end;
+        @include respond-below(sm){
+          justify-content: center;
+        }
+        .sbt-footer-bg{
+          padding-top: calculateRem(30px);
+          .sbt-footer-bg-img{
+            height: calculateRem(200px);
+            width: calculateRem(380px);
+            @include respond-below (sm){
+              height: calculateRem(180px);
+              width: calculateRem(320px);
             }
-            .oval-box{
-              background: none;
-              border: calculateRem(1px) solid var(--rc-4a4a4a);
-              border-radius: 3px;
-            }
-            .small-box{
-              border: calculateRem(1px) solid var(--rc-4a4a4a);
-              background-color: var(--black);
+          }
+          .sbt-footer-title{
+            font-size: calculateRem(16px) !important;
+            color: var(--gray-800);
+            padding: 0 calculateRem(24px);
+            position: absolute;
+            width: calculateRem(130px);
+            bottom: calculateRem(95px);
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            @include respond-below (sm){
+              bottom: calculateRem(80px);
             }
           }
           .playStore-img{
             width: calculateRem(164px);
+            position: absolute;
+            bottom: calculateRem(30px);
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            @include respond-below(sm){
+              width: calculateRem(144px);
+              position: absolute;
+              bottom: calculateRem(20px);
+            }
           }
         }
       }
-    }
-    .help-center{
-      color: var(--gray-800);
-      font-size: calculateRem(14px);
-    }
-    .footer-info{
-      color: var(--gray-800);
-      font-size: calculateRem(14px);
-      font-weight: bold;
-    }
-    a{
-      color: var(--gray-800) !important;
-      font-size: calculateRem(14px);
-    }
-    .footer-bg{
-      img{
-        height: calculateRem(185px);
-        width: calculateRem(380px);
+      .ui.grid.stackable{
+        @include respond-below(md){
+          padding: 0 calculateRem(32px) !important;
+        }
       }
-    }
+      .ui.stackable.grid>.wide.column{
+        @include respond-below(md){
+          padding: 0 !important;
+        }
+      }
+    }   
   }
+}

@@ -99,6 +99,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        } 
+      });
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {

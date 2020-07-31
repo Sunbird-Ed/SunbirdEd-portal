@@ -126,16 +126,32 @@
       <div class="sbt-container">
         <!--Header section-->
         <div class="sbt-header-bar sb-g">
-          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sbt-header-logo">
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
+            <div class="d-flex flex-ai-center flex-jc-space-between w-100">
             <!--Logo-->
             <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
               <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                 src="{{tenantInfo.logo}}">
             </a>
-            <!--/Logo-->
+             <!--/Logo-->
+            <!--Avtar Dropdown-->
+            <a class="profile-avtar p-0" tabindex="0">
+              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
+                  name="Guest">
+                </ngx-avatar>
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
+                              [size]="48" initialsSize="1"
+                              name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
+              </div>
+            </a>
+            <!--/Avtar Dropdown-->
+           </div>
+           
           </div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-tool-bar">
-            <app-search [layoutConfiguration]="layoutConfiguration"class="sbt-search-box large mx-24">
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-header-tool-bar">
+            <app-search [layoutConfiguration]="layoutConfiguration" class="sbt-search-box large">
             </app-search>
             <div class="d-flex flex-ai-center">
             <!-- student dropdown -->
@@ -148,13 +164,13 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!--Avtar Dropdown-->
-            <a class="profile-avtar computer only p-0" tabindex="0">
+            <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <ngx-avatar *ngIf='!userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" initialsSize="1"
                   name="Guest">
                 </ngx-avatar>
                 <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle"
-                              [size]="38" initialsSize="1"
+                              [size]="48" initialsSize="1"
                               name="{{userProfile?.firstName}}">
                   </ngx-avatar>
               </div>
@@ -165,11 +181,10 @@
         </div>
 
         <div class="sbt-header-menu-bar sb-g">
-          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3"></div>
-          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sbt-header-menu-extension"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9  sb-g-col-xxxl-12 sbt-header-menu-extension"></div>
           <div class="sbt-header-menu">
-            <app-main-menu [layoutConfiguration]="layoutConfiguration"
-                           class="d-flex computer only ml-auto"></app-main-menu>
+            <app-main-menu [layoutConfiguration]="layoutConfiguration"></app-main-menu>
           </div>
         </div>
       </div>
@@ -275,18 +290,30 @@
           {{resourceService?.frmelmnts?.tab?.courses}}
         </li>
 
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
-        [class.active]="router.isActive(routerLinks?.groups)" 
+        <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
+        [class.active]="router.isActive(routerLinks?.groups)"
         *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
         </li>
 
-        <li class="list-item mobile only" (click)="toggleSideMenu(false)"
+        <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
             *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
           {{resourceService?.frmelmnts?.tab?.contribute}}
         </li>
+        <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+            [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
+            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable'
+            appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+          {{resourceService?.frmelmnts?.tab?.workspace}}
+        </li>
+        <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
+            appPermission (click)="toggleSideMenu(false)"
+            [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+                {{resourceService?.frmelmnts?.tab?.help}}
+              </li>
         <li class="list-item" appTelemetryInteract
             [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
@@ -296,5 +323,29 @@
       </ul>
     </div>
     </div>
+    <ng-container *ngIf="isLayoutAvailable()">
+
+      <div *ngIf="!userService.loggedIn">
+
+        <div class="profile__actions">
+          <ul class="profile__actions__list">
+            <li class="list-item" (click)="toggleSideMenu(false)"
+                [class.active]="router.isActive(routerLinks?.explore)"
+                *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]"
+                appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
+              {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
+            </li>
+
+            <li class="list-item" (click)="toggleSideMenu(false)" appTelemetryInteract
+                [telemetryInteractEdata]="signInIntractEdata">
+              <a href={{hrefPath}}>
+                <span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>
+                {{resourceService.frmelmnts?.btn?.login}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
