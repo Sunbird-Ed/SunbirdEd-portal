@@ -45,6 +45,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   sortingOptions: Array<ISort>;
   public showFilter = true;
   layoutConfiguration;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -63,7 +65,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.initLayout();
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
         this.enrolledSection = data[0];
@@ -88,12 +90,26 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       error => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
     this.layoutService.switchableLayout().
         pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
         if(layoutConfig!=null) {
           this.layoutConfiguration = layoutConfig.layout;
-        } 
+        }
+        this.redoLayout();
       });
+  }
+  redoLayout() {
+      if(this.layoutConfiguration!=null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      }
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -288,12 +304,5 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
-  }
-  redoLayout(panelIndex) {
-    if(this.layoutConfiguration) {
-      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-    } else {
-      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
-    }
   }
 }

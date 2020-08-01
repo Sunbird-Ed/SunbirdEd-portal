@@ -117,4 +117,17 @@ describe('MainFooterComponent', () => {
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
     });
 
+    it('should redirect to diksha app without UTM params if not avaiable', () => {
+        component.layoutConfiguration = {};
+        fixture.detectChanges();
+        component.redoLayout();
+        component.redoLayout();
+        expect(component).toBeTruthy();
+        component.layoutConfiguration = {};
+        fixture.detectChanges();
+        component.redoLayout();
+        component.redoLayout();
+        expect(component).toBeTruthy();
+    });
+
 });

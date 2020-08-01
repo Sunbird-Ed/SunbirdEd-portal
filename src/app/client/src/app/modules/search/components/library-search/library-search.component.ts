@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
@@ -40,20 +40,21 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public frameworkId;
     public closeIntractEdata;
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
-
+    layoutConfiguration;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     ngOnInit() {
+        this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
               this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
@@ -72,6 +73,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.setNoResultMessage();
             });
     }
+    initLayout() {
+        this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.layoutService.switchableLayout().
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+            if(layoutConfig!=null) {
+              this.layoutConfiguration = layoutConfig.layout;
+            }
+          });
+      }
     public getFilters(filters) {
         this.facets = filters.map(element => element.code);
         const defaultFilters = _.reduce(filters, (collector: any, element) => {

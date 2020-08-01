@@ -98,13 +98,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    this.initLayout();
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
@@ -201,6 +195,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseProgressData = courseProgressData;
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
       });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
 
   private parseChildContent() {

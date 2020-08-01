@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } 
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 import {
   ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService,
-  UtilService
+  UtilService, LayoutService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil, filter, map } from 'rxjs/operators';
@@ -27,6 +27,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
+  
 
   unsubscribe$ = new Subject<void>();
   contentId: string;
@@ -35,6 +36,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   isConnected;
   isContentDeleted: Subject<any> = new Subject();
   playerOption: any;
+  layoutConfiguration;
 
   constructor(private activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -43,10 +45,12 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     private utilService: UtilService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    public layoutService: LayoutService
   ) { }
 
   ngOnInit() {
+    this.initLayout();
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();
@@ -69,6 +73,15 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
+  }
   ngOnChanges() {
     if (this.contentDetails && this.tocPage) {
       this.contentId = this.contentDetails.identifier;

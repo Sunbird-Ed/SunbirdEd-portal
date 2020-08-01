@@ -2,11 +2,11 @@
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
 <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
-  <div [ngClass]="redoLayout(0)">
+  <div [ngClass]="FIRST_PANEL_LAYOUT">
     <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
     </app-search-filter>
   </div>
-  <div [ngClass]="redoLayout(1)">
+  <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div *ngIf="false">
   <div class="sb-bg-color-white py-16">

@@ -113,18 +113,21 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    this.initLayout();
     this.subscribeToQueryParam();
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
 
   goBack() {
