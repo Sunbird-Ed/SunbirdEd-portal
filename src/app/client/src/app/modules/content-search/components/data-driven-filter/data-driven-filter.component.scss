@@ -1,43 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
 
-.sb-header-filter-bar {
-  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
-  position: relative;
-}
-
-.state-medium-container {
-  position: relative;
-  z-index: 999;
-  height: calculateRem(64px);
-
-  &__dropdown {
-    padding: calculateRem(16px) 0;
-    z-index: 1;
-  }
-
-  &__separator {
-    height: calculateRem(24px);
-    width: calculateRem(1px);
-    background-color: var(--gray-200);
-    margin: 0px calculateRem(16px) 0px calculateRem(16px);
-
-    @include respond-below(sm) {
-      margin: 0px calculateRem(8px) 0px calculateRem(8px);
-    }
-  }
-
-  &__medium {
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: calculateRem(64px);
-
-    @include respond-below(xs) {
-      flex: 0 0 50%;
-    }
-  }
-}
-
 // state dropdown css
 .ui.selection.dropdown .menu>.item {
   font-size: calculateRem(12px);
@@ -110,8 +73,6 @@
   padding: 0.5rem 0 !important;
 }
 
-
-
 /* new theme css */
 /* over written class pill */
 :host::ng-deep {
@@ -167,7 +128,7 @@
   background: var(--white);
   box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
   min-width: calculateRem(232px);
-  padding: calculateRem(32px) calculateRem(0px) calculateRem(32px) calculateRem(24px);
+  padding: calculateRem(16px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
   position: fixed;
   top: 4px;
   right: 0;
