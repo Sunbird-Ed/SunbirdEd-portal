@@ -33,8 +33,8 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   defaultFooterConfig: any;
   public unsubscribe$ = new Subject<void>();
 
-  FIRST_PANEL_LAYOUT:string;
-  SECOND_PANEL_LAYOUT:string;
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
   
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
@@ -58,20 +58,20 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     this.redoLayout();
   }
   redoLayout() {
-      if(this.layoutConfiguration!=null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine)+ 'sbt-page-content-area';
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine) + ' sbt-page-content-area';
       } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
       }
   }
  ngAfterViewInit() {
-    this.footerAlign();
+    // this.footerAlign();
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.footerAlign();
+    // this.footerAlign();
   }
   // footer dynamic height
   footerAlign() {
