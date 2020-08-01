@@ -1,11 +1,11 @@
 <div class="sb-g">
-    <div [ngClass]="FIRST_LAYOUT">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
         <app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
             *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
             [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
             [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
     </div>
-    <div [ngClass]="SECOND_LAYOUT">
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
         <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
