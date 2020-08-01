@@ -3,11 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService } from '../config/config.service';
 
 export const COLUMN_TYPE = {
-  threeToNine: [3,9],
-  twoToTen: [2,10],
-  fourToEight: [4,8],
-  fiveToSeven: [5,7],
-  fullLayout: [12,12]
+  threeToNine: [3, 9],
+  twoToTen: [2, 10],
+  fourToEight: [4, 8],
+  fiveToSeven: [5, 7],
+  fullLayout: [12, 12]
 };
 
 @Injectable({
@@ -20,14 +20,14 @@ export class LayoutService {
    */
   private _layout$ = new BehaviorSubject<any>(undefined);
   public _layoutConfigData$: Observable<any> = this._layout$.asObservable();
- 
+
 
   constructor(private configService: ConfigService) { }
 
-  layoutConfig:any;
+  layoutConfig: any;
 
   initlayoutConfig() {
-    if(this.layoutConfig!=null) {
+    if (this.layoutConfig != null) {
       return this.layoutConfig;
     } else {
       return this.configService.appConfig.layoutConfiguration;
@@ -37,26 +37,27 @@ export class LayoutService {
   getLayoutConfig() {
     return this.layoutConfig;
   }
-  setLayoutConfig(layoutConfig:any) {
+  setLayoutConfig(layoutConfig: any) {
     this.layoutConfig = layoutConfig;
-    this._layout$.next({layout:layoutConfig});
+    this._layout$.next({layout: layoutConfig});
   }
   switchableLayout() {
     return this._layoutConfigData$;
   }
-  redoLayoutCSS(panelIndex,layoutConfigExternal,columnType) {
-    let total = 12;
-    let resultLayout= columnType[panelIndex];
-    let xxxltotal = panelIndex == 0 ? 4 : 12;
-    if(layoutConfigExternal) {
-        return "sb-g-col-xs-"+total+" sb-g-col-md-"+resultLayout+" sb-g-col-lg-"+resultLayout+" sb-g-col-xxxl-"+xxxltotal;
+  redoLayoutCSS(panelIndex, layoutConfigExternal, columnType) {
+    const total = 12;
+    const sixteenColumn = 16;
+    const resultLayout = columnType[panelIndex];
+    const xxxltotal = panelIndex === 0 ? 4 : 12;
+    if (layoutConfigExternal) {
+        return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + resultLayout + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
     } else {
-      return "sb-g-col-xs-"+total+" sb-g-col-md-"+total+" sb-g-col-lg-"+total+" sb-g-col-xxxl-"+16;
-      
+      return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + total + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
+
     }
   }
   isLayoutAvailable(layoutConfigExternal) {
-    if(layoutConfigExternal!=null) {
+    if (layoutConfigExternal != null) {
       return true;
     }
     return false;
