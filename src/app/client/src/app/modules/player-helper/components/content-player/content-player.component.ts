@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { PlayerConfig } from '@sunbird/shared';
+import { PlayerConfig, LayoutService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
@@ -40,8 +40,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
  */
   @ViewChild('modal') modal;
   @Input() contentData;
+  @Input() layoutConfiguration;
   isLoading: Boolean = false; // To restrict player loading multiple times
-  constructor(public router: Router) {
+  constructor(public router: Router, public layoutService:LayoutService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -74,6 +75,16 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
         this.contentProgressEvents$.next(data);
       });
     }
+    this.initLayout();
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   generateScoreSubmitEvent(event: any) {

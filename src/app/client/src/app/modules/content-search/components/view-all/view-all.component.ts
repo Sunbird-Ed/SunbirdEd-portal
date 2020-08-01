@@ -138,6 +138,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   showDownloadLoader = false;
   layoutConfiguration:any;
+  FIRST_PANEL_LAYOUT:string;
+  SECOND_PANEL_LAYOUT:string;
 
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
@@ -160,7 +162,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    this.initLayout();
     if (!this.userService.loggedIn) {
       this.getChannelId();
     } else {
@@ -201,12 +203,18 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
+    
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+    this.redoLayout();
+   });
   }
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
@@ -414,11 +422,13 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
-  redoLayout(panelIndex) {
+  redoLayout() {
     if(this.layoutConfiguration) {
-      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
     } else {
-      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
     }
   }
 

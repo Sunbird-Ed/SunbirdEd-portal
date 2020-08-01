@@ -191,9 +191,9 @@ describe('ViewAllComponent', () => {
   });
   it('should redo layout on render', () => {
     component.layoutConfiguration = {};
-    component.redoLayout(0);
+    component.redoLayout();
     component.layoutConfiguration = null;
-    component.redoLayout(1);
+    component.redoLayout();
   });
 
   it('should process the data if view-all is clicked from My-Courses section', () => {

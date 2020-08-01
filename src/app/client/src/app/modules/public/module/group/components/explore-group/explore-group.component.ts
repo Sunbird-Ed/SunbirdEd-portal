@@ -30,13 +30,7 @@ export class ExploreGroupComponent implements OnInit {
 
   ngOnInit() {
     this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    this.initLayout();
     this.telemetryImpression = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env')
@@ -49,6 +43,15 @@ export class ExploreGroupComponent implements OnInit {
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
 
   addTelemetry (id) {
