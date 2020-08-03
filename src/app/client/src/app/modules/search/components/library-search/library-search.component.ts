@@ -45,7 +45,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public globalSearchFacets: Array<string>;
     public allTabData;
     layoutConfiguration;
-
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
