@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchComponent } from './components';
+  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
@@ -17,7 +17,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchComponent],
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent],
   imports: [
     SharedFeatureModule,
     RouterModule,
@@ -32,6 +32,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
   ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchComponent]
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent]
 })
 export class ContentSearchModule { }
