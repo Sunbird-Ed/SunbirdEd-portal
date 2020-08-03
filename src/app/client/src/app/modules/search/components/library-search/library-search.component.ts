@@ -22,7 +22,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public noResultMessage;
     public filterType: string;
     public queryParams: any;
-    public channelId: string;
+    public hashTagId: string;
     public unsubscribe$ = new Subject<void>();
     public telemetryImpression: IImpressionEventInput;
     public inViewLogs = [];
@@ -129,7 +129,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             filters = _.omit(this.frameworkData, ['id']);
         }
         if (!filters.channel) {
-            filters.channel = this.channelId;
+            filters.channel = this.hashTagId;
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
         const option: any = {
