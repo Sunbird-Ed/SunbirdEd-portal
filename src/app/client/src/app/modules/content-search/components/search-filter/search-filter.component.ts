@@ -97,6 +97,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.emitFilterChangeEvent();
     });
   }
+
+  private mediumFilterChange(event) {
+    this.selectedMediumIndex = event.label;
+    this.emitFilterChangeEvent();
+  }
   private updateBoardList() {
     if (this.filters.board || !this.filters.board.length) {
       this.emptyBoard = true;
