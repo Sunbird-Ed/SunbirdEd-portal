@@ -19,7 +19,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
-  constructor(public resourceService: ResourceService, private router: Router,
+  constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
   }
 
@@ -32,7 +32,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   public resetFilters() {
     this.selectedFilters = _.pick(this.selectedFilters, ['key']);
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
-    if (this.activatedRoute.snapshot.params.pageNumber) { // when using dataDriven filter should this should be verified
+    if (_.get(this.activatedRoute, 'snapshot.params.pageNumber')) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
     } else {
       redirectUrl = this.router.url.split('?')[0];

@@ -7,16 +7,21 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { BehaviorSubject } from 'rxjs';
 
 describe('GlobalSearchFilterComponent', () => {
   let component: GlobalSearchFilterComponent;
   let fixture: ComponentFixture<GlobalSearchFilterComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = jasmine.createSpy('url');
+    url = '/all/1?medium=test';
   }
 
   class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    paramsMock = new BehaviorSubject<any>({ pageNumber: '1' });
+    get params() { return this.paramsMock.asObservable(); }
+    get queryParams() { return this.queryParamsMock.asObservable(); }
     snapshot = {
       data: {
         telemetry: { env: 'search', pageid: 'global-search', type: 'view', subtype: 'paginate' }
@@ -37,7 +42,13 @@ describe('GlobalSearchFilterComponent', () => {
     fixture = TestBed.createComponent(GlobalSearchFilterComponent);
     component = fixture.componentInstance;
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call ngoninit', () => {
+    component.ngOnInit();
+    expect(component.selectedFilters).toEqual({ subject: ['English'] });
+  });
+
+  it('should reset filters', () => {
+    component.resetFilters();
+    expect(component.router.navigate).toHaveBeenCalled();
   });
 });
