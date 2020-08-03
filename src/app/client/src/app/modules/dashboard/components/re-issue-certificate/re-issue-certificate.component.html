@@ -1,28 +1,28 @@
-<div class="ui stackable grid re-issue-content">
+<div class="ui stackable grid re-issue-content" [appTelemetryImpression]="telemetryImpression">
   <div class="twelve wide column">
     <div class="sb-bg-color-white px-16">
       <div class="ui grid">
         <div class="seven wide column">
-          <div class="reissue-title text-left font-weight-bold"> Re-issue Certificates </div>
+          <div class="reissue-title text-left font-weight-bold">{{resourceService?.frmelmnts?.lbl?.certificates}} </div>
           <div class="sb-field certificate-id-content">
             <label class="d-inline-flex flex-ai-center flex-jc-space-between w-100 user-id-label" for="id">
-              <span>Enter Diksha Id</span></label>
+              <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}</span></label>
             <div class="d-flex">
               <div class="user-id-input">
-                <input class="sb-form-control font-weight-bold" name="id" placeholder="Enter user ID" type="id">
+                <input class="sb-form-control font-weight-bold" name="id" placeholder="Enter user ID" type="id" [(ngModel)]="userName">
                 <small class="message sb-color-error font-weight-bold mt-8"></small></div>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button">Search</button>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button" (click)="getCertList();addTelemetry('search-user-cert', {userName: userName})" [disabled]="!userName || disableBtn"
+                [ngClass]="{'sb-btn-disabled': !userName?.trim()}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
           </div>
         </div>
         <div class="five wide column">
           <div class="fsmall certificate-id-info">
-            <div> What is Diksha Id ? </div>
-            <div class="py-8">Use the following instructions to guide members to identify
-              their unique DIKSHA ID.</div>
+            <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': instance}} </div>
+            <div class="py-8">{{resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance}}</div>
             <div class="pt-8">
-              <div>Step 1 : Click Profile tab</div>
-              <div class="py-8">Step 2 : See the DIKSHA ID here</div>
+              <div>{{resourceService?.frmelmnts?.lbl?.step1}} {{resourceService?.frmelmnts?.lbl?.profileTab}}</div>
+              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': instance}}</div>
             </div>
           </div>
         </div>
@@ -30,22 +30,22 @@
     </div>
   </div>
 
-  <div class="twelve wide column mt-24">
+  <div class="twelve wide column mt-24" *ngIf="batchList.length">
     <div class="sb-bg-color-white px-16 py-24">
       <div class="d-flex re-issue-list-content">
           <div class="re-issue-list-content__labels pt-0 px-16 pb-16">
             <div class="ui stackable grid mt-0">
               <div class="three wide column">
-                <div class="re-issue-label">Batch Name</div>
+                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.batch_name}}</div>
               </div>
               <div class="three wide column">
-                <div class="re-issue-label">User Name</div>
+                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-label">User District</div>
+                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.userDistrict}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-label">Course Progress</div>
+                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
               </div>
               <div class="two wide column">
                 <div class="re-issue-label"></div>
@@ -53,39 +53,25 @@
             </div>
           </div>
 
-          <div class="sb-bg-color-white pt-0 px-16 pb-16">
-            <div class="ui stackable grid mt-0">
+          <div class="sb-bg-color-white pt-0 px-16 pb-16" >
+            <div class="ui stackable grid mt-0" *ngFor="let batch of batchList">
               <div class="three wide column">
-                <div class="re-issue-status">Cbse batchID 2376590 </div>
-              </div>
-              <div class="three wide column">
-                <div class="re-issue-status">Kunwar Singh Gahawar</div>
-              </div>
-              <div class="two wide column">
-                <div class="re-issue-status">Bangalore</div>
-              </div>
-              <div class="two wide column">
-                <div class="re-issue-status">Completed</div>
-              </div>
-              <div class="two wide column">
-                <div class="re-issue-status"><a href="#preview" class="font-weight-bold">Re-issue Certificate</a></div>
-              </div>
-            </div>  
-            <div class="ui stackable grid mt-0">
-              <div class="three wide column">
-                <div class="re-issue-status">Cbse batchID 2376590 </div>
+                <div class="re-issue-status">{{batch?.name}}</div>
               </div>
               <div class="three wide column">
-                <div class="re-issue-status">Kunwar Singh Gahawar</div>
+                <div class="re-issue-status">{{userData?.userName}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-status">Bangalore</div>
+                <div class="re-issue-status">{{userData?.district}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-status">Completed</div>
+                <div class="re-issue-status" *ngIf="batch?.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
+                <div class="re-issue-status" *ngIf="batch?.progress < 100">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
               </div>
               <div class="two wide column">
-                <div class="re-issue-status"><a href="#preview" class="font-weight-bold">Re-issue Certificate</a></div>
+                <div class="re-issue-status">
+                  <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
+                </div>
               </div>
             </div>   
           </div>
@@ -93,7 +79,24 @@
       </div>
     </div>
  
-  <div class="d-flex flex-dc w-100">
-    <div class="records-count-label pl-16">Showing 2 of 2 records</div>
+  <div class="d-flex flex-dc w-100" *ngIf="batchList.length">
+    <div class="records-count-label pl-16">Showing {{batchList.length}} of {{batchList.length}} records</div>
   </div>
 </div>
+
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-primary"
+  appBodyScroll (dismissed)="toggleModal(false);addTelemetry('close-re-issue-popup', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.certificates}} ?
+  </div>
+  <div class="sb-modal-content">
+    <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}} ?</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="reIssueCert(userBatch);addTelemetry('re-issue-cert-confirm', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="toggleModal(false);addTelemetry('re-issue-cert-cancel', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })">{{resourceService?.frmelmnts?.btn?.no}}</button>
+  </div>
+</sui-modal>
