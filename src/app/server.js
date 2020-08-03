@@ -52,6 +52,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/sso/sign-in/*'
 ],
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -171,7 +172,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   logger.error({
     msg: `please set environment variable sunbird_environment,sunbird_instance
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
-  process.exit(1)
+  // process.exit(1)
 }
 function runApp() {
 
