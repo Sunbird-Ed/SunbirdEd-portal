@@ -8,7 +8,10 @@ import * as _ from 'lodash-es';
 })
 export class SelectOptionGroupComponent implements OnInit {
   @Input() optionData: Array<{}>;
+  @Input() title: string;
+  @Input() showHeader: boolean;
   @Input() selectedOption: { label: string, value: string, selectedOption: string };
+  @Input() selectedOptionValue: any;
   @Output() selectedValue = new EventEmitter<{ label: string, value: string, selectedOption: string }>();
   public preSelectedValue: string;
   @Input() layoutConfiguration;
@@ -30,17 +33,25 @@ export class SelectOptionGroupComponent implements OnInit {
    * @since release-3.1.0
    */
   choosedValue() {
-    if (this.selectedOption.label === 'Publisher') {
-      const publisher = _.find(this.optionData, ['label', 'Publisher']);
-      if (publisher) {
-        _.forEach(publisher.option, value => {
-          if (value.value === this.selectedOption.selectedOption) {
-            this.preSelectedValue = value.name;
-          }
-        });
-      }
+    if (this.selectedOptionValue) {
+      _.forEach(this.optionData , (value, key) => {
+         if (key === this.selectedOptionValue.index) {
+          this.preSelectedValue = value;
+        }
+      });
     } else {
-      this.preSelectedValue = this.selectedOption.selectedOption;
+      if (this.selectedOption.label === 'Publisher') {
+        const publisher = _.find(this.optionData, ['label', 'Publisher']);
+        if (publisher) {
+          _.forEach(publisher.option, value => {
+            if (value.value === this.selectedOption.selectedOption) {
+              this.preSelectedValue = value.name;
+            }
+          });
+        }
+      } else {
+        this.preSelectedValue = this.selectedOption.selectedOption;
+      }
     }
   }
 }
