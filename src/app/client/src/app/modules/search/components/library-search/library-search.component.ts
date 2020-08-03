@@ -45,14 +45,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
     public globalSearchFacets: Array<string>;
     public allTabData;
-    public defaultFilters = {
-        board: [DEFAULT_FRAMEWORK],
-        gradeLevel: [],
-        medium: []
-      };
-      public custodianOrg = true;
-
     layoutConfiguration;
+
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -67,40 +61,16 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
-
-    private getChannelId() {
-        return this.orgDetailsService.getCustodianOrgDetails().pipe(map(custodianOrg => {
-          if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
-            return { channelId: this.userService.hashTagId, custodianOrg: true};
-          } else {
-            return { channelId: this.userService.hashTagId, custodianOrg: false };
-          }
-        }));
-      }
-
     ngOnInit() {
-        const formServiceInputParams = {
-            formType: 'contentcategory',
-            formAction: 'menubar',
-            contentType: 'global'
-        };
-        forkJoin([this.getChannelId(), this.formService.getFormConfig(formServiceInputParams)]).pipe(
-            mergeMap((data: any) => {
-                this.channelId = data[0].channelId;
-                this.custodianOrg = data[0].custodianOrg;
-                const formData = data[1];
-                this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-                this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-                return this.contentSearchService.initialize(this.channelId, this.custodianOrg, this.defaultFilters.board[0]);
-            }),
-            takeUntil(this.unsubscribe$))
-            .subscribe(() => {
-                this.setNoResultMessage();
-                this.initFilters = true;
-            }, (error) => {
-                this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-                this.navigationhelperService.goBack();
-            });
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+            this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            this.setNoResultMessage();
+            this.initFilters = true;
+        }, error => {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+            this.navigationhelperService.goBack();
+        });
 
         this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
@@ -109,10 +79,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
 
-        if (_.get(this.userService, 'userProfile.framework')) {
-            const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
-            this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
-        }
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
@@ -186,7 +152,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;
-                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+                this.facetsList = this.searchService.processFilterData(this.facets);
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];

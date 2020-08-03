@@ -26,13 +26,13 @@
         </div>
 
         <!-- class section -->
-        <!-- <div class="state-medium-container__dropdown" *ngIf="gradeLevels?.length">
+        <div class="state-medium-container__dropdown" *ngIf="gradeLevels?.length">
           <span>Class: </span>
           <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
             [selectedItems]="[selectedGradeLevelIndex]"
             (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
             [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
-        </div> -->
+        </div>
 
         <!-- subject section -->
         <div class="state-medium-container__dropdown" *ngIf="subjects?.length">
