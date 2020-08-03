@@ -1,3 +1,5 @@
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <app-data-driven-filter [enrichFilters]="facetsList" (dataDrivenFilter)="getFilters($event)" [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="initFilters" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
 
 <div class="ui container">

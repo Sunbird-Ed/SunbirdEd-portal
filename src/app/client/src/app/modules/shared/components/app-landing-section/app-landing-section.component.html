@@ -1,8 +1,8 @@
 <div class="sbt-fluid-header-bg mb-8" *ngIf="layoutConfiguration">
   <div class="sb-g sbt-container sbt-page-header" [ngClass]="{'sb-no-title': noTitle}">
-  <div [ngClass]="redoLayout(0)">
+  <div [ngClass]="FIRST_PANEL_LAYOUT">
   </div>
-  <div class="relative" [ngClass]="redoLayout(1)">
+  <div class="relative" [ngClass]="SECOND_PANEL_LAYOUT">
       <img *ngIf="!noTitle" class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="Textbooks">
       <div class="sbt-page-header-content pl-24" [ngClass]="{'sb-no-title': noTitle}">
           <h1>{{textToDisplay}}</h1>
@@ -11,3 +11,4 @@
   </div>
   </div>
 </div>
+<div *ngIf="!layoutConfiguration"></div>

@@ -257,8 +257,8 @@ describe('ExploreComponent', () => {
   it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
-    component.redoLayout(0);
+    component.redoLayout();
     component.layoutConfiguration = null;
-    component.redoLayout(1);
+    component.redoLayout();
   });
 });

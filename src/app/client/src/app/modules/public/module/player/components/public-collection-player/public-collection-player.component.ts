@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService, UtilService, ITelemetryShare
+  ContentUtilsServiceService, UtilService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -112,6 +112,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public unsubscribe$ = new Subject<void>();
   selectedContent: {};
   pageId: string;
+  layoutConfiguration;
 
   constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -120,7 +121,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public popupControlService: PopupControlService,
     public utilService: UtilService, public userService: UserService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService,
+    public layoutService: LayoutService) {
     this.contentService = contentService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -139,12 +141,22 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
   }
   ngOnInit() {
+    this.initLayout();
     this.pageId = this.route.snapshot.data.telemetry.pageid;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.contentData = this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
   setTelemetryData() {
     if (this.dialCode) {

@@ -30,13 +30,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService) {
   }
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    this.initLayout();
     this.coursesService.enrolledCourseData$.pipe(first(),
       mergeMap(({ enrolledCourses }) => {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
@@ -88,6 +82,15 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         }
         this.navigationHelperService.navigateToResource('/learn');
       });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {
     const allBatchesOfCourse = _.filter(enrolledCourses, { courseId })

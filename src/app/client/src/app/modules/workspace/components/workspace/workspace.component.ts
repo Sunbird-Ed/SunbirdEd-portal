@@ -20,13 +20,16 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initLayout();
+  }
+  initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
