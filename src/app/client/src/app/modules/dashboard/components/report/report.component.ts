@@ -1,7 +1,7 @@
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryService } from '@sunbird/telemetry';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } from 'rxjs';
@@ -16,7 +16,7 @@ import { ISummaryObject } from '../../interfaces';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
-export class ReportComponent implements OnInit, AfterViewInit {
+export class ReportComponent implements OnInit {
 
   public report: any;
   public showSummaryModal = false;
@@ -26,7 +26,6 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private downloadUrl: string;
   public reportObj: any;
   public isUserReportAdmin = false;
-  telemetryImpression: IImpressionEventInput;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
   @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
@@ -56,10 +55,10 @@ export class ReportComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
+  constructor(public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router) { }
+    private router: Router, private telemetryService: TelemetryService) { }
 
   ngOnInit() {
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -170,9 +169,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.downloadUrl = url;
   }
 
-  public setTelemetryInteractObject(val) {
+  public getTelemetryInteractEdata = ({ id = 'report-chart', type = 'click', pageid = this.activatedRoute.snapshot.data.telemetry.pageid,
+    subtype = null }) => ({ id, type, pageid, ...subtype && { subtype } })
+
+  public setTelemetryInteractObject(val?: string) {
     return {
-      id: val,
+      id: val || this.activatedRoute.snapshot.params.reportId,
       type: 'Report',
       ver: '1.0'
     };
@@ -184,27 +186,6 @@ export class ReportComponent implements OnInit, AfterViewInit {
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        object: {
-          id: this.activatedRoute.snapshot.params.reportId,
-          type: 'Report',
-          ver: '1.0'
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
   }
 
   downloadReport(reportType: string) {
@@ -374,6 +355,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
         const { reportId } = this.activatedRoute.snapshot.params;
         event['hash'] = this.hash;
         this.closeSummaryModal();
+        const cdata = [...(event['chartId'] ? [this.getCDataObj({ id: event['chartId'], type: 'Chart' })] : [])];
+        this.logTelemetry({ type: 'select-submit', cdata, subtype: _.get(event, 'type') });
         return this.reportService.addReportSummary({
           reportId,
           summaryDetails: event
@@ -469,6 +452,43 @@ export class ReportComponent implements OnInit, AfterViewInit {
       this.refreshComponent();
     });
   }
+
+  public getCDataObj = ({ id, type }) => ({ id, type });
+
+  private logTelemetry({ type, cdata = [], subtype = null }) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'reports',
+        cdata: [...cdata, { id: _.get(this.reportService.getParameterValues('$slug'), 'value'), type: 'State' }]
+      },
+      edata: {
+        ...this.getTelemetryInteractEdata({ type, subtype }),
+      },
+      object: {
+        ...this.setTelemetryInteractObject(),
+        rollup: {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  public getTelemetryImpressionObj = ({ type }) => ({
+    context: {
+      env: this.activatedRoute.snapshot.data.telemetry.env
+    },
+    object: {
+      id: this.activatedRoute.snapshot.params.reportId,
+      type: 'Report',
+      ver: '1.0'
+    },
+    edata: {
+      type: type || this.activatedRoute.snapshot.data.telemetry.type,
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      uri: this.router.url,
+      duration: this.navigationhelperService.getPageLoadTime()
+    }
+  })
+
 }
 
 

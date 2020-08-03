@@ -365,15 +365,14 @@ describe('ReportComponent', () => {
   it('should handle handleAddSummaryStreams subscription', done => {
     component['hash'] = 'hash';
     spyOn(component, 'closeSummaryModal');
+    spyOn(reportService, 'getParameterValues').and.returnValue({ value: 'tn' });
     spyOn(reportService, 'addReportSummary').and.returnValue(of({}));
     component['handleAddSummaryStreams']().subscribe(res => {
       expect(component.closeSummaryModal).toHaveBeenCalled();
       expect(reportService.addReportSummary).toHaveBeenCalled();
       done();
     });
-
     component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
-
   });
 
 });

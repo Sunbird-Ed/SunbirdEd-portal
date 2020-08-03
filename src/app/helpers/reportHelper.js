@@ -226,7 +226,8 @@ const getParameterValue = (param, user) => {
     const parametersMapping = {
         $slug: _.get(user, 'rootOrg.slug'),
         $board: _.get(user, 'framework.board'),
-        $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name')
+        $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name'),
+        $channel: _.get(user, 'rootOrg.hashTagId')
     };
     return parametersMapping[param];
 }

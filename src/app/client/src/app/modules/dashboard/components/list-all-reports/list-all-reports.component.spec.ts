@@ -259,4 +259,12 @@ describe('ListAllReportsComponent', () => {
     }));
   });
 
+  it('should get the count of different status of reports', () => {
+    const reports = [{ status: 'live' }, { status: 'live' }, { status: 'draft' }];
+    let result = component['getReportsCount']({ reports, status: 'live' });
+    expect(result).toBe(2);
+    result = component['getReportsCount']({ reports, status: 'draft' });
+    expect(result).toBe(1);
+  });
+
 });

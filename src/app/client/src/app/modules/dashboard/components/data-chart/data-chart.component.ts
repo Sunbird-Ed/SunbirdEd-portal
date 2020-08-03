@@ -87,7 +87,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
-    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
+    private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
   }
@@ -270,10 +270,20 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartLabels = labels;
   }
 
+  private sortData(chartData, labelsExpr) {
+    return _.orderBy(chartData, data => {
+      const date = moment(data[labelsExpr], 'DD-MM-YYYY');
+      if (date.isValid()) { return date; }
+      return data[labelsExpr];
+    });
+  }
+
   getDataSetValue(chartData = this.chartData) {
     let groupedDataBasedOnLabels;
-    if (_.get(this.chartConfig, 'labelsExpr')) {
-      groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
+    const labelsExpr = _.get(this.chartConfig, 'labelsExpr');
+    if (labelsExpr) {
+      const sortedData = this.sortData(chartData, labelsExpr);
+      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) => _.trim(data[labelsExpr].toLowerCase()));
     }
     this.setChartLabels(groupedDataBasedOnLabels);
     this.datasets = [];
@@ -283,9 +293,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
       const fill = _.isBoolean(_.get(dataset, 'fill')) ? _.get(dataset, 'fill') : true;
       const type = _.get(dataset, 'type');
       const lineThickness = _.get(dataset, 'lineThickness');
+      const goalValue = _.get(dataset, 'goal');
       this.datasets.push({
         label: dataset.label,
-        data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr'], +_.get(dataset, 'top')),
+        data: (goalValue && this.getGoalsDataset(chartData, +goalValue)) || (_.get(dataset, 'data') ||
+          this.getData(groupedDataBasedOnLabels, dataset['dataExpr'], +_.get(dataset, 'top'))),
         hidden,
         fill,
         ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' },
@@ -297,6 +309,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (this.showGraphStats) {
       this.calculateGraphStats();
     }
+  }
+
+  private getGoalsDataset(chartData, goalValue: number) {
+    return _.fill(chartData, goalValue);
   }
 
   private calculateGraphStats() {
