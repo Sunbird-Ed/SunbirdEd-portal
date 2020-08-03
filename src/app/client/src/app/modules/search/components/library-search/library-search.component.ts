@@ -71,10 +71,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
-                this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
             }
         });
-
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
