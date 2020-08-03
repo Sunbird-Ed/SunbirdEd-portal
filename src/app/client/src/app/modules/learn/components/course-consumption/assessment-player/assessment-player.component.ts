@@ -318,15 +318,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
-    if (_.get(telObject, 'edata.summary')) {
-      const playerSummary = _.get(telObject, 'edata.summary').reduce((acc, s) => {
-        Object.keys(s).forEach((k) => { acc[k] = s[k]; });
-        return acc;
-      }, {});
-      if (this.activeContent.mimeType === 'application/vnd.ekstep.ecml-archive' && !playerSummary.endpageseen) {
-        request['status'] = 1;
-      }
-    }
 
     /* istanbul ignore else */
     if (!eid) {
