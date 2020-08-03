@@ -1,7 +1,7 @@
 import { UserService } from '@sunbird/core';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
@@ -16,16 +16,16 @@ import 'datatables.net';
   templateUrl: './list-all-reports.component.html',
   styleUrls: ['./list-all-reports.component.scss']
 })
-export class ListAllReportsComponent implements OnInit, AfterViewInit {
+export class ListAllReportsComponent implements OnInit {
   reports: any;
 
   constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute,
-    private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService) { }
+    private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
+    private telemetryService: TelemetryService) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
   private _isUserReportAdmin: boolean;
-  public telemetryImpression: IImpressionEventInput;
 
   @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
@@ -83,7 +83,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
    */
   public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
     this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])],
-      { queryParams: { ...(this.reportService.isUserSuperAdmin() && { materialize }) } }).catch(err => {
+      { queryParams: { ...(this.reportService.isUserReportAdmin() && { materialize }) } }).catch(err => {
         console.log({ err });
       });
   }
@@ -103,22 +103,23 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     }
 
     const icon = {
-      live: { color: 'success', icon: 'check' },
-      draft: { color: 'primary', icon: 'edit' },
-      retired: { color: 'warning', icon: 'close' },
-      ['partially live']: { color: 'secondary', icon: 'check' }
+      live: { color: 'success-0', icon: 'check' },
+      draft: { color: 'warning-0', icon: 'edit' },
+      retired: { color: 'primary-100', icon: 'close' },
+      ['partially live']: { color: 'secondary-0', icon: 'check' }
     };
 
     const status = _.startCase(_.toLower(data));
-    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">${status}</span>`;
+    const spanElement = `<span class="sb-label sb-label-table sb-label-${icon[_.toLower(data)].color}">
+    ${data === 'live' ? `<span class="sb-live"></span>` : ''} ${status}</span>`;
     return spanElement;
   }
 
   private renderTags(data) {
 
     if (Array.isArray(data)) {
-      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">${_.startCase(_.toLower(tag))}</span>`), ' ');
-      return `<div class="sb-filter-label mb-16"><div class="d-inline-flex">${elements}</div></div>`;
+      const elements = _.join(_.map(data, tag => `<span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">${_.startCase(_.toLower(tag))}</span>`), ' ');
+      return `<div class="sb-filter-label"><div class="d-inline-flex m-0">${elements}</div></div>`;
     }
 
     return _.startCase(_.toLower(data));
@@ -161,8 +162,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         {
           title: 'Title', data: 'title', render: (data, type, row) => {
             const { title, description } = row;
-            return `<div class="sb-media"><div class="sb-media-body"><h6 class="media-heading ellipsis p-0">
-                  ${title}</h6> <p class="media-description"> ${description}</p></div></div>`;
+            return `<div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                  ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
           }
         },
         {
@@ -193,8 +194,9 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
       if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
-      const hash = _.get(rowData, 'hashed_val');
-      this.rowClickEventHandler(_.get(rowData, 'reportid'), hash);
+      const { reportid, hashed_val, materialize } = rowData;
+      this.logTelemetry({ type: 'select-report', id: `${reportid}` });
+      this.rowClickEventHandler(reportid, hashed_val, materialize || false);
     });
 
     const getChildTable = (table_id) => `<table id="${table_id}" class="w-80 b-1"></table>`;
@@ -209,6 +211,14 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
         if (!rowData.isParameterized) { return false; }
         if (!_.has(rowData, 'children')) { return false; }
         const id = rowData.reportid;
+
+        this.logTelemetry({
+          type: 'select-parameterized', id: `${id}`,
+          cdata: [{ id: `${_.get(rowData, 'children.length')}`, type: 'CountReports' },
+          { id: `${this.getReportsCount({ reports: rowData.children, status: 'live' })}`, type: 'Live' },
+          { id: `${this.getReportsCount({ reports: rowData.children, status: 'draft' })}`, type: 'Draft' }]
+        });
+
         row.child(getChildTable(id)).show();
         const childTable = $(`#${id}`).DataTable({
           paging: true,
@@ -236,31 +246,60 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
         $(`#${id}`).on('click', 'td', e => {
           const { reportid, hashed_val, materialize } = childTable.row(e.currentTarget).data();
+          this.logTelemetry({ type: 'select-report', id: `${reportid}`, cdata: [{ id: `${this.reportService.getParameterFromHash(hashed_val)}`, type: 'ParameterName' }] });
           this.rowClickEventHandler(reportid, hashed_val, materialize || false);
         });
       }
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        object: {
-          id: this.userService.userid,
-          type: 'user',
-          ver: '1.0'
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
+  public getTelemetryImpression = ({ type, cdata = [] }) => ({
+    context: {
+      env: this.activatedRoute.snapshot.data.telemetry.env,
+      cdata
+    },
+    object: {
+      id: this.userService.userid,
+      type: 'user',
+      ver: '1.0'
+    },
+    edata: {
+      type,
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      uri: this.router.url,
+      duration: this.navigationhelperService.getPageLoadTime()
+    }
+  })
+
+  public setTelemetryInteractObject = ({ id, type = 'Report', ver = '1.0' }) => ({ id, type, ver });
+
+  public setTelemetryInteractEdata({ type, id = 'reports-list' }) {
+    return {
+      id,
+      type,
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
+  private logTelemetry({ type, cdata = [], id }) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'reports',
+        cdata
+      },
+      edata: {
+        ...this.setTelemetryInteractEdata({ type }),
+      },
+      object: {
+        ...this.setTelemetryInteractObject({ id }),
+        rollup: {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  private getReportsCount({ reports = [], status = 'draft' }) {
+    return _.size(_.filter(reports, report => _.get(report, 'status') === status));
   }
 
 }

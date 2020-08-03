@@ -6,6 +6,10 @@ const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
 const ApiInterceptor = require('sb_api_interceptor')
 const logger = require('sb_logger_util_v2')
+const http = require('http');
+const https = require('https');
+const httpAgent = new http.Agent({ keepAlive: true, });
+const httpsAgent = new https.Agent({ keepAlive: true, });
 
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -22,7 +26,7 @@ const cacheConfig = {
 
 const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
 
-const decorateRequestHeaders = function () {
+const decorateRequestHeaders = function (upstreamUrl = "") {
   return function (proxyReqOpts, srcReq) {
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
     if (channel && !srcReq.get('X-Channel-Id')) {
@@ -46,7 +50,8 @@ const decorateRequestHeaders = function () {
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
-    
+    proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
+    proxyReqOpts.headers['connection'] = 'keep-alive';
     // var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
     // logger.info({
     //   URL: srcReq.url,

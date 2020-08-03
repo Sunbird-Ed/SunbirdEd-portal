@@ -9,9 +9,10 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        line-height: normal;
       }
       button {
-        flex-basis: 10%;
+        flex-basis: auto;
       }
     }
     &__heading {

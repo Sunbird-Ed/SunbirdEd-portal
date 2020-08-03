@@ -45,7 +45,8 @@
                     [placeholder]="filter.displayName" [formControlName]="filter.reference">
                     <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                       [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option | titlecase">
+                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options"
+                      [value]="option | titlecase">
                     </sui-select-option>
                   </sui-multi-select>
                 </div>
@@ -92,7 +93,10 @@
   </div>
   <div *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}"
     class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">
-    <button (click)="addChartSummary()" type="button"
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+      [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
+      (click)="addChartSummary()" type="button"
       class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
       {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
   </div>

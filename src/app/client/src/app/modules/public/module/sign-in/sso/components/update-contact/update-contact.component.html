@@ -38,6 +38,8 @@
               {{resourceService.frmelmnts?.lbl?.blockedUserError}}</label>
             <label *ngIf="disableSubmitBtn && userExist" class="sb-color-warning fxsmall mt-8" >
               {{ contactForm.type === 'phone' ? resourceService.frmelmnts?.lbl?.uniquePhone : resourceService.frmelmnts?.lbl?.uniqueEmail}}</label>
+            <label *ngIf="disableSubmitBtn && captchaValidationFailed" class="sb-color-warning fxsmall mt-8" >
+              {{resourceService.frmelmnts?.lbl?.captchaValidationFailed}}</label>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
               <input type="checkbox" id="tncAccepted" role="checkbox"
                      [(ngModel)]="contactForm.tncAccepted"  (change)="toggleTncCheckBox($event)" name="tncAccepted"
@@ -48,9 +50,11 @@
                 </a>
             </label>
             </div>
+            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
-                      class="sb-btn sb-btn-normal mt-24 w-100" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
+                      class="sb-btn sb-btn-normal mt-24 w-100" tabindex="0" (click)="submitForm()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
             </div>
           </form>
         </div>

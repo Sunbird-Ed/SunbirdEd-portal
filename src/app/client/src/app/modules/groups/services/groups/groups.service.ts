@@ -22,6 +22,7 @@ export class GroupsService {
   public membersList = new EventEmitter();
   public closeForm = new EventEmitter();
   public showLoader = new EventEmitter();
+  public showMenu = new EventEmitter();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -240,5 +241,9 @@ getActivity(groupId, activity, mergeGroup) {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.GOOGLE_RECAPTCHA
     };
     return this.learnerService.get(systemSetting);
+  }
+
+  emitMenuVisibility(visibility) {
+    this.showMenu.emit(visibility);
   }
 }

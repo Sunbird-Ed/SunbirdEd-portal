@@ -598,3 +598,8 @@ app-workspace {
   padding-bottom: calculateRem(160px);
   min-height: calc(100vh - 100px);
 }
+.sb-table-hover tbody tr.non-clickable-row:hover {
+  background: var(--white);
+  color: rgba(var(--rc-rgba-gray), 0.95);
+  cursor: initial;
+}

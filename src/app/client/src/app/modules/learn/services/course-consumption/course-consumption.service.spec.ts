@@ -1,7 +1,7 @@
 import { Observable, of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed, inject } from '@angular/core/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -58,7 +58,7 @@ describe('CourseConsumptionService', () => {
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        {provide: ResourceService, useValue: resourceBundle}
+        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService
       ]
     });
   });
@@ -96,11 +96,20 @@ describe('CourseConsumptionService', () => {
     const response = service.parseChildren(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toEqual(courseConsumptionServiceMockData.parseChildrenResult);
   });
-  it(`Show throw error with msg The course doesn't have any open batches`, () => {
+  it(`Show throw error with msg The course doesn't have any open batches and emit enableCourseEntrollment as false event`, () => {
     const service = TestBed.get(CourseConsumptionService);
     spyOn(service['toasterService'], 'error');
+    spyOn(service['enableCourseEntrollment'], 'emit');
     service.getAllOpenBatches({content: [], count: 0});
+    expect(service['enableCourseEntrollment'].emit).toHaveBeenCalledWith(false);
     expect(service['toasterService'].error).toHaveBeenCalledWith(service['resourceService'].messages.emsg.m0003);
+  });
+
+  it(`Show emit enableCourseEntrollment as true event`, () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service['enableCourseEntrollment'], 'emit');
+    service.getAllOpenBatches({ content: [{ enrollmentType: 'open' }], count: 1 });
+    expect(service['enableCourseEntrollment'].emit).toHaveBeenCalledWith(true);
   });
 
   it('should call setPreviousAndNextModule and check only next module is defined', () => {
@@ -128,5 +137,22 @@ describe('CourseConsumptionService', () => {
     const returnVal = service.setPreviousAndNextModule(parentCourse, collectionId);
     expect(returnVal.next).toBeUndefined();
     expect(returnVal.prev).toBeDefined();
+  });
+
+  it('should set course page previous url', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
+    service.setCoursePagePreviousUrl();
+    expect(service.coursePagePreviousUrl).toEqual({ url: '/learn' });
+  });
+
+  it('should return course page previous url', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/learn' });
+    service.setCoursePagePreviousUrl();
+    const previousPageUrl = service.getCoursePagePreviousUrl;
+    expect(service.coursePagePreviousUrl).toEqual(previousPageUrl);
   });
 });
