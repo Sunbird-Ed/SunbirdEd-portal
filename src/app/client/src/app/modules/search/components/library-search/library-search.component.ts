@@ -2,15 +2,14 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, FormService } from '@sunbird/core';
-import { combineLatest, Subject, forkJoin } from 'rxjs';
+import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
+import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, first, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { ContentSearchService } from '@sunbird/content-search';
 
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -53,9 +52,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-        public orgDetailsService: OrgDetailsService,
-        public formService: FormService, private contentSearchService: ContentSearchService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
