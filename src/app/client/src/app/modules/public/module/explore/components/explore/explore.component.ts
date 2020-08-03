@@ -41,6 +41,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   slideConfig: object = {};
   layoutConfiguration: any;
   formData: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -56,7 +58,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.initLayout();
     const formServiceInputParams = {
       formType: 'contentcategory',
       formAction: 'menubar',
@@ -77,12 +79,26 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         this.navigationhelperService.goBack();
       });
-      this.layoutService.switchableLayout().
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService.switchableLayout().
         pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
         if(layoutConfig!=null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
+        this.redoLayout();
       });
+  }
+  redoLayout() {
+      if(this.layoutConfiguration!=null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      }
   }
 
   private windowScroll () {
@@ -304,14 +320,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       object: _.get(event, 'object')
     };
     this.telemetryService.interact(cardClickInteractData);
-  }
-
-  redoLayout(panelIndex) {
-    if(this.layoutConfiguration) {
-      return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-    } else {
-      return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
-    }
   }
 
 }

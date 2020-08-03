@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, FormService } from '@sunbird/core';
 import { combineLatest, Subject, forkJoin } from 'rxjs';
@@ -52,13 +52,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
       };
       public custodianOrg = true;
 
+    layoutConfiguration;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
+        public orgDetailsService: OrgDetailsService,
         public formService: FormService, private contentSearchService: ContentSearchService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
@@ -100,6 +102,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.navigationhelperService.goBack();
             });
 
+        this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
                 this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
@@ -122,6 +125,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.setNoResultMessage();
             });
     }
+    initLayout() {
+        this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.layoutService.switchableLayout().
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+            if(layoutConfig!=null) {
+              this.layoutConfiguration = layoutConfig.layout;
+            }
+          });
+      }
     public getFilters(filters) {
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {

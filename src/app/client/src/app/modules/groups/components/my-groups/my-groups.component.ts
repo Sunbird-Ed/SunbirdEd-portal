@@ -31,19 +31,22 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        } 
-      });
+    this.initLayout();
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.getMyGroupList();
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+    if(layoutConfig!=null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
 
 

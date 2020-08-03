@@ -40,6 +40,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
 
     public frameWorkName: string;
     layoutConfiguration: any;
+    FIRST_PANEL_LAYOUT:string;
+    SECOND_PANEL_LAYOUT:string;
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -53,12 +55,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     ngOnInit() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
-        this.layoutService.switchableLayout().
-          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-            if(layoutConfig!=null) {
-                this.layoutConfiguration = layoutConfig.layout;
-            }
-        });
+        this.initLayout();
         combineLatest(
             this.orgDetailsService.getOrgDetails(this.userService.slug),
             this.getFrameWork()
@@ -84,6 +81,25 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         );
     }
+    initLayout() {
+        this.redoLayout();
+        this.layoutService.switchableLayout().
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+            if(layoutConfig!=null) {
+              this.layoutConfiguration = layoutConfig.layout;
+            }
+            this.redoLayout();
+          });
+      }
+      redoLayout() {
+          if(this.layoutConfiguration!=null) {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+          } else {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+          }
+      }
     public getFilters(filters) {
         this.facets = filters.map(element => element.code);
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
@@ -240,11 +256,4 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
             'messageText': 'messages.stmsg.m0006'
         };
     }
-    redoLayout(panelIndex) {
-        if(this.layoutConfiguration) {
-          return this.layoutService.redoLayoutCSS(panelIndex,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-        } else {
-          return this.layoutService.redoLayoutCSS(panelIndex,null,COLUMN_TYPE.fullLayout);
-        }
-      }
 }

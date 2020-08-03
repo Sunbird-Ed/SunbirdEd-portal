@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit, Input} from '@angular/core';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
@@ -32,14 +32,19 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   tenantFooter: any;
   defaultFooterConfig: any;
   public unsubscribe$ = new Subject<void>();
+
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
+  
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
-      public tenantService: TenantService
+      public tenantService: TenantService, public layoutService: LayoutService
     ) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.initlayout();
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
@@ -49,12 +54,24 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
     };
   }
+  initlayout() {
+    this.redoLayout();
+  }
+  redoLayout() {
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine) + ' sbt-page-content-area';
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+      }
+  }
  ngAfterViewInit() {
-    this.footerAlign();
+    // this.footerAlign();
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.footerAlign();
+    // this.footerAlign();
   }
   // footer dynamic height
   footerAlign() {

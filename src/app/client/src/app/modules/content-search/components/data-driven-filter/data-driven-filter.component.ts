@@ -1,8 +1,7 @@
-import { of, throwError, Subscription } from 'rxjs';
-import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
+import { of, throwError, Subscription, Subject } from 'rxjs';
+import { first, mergeMap, map, tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import {
-  ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
-} from '@sunbird/shared';
+  ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService, LayoutService} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy, ViewRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from '@sunbird/core';
@@ -12,7 +11,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-data-driven-filter',
-  templateUrl: './data-driven-filter.component.html'
+  templateUrl: './data-driven-filter.component.html',
+  styleUrls: ['./data-driven-filter.component.scss']
 })
 export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() filterEnv: string;
@@ -27,6 +27,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() frameworkName: string;
   @Input() formAction: string;
   @Output() dataDrivenFilter = new EventEmitter();
+  @Input() layoutConfiguration;
 
   public showFilters = false;
 
@@ -40,7 +41,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   public channelInputLabel: any;
 
   public formInputData: any;
-
+  public unsubscribe = new Subject<void>();
   public refresh = true;
 
   public isShowFilterPlaceholder = true;
@@ -59,11 +60,13 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
-    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService) {
+    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService, 
+    public layoutService: LayoutService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
+    this.initLayout();
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -88,6 +91,15 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       this.dataDrivenFilter.emit([]);
     });
     this.setFilterInteractData();
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+   });
   }
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
@@ -332,5 +344,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }

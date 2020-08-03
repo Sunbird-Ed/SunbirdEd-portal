@@ -31,9 +31,9 @@ describe('AppLandingSectionComponent', () => {
   });
 
   it('should create', () => {
-    component.redoLayout(0);
+    component.redoLayout();
     expect(component).toBeTruthy();
-    component.redoLayout(1);
+    component.redoLayout();
     expect(component).toBeTruthy();
   });
 });
