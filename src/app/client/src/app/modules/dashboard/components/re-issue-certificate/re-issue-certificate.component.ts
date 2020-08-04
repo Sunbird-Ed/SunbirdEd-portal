@@ -51,16 +51,19 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       if (_.isEmpty(_.get(data, 'result.response.err'))) {
         this.userData = _.get(data, 'result.response');
         this.batchList = _.get(data, 'result.response.courses.batches');
-        // tslint:disable-next-line: no-unused-expression
-        _.isEmpty(this.batchList) ? this.toasterService.error(this.resourceService.messages.dashboard.emsg.m002) : [];
+        const value = _.isEmpty(this.batchList) ? this.toasterService.error(this.resourceService.messages.dashboard.emsg.m002) : [];
       } else {
-        this.toasterService.error(this.resourceService.messages.dashboard.emsg.m001);
+        this.showErrorMsg();
       }
     }, err => {
       this.userName = '';
       this.disableBtn = false;
-      this.toasterService.error(this.resourceService.messages.dashboard.emsg.m001);
+      this.showErrorMsg();
     });
+  }
+
+  showErrorMsg()  {
+    this.toasterService.error(this.resourceService.messages.dashboard.emsg.m001);
   }
 
   reIssueCert (batch) {

@@ -84,12 +84,12 @@ describe('ReIssueCertificateComponent', () => {
   it('should return certList with error', () => {
     component.userName = '   testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of({ result: { response: { err: { message: 'Error while fetching cert list' } } } }));
-    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'showErrorMsg');
     component.getCertList();
     component['certService'].getUserCertList('testUser', '123').subscribe(data => {
       expect(component.userName).toEqual('');
       expect(component.disableBtn).toBeFalsy();
-      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m001);
+      expect(component.showErrorMsg).toHaveBeenCalled();
     });
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
   });
@@ -97,11 +97,11 @@ describe('ReIssueCertificateComponent', () => {
   it('should throw  error while fetching certList', () => {
     component.userName = 'testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(throwError({ result: { response: { err: { message: 'Error while fetching cert list' } } } }));
-    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'showErrorMsg');
     component.getCertList();
     component['certService'].getUserCertList('testUser', '123').subscribe(data => {
     }, err => {
-      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m001);
+      expect(component.showErrorMsg).toHaveBeenCalled();
     });
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
     expect(component.userName).toEqual('');
@@ -290,6 +290,12 @@ describe('ReIssueCertificateComponent', () => {
 
     component.addTelemetry('re-issue-cert', { userName: 'testUser'});
     expect(component['telemetryService'].interact).toHaveBeenCalledWith(interactData);
+  });
+
+  it('should call toaster service with error msg', () => {
+    spyOn(component['toasterService'], 'error');
+    component.showErrorMsg();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m001);
   });
 
   it('should unsubscribe all subscribed events', () => {
