@@ -169,6 +169,11 @@
   text-transform: unset;
 }
 
+.self-declared-title{
+  font-size: calculateRem(20px);
+  font-weight: bold;
+}
+
 .sb-certificate-trained {
   border: calculateRem(0.5px) solid var(--gray-100);
   border-radius: calculateRem(4px);
