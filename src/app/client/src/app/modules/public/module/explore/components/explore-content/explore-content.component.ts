@@ -43,9 +43,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   contentName: string;
   showDownloadLoader = false;
   frameworkId;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
   layoutConfiguration;
   FIRST_PANEL_LAYOUT;
-  SECOND_PANEL_LAYOUT
+  SECOND_PANEL_LAYOUT;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -57,6 +59,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+      this.setNoResultMessage();
+      this.initFilters = true;
+    }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
+    });
+
     this.initLayout();
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
@@ -100,7 +112,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       }
   }
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -126,59 +137,52 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-      const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-      const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+    if (!filters.channel) {
       filters.channel = this.hashTagId;
-      filters.contentType = _.get(allTabData, 'search.filters.contentType');
-      const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
-      if (this.queryParams.key) {
-        delete softConstraints['board'];
-      }
-      const option: any = {
-        filters: filters,
-        fields: _.get(allTabData, 'search.fields'),
-        limit: _.get(allTabData, 'search.limit'),
-        pageNumber: this.paginationDetails.currentPage,
-        query: this.queryParams.key,
-        mode: 'soft',
-        softConstraints: softConstraints,
-        facets: this.facets,
-        params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
-      };
-      if (this.queryParams.softConstraints) {
-        try {
-          option.softConstraints = JSON.parse(this.queryParams.softConstraints);
-        } catch {
+    }
+    filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+    if (this.queryParams.key) {
+      delete softConstraints['board'];
+    }
+    const option: any = {
+      filters: filters,
+      fields: _.get(this.allTabData, 'search.fields'),
+      limit: _.get(this.allTabData, 'search.limit'),
+      pageNumber: this.paginationDetails.currentPage,
+      query: this.queryParams.key,
+      mode: 'soft',
+      softConstraints: softConstraints,
+      facets: this.globalSearchFacets,
+      params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+    };
+    if (this.queryParams.softConstraints) {
+      try {
+        option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+      } catch {
 
-        }
       }
-      if (this.frameworkId) {
-        option.params.framework = this.frameworkId;
-      }
-      this.searchService.contentSearch(option)
-        .subscribe(data => {
-          this.showLoader = false;
-          this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-          this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          this.contentList = data.result.content || [];
-        }, err => {
-          this.showLoader = false;
-          this.contentList = [];
-          this.facetsList = [];
-          this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        });
-    }, err => {
-      this.showLoader = false;
-      this.contentList = [];
-      this.facetsList = [];
-      this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-    });
+    }
+    if (this.frameworkId) {
+      option.params.framework = this.frameworkId;
+    }
+    this.searchService.contentSearch(option)
+      .subscribe(data => {
+        this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+        this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.contentList = data.result.content || [];
+      }, err => {
+        this.showLoader = false;
+        this.contentList = [];
+        this.facetsList = [];
+        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      });
   }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
