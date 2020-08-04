@@ -1,0 +1,21 @@
+<ng-container *ngIf="facets">
+  <div *ngIf="refresh" class="sb-header-filter-bar zindex-2">
+    <div class="d-flex state-medium-container sb-bg-color-white">
+      <div class="ui container d-flex flex-ai-center" *ngFor="let facet of facets | sortBy:'index':'asc'">
+        <div>
+          <span>{{facet.label}} </span>
+          <sui-multi-select labelField="name" valueField="name" placeholder="{{facet.placeholder}}" class="selection"
+            [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
+            (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});">
+            <sui-select-option *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+            </sui-select-option>
+          </sui-multi-select>
+        </div>
+      </div>
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()" appTelemetryInteract
+        [telemetryInteractEdata]="resetFilterInteractEdata">
+        {{resourceService.frmelmnts?.btn?.reset}}
+      </button>
+    </div>
+  </div>
+</ng-container>
