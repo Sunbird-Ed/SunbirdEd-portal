@@ -221,7 +221,7 @@ describe('ExploreContentComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(0);
+    expect(component.contentList.length).toEqual(1);
     expect(toasterService.error).toHaveBeenCalled();
   }));
 });
