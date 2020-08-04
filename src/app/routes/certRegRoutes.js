@@ -7,15 +7,14 @@ const proxy = require('express-http-proxy')
 const logger = require('sb_logger_util_v2')
 const _ = require('lodash')
 const bodyParser = require('body-parser');
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { getUserCertificates } = require('./../helpers/certHelper');
 
 
 var certRegServiceApi = {
   searchCertificate: 'certreg/v1/certs/search',
   getUserDetails: '/certreg/v1/user/search',
-  searchUser: '/user/v1/search',
-  reIssueCert: '/certreg/v1/cert/reissue',
-  reIssueCertificate: '/course/batch/cert/v1/issue?reissue=true'
+  reIssueCertificate: '/certreg/v1/cert/reissue',
 }
 
 
@@ -47,13 +46,14 @@ module.exports = function (app) {
   app.post(certRegServiceApi.getUserDetails,
     bodyParser.json({ limit: '10mb' }),
     permissionsHelper.checkPermission(),
+    isAPIWhitelisted.isAllowed(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: function (req) {
         logger.info({ msg: `${certRegServiceApi.getUserDetails} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
         delete req.body.request.filters['courseId'];
-        return require('url').parse(certRegURL + certRegServiceApi.searchUser).path;
+        return require('url').parse(certRegURL + '/user/v1/search').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
@@ -76,14 +76,15 @@ module.exports = function (app) {
   );
 
   // To ReIssue certificate 
-  app.post(certRegServiceApi.reIssueCert,
+  app.post(certRegServiceApi.reIssueCertificate,
     bodyParser.json({ limit: '10mb' }),
     permissionsHelper.checkPermission(),
+    isAPIWhitelisted.isAllowed(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: function (req) {
         logger.info({ msg: `/course/batch/cert/v1/issue?reissue=true is called with ${JSON.stringify(_.get(req, 'body'))}` });
-        return require('url').parse(certRegURL + certRegServiceApi.reIssueCertificate).path;
+        return require('url').parse(certRegURL + '/course/batch/cert/v1/issue?reissue=true').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {

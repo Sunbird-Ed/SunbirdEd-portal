@@ -15,7 +15,9 @@ const ROLE = {
   CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
-  PUBLIC: 'PUBLIC'
+  PUBLIC: 'PUBLIC',
+  ORG_ADMIN: 'ORG_ADMIN',
+  SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION'
 };
 
 const API_LIST = {
@@ -525,7 +527,18 @@ const API_LIST = {
     '/learner/data/v1/group/activity/agg': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
-    }
+    },
+
+    //certreg reg apis
+    '/certreg/v1/user/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.SYSTEM_ADMINISTRATION]
+    },
+    '/certreg/v1/cert/reissue': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.SYSTEM_ADMINISTRATION]
+    },
+
   },
   URL_PATTERN: [
     '/content/content/v1/copy/:do_id',
