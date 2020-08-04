@@ -33,6 +33,9 @@ describe('ExploreCourseComponent', () => {
       'fmsg': {},
       'emsg': {},
       'stmsg': {}
+    },
+    'frmelmnts': {
+      'lbl': {}
     }
   };
   class FakeActivatedRoute {
@@ -228,7 +231,7 @@ describe('ExploreCourseComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.frameWorkName).toEqual('TPD');
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(0);
+    expect(component.contentList.length).toEqual(1);
     expect(toasterService.error).toHaveBeenCalled();
   }));
 });

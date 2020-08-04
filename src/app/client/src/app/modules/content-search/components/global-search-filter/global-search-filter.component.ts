@@ -18,6 +18,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
+  public isOpen = true;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
