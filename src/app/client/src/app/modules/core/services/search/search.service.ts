@@ -364,7 +364,7 @@ export class SearchService {
     let filters = request.filters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = contentType; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (!request.isCustodianOrg) {
+    if (!request.isCustodianOrg && _.isEmpty(_.get(request, 'filters.board'))) {
       filters['channel'] = request.channelId;
     }
     const option = {
