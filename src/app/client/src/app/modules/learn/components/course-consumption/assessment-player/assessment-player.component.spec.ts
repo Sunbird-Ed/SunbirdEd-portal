@@ -223,6 +223,9 @@ describe('AssessmentPlayerComponent', () => {
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
+    component.activeContent = {
+      contentType: 'Course'
+    };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({ content: {} }));

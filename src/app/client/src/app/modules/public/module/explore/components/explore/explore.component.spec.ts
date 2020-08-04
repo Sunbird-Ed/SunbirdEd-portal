@@ -34,8 +34,7 @@ describe('ExploreComponent', () => {
         'm0027': 'Something went wrong',
         'm0090': 'Could not download. Try again later',
         'm0091': 'Could not copy content. Try again later',
-        'm0004': 'Could not fetch date, try again later...',
-        'm0005': 'Could not fetch data, try again later...'
+        'm0004': 'Could not fetch data, try again later...'
       },
       'stmsg': {
         'm0009': 'error',
@@ -197,7 +196,7 @@ describe('ExploreComponent', () => {
     expect(component.showLoader).toBe(false);
     expect(component.pageSections).toEqual([]);
     expect(component.apiContentList).toEqual([]);
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0005);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 
   it('should play content', () => {

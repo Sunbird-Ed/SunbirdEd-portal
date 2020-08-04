@@ -226,7 +226,8 @@ const getParameterValue = (param, user) => {
     const parametersMapping = {
         $slug: _.get(user, 'rootOrg.slug'),
         $board: _.get(user, 'framework.board'),
-        $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name')
+        $state: _.get(_.find(_.get(user, 'userLocations'), ['type', 'state']), 'name'),
+        $channel: _.get(user, 'rootOrg.hashTagId')
     };
     return parametersMapping[param];
 }
@@ -262,7 +263,12 @@ const getReports = (reports, user) => {
             if (isUserSuperAdmin(user)) {
                 results.push(report);
             } else if (isUserAdmin(user)) {
-                const childReports = _.filter(report.children, child => hash.includes(child.hashed_val));
+                const childReports = _.uniqBy(_.concat(_.filter(report.children, child => hash.includes(child.hashed_val)), _.map(hash, hashed_val => ({
+                    hashed_val,
+                    status: "draft",
+                    reportid: _.get(report, 'reportid'),
+                    materialize: true
+                }))), 'hashed_val');
                 if (childReports.length) {
                     if (childReports.length === 1) {
                         delete report.children;

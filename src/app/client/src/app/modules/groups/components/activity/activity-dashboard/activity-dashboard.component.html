@@ -30,14 +30,14 @@
 
   <div class="ui container mt-24">
     <div class="status-container sb-bg-color-white flex-dc d-flex p-8 py-16 br-4" style="width:40%;">
-      <div class="mr-8 mb-8 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{groupData?.updatedOn | date}}</div>
+      <div class="mr-8 mb-8 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>
 
       <div class="px-8">
         <div class="sb-search-box no-btn mb-16">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
             <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
-              [placeholder]="resourceService?.frmelmnts?.lbl?.searchForGroupMember" />
+              [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
           </div>
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>

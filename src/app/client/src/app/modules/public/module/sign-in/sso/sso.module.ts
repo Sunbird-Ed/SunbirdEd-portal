@@ -7,6 +7,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { SharedModule } from '@sunbird/shared';
     SharedFeatureModule,
     FormsModule,
     ReactiveFormsModule,
+    RecaptchaModule,
     SharedModule
   ],
   declarations: [SelectOrgComponent, UpdateContactComponent, AuthFailedComponent]
