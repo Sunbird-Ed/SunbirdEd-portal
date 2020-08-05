@@ -338,12 +338,12 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.frameworkCardData).toEqual([
       {
         title: 'Curriculum courses',
-        description: `Create courses for concepts from the syllabus, across grades and subjects, for example; for fractions, photosynthesis, reading comprehension, etc.`,
+        description: `These are courses covering concepts for your across grades and subjects from your syllabus . For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
         framework: 'NCFCOPY'
       },
       {
         title: 'Generic courses',
-        description: `Create course that help develop a learner's professional skills, for example; for classroom management, pedagogy, ICT, Leadership, etc.`,
+        description: `These are courses that helps build skills in the learner towards their overall professional development. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
         framework: 'TPD'
       }
     ]);
