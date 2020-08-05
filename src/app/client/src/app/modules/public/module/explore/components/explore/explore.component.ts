@@ -134,7 +134,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
-    this.svgToDisplay = _.get(currentPageData, 'theme.rightImage');
+    this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }
 
