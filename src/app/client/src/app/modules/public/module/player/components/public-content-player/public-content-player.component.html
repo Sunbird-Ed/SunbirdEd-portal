@@ -1,3 +1,4 @@
+<app-landing-section [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div *ngIf="contentData && !loadLandscapePlayer" [style.display]="!showLoader ? 'block' : 'none'">
   <!--CC-Player Content Header -->
   <div class="sb-bg-white relative position cc-player__btn-back ">
@@ -17,11 +18,11 @@
       <div class="header-info flex-basis-1">
         <div class="header-info__title ellipsis">
           <h5 class="sb-color-primary font-weight-bold">{{contentData.name}}</h5>
-        </div>
         <div class="header-info__desc d-flex flex-ai-center" *ngIf="contentData">
           <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
           <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
           <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
+        </div>
         </div>
         <div>
           <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">

@@ -29,7 +29,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
   public type: string;
   public publisher: any[] = [];
-
   public boards: any[] = [];
   public mediums: any[] = [];
   public gradeLevels: any[] = [];
@@ -39,6 +38,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange: EventEmitter<{status: string, filters?: any}> = new EventEmitter();
   @Output() fetchingFilters: EventEmitter<any> = new EventEmitter();
   @Input() layoutConfiguration;
+  showFilter = true;
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, public layoutService:LayoutService) {
   }
