@@ -58,19 +58,15 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
 
 const getDistrictName = async (req, requestParams) => {
   logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + 'data/v1/location/search'}` })
-  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in  getLocation() error:  ${err}` });
-  });
+  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise()
   logger.info({ msg: `getDistrictName() is returning data ${_.get(response, 'data.result.response[0].name')}` })
   return (_.get(response, 'data.result.response[0].name'));
 };
 
 const getCourseData = async (req, courseId, userId, currentUser) => {
   logger.info({ msg: `getCourseData() is called with ${courseId} with url: ${certRegURL + 'content/v1/read'}` });
-  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in getCourseData() while fetching course error:  ${err}` });
-  });
-  // logger.info({ msg: `returning data from getCourseData() with${JSON.stringify(_.get(response, 'data.result.content'))}` });
+  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise()
+  logger.info({ msg: `returning data from getCourseData() with${JSON.stringify(_.get(response, 'data.result.content'))}` });
   const courseData = _.get(response, 'data.result.content');
   const batchList = await getBatches(req, courseData, _.get(courseData, 'batches'), userId, currentUser);
   return (
@@ -101,10 +97,7 @@ const getBatches = async (req, courseData, batchList, userId, currentUser) => {
   };
   logger.info({ msg: `HTTPService is called in  getBatchList() of current user with ${certRegURL + 'course/v1/batch/list'}` });
 
-  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in batchList() while fetching course error:  ${err}` });
-  });
-
+  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise()
   batchList = _.get(response, 'data.result.response.content');
   let batches = [];
   let certList = [];
@@ -148,9 +141,7 @@ const getCertList = async (req, userId) => {
     }
   };
   logger.info({ msg: `searchCertificate HTTP request is called to get certificates for userId: ${userId}, with url ${certRegURL + 'certreg/v1/certs/search'}` });
-  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in  getUserCertificates() while fetching certificates error :  ${err}` });
-  });
+  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise()
 
   logger.info({ msg: `getCertList() is returning data with ${JSON.stringify(_.get(response, 'data.result.response.content'))}` })
   return _.get(response, 'data.result.response.content') || [];
@@ -182,9 +173,7 @@ const getBatchProgress = async (req, userId, batchId, course) => {
     appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token');
   
     logger.info({ msg: `HTTPService is called in  getBatchProgress() with ${certRegURL + 'course/v1/content/state/read'}` });
-    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise().catch(err => {
-      logger.error({ msg: `Error occurred in  getBatchProgress() Error: , ${err}` });
-    });
+    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise()
 
     let progress = 0;
     _.forEach(_.get(response, 'data.result.contentList'), (content) => {
