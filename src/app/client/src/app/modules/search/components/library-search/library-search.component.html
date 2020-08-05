@@ -32,7 +32,7 @@
 
           <div class="twelve wide column">
             <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
-              *ngIf="initFilters && facets" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
             <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)"
               *ngIf="!showLoader && contentList.length" class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
