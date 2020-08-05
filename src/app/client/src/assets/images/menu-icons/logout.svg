@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 21 20" style="enable-background:new 0 0 21 20;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#241F20;}
+</style>
+<g id="Page-1">
+	<g id="Icons-for-drawer-menu" transform="translate(-753.000000, -75.000000)">
+		<g id="Group" transform="translate(746.000000, 75.000000)">
+			<g id="logout" transform="translate(7.000000, 0.000000)">
+				<path class="st0" d="M17.7,19.8h-14c-1.5,0-2.8-1.2-2.8-2.8v-2.5c0-0.4,0.3-0.8,0.8-0.8s0.8,0.3,0.8,0.8V17
+					c0,0.7,0.6,1.2,1.2,1.2h14c0.7,0,1.2-0.6,1.2-1.2V3c0-0.7-0.6-1.2-1.2-1.2h-14C3,1.8,2.4,2.3,2.4,3v4c0,0.4-0.3,0.8-0.8,0.8
+					S0.9,7.4,0.9,7V3c0-1.5,1.2-2.8,2.8-2.8h14c1.5,0,2.8,1.2,2.8,2.8v14C20.4,18.5,19.2,19.8,17.7,19.8z"/>
+				<path class="st0" d="M14.5,11.1h-12c-0.4,0-0.8-0.3-0.8-0.8s0.3-0.8,0.8-0.8h12c0.4,0,0.8,0.3,0.8,0.8S14.9,11.1,14.5,11.1z"/>
+				<path class="st0" d="M7.3,15.6c-0.2,0-0.3,0-0.4-0.2l-6-4.5c-0.2-0.1-0.3-0.4-0.3-0.6s0.1-0.5,0.3-0.6l6-4.5
+					C7.2,5,7.7,5.1,7.9,5.4c0.2,0.3,0.2,0.8-0.1,1.1l-5.2,3.9l5.2,3.9c0.3,0.2,0.4,0.7,0.1,1C7.8,15.5,7.6,15.6,7.3,15.6z"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
