@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.textbooks" 
+<app-landing-section [textToDisplay]="pageTitle" [svgToDisplay]="svgToDisplay"
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
 <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
@@ -43,5 +43,5 @@
 </div>
 <app-offline-banner [slug]="userService.slug"></app-offline-banner>
 <div *ngIf="layoutConfiguration">
-  <img class="sbt-theme-right-flower computer only" src="./assets/images/sbt-right-flower.svg" />
-  </div>
+  <img class="sbt-theme-right-flower computer only" src="./assets/images/sbt-right-flower.svg"/>
+</div>
