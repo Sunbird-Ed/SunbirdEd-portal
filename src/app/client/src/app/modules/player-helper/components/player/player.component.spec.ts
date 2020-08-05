@@ -7,6 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Subject, of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UserService } from '../../../core/services';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 
 const startEvent = {
   detail: {
@@ -46,7 +47,7 @@ describe('PlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [{ provide: UserService, useValue: {} }],
+      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -88,6 +89,7 @@ describe('PlayerComponent', () => {
   });
   it('should emit "END" event and open contentRating', () => {
     let contentProgressEvent;
+    spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component.contentProgressEvents$.subscribe((data) => {
       contentProgressEvent = data;
     });
