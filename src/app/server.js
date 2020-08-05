@@ -25,9 +25,9 @@ const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'he
 const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
+const { logger, logLevels, enableLogger } = require('@project-sunbird/logger');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser')
-const logger = require('sb_logger_util_v2');
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -35,14 +35,17 @@ let keycloak = getKeyCloakClient({
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
 })
-const logLevel = envHelper.sunbird_portal_log_level;
 
-logger.init({
-  logLevel
-})
+enableLogger({
+  logBasePath: path.join(__dirname, 'logs'),
+  logLevel: envHelper.sunbird_portal_log_level,
+  context: {src: 'sunbird'},
+  adopterConfig: {
+    adopter: 'winston'
+  }
+});
 
-logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
-
+logger.debug({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
 const app = express()
 
 app.use(cookieParser())
