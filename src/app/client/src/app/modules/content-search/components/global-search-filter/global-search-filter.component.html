@@ -20,7 +20,8 @@
                     <div class="" *ngFor="let facet of facets | sortBy:'index':'asc'">
                       <div>
                         <label>{{facet.label}} </label>
-                        <sui-multi-select labelField="name" valueField="name" placeholder="{{facet.placeholder}}"
+                        <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
+                          zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                           class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple w-100 mb-16"
                           [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
                           (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
