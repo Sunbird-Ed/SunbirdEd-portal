@@ -18,7 +18,7 @@
       <div class="sbgrid p-16" #formData>
         <div [ngClass]="{'active': selectedCard === data}" (click)="selectFramework(data)"  class="sb-education-card" *ngFor="let data of frameworkCardData">
           <div class="checkbox-img"></div>
-          <h4 class="sb-education-card__title">
+          <h4 class="sb-education-card__title pb-12">
             {{data.title}}
           </h4>
           <p class="sb-education-card__text">
