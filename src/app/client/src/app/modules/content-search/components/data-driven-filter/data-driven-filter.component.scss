@@ -162,6 +162,7 @@
     top: calculateRem(12px);
     right: calculateRem(48px);
     box-shadow: none;
+    border-radius:calculateRem(16px);
     @include respond-above(sm) {
       right: calculateRem(16px);
     }
@@ -246,7 +247,7 @@
     left: calculateRem(24px);
     top: 0px;
     z-index: 999;
-
+    cursor: pointer;
     i {
       margin-top: calculateRem(-10px);
       margin-left: calculateRem(3px);
@@ -297,5 +298,25 @@
       box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
     }
+  }
+}
+
+
+:host ::ng-deep {
+  .ui.accordion.sbt-filter-accordion .title:not(.ui) {
+    display: none;
+  }
+  .ui.accordion.sbt-filter-accordion .active.content {
+    padding:0px 0px 0px 0px;
+  }
+  .ui.accordion.sbt-filter-accordion .content {
+    padding: 0em 0 1em;
+  }
+}
+
+
+.sbt-filter-accordion {
+  @include respond-below(md) {
+  display: none;
   }
 }
