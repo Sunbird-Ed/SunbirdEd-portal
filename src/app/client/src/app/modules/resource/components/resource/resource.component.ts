@@ -47,6 +47,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   SECOND_PANEL_LAYOUT;
   slideConfig: object = {};
   formData: any;
+  pageTitle;
+  svgToDisplay;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -138,6 +140,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
+    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
+    this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }
   private fetchContents(currentPageData) {

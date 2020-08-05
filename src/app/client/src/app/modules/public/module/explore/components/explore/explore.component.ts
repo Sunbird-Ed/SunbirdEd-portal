@@ -43,6 +43,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   formData: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  pageTitle;
+  svgToDisplay;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -131,6 +133,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
+    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
+    this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }
 
