@@ -15,7 +15,7 @@ const fs = require('fs');
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
 

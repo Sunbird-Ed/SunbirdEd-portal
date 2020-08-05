@@ -7,7 +7,7 @@ const async = require('async')
 const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);

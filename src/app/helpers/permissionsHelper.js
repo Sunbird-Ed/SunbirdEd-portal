@@ -7,7 +7,7 @@ const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
     'course/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],

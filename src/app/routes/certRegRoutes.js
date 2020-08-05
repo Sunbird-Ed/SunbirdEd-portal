@@ -4,7 +4,7 @@ const envHelper = require('../helpers/environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 
 var certRegServiceApi = {
   searchCertificate : 'certreg/v1/certs/search'
