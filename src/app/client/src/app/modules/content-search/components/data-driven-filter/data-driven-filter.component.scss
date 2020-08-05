@@ -164,7 +164,7 @@
     box-shadow: none;
     border-radius:calculateRem(16px);
     @include respond-above(sm) {
-      right: calculateRem(16px);
+      right: calculateRem(32px);
     }
   }
   &.mr-16 {
@@ -311,12 +311,5 @@
   }
   .ui.accordion.sbt-filter-accordion .content {
     padding: 0em 0 1em;
-  }
-}
-
-
-.sbt-filter-accordion {
-  @include respond-below(md) {
-  display: none;
   }
 }
