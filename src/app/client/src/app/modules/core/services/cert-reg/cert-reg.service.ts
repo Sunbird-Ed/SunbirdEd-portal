@@ -63,12 +63,13 @@ export class CertRegService extends DataService {
     return this.post(options);
   }
 
-  public getUserCertList(userName, courseId) {
+  public getUserCertList(userName, courseId, loggedInUser) {
     const request = {
       request: {
         filters: {
           userName: userName,
           courseId: courseId,
+          createdBy: loggedInUser,
         }
       }
     };

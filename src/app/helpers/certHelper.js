@@ -3,18 +3,8 @@ const envHelper = require('./environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const logger = require('sb_logger_util_v2')
 const _ = require('lodash')
-const uuid = require('uuid/v1')
-const dateFormat = require('dateformat')
 
-var certRegServiceApi = {
-  searchCertificate: 'certreg/v1/certs/search',
-  getCourse: 'content/v1/read',
-  searchLocation: 'data/v1/location/search',
-  getProgress: 'course/v1/content/state/read'
-};
-
-
-getHeaders = (req) => {
+getHeaders = () => {
   return {
     headers: {
       'content-type': 'application/json',
@@ -37,7 +27,7 @@ isJSON = (batches) => {
 
 
 // To get Certificate details and course details
-const getUserCertificates = async (req, userData, courseId) => {
+const getUserCertificates = async (req, userData, courseId, currentUser) => {
   logger.info({ msg: 'getUserCertificates() is called' });
   const requestParams = {
     request: {
@@ -55,7 +45,7 @@ const getUserCertificates = async (req, userData, courseId) => {
     district = await getDistrictName(req, requestParams);
   }
 
-  const courseData = await getCourseData(req, courseId, _.get(userData, 'identifier'));
+  const courseData = await getCourseData(req, courseId, _.get(userData, 'identifier'), currentUser);
 
   const resObj = {
     userId: _.get(userData, 'identifier'),
@@ -67,22 +57,22 @@ const getUserCertificates = async (req, userData, courseId) => {
 };
 
 const getDistrictName = async (req, requestParams) => {
-  logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + certRegServiceApi.searchLocation}` })
-  const response = await HTTPService.post(`${certRegURL + certRegServiceApi.searchLocation}`, requestParams, getHeaders(req)).toPromise().catch(err => {
+  logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + 'data/v1/location/search'}` })
+  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise().catch(err => {
     logger.error({ msg: `Error occurred in  getLocation() error:  ${err}` });
   });
   logger.info({ msg: `getDistrictName() is returning data ${_.get(response, 'data.result.response[0].name')}` })
   return (_.get(response, 'data.result.response[0].name'));
 };
 
-const getCourseData = async (req, courseId, userId) => {
-  logger.info({ msg: `getCourseData() is called with ${courseId} with url: ${certRegURL + certRegServiceApi.getCourse}` });
-  const response = await HTTPService.get(`${certRegURL + certRegServiceApi.getCourse}/${courseId}`, {}).toPromise().catch(err => {
+const getCourseData = async (req, courseId, userId, currentUser) => {
+  logger.info({ msg: `getCourseData() is called with ${courseId} with url: ${certRegURL + 'content/v1/read'}` });
+  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise().catch(err => {
     logger.error({ msg: `Error occurred in getCourseData() while fetching course error:  ${err}` });
   });
   // logger.info({ msg: `returning data from getCourseData() with${JSON.stringify(_.get(response, 'data.result.content'))}` });
   const courseData = _.get(response, 'data.result.content');
-  const batchList = await getBatches(req, courseData, _.get(courseData, 'batches'), userId);
+  const batchList = await getBatches(req, courseData, _.get(courseData, 'batches'), userId, currentUser);
   return (
     {
       courseId: _.get(courseData, 'identifier'),
@@ -95,9 +85,27 @@ const getCourseData = async (req, courseId, userId) => {
 }
 
 
-const getBatches = async (req, courseData, batchList, userId) => {
-
+const getBatches = async (req, courseData, batchList, userId, currentUser) => {
   const courseId = _.get(courseData, 'identifier');
+  const requestParams = {
+      request: {
+        filters: {
+          courseId: courseId,
+          createdBy:  currentUser,
+          status: ['0', '1', '2']
+        },
+        sort_by: {
+          createdDate: 'desc'
+        }
+      }
+  };
+  logger.info({ msg: `HTTPService is called in  getBatchList() of current user with ${certRegURL + 'course/v1/batch/list'}` });
+
+  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise().catch(err => {
+    logger.error({ msg: `Error occurred in batchList() while fetching course error:  ${err}` });
+  });
+
+  batchList = _.get(response, 'data.result.response.content');
   let batches = [];
   let certList = [];
   certList = await getCertList(req, userId);
@@ -139,8 +147,8 @@ const getCertList = async (req, userId) => {
       }
     }
   };
-  logger.info({ msg: `searchCertificate HTTP request is called to get certificates for userId: ${userId}, with url ${certRegURL + certRegServiceApi.searchCertificate}` });
-  let response = await HTTPService.post(certRegURL + certRegServiceApi.searchCertificate, options, getHeaders(req)).toPromise().catch(err => {
+  logger.info({ msg: `searchCertificate HTTP request is called to get certificates for userId: ${userId}, with url ${certRegURL + 'certreg/v1/certs/search'}` });
+  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise().catch(err => {
     logger.error({ msg: `Error occurred in  getUserCertificates() while fetching certificates error :  ${err}` });
   });
 
@@ -170,11 +178,11 @@ const getBatchProgress = async (req, userId, batchId, course) => {
       }
     };
 
-    const appConfig = getHeaders(req);
+    const appConfig = getHeaders();
     appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token');
   
-    logger.info({ msg: `HTTPService is called in  getBatchProgress() with ${certRegURL + certRegServiceApi.getProgress}` });
-    const response = await HTTPService.post(certRegURL + certRegServiceApi.getProgress, options, appConfig).toPromise().catch(err => {
+    logger.info({ msg: `HTTPService is called in  getBatchProgress() with ${certRegURL + 'course/v1/content/state/read'}` });
+    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise().catch(err => {
       logger.error({ msg: `Error occurred in  getBatchProgress() Error: , ${err}` });
     });
 

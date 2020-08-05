@@ -42,7 +42,7 @@ module.exports = function (app) {
     }))
 
   // To get user certificates list
-  let courseId;
+  let courseId, currentUser;
   app.post(certRegServiceApi.getUserDetails,
     bodyParser.json({ limit: '10mb' }),
     permissionsHelper.checkPermission(),
@@ -52,14 +52,16 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         logger.info({ msg: `${certRegServiceApi.getUserDetails} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
+        currentUser = _.get(req, 'body.request.filters.createdBy');
         delete req.body.request.filters['courseId'];
+        delete req.body.request.filters['createdBy'];
         return require('url').parse(certRegURL + '/user/v1/search').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
           const data = JSON.parse(proxyResData.toString('utf8'));
           logger.info({ msg: `getUserCertificates() is calling from certRegRoutes ` });
-          const certificates = await getUserCertificates(req, _.get(data, 'result.response.content[0]'), courseId);
+          const certificates = await getUserCertificates(req, _.get(data, 'result.response.content[0]'), courseId, currentUser);
           if (data) {
             data.result.response = certificates;
             return data;

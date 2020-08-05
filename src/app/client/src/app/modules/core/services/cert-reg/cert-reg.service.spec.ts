@@ -45,10 +45,11 @@ describe('CertRegService', () => {
         filters: {
           userName: 'testUser',
           courseId: '123',
+          createdBy: 'user1'
         }
       }
     };
-    certRegService.getUserCertList('testUser', '123');
+    certRegService.getUserCertList('testUser', '123', 'user1');
     const options = { url: 'v1/user/search', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
   });

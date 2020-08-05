@@ -6,23 +6,23 @@
           <div class="reissue-title text-left font-weight-bold">{{resourceService?.frmelmnts?.lbl?.certificates}} </div>
           <div class="sb-field certificate-id-content">
             <label class="d-inline-flex flex-ai-center flex-jc-space-between w-100 user-id-label" for="id">
-              <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}</span></label>
+              <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': channelName}}</span></label>
             <div class="d-flex">
               <div class="user-id-input">
                 <input class="sb-form-control font-weight-bold" name="id" placeholder="Enter user ID" type="id" [(ngModel)]="userName">
                 <small class="message sb-color-error font-weight-bold mt-8"></small></div>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button" (click)="getCertList();addTelemetry('search-user-cert', {userName: userName})" [disabled]="!userName || disableBtn"
-                [ngClass]="{'sb-btn-disabled': !userName?.trim()}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button" (click)="searchCertificates();addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
+                #searchBtn [ngClass]="{'sb-btn-disabled': !userName?.trim()}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
           </div>
         </div>
         <div class="five wide column">
           <div class="fsmall certificate-id-info">
-            <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': instance}} </div>
-            <div class="py-8">{{resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance}}</div>
+            <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': channelName}} </div>
+            <div class="py-8">{{resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': channelName}}</div>
             <div class="pt-8">
               <div>{{resourceService?.frmelmnts?.lbl?.step1}} {{resourceService?.frmelmnts?.lbl?.profileTab}}</div>
-              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': instance}}</div>
+              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': channelName}}</div>
             </div>
           </div>
         </div>

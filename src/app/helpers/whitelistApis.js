@@ -16,8 +16,7 @@ const ROLE = {
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  ORG_ADMIN: 'ORG_ADMIN',
-  SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION'
+  COURSE_MENTOR: 'COURSE_MENTOR'
 };
 
 const API_LIST = {
@@ -532,11 +531,11 @@ const API_LIST = {
     //certreg reg apis
     '/certreg/v1/user/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.SYSTEM_ADMINISTRATION]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/certreg/v1/cert/reissue': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.SYSTEM_ADMINISTRATION]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
 
   },

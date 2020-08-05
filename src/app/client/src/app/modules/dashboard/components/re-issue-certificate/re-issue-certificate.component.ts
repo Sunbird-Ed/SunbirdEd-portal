@@ -1,8 +1,8 @@
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { CertRegService } from '@sunbird/core';
+import { CertRegService, UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IUserCertificate } from '../../interfaces';
@@ -13,12 +13,12 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./re-issue-certificate.component.scss']
 })
 export class ReIssueCertificateComponent implements OnInit, OnDestroy {
-  courseId: string;
+  @ViewChild('searchBtn') button;
   @Input() userName;
+  courseId: string;
   userData: IUserCertificate;
   certList: Array<{}>;
-  disableBtn = false;
-  instance: string;
+  channelName: string;
   batchList = [];
   showModal = false;
   userBatch: {};
@@ -32,21 +32,23 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
     private router: Router,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    private userService: UserService,
     ) { }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance);
+    this.channelName = _.upperCase(this.resourceService.instance);
     this.activatedRoute.parent.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.courseId = _.get(params, 'courseId');
       this.setImpressionEvent();
     });
   }
 
-  getCertList() {
-    this.disableBtn = true;
-    this.certService.getUserCertList(this.userName.trim(), this.courseId).pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-      this.disableBtn = false;
+  searchCertificates() {
+    this.button.nativeElement.disabled = true;
+    this.certService.getUserCertList(this.userName.trim(), this.courseId, this.userService.userid)
+    .pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.button.nativeElement.disabled = false;
       this.userName = '';
       if (_.isEmpty(_.get(data, 'result.response.err'))) {
         this.userData = _.get(data, 'result.response');
@@ -57,7 +59,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       }
     }, err => {
       this.userName = '';
-      this.disableBtn = false;
+      this.button.nativeElement.disabled = false;
       this.showErrorMsg();
     });
   }
@@ -84,8 +86,15 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   }
 
   toggleModal(visibility = false, batch?: {}) {
-    this.showModal = visibility;
-    this.userBatch = batch ? batch : this.userBatch;
+      if (batch) {
+      this.showModal = !_.isEqual(_.get(batch, 'createdBy'), this.userService.userid)
+      ? (this.toasterService.error(this.resourceService.messages.dashboard.emsg.m004), false) : visibility;
+      this.userBatch = batch;
+    } else {
+      this.showModal = visibility;
+      this.userBatch = this.userBatch;
+    }
+
   }
 
     // To set telemetry impression
@@ -127,7 +136,8 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       };
 
       if (extra) {
-          interactData.edata['extra'] = extra;
+        interactData.edata['extra'] = extra;
+        _.map(extra, ((value, key) =>  interactData.context.cdata.push({id: value, type: key})));
       }
 
       this.telemetryService.interact(interactData);

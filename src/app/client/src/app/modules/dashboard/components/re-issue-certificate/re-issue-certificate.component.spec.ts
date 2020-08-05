@@ -9,6 +9,7 @@ import { ReIssueCertificateComponent } from './re-issue-certificate.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { APP_BASE_HREF } from '@angular/common';
 
 describe('ReIssueCertificateComponent', () => {
   let component: ReIssueCertificateComponent;
@@ -37,7 +38,8 @@ describe('ReIssueCertificateComponent', () => {
         emsg: {
           m001: 'Could not fetch the certificate list. Try again later',
           m002: 'User is not enrolled in any of the batches of this course',
-          m003: 'Could not reissue certificate. Try again later'
+          m003: 'Could not reissue certificate. Try again later',
+          m004: `You haven't created this batch`,
         },
         smsg: {
           m001: 'Certificate Re-Issued successfully'
@@ -46,7 +48,6 @@ describe('ReIssueCertificateComponent', () => {
     },
     frmelmnts: {
       lbl: {
-
       }
     },
     instance: 'sunbird'
@@ -59,7 +60,8 @@ describe('ReIssueCertificateComponent', () => {
       providers: [TelemetryService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
-        { provide: ResourceService, useValue: resourceBundle }
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })
       .compileComponents();
@@ -85,27 +87,25 @@ describe('ReIssueCertificateComponent', () => {
     component.userName = '   testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of({ result: { response: { err: { message: 'Error while fetching cert list' } } } }));
     spyOn(component, 'showErrorMsg');
-    component.getCertList();
-    component['certService'].getUserCertList('testUser', '123').subscribe(data => {
+    component.searchCertificates();
+    component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userName).toEqual('');
-      expect(component.disableBtn).toBeFalsy();
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
-    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
+    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
   });
 
   it('should throw  error while fetching certList', () => {
     component.userName = 'testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(throwError({ result: { response: { err: { message: 'Error while fetching cert list' } } } }));
     spyOn(component, 'showErrorMsg');
-    component.getCertList();
-    component['certService'].getUserCertList('testUser', '123').subscribe(data => {
+    component.searchCertificates();
+    component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
     }, err => {
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
-    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
+    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
     expect(component.userName).toEqual('');
-    expect(component.disableBtn).toBeFalsy();
   });
 
   it('should return  certList with batchList[] empty', () => {
@@ -126,15 +126,14 @@ describe('ReIssueCertificateComponent', () => {
     component.userName = 'testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
     spyOn(component['toasterService'], 'error');
-    component.getCertList();
-    component['certService'].getUserCertList('testUser', '123').subscribe(data => {
+    component.searchCertificates();
+    component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userData).toEqual(response.result.response);
       expect(component.batchList).toEqual([]);
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m002);
     });
-    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
+    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
     expect(component.userName).toEqual('');
-    expect(component.disableBtn).toBeFalsy();
   });
 
   it('should return  certList with batchList[{}]', () => {
@@ -156,14 +155,13 @@ describe('ReIssueCertificateComponent', () => {
     };
     component.userName = 'testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
-    component.getCertList();
-    component['certService'].getUserCertList('testUser', '123').subscribe(data => {
+    component.searchCertificates();
+    component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userData).toEqual(response.result.response);
       expect(component.batchList).toEqual([{batchId: '1'}]);
     });
-    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123');
+    expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
     expect(component.userName).toEqual('');
-    expect(component.disableBtn).toBeFalsy();
   });
 
   it ('should reIssue certificate', () => {
@@ -222,23 +220,42 @@ describe('ReIssueCertificateComponent', () => {
     {request: {courseId: '123', batchId: '1', userIds: ['testUser']}});
   });
 
-
   it('should assign showModal TRUE', () => {
     component.toggleModal(true);
     expect(component.showModal).toBeTruthy();
     expect(component.userBatch).toBeUndefined();
   });
 
-  it('should assign showModal TRUE', () => {
+  it('should assign showModal FALSE ', () => {
+    component['userService'].setUserId('user1');
     component.toggleModal(false, {
       batch: 'batch 1',
       name: '123',
+      createdBy: 'user1'
     });
     expect(component.showModal).toBeFalsy();
     expect(component.userBatch).toEqual({
       batch: 'batch 1',
       name: '123',
+      createdBy: 'user1'
     });
+  });
+
+  it('should check who is created and assign showmodal value', () => {
+    component['userService'].setUserId('user1');
+    spyOn(component['toasterService'], 'error');
+    component.toggleModal(true, {
+      batch: 'batch 1',
+      name: '123',
+      createdBy: 'user2'
+    });
+    expect(component.showModal).toBeFalsy();
+    expect(component.userBatch).toEqual({
+      batch: 'batch 1',
+      name: '123',
+      createdBy: 'user2'
+    });
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m004);
   });
 
   it ('should assign telemetryImpression', () => {
@@ -271,14 +288,16 @@ describe('ReIssueCertificateComponent', () => {
     const interactData = {
       context: {
         env: 'dashboard',
-        cdata: []
+        cdata: [
+          {id: 'testUser', type: 'userId'},
+        ]
       },
       edata: {
         id: 're-issue-cert',
         type: 'click',
         pageid: 'certificates',
         extra: {
-          userName: 'testUser'
+          userId: 'testUser',
         }
       },
       object: {
@@ -288,7 +307,7 @@ describe('ReIssueCertificateComponent', () => {
       }
     };
 
-    component.addTelemetry('re-issue-cert', { userName: 'testUser'});
+    component.addTelemetry('re-issue-cert', { userId: 'testUser'});
     expect(component['telemetryService'].interact).toHaveBeenCalledWith(interactData);
   });
 

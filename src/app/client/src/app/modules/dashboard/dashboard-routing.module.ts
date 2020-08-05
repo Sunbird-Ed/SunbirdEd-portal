@@ -38,7 +38,7 @@ const routes: Routes = [
       {
         path: 'certificates', component: ReIssueCertificateComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'bulkUpload',
+          roles: 'courseBatchRoles',
           telemetry: {
             env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
             type: 'view', object: { ver: '1.0', type: 'course' }
