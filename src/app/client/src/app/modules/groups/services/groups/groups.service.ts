@@ -131,7 +131,7 @@ export class GroupsService {
     return this.groupCservice.removeActivities(groupId, removeActivitiesRequest);
   }
 
-  getUserData(memberId: string, captchaToken: string = '') {
+  getUserData(memberId: string, captchaToken: object = {}) {
     return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
