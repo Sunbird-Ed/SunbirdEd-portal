@@ -1,4 +1,3 @@
-<app-landing-section [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div *ngIf="contentData && !loadLandscapePlayer" [style.display]="!showLoader ? 'block' : 'none'">
   <!--CC-Player Content Header -->
   <div class="sb-bg-white relative position cc-player__btn-back ">
@@ -12,20 +11,21 @@
       </button>
     </div>
   </div>
-  <div class="cc-player__content-header d-flex flex-ai-center relative position" [ngClass]="{'header-block': isFullScreenView}"
-    *ngIf="contentData">
+  <div class="cc-player__content-header d-flex flex-ai-center relative position"
+    [ngClass]="{'header-block': isFullScreenView}" *ngIf="contentData">
     <div class="ui container">
       <div class="header-info flex-basis-1">
         <div class="header-info__title ellipsis">
           <h5 class="sb-color-primary font-weight-bold">{{contentData.name}}</h5>
-        <div class="header-info__desc d-flex flex-ai-center" *ngIf="contentData">
-          <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
-          <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
-          <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
-        </div>
+          <div class="header-info__desc d-flex flex-ai-center" *ngIf="contentData">
+            <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
+            <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
+            <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
+          </div>
         </div>
         <div>
-          <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+          <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;"
+            class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
             <i class="blue share alternate icon"></i>
             {{resourceService?.frmelmnts?.lbl?.share}}
           </a>
@@ -48,19 +48,22 @@
 </div>
 
 <div class="ui stackable grid" *ngIf="loadLandscapePlayer">
-    <div class="twelve wide column" >
-        <div *ngIf="(popupControlService.checkPopupStatus | async) else loading">
-            <div class="player-fullscreen" id="playerFullscreen"> 
-              <app-player class="content-player content-player-landscape" (closePlayerEvent)="closePlayer()" [pageId]="'public'" [isSingleContent]="isSingleContent" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
-            </div>
-            <ng-template #loading>
-              <app-loader></app-loader>
-            </ng-template>
-        </div>
+  <div class="twelve wide column">
+    <div *ngIf="(popupControlService.checkPopupStatus | async) else loading">
+      <div class="player-fullscreen" id="playerFullscreen">
+        <app-player class="content-player content-player-landscape" (closePlayerEvent)="closePlayer()"
+          [pageId]="'public'" [isSingleContent]="isSingleContent" [playerOption]="playerOption"
+          [playerConfig]="playerConfig"></app-player>
+      </div>
+      <ng-template #loading>
+        <app-loader></app-loader>
+      </ng-template>
     </div>
   </div>
+</div>
 <div class="ui container" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
 </div>
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
+  (close)="sharelinkModal = false">
 </app-share-link>
