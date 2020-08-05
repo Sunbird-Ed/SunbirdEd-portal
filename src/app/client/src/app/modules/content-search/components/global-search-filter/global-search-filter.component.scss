@@ -1,0 +1,189 @@
+@import "variables";
+@import "mixins/mixins";
+
+/* new theme css */
+/* over written class pill */
+.sbt-filter-bar {
+  background: var(--white);
+  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+  min-width: calculateRem(232px);
+  padding: calculateRem(16px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
+  position: fixed;
+  top: 4px;
+  right: 0;
+  left: 0;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  z-index: 9999;
+  margin: 0;
+  border-radius: calculateRem(24px);
+  @include respond-between(sm, md) {
+    position: absolute;
+    top: 0;
+    width: calculateRem(272px);
+    z-index: 1112;
+    height: auto;
+  }
+  @include respond-above(md) {
+    z-index: initial;
+    position: relative;
+    width: auto;
+    height: auto;
+    // margin-top:calculateRem(-72px);
+  }
+  .icon-close {
+    position: absolute;
+    top: calculateRem(16px);
+    right: calculateRem(16px);
+  }
+  .sbt-btn-reset {
+    position: absolute;
+    top: calculateRem(12px);
+    right: calculateRem(48px);
+    box-shadow: none;
+    border-radius:calculateRem(16px);
+    @include respond-above(sm) {
+      right: calculateRem(16px);
+    }
+  }
+  &.mr-16 {
+    @include respond-below(sm) {
+      margin-right: 0 !important;
+    }
+  }
+  .sbt-filter-scrollable {
+    overflow-y: auto;
+    padding-right: calculateRem(24px);
+    height: calc(100vh - 64px);
+    @include respond-between(sm, md) {
+      max-height: calc(100vh - 388px);
+      height: auto;
+    }
+    @include respond-above(md) {
+      max-height: calc(100vh - 388px);
+      height: auto;
+    }
+  }
+  .state-medium-container {
+    position: relative;
+    z-index: 999;
+    &__dropdown {
+      z-index: 1;
+    }
+    &__separator {
+      height: calculateRem(24px);
+      width: calculateRem(1px);
+      background-color: var(--gray-200);
+      margin: 0px calculateRem(16px) 0px calculateRem(16px);
+      @include respond-below(sm) {
+        margin: 0px calculateRem(8px) 0px calculateRem(8px);
+      }
+    }
+    &__medium {
+      overflow-x: auto;
+      overflow-y: hidden;
+      height: calculateRem(64px);
+      @include respond-below(xs) {
+        flex: 0 0 50%;
+      }
+    }
+  }
+}
+.sbt-filter {
+  margin-bottom: calculateRem(16px);
+  z-index: 9;
+  &-text,&-overlay{
+    display: none;
+  }
+  .icon-close {
+  @include respond-above(md) {
+    display: none;
+   }
+  }
+  @include respond-above(sm) {
+    position: sticky;
+    top: calculateRem(188px);
+    margin-top: calculateRem(-72px);
+  }
+  &-switcher {
+    width: calculateRem(40px);
+    height: calculateRem(40px);
+    background-color: var(--primary-color);
+    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: calculateRem(-20px);
+    border-radius: 100%;
+    color: var(--white);
+    position: absolute;
+    left: calculateRem(24px);
+    top: 0px;
+    z-index: 999;
+    cursor: pointer;
+    i {
+      margin-top: calculateRem(-10px);
+      margin-left: calculateRem(3px);
+      font-size: calculateRem(20px);
+    }
+  }
+  @include respond-between(sm, md) {
+    position: fixed;
+    z-index: 1111;
+    top: inherit;
+    &-overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1111;
+      left: 0;
+      top: 0;
+    }
+    &-switcher-container {
+      cursor: pointer;
+      position: absolute;
+      // top: calculateRem(-72px);
+      z-index: 1113;
+    }
+    &-switcher {
+      box-shadow: none;
+    }
+    &-text {
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+      height: 2.5rem;
+      margin-top: -1.25rem;
+      background: var(--white);
+      padding: 0 calculateRem(16px) 0 calculateRem(48px);
+      display: flex;
+      align-items: center;
+      z-index: 3;
+      font-size: calculateRem(12px);
+      font-weight: bold;
+      justify-content: center;
+      box-shadow: 0.25rem 0.25rem 0.125rem 0 var(--sbt-box-shadow-black);
+      border-radius: calculateRem(20px);
+    }
+  }
+}
+
+:host ::ng-deep {
+  .ui.accordion.sbt-filter-accordion .title:not(.ui) {
+    display: none;
+  }
+  .ui.accordion.sbt-filter-accordion .active.content {
+    padding:0px 0px 0px 0px;
+  }
+  .ui.accordion.sbt-filter-accordion .content {
+    padding: 0em 0 1em;
+  }
+}
+
+
+.sbt-filter-accordion {
+  @include respond-below(md) {
+  display: none;
+  }
+}

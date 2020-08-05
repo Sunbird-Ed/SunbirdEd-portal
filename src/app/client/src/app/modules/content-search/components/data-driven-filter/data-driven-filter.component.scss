@@ -116,7 +116,7 @@
           &:hover {
             color: var(--white) !important;
             background-color: var(--sbt-pill-bg-active) !important;
-            box-shadow: calculateRem(3px) calculateRem(3px) calculateRem(2px) 0 var(--sbt-box-shadow-black) !important;
+            box-shadow: var(--sbt-box-shadow-3px) !important;
           }
         }
       }
@@ -126,7 +126,7 @@
 
 .sbt-filter-bar {
   background: var(--white);
-  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+  box-shadow: var(--sbt-box-shadow-6px);
   min-width: calculateRem(232px);
   padding: calculateRem(16px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
   position: fixed;
@@ -156,6 +156,16 @@
     position: absolute;
     top: calculateRem(16px);
     right: calculateRem(16px);
+  }
+  .sbt-btn-reset {
+    position: absolute;
+    top: calculateRem(12px);
+    right: calculateRem(48px);
+    box-shadow: none;
+    border-radius:calculateRem(16px);
+    @include respond-above(sm) {
+      right: calculateRem(16px);
+    }
   }
   &.mr-16 {
     @include respond-below(sm) {
@@ -226,7 +236,7 @@
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--primary-color);
-    box-shadow: calculateRem(4px) calculateRem(4px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+    box-shadow: var(--sbt-box-shadow-3px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,7 +247,7 @@
     left: calculateRem(24px);
     top: 0px;
     z-index: 999;
-
+    cursor: pointer;
     i {
       margin-top: calculateRem(-10px);
       margin-left: calculateRem(3px);
@@ -285,8 +295,28 @@
       font-size: calculateRem(12px);
       font-weight: bold;
       justify-content: center;
-      box-shadow: 0.25rem 0.25rem 0.125rem 0 var(--sbt-box-shadow-black);
+      box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
     }
+  }
+}
+
+
+:host ::ng-deep {
+  .ui.accordion.sbt-filter-accordion .title:not(.ui) {
+    display: none;
+  }
+  .ui.accordion.sbt-filter-accordion .active.content {
+    padding:0px 0px 0px 0px;
+  }
+  .ui.accordion.sbt-filter-accordion .content {
+    padding: 0em 0 1em;
+  }
+}
+
+
+.sbt-filter-accordion {
+  @include respond-below(md) {
+  display: none;
   }
 }

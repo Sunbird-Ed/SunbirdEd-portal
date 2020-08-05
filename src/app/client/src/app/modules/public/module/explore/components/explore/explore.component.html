@@ -3,7 +3,7 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
 <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="FIRST_PANEL_LAYOUT">
-  <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
+  <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
   </div>
   <div [ngClass]="SECOND_PANEL_LAYOUT">
@@ -20,7 +20,7 @@
       </div> 
     </div>
         </div>
-        <div class="mt-24 sb-library-cards">
+      <div class="mt-24 sb-library-cards right-flower-position-adjust-container">
       <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">

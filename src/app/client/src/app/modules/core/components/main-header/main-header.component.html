@@ -153,9 +153,9 @@
           <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 sbt-header-tool-bar">
             <app-search [layoutConfiguration]="layoutConfiguration" class="sbt-search-box large">
             </app-search>
-            <div class="d-flex flex-ai-center">
+            <div class="d-flex flex-ai-center sbt-dropdown-profile-area">
             <!-- student dropdown -->
-                <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-purple--bg mr-16" placeholder="Student" labelField="name" #multiSelect>
+                <sui-select *ngIf="ShowStudentDropdown" class="selection sbt-dropdown sbt-dropdown--md sbt-purple mr-16" placeholder="Student" labelField="name" #multiSelect>
                    <sui-select-option  *ngFor="let option of multiSelect1" [value]="option">
                    </sui-select-option>
                  </sui-select>
@@ -254,12 +254,13 @@
       </div>
       <ul class="profile__actions__list">
         <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
-          <img src="assets/images/profileuser.svg" alt="">
+          <i class="icon-svg icon-svg--sm icon-profileuser mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#profileuser"></use></svg></i>
           {{resourceService.frmelmnts?.lnk?.profile}}
         </li>
         <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
             [permission]='adminDashboard' (click)="toggleSideMenu(false)"
             routerLink="dashBoard/organization">
+            <i class="icon-svg icon-svg--sm icon-dashboard mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#dashboard"></use></svg></i>
           {{resourceService.frmelmnts?.lnk?.dashboard}}
         </li>
         <li class="list-item" (click)="toggleSideMenu(false)"
@@ -269,12 +270,13 @@
         </li>
         <li class="list-item" *ngIf='!isValidCustodianOrgUser'
             (click)="toggleSideMenu(false);showAccountMergemodal = true;">
-          <img src="assets/images/membersuser.svg" alt="">
+          <i class="icon-svg icon-svg--sm icon-mergeaccount mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#mergeaccount"></use></svg></i>
           {{resourceService.frmelmnts?.lbl?.mergeAccount}}
         </li>
         <li class="list-item" (click)="toggleSideMenu(false)"
             *ngIf='permissionService.permissionAvailable' appPermission
             [permission]='orgAdminRole' routerLink="manage">
+            <i class="icon-svg icon-svg--sm icon-manage mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#manage"></use></svg></i>
           {{resourceService.frmelmnts?.lbl?.manage}}
         </li>
         <li class="list-item mobile only" (click)="toggleSideMenu(false)"
@@ -293,6 +295,7 @@
         <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
         [class.active]="router.isActive(routerLinks?.groups)"
         *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
+        <i class="icon-svg icon-svg--sm icon-groups mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#groups"></use></svg></i>
             {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
         </li>
 
@@ -300,24 +303,27 @@
             *ngIf="showContributeTab" [class.active]="router.isActive('/contribute')"
             appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
             routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
+            <i class="icon-svg icon-svg--sm icon-contribute mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#contribute"></use></svg></i>
           {{resourceService?.frmelmnts?.tab?.contribute}}
         </li>
         <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
             [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
             *ngIf='isLayoutAvailable() && permissionService.permissionAvailable'
             appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+            <i class="icon-svg icon-svg--sm icon-workspace mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#workspace"></use></svg></i>
           {{resourceService?.frmelmnts?.tab?.workspace}}
         </li>
         <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
             *ngIf='isLayoutAvailable() && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
             appPermission (click)="toggleSideMenu(false)"
             [permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
+            <i class="icon-svg icon-svg--sm icon-help mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#help"></use></svg></i>
                 {{resourceService?.frmelmnts?.tab?.help}}
               </li>
         <li class="list-item" appTelemetryInteract
             [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
-          <img src="assets/images/logoutuser.svg" alt="">
+            <i class="icon-svg icon-svg--sm icon-logout mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#logout"></use></svg></i>
           {{resourceService.frmelmnts?.lnk?.logout}}
         </li>
       </ul>
@@ -333,13 +339,14 @@
                 [class.active]="router.isActive(routerLinks?.explore)"
                 *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]"
                 appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
+                <i class="icon-svg icon-svg--sm icon-groups mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#groups"></use></svg></i>
               {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span>
             </li>
 
             <li class="list-item" (click)="toggleSideMenu(false)" appTelemetryInteract
                 [telemetryInteractEdata]="signInIntractEdata">
-              <a href={{hrefPath}}>
-                <span class="sb-icon sb-icon__story sb-icon--md mr-4"></span>
+              <a href={{hrefPath}} class="d-flex flex-ai-center">
+                <i class="icon-svg icon-svg--sm icon-login mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#login"></use></svg></i>
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>

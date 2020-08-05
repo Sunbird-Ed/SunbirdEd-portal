@@ -3,13 +3,21 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
-        [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true [isShowFilterLabel]=true
-        [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
+        <ng-container *ngIf="!layoutConfiguration">
+          <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
+            [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true [isShowFilterLabel]=true
+            [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)">
+          </app-data-driven-filter>
+        </ng-container>
+        <ng-container *ngIf="layoutConfiguration">
+          <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
+            (filterChange)="getFilters($event)">
+          </app-global-search-filter>
+        </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" >
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div class="content-grid mt-24 sdfsdaf">
+        <div class="content-grid mt-24">
           <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
             <div class="sb-pageSection-header">
               <div class="">

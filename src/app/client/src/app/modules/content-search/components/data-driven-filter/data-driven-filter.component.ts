@@ -28,7 +28,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() formAction: string;
   @Output() dataDrivenFilter = new EventEmitter();
   @Input() layoutConfiguration;
-
+  @Input() isOpen;
   public showFilters = false;
 
   public formFieldProperties: Array<any>;
@@ -66,6 +66,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+        // screen size
+        if (window.innerWidth <= 992 ) {
+          this.isOpen = false;
+        }
     this.initLayout();
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {

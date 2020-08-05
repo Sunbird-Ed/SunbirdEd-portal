@@ -108,6 +108,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
+  ShowStudentDropdown = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
   selected = [];
