@@ -49,6 +49,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   SECOND_PANEL_LAYOUT;
   public globalSearchFacets: Array<string>;
   public allTabData;
+  public selectedFilters;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -178,7 +179,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
