@@ -142,8 +142,12 @@ html[data-theme='Default'] {
   --sbt-box-shadow:rgba(128, 167, 206, 1);
   --sbt-theme-purple-selectbox:#6841B3;
   --sbt-theme-green-selectbox:#008840;
-  --sbt-theme-purple-selectbox-lbg:#E5EDF5;
+  --sbt-theme-blue-selectbox:#0531FF;
+  --sbt-theme-light-blue-selectbox:#108DE1;
+  --sbt-theme-purple-selectbox-lbg:#F2EEFF;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-theme-blue-selectbox-lbg:#E5EDF5;
+  --sbt-theme-light-blue-selectbox-lbg:#E9F5FF;
   --sbt-pill-hs:253, 100%;
   --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
   --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
@@ -163,8 +167,12 @@ html[data-theme='Orange'] {
   --sbt-box-shadow:rgb(212, 165, 111, 1);
   --sbt-theme-purple-selectbox:#6841B3;
   --sbt-theme-green-selectbox:#008840;
-  --sbt-theme-purple-selectbox-lbg:#E5EDF5;
+  --sbt-theme-blue-selectbox:#0531FF;
+  --sbt-theme-light-blue-selectbox:#108DE1;
+  --sbt-theme-purple-selectbox-lbg:#F2EEFF;
   --sbt-theme-green-selectbox-lbg:#E0F5EA;
+  --sbt-theme-blue-selectbox-lbg:#E5EDF5;
+  --sbt-theme-light-blue-selectbox-lbg:#E9F5FF;
   --sbt-pill-hs:253, 100%;
   --sbt-pill-bg:hsl(var(--sbt-pill-hs), 90%);
   --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
