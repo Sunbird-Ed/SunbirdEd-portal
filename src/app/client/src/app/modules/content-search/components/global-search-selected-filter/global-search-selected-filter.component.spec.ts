@@ -1,10 +1,3 @@
-
-
-//{type: 'medium', value: 'assamese'}
-
-
-
-
 import { GlobalSearchSelectedFilterComponent } from './global-search-selected-filter.component';
 import { Response } from './global-search-selected-filter.component.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
