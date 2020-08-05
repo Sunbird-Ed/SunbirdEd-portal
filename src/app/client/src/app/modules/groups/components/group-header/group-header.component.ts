@@ -36,10 +36,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
+
+    this.groupService.showMenu.subscribe(data => {
+      this.dropdownContent = data !== 'group';
+    });
   }
 
   toggleModal(visibility = false) {
     this.showModal = visibility;
+    this.groupService.emitMenuVisibility('group');
   }
 
   deleteGroup() {

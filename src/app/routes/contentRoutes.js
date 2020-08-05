@@ -19,6 +19,9 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 module.exports = (app) => {
     app.all('/content/course/v1/search',
         proxy(contentURL, {
+            timeout: envHelper.sunbird_api_request_timeout,
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
                 logger.info({ msg: '/content/course/v1/search called' });
                 return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
@@ -36,8 +39,9 @@ module.exports = (app) => {
         proxyUtils.verifyToken(),
         isAPIWhitelisted.isAllowed(),
         proxy(contentURL, {
+            timeout: envHelper.sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
             proxyReqPathResolver: (req) => {
                 let urlParam = req.params['0']
                 let query = require('url').parse(req.url).query

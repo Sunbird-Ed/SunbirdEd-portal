@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
@@ -8,8 +8,10 @@ import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angu
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, first, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+
+const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
     templateUrl: './library-search.component.html',
     styleUrls: ['./library-search.component.scss']
@@ -40,7 +42,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public frameworkId;
     public closeIntractEdata;
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
+    public globalSearchFacets: Array<string>;
+    public allTabData;
     layoutConfiguration;
+    FIRST_PANEL_LAYOUT;
+    SECOND_PANEL_LAYOUT;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -54,18 +60,27 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     ngOnInit() {
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+            this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            this.setNoResultMessage();
+            this.initFilters = true;
+        }, error => {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+            this.navigationhelperService.goBack();
+        });
+
         this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
               this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
             }
-          });
+        });
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
             }
-          });
-        this.initFilters = true;
+        });
         this.dataDrivenFilterEvent.pipe(first()).
             subscribe((filters: any) => {
                 this.dataDrivenFilters = filters;
@@ -75,15 +90,25 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.redoLayout();
         this.layoutService.switchableLayout().
-            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-            if(layoutConfig!=null) {
-              this.layoutConfiguration = layoutConfig.layout;
-            }
-          });
-      }
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+                if (layoutConfig != null) {
+                    this.layoutConfiguration = layoutConfig.layout;
+                }
+                this.redoLayout();
+            });
+    }
+    redoLayout() {
+        if (this.layoutConfiguration != null) {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        } else {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+        }
+    }
     public getFilters(filters) {
-        this.facets = filters.map(element => element.code);
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
                 collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -111,50 +136,43 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-            const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-            let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-            if (_.isEmpty(filters)) {
-                filters = _.omit(this.frameworkData, ['id']);
-            }
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        if (_.isEmpty(filters)) {
+            filters = _.omit(this.frameworkData, ['id']);
+        }
+        if (!filters.channel) {
             filters.channel = this.hashTagId;
-            filters.contentType = _.get(allTabData, 'search.filters.contentType');
-            const option: any = {
-                filters: filters,
-                fields: _.get(allTabData, 'search.fields'),
-                limit: _.get(allTabData, 'search.limit'),
-                pageNumber: this.paginationDetails.currentPage,
-                query: this.queryParams.key,
-                mode: 'soft',
-                facets: this.facets,
-                params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
-            };
-            if (this.frameworkId) {
-                option.params.framework = this.frameworkId;
-            }
-            this.searchService.contentSearch(option)
-                .subscribe(data => {
-                    this.showLoader = false;
-                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    this.contentList = this.getOrderedData(_.get(data, 'result.content'));
-                }, err => {
-                    this.showLoader = false;
-                    this.contentList = [];
-                    this.facetsList = [];
-                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-                });
-        }, (err: any) => {
-            this.showLoader = false;
-            this.contentList = [];
-            this.facetsList = [];
-            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        });
+        }
+        filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        const option: any = {
+            filters,
+            fields: _.get(this.allTabData, 'search.fields'),
+            limit: _.get(this.allTabData, 'search.limit'),
+            pageNumber: this.paginationDetails.currentPage,
+            query: this.queryParams.key,
+            mode: 'soft',
+            facets: this.globalSearchFacets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+        };
+        if (this.frameworkId) {
+            option.params.framework = this.frameworkId;
+        }
+        this.searchService.contentSearch(option)
+            .subscribe(data => {
+                this.showLoader = false;
+                this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+                this.facetsList = this.searchService.processFilterData(this.facets);
+                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];
+            }, err => {
+                this.showLoader = false;
+                this.contentList = [];
+                this.facetsList = [];
+                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+            });
     }
 
     getOrderedData(contents) {

@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
 import { Observable, of, forkJoin, throwError } from 'rxjs';
 import * as moment from 'moment';
 
-const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state'];
+const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
 @Injectable()
 export class ReportService {
@@ -363,7 +363,7 @@ export class ReportService {
             filters: { isRootOrg: true },
             fields: ['id', 'channel', 'slug', 'orgName'],
             pageNumber: 1,
-            limit: 1000
+            limit: 10000
           };
           return this.searchService.orgSearch(req).pipe(
             map(res => _.map(_.get(res, 'result.response.content'), 'slug')),
@@ -398,6 +398,21 @@ export class ReportService {
             map(apiResponse => _.map(_.get(apiResponse, 'result.response'), state => _.get(state, 'name'))),
             shareReplay(1),
             catchError(err => of([]))
+          );
+        }
+      },
+      $channel: {
+        value: _.get(this.userService, 'userProfile.rootOrg.hashTagId'),
+        masterData: () => {
+          const req = {
+            filters: { isRootOrg: true },
+            fields: ['id', 'channel', 'slug', 'orgName'],
+            pageNumber: 1,
+            limit: 10000
+          };
+          return this.searchService.orgSearch(req).pipe(
+            map(res => _.map(_.get(res, 'result.response.content'), 'id')),
+            shareReplay(1)
           );
         }
       }

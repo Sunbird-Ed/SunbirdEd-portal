@@ -70,6 +70,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
+      this.courseConsumptionService.setCoursePagePreviousUrl();
+    }
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
     } else {
@@ -262,6 +265,20 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   goBack() {
-    this.navigationHelperService.goBack();
+    const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
+    this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (!previousPageUrl) {
+      this.router.navigate(['/learn']);
+      return;
+    }
+    if (previousPageUrl.url.indexOf('/my-groups/') >= 0) {
+      this.navigationHelperService.goBack();
+    } else {
+      if (previousPageUrl.queryParams) {
+        this.router.navigate([previousPageUrl.url], {queryParams: previousPageUrl.queryParams});
+      } else {
+        this.router.navigate([previousPageUrl.url]);
+      }
+    }
   }
 }

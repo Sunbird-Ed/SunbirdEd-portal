@@ -171,7 +171,8 @@ describe('ReportComponent', () => {
       expect(res).toBeDefined();
       expect(res).toEqual([{
         label: 'Report Summary',
-        text: [mockLatestReportSummary[0].summary]
+        text: [mockLatestReportSummary[0].summary],
+        createdOn: mockLatestReportSummary[0].createdon
       }]);
       done();
     });
@@ -364,15 +365,14 @@ describe('ReportComponent', () => {
   it('should handle handleAddSummaryStreams subscription', done => {
     component['hash'] = 'hash';
     spyOn(component, 'closeSummaryModal');
+    spyOn(reportService, 'getParameterValues').and.returnValue({ value: 'tn' });
     spyOn(reportService, 'addReportSummary').and.returnValue(of({}));
     component['handleAddSummaryStreams']().subscribe(res => {
       expect(component.closeSummaryModal).toHaveBeenCalled();
       expect(reportService.addReportSummary).toHaveBeenCalled();
       done();
     });
-
     component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
-
   });
 
 });

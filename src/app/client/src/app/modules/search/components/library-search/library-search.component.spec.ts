@@ -185,7 +185,7 @@ describe('LibrarySearchComponent', () => {
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(0);
+    expect(component.contentList.length).toEqual(2);
     expect(toasterService.error).toHaveBeenCalled();
   }));
 });
