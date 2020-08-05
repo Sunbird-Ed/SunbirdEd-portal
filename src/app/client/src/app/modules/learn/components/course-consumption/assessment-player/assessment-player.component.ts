@@ -61,7 +61,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   totalContents = 0;
   consumedContents = 0;
   layoutConfiguration;
-  courceProgress = 0;
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
@@ -168,9 +167,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
-              if (this.isCertificateAttached) {
-                this.courceProgress = _.get(this.enrolledBatchInfo, 'cert_templates.template_22.description').match(/\d+/g);
-              }
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
@@ -222,18 +218,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           /* istanbul ignore else */
           if (_.get(res, 'content.length')) {
-            const progress = (_.reduce(res.content, function (sumProgress, course) {
-              if (course['progress']) {
-                return sumProgress  + course['progress'];
-              }
-              return sumProgress + 0;
-            }, 0)) / res.content.length;
-            const cutoffProgress = parseInt(this.courceProgress[0], 10)
-            this.isCourseCompleted = progress > cutoffProgress ? true : false;
-            // this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            this.isCourseCompleted = _.every(res.content, ['status', 2]);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
           }
-
         }, err => console.error(err, 'content read api failed'));
     }
   }
