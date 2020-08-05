@@ -221,9 +221,9 @@ html[data-theme='Default'] {
   --sbt-poems-text: var(--sbt-poems);
   --sbt-poems-bg: var(--sbt-poems);
   --sbt-tv-text: var(--sbt-tv);
-  --sbt-tv-text: var(--sbt-tv);
+  --sbt-tv-bg: var(--sbt-tv);
   --sbt-podcasts-text: var(--sbt-podcasts);
-  --sbt-podcasts-text: var(--sbt-podcasts);
+  --sbt-podcasts-bg: var(--sbt-podcasts);
   --sbt-all-text: var(--sbt-all);
   --sbt-all-bg: var(--sbt-all);
 }
@@ -284,9 +284,9 @@ html[data-theme='Green'] {
   --sbt-poems-text: var(--sbt-poems);
   --sbt-poems-bg: var(--sbt-poems);
   --sbt-tv-text: var(--sbt-tv);
-  --sbt-tv-text: var(--sbt-tv);
+  --sbt-tv-bg: var(--sbt-tv);
   --sbt-podcasts-text: var(--sbt-podcasts);
-  --sbt-podcasts-text: var(--sbt-podcasts);
+  --sbt-podcasts-bg: var(--sbt-podcasts);
   --sbt-all-text: var(--sbt-all);
   --sbt-all-bg: var(--sbt-all);
 }
@@ -535,6 +535,11 @@ html[layout='joy'] {
   }
   .toc-box-shadow {
     box-shadow:none !important;
+  }
+  .training-relevant {
+    background: var(--sbt-compt-bg) !important;
+    border-radius: 24px;
+    padding: 16px;
   }
   .relative9 {
     position: relative;

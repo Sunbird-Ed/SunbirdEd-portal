@@ -7,7 +7,7 @@
             [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
           </ng-container>
           <ng-container *ngIf="layoutConfiguration">
-            <app-global-search-filter [facets]="facets" *ngIf="initFilters && allTabData"
+            <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
               (filterChange)="getFilters($event)">
             </app-global-search-filter>
           </ng-container>

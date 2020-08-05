@@ -1,50 +1,43 @@
 <ng-container *ngIf="facets">
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
-    <div class="sbt-filter-switcher-container">
-      <div class="sbt-filter-switcher" (click)="isOpen = !isOpen"><i class="sliders horizontal icon"></i></div>
+    <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">
+      <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+      <div class="sbt-filter-text">Filter</div>
     </div>
-    <div class="sbt-filter-bar mr-16">
-      <i class="icon-svg icon-svg--xxs icon-close cursor-pointer">
-        <svg class="icon icon-svg--gray">
-          <use xlink:href="./assets/images/sprite.svg#close"></use>
-        </svg>
-      </i>
-      <div class="sbt-filter-scrollable relative" style="overflow: initial;max-height: inherit;">
-        <div class="">
-          <div class="ui container">
-            <sui-accordion [closeOthers]="false">
-              <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
-                <ng-container content>
-                  <div class="" *ngIf="refresh">
-                    <div class="" *ngFor="let facet of facets | sortBy:'index':'asc'">
-                      <div>
-                        <label>{{facet.label}} </label>
-                        <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
-                          zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                          class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple w-100 mb-16"
-                          [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
-                          (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
-                          #multiSelect>
-                          <sui-select-option *ngFor="let dropdownValue of multiSelect.filteredOptions"
-                            [value]="dropdownValue">
-                          </sui-select-option>
-                        </sui-multi-select>
-                      </div>
-                    </div>
-                    <div class="text-right">
-                      <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right" (click)="resetFilters()"
-                        appTelemetryInteract
-                        [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
-                          class="icon undo"></i></button>
-                    </div>
-                  </div>
-                </ng-container>
-              </sui-accordion-panel>
-            </sui-accordion>
+    <sui-accordion class="sbt-filter-accordion">
+      <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
+        <ng-container content>
+          <div class="sbt-filter-bar mr-16">
+            <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
+              <svg class="icon icon-svg--gray">
+                <use xlink:href="./assets/images/sprite.svg#close"></use>
+              </svg>
+            </i>
+            <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
+              (click)="resetFilters()" appTelemetryInteract
+              [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
+                class="icon undo"></i></button>
+            <div class="sbt-filter-scrollable relative mt-24" style="overflow: initial;max-height: inherit;">
+              <div *ngIf="refresh">
+                <div *ngFor="let facet of facets | sortBy:'index':'asc'">
+                  <label>{{facet.label}} </label>
+                  <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
+                    zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
+                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
+                    [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
+                    (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
+                    #multiSelect>
+                    <sui-select-option *ngFor="let dropdownValue of multiSelect.filteredOptions"
+                      [value]="dropdownValue">
+                    </sui-select-option>
+                  </sui-multi-select>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </ng-container>
+      </sui-accordion-panel>
+    </sui-accordion>
   </div>
 </ng-container>

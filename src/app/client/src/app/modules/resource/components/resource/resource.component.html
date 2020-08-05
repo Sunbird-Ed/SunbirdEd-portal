@@ -3,7 +3,7 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
 <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
   <div [ngClass]="FIRST_PANEL_LAYOUT">
-    <app-search-filter [layoutConfiguration]="layoutConfiguration" *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
+    <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'resource-page'" [defaultFilters]="defaultFilters">
     </app-search-filter>
   </div>
   <div [ngClass]="SECOND_PANEL_LAYOUT">
