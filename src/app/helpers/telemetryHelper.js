@@ -518,7 +518,7 @@ module.exports = {
 
   getTelemetryCdata: function (req, cdata = []) {
     cdata.push({
-      id: req.session.userSid || req.sessionID,
+      id: req.session.userSid,
       type: 'UserSession'
     });
     return cdata;
