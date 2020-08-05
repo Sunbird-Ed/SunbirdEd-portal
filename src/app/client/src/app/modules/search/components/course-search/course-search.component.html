@@ -15,7 +15,7 @@
       </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-        <div class="ui container">
+      <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
     <div class="content-grid mt-24">
         <div class="sb-pageSection">
             <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
