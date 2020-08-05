@@ -6,8 +6,10 @@ import { TocCardType } from '@project-sunbird/common-consumption';
 import { UserService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
-   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
+import {
+  ConfigService, ResourceService, ToasterService, NavigationHelperService,
+  ContentUtilsServiceService, ITelemetryShare, LayoutService
+} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -83,51 +85,51 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
-      const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
-      };
+    const navigationExtras: NavigationExtras = {
+      queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
+    };
 
-      if (event && !_.isEmpty(event.event)) {
-        navigationExtras.queryParams.selectedContent = event.data.identifier;
-      } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
-        && _.get(this.contentStatus, 'length')) {
-        const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
-        const collectionChildren = [];
-        this.contentStatus.forEach(item => {
-          if (parsedChildren.find(content => content === item.contentId)) {
-            collectionChildren.push(item);
-          }
-        });
+    if (event && !_.isEmpty(event.event)) {
+      navigationExtras.queryParams.selectedContent = event.data.identifier;
+    } else if (_.get(collectionUnit, 'mimeType') === 'application/vnd.ekstep.content-collection' && _.get(collectionUnit, 'children.length')
+      && _.get(this.contentStatus, 'length')) {
+      const parsedChildren = this.courseConsumptionService.parseChildren(collectionUnit);
+      const collectionChildren = [];
+      this.contentStatus.forEach(item => {
+        if (parsedChildren.find(content => content === item.contentId)) {
+          collectionChildren.push(item);
+        }
+      });
+
+      /* istanbul ignore else */
+      if (collectionChildren.length) {
+        const selectedContent: any = collectionChildren.find(item => item.status !== 2);
 
         /* istanbul ignore else */
-        if (collectionChildren.length) {
-          const selectedContent: any = collectionChildren.find(item => item.status !== 2);
-
-          /* istanbul ignore else */
-          if (selectedContent) {
-            navigationExtras.queryParams.selectedContent = selectedContent.contentId;
-          }
+        if (selectedContent) {
+          navigationExtras.queryParams.selectedContent = selectedContent.contentId;
         }
       }
-      this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
+    }
+    this.router.navigate(['/learn/course/play', _.get(collectionUnit, 'identifier')], navigationExtras);
   }
 
   ngOnInit() {
     this.initLayout();
     this.subscribeToQueryParam();
     this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
+      pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+        this.isFullScreenView = isFullScreen;
+      });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   goBack() {
@@ -165,8 +167,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.courceProgress =_.get(this.enrolledBatchInfo, 'cert_templates.template_22.description').match(/\d+/g);
               this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
+              if (this.isCertificateAttached) {
+                this.courceProgress = _.get(this.enrolledBatchInfo, 'cert_templates.template_22.description').match(/\d+/g);
+              }
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
@@ -218,12 +222,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           /* istanbul ignore else */
           if (_.get(res, 'content.length')) {
-            const progress = (_.reduce(res.content, function (sum,  n){
-              if (n['progress']) {
-                return  sum + n['progress'];
+            const progress = (_.reduce(res.content, function (sumProgress, course) {
+              if (course['progress']) {
+                return sumProgress  + course['progress'];
               }
-              return  sum  +  0;
-            },0)) / res.content.length;
+              return sumProgress + 0;
+            }, 0)) / res.content.length;
             const cutoffProgress = parseInt(this.courceProgress[0], 10)
             this.isCourseCompleted = progress > cutoffProgress ? true : false;
             // this.isCourseCompleted = _.every(res.content, ['status', 2]);
@@ -472,7 +476,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
     }
     if (rollup) {
-      rollup = {l1: this.courseId};
+      rollup = { l1: this.courseId };
     }
     const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
     const interactData = {
@@ -529,9 +533,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         uri: this.router.url,
       },
       object: {
-        id:  this.courseId || _.get(this.courseHierarchy, 'identifier'),
+        id: this.courseId || _.get(this.courseHierarchy, 'identifier'),
         type: _.get(this.courseHierarchy, 'contentType') || 'Course',
-        ver:  `${_.get(this.courseHierarchy, 'pkgVersion')}` || '1.0',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || '1.0',
         rollup: { l1: this.courseId }
       }
     };
