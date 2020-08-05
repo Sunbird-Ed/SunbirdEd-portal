@@ -298,7 +298,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public navigateToExploreContent() {
     this.router.navigate(['explore', 1], {
       queryParams: {
-        ...this.selectedFilters, appliedFilters: false,
+        ...this.selectedFilters, appliedFilters: false, pageTitle: this.pageTitle,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
     });
