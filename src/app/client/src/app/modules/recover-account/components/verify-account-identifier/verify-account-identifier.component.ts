@@ -59,10 +59,10 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       this.disableResendOtp = true;
     }, 22000);
     const interval = setInterval(() => {
-      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      // this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
       this.counter--;
       if (this.counter < 0) {
-        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        // this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
         clearInterval(interval);
       }
     }, 1000);
