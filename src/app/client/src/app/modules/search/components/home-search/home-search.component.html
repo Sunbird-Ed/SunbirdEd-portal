@@ -1,7 +1,15 @@
 <div class="sb-g">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
-        [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
+        <ng-container *ngIf="!layoutConfiguration">
+          <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']"
+            [accordionDefaultOpen]=false [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType">
+          </app-data-driven-filter>
+        </ng-container>
+        <ng-container *ngIf="layoutConfiguration">
+          <app-global-search-filter [facets]="facets" *ngIf="initFilters && allTabData"
+            (filterChange)="getFilters($event)">
+          </app-global-search-filter>
+        </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div class="ui container mt-16">
