@@ -68,6 +68,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
       this.memberListToShow = members;
       this.hideMemberMenu();
     });
+
+    this.groupsService.showMenu.subscribe(data => {
+      this.showKebabMenu = data === 'member';
+    });
   }
 
   hideMemberMenu() {
@@ -79,13 +83,14 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   getMenuData(event, member) {
     this.showKebabMenu = !this.showKebabMenu;
+    this.groupsService.emitMenuVisibility('member');
     this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
     this.selectedMember = member;
     event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {
-    searchKey = _.toLower(searchKey);
+    searchKey = _.toLower(searchKey).trim();
     if (searchKey.trim().length) {
       this.showSearchResults = true;
       this.memberListToShow = this.members.filter(item => _.toLower(item.title).includes(searchKey));

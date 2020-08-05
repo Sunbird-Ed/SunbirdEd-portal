@@ -164,15 +164,18 @@ describe('ListAllReportsComponent', () => {
 
     let result;
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success">Live</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success-0">
+    <span class="sb-live"></span> Live</span>`);
 
     input.data = 'draft';
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-primary">Draft</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-warning-0">
+     Draft</span>`);
 
     input.data = 'retired';
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-warning">Retired</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-primary-100">
+     Retired</span>`);
   });
 
   it('should render the status of paramterized report', () => {
@@ -190,15 +193,18 @@ describe('ListAllReportsComponent', () => {
 
     let result;
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success">Live</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-success-0">
+    <span class="sb-live"></span> Live</span>`);
 
     input.row.children.push({ status: 'draft' });
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-secondary">Partially Live</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-secondary-0">
+     Partially Live</span>`);
 
     input.row.children = [{ status: 'draft' }];
     result = component['renderStatus'](input.data, null, input.row);
-    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-primary">Draft</span>`);
+    expect(result).toBe(`<span class="sb-label sb-label-table sb-label-warning-0">
+     Draft</span>`);
   });
 
   it('should render tags either input is string', () => {
@@ -210,6 +216,55 @@ describe('ListAllReportsComponent', () => {
   it('should render tags either input is array of string', () => {
     const input = ['live'];
     const result = component['renderTags'](input);
-    expect(result).toBe(`<div class="sb-filter-label mb-16"><div class="d-inline-flex"><span class="sb-label-name sb-label-table sb-label-primary-100 mr-5">Live</span></div></div>`);
+    expect(result).toBe(`<div class="sb-filter-label"><div class="d-inline-flex m-0"><span class="sb-label-name sb-label-table sb-label-primary-100 mr-5 px-8 py-4">Live</span></div></div>`);
   });
+
+  describe('it should handle datatable click handler', () => {
+
+    let spy, tableElement;
+
+    beforeEach(() => {
+      spy = spyOn(component, 'rowClickEventHandler');
+      tableElement = document.createElement('table');
+      tableElement.innerHTML = '<tbody> <tr> <td> 123 </td></tr> </tbody>';
+      spyOn($(tableElement), 'DataTable').and.returnValue({});
+    });
+
+    it('should handle click event from dataTable when row is parameterized and have child rows', fakeAsync(() => {
+      component.reports = [{
+        isParameterized: true,
+        children: [{
+          status: 'draft'
+        }]
+      }];
+      component.prepareTable(tableElement);
+      tableElement.querySelector('td').click();
+      tick();
+      expect(spy).not.toHaveBeenCalled();
+    }));
+
+    it('should handle click event from dataTable when row is non parameterized or do not have child rows', fakeAsync(() => {
+      component.reports = [{
+        reportid: '123',
+        hashed_val: 'hash',
+        isParameterized: false,
+        children: [{
+          status: 'draft'
+        }]
+      }];
+      component.prepareTable(tableElement);
+      tableElement.querySelector('td').click();
+      tick();
+      expect(spy).toHaveBeenCalledWith('123', 'hash', false);
+    }));
+  });
+
+  it('should get the count of different status of reports', () => {
+    const reports = [{ status: 'live' }, { status: 'live' }, { status: 'draft' }];
+    let result = component['getReportsCount']({ reports, status: 'live' });
+    expect(result).toBe(2);
+    result = component['getReportsCount']({ reports, status: 'draft' });
+    expect(result).toBe(1);
+  });
+
 });

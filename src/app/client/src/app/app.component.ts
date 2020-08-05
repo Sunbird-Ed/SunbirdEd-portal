@@ -16,6 +16,7 @@ import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zi
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { image } from '../assets/images/tara-bot-icon';
 /**
  * main app component
  */
@@ -91,7 +92,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
-  layoutConfiguration;  
+  layoutConfiguration;
+  title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -207,8 +209,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['appId'] = this.userService.appId;
     this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
 
-    this.botObject['imageUrl'] = 'assets/images/tara-bot-icon.png';
-    this.botObject['title'] = this.botObject['header'] = _.get(this.resourceService, 'frmelmnts.btn.botTitle');
+    this.botObject['imageUrl'] = image.imageUrl;
+    this.botObject['title'] = this.botObject['header'] = this.title;
   }
 
   isBotdisplayforRoute () {

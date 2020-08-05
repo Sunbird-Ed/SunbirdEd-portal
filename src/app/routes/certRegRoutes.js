@@ -23,8 +23,9 @@ module.exports = function (app) {
   app.all(`/+${certRegServiceApi.searchCertificate}`,
     permissionsHelper.checkPermission(),
     proxy(certRegURL, {
+      timeout: envHelper.sunbird_api_request_timeout,
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
         return (certRegURL + certRegServiceApi.searchCertificate)
       },

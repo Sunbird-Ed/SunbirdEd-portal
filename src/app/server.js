@@ -52,10 +52,14 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/sso/sign-in/*'
 ],
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
     resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl 
+    },
     saveUninitialized: false,
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
@@ -116,7 +120,8 @@ require('./routes/certRegRoutes.js')(app);
 
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',
-  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  timeout: envHelper.sunbird_api_request_timeout,
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.TELEMETRY_SERVICE_LOCAL_URL),
   proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
 }))
 

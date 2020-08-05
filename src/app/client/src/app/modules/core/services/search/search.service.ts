@@ -458,6 +458,41 @@ export class SearchService {
     }));
   }
 
+  updateFacetsData(facets) {
+    return _.map(facets, facet => {
+      switch (_.get(facet, 'name')) {
+        case 'board':
+          facet['index'] = '1';
+          facet['label'] = this.resourceService.frmelmnts.lbl.boards;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectBoard;
+          break;
+        case 'medium':
+          facet['index'] = '2';
+          facet['label'] = this.resourceService.frmelmnts.lbl.medium;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMedium;
+          break;
+        case 'gradeLevel':
+          facet['index'] = '3';
+          facet['label'] = this.resourceService.frmelmnts.lbl.class;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectClass;
+          break;
+        case 'subject':
+          facet['index'] = '4';
+          facet['label'] = this.resourceService.frmelmnts.lbl.subject;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectSubject;
+          break;
+        case 'publisher':
+          facet['index'] = '5';
+          facet['label'] = this.resourceService.frmelmnts.lbl.publisher;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectPublisher;
+          break;
+        case 'contentType':
+          facet['index'] = '6';
+          facet['label'] = this.resourceService.frmelmnts.lbl.contentType;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectContentType;
+          break;
+      }
+      return facet;
+    });
+  }
 }
-
-

@@ -106,6 +106,9 @@ module.exports = (app, keycloak) => {
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
     resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl 
+    },
     saveUninitialized: false,
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
@@ -118,6 +121,9 @@ module.exports = (app, keycloak) => {
     session({
       secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
       resave: false,
+      cookie: {
+        maxAge: envHelper.sunbird_session_ttl 
+      },
       saveUninitialized: false,
       store: memoryStore
     }),
@@ -190,6 +196,7 @@ function getLocals(req) {
   locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.enableSSO = envHelper.sunbird_enable_sso;
   return locals
 }
 

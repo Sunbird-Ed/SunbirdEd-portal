@@ -29,7 +29,7 @@
   </div>
 </div>
 
-<div class="ui container mt-24 sb-library-cards">
+<div class="ui container mt-24 sb-library-cards right-flower-position-adjust-container">
   <div class="sbgrid">
     <div *ngFor="let course of mergedCourseList">
       <sb-my-course-card *ngIf="course.isEnrolledCourse" [course]="course" [cardImg]="course?.courseLogoUrl || course?.appIcon || fallbackImg" [hideProgress]="true" [section]="null" (cardClick)="navigateToCourseDetails(course)"></sb-my-course-card>

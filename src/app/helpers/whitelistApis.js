@@ -16,7 +16,8 @@ const ROLE = {
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  COURSE_MENTOR: 'COURSE_MENTOR'
+  COURSE_MENTOR: 'COURSE_MENTOR',
+  ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
 const API_LIST = {
@@ -67,7 +68,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/content/v1/read': {
+    '/content/content/v1/read/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -171,7 +172,7 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
 
     // Generic Editor
@@ -240,7 +241,7 @@ const API_LIST = {
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -317,11 +318,11 @@ const API_LIST = {
     },
     '/learner/user/v1/tnc/accept': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v1/update': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
+      ROLE_CHECK: [ROLE.ALL],
       OWNER_CHECK: {
         checks: [
           { entity: '__session__userId', params: [] }
@@ -362,7 +363,7 @@ const API_LIST = {
     },
     '/learner/user/v2/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v2/accept/tnc': {
       checksNeeded: ['ROLE_CHECK'],
@@ -400,8 +401,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/certreg/v1/certs/validate': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     '/learner/otp/v1/verify': {
       checksNeeded: ['ROLE_CHECK'],
@@ -540,6 +540,7 @@ const API_LIST = {
 
   },
   URL_PATTERN: [
+    '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',
     '/content/content/v1/reject/:do_id',

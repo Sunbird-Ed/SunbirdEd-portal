@@ -83,14 +83,14 @@ const routes: Routes = [
   {
     path: 'reports', component: ListAllReportsComponent, data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'list-all-reports', type: 'view' }
+      telemetry: { env: 'reports', pageid: 'reports-list', type: 'view' }
     }
   },
   {
     path: 'reports/:reportId', component: ReportComponent,
     data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'report-page', type: 'view' },
+      telemetry: { env: 'reports', pageid: 'report-chart', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
     }
@@ -99,7 +99,7 @@ const routes: Routes = [
     path: 'reports/:reportId/:hash', component: ReportComponent,
     data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'report-page', type: 'view' },
+      telemetry: { env: 'reports', pageid: 'report-chart', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
     }

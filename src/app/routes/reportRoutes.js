@@ -2,18 +2,19 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
+const { REPORT_SERVICE_URL, sunbird_api_request_timeout } = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
-const { getUserDetails } = require('../helpers/userHelper');
+const { getUserDetailsV2 } = require('../helpers/userHelper');
 module.exports = function (app) {
 
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
@@ -33,6 +34,7 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
             proxyReqPathResolver: function (req) {
@@ -44,7 +46,7 @@ module.exports = function (app) {
                     const { reports, count } = _.get(data, 'result');
                     if (count === 0) return proxyResData;
                     var token = _.get(req, 'kauth.grant.access_token.token');
-                    const user = await getUserDetails(req.session.userId, token);
+                    const user = await getUserDetailsV2(req.session.userId, token);
                     const filteredReports = reportHelper.getReports(reports, user);
                     data.result.reports = filteredReports;
                     data.result.count = filteredReports.length;
@@ -61,8 +63,9 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
+            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },

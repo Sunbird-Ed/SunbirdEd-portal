@@ -143,6 +143,20 @@ describe('GroupMembersComponent', () => {
     expect(component.showSearchResults).toBe(false);
   });
 
+  it('should call search when there is space in searchKey', () => {
+    component.showSearchResults = false;
+    members = [
+      {
+        identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'
+      },
+    ];
+    component.members = members;
+    component.search(' j ');
+    expect(component.showSearchResults).toBe(true);
+    expect(component.memberListToShow).toEqual(members);
+  });
+
   it('should open the modal', () => {
     component.showModal = false;
     component.openModal('delete');
