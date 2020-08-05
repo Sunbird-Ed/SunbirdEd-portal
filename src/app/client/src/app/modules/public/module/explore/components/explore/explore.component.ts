@@ -66,7 +66,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       formAction: 'menubar',
       contentType: 'global'
     };
-    forkJoin([this.getChannelId(), this.formService.devFormConfig(formServiceInputParams)]).pipe(
+    forkJoin([this.getChannelId(), this.formService.getFormConfig(formServiceInputParams)]).pipe(
       mergeMap((data: any) => {
         this.channelId = data[0].channelId;
         this.custodianOrg = data[0].custodianOrg;
