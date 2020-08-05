@@ -1,6 +1,6 @@
 <div *ngIf="!loader">
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left">
+    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
@@ -50,7 +50,7 @@
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
 
-          <div *ngFor="let item of courseHierarchy?.children; let index = index">
+          <div class="course-consumption-modules-container" *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)">
                 <sb-accordion-header class="sb-bg-color-gray-0">

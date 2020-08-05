@@ -21,7 +21,7 @@
         </div>
     </div>
     <!-- State and Medium sections ends-->
-
+    
     <!-- class section -->
     <div class="sb-class-bar sb-bg-color-gray-0">
         <div class="ui container">
@@ -35,30 +35,31 @@
 </ng-container>
 <div *ngIf="isLayoutAvailable()">
     <div class="sbt-filter">
-        <div class="sbt-filter-overlay"></div>	
-        <div class="sbt-filter-switcher-container">	
+        <div class="sbt-filter-overlay" *ngIf="showFilter"></div>	
+        <div class="sbt-filter-switcher-container cursor-pointer" (click)="showFilter=!showFilter">	
             <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>	
-            <div class="sbt-filter-text">Filter</div>	
+            <div class="sbt-filter-text" *ngIf="!showFilter">Filter</div>	
         </div>
-        <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16">
-            <i class="icon-svg icon-svg--xxs icon-close cursor-pointer">	
-                <svg class="icon icon-svg--gray">	
-                    <use xlink:href="./assets/images/sprite.svg#close"></use>	
-                </svg>	
-            </i>
-            <div class="sbt-filter-scrollable relative position">
-                <!-- State and Medium sections -->
-                <div>
-                    <div *ngIf="boards?.length" class="w-100">
-                        <!-- state section -->
-                        <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100"
-                            *ngIf="optionData" [title]="optionLabel.Board" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
-                            (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
-                        <!-- state section ends -->
+        <div *ngIf="showFilter">
+            <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16">
+                <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="showFilter=!showFilter">	
+                    <svg class="icon icon-svg--gray">	
+                        <use xlink:href="./assets/images/sprite.svg#close"></use>	
+                    </svg>	
+                </i>
+                <div class="sbt-filter-scrollable relative position">
+                    <!-- State and Medium sections -->
+                    <div>
+                        <div *ngIf="boards?.length" class="w-100">
+                            <!-- state section -->
+                            <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100"
+                                *ngIf="optionData" [title]="optionLabel.Board" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
+                                (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
+                            <!-- state section ends -->
+                        </div>
                     </div>
-                </div>
-                <!-- State and Medium sections ends-->
-                <!-- medium section -->
+                    <!-- State and Medium sections ends-->
+                    <!-- medium section -->
                 <div class="w-100">
                     <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" 
                      [title]="'Medium'" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
@@ -66,15 +67,16 @@
                     appTelemetryInteract [telemetryInteractEdata]="getMediumInteractEdata()"></app-select-option-group> 
                 </div>
                 <!-- medium section ends -->
-                <!-- class section -->
-                <div class="sbt-class-bar text-left">
-                    <label class="fmedium">Class</label>
-                    <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
-                        [selectedItems]="[selectedGradeLevelIndex]"
-                        (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
-                        [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+                    <!-- class section -->
+                    <div class="sbt-class-bar text-left">
+                        <label class="fmedium">Class</label>
+                        <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
+                            [selectedItems]="[selectedGradeLevelIndex]"
+                            (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
+                            [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+                    </div>
+                    <!-- class section ends -->
                 </div>
-                <!-- class section ends -->
             </div>
         </div>
     </div>
