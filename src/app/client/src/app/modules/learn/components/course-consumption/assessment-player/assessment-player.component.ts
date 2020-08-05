@@ -59,7 +59,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   totalContents = 0;
   consumedContents = 0;
   layoutConfiguration;
-
+  courceProgress = 0;
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
@@ -165,6 +165,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
+              this.courceProgress =_.get(this.enrolledBatchInfo, 'cert_templates.template_22.description').match(/\d+/g);
               this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
@@ -217,7 +218,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           /* istanbul ignore else */
           if (_.get(res, 'content.length')) {
-            this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            const progress = (_.reduce(res.content, function (sum,  n){
+              if (n['progress']) {
+                return  sum + n['progress'];
+              }
+              return  sum  +  0;
+            },0)) / res.content.length;
+            const cutoffProgress = parseInt(this.courceProgress[0], 10)
+            this.isCourseCompleted = progress > cutoffProgress ? true : false;
+            // this.isCourseCompleted = _.every(res.content, ['status', 2]);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
           }
 
