@@ -1,4 +1,4 @@
-<div *ngIf="facets">
+<div *ngIf="(selectedFilters | json) != '{}'">
 <ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
   <div *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
     <label>{{facet.label}} :&nbsp;</label>

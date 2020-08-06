@@ -15,12 +15,13 @@ export class GlobalSearchSelectedFilterComponent {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   removeFilterSelection(data) {
-    _.map(this.selectedFilters, (value) => {
+    _.map(this.selectedFilters, (value, key) => {
       if (this.selectedFilters[data.type] && !_.isEmpty(this.selectedFilters[data.type])) {
         _.remove(value, (n) => {
           return n === data.value;
         });
       }
+      if (_.isEmpty(value)) { delete this.selectedFilters[key]; }
     });
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     this.updateRoute();
