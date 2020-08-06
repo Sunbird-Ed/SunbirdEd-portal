@@ -43,7 +43,15 @@ let keycloak = getKeyCloakClient({
   'ssl-required': 'none',
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
-})
+});
+
+let logMiddleware = (req, res, next) => {
+  logger.debug({msg: `${req.originalUrl} was called with reqId: ${req.get('X-Request-ID')}`});
+  next();
+  res.on("finish", () => {
+    logger.debug({msg: `${req.originalUrl} was completed with reqId: ${req.get('X-Request-ID')}`});
+  });
+}
 
 logger.debug({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
 const app = express()
@@ -57,6 +65,7 @@ app.all([
   '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
   '/sso/sign-in/*'
 ],
+logMiddleware,
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
     resave: false,
