@@ -1,5 +1,5 @@
 'use strict'
-const { logger, enableLogger } = require('@project-sunbird/logger');
+const { enableLogger } = require('@project-sunbird/logger');
 const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
 enableLogger({
@@ -10,6 +10,7 @@ enableLogger({
     adopter: 'winston'
   }
 });
+const { logger } = require('@project-sunbird/logger');
 const express = require('express');
 const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
