@@ -4,7 +4,7 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
+      <app-prominent-filter [layoutConfiguration]="layoutConfiguration" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
         [accordionDefaultOpen]=true [isShowFilterLabel]=true [notToUseFramework]="toUseFrameWorkData" [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">

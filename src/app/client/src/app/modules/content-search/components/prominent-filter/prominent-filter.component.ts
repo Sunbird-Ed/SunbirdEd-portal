@@ -12,7 +12,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
-  templateUrl: './prominent-filter.component.html'
+  templateUrl: './prominent-filter.component.html',
+  styleUrls: ['./prominent-filter.component.scss']
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
