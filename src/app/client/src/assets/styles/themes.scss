@@ -487,11 +487,11 @@ html[layout='joy'] {
   .course-consumption-container .training-modules .course-consumption-modules-container {
     background: var(--sbt-compt-bg) !important;
     border-radius: calc(var(--sbt-bradius) * 12);
-    padding: 24px 24px 1px 24px;
+    // padding: 24px 24px 1px 24px;
   }
 
   .sbaccordion {
-    box-shadow: 6px 6px 2px 0 rgba(0, 0, 0, 0.1) !important;
+    box-shadow: none !important;
     border-radius: calc(var(--sbt-bradius) * 12);
   }
 
@@ -503,7 +503,9 @@ html[layout='joy'] {
     border-bottom-left-radius: calc(var(--sbt-bradius) * 12);
     border-bottom-right-radius: calc(var(--sbt-bradius) * 12);
     border: 0px;
-    background: var(--white);
+    background: var(--sbt-compt-bg);
+    max-height: 100%;
+    padding: 0 calculateRem(24px) calculateRem(24px) calculateRem(24px);
   }
 
   .sbchapter__item.course-content {
@@ -511,6 +513,7 @@ html[layout='joy'] {
     padding-left: 24px;
     border: 1px solid #E4E8EE;
     box-shadow: none;
+    margin-bottom: calculateRem(16px);
   }
 
   .accordion-item-header-expanded .sbaccordion__panel-header {
@@ -533,9 +536,9 @@ html[layout='joy'] {
   }
 
   .sbaccordion__panel-header .icon-svg--xs {
-    width: 16px;
-    height: 16px;
-    padding: 3px;
+    width: 24px;
+    height: 24px;
+    padding: 1px 4px 4px 4px;
   }
   .ui.container .cc-player{
     width: calc(100% - 4%);
@@ -570,6 +573,79 @@ html[layout='joy'] {
     z-index: 99;
   }
 
+  .certified-course__progress {
+    background: var(--sbt-compt-bg) !important;
+    border-radius: calc(var(--sbt-bradius) * 12);
+    .fsmall {
+      font-size: var(--font-size-normal) !important;
+      font-weight: bold;
+    }
+  }
+
+  .sbaccordion {
+    &__panel-header {
+      border-top-left-radius: calc(var(--sbt-bradius) * 12);
+      border-top-right-radius: calc(var(--sbt-bradius) * 12);
+      background: var(--sbt-compt-bg);
+      border: none;
+      padding: calculateRem(24px);
+      height: calculateRem(64px);
+    }
+  }
+
+  sb-accordion-header[aria-expanded="false"] {
+    .sbaccordion__panel-header {
+      border-bottom-left-radius: calc(var(--sbt-bradius) * 12);
+      border-bottom-right-radius: calc(var(--sbt-bradius) * 12);
+    }
+  }
+
+  .sb-toc-child-item, .side-toc-content.chapter-box {
+    background-color: var(--white);
+    box-shadow: var(--sbt-box-shadow-6px);
+    padding: 16px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: calculateRem(16px);
+    border-radius: 24px;
+  }
+  // Assesment Player
+
+  .back-btn-container, .textbook-container, .cc-player__list {
+    background: var(--sbt-compt-bg) !important;
+  }
+
+  .back-btn-container, .textbook-container {
+    padding: 0 calculateRem(16px);
+  }
+
+  .back-btn-container {
+    margin: calculateRem(16px) 2% 0px 2%;
+    border-radius: calc(var(--sbt-bradius) * 12) calc(var(--sbt-bradius) * 12) 0px 0px;
+  }
+
+  .textbook-container {
+    border-radius: 0px 0px calc(var(--sbt-bradius) * 12) calc(var(--sbt-bradius) * 12);
+    margin: 0 2% calculateRem(24px) 2%;
+  }
+
+  .cc-player__list {
+    border-radius: calc(var(--sbt-bradius) * 12);
+    padding: calculateRem(24px) !important;
+    h5 {
+      padding: 0 calculateRem(16px) calculateRem(16px) 0 !important;
+    }
+  }
+  
+  .sbchapter__item.course-content.sbchapter__item--active {
+    border-color: #60CD87;
+    background-color: rgba(96,205,135,0.05);
+  }
+
+  .sbchapter__item .sbchapter__img--inprogress .icon-svg svg.icon.icon-svg--primary {
+    fill: #2ab727;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {

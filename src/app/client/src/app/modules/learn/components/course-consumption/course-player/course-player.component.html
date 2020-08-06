@@ -90,7 +90,7 @@
                         </div>
                         <div *ngIf="item?.children?.length">
                           <div *ngFor="let child of item?.children">
-                              <sb-toc-child-item [childData]="child"
+                              <sb-toc-child-item [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType">
                               </sb-toc-child-item>
