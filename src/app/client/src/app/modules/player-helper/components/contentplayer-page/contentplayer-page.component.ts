@@ -27,7 +27,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
-  
+
 
   unsubscribe$ = new Subject<void>();
   contentId: string;
@@ -76,8 +76,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });

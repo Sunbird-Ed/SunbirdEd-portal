@@ -36,7 +36,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
-  layoutConfiguration:any;
+  layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -90,25 +90,25 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
-  
+
     initLayout() {
       this.layoutConfiguration = this.layoutService.initlayoutConfig();
       this.redoLayout();
       this.layoutService.switchableLayout().
-          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-          if(layoutConfig!=null) {
+          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+          if (layoutConfig != null) {
             this.layoutConfiguration = layoutConfig.layout;
           }
           this.redoLayout();
         });
     }
     redoLayout() {
-        if(this.layoutConfiguration!=null) {
-          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        if (this.layoutConfiguration != null) {
+          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
         } else {
-          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
         }
     }
   public getFilters(filters) {

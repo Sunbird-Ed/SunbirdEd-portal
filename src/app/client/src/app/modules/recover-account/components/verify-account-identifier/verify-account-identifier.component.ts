@@ -5,7 +5,7 @@ import {ResourceService, ToasterService, ConfigService, InterpolatePipe, UtilSer
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { RecaptchaComponent } from "ng-recaptcha";
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   templateUrl: './verify-account-identifier.component.html',
@@ -31,7 +31,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     type: 'Task'
   }];
   googleCaptchaSiteKey: string;
-  isCaptchaEnabled: boolean = true;
+  isCaptchaEnabled = true;
   isP2CaptchaEnabled: any;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,

@@ -325,7 +325,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  
+
   onSubmitSignUpForm(captchaResponse?) {
     this.disableSubmitBtn = true;
     this.generateOTP(captchaResponse);
@@ -352,7 +352,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           (_.get(err, 'error.params.status') &&
             err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(failedgenerateOTPMessage);
-        if (this.isP1CaptchaEnabled === 'true') this.resetGoogleCaptcha();
+        if (this.isP1CaptchaEnabled === 'true') { this.resetGoogleCaptcha(); }
         this.disableSubmitBtn = false;
       }
     );

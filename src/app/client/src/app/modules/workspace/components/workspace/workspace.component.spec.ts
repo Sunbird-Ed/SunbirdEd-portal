@@ -19,7 +19,7 @@ describe('WorkspaceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule,SharedModule.forRoot(), HttpClientTestingModule,]
+      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, ]
     })
     .compileComponents();
   }));

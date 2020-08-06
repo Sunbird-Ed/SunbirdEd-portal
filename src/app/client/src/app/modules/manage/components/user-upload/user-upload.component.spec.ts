@@ -58,7 +58,7 @@ describe('UserUploadComponent', () => {
   };
   const event = {
     target: {
-      files:[{
+      files: [{
         name: 'test.csv',
         lastModified: 1593411651030,
         lastModifiedDate: new Date(),
@@ -189,7 +189,7 @@ describe('UserUploadComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const manageService = TestBed.get(ManageService);
     const toasterService = TestBed.get(ToasterService);
-    component.file = {name:'test.jpeg'};
+    component.file = {name: 'test.jpeg'};
     resourceService.messages = mockRes.resourceBundle.messages;
     spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();

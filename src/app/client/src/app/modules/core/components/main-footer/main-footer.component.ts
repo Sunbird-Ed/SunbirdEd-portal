@@ -35,7 +35,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
-  
+
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
       public tenantService: TenantService, public layoutService: LayoutService
