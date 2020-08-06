@@ -6,10 +6,10 @@
       <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
       <div class="course-complete-data font-weight-bold">
         <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
-        <div>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</div>
+        <p>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="!isCertificateAttached">
+    <div class="course-complete-para mt-32" *ngIf="!isCertificateAttached; else withCertificate">
       <span>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
     </div>
   </div>
