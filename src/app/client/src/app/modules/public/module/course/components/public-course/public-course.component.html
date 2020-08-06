@@ -2,7 +2,7 @@
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-  <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
+  <app-prominent-filter [layoutConfiguration]="layoutConfiguration" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
     [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [notToUseFramework]="toUseFrameWorkData"
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
