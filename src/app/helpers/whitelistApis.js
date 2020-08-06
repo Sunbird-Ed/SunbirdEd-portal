@@ -16,6 +16,7 @@ const ROLE = {
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
+  COURSE_MENTOR: 'COURSE_MENTOR',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -525,7 +526,18 @@ const API_LIST = {
     '/learner/data/v1/group/activity/agg': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
-    }
+    },
+
+    //certreg reg apis
+    '/certreg/v1/user/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+    },
+    '/certreg/v1/cert/reissue': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+    },
+
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
