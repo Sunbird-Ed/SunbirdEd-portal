@@ -794,7 +794,8 @@ export const RESPONSE = {
     ],
     'gradeLevel': [
       'Class 5'
-    ]
+    ],
+    'pageTitle' : 'textBook'
   },
   contentSearchSuccessResponse: [
     {
