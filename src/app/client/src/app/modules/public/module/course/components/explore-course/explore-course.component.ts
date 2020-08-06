@@ -42,7 +42,9 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     layoutConfiguration: any;
     FIRST_PANEL_LAYOUT:string;
     SECOND_PANEL_LAYOUT:string;
-
+    public globalSearchFacets: Array<string>;
+    public allTabData;
+    public selectedFilters;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -54,6 +56,15 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         this.filterType = this.configService.appConfig.exploreCourse.filterType;
     }
     ngOnInit() {
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+            this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            this.setNoResultMessage();
+            this.initFilters = true;
+        }, error => {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+            this.navigationhelperService.goBack();
+        });
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.initLayout();
         combineLatest(
@@ -101,7 +112,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
           }
       }
     public getFilters(filters) {
-        this.facets = filters.map(element => element.code);
+        this.selectedFilters = filters.filters;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
             collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -141,50 +152,49 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
     private fetchContents() {
-        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-            const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-            let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-            // filters.channel = this.hashTagId;
-            // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
-            filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-            filters.contentType = _.get(allTabData, 'search.filters.contentType');
-            const option = {
-                filters: filters,
-                fields: _.get(allTabData, 'search.fields'),
-                limit: _.get(allTabData, 'search.limit'),
-                pageNumber: this.paginationDetails.currentPage,
-                query: this.queryParams.key,
-                // softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-                facets: this.facets,
-                params: this.configService.appConfig.ExplorePage.contentApiQueryParams
-            };
-            if (this.frameWorkName) {
-                option.params.framework = this.frameWorkName;
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        if (!filters.channel) {
+            filters.channel = this.hashTagId;
+        }
+        filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+        if (this.queryParams.key) {
+            delete softConstraints['board'];
+        }
+        const option: any = {
+            filters: filters,
+            fields: _.get(this.allTabData, 'search.fields'),
+            limit: _.get(this.allTabData, 'search.limit'),
+            pageNumber: this.paginationDetails.currentPage,
+            query: this.queryParams.key,
+            mode: 'soft',
+            softConstraints: softConstraints,
+            facets: this.globalSearchFacets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+        };
+        if (this.queryParams.softConstraints) {
+            try {
+                option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+            } catch {
+
             }
-            this.searchService.contentSearch(option)
-                .subscribe(data => {
-                    this.showLoader = false;
-                    this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-                    this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePage;
-                    this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-                }, err => {
-                    this.showLoader = false;
-                    this.contentList = [];
-                    this.facetsList = [];
-                    this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-                });
-        }, err => {
-            this.showLoader = false;
-            this.contentList = [];
-            this.facetsList = [];
-            this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-                this.configService.appConfig.SEARCH.PAGE_LIMIT);
-            this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        });
+        }
+        this.searchService.contentSearch(option)
+            .subscribe(data => {
+                this.showLoader = false;
+                this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+                this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+                this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.contentList = data.result.content || [];
+            }, err => {
+                this.showLoader = false;
+                this.contentList = [];
+                this.facetsList = [];
+                this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+                    this.configService.appConfig.SEARCH.PAGE_LIMIT);
+                this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+            });
     }
     private setTelemetryData() {
         this.inViewLogs = [];

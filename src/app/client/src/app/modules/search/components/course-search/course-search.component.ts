@@ -47,6 +47,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutConfiguration;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
+  public selectedFilters;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -65,6 +68,15 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   ngOnInit() {
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+      this.setNoResultMessage();
+      this.initFilters = true;
+    }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
+    });
     this.initLayout();
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
@@ -130,52 +142,44 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchContents() {
-    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-      const allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
-      let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-      filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-      filters.contentType = _.get(allTabData, 'search.filters.contentType');
-      const option = {
-        filters: filters,
-        fields: _.get(allTabData, 'search.fields'),
-        limit: _.get(allTabData, 'search.limit'),
-        pageNumber: this.paginationDetails.currentPage,
-        query: this.queryParams.key,
-        sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
-        facets: this.facets,
-        params: this.configService.appConfig.Course.contentApiQueryParams
-      };
-      if (this.frameWorkName) {
-        option.params.framework = this.frameWorkName;
-      }
-      this.searchService.contentSearch(option)
-        .subscribe(data => {
-          this.showLoader = false;
-          this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
-          this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-          this.contentList = _.map(data.result.content, (content: any) =>
-            this.utilService.processContent(content, constantData, dynamicFields, metaData));
-        }, err => {
-          this.showLoader = false;
-          this.contentList = [];
-          this.facetsList = [];
-          this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
-          this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        });
-    }, err => {
-      this.showLoader = false;
-      this.contentList = [];
-      this.facetsList = [];
-      this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-        this.configService.appConfig.SEARCH.PAGE_LIMIT);
-      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-    });
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    const option = {
+      filters: filters,
+      fields: _.get(this.allTabData, 'search.fields'),
+      limit: _.get(this.allTabData, 'search.limit'),
+      pageNumber: this.paginationDetails.currentPage,
+      query: this.queryParams.key,
+      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+      facets: this.globalSearchFacets,
+      params: this.configService.appConfig.Course.contentApiQueryParams
+    };
+    if (this.frameWorkName) {
+      option.params.framework = this.frameWorkName;
+    }
+    this.searchService.contentSearch(option)
+      .subscribe(data => {
+        this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
+        this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
+        this.contentList = _.map(data.result.content, (content: any) =>
+          this.utilService.processContent(content, constantData, dynamicFields, metaData));
+      }, err => {
+        this.showLoader = false;
+        this.contentList = [];
+        this.facetsList = [];
+        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      });
+
   }
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

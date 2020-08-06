@@ -30,7 +30,8 @@ const routes: Routes = [
       path: ':pageNumber', component: ExploreCourseComponent, data: {
         telemetry: {
           env: 'explore-course', pageid: 'explore-course-search', type: 'view', subtype: 'paginate'
-        }
+        },
+        softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
       }
     },
     {

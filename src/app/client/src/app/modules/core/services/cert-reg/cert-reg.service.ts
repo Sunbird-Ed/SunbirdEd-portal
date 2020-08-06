@@ -62,4 +62,29 @@ export class CertRegService extends DataService {
     };
     return this.post(options);
   }
+
+  public getUserCertList(userName, courseId, loggedInUser) {
+    const request = {
+      request: {
+        filters: {
+          userName: userName,
+          courseId: courseId,
+          createdBy: loggedInUser,
+        }
+      }
+    };
+    const options = {
+      url: this.config.urlConFig.URLS.CERTIFICATE.FETCH_USER,
+      data: request,
+    };
+    return this.post(options);
+  }
+
+  public reIssueCertificate(request) {
+    const options = {
+      url: `${this.config.urlConFig.URLS.CERTIFICATE.REISSUE_CERTIFICATE}`,
+      data: request,
+    };
+    return this.post(options);
+  }
 }

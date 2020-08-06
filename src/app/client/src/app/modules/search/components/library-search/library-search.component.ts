@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
@@ -44,7 +44,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
     public globalSearchFacets: Array<string>;
     public allTabData;
+    public selectedFilters;
     layoutConfiguration;
+    FIRST_PANEL_LAYOUT;
+    SECOND_PANEL_LAYOUT;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -88,14 +91,26 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.redoLayout();
         this.layoutService.switchableLayout().
-            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-            if(layoutConfig!=null) {
-              this.layoutConfiguration = layoutConfig.layout;
-            }
-          });
-      }
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+                if (layoutConfig != null) {
+                    this.layoutConfiguration = layoutConfig.layout;
+                }
+                this.redoLayout();
+            });
+    }
+    redoLayout() {
+        if (this.layoutConfiguration != null) {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        } else {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+        }
+    }
     public getFilters(filters) {
+        this.selectedFilters = filters.filters;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
                 collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
