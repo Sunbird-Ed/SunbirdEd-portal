@@ -1,4 +1,4 @@
-<div class="ui" [appTelemetryImpression]="telemetryImpression" #reportElement>
+<div class="ui" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
   <div class="twelve wide column px-0">
     <div *ngIf="!hideElements" class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
@@ -17,7 +17,7 @@
           <div *ngIf="noResult">
             <app-no-result [data]="noResultMessage"></app-no-result>
           </div>
-          <div *ngIf="!noResult">
+          <div *ngIf="!noResult" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
             <div id="report-header">
 
               <div class="content-header">
@@ -49,17 +49,27 @@
                     </div>
                     <div *ngIf="isUserReportAdmin && !hideElements"
                       class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-                      <button (click)="openReportSummaryModal()" type="button"
+                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
+                        (click)="openReportSummaryModal()" type="button"
                         class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                         <i class="blue plus alternate icon"></i> Add
                         {{ resourceService?.frmelmnts?.lbl?.reportSummary}}
                       </button>
-                      <button (click)="openConfirmationModal('retire')" *ngIf="report?.status !== 'retired'"
-                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
+                        getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
+                        (click)="openConfirmationModal('retire')" *ngIf="report?.status !== 'retired'" type="button"
+                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white minus alternate icon"></i> {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                       </button>
-                      <button (click)="openConfirmationModal('publish')" *ngIf="report?.status === 'draft'"
-                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
+                        getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-publish'})"
+                        (click)="openConfirmationModal('publish')" *ngIf="report?.status === 'draft'" type="button"
+                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white check alternate icon"></i> Publish
                       </button>
                     </div>
@@ -99,13 +109,12 @@
                         (click)="setDownloadUrl(table.downloadUrl)" class="item"
                         [suiTabHeader]="table.id">{{table?.name}}</a>
                       <a *ngIf="currentReport?.files?.length" appTelemetryInteract
-                        [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                        [telemetryInteractEdata]="setTelemetryInteractEdata('download')" class="item"
+                        [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item"
                         [ngClass]="{'mr-auto': currentReport.files.length > 0}" (activate)="showExportsOption=false"
                         suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
-                      <button appTelemetryInteract
-                        [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
-                        [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
+                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
                         *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
                         class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
                           class="download icon"></i>
@@ -114,7 +123,9 @@
                         <sui-select *ngIf="showExportsOption" class="selection mr-8"
                           [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}"
                           [placeholder]="'Export As'" (selectedOptionChange)="downloadReport($event)">
-                          <sui-select-option *ngFor="let option of exportOptions" [value]="option">
+                          <sui-select-option *ngFor="let option of exportOptions" [value]="option" appTelemetryInteract
+                            [telemetryInteractObject]="setTelemetryInteractObject()"
+                            [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})">
                           </sui-select-option>
                         </sui-select>
                       </div>
@@ -198,9 +209,8 @@
                     <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
                       <div class="sb-graph-section p-24 my-24"
                         *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
-                        <app-data-chart
-                          [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
-                          [chartInfo]="chart" [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
+                        <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
+                          [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                           (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                         </app-data-chart>
                       </div>

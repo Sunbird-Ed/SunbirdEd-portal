@@ -315,9 +315,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       contentId: _.cloneDeep(_.get(telObject, 'object.id')),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && this.courseProgress === 100) ? 2 : 1,
+      status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
+
     /* istanbul ignore else */
     if (!eid) {
       const contentType = this.activeContent.contentType;

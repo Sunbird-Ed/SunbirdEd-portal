@@ -126,6 +126,9 @@ module.exports = function (app) {
     proxyObj()
   )
 
+  app.get('/learner/isUserExists/user/v1/get/phone/*', proxyObj());
+
+  app.get('/learner/isUserExists/user/v1/get/email/*', proxyObj());
 
   app.all('/learner/user/v1/signup',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
@@ -253,6 +256,7 @@ function proxyObj (){
     proxyReqPathResolver: function (req) {
       let urlParam = req.originalUrl.replace('/learner/', '')
       let query = require('url').parse(req.url).query
+      if (urlParam.indexOf('isUserExists') > -1) urlParam = urlParam.replace('isUserExists/', '');
       if (query) {
         return require('url').parse(learnerURL + urlParam + '?' + query).path
       } else {
