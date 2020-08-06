@@ -9,15 +9,17 @@
       <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
         <ng-container content>
           <div class="sbt-filter-bar mr-16">
-            <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
-              <svg class="icon icon-svg--gray">
-                <use xlink:href="./assets/images/sprite.svg#close"></use>
-              </svg>
-            </i>
-            <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
-              (click)="resetFilters()" appTelemetryInteract
-              [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
-                class="icon undo"></i></button>
+            <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
+              <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
+                (click)="resetFilters()" appTelemetryInteract
+                [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
+                  class="icon undo"></i></button>
+              <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
+                <svg class="icon icon-svg--gray">
+                  <use xlink:href="./assets/images/sprite.svg#close"></use>
+                </svg>
+              </i>
+            </div>
             <div class="sbt-filter-scrollable relative mt-24" style="overflow: initial;max-height: inherit;">
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">

@@ -152,21 +152,19 @@
     height: auto;
     // margin-top:calculateRem(-72px);
   }
-  .icon-close {
-    position: absolute;
-    top: calculateRem(16px);
-    right: calculateRem(16px);
-  }
-  .sbt-btn-reset {
+  .sbt-reset-bar{
     position: absolute;
     top: calculateRem(12px);
-    right: calculateRem(48px);
-    box-shadow: none;
-    border-radius:calculateRem(16px);
-    @include respond-above(sm) {
-      right: calculateRem(32px);
+    right: calculateRem(16px);
+    .icon-close {
+      margin-top: calculateRem(-6px);
+    }
+    .sbt-btn-reset {
+      box-shadow: none;
+      border-radius:calculateRem(16px);
     }
   }
+  
   &.mr-16 {
     @include respond-below(sm) {
       margin-right: 0 !important;

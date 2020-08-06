@@ -1023,7 +1023,6 @@ app-workspace {
     }
   }
 }
-
 .sb-field {
   .ui.selection.sbt-dropdown.dropdown.active {
     .menu {
@@ -1053,6 +1052,19 @@ app-workspace {
     }
   }
 
+}
+.sbt-filter-scrollable{
+  .ui.selection.sbt-dropdown.dropdown{
+    height: 2.5rem;
+    line-height: 2.5rem;
+  }
+  .ui.selection.sbt-dropdown.visible.dropdown>.text:not(.default){
+    font-weight: bold;
+  }
+}
+.ui.dropdown.sbt-dropdown.multiple > .text{
+  margin: 0;
+  font-weight: bold;
 }
 
 .avatar-content {
