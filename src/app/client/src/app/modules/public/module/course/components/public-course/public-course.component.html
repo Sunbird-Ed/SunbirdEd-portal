@@ -1,5 +1,6 @@
 <app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.course" 
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
 <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
   <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
@@ -9,7 +10,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
   <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-    <div class="ui grid">
+    <div class="ui grid relative9">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
         <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
@@ -23,6 +24,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"

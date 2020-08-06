@@ -517,7 +517,10 @@ html[layout='joy'] {
   .accordion-item-header-expanded .sbaccordion__panel-header {
     border: 0px;
   }
-
+  .sbaccordion__panel-header {
+    border: 0px;
+    border-radius: 24px;
+  }
   .ui.styled.accordion .accordion .content,
   .ui.styled.accordion .content {
     background: var(--sbt-compt-bg) !important;
@@ -555,6 +558,10 @@ html[layout='joy'] {
     border-radius: 24px;
     padding: 16px;
   }
+  .certified-course__progress {
+    border-radius: 24px;
+    background: var(--sbt-compt-bg) !important;
+  }
   .relative9 {
     position: relative;
     z-index: 9;
@@ -563,6 +570,7 @@ html[layout='joy'] {
     position: relative;
     z-index: 99;
   }
+
 }
 
 html[layout='joy'][dir='rtl'] {
