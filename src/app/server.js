@@ -1,9 +1,19 @@
 'use strict'
+const { logger, enableLogger } = require('@project-sunbird/logger');
+const envHelper = require('./helpers/environmentVariablesHelper.js');
+const path = require('path');
+enableLogger({
+  logBasePath: path.join(__dirname, 'logs'),
+  logLevel: envHelper.sunbird_portal_log_level,
+  context: {src: 'sunbird-portal'},
+  adopterConfig: {
+    adopter: 'winston'
+  }
+});
 const express = require('express');
 const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
-const path = require('path')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const uuid = require('uuid/v1')
@@ -12,7 +22,6 @@ const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
 const tenantHelper = require('./helpers/tenantHelper.js')
-const envHelper = require('./helpers/environmentVariablesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
 const latexService = require('./helpers/latexService.js')
@@ -25,7 +34,6 @@ const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'he
 const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
-const { logger, logLevels, enableLogger } = require('@project-sunbird/logger');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser')
 let keycloak = getKeyCloakClient({
@@ -35,15 +43,6 @@ let keycloak = getKeyCloakClient({
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
 })
-
-enableLogger({
-  logBasePath: path.join(__dirname, 'logs'),
-  logLevel: envHelper.sunbird_portal_log_level,
-  context: {src: 'sunbird-portal'},
-  adopterConfig: {
-    adopter: 'winston'
-  }
-});
 
 logger.debug({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
 const app = express()
