@@ -16,9 +16,15 @@
         <div class="twelve wide column" *ngIf="!showLoader && !noResult">
             <div class="masonry-grid dynamic-section-card">
                 <div class="masonry-item" *ngFor="let content of searchList;let i = index;">
-
+                    <ng-container *ngIf="!layoutConfiguration">
                     <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
                         (clickEvent)="playContent($event)" [data]="content"></app-card>
+                    </ng-container>
+                    <ng-container *ngIf="layoutConfiguration">
+                        <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
+                        appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+                        (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
+                    </ng-container>
                         
                 </div>
             </div>

@@ -27,6 +27,8 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   @Input() hideProgress: boolean;
 
+  @Input() layoutConfiguration;
+
   @Output() playEvent = new EventEmitter<any>();
 
   @Output() visits = new EventEmitter<any>();

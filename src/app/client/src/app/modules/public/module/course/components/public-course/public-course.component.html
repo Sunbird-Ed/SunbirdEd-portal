@@ -13,7 +13,7 @@
     <div class="ui grid relative9">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
-        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
+        <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
