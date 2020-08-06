@@ -78,7 +78,7 @@
                           <div *ngFor="let child of item?.children">
                             <div>
                               <sb-toc-child-item [childData]="child"
-                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType">
+                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType" class="sb-toc-child-item">
                               </sb-toc-child-item>
                             </div>
                           </div>
