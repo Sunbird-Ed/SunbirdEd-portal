@@ -535,27 +535,27 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.1.24":
-  version "3.1.24"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.24.tgz#dfd80e6db1cb7a7a6accbe669b172aa9549d588d"
-  integrity sha512-7+Laaa96SGN5KA2n+cqDodItxd7fHKEAoinC+rh07ZZj6GuJOAxITGh6DPL12ARPwi8nrP4H98px9p3V6EBOpw==
+"@project-sunbird/client-services@^3.1.28":
+  version "3.1.29"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.29.tgz#843a0c941f47884133a6956facb9a8a72def2494"
+  integrity sha512-zNFwksrD3xklp2qRYQlMUvtt6T0caHkm6ypO1K7TUH0AeXlS4vGnDaAo6WZ8LR/36mLwQXtPmsnnCzEQj/SiAQ==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.1.20":
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.20.tgz#880c4da6e9a8e89790b9b656edc016ccf45a92da"
-  integrity sha512-P31ZYKS0BH8ikCxRR8pT60nB5Kn3QMAKKUsXwmcUV4ubbFtk5fdTr03BozJul3xBS1V2y12/KT2a1iKHW91mTA==
+"@project-sunbird/common-consumption@^3.1.24":
+  version "3.1.24"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.24.tgz#598b4fab22688a9099a06ce02e35c99adecb41b0"
+  integrity sha512-AOeTHHcSh+IoAsrIURBUxGK3o5anLGqFkKfxaQkkyVUUFufhDdqQemVOWbfKtIFKIKhSPrb+I7fLwyb0heNHZw==
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-styles@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.3.tgz#654ed5f6d4565c9e609e18b14579c4d2290e8a4f"
-  integrity sha512-kLCneMIE+xsrhil727SuGlHNmNQJZqThvXBKjEF5oWOyQA6aEN/bprkliKIkE6z0elAyE7dGsv7eVJMsmc7iTA==
+"@project-sunbird/sb-styles@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.5.tgz#27af369701e96d1dbf095dbafc41c99701721897"
+  integrity sha512-4Eizp8eIn38BKFdrVI9uuLuwCi/dx4yGcqLyprnzVwJR6oCw70tsCaYH6zrkU4eDORADN81XBUx4PdgTgyLWKw==
 
 "@project-sunbird/telemetry-sdk@^0.0.26":
   version "0.0.26"
@@ -10162,10 +10162,10 @@ stylus@0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-sunbird-chatbot-client@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.2.tgz#b6a4babe28ac82519471d55978bfd2fe15317d5b"
-  integrity sha512-JiQuiPC3wO+SotrDPKZ1/Z/FMVNodJGBIaNdO0dJoej4um6xmhX4Cqv/LsRK0KPHGAOP8ZGoJhRm/VS4ryubNg==
+sunbird-chatbot-client@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.5.tgz#3bf66235e2aa2d11cf6b4d764e314fb186b68da5"
+  integrity sha512-uNSDRX0jEfGCJ1xKvgqZ71/7Ivv5JMwbfmx+xo0ykVwCRSz5NGin35BuxY1zCExodssJpDrGNdWRpUj2DISWLQ==
   dependencies:
     tslib "^1.9.0"
 
