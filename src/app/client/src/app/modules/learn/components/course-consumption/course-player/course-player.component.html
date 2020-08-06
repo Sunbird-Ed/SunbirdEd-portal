@@ -147,7 +147,15 @@
           </div>
         </div>
 
-        <!-- 2. Course Progress bar -->
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="certificateDescription !== ''">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center p-8 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+          </div>
+          <p class="fsmall px-4 pt-8"> {{certificateDescription}} </p>
+      </div>
+
+      <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup">
           <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
