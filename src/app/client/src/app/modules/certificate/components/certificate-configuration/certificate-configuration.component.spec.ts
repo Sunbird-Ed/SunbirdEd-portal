@@ -32,4 +32,12 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
 
   });
+
+  it('should fetch certificate details', () => {
+    component.getCertificateDetails();
+  });
+
+  it('should add certificate to the batch', () => {
+    component.addCertificateToBatch();
+  });
 });

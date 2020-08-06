@@ -19,4 +19,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  getCertificateDetails() {  }
+
+  addCertificateToBatch() { }
 }
