@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-global-search-selected-filter',
   templateUrl: './global-search-selected-filter.component.html',
@@ -12,7 +12,7 @@ export class GlobalSearchSelectedFilterComponent {
   @Input() selectedFilters;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public resourceService: ResourceService) { }
 
   removeFilterSelection(data) {
     _.map(this.selectedFilters, (value, key) => {
