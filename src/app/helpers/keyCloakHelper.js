@@ -47,7 +47,7 @@ const authenticated = function (request, next) {
       logger.error({msg: 'error loggin in user', error: err});
       next(err, null);
     } else {
-      logger.error({msg: 'keycloack authenticated successfully'});
+      logger.info({msg: 'keycloack authenticated successfully'});
       next(null, 'loggedin');
     }
   })

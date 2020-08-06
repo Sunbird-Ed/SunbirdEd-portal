@@ -25,9 +25,9 @@ module.exports = (app) => {
     const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
-    logger.info({msg: 'query params state', googleSignInData});
+    logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
-    logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
+    logger.info({ reqId: req.get('X-Request-ID'), msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
