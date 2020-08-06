@@ -166,7 +166,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
+              this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates.template_22.description'));
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
