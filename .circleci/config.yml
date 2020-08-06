@@ -18,7 +18,7 @@ jobs:
           path: ~/portal
       - run:
           name: Installing angular cli
-          command: 'npm install -g @angular/cli@6.0.8 --no-progress'
+          command: 'npm install -g @angular/cli@latest --no-progress'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
