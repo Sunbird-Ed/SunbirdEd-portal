@@ -49,7 +49,6 @@
 
   &__actions {
     &__list {
-      padding-left: 0;
 
       .list-item {
         margin: 0 0 0 0;
@@ -258,42 +257,55 @@
 
 }
 
-
-.group__type {
-  margin-left: 1.5rem;
-  background: var(--red-100);
-  position: relative;
-  height: 1.25rem;
-  padding: 0 .25rem 0 0.5rem;
-  color: var(--white);
-  margin-right: -.5rem;
-  font-size: .6875rem;
-  display: flex;
-  align-items: center;
-  font-weight: normal;
+:host ::ng-deep {
+  .group__type {
+    margin-left: 1.5rem;
+    background: var(--red-100);
+    position: relative;
+    height: 1.25rem;
+    padding: 0 .25rem 0 0.5rem;
+    color: var(--white);
+    margin-right: -.5rem;
+    font-size: .6875rem;
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    html[dir="rtl"] & {
+      padding: 0 .5rem 0 0.25rem;
+    }
+  }
+  
+  .group__type:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-width: .625rem .3125rem;
+    border-style: solid;
+    border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+    position: absolute;
+    right: -.625rem;
+    html[dir="rtl"] & {
+      left: -.6rem;
+      right: inherit;
+      transform: rotate(180deg);
+    }
+  }
 }
 
-.group__type:after {
-  content: "";
-  width: 0;
-  height: 0;
-  border-width: .625rem .3125rem;
-  border-style: solid;
-  border-color: var(--red-100) transparent var(--red-100) var(--red-100);
-  position: absolute;
-  right: -.625rem;
-}
 
 __textbooks {
-    -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg);
-    mask-image: url(/assets/images/mask-image/textbooks.svg);
-  }
+  -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg);
+  mask-image: url(/assets/images/mask-image/textbooks.svg);
+}
 
 :host ::ng-deep {
   @include respond-below(sm) {
-    .sbt-dropdown-profile-area,app-language-dropdown {
+
+    .sbt-dropdown-profile-area,
+    app-language-dropdown {
       width: 100%;
     }
+
     .ui.selection.sbt-dropdown.dropdown {
       min-width: 100%;
     }

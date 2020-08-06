@@ -209,7 +209,7 @@
                         [isMenu]="false">
         </sb-member-card>
       </div>
-      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc">
+      <div class="fsmall sb-color-gray-400 my-12 profile__info__desc text-left">
         {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
       </div>
 
@@ -252,7 +252,7 @@
           {{resourceService.frmelmnts?.lbl?.addAnotherUser}}
         </div>
       </div>
-      <ul class="profile__actions__list">
+      <ul class="profile__actions__list pl-0">
         <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
           <i class="icon-svg icon-svg--sm icon-profileuser mr-4"><svg class="icon icon-svg--primary"><use xlink:href="./assets/images/sprite.svg#profileuser"></use></svg></i>
           {{resourceService.frmelmnts?.lnk?.profile}}
@@ -334,7 +334,7 @@
       <div *ngIf="!userService.loggedIn">
 
         <div class="profile__actions">
-          <ul class="profile__actions__list">
+          <ul class="profile__actions__list pl-0">
             <li class="list-item" (click)="toggleSideMenu(false)"
                 [class.active]="router.isActive(routerLinks?.explore)"
                 *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]"
