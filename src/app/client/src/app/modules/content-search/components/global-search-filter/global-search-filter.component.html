@@ -9,22 +9,24 @@
       <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
         <ng-container content>
           <div class="sbt-filter-bar mr-16">
-            <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
-              <svg class="icon icon-svg--gray">
-                <use xlink:href="./assets/images/sprite.svg#close"></use>
-              </svg>
-            </i>
-            <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
-              (click)="resetFilters()" appTelemetryInteract
-              [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
-                class="icon undo"></i></button>
-            <div class="sbt-filter-scrollable relative mt-24" style="overflow: initial;max-height: inherit;">
+            <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
+              <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
+                (click)="resetFilters()" appTelemetryInteract
+                [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
+                  class="icon undo"></i></button>
+              <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
+                <svg class="icon icon-svg--gray">
+                  <use xlink:href="./assets/images/sprite.svg#close"></use>
+                </svg>
+              </i>
+            </div>
+            <div class="sbt-filter-scrollable relative" style="overflow: initial;max-height: inherit;">
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
-                  <label>{{facet.label}} </label>
+                  <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label>
                   <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
+                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
                     (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
                     #multiSelect>
