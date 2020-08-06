@@ -47,6 +47,8 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
+  pageTitle;
+  svgToDisplay;
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
       'filters': {
@@ -96,6 +98,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
+    this.getFormData();
     this.getLanguageChange();
     // TODO change the slug to 'Igot'
     if (this.userService.slug === this.slugForProminentFilter) {
@@ -126,6 +129,21 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
         });
+  }
+  getFormData() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      _.forEach(data, (value, key) => {
+        if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
+          this.pageTitle = _.get(this.resourceService, value.title);
+          this.svgToDisplay = _.get(value, 'theme.imageName');
+        }
+      });
+    });
   }
   initLayout() {
     this.redoLayout();
