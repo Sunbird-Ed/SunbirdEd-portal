@@ -113,12 +113,14 @@
            <!--Toggle Content-->
            <ng-container content>
     <div class="sbt-filter-bar mr-16">
-        <i class="icon-svg icon-svg--xxs icon-close cursor-pointer">	
-            <svg class="icon icon-svg--gray">	
-                <use xlink:href="./assets/images/sprite.svg#close"></use>	
-            </svg>	
-        </i>
+       <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
         <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer">Reset <i class="icon undo"></i></button>
+        <i class="icon-svg icon-svg--xxs icon-close cursor-pointer">	
+          <svg class="icon icon-svg--gray">	
+              <use xlink:href="./assets/images/sprite.svg#close"></use>	
+          </svg>	
+      </i>
+       </div>
         <div class="sbt-filter-scrollable relative" style="overflow: initial;max-height: inherit;">
          
                  
@@ -168,14 +170,14 @@
                           *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
                           <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                             defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                            class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple w-100 mb-16" [(ngModel)]="formInputData[field.code]" [options]="options"
+                            class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16" [(ngModel)]="formInputData[field.code]" [options]="options"
                             [hasLabels]="false" #multiSelect *ngIf="field.code !== 'gradeLevel'">
                             <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
                             </sui-select-option>
                           </sui-multi-select>
                           <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                             defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                            class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown--sm sbt-purple w-100 mb-16" [(ngModel)]="formInputData[field.code]" [options]="options"
+                            class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16" [(ngModel)]="formInputData[field.code]" [options]="options"
                             [hasLabels]="false" #multiSelect *ngIf="field.code === 'gradeLevel'">
                             <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
                           </sui-multi-select>
@@ -183,7 +185,7 @@
                         <div *ngIf="field.code === 'channel'">
                           <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
                             name={{field.code}} defaultSelectionText={{field.name}}
-                            zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="selection sbt-dropdown sbt-dropdown--sm sbt-purple w-100 mb-16"
+                            zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16"
                             [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
                             valueField="identifier" #multiSelect>
                             <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">
