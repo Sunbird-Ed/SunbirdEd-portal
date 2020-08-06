@@ -1,0 +1,13 @@
+<div *ngIf="facets">
+<ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
+  <div *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
+    <label>{{facet.label}} :&nbsp;</label>
+    <ng-container *ngFor="let item of selectedFilters[facet.name]">
+      <a class="ui label mt-8 mr-8" *ngIf="item && item.length > 0">
+        {{item}}
+        <i class="delete icon" (click)="removeFilterSelection({type: facet.name, value: item})"></i>
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+</div>

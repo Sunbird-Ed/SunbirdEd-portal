@@ -175,8 +175,7 @@ select:-internal-autofill-selected {
   }
   // max-width: 100%;
   width: 100%;
-  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow);
-  box-shadow: calculateRem(6px) calculateRem(6px) calculateRem(2px) 0 var(--sbt-box-shadow-black);
+  box-shadow: var(--sbt-box-shadow-6px);
 
   @include respond-above(sm) {
     &.large {

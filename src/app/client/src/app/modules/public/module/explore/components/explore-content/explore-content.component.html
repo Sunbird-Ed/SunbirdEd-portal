@@ -10,7 +10,7 @@
           </app-data-driven-filter>
         </ng-container>
         <ng-container *ngIf="layoutConfiguration">
-          <app-global-search-filter [facets]="facets" *ngIf="initFilters && allTabData"
+          <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
             (filterChange)="getFilters($event)">
           </app-global-search-filter>
         </ng-container>
@@ -29,6 +29,8 @@
       
           <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container
             (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
+            <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
