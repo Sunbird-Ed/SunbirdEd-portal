@@ -68,7 +68,7 @@
                 <div class="re-issue-status" *ngIf="batch?.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
                 <div class="re-issue-status" *ngIf="batch?.progress < 100">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
               </div>
-              <div class="two wide column pl-0">
+              <div class="two wide column pl-0" *ngIf="batch?.certificates">
                 <div class="re-issue-status">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
