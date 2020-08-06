@@ -39,7 +39,7 @@ let keycloak = getKeyCloakClient({
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
-  context: {src: 'sunbird'},
+  context: {src: 'sunbird-portal'},
   adopterConfig: {
     adopter: 'winston'
   }
