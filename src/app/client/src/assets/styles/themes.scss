@@ -232,8 +232,8 @@ html[data-theme='Green'] {
   --primary-hs: 148, 100%;
   --primary-color: hsl(var(--primary-hs), 27%); // #008a40;
   //--primary-300: adjust-color(hsl(148, 100%, 27%), $lightness: 50%);
-  --primary-300: hsl(var(--primary-hs), 40%);
-  --primary-200: hsl(var(--primary-hs), 65%);
+  --primary-300: #74B48B;
+  --primary-200: #AFCAB1;
   --primary-100: hsl(var(--primary-hs), 80%);
   --primary-800: #07bc81;
   --sbt-body-bg: #EAE1D7;
@@ -317,12 +317,11 @@ html[data-theme='Orange'] {
   --sbt-pill-bg-active:hsl(var(--sbt-pill-hs), 61%); // #6338ff
 }
 
-
 html[data-theme='Default'][layout='joy'] {
   --primary-hs: 206, 100%;
-  --primary-color: hsl(var(--primary-hs), 50%); // #008a40;
-  --primary-300: hsl(var(--primary-hs), 60%);
-  --primary-200: hsl(var(--primary-hs), 80%);
+  --primary-color:#0091FF;
+  --primary-300: #74B9EB;
+  --primary-200: #AFCCE1;
   --primary-800: hsl(var(--primary-hs), 40%);
 }
 

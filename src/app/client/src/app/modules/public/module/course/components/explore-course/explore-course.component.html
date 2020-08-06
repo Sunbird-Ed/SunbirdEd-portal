@@ -1,3 +1,4 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
     <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
@@ -27,8 +28,8 @@
           (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
           <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
-          <div class="masonry-grid dynamic-section-card ">
-            <div in-view-item [id]="i" [data]="content" class="masonry-item"
+          <div class="sb-grid dynamic-section-card ">
+            <div in-view-item [id]="i" [data]="content" class=""
               *ngFor="let content of contentList;let i = index;">
               <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
                 [telemetryInteractEdata]="cardIntractEdata"

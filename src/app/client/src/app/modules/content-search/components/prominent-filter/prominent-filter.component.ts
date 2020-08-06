@@ -1,19 +1,18 @@
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { of, throwError } from 'rxjs';
 import {
   ConfigService, ResourceService, Framework, ToasterService, ServerResponse, UtilService,
-  BrowserCacheTtlService, LayoutService
+  BrowserCacheTtlService
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ApplicationRef, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { first, mergeMap, map, tap, catchError, filter, takeUntil } from 'rxjs/operators';
+import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
-  templateUrl: './prominent-filter.component.html',
-  styleUrls: ['./prominent-filter.component.scss']
+  templateUrl: './prominent-filter.component.html'
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
@@ -30,7 +29,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() layoutConfiguration;
   @Output() prominentFilter = new EventEmitter();
   public resetFilterInteractEdata: IInteractEventEdata;
-  @Input() layoutConfiguration;
   /**
  * To get url, app configs
  */
@@ -73,7 +71,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   userRoles = [];
 
   public permissionService: PermissionService;
-  public unsubscribe = new Subject<void>();
+
   refresh = true;
   isShowFilterPlaceholder = true;
   contentTypes: any;
@@ -102,7 +100,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     private browserCacheTtlService: BrowserCacheTtlService,
     private utilService: UtilService,
     private orgDetailsService: OrgDetailsService,
-    public layoutService: LayoutService
+
   ) {
     this.configService = configService;
     this.resourceService = resourceService;
@@ -116,7 +114,6 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initLayout();
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -141,33 +138,22 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     });
     this.setFilterInteractData();
   }
-
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-        if (layoutConfig != null) {
-          this.layoutConfiguration = layoutConfig.layout;
-        }
-      });
-  }
-
   private setFilterInteractData() {
     setTimeout(() => { // wait for model to change
       const filters = _.pickBy(this.formInputData, (val, key) =>
         (!_.isEmpty(val) || typeof val === 'number')
-        && _.map(this.formFieldProperties, field => field.code).includes(key));
+          && _.map(this.formFieldProperties, field => field.code).includes(key));
       this.applyFilterInteractEdata = {
         id: 'apply-filter',
         type: 'click',
         pageid: this.pageId,
-        extra: { filters: filters }
+        extra: {filters: filters}
       };
       this.resetFilterInteractEdata = {
         id: 'reset-filter',
         type: 'click',
         pageid: this.pageId,
-        extra: { filters: filters }
+        extra: {filters: filters}
       };
     }, 5);
   }
@@ -195,23 +181,23 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
           if (this.notToUseFramework) {
             formFieldCategory.range = formFieldCategory.range;
           } else {
-            if (formFieldCategory.code === 'channel') {
-              formFieldCategory.range = _.map(formData.channelData, (value) => {
-                return {
-                  category: 'channel',
-                  identifier: value.hashTagId,
-                  name: value.orgName,
-                };
-              });
-            } else {
-              const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
-              formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
-            }
-            if (this.selectedLanguage !== 'en') {
-              formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
-              formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
-            }
+          if (formFieldCategory.code === 'channel') {
+            formFieldCategory.range = _.map(formData.channelData, (value) => {
+              return {
+                category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
+            });
+          } else {
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
+          if (this.selectedLanguage !== 'en') {
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
+            formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+          }
+        }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
@@ -355,9 +341,4 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       this.resourceDataSubscription.unsubscribe();
     }
   }
-
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
-  }
-
 }
