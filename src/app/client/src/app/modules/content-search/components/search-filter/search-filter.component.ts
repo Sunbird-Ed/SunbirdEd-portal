@@ -33,6 +33,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public mediums: any[] = [];
   public gradeLevels: any[] = [];
   filterChangeEvent =  new Subject();
+  @Input() isOpen;
   @Input() defaultFilters;
   @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<{status: string, filters?: any}> = new EventEmitter();
@@ -46,7 +47,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.type = this.optionLabel.Board;
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
+
+    // screen size
+    if (window.innerWidth <= 992 ) {
+      this.isOpen = false;
+    }
   }
+
   private fetchSelectedFilterAndFilterOption() {
     this.activatedRoute.queryParams.pipe(map((queryParams) => {
       const queryFilters: any = {};

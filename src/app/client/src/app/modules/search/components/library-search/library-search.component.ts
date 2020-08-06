@@ -44,6 +44,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
     public globalSearchFacets: Array<string>;
     public allTabData;
+    public selectedFilters;
     layoutConfiguration;
     FIRST_PANEL_LAYOUT;
     SECOND_PANEL_LAYOUT;
@@ -109,6 +110,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
     public getFilters(filters) {
+        this.selectedFilters = filters.filters;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
                 collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

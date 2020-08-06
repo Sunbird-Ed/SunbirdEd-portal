@@ -44,6 +44,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     SECOND_PANEL_LAYOUT:string;
     public globalSearchFacets: Array<string>;
     public allTabData;
+    public selectedFilters;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -111,6 +112,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
           }
       }
     public getFilters(filters) {
+        this.selectedFilters = filters.filters;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
             collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

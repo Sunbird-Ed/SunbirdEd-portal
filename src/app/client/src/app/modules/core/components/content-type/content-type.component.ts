@@ -2,7 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
 import {ResourceService} from '@sunbird/shared';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
+
 
 @Component({
   selector: 'app-content-type',
@@ -12,9 +13,11 @@ import {Router} from '@angular/router';
 export class ContentTypeComponent implements OnInit {
   @Input() layoutConfiguration;
   contentTypes;
+  selectedContentType;
 
   constructor(public formService: FormService, public resourceService: ResourceService,
-              public router: Router, public userService: UserService) {
+              public router: Router, public userService: UserService,
+              public activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -34,6 +37,7 @@ export class ContentTypeComponent implements OnInit {
 
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
+    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
   }
 
   getTitle(contentType) {
@@ -46,6 +50,7 @@ export class ContentTypeComponent implements OnInit {
 
 
   showContentType(data) {
+    this.selectedContentType = data.contentType;
     if (this.userService.loggedIn) {
       this.router.navigate([data.loggedInUserRoute.route],
         {queryParams: {selectedTab: data.loggedInUserRoute.queryParam}});

@@ -19,18 +19,14 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-
+    white-space: nowrap;
     &.active,
     &:hover {
       color: var(--white);
-
+      text-decoration: none;
       .sb-icon {
         background-color: var(--white);
       }
-    }
-
-    &:hover {
-      text-decoration: none;
     }
 
     &--textbooks {
@@ -38,7 +34,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__textbook {
+      .sb-icon__textbooks {
         background-color: var(--sbt-textbooks-bg);
       }
     }
@@ -48,7 +44,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__course {
+      .sb-icon__courses {
         background-color: var(--sbt-courses-bg);
       }
     }
@@ -58,7 +54,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__test {
+      .sb-icon__tests {
         background-color: var(--sbt-tests-bg);
       }
     }
@@ -68,7 +64,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__quiz {
+      .sb-icon__quizzes {
         background-color: var(--sbt-quizzes-bg);
       }
     }
@@ -78,7 +74,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__story {
+      .sb-icon__stories {
         background-color: var(--sbt-stories-bg);
       }
     }
@@ -88,7 +84,7 @@
 
       &:hover,
       &.item.active,
-      .sb-icon__poem {
+      .sb-icon__poems {
         background-color: var(--sbt-poems-bg);
       }
     }

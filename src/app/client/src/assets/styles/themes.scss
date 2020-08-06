@@ -221,9 +221,9 @@ html[data-theme='Default'] {
   --sbt-poems-text: var(--sbt-poems);
   --sbt-poems-bg: var(--sbt-poems);
   --sbt-tv-text: var(--sbt-tv);
-  --sbt-tv-text: var(--sbt-tv);
+  --sbt-tv-bg: var(--sbt-tv);
   --sbt-podcasts-text: var(--sbt-podcasts);
-  --sbt-podcasts-text: var(--sbt-podcasts);
+  --sbt-podcasts-bg: var(--sbt-podcasts);
   --sbt-all-text: var(--sbt-all);
   --sbt-all-bg: var(--sbt-all);
 }
@@ -284,9 +284,9 @@ html[data-theme='Green'] {
   --sbt-poems-text: var(--sbt-poems);
   --sbt-poems-bg: var(--sbt-poems);
   --sbt-tv-text: var(--sbt-tv);
-  --sbt-tv-text: var(--sbt-tv);
+  --sbt-tv-bg: var(--sbt-tv);
   --sbt-podcasts-text: var(--sbt-podcasts);
-  --sbt-podcasts-text: var(--sbt-podcasts);
+  --sbt-podcasts-bg: var(--sbt-podcasts);
   --sbt-all-text: var(--sbt-all);
   --sbt-all-bg: var(--sbt-all);
 }
@@ -344,9 +344,11 @@ html[layout='joy'] {
     box-shadow: none;
   }
   .sb-form-control {
-    border-radius: calc(var(--sbt-bradius) * 8) //calculateRem(16px);
+    border-radius: calc(var(--sbt-bradius) * 8) !important //calculateRem(16px);
   }
-
+  .ui.dropdown.selection.sb-form-control .menu{
+    border-radius: 0 0 calc(var(--sbt-bradius) * 8) calc(var(--sbt-bradius) * 8);
+  }
   /* modal */
   .sb-modal {
     .ui.modal {
@@ -369,7 +371,7 @@ html[layout='joy'] {
       }
 
       .sb-modal-actions {
-        padding: calculateRem(8px) calculateRem(24px) calculateRem(8px);
+        padding: calculateRem(8px) calculateRem(24px) calculateRem(24px);
         background: var(--sbt-compt-bg);
         border-top: calculateRem(0px) solid var(--gray-100);
         border-radius: 0 0 calc(var(--sbt-bradius) * 12) calc(var(--sbt-bradius) * 12);
@@ -378,14 +380,26 @@ html[layout='joy'] {
       &>.close {
         // right: auto !important;
         // left: calculateRem(12px);
-        background: var(--white);
-        border-radius: 100%;
-        color: var(--red);
+        height: calculateRem(24px);
+        width: calculateRem(24px);
+        border-radius: 50%;
         box-shadow: var(--sbt-box-shadow-6px);
-        right: 10px;
-        top: 8px;
+        right: calculateRem(12px) !important;
+        top: calculateRem(12px) !important;
+        background-color: var(--white);
+        &::before{
+          content: "";
+          background: url(/assets/images/close.png) no-repeat !important;
+          height: calculateRem(22px);
+          width: calculateRem(22px);
+        }
+        
       }
     }
+  }
+  .ui.modal>:last-child{
+    border-bottom-left-radius: calc(var(--sbt-bradius) * 12);
+    border-bottom-right-radius: calc(var(--sbt-bradius) * 12);
   }
 
   //end
@@ -536,6 +550,11 @@ html[layout='joy'] {
   .toc-box-shadow {
     box-shadow:none !important;
   }
+  .training-relevant {
+    background: var(--sbt-compt-bg) !important;
+    border-radius: 24px;
+    padding: 16px;
+  }
   .relative9 {
     position: relative;
     z-index: 9;
@@ -543,5 +562,12 @@ html[layout='joy'] {
   .right-flower-position-adjust-container {
     position: relative;
     z-index: 99;
+  }
+}
+
+html[layout='joy'][dir='rtl'] {
+  .sb-modal .ui.modal .close{
+    left: calculateRem(12px) !important;
+    right: auto;
   }
 }
