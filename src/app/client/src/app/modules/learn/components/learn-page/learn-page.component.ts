@@ -45,8 +45,8 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public toUseFrameWorkData = false;
   private resourceDataSubscription: Subscription;
   layoutConfiguration: any;
-  FIRST_PANEL_LAYOUT: string;
-  SECOND_PANEL_LAYOUT: string;
+  FIRST_PANEL_LAYOUT:string;
+  SECOND_PANEL_LAYOUT:string;
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
       'filters': {
@@ -68,7 +68,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   });
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
-    (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
@@ -101,7 +101,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
     }
-    if (this.userService._isCustodianUser && this.orgDetailsFromSlug) {
+    if (this.userService._isCustodianUser && this.orgDetailsFromSlug ) {
       if (_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter) {
         this.toUseFrameWorkData = true;
       }
@@ -130,21 +130,21 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   initLayout() {
     this.redoLayout();
     this.layoutService.switchableLayout().
-      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-        if (layoutConfig != null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
+        if(layoutConfig!=null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
         this.redoLayout();
       });
   }
   redoLayout() {
-    if (this.layoutConfiguration != null) {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-    } else {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-    }
+      if(this.layoutConfiguration!=null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      }
   }
 
   private getLanguageChange() {
@@ -186,7 +186,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       return value.length;
     });
     let hashTagId = this.userService.hashTagId;
-    if (this.userService._isCustodianUser && this.orgDetailsFromSlug) {
+    if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
       hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
     const option: any = {
@@ -206,9 +206,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
             const sectionId = _.get(result[1], 'result.response.value');
             option['sections'] = {};
             option['sections'][sectionId] = {
-              'filters': {
-                'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
-              }
+             'filters': {
+               'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
+             }
             };
           }
         }
@@ -319,7 +319,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
-      this.coursesService.findEnrolledCourses(metaData.identifier);
+    this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -334,7 +334,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public viewAll(event) {
-    const searchQuery = _.get(event, 'searchQuery') ? JSON.parse(event.searchQuery) : JSON.parse(this.myCoursesSearchQuery);
+    const searchQuery = _.get(event, 'searchQuery') ?  JSON.parse(event.searchQuery) : JSON.parse(this.myCoursesSearchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {
