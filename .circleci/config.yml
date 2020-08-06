@@ -17,14 +17,11 @@ jobs:
       - checkout:
           path: ~/portal
       - run:
-          name: Installing angular cli1
-          command: npm uninstall -g @angular/cli@6.0.8
+          name: Installing npm
+          command: 'npm i npm@latest -g'
       - run:
-          name: Installing angular cli2
-          command: npm cache clean --force
-      - run:
-          name: Installing angular cli3
-          command: 'npm install -g @angular/cli@latest --no-progress'
+          name: Installing angular cli
+          command: 'npm install -g @angular/cli@6.0.8 --no-progress'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
