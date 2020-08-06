@@ -11,6 +11,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { assessmentPlayerMockData } from '../assessment-player/assessment-player.component.data.spec';
 import { CoursesService } from './../../../../core/services/course/course.service';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
+import { enrolledBatchWithCertificate } from './../../batch/batch-details/batch-details.component.data';
 import { CoursePlayerComponent } from './course-player.component';
 import { CourseHierarchyGetMockResponse, CourseHierarchyGetMockResponseFlagged, telemetryInteractMockData, enrolledCourseMockData } from './course-player.component.mock.data';
 
@@ -82,6 +83,22 @@ describe('CoursePlayerComponent', () => {
     fixture.destroy();
   });
 
+
+  it('should fetch certificate description', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const resourceService = TestBed.get(ResourceService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatchWithCertificate.result.response));
+    spyOn(windowScrollService, 'smoothScroll');
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    component.ngOnInit();
+    expect(component.courseHierarchy).toBeDefined();
+    expect(component.certificateDescription).toBe('This course certificate is only for Rajasthan users scoring 80% or above');
+  });
+
   it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
@@ -94,6 +111,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
+    expect(component.certificateDescription).toBe('');
   });
 
   it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
