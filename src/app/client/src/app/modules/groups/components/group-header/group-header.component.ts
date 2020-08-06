@@ -50,16 +50,21 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   deleteGroup() {
     this.toggleModal(false);
     this.showLoader = true;
-    setTimeout(() => {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
-        this.showLoader = false;
+        this.navigateToPreviousPage();
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m003);
+        this.navigateToPreviousPage();
       });
+
+  }
+
+  navigateToPreviousPage() {
+    setTimeout(() => {
       this.showLoader = false;
       this.goBack();
-    });
+    }, 1500);
   }
 
   editGroup() {
