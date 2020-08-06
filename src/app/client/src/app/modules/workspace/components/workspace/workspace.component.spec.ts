@@ -32,4 +32,11 @@ describe('WorkspaceComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+   it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.redoLayout();
+  });
 });

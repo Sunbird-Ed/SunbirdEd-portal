@@ -21,6 +21,7 @@
               </i>
             </div>
             <div class="sbt-filter-scrollable relative" style="overflow: initial;max-height: inherit;">
+              <div class="fnormal mb-8">Based on your preferences</div>
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label>
