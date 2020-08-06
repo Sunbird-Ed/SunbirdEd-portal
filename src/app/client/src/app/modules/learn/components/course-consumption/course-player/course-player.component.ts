@@ -172,11 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
         if (this.batchId) {
           this.enrolledBatchInfo = enrolledBatchDetails;
-          const certificateTemplate = _.get(this.enrolledBatchInfo, 'cert_templates')
-          if(certificateTemplate && Object.keys(certificateTemplate).length !== 0){
-            const templateKey = Object.keys(certificateTemplate);
-            this.certificateDescription = certificateTemplate.templateKey[0].description;
-          }
+          this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
           this.enrolledCourse = true;
           setTimeout(() => {
             this.setTelemetryStartEndData();

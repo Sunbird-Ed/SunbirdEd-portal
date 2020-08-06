@@ -141,4 +141,4 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">
 </app-share-link>
-<app-course-completion *ngIf="showCourseCompleteMessage" [isCertificateAttached]="isCertificateAttached" (close)="onCourseCompleteClose()"></app-course-completion>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
