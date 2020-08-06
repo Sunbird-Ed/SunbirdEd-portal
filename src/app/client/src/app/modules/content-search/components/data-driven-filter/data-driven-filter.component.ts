@@ -60,7 +60,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
-    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService, 
+    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService,
     public layoutService: LayoutService) {
     this.router.onSameUrlNavigation = 'reload';
   }

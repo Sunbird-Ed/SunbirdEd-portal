@@ -17,7 +17,7 @@ describe('AppLandingSectionComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[SharedModule.forRoot()],
+      imports: [SharedModule.forRoot()],
       providers: []
     })
     .compileComponents();

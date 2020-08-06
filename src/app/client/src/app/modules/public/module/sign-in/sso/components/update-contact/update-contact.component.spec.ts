@@ -324,7 +324,7 @@ describe('UpdateContactComponent', () => {
   it('should submit form when captcha enabled', () => {
     component.isP1CaptchaEnabled = 'true';
     spyOn(component, 'resetGoogleCaptcha').and.callThrough();
-    spyOn(component, 'resolved').and.callFake(() => { return true; })
+    spyOn(component, 'resolved').and.callFake(() => true);
     component.submitForm();
     expect(component.resetGoogleCaptcha).toHaveBeenCalled();
   });
@@ -338,7 +338,7 @@ describe('UpdateContactComponent', () => {
 
   it('should receive response from captcha', () => {
     component.isP1CaptchaEnabled = 'true';
-    spyOn(component, 'onFormUpdate').and.callFake(() => { return true; })
+    spyOn(component, 'onFormUpdate').and.callFake(() => true);
     component.resolved(mockUpdateContactData.captchaToken);
     expect(component.onFormUpdate).toHaveBeenCalledWith(mockUpdateContactData.captchaToken);
   });
