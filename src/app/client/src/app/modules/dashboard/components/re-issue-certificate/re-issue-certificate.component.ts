@@ -45,6 +45,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   }
 
   searchCertificates() {
+    this.batchList = [];
     this.button.nativeElement.disabled = true;
     this.button.nativeElement.classList.add('sb-btn-disabled');
     this.button.nativeElement.classList.remove('sb-btn-outline-primary');

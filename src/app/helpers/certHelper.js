@@ -45,11 +45,10 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
     district = await getDistrictName(req, requestParams);
   }
 
-  const courseData = await getCourseData(req, courseId, _.get(userData, 'identifier'), currentUser);
-
+  const courseData = await getCreatorBatches(req, courseId, currentUser, _.get(userData, 'identifier'))
   const resObj = {
     userId: _.get(userData, 'identifier'),
-    userName: _.get(userData, 'firstName') + _.get(userData, 'lastName'),
+    userName: _.get(userData, 'firstName') + (_.get(userData, 'lastName') || ''),
     district: district,
     courses: courseData
   };
@@ -67,28 +66,9 @@ const getDistrictName = async (req, requestParams) => {
   return (_.get(response, 'data.result.response[0].name'));
 };
 
-const getCourseData = async (req, courseId, userId, currentUser) => {
-  logger.info({ msg: `getCourseData() is called with ${courseId} with url: ${certRegURL + 'content/v1/read'}` });
-  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise().catch(err => {	  
-  logger.error({ msg: `Error occurred in getCourseData() while fetching course error:  ${err}` });
-  });
-  logger.info({ msg: `returning data from getCourseData() with${JSON.stringify(_.get(response, 'data.result.content'))}` });
-  const courseData = _.get(response, 'data.result.content');
-  const batchList = await getBatches(req, courseData, _.get(courseData, 'batches'), userId, currentUser);
-  return (
-    {
-      courseId: _.get(courseData, 'identifier'),
-      name: _.get(courseData, 'name'),
-      contentType: _.get(courseData, 'contentType'),
-      pkgVersion: _.get(courseData, 'pkgVersion'),
-      batches: _.compact(batchList)
-    }
-  );
-}
 
-
-const getBatches = async (req, courseData, batchList, userId, currentUser) => {
-  const courseId = _.get(courseData, 'identifier');
+const getCreatorBatches = async (req, courseId, currentUser, userId) => {
+  logger.info({ msg: `getCreatorBatches() is called with ${courseId}, currentUser ${currentUser} userId: ${userId} with url: ${certRegURL + 'content/v1/read'}` });
   const requestParams = {
       request: {
         filters: {
@@ -102,98 +82,54 @@ const getBatches = async (req, courseData, batchList, userId, currentUser) => {
       }
   };
   logger.info({ msg: `HTTPService is called in  getBatchList() of current user with ${certRegURL + 'course/v1/batch/list'}` });
-
   const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise().catch(err => {
     logger.error({ msg: `Error occurred in batchList() while fetching course error:  ${err}` });	
   });
 
-  batchList = _.get(response, 'data.result.response.content');
-  let batches = [];
-  let certList = [];
-  certList = await getCertList(req, userId);
-  batchList = !_.isEmpty(batchList) ? isJSON(batchList) : [];
-  for (let cert of certList) {
-    let batch = {};
-    if (!_.isEmpty(batches)) {
-      batch = _.find(batches, { batchId: _.get(cert, '_source.related.batchId') });
-      if (batch && courseId === _.get(cert, '_source.related.courseId')) {
-        batch.certificates.push(cert);
-      }
-    } else {
-      batch = _.find(batchList, { batchId: _.get(cert, '_source.related.batchId') });
-      if (batch) {
-        batch.progress = await getBatchProgress(req, userId, _.get(batch, 'batchId'), courseData);
-        batch['certificates'] = (courseId === _.get(cert, '_source.related.courseId')) ? [cert] : [];
-      }
-    }
-    batches.push(batch);
-  };
-  return _.uniqBy(batches, 'batchId');
+  const creatorBatches = _.get(response, 'data.result.response.content');
+  const enrolledBatches = await getUserEnrolledCourses(req, userId);
+  const data = filterUserBatches(courseId, creatorBatches, enrolledBatches);
+  logger.info({msg: `returning response from getCreatorBatches for courseId: ${courseId}, currentUser ${currentUser} userId: ${userId} Data: ${creatorBatches}`})
+
+  return data ;
 }
 
-const getCertList = async (req, userId) => {
-  logger.info({ msg: `getCertList() is called with ${userId}` });
-  const options = {
-    request: {
-      _source: [],
-      query: {
-        bool: {
-          must: [
-            {
-              match_phrase: {
-                'recipient.id': userId,
-              },
-            }
-          ]
-        }
-      }
-    }
-  };
-  logger.info({ msg: `searchCertificate HTTP request is called to get certificates for userId: ${userId}, with url ${certRegURL + 'certreg/v1/certs/search'}` });
-  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in  getUserCertificates() while fetching certificates error :  ${err}` });	
-  });
-
-  logger.info({ msg: `getCertList() is returning data with ${JSON.stringify(_.get(response, 'data.result.response.content'))}` })
-  return _.get(response, 'data.result.response.content') || [];
-}
-
-const getBatchProgress = async (req, userId, batchId, course) => {
-  logger.info({ msg: `getBatchProgress() is called with ${userId, batchId, course}` });
-    let contentIds = _.get(course, 'leafNodes') || [];
-    if (_.isEmpty(contentIds)) {
-      const model = new TreeModel();
-      const treeModel = model.parse(course);
-      treeModel.walk((node) => {
-        if (node.model.mimeType === 'application/vnd.ekstep.content-collection') {
-          contentIds.push(_.get(node.model, 'identifier'));
-        }
-      });
-    }
-
-    const options = {
-      request: {
-        userId: userId,
-        batchId: batchId,
-        contentIds: _.compact(contentIds),
-        courseId: _.get(course, 'identifier')
-      }
-    };
-
+const getUserEnrolledCourses = async (req, userId) => {
+  logger.info({ msg: `getUserEnrolledCourses() is called with userId ${userId}` });
     const appConfig = getHeaders();
-    appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token');
-  
-    logger.info({ msg: `HTTPService is called in  getBatchProgress() with ${certRegURL + 'course/v1/content/state/read'}` });
-    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise().catch(err => {
-      logger.error({ msg: `Error occurred in  getBatchProgress() Error: , ${err}` });	
+    appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+    const response = await HTTPService.get(`${certRegURL + 'course/v1/user/enrollment/list'}/${userId}`, appConfig).toPromise().catch(err => {
+      logger.error({ msg: `Error occurred in getBatches() while fetching course error:  ${err}` });
     });
-
-    let progress = 0;
-    _.forEach(_.get(response, 'data.result.contentList'), (content) => {
-      progress += _.get(content, 'progress');
-    });
-    logger.info({ msg: `getBatchProgress() is returning with progress  ${progress} for batch: ${batchId}` });
-    return !_.isEmpty(contentIds) ? (progress / (contentIds.length * 100)) * 100: 0;
+    logger.info({msg: `returning response from getUserEnrolledCourses for userId: ${userId} Data: ${_.get(response, 'data.result.courses')}`})
+    return _.get(response, 'data.result.courses');
 }
 
+const filterUserBatches = (courseId, creatorBatches, enrolledBatches) => {
+  logger.info({ msg: `filterUserBatches() is called with courseId ${courseId}` });
+
+  let courseData = {};
+  for (let batch of enrolledBatches) {
+        if (batch) {
+          if (_.isEqual(_.get(batch, 'courseId'), courseId)) {
+              courseData = {
+                courseId: _.get(batch, 'courseId'),
+                name: _.get(batch, 'content.name'),
+                contentType: _.get(batch, 'content.contentType'),
+                pkgVersion: _.get(batch, 'content.pkgVersion'),
+                batches: [],
+              };
+            const creatorBatch = _.find(creatorBatches, {batchId: _.get(batch, 'batchId')});
+              if (creatorBatch) {
+                batch.createdBy = _.get(creatorBatch, 'createdBy');
+                batch.progress =  _.get(batch, 'progress') > 0 ? (_.get(batch, 'progress') === _.get(batch, 'leafNodesCount') ? 2 : 1) : 0;
+                batch.name = _.get(creatorBatch, 'name');
+                courseData.batches.push(_.omit(batch, 'content'));
+              }
+          }
+        }
+  }
+  logger.info({msg: `returning response from filterUserBatches for courseId: ${courseId} Data: ${JSON.stringify(courseData)}`})
+  return courseData;
+}
 module.exports = { getUserCertificates };
