@@ -46,10 +46,11 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
 
   searchCertificates() {
     this.button.nativeElement.disabled = true;
+    this.button.nativeElement.classList.add('sb-btn-disabled');
+    this.button.nativeElement.classList.remove('sb-btn-outline-primary');
     this.certService.getUserCertList(this.userName.trim(), this.courseId, this.userService.userid)
     .pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-      this.button.nativeElement.disabled = false;
-      this.userName = '';
+      this.modifyCss();
       if (_.isEmpty(_.get(data, 'result.response.err'))) {
         this.userData = _.get(data, 'result.response');
         this.batchList = _.get(data, 'result.response.courses.batches');
@@ -58,10 +59,15 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
         this.showErrorMsg();
       }
     }, err => {
-      this.userName = '';
-      this.button.nativeElement.disabled = false;
+      this.modifyCss();
       this.showErrorMsg();
     });
+  }
+
+  modifyCss() {
+    this.button.nativeElement.disabled = false;
+    this.button.nativeElement.classList.remove('sb-btn-disabled');
+    this.button.nativeElement.classList.add('sb-btn-outline-primary');
   }
 
   showErrorMsg()  {
@@ -94,7 +100,6 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       this.showModal = visibility;
       this.userBatch = this.userBatch;
     }
-
   }
 
     // To set telemetry impression
@@ -109,11 +114,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
           uri: this.router.url,
           duration: this.navigationhelperService.getPageLoadTime()
         },
-        object: {
-            id: this.courseId,
-            type: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.type'),
-            ver: _.get(this.activatedRoute.snapshot, 'data.telemetry.object.ver'),
-        }
+        object: this.setObject()
       };
     }
 
@@ -128,11 +129,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
           type: 'click',
           pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
         },
-        object: {
-          id: this.courseId,
-          type: _.get(this.userData, 'courses.contentType') || _.get(this.activatedRoute.snapshot, 'data.telemetry.object.type'),
-          ver: _.get(this.userData, 'courses.pkgVersion') ? `${_.get(this.userData, 'courses.pkgVersion')}` : '1.0',
-        }
+        object: this.setObject()
       };
 
       if (extra) {
@@ -143,6 +140,25 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       this.telemetryService.interact(interactData);
     }
 
+    setObject() {
+      return {
+        id: this.courseId,
+        type: _.get(this.userData, 'courses.contentType') || _.get(this.activatedRoute.snapshot, 'data.telemetry.object.type'),
+        ver: _.get(this.userData, 'courses.pkgVersion') ? _.get(this.userData, 'courses.pkgVersion') ? `${_.get(this.userData, 'courses.pkgVersion')}` : '1.0' : '1.0',
+      };
+    }
+
+  toLowerCase(msg: string) {
+    if (msg) {
+      return msg[0].toUpperCase() + msg.substring(1).toLowerCase();
+    }
+    return '';
+  }
+
+  resetValues() {
+    this.userName = this.userName ? this.userName.trim() : this.userName;
+    this.batchList = [];
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

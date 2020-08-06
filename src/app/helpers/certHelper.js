@@ -49,23 +49,29 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
 
   const resObj = {
     userId: _.get(userData, 'identifier'),
-    userName: _.get(userData, 'userName'),
+    userName: _.get(userData, 'firstName') + _.get(userData, 'lastName'),
     district: district,
     courses: courseData
   };
   return resObj;
 };
 
+
+
 const getDistrictName = async (req, requestParams) => {
   logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + 'data/v1/location/search'}` })
-  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise()
+  const response = await HTTPService.post(`${certRegURL + 'data/v1/location/search'}`, requestParams, getHeaders()).toPromise().catch(err => {
+    logger.error({ msg: `Error occurred in  getLocation() error:  ${err}` });	
+    });
   logger.info({ msg: `getDistrictName() is returning data ${_.get(response, 'data.result.response[0].name')}` })
   return (_.get(response, 'data.result.response[0].name'));
 };
 
 const getCourseData = async (req, courseId, userId, currentUser) => {
   logger.info({ msg: `getCourseData() is called with ${courseId} with url: ${certRegURL + 'content/v1/read'}` });
-  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise()
+  const response = await HTTPService.get(`${certRegURL + 'content/v1/read'}/${courseId}`, {}).toPromise().catch(err => {	  
+  logger.error({ msg: `Error occurred in getCourseData() while fetching course error:  ${err}` });
+  });
   logger.info({ msg: `returning data from getCourseData() with${JSON.stringify(_.get(response, 'data.result.content'))}` });
   const courseData = _.get(response, 'data.result.content');
   const batchList = await getBatches(req, courseData, _.get(courseData, 'batches'), userId, currentUser);
@@ -97,7 +103,10 @@ const getBatches = async (req, courseData, batchList, userId, currentUser) => {
   };
   logger.info({ msg: `HTTPService is called in  getBatchList() of current user with ${certRegURL + 'course/v1/batch/list'}` });
 
-  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise()
+  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise().catch(err => {
+    logger.error({ msg: `Error occurred in batchList() while fetching course error:  ${err}` });	
+  });
+
   batchList = _.get(response, 'data.result.response.content');
   let batches = [];
   let certList = [];
@@ -141,7 +150,9 @@ const getCertList = async (req, userId) => {
     }
   };
   logger.info({ msg: `searchCertificate HTTP request is called to get certificates for userId: ${userId}, with url ${certRegURL + 'certreg/v1/certs/search'}` });
-  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise()
+  let response = await HTTPService.post(certRegURL + 'certreg/v1/certs/search', options, getHeaders()).toPromise().catch(err => {
+    logger.error({ msg: `Error occurred in  getUserCertificates() while fetching certificates error :  ${err}` });	
+  });
 
   logger.info({ msg: `getCertList() is returning data with ${JSON.stringify(_.get(response, 'data.result.response.content'))}` })
   return _.get(response, 'data.result.response.content') || [];
@@ -173,7 +184,9 @@ const getBatchProgress = async (req, userId, batchId, course) => {
     appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token');
   
     logger.info({ msg: `HTTPService is called in  getBatchProgress() with ${certRegURL + 'course/v1/content/state/read'}` });
-    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise()
+    const response = await HTTPService.post(certRegURL + 'course/v1/content/state/read', options, appConfig).toPromise().catch(err => {
+      logger.error({ msg: `Error occurred in  getBatchProgress() Error: , ${err}` });	
+    });
 
     let progress = 0;
     _.forEach(_.get(response, 'data.result.contentList'), (content) => {

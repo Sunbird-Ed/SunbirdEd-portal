@@ -63,11 +63,10 @@ module.exports = function (app) {
           const data = JSON.parse(proxyResData.toString('utf8'));
           logger.info({ msg: `getUserCertificates() is calling from certRegRoutes ` });
           const certificates = await getUserCertificates(req, _.get(data, 'result.response.content[0]'), courseId, currentUser);
-          if (data) {
+          if (data && _.isEqual(_.get(data, 'params.status'), 'success')) {
             data.result.response = certificates;
             return data;
-          }
-          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+          } else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         } catch (err) {
           logger.error({ msg: `Error occurred while searching userData with: ${certRegServiceApi.searchUser}, Error: ${JSON.stringify(_.get(err, 'response.data'))}` });
           let data = JSON.parse(proxyResData.toString('utf8'));
@@ -91,7 +90,7 @@ module.exports = function (app) {
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
-          logger.info({ msg: '/course/batch/cert/v1/issue?reissue=true called' });
+          logger.info({ msg: `/course/batch/cert/v1/issue?reissue=true called  by userId: ${req.session['userId']}` });
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);

@@ -3,16 +3,16 @@
     <div class="sb-bg-color-white px-16">
       <div class="ui grid">
         <div class="seven wide column">
-          <div class="reissue-title text-left font-weight-bold">{{resourceService?.frmelmnts?.lbl?.certificates}} </div>
+          <div class="reissue-title text-left font-weight-bold">{{resourceService?.frmelmnts?.lbl?.cert}} </div>
           <div class="sb-field certificate-id-content">
             <label class="d-inline-flex flex-ai-center flex-jc-space-between w-100 user-id-label" for="id">
               <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': channelName}}</span></label>
             <div class="d-flex">
               <div class="user-id-input">
-                <input class="sb-form-control font-weight-bold" name="id" placeholder="Enter user ID" type="id" [(ngModel)]="userName">
+                <input class="sb-form-control font-weight-bold" name="id" placeholder="{{resourceService?.frmelmnts?.lbl?.searchUser}}" type="id" [(ngModel)]="userName" (ngModelChange)="resetValues()">
                 <small class="message sb-color-error font-weight-bold mt-8"></small></div>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-16" type="button" (click)="searchCertificates();addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
-                #searchBtn [ngClass]="{'sb-btn-disabled': !userName?.trim()}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+              <button class="sb-btn sb-btn-normal ml-16" id="search-btn" type="button" (click)="searchCertificates($event);addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
+                #searchBtn [ngClass]="{'sb-btn-disabled': !userName?.trim(), 'sb-btn-outline-primary': userName}">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
           </div>
         </div>
@@ -35,19 +35,19 @@
       <div class="d-flex re-issue-list-content">
           <div class="re-issue-list-content__labels pt-0 px-16 pb-16">
             <div class="ui stackable grid mt-0">
-              <div class="three wide column">
-                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.batch_name}}</div>
+              <div class="three wide column pr-0">
+                <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.batch_name)}}</div>
               </div>
-              <div class="three wide column">
-                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}</div>
+              <div class="three wide column px-0">
+                <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.dashboardsortbyusername)}}</div>
               </div>
-              <div class="two wide column">
-                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.userDistrict}}</div>
+              <div class="two wide column px-0">
+                <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.userDistrict)}}</div>
               </div>
-              <div class="two wide column">
-                <div class="re-issue-label">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
+              <div class="two wide column px-0">
+                <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.courseProgress)}}</div>
               </div>
-              <div class="two wide column">
+              <div class="two wide column pl-0">
                 <div class="re-issue-label"></div>
               </div>
             </div>
@@ -55,20 +55,20 @@
 
           <div class="sb-bg-color-white pt-0 px-16 pb-16" >
             <div class="ui stackable grid mt-0" *ngFor="let batch of batchList">
-              <div class="three wide column">
-                <div class="re-issue-status">{{batch?.name}}</div>
+              <div class="three wide column pr-0">
+                <div class="re-issue-status">{{batch?.name}} </div>
               </div>
-              <div class="three wide column">
+              <div class="three wide column px-0">
                 <div class="re-issue-status">{{userData?.userName}}</div>
               </div>
-              <div class="two wide column">
+              <div class="two wide column px-0">
                 <div class="re-issue-status">{{userData?.district}}</div>
               </div>
-              <div class="two wide column">
+              <div class="two wide column px-0">
                 <div class="re-issue-status" *ngIf="batch?.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
                 <div class="re-issue-status" *ngIf="batch?.progress < 100">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
               </div>
-              <div class="two wide column">
+              <div class="two wide column pl-0">
                 <div class="re-issue-status">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
@@ -80,7 +80,7 @@
     </div>
  
   <div class="d-flex flex-dc w-100" *ngIf="batchList.length">
-    <div class="records-count-label pl-16">Showing {{batchList.length}} of {{batchList.length}} records</div>
+    <div class="records-count-label pl-16">{{resourceService?.frmelmnts?.lbl?.showingrecord | interpolate: '{count}': batchList.length}} {{resourceService?.frmelmnts?.lbl?.totalrecords | interpolate: '{total}': batchList.length}}</div>
   </div>
 </div>
 
@@ -88,7 +88,7 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-primary"
   appBodyScroll (dismissed)="toggleModal(false);addTelemetry('close-re-issue-popup', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" #modal *ngIf="showModal">
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.certificates}} ?
+    {{resourceService?.frmelmnts?.lbl?.cert}} ?
   </div>
   <div class="sb-modal-content">
     <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}} ?</p>

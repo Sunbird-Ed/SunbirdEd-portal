@@ -5,6 +5,8 @@ export interface IUserCertificate {
     courses: {
         courseId: string;
         name: string;
+        contentType: string;
+        pkgVersion: number;
         batches: Array<{}>;
     };
 }
