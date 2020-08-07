@@ -16,12 +16,12 @@ describe('LayoutService', () => {
     const service: LayoutService = TestBed.get(LayoutService);
     service.layoutConfig = null;
     service.initlayoutConfig();
-    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.threeToNine);
+    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.threeToNine, true);
     service.setLayoutConfig({layout: 'test'});
-    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.fiveToSeven);
-    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.fourToEight);
-    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.threeToNine);
-    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.twoToTen);
+    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.fiveToSeven, true);
+    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.fourToEight, true);
+    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.threeToNine, true);
+    service.redoLayoutCSS(0, service.layoutConfig, COLUMN_TYPE.twoToTen, true);
     service.initlayoutConfig();
     expect(service.getLayoutConfig()).toBeTruthy();
     expect(service).toBeTruthy();
