@@ -1,3 +1,9 @@
+<app-landing-section [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups sbt-mygroups-details relative9' : ''">
+
 <app-back-button></app-back-button>
 
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
@@ -52,5 +58,5 @@
     </div>
   </div>
 </div>
-
+</div>
 <app-ftu-popup *ngIf="showModal" [showMemberPopup]="showModal" (close)="toggleModal(false)"></app-ftu-popup>

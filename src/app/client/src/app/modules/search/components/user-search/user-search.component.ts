@@ -396,4 +396,5 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
 }
