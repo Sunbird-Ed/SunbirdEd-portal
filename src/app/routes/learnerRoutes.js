@@ -88,10 +88,10 @@ module.exports = function (app) {
   // )
 
   // Route to check user email exists - SSO update contact workflow
-  app.all('/learner/user/v1/get/email/*', proxyObj());
+  app.all('/learner/user/v1/get/email/*', googleService.validateRecaptcha, proxyObj());
   
   // Route to check user phone exists - SSO update contact workflow
-  app.all('/learner/user/v1/get/phone/*', proxyObj());
+  app.all('/learner/user/v1/get/phone/*', googleService.validateRecaptcha, proxyObj());
 
   app.get('/learner/isUserExists/user/v1/get/phone/*', proxyObj());
 
