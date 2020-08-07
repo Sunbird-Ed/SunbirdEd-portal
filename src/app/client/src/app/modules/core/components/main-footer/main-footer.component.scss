@@ -28,7 +28,7 @@
       top:calculateRem(0px); //24px
       bottom: 0;
       right:0;
-      z-index:9;
+      z-index:8;
       @include respond-below(sm){
         bottom: auto;
       }

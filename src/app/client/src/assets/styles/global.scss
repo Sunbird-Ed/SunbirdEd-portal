@@ -1209,3 +1209,31 @@ app-workspace {
   color: rgba(var(--rc-rgba-gray), 0.95);
   cursor: initial;
 }
+
+/* my groups */
+.sbt-center-container {
+  width: calc(100% - 4%);
+  margin: 0 auto;
+}
+.sbt-mygroups {
+  .sb-bg-color-white {
+    margin-top: 24px;
+    border-radius: 24px;
+    background: var(--sbt-compt-bg) !important;
+    padding: 0px 16px;
+  }
+  .sb-card-grid {
+    margin-top: 24px;
+  }
+  .content-header {
+    border-radius: 0px 0px 24px 24px;
+    padding: 0px 16px;
+    background: var(--sbt-compt-bg) !important;
+  }
+
+}
+.sbt-mygroups-details {
+  .sb-bg-color-white {
+    border-radius: 24px 24px 0px 0px;
+  }
+}
