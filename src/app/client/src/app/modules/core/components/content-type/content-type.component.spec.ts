@@ -54,17 +54,16 @@ describe('ContentTypeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should inint the component', () => {
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
-    component.ngOnInit();
-    expect(component.contentTypes).toEqual(mockData.formData);
-    expect(component.selectedContentType).toBe('textbook');
-  });
-
   it('should fetch title', () => {
     const title = component.getTitle({title: 'frmelmnts.lbl.textbook'});
     expect(title).toEqual('textbook');
+  });
+
+  it('should tell is layout is available', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
+    const layoutData = component.isLayoutAvailable();
+    expect(layoutData).toBe(true);
   });
 
   it('should fetch title for logged in user', () => {
@@ -78,6 +77,14 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toBe('textbook');
     expect(router.navigate).toHaveBeenCalledWith(
       ['/resources'], {queryParams: {selectedTab: 'textbooks'}});
+  });
+
+  it('should inint the component', () => {
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+    component.ngOnInit();
+    expect(component.contentTypes).toEqual(mockData.formData);
+    expect(component.selectedContentType).toBe('textbook');
   });
 
   it('should fetch title for non logged in user', () => {
@@ -102,10 +109,4 @@ describe('ContentTypeComponent', () => {
     expect(icon).toEqual('textbook');
   });
 
-  it('should tell is layout is available', () => {
-    const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
-    const layoutData = component.isLayoutAvailable();
-    expect(layoutData).toBe(true);
-  });
 });

@@ -35,19 +35,22 @@ export class ContentTypeComponent implements OnInit {
     });
   }
 
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
-  }
-
-  getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
   }
 
   getIcon(contentType) {
     return _.get(contentType, 'theme.className');
   }
 
+  getTitle(contentType) {
+    return _.get(this.resourceService, _.get(contentType, 'title'));
+  }
 
   showContentType(data) {
     this.selectedContentType = data.contentType;
@@ -58,10 +61,6 @@ export class ContentTypeComponent implements OnInit {
       this.router.navigate([data.anonumousUserRoute.route],
         {queryParams: {selectedTab: data.anonumousUserRoute.queryParam}});
     }
-  }
-
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 
 }
