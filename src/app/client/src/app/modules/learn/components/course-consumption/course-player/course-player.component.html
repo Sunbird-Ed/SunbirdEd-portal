@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
