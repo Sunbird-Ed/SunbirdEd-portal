@@ -242,6 +242,11 @@ describe('MainHeaderComponent', () => {
     expect(component.hrefPath).toBe('/resources');
   });
 
+  it('should give login redirection path for group course', () => {
+    component.updateHrefPath('/explore-groups');
+    expect(component.hrefPath).toBe('/my-groups');
+  });
+
   it('should give login redirection path for play content', () => {
     component.updateHrefPath('/play');
     expect(component.hrefPath).toBe('/resources/play');
