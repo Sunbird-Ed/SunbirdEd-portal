@@ -106,6 +106,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
           this.svgToDisplay = _.get(value, 'theme.imageName');
         }
       });
+    }, error => {
     });
   }
     initLayout() {
