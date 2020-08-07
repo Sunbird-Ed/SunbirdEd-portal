@@ -14,11 +14,12 @@
                 (click)="resetFilters()" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
                   class="icon undo"></i></button>
-              <i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
-                <svg class="icon icon-svg--gray">
-                  <use xlink:href="./assets/images/sprite.svg#close"></use>
-                </svg>
-              </i>
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">	
+                    <svg class="icon icon-svg--red">	
+                        <use xlink:href="./assets/images/sprite.svg#close"></use>	
+                    </svg>	
+                </i>
+              </span>
             </div>
             <div class="sbt-filter-scrollable relative" style="overflow: initial;max-height: inherit;">
               <div class="fnormal mb-8">Based on your preferences</div>

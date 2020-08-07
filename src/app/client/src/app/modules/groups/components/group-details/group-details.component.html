@@ -1,5 +1,8 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups sbt-mygroups-details relative9' : ''">
+
 <div class="ui container" *ngIf="isLoader" > 
   <app-loader></app-loader>
 </div>
@@ -7,7 +10,7 @@
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
   <app-group-header [groupData]="groupData"></app-group-header>
   <div class="ui container">
-    <div class="sb-g mt-24">
+    <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         <div class="sb-pageSection">
           <div class="sb-pageSection-header">
@@ -30,6 +33,7 @@
   </div>
 </div>
 
+</div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
   <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
