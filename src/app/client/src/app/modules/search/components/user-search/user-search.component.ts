@@ -397,10 +397,4 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  ngOnDestroy() {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
-    }
-  }
 }
