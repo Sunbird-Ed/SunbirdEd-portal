@@ -70,7 +70,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
         if (window.innerWidth <= 992 ) {
           this.isOpen = false;
         }
-    this.initLayout();
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -95,15 +94,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       this.dataDrivenFilter.emit([]);
     });
     this.setFilterInteractData();
-  }
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
   }
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
@@ -350,9 +340,5 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
-  }
-
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }

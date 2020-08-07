@@ -516,6 +516,8 @@ html[layout='joy'] {
 
   .sbchapter__item {
     border-radius: calc(var(--sbt-bradius) * 16);
+    padding: calculateRem(8px) calculateRem(16px);
+    min-height: calculateRem(48px);
     .course-content {
       border-radius: calc(var(--sbt-bradius) * 16);
       padding-left: 24px;
@@ -564,7 +566,7 @@ html[layout='joy'] {
   .toc-box-shadow {
     box-shadow:none !important;
   }
-  .training-relevant {
+  .training-relevant, .sbt-certified-course, .sb-no-course-found {
     background: var(--sbt-compt-bg) !important;
     border-radius: 24px;
     padding: 16px;
@@ -641,7 +643,7 @@ html[layout='joy'] {
 
   .cc-player__list {
     border-radius: calc(var(--sbt-bradius) * 12);
-    padding: calculateRem(24px) !important;
+    padding: calculateRem(16px) !important;
     .main-side-toc-content {
       box-shadow: none !important;
       max-height: 100%;
@@ -665,13 +667,14 @@ html[layout='joy'] {
     }
   }
   
-  .sbchapter__item.course-content.sbchapter__item--active {
-    border-color: #60CD87;
-    background-color: rgba(96,205,135,0.05);
+  .sb-course-details .sbt-certified-course {
+    .certified-course__certificate {
+      background-color: inherit;
+    }
   }
 
-  .sbchapter__item .sbchapter__img--inprogress .icon-svg svg.icon.icon-svg--primary {
-    fill: #2ab727;
+  .sb-no-course-found {
+    border: none;
   }
 
 }

@@ -154,6 +154,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   updateHrefPath(url) {
     if (url.indexOf('explore-course') >= 0) {
       this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.hrefPath = url.replace('explore-groups', MY_GROUPS);
     } else if (url.indexOf('explore') >= 0) {
       this.hrefPath = url.replace('explore', 'resources');
     } else if (url.indexOf('play') >= 0) {
