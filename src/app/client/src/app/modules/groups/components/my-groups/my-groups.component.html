@@ -1,6 +1,8 @@
 
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : ''">
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img src="./assets/images/mygroups.svg" width="220">
@@ -59,5 +61,7 @@
   </div>
 </div>
 <router-outlet></router-outlet>
+
+</div>
 
 <app-ftu-popup *ngIf="showModal" [showWelcomePopup]="showModal" (close)="closeModal()"></app-ftu-popup>
