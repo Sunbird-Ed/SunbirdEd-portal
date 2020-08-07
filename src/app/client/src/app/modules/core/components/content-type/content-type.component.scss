@@ -20,6 +20,9 @@
     align-items: center;
     cursor: pointer;
     white-space: nowrap;
+    @include respond-above(sm){
+      min-width: 180px;
+    }
     &.active,
     &:hover {
       color: var(--white);

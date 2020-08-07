@@ -1,11 +1,15 @@
-<div class="sb-g">
+<app-landing-section [textToDisplay]="pageTitle" [svgToDisplay]="svgToDisplay"
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">    
     <div [ngClass]="FIRST_PANEL_LAYOUT">
         <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
             [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
             [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-        <div class="ui container" [appTelemetryImpression]="telemetryImpression">
+        <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container'">
+        <div class="relative9" [appTelemetryImpression]="telemetryImpression">
     <div class="sb-pageSection mt-24">
         <div class="sb-pageSection-header" *ngIf="!showLoader">
             <h4 class="sb-pageSection-title m-0 mr-5">{{sectionName}}</h4>
@@ -15,7 +19,7 @@
     </div>
         <div class="twelve wide column" *ngIf="!showLoader && !noResult">
             <div class="sb-grid dynamic-section-card">
-                <div class="masonry-item" *ngFor="let content of searchList;let i = index;">
+                <div class="" *ngFor="let content of searchList;let i = index;">
                     <ng-container *ngIf="!layoutConfiguration">
                     <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
                         (clickEvent)="playContent($event)" [data]="content"></app-card>
@@ -51,7 +55,9 @@
           
         </div>
         </div>
+        </div>
     </div>
+</div>
 </div>
 <sui-modal 
     [mustScroll]="true" 

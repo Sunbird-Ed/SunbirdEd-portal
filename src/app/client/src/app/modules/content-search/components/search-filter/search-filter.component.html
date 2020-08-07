@@ -33,8 +33,8 @@
     <!-- class section ends -->
     </div>
 </ng-container>
-<div *ngIf="isLayoutAvailable()">
-    <div class="sbt-filter">
+
+    <div *ngIf="isLayoutAvailable()" class="sbt-filter">
         <!-- <div class="sbt-filter-overlay"></div>	 -->
         <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">	
             <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
@@ -87,4 +87,3 @@
     </sui-accordion-panel>
   </sui-accordion>
     </div>
-</div>

@@ -154,6 +154,11 @@ ol.ui.list ol {
   overflow: hidden;
 }
 
+.ui.basic.primary.button, .ui.basic.primary.buttons .button {
+  color: var(--primary-color) !important;
+  border: 1px solid var(--primary-color);
+  box-shadow: none !important;
+}
 .ui.selection.dropdown:focus,
 .ui.selection.dropdown:focus~label {
   border: 1px solid var(--primary-300);

@@ -330,6 +330,13 @@ html[layout='joy'] {
   --sbt-body-bg2: #F2F4F6;
   --sbt-primary-bg: #0091FF;
 
+  .sbt-center-container {
+    width: calc(100% - 4%);
+    margin:0 auto;
+  }
+  .sbt-bg-container {
+
+  }
   /* new button style */
   .sb-btn {
     box-shadow: var(--sbt-box-shadow-6px);
@@ -576,8 +583,10 @@ html[layout='joy'] {
     background: var(--sbt-compt-bg) !important;
   }
   .relative9 {
+   @include respond-above(md) {
     position: relative;
     z-index: 9;
+   }
   }
   .right-flower-position-adjust-container {
     position: relative;
