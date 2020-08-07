@@ -1,20 +1,14 @@
 <ng-container *ngIf="!isLayoutAvailable()">
 <!--Computer-->
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
-	<!--Logged in user-->
+
+  <ng-container>
+    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+  </ng-container>
+
+  <!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
-			{{resourceService?.frmelmnts?.tab?.resources}}
-		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
-			{{resourceService?.frmelmnts?.tab?.courses}}
-		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
-		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
-		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
-		</a>
+
 		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
@@ -39,18 +33,7 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-		<a class="item py-8 pl-0 pr-24"
-			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
-			*ngIf="!router.isActive('', true)" [routerLink]="['/explore']"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata">
-			{{resourceService?.frmelmnts?.tab?.resources}}
-		</a>
-		<a class="item py-8 pl-0 pr-24"
-			[class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
-			*ngIf="!router.isActive('', true)" [routerLink]="['/explore-course']"
-			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
-			{{resourceService?.frmelmnts?.tab?.courses}}
-		</a>
+
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.explore)" 
 		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 		[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>

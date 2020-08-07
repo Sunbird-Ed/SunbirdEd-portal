@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
-import {ResourceService} from '@sunbird/shared';
+import {LayoutService, ResourceService} from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 
 
@@ -17,7 +17,7 @@ export class ContentTypeComponent implements OnInit {
 
   constructor(public formService: FormService, public resourceService: ResourceService,
               public router: Router, public userService: UserService,
-              public activatedRoute: ActivatedRoute) {
+              public activatedRoute: ActivatedRoute, public layoutService: LayoutService) {
   }
 
   ngOnInit() {
@@ -58,6 +58,10 @@ export class ContentTypeComponent implements OnInit {
       this.router.navigate([data.anonumousUserRoute.route],
         {queryParams: {selectedTab: data.anonumousUserRoute.queryParam}});
     }
+  }
+
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 
 }

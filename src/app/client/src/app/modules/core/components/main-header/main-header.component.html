@@ -290,7 +290,7 @@
             {{resourceService?.frmelmnts?.tab?.courses}}
           </li>
 
-          <li class="list-item" [ngClass]="{'mobile only': !isLayoutAvailable()}" (click)="toggleSideMenu(false)"
+          <li class="list-item" (click)="toggleSideMenu(false)"
             [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true)"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
