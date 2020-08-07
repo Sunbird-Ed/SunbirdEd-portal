@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormService, UserService} from '@sunbird/core';
 import {ContentTypeComponent} from './content-type.component';
-import {ResourceService, ConfigService, BrowserCacheTtlService} from '@sunbird/shared';
+import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 import {of as observableOf, of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -37,7 +37,7 @@ describe('ContentTypeComponent', () => {
       imports: [HttpClientTestingModule],
       declarations: [ContentTypeComponent],
       providers: [{provide: ResourceService, useValue: resourceBundle}, CacheService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute},
+        {provide: ActivatedRoute, useValue: fakeActivatedRoute}, LayoutService,
         {provide: APP_BASE_HREF, useValue: '/'}, BrowserCacheTtlService,
         FormService, ConfigService, {provide: Router, useClass: RouterStub}],
     })
@@ -102,4 +102,10 @@ describe('ContentTypeComponent', () => {
     expect(icon).toEqual('textbook');
   });
 
+  it('should tell is layout is available', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
+    const layoutData = component.isLayoutAvailable();
+    expect(layoutData).toBe(true);
+  });
 });
