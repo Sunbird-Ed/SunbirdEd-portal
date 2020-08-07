@@ -44,7 +44,10 @@ export class LayoutService {
   switchableLayout() {
     return this._layoutConfigData$;
   }
-  redoLayoutCSS(panelIndex, layoutConfigExternal, columnType) {
+  redoLayoutCSS(panelIndex, layoutConfigExternal, columnType, isFilterLayout?) {
+    if (isFilterLayout) {
+      return this.redoLayoutFilterCSS(panelIndex, layoutConfigExternal, columnType);
+    }
     const total = 12;
     const sixteenColumn = 16;
     const resultLayout = columnType[panelIndex];
@@ -54,6 +57,18 @@ export class LayoutService {
     } else {
       return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + total + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
 
+    }
+  }
+
+  redoLayoutFilterCSS(panelIndex, layoutConfigExternal, columnType) {
+    const total = 12;
+    const sixteenColumn = 16;
+    const resultLayout = columnType[panelIndex];
+    const xxxltotal = panelIndex === 0 ? 4 : 12;
+    if (layoutConfigExternal) {
+        return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + 0 + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
+    } else {
+      return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + 12 + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
     }
   }
   isLayoutAvailable(layoutConfigExternal) {

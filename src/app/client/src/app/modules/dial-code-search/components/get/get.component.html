@@ -13,7 +13,7 @@
           {{resourceService?.frmelmnts?.lbl?.startExploringContentBySearch}}
         </p>
 
-        <div class="sb-search-box large dial-section-input">
+        <div class="sb-search-box large dial-section-input sbt-dialcode-inputsearch">
           <div class="input-div relative">
             <i class="search icon"></i>
             <input class="sb-search-input" type="text" name="search" (keyup.enter)="navigateToSearch()"
@@ -21,7 +21,7 @@
                    placeholder="{{resourceService?.frmelmnts?.lbl?.enterDialCode}}"
                    title="Search"/>
           </div>
-          <button class="sb-btn sb-btn-normal" (click)="navigateToSearch()">Search</button>
+          <button class="sb-btn sb-btn-normal sbt-dialcode-btn" (click)="navigateToSearch()">Search</button>
         </div>
         <!-- <div class="ui fluid icon input dial-section-input">
           <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword"
@@ -29,7 +29,7 @@
           <i class="search icon dialcode-search-icon" (click)="navigateToSearch()"></i>
         </div> -->
       </div>
-      <div class="column dial-scan-column px-60">
+      <div class="column dial-scan-column px-60 text-center">
         <!-- <h5 class="sb-text-gray">
           {{resourceService?.frmelmnts?.lbl?.whatsQRCode}}</h5> -->
         <div class="ui large image">

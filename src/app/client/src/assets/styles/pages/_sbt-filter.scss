@@ -112,45 +112,101 @@
 
 }
 
-.sbt-filter-bar {
-  background: var(--white);
-  box-shadow: var(--sbt-box-shadow-6px);
-  min-width: calculateRem(232px);
-  padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
-  position: fixed;
-  top: 4px;
-  right: 0;
-  left: 0;
-  width: calc(100% - 8px);
-  height: calc(100% - 8px);
-  z-index: 9999;
-  margin: 0;
-  border-radius: calculateRem(24px);
 
-  @include respond-between(sm, md) {
-    position: absolute;
-    top: 0;
-    width: calculateRem(272px);
-    z-index: 1112;
-    height: auto;
-  }
 
+.sbt-filter {
+  // margin-bottom: calculateRem(16px);
+  
+  z-index: 100;
+  position: relative;
   @include respond-above(md) {
-    z-index: initial;
-    position: relative;
-    width: auto;
-    height: auto;
-    // margin-top:calculateRem(-72px);
+    position: sticky;
+    top: calculateRem(188px);
+    margin-top: calculateRem(-72px);
   }
+  @include respond-between(sm, md) {
+    margin-top: calculateRem(-72px);
+    position: fixed;
+    // z-index: 1111;
+    // top: inherit;
 
+    &-overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1111;
+      left: 0;
+      top: 0;
+    }
 
-  &.mr-16 {
-    @include respond-below(sm) {
-      margin-right: 0 !important;
+    &-switcher-container {
+      cursor: pointer;
+      position: absolute;
+      // top: calculateRem(-72px);
+      z-index: 1113;
+    }
+
+    &-switcher {
+      box-shadow: none;
+    }
+
+    &-text {
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+      height: 2.5rem;
+      margin-top: -1.25rem;
+      background: var(--white);
+      padding: 0 calculateRem(16px) 0 calculateRem(48px);
+      display: flex;
+      align-items: center;
+      z-index: 3;
+      font-size: calculateRem(12px);
+      font-weight: bold;
+      justify-content: center;
+      box-shadow: var(--sbt-box-shadow-3px);
+      border-radius: calculateRem(20px);
     }
   }
-
-  .sbt-filter-scrollable {
+  &-bar {
+    background: var(--white);
+    box-shadow: var(--sbt-box-shadow-6px);
+    min-width: calculateRem(232px);
+    padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
+    position: fixed;
+    top: 4px;
+    right: 0;
+    left: 0;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    z-index: 9999;
+    margin: 0;
+    border-radius: calculateRem(24px);
+  
+    @include respond-between(sm, md) {
+      position: absolute;
+      top: 0;
+      width: calculateRem(272px);
+      z-index: 1112;
+      height: auto;
+    }
+  
+    @include respond-above(md) {
+      z-index: initial;
+      position: relative;
+      width: auto;
+      height: auto;
+      // margin-top:calculateRem(-72px);
+    }
+  
+    &.mr-16 {
+      @include respond-below(sm) {
+        margin-right: 0 !important;
+      }
+    }
+  }
+  &-scrollable {
     overflow-y: auto;
     padding-right: calculateRem(24px);
     height: calc(100vh - 64px);
@@ -195,29 +251,24 @@
       }
     }
   }
-}
-
-.sbt-filter {
-  margin-bottom: calculateRem(16px);
-  z-index: 9;
 
   &-text,
   &-overlay {
     display: none;
   }
-
-  .icon-close {
+  &-close{
+    background: #fff;
+    box-shadow: var(--sbt-box-shadow-3px);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @include respond-above(md) {
       display: none;
     }
   }
-
-  @include respond-above(sm) {
-    position: sticky;
-    top: calculateRem(188px);
-    margin-top: calculateRem(-72px);
-  }
-
   &-switcher {
     width: calculateRem(40px);
     height: calculateRem(40px);
@@ -242,48 +293,5 @@
     }
   }
 
-  @include respond-between(sm, md) {
-    position: fixed;
-    z-index: 1111;
-    top: inherit;
 
-    &-overlay {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, .5);
-      z-index: 1111;
-      left: 0;
-      top: 0;
-    }
-
-    &-switcher-container {
-      cursor: pointer;
-      position: absolute;
-      // top: calculateRem(-72px);
-      z-index: 1113;
-    }
-
-    &-switcher {
-      box-shadow: none;
-    }
-
-    &-text {
-      position: absolute;
-      left: 1.5rem;
-      top: 0;
-      height: 2.5rem;
-      margin-top: -1.25rem;
-      background: var(--white);
-      padding: 0 calculateRem(16px) 0 calculateRem(48px);
-      display: flex;
-      align-items: center;
-      z-index: 3;
-      font-size: calculateRem(12px);
-      font-weight: bold;
-      justify-content: center;
-      box-shadow: var(--sbt-box-shadow-3px);
-      border-radius: calculateRem(20px);
-    }
-  }
 }
