@@ -535,20 +535,20 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.1.21":
-  version "3.1.22"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.22.tgz#a416a8e1112c4f311220d2e5246be1fd93ec815e"
-  integrity sha512-N7yeI/XOUH93u9Xl20RHWBMN8fypaa4ZGvaOeQ/x6GNfQZ/2nXwUUEDodRAHIfH/WXT7Msz5bHPY3AIlGFJxDw==
+"@project-sunbird/client-services@^3.1.28":
+  version "3.1.28"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.28.tgz#503630441cdd8efe4cf95fdb2ca7bd19461ec872"
+  integrity sha512-TMyhCoE5U+Jn2IPl+7WTshFgFWrRzkFNDsmHlCCWD6mU3pHc22r2H4tv+cHUDa/PU+ZJmsKocP6dK++Cn0vIsA==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.1.12":
-  version "3.1.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.12.tgz#f98d0b30c9c8a55823ab94f8f619f38fd818f58b"
-  integrity sha512-LykXxIF2mqpRJ7YElEBVs5rmrCv/PxiTpViowIQv/2xKSwQ4M1reviDsJLzk1yFhS3FsLnDeojsavx6C1eQLYg==
+"@project-sunbird/common-consumption@^3.1.21":
+  version "3.1.22"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.1.22.tgz#f2be954dd02e0d3117f97427ba97024c41e3b788"
+  integrity sha512-aOH6srXJZYiBQHkTrXgyng8xkIvdzsukb1gveKX8RqB3Dw+m8SnlF3igj//hJ6Mjexj+aorazu7Lzp+cQWPyZg==
   dependencies:
     tslib "^1.9.0"
 
@@ -10162,10 +10162,10 @@ stylus@0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-sunbird-chatbot-client@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.2.tgz#b6a4babe28ac82519471d55978bfd2fe15317d5b"
-  integrity sha512-JiQuiPC3wO+SotrDPKZ1/Z/FMVNodJGBIaNdO0dJoej4um6xmhX4Cqv/LsRK0KPHGAOP8ZGoJhRm/VS4ryubNg==
+sunbird-chatbot-client@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.5.tgz#3bf66235e2aa2d11cf6b4d764e314fb186b68da5"
+  integrity sha512-uNSDRX0jEfGCJ1xKvgqZ71/7Ivv5JMwbfmx+xo0ykVwCRSz5NGin35BuxY1zCExodssJpDrGNdWRpUj2DISWLQ==
   dependencies:
     tslib "^1.9.0"
 
