@@ -205,8 +205,15 @@
   &-overlay {
     display: none;
   }
-
-  .icon-close {
+  &-close{
+    background: #fff;
+    box-shadow: var(--sbt-box-shadow-3px);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @include respond-above(md) {
       display: none;
     }
