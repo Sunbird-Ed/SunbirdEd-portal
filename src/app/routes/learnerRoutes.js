@@ -123,6 +123,7 @@ module.exports = function (app) {
         if (req.originalUrl === '/learner/data/v1/role/read') {
           urlParam = req.originalUrl.replace('/learner/', '')
         }
+        logger.info({ msg: '/learner/* called - ' + req.method + ' - ' + req.url });
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
