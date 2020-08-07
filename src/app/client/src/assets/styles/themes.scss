@@ -511,13 +511,14 @@ html[layout='joy'] {
     border: 0px;
     background: var(--sbt-compt-bg);
     max-height: 100%;
-    padding: calculateRem(8px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
+    padding: calculateRem(4px) calculateRem(16px) calculateRem(16px) calculateRem(16px);
   }
 
   .sbchapter__item {
     border-radius: calc(var(--sbt-bradius) * 16);
     padding: calculateRem(8px) calculateRem(16px);
     min-height: calculateRem(48px);
+    margin-bottom: calculateRem(16px);
     .course-content {
       border-radius: calc(var(--sbt-bradius) * 16);
       padding-left: 24px;
@@ -525,6 +526,19 @@ html[layout='joy'] {
       box-shadow: none;
       margin-bottom: calculateRem(16px);
     }
+  }
+
+  .sbchapter__title {
+    margin-bottom: 16px !important;
+    font-size: calculateRem(14px);
+  }
+
+  .sbchapter__item__title {
+    color: var(--gray-800);
+  }
+
+  .sbchapter__item--active .sbchapter__item__title {
+    font-weight: normal !important;
   }
 
   .accordion-item-header-expanded .sbaccordion__panel-header {
@@ -565,6 +579,9 @@ html[layout='joy'] {
   }
   .toc-box-shadow {
     box-shadow:none !important;
+    .sb-slider-pills-container .sb-pills-container {
+      padding: calculateRem(16px) 0 !important;
+    }
   }
   .training-relevant, .sbt-certified-course, .sb-no-course-found {
     background: var(--sbt-compt-bg) !important;
@@ -599,9 +616,13 @@ html[layout='joy'] {
       border-top-right-radius: calc(var(--sbt-bradius) * 12);
       background: var(--sbt-compt-bg);
       border: none;
-      padding: calculateRem(24px);
-      height: calculateRem(64px);
+      padding: calculateRem(16px);
+      height: calculateRem(48px);
     }
+  }
+
+  .sb-toc-credits .sb-bg-color-gray-0 .sbaccordion__panel-header {
+    height: calculateRem(48px) !important;
   }
 
   sb-accordion-header[aria-expanded="false"] {
@@ -641,12 +662,19 @@ html[layout='joy'] {
     margin: 0 2% calculateRem(24px) 2%;
   }
 
+  .cc-player__list .main-side-toc-content, .sb-toc-credits {
+    .sbaccordion {
+      box-shadow: var(--sbt-box-shadow-6px) !important;
+    }
+  }
+
   .cc-player__list {
     border-radius: calc(var(--sbt-bradius) * 12);
     padding: calculateRem(16px) !important;
     .main-side-toc-content {
       box-shadow: none !important;
       max-height: 100%;
+      overflow-y: inherit;
     }
   
     .main-side-toc-content, .sb-toc-credits {
