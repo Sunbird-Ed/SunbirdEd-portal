@@ -18,7 +18,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
-  public isOpen = true;
+  @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
@@ -28,6 +28,10 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
+        // screen size
+        if (window.innerWidth <= 992 ) {
+          this.isOpen = false;
+        }
   }
 
   public resetFilters() {

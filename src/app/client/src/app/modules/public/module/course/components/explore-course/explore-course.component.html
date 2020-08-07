@@ -7,13 +7,13 @@
             [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
           </ng-container>
           <ng-container *ngIf="layoutConfiguration">
-            <app-global-search-filter [facets]="facets" *ngIf="initFilters && allTabData"
+            <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
               (filterChange)="getFilters($event)">
             </app-global-search-filter>
           </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-        <div class="ui container">
+        <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
     <div class="content-grid mt-24">
         <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
             <div  class="sb-pageSection-header">
@@ -24,6 +24,8 @@
         </div>
         <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" in-view-container
           (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
+          <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
           <div class="masonry-grid dynamic-section-card ">
             <div in-view-item [id]="i" [data]="content" class="masonry-item"
               *ngFor="let content of contentList;let i = index;">

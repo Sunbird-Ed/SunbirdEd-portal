@@ -45,6 +45,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   frameworkId;
   public globalSearchFacets: Array<string>;
   public allTabData;
+  public selectedFilters;
   layoutConfiguration;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
@@ -112,6 +113,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       }
   }
   public getFilters(filters) {
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

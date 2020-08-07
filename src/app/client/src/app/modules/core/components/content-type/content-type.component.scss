@@ -19,79 +19,93 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    &.active, &:hover {
+    white-space: nowrap;
+    &.active,
+    &:hover {
       color: var(--white);
-
+      text-decoration: none;
       .sb-icon {
         background-color: var(--white);
       }
     }
 
-    &:hover {
-      text-decoration: none;
-    }
+    &--textbooks {
+      color: var(--sbt-textbooks-text);
 
-    &--textbook {
-      color: #E7800B;
-
-      &:hover, &.item.active, .sb-icon__textbook {
-        background-color: #E7800B;
+      &:hover,
+      &.item.active,
+      .sb-icon__textbooks {
+        background-color: var(--sbt-textbooks-bg);
       }
     }
 
-    &--course {
-      color: #0531FF;
+    &--courses {
+      color: var(--sbt-courses-text);
 
-      &:hover, &.item.active, .sb-icon__course {
-        background-color: #0531FF;
+      &:hover,
+      &.item.active,
+      .sb-icon__courses {
+        background-color: var(--sbt-courses-bg);
       }
     }
 
-    &--test {
-      color: #E02020;
+    &--tests {
+      color: var(--sbt-tests-text);
 
-      &:hover, &.item.active, .sb-icon__test {
-        background-color: #E02020;
+      &:hover,
+      &.item.active,
+      .sb-icon__tests {
+        background-color: var(--sbt-tests-bg);
       }
     }
 
-    &--quiz {
-      color: #0C989B;
+    &--quizzes {
+      color: var(--sbt-quizzes-text);
 
-      &:hover, &.item.active, .sb-icon__quiz {
-        background-color: #0C989B;
+      &:hover,
+      &.item.active,
+      .sb-icon__quizzes {
+        background-color: var(--sbt-quizzes-bg);
       }
     }
 
-    &--story {
-      color: #0531FF;
+    &--stories {
+      color: var(--sbt-stories-text);
 
-      &:hover, &.item.active, .sb-icon__story {
-        background-color: #0531FF;
+      &:hover,
+      &.item.active,
+      .sb-icon__stories {
+        background-color: var(--sbt-stories-bg);
       }
     }
 
-    &--poem {
-      color: #B620E0;
+    &--poems {
+      color: var(--sbt-poems-text);
 
-      &:hover, &.item.active, .sb-icon__poem {
-        background-color: #B620E0;
+      &:hover,
+      &.item.active,
+      .sb-icon__poems {
+        background-color: var(--sbt-poems-bg);
       }
     }
 
     &--tv {
-      color: #E02020;
+      color: var(--sbt-tv-text);
 
-      &:hover, &.item.active, .sb-icon__tv {
-        background-color: #E02020;
+      &:hover,
+      &.item.active,
+      .sb-icon__tv {
+        background-color: var(--sbt-tv-bg);
       }
     }
 
     &--all {
-      color: #B620E0;
+      color: var(--sbt-all-text);
 
-      &:hover, &.item.active, .sb-icon__all {
-        background-color: #B620E0;
+      &:hover,
+      &.item.active,
+      .sb-icon__all {
+        background-color: var(--sbt-all-bg);
       }
     }
   }
@@ -135,34 +149,34 @@
     height: var(--icon-svg-xl);
   }
 
-  &__textbook {
-    -webkit-mask-image: url(/assets/images/mask-image/Textbook.svg);
-    mask-image: url(/assets/images/mask-image/Textbook.svg);
+  &__textbooks {
+    -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg);
+    mask-image: url(/assets/images/mask-image/textbooks.svg);
   }
 
-  &__course {
-    -webkit-mask-image: url(/assets/images/mask-image/Courses.svg);
-    mask-image: url(/assets/images/mask-image/Courses.svg);
+  &__courses {
+    -webkit-mask-image: url(/assets/images/mask-image/courses.svg);
+    mask-image: url(/assets/images/mask-image/courses.svg);
   }
 
-  &__quiz {
-    -webkit-mask-image: url(/assets/images/mask-image/quiz.svg);
-    mask-image: url(/assets/images/mask-image/quiz.svg);
+  &__quizzes {
+    -webkit-mask-image: url(/assets/images/mask-image/quizzes.svg);
+    mask-image: url(/assets/images/mask-image/quizzes.svg);
   }
 
-  &__test {
-    -webkit-mask-image: url(/assets/images/mask-image/test.svg);
-    mask-image: url(/assets/images/mask-image/test.svg);
+  &__tests {
+    -webkit-mask-image: url(/assets/images/mask-image/tests.svg);
+    mask-image: url(/assets/images/mask-image/tests.svg);
   }
 
-  &__story {
+  &__stories {
     -webkit-mask-image: url(/assets/images/mask-image/stories.svg);
     mask-image: url(/assets/images/mask-image/stories.svg);
   }
 
-  &__poem {
-    -webkit-mask-image: url(/assets/images/mask-image/poem.svg);
-    mask-image: url(/assets/images/mask-image/poem.svg);
+  &__poems {
+    -webkit-mask-image: url(/assets/images/mask-image/poems.svg);
+    mask-image: url(/assets/images/mask-image/poems.svg);
   }
 
   &__tv {
@@ -173,5 +187,10 @@
   &__podcasts {
     -webkit-mask-image: url(/assets/images/mask-image/podcasts.svg);
     mask-image: url(/assets/images/mask-image/podcasts.svg);
+  }
+
+  &__all {
+    -webkit-mask-image: url(/assets/images/mask-image/all.svg);
+    mask-image: url(/assets/images/mask-image/all.svg);
   }
 }
