@@ -16,7 +16,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   @ViewChild('searchBtn') button;
   @Input() userName;
   courseId: string;
-  userData: IUserCertificate | {};
+  userData: IUserCertificate;
   channelName: string;
   showModal = false;
   userBatch: {};
@@ -43,7 +43,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   }
 
   searchCertificates() {
-    this.userData = {};
+    this.userData.courses.batches = [] ;
     this.button.nativeElement.disabled = true;
     this.button.nativeElement.classList.add('sb-btn-disabled');
     this.button.nativeElement.classList.remove('sb-btn-outline-primary');
@@ -54,6 +54,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
         this.userData = _.get(data, 'result.response');
       }
     }, (err) => {
+      this.userData.courses.batches = [] ;
       this.modifyCss();
       this.showErrorMsg(this.resourceService.messages.dashboard.emsg.m001);
     });
@@ -162,7 +163,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
 
   resetValues() {
     this.userName = this.userName ? this.userName.trim() : this.userName;
-    this.userData = {};
+    this.userData.courses.batches = [] ;
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
