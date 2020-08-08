@@ -69,7 +69,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   courseList = [];
   isTextbookDetailsPage = false;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
