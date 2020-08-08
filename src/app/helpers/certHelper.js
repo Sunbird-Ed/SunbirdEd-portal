@@ -108,16 +108,11 @@ const getUserEnrolledCourses = async (req, userId) => {
 const filterUserBatches = (courseId, creatorBatches, enrolledBatches) => {
   logger.info({ msg: `filterUserBatches() is called with courseId ${courseId}` });
 
-  let courseData = {
-    courseId: courseId,
-    name: _.get(enrolledBatches, '[0].content.name'),
-    contentType: _.get(enrolledBatches, '[0].content.contentType'),
-    pkgVersion: _.get(enrolledBatches, '[0].content.pkgVersion'),
-    batches: []
-  };
-
+  let courseData = {batches: []};
+  let matchedBatch = {};
   _.map(enrolledBatches, batch => {
     if (_.isEqual(_.get(batch, 'courseId'), courseId)) {
+      matchedBatch = _.get(batch, 'content');
       const creatorBatch = _.find(creatorBatches, {batchId: _.get(batch, 'batchId')});
       if (creatorBatch) {
           batch.createdBy = _.get(creatorBatch, 'createdBy');
@@ -127,6 +122,10 @@ const filterUserBatches = (courseId, creatorBatches, enrolledBatches) => {
     }
   });
 
+  courseData.courseId = courseId,
+  courseData.name = _.get(matchedBatch, 'name'),
+  courseData.contentType = _.get(matchedBatch, 'contentType'),
+  courseData.pkgVersion = _.get(matchedBatch, 'pkgVersion'),
 
   logger.info({msg: `returning response from filterUserBatches for courseId: ${courseId} Data: ${JSON.stringify(courseData)}`})
   return courseData;

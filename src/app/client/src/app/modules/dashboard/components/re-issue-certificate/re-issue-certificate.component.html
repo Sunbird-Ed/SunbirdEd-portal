@@ -70,7 +70,7 @@
               <div class="two wide column text-center">
                 <div class="re-issue-status" >{{batch?.completionpercentage || 0}}%</div>
               </div>
-              <div class="two wide column pl-0" *ngIf="batch?.certificates">
+              <div class="two wide column pl-0" *ngIf="batch?.certificates?.length">
                 <div class="re-issue-status text-center">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
@@ -81,7 +81,7 @@
       </div>
     </div>
  
-  <div class="d-flex flex-dc w-100" *ngIf="userData?.courses?.batches">
+  <div class="d-flex flex-dc w-100" *ngIf="userData?.courses?.batches?.length">
     <div class="records-count-label pl-16">{{resourceService?.frmelmnts?.lbl?.showingrecord | interpolate: '{count}': userData?.courses?.batches.length}} {{resourceService?.frmelmnts?.lbl?.totalrecords | interpolate: '{total}': userData?.courses?.batches.length}}</div>
   </div>
 </div>

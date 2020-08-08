@@ -1,5 +1,5 @@
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiPopupModule } from 'ng2-semantic-ui';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -61,7 +61,8 @@ describe('ReIssueCertificateComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReIssueCertificateComponent],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SuiModalModule, ReactiveFormsModule, FormsModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SuiModalModule,
+        ReactiveFormsModule, FormsModule, SuiPopupModule],
       providers: [TelemetryService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
@@ -77,6 +78,18 @@ describe('ReIssueCertificateComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     searchBtn = fixture.debugElement.query(By.css('#search-btn'));
+    component.userData = {
+      userId: 'testUser',
+      userName: 'user',
+      district: 'district 1',
+      courses: {
+        courseId: '123',
+        name: 'course 1',
+        contentType: 'course',
+        pkgVersion: 1,
+        batches: [{}]
+      }
+  };
   });
 
   it('should create', () => {
@@ -125,8 +138,6 @@ describe('ReIssueCertificateComponent', () => {
 
   it('should return  certList with batchList[] empty', () => {
     const response = {
-      result: {
-        response: {
           userId: 'testUser',
           userName: 'user',
           district: 'district 1',
@@ -135,24 +146,25 @@ describe('ReIssueCertificateComponent', () => {
             name: 'course 1',
             contentType: 'course',
             pkgVersion: 1,
-            batches: []
+            batches: [{}]
           }
-        }
-      }
     };
     component.userName = 'testUser';
+    component['userService'].setUserId('user1');
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
     spyOn(component, 'isErrorOccurred').and.returnValue(false);
     component.searchCertificates();
     component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
-      expect(component.userData).toEqual(response.result.response);
-      expect(component.isErrorOccurred).toHaveBeenCalledWith(response.result.response);
+      component.isErrorOccurred(data);
+      component.userData = response;
     });
+    expect(component.userData).toEqual(response);
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
+    expect(component.isErrorOccurred).toHaveBeenCalledWith(response);
 
   });
 
-  it('should return  certList with batchList[{}]', () => {
+  it('should return  certList with batchList[]', () => {
     const response = {
       result: {
         response: {
@@ -358,7 +370,7 @@ describe('ReIssueCertificateComponent', () => {
     expect(component.setObject).toHaveBeenCalled();
   });
 
-  it('should return object', () => {
+  it('should return object with version 2', () => {
     component.courseId = '123';
     component.userData = {userId: '123', userName: 'user', district: 'district',
     courses: { courseId: '123', name: 'course 1',
@@ -371,13 +383,13 @@ describe('ReIssueCertificateComponent', () => {
     });
   });
 
-  it('should return object', () => {
+  it('should return object with version 1', () => {
     component.courseId = '123';
     const data = component.setObject();
     expect(data).toEqual({
       id: '123',
       type: 'course',
-      ver: '1.0',
+      ver: '1',
     });
   });
 
