@@ -85,6 +85,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
+        if (_.get(this.searchResults[0], 'contentType') === 'TextBook') {
+          sessionStorage.setItem('l1parent', this.searchResults[0].identifier);
+        }
         this.appendItems(0, this.itemsToLoad);
         if (this.searchResults.length === 1) {
           if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
@@ -256,7 +259,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     } else {
       this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
-        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent },
+        { queryParams: { dialCode: this.dialCode, l1Parent: sessionStorage.getItem('l1parent') || event.data.metaData.l1Parent },
           state: { 'isSingleContent': this.searchResults.length > 1 ? false : true} });
     }
   }
