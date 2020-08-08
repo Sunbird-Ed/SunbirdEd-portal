@@ -1,13 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest as observableCombineLatest, of } from 'rxjs';
-import {
-  ResourceService,
-  ToasterService,
-  ConfigService,
-  UtilService,
-  NavigationHelperService,
-  LayoutService
-} from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, UtilService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
