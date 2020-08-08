@@ -1,6 +1,13 @@
 @import "variables";
 @import "mixins/mixins";
 
+.item a.item.active, .item a.item:hover {
+  outline: none;
+  color: var(--primary-color) !important;
+}
+.item a.item.active {
+  font-weight: bold;
+}
 /* new styles */
 .sb-linkmenu {
   overflow: auto;

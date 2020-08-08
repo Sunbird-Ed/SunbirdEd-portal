@@ -66,6 +66,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     backgroundColor: '#ffffff',
     color: '#333333',
     fontFamily: 'inherit',
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #E8E8E8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
+  };
+  SbtavtarDesktopStyle = {
+    backgroundColor: '#ffffff',
+    color: '#333333',
+    fontFamily: 'inherit',
     fontSize: '24px',
     lineHeight: '48px',
     border: '1px solid #E8E8E8',

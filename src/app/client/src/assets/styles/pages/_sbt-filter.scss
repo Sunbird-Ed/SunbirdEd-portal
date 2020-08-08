@@ -116,7 +116,7 @@
 
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
-  z-index: 100;
+  z-index: 9;
   position: relative;
   &-text,
   &-overlay {
@@ -256,7 +256,8 @@
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 388px);
+      height: auto;
       // height: auto;
       // overflow: initial;
       // max-height: inherit;
