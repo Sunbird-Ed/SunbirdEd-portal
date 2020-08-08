@@ -44,8 +44,11 @@ describe('ReIssueCertificateComponent', () => {
           m004: `You haven't created this batch`,
         },
         smsg: {
-          m001: 'Certificate Re-Issued successfully'
+          m001: 'We have received your request to re-issue your certificate. You will receive the re-issued certificate in 7 working days'
         }
+      },
+      emsg: {
+        m004: 'You have entered an invalid sunbird ID'
       }
     },
     frmelmnts: {
@@ -139,12 +142,11 @@ describe('ReIssueCertificateComponent', () => {
     };
     component.userName = 'testUser';
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
-    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'isErrorOccurred').and.returnValue(false);
     component.searchCertificates();
     component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userData).toEqual(response.result.response);
-      expect(component.batchList).toEqual([]);
-      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m002);
+      expect(component.isErrorOccurred).toHaveBeenCalledWith(response.result.response);
     });
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
 
@@ -174,7 +176,6 @@ describe('ReIssueCertificateComponent', () => {
     component.searchCertificates();
     component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userData).toEqual(response.result.response);
-      expect(component.batchList).toEqual([{batchId: '1'}]);
     });
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
   });
@@ -191,7 +192,7 @@ describe('ReIssueCertificateComponent', () => {
 
   it('should call toaster service with error msg', () => {
     spyOn(component['toasterService'], 'error');
-    component.showErrorMsg();
+    component.showErrorMsg(resourceBundle.messages.dashboard.emsg.m001);
     expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m001);
   });
 
@@ -389,6 +390,52 @@ describe('ReIssueCertificateComponent', () => {
   it ('should convert to lowercase and return empty msg', () => {
     const data = component.toLowerCase(undefined);
     expect(data).toEqual('');
+   });
+
+   it ('should not call toaster message ', () => {
+    spyOn(component['toasterService'], 'error');
+    const value = component.isErrorOccurred({
+      userId: 'testUser',
+      userName: 'user',
+      district: 'district 1',
+      courses: {
+        courseId: '123',
+        name: 'course 1',
+        contentType: 'course',
+        pkgVersion: 1,
+        batches: [{
+          batch: 'batch 1',
+          name: '123',
+        }]
+      }
+    });
+    expect(value).toBeFalsy();
+    expect(component['toasterService'].error).not.toHaveBeenCalled();
+   });
+
+   it ('should  call toaster message for user is not enrolled in batches ', () => {
+    spyOn(component['toasterService'], 'error');
+    const value = component.isErrorOccurred({
+      userId: 'testUser',
+      userName: 'user',
+      district: 'district 1',
+      courses: {
+        courseId: '123',
+        name: 'course 1',
+        contentType: 'course',
+        pkgVersion: 1,
+        batches: []
+      }
+    });
+    expect(value).toBeTruthy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m002);
+   });
+
+   it ('should  call toaster message for invalid user ', () => {
+    spyOn(component['toasterService'], 'error');
+    const value = component.isErrorOccurred({});
+    expect(value).toBeTruthy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m004);
    });
 
   it('should unsubscribe all subscribed events', () => {

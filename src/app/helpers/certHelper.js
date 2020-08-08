@@ -108,27 +108,26 @@ const getUserEnrolledCourses = async (req, userId) => {
 const filterUserBatches = (courseId, creatorBatches, enrolledBatches) => {
   logger.info({ msg: `filterUserBatches() is called with courseId ${courseId}` });
 
-  let courseData = {};
-  for (let batch of enrolledBatches) {
-        if (batch) {
-          if (_.isEqual(_.get(batch, 'courseId'), courseId)) {
-              courseData = {
-                courseId: _.get(batch, 'courseId'),
-                name: _.get(batch, 'content.name'),
-                contentType: _.get(batch, 'content.contentType'),
-                pkgVersion: _.get(batch, 'content.pkgVersion'),
-                batches: [],
-              };
-            const creatorBatch = _.find(creatorBatches, {batchId: _.get(batch, 'batchId')});
-              if (creatorBatch) {
-                batch.createdBy = _.get(creatorBatch, 'createdBy');
-                batch.progress =  _.get(batch, 'progress') > 0 ? (_.get(batch, 'progress') === _.get(batch, 'leafNodesCount') ? 2 : 1) : 0;
-                batch.name = _.get(creatorBatch, 'name');
-                courseData.batches.push(_.omit(batch, 'content'));
-              }
-          }
-        }
-  }
+  let courseData = {
+    courseId: courseId,
+    name: _.get(enrolledBatches, '[0].content.name'),
+    contentType: _.get(enrolledBatches, '[0].content.contentType'),
+    pkgVersion: _.get(enrolledBatches, '[0].content.pkgVersion'),
+    batches: []
+  };
+
+  _.map(enrolledBatches, batch => {
+    if (_.isEqual(_.get(batch, 'courseId'), courseId)) {
+      const creatorBatch = _.find(creatorBatches, {batchId: _.get(batch, 'batchId')});
+      if (creatorBatch) {
+          batch.createdBy = _.get(creatorBatch, 'createdBy');
+          batch.name = _.get(creatorBatch, 'name');
+          courseData.batches.push(_.omit(batch, 'content'));
+      }
+    }
+  });
+
+
   logger.info({msg: `returning response from filterUserBatches for courseId: ${courseId} Data: ${JSON.stringify(courseData)}`})
   return courseData;
 }
