@@ -290,6 +290,8 @@ html[data-theme='Green'] {
   --sbt-podcasts-bg: var(--sbt-podcasts);
   --sbt-all-text: var(--sbt-all);
   --sbt-all-bg: var(--sbt-all);
+  --rc-E0EFFF:#d5e9d7;
+  --rc-007AFF:var(--primary-300);
 }
 
 html[data-theme='Orange'] {
@@ -357,9 +359,6 @@ html[layout='joy'] {
   .sb-btn-square.sb-btn-sm {
     box-shadow: none;
   }
-  .sb-form-control {
-    border-radius: calc(var(--sbt-bradius) * 8) !important //calculateRem(16px);
-  }
   .ui.dropdown.selection.sb-form-control .menu{
     border-radius: 0 0 calc(var(--sbt-bradius) * 8) calc(var(--sbt-bradius) * 8);
   }
@@ -380,7 +379,7 @@ html[layout='joy'] {
     border-radius: 0px 16px 16px 0px;
     box-shadow: none;
   }
-  /* modal */
+  // modal styles
   .sb-modal {
     .ui.modal {
       box-shadow: var(--sbt-box-shadow-6px);
@@ -432,7 +431,22 @@ html[layout='joy'] {
     border-bottom-left-radius: calc(var(--sbt-bradius) * 12);
     border-bottom-right-radius: calc(var(--sbt-bradius) * 12);
   }
-
+  .ui.grid.sb-form.m-0.sb-workspace-modal.p-16 {
+    padding:0px !important;
+  }
+  // form fields
+  .sb-form-control {
+    border-radius: calc(var(--sbt-bradius) * 8) !important;
+    padding-left: 16px;
+  }
+  .sb-field .ui.selection.dropdown{
+    border-radius: 24px;
+    background: var(--white);
+    padding-left: 16px;
+  }
+  .ui.selection.active.dropdown .menu, .ui.dropdown.selection .menu {
+    border-radius: 0px 0px 24px 24px;
+  }
   //end
 
   /* public content player */
@@ -621,12 +635,12 @@ html[layout='joy'] {
   .relative9 {
    @include respond-above(md) {
     position: relative;
-    z-index: 9;
+    z-index: 8;
    }
   }
   .right-flower-position-adjust-container {
     position: relative;
-    z-index: 99;
+    z-index: 8;
   }
 
   .certified-course__progress {
