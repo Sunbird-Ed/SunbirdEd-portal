@@ -39,6 +39,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  pageTitle;
+  svgToDisplay;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
@@ -61,6 +63,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
    this.initLayout();
+   this.getFormData();
     combineLatest(
       this.orgDetailsService.getOrgDetails(this.userService.slug),
       this.getFrameWork()
@@ -90,7 +93,22 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
-
+  getFormData() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      _.forEach(data, (value, key) => {
+        if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
+          this.pageTitle = _.get(this.resourceService, value.title);
+          this.svgToDisplay = _.get(value, 'theme.imageName');
+        }
+      });
+    }, error => {
+    });
+  }
     initLayout() {
       this.layoutConfiguration = this.layoutService.initlayoutConfig();
       this.redoLayout();
