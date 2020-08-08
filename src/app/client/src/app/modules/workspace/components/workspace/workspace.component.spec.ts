@@ -19,7 +19,7 @@ describe('WorkspaceComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceComponent ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule,SharedModule.forRoot(), HttpClientTestingModule,]
+      imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, ]
     })
     .compileComponents();
   }));
@@ -31,5 +31,12 @@ describe('WorkspaceComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+   it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.redoLayout();
   });
 });

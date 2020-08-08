@@ -1,0 +1,32 @@
+@import "variables";
+@import "mixins/mixins";
+
+:host ::ng-deep {
+.sbt-prominent-filter {
+  border-radius: calculateRem(24px);
+    padding: calculateRem(24px);
+  background: var(--white);
+    .sb-prominent-filter-field {
+      margin:calculateRem(8px) 0px;
+      &:last-child {
+        text-align: right;
+      }
+    }
+
+    .treepicker-parent input {
+      width: 100%;
+      border-radius: calculateRem(24px);
+      border: 1px solid #999;
+      height: calculateRem(32px);
+      font-size: calculateRem(14px);
+    }
+    sui-multi-select.ui.selection.dropdown {
+      width:100%;
+      border-radius: calculateRem(24px);
+    }
+    .ui.selection.dropdown .menu>.item {
+      display: flex;
+    }
+}
+ 
+}

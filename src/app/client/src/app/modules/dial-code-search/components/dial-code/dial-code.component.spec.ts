@@ -4,7 +4,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, OrgDetailsService, SearchService, UserService, CoursesService, PlayerService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConfigService, NavigationHelperService, ResourceService, SharedModule, ToasterService, UtilService } from '@sunbird/shared';
+import {
+  ConfigService,
+  NavigationHelperService,
+  ResourceService,
+  SharedModule,
+  ToasterService,
+  UtilService,
+  LayoutService
+} from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of as observableOf, throwError, of } from 'rxjs';
@@ -82,7 +90,7 @@ describe('DialCodeComponent', () => {
       providers: [SearchService, UtilService, ConfigService, OrgDetailsService, UserService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, LayoutService,
         DialCodeService, TelemetryService, ToasterService, NavigationHelperService]
     })
       .compileComponents();
@@ -428,5 +436,18 @@ describe('DialCodeComponent', () => {
     expect(component.redirectCollectionUrl).toEqual('play/collection');
     expect(component.redirectContentUrl).toEqual('play/content');
     expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should call init layout on component intilization', () => {
+    spyOn(component, 'initLayout');
+    component.ngOnInit();
+    expect(component.initLayout).toHaveBeenCalled();
+  });
+
+  it('should call init layout on component intilization for old layout', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: {data: 'data'}}));
+    component.ngOnInit();
+    expect(component.layoutConfiguration).toEqual({data: 'data'});
   });
 });
