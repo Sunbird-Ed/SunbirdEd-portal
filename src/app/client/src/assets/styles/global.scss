@@ -386,10 +386,6 @@ app-workspace {
   min-height: calc(100vh - 320px);
 }
 
-.sbt-filter-sidebar {
-  margin-top: calculateRem(-72px);
-}
-
 .sbt-page-content-area {
   background: none;
 
@@ -411,9 +407,7 @@ app-workspace {
   }
 }
 
-
-
-.avatar-content {
+.sbt-header-bar .avatar-content {
   box-shadow: var(--sbt-box-shadow-6px);
 }
 
@@ -564,9 +558,4 @@ app-workspace {
     background: var(--sbt-compt-bg) !important;
   }
 
-}
-.sbt-mygroups-details {
-  .sb-bg-color-white {
-    border-radius: 24px 24px 0px 0px;
-  }
 }

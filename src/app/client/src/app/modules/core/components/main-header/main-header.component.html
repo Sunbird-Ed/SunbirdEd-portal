@@ -142,7 +142,7 @@
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
                     src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="48"
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
                   initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
               </div>
@@ -170,7 +170,7 @@
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
                     src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="48"
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
                   initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
               </div>
