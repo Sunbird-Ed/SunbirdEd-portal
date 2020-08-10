@@ -4,7 +4,7 @@ import { AppLoaderComponent } from './app-loader.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
-import {of} from "rxjs";
+import {of} from 'rxjs';
 
 
 describe('AppLoaderComponent', () => {
@@ -43,4 +43,14 @@ describe('AppLoaderComponent', () => {
     component.ngOnInit();
     expect(component.layoutConfiguration).toBe('data');
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnInit();
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
 });

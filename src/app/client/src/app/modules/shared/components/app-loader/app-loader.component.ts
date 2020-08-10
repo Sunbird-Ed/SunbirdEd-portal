@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
 import {LayoutService, ResourceService} from '../../services/index';
@@ -13,12 +13,12 @@ import {takeUntil} from 'rxjs/operators';
   selector: 'app-loader',
   templateUrl: './app-loader.component.html'
 })
-export class AppLoaderComponent implements OnInit {
+export class AppLoaderComponent implements OnInit, OnDestroy {
   @Input() data: ILoaderMessage;
   headerMessage: string;
   loaderMessage: string;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
+  unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, public layoutService: LayoutService) {
     this.resourceService = resourceService;
@@ -41,5 +41,12 @@ export class AppLoaderComponent implements OnInit {
         this.layoutConfiguration = layoutConfig.layout;
       }
     });
+  }
+
+  ngOnDestroy() {
+    if (this.unsubscribe$) {
+      this.unsubscribe$.next();
+      this.unsubscribe$.complete();
+    }
   }
 }
