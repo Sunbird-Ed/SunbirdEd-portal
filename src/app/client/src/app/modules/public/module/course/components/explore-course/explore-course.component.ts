@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination, 
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
     LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
@@ -40,10 +40,11 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
 
     public frameWorkName: string;
     layoutConfiguration: any;
-    FIRST_PANEL_LAYOUT:string;
-    SECOND_PANEL_LAYOUT:string;
+    FIRST_PANEL_LAYOUT: string;
+    SECOND_PANEL_LAYOUT: string;
     public globalSearchFacets: Array<string>;
     public allTabData;
+    public selectedFilters;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -94,23 +95,24 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     initLayout() {
         this.redoLayout();
         this.layoutService.switchableLayout().
-            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-            if(layoutConfig!=null) {
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+            if (layoutConfig != null) {
               this.layoutConfiguration = layoutConfig.layout;
             }
             this.redoLayout();
           });
       }
       redoLayout() {
-          if(this.layoutConfiguration!=null) {
-            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+          if (this.layoutConfiguration != null) {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
           } else {
-            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
           }
       }
     public getFilters(filters) {
+        this.selectedFilters = filters.filters;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
             collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

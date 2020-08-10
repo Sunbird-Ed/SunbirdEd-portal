@@ -42,11 +42,13 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public cardData: Array<{}> = [];
   public isLoading = true;
-  layoutConfiguration:any;
+  layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   slideConfig: object = {};
   formData: any;
+  pageTitle;
+  svgToDisplay;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -91,20 +93,20 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
         this.redoLayout();
       });
   }
   redoLayout() {
-      if(this.layoutConfiguration!=null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
       } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
       }
   }
 
@@ -138,6 +140,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
+    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
+    this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }
   private fetchContents(currentPageData) {

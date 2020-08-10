@@ -2,7 +2,7 @@ import { filter } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
-import { ResourceService, ConfigService, IUserProfile,LayoutService } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, LayoutService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -75,7 +75,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
   */
-  @Input() layoutConfiguration:any;
+  @Input() layoutConfiguration: any;
   private activatedRoute: ActivatedRoute;
   /**
      * Constructor to create injected service(s) object

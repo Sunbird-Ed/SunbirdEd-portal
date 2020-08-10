@@ -28,7 +28,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() formAction: string;
   @Output() dataDrivenFilter = new EventEmitter();
   @Input() layoutConfiguration;
-
+  @Input() isOpen;
   public showFilters = false;
 
   public formFieldProperties: Array<any>;
@@ -60,13 +60,16 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     private activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public frameworkService: FrameworkService, public formService: FormService,
     public userService: UserService, public permissionService: PermissionService, private utilService: UtilService,
-    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService, 
+    private browserCacheTtlService: BrowserCacheTtlService, private orgDetailsService: OrgDetailsService,
     public layoutService: LayoutService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit() {
-    this.initLayout();
+        // screen size
+        if (window.innerWidth <= 992 ) {
+          this.isOpen = false;
+        }
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -91,15 +94,6 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       this.dataDrivenFilter.emit([]);
     });
     this.setFilterInteractData();
-  }
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
   }
   getFormatedFilterDetails() {
     const formAction = this.formAction ? this.formAction : 'search';
@@ -346,9 +340,5 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
-  }
-
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }

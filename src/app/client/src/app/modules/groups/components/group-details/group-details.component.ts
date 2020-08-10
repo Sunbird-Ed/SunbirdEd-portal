@@ -25,8 +25,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   members: IGroupMember[] = [];
   isLoader = true;
   isAdmin = false;
-  layoutConfiguration:any;
-  
+  layoutConfiguration: any;
+
   config: IGroupMemberConfig = {
     showMemberCount: true,
     showSearchBox: true,
@@ -58,8 +58,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
       this.layoutConfiguration = layoutConfig.layout;
     }
    });

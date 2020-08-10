@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {ResourceService, ToasterService, ConfigService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { RecaptchaComponent } from "ng-recaptcha";
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   templateUrl: './select-account-identifier.component.html',

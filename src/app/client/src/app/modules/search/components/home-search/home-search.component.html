@@ -6,7 +6,7 @@
           </app-data-driven-filter>
         </ng-container>
         <ng-container *ngIf="layoutConfiguration">
-          <app-global-search-filter [facets]="facets" *ngIf="initFilters && allTabData"
+          <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
             (filterChange)="getFilters($event)">
           </app-global-search-filter>
         </ng-container>
@@ -25,9 +25,11 @@
         </div>
     </div>
     <div class="twelve wide column">
+      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
-        class="masonry-grid dynamic-section-card ">
-        <div in-view-item [id]="index" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
+        class="sb-grid dynamic-section-card ">
+        <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
           <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
             [data]="content" (clickEvent)="playContent($event)"></app-card>
         </div>

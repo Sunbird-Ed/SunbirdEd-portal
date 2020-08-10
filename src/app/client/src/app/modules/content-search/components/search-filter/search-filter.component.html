@@ -21,7 +21,7 @@
         </div>
     </div>
     <!-- State and Medium sections ends-->
-
+    
     <!-- class section -->
     <div class="sb-class-bar sb-bg-color-gray-0">
         <div class="ui container">
@@ -33,32 +33,38 @@
     <!-- class section ends -->
     </div>
 </ng-container>
-<div *ngIf="isLayoutAvailable()">
-    <div class="sbt-filter">
-        <div class="sbt-filter-overlay"></div>	
-        <div class="sbt-filter-switcher-container">	
-            <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>	
+
+    <div *ngIf="isLayoutAvailable()" class="sbt-filter">
+        <!-- <div class="sbt-filter-overlay"></div>	 -->
+        <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">	
+            <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
             <div class="sbt-filter-text">Filter</div>	
         </div>
-        <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16">
-            <i class="icon-svg icon-svg--xxs icon-close cursor-pointer">	
-                <svg class="icon icon-svg--gray">	
-                    <use xlink:href="./assets/images/sprite.svg#close"></use>	
-                </svg>	
-            </i>
-            <div class="sbt-filter-scrollable relative position">
-                <!-- State and Medium sections -->
-                <div>
-                    <div *ngIf="boards?.length" class="w-100">
-                        <!-- state section -->
-                        <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100"
-                            *ngIf="optionData" [title]="optionLabel.Board" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
-                            (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
-                        <!-- state section ends -->
-                    </div>
-                </div>
-                <!-- State and Medium sections ends-->
-                <!-- medium section -->
+        <sui-accordion class="sbt-filter-accordion">
+            <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
+              <ng-container content>
+            <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16">
+                <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
+                    <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer hide">Reset <i class="icon undo"></i></button>
+                    <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">	
+                        <svg class="icon icon-svg--red">	
+                            <use xlink:href="./assets/images/sprite.svg#close"></use>	
+                        </svg>	
+                    </i>
+                  </span>
+                   </div>
+                <div class="fnormal mb-8">Based on your preferences</div>
+                <div class="sbt-filter-scrollable relative position">
+                    <!-- State and Medium sections -->
+                        <div *ngIf="boards?.length" class="w-100">
+                            <!-- state section -->
+                            <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100"
+                                *ngIf="optionData" [title]="optionLabel.Board" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
+                                (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
+                            <!-- state section ends -->
+                        </div>
+                    <!-- State and Medium sections ends-->
+                    <!-- medium section -->
                 <div class="w-100">
                     <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" 
                      [title]="'Medium'" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
@@ -66,16 +72,18 @@
                     appTelemetryInteract [telemetryInteractEdata]="getMediumInteractEdata()"></app-select-option-group> 
                 </div>
                 <!-- medium section ends -->
-                <!-- class section -->
-                <div class="sbt-class-bar text-left">
-                    <label class="fmedium">Class</label>
-                    <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
-                        [selectedItems]="[selectedGradeLevelIndex]"
-                        (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
-                        [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+                    <!-- class section -->
+                    <div class="sbt-class-bar text-left">
+                        <label class="fmedium">Class</label>
+                        <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
+                            [selectedItems]="[selectedGradeLevelIndex]"
+                            (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
+                            [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
+                    </div>
+                    <!-- class section ends -->
                 </div>
-                <!-- class section ends -->
             </div>
-        </div>
+        </ng-container>
+    </sui-accordion-panel>
+  </sui-accordion>
     </div>
-</div>

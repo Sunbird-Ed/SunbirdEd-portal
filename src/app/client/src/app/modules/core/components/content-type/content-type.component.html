@@ -1,9 +1,25 @@
-<div class="sb-linkmenu m-0 d-flex flex-ai-center">
-  <ng-container *ngFor="let contentType of contentTypes">
-    <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
-       [ngClass]="'item item--' + getIcon(contentType)">
-      <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
-      {{getTitle(contentType)}}
-    </a>
-  </ng-container>
-</div>
+<ng-container *ngIf="!isLayoutAvailable()">
+  <div class="item py-8 pl-0 pr-24r">
+    <ng-container *ngFor="let contentType of contentTypes">
+      <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
+         [ngClass]="{'active': selectedContentType === contentType.contentType}"
+         class="item {{'item--' + getIcon(contentType)}}">
+        {{getTitle(contentType)}}
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isLayoutAvailable()">
+  <div class="sb-linkmenu m-0 d-flex flex-ai-center">
+    <ng-container *ngFor="let contentType of contentTypes">
+      <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
+         [ngClass]="{'active': selectedContentType === contentType.contentType}"
+         class="item {{'item--' + getIcon(contentType)}}">
+        <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
+        {{getTitle(contentType)}}
+      </a>
+    </ng-container>
+  </div>
+</ng-container>
+

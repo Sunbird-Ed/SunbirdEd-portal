@@ -45,6 +45,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   frameworkId;
   public globalSearchFacets: Array<string>;
   public allTabData;
+  public selectedFilters;
+  public formData;
   layoutConfiguration;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
@@ -61,6 +63,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   ngOnInit() {
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.formData = formData;
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
       this.setNoResultMessage();
       this.initFilters = true;
@@ -95,23 +98,24 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
         this.redoLayout();
       });
   }
   redoLayout() {
-      if(this.layoutConfiguration!=null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
       } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
       }
   }
   public getFilters(filters) {
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -137,11 +141,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
+    const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    _.forEach(this.formData, (form, key) => {
+      const pageTitle = _.get(this.resourceService, form.title);
+      if (pageTitle === pageType) {
+        filters.contentType = _.get(form, 'search.filters.contentType');
+      }
+    });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
     if (this.queryParams.key) {
       delete softConstraints['board'];

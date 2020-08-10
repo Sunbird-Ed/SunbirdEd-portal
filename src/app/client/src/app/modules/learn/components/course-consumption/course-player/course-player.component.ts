@@ -70,6 +70,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isModuleExpanded = false;
   isEnrolledCourseUpdated = false;
   layoutConfiguration;
+  certificateDescription = '';
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -171,6 +172,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
         if (this.batchId) {
           this.enrolledBatchInfo = enrolledBatchDetails;
+          this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
           this.enrolledCourse = true;
           setTimeout(() => {
             this.setTelemetryStartEndData();
@@ -200,8 +202,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
       this.layoutConfiguration = layoutConfig.layout;
     }
    });

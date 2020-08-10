@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    public changeDetectorRef: ChangeDetectorRef,public layoutService: LayoutService) {
+    public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
@@ -132,24 +132,24 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
-  ngAfterViewInit(){
-    //themeing code
-    let trans = () => {
+  ngAfterViewInit() {
+    // themeing code
+    const trans = () => {
       document.documentElement.classList.add('transition');
       window.setTimeout(() => {
-          document.documentElement.classList.remove('transition')
-      }, 1000)
-  }
-    var selector = document.querySelectorAll('input[name=selector]');
-    for(var i=0;i<selector.length;i++){
+          document.documentElement.classList.remove('transition');
+      }, 1000);
+  };
+    const selector = document.querySelectorAll('input[name=selector]');
+    for (let i = 0; i < selector.length; i++) {
       selector[i].addEventListener('change', function() {
-        if(this.checked) {
-           trans()
-           document.documentElement.setAttribute('data-theme', this.value)
+        if (this.checked) {
+           trans();
+           document.documentElement.setAttribute('data-theme', this.value);
         }
-    })
+    });
     }
-    //themeing code
+    // themeing code
   }
   ngOnInit() {
     this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {

@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
-import { ResourceService,LayoutService } from '@sunbird/shared';
+import { ResourceService, LayoutService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -29,24 +29,31 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
   public type: string;
   public publisher: any[] = [];
-
   public boards: any[] = [];
   public mediums: any[] = [];
   public gradeLevels: any[] = [];
   filterChangeEvent =  new Subject();
+  @Input() isOpen;
   @Input() defaultFilters;
   @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<{status: string, filters?: any}> = new EventEmitter();
   @Output() fetchingFilters: EventEmitter<any> = new EventEmitter();
   @Input() layoutConfiguration;
+  showFilter = true;
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
-    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, public layoutService:LayoutService) {
+    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, public layoutService: LayoutService) {
   }
   ngOnInit() {
     this.type = this.optionLabel.Board;
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
+
+    // screen size
+    if (window.innerWidth <= 992 ) {
+      this.isOpen = false;
+    }
   }
+
   private fetchSelectedFilterAndFilterOption() {
     this.activatedRoute.queryParams.pipe(map((queryParams) => {
       const queryFilters: any = {};

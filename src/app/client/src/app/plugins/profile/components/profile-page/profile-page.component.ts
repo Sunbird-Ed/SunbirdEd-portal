@@ -10,7 +10,7 @@ import {
 } from '@sunbird/core';
 import {
   ConfigService,
-  IUserData,
+  IUserData, LayoutService,
   NavigationHelperService,
   ResourceService,
   ServerResponse,
@@ -18,10 +18,11 @@ import {
   UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService} from '@sunbird/telemetry';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CacheService} from 'ng2-cache-service';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -71,15 +72,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   schoolObj: { idType: string, provider: string, id: string };
   instance: string;
   nonCustodianUserLocation : object = {};
+  layoutConfiguration: any;
+  public unsubscribe$ = new Subject<void>();
+
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
-    private telemetryService: TelemetryService) {
+    private telemetryService: TelemetryService, public layoutService: LayoutService) {
   }
 
   ngOnInit() {
+    this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
@@ -120,7 +125,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
   populateLocationDetails() {
     const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
     fields.forEach((fieldKey, userProfileKey) => {

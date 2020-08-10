@@ -66,6 +66,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     backgroundColor: '#ffffff',
     color: '#333333',
     fontFamily: 'inherit',
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #E8E8E8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
+  };
+  SbtavtarDesktopStyle = {
+    backgroundColor: '#ffffff',
+    color: '#333333',
+    fontFamily: 'inherit',
     fontSize: '24px',
     lineHeight: '48px',
     border: '1px solid #E8E8E8',
@@ -108,6 +119,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myGroupIntractEData: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
+  ShowStudentDropdown = false;
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
   selected = [];
@@ -153,6 +165,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   updateHrefPath(url) {
     if (url.indexOf('explore-course') >= 0) {
       this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.hrefPath = url.replace('explore-groups', MY_GROUPS);
     } else if (url.indexOf('explore') >= 0) {
       this.hrefPath = url.replace('explore', 'resources');
     } else if (url.indexOf('play') >= 0) {

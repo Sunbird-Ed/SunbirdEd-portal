@@ -1,8 +1,9 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'" [appTelemetryImpression]="telemetryContentImpression">
+  <div *ngIf="collectionData" class="relative9" [style.display]="!showLoader ? 'block' : 'none'" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
+   
     <div class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
         <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
@@ -16,7 +17,7 @@
     </div>
 
     <!--CC-Player Content Header -->
-    <div class="content-header" *ngIf="collectionData">
+    <div class="content-header cc-player__content-header" *ngIf="collectionData">
         <div class="ui container py-16">
           <div class="content-header__content">
             <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
@@ -72,13 +73,13 @@
     <!-- CC-Player Video -->
     <div class="ui container">
       <div class="cc-player sb-g">
-        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
-        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 cc-player__list mb-16" *ngIf="collectionData">
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9" *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
               <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
                   <h6 class="sb-color-primary font-weight-normal">{{resourceService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>

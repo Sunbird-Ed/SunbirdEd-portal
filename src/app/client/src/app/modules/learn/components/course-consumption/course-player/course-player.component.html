@@ -1,8 +1,8 @@
 <!-- Accordion and batch card section start -->
 <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
-    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left">
-      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+  <div class="ui container relative9" [appTelemetryImpression]="telemetryCourseImpression">
+    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left cc-player">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
 
         <!-- Course details for mobile view -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 mobile only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 mobile only sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -90,7 +90,7 @@
                         </div>
                         <div *ngIf="item?.children?.length">
                           <div *ngFor="let child of item?.children">
-                              <sb-toc-child-item [childData]="child"
+                              <sb-toc-child-item [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType">
                               </sb-toc-child-item>
@@ -112,7 +112,7 @@
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="enrolledCourse"></app-course-details>
 
       </div>
-      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
 
         <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledBatchInfo?.cert_templates; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
@@ -147,7 +147,15 @@
           </div>
         </div>
 
-        <!-- 2. Course Progress bar -->
+        <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="certificateDescription !== ''">
+          <div class="certified-course__certificate d-inline-flex flex-ai-center p-8 width-100">
+            <img src="assets/images/certificate-icon.png" alt="Certificate">
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+          </div>
+          <p class="fsmall px-4 pt-8"> {{certificateDescription}} </p>
+      </div>
+
+      <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup">
           <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
