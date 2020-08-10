@@ -1,7 +1,7 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups sbt-mygroups-details relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
 
 <div class="ui container" *ngIf="isLoader" > 
   <app-loader></app-loader>

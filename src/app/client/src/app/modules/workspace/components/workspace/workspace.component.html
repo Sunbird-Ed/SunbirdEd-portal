@@ -16,17 +16,16 @@
 <div *ngIf="layoutConfiguration">
   <div class="sbt-fluid-content-bg">
     <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
-      <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div class="relative9" [ngClass]="FIRST_PANEL_LAYOUT">
         <app-workspacesidebar ></app-workspacesidebar>
       </div>
       <div [ngClass]="SECOND_PANEL_LAYOUT">
         <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'workspacesegment'">
-         <div class="relative9">
           <router-outlet></router-outlet>
-         </div>
         </div>
       </div>
       </div>
-      <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
   </div>
   </div>
+
+  <app-browser-compatibility [showModal]="true"></app-browser-compatibility>

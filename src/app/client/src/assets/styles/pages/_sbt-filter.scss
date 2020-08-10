@@ -116,7 +116,7 @@
 
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
-  z-index: 100;
+  z-index: 9;
   position: relative;
   &-text,
   &-overlay {
@@ -167,7 +167,7 @@
     // margin-top: calculateRem(-72px);
     position: fixed;
     // z-index: 1111;
-    top: calculateRem(188px);
+    top: calculateRem(224px);
 
     &-overlay {
       position: fixed;
@@ -246,6 +246,7 @@
     }
   }
   &-scrollable {
+    position: relative;
     overflow-y: auto;
     padding-right: calculateRem(24px);
     height: calc(100vh - 64px);
@@ -256,13 +257,16 @@
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 388px);
+      height: auto;
       // height: auto;
       // overflow: initial;
       // max-height: inherit;
     }
   }
-
+  &-noscrollable {
+    overflow-y: inherit !important;
+  }
   .state-medium-container {
     position: relative;
     z-index: 999;

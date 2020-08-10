@@ -30,47 +30,48 @@
     </div>
   </div>
 
-  <div class="twelve wide column mt-24" *ngIf="batchList.length">
+ <div class="twelve wide column mt-24" *ngIf="userData?.courses?.batches.length">
     <div class="sb-bg-color-white px-16 py-24">
       <div class="d-flex re-issue-list-content">
           <div class="re-issue-list-content__labels pt-0 px-16 pb-16">
             <div class="ui stackable grid mt-0">
-              <div class="three wide column pr-0">
+              <div class="three wide column">
                 <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.batch_name)}}</div>
               </div>
-              <div class="three wide column px-0">
+              <div class="three wide column">
                 <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.dashboardsortbyusername)}}</div>
               </div>
-              <div class="two wide column px-0">
+              <div class="two wide column">
                 <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.userDistrict)}}</div>
               </div>
-              <div class="two wide column px-0">
-                <div class="re-issue-label">{{toLowerCase(resourceService?.frmelmnts?.lbl?.courseProgress)}}</div>
+              <div class="two wide column">
+                <div class="re-issue-label text-center">{{toLowerCase(resourceService?.frmelmnts?.lbl?.courseProgress)}}</div>
               </div>
               <div class="two wide column pl-0">
-                <div class="re-issue-label"></div>
+                <div class="re-issue-label text-center"></div>
               </div>
             </div>
           </div>
 
           <div class="sb-bg-color-white pt-0 px-16 pb-16" >
-            <div class="ui stackable grid mt-0" *ngFor="let batch of batchList">
-              <div class="three wide column pr-0">
-                <div class="re-issue-status">{{batch?.name}} </div>
+            <div class="ui stackable grid mt-0" *ngFor="let batch of userData?.courses?.batches">
+              <div class="three wide column">
+                <div class="re-issue-status" suiPopup popupHeader="{{batch?.name}}" *ngIf="batch?.name?.length >= 50">{{batch?.name}} </div>
+                <div class="re-issue-status"  *ngIf="batch?.name?.length < 50">{{batch?.name}} </div>
               </div>
-              <div class="three wide column px-0">
-                <div class="re-issue-status">{{userData?.userName}}</div>
+              <div class="three wide column">
+                <div class="re-issue-status" suiPopup popupHeader="{{userData?.userName}}" *ngIf="userData?.userName?.length >= 50">{{userData?.userName}}</div>
+                <div class="re-issue-status" *ngIf="userData?.userName?.length < 50">{{userData?.userName}}</div>
               </div>
-              <div class="two wide column px-0">
-                <div class="re-issue-status">{{userData?.district}}</div>
+              <div class="two wide column">
+                <div class="re-issue-status" suiPopup popupHeader="{{userData?.district}}" *ngIf="userData?.district?.length >= 48">{{userData?.district}}"></div>
+                <div class="re-issue-status" *ngIf="userData?.district?.length < 48">{{userData?.district}}</div>
               </div>
-              <div class="two wide column px-0">
-                <div class="re-issue-status" *ngIf="batch?.progress === 2">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
-                <div class="re-issue-status" *ngIf="batch?.progress === 1">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
-                <div class="re-issue-status" *ngIf="batch?.progress === 0">{{resourceService?.frmelmnts?.lbl?.yetToStart}}</div>
+              <div class="two wide column text-center">
+                <div class="re-issue-status" >{{batch?.completionpercentage || 0}}%</div>
               </div>
-              <div class="two wide column pl-0" *ngIf="batch?.certificates">
-                <div class="re-issue-status">
+              <div class="two wide column pl-0" *ngIf="batch?.certificates?.length">
+                <div class="re-issue-status text-center">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
               </div>
@@ -80,8 +81,8 @@
       </div>
     </div>
  
-  <div class="d-flex flex-dc w-100" *ngIf="batchList.length">
-    <div class="records-count-label pl-16">{{resourceService?.frmelmnts?.lbl?.showingrecord | interpolate: '{count}': batchList.length}} {{resourceService?.frmelmnts?.lbl?.totalrecords | interpolate: '{total}': batchList.length}}</div>
+  <div class="d-flex flex-dc w-100" *ngIf="userData?.courses?.batches?.length">
+    <div class="records-count-label pl-16">{{resourceService?.frmelmnts?.lbl?.showingrecord | interpolate: '{count}': userData?.courses?.batches.length}} {{resourceService?.frmelmnts?.lbl?.totalrecords | interpolate: '{total}': userData?.courses?.batches.length}}</div>
   </div>
 </div>
 
