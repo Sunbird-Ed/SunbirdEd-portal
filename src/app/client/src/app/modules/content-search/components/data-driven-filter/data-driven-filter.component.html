@@ -161,7 +161,7 @@
                     *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
                     <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                       defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                      class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16"
+                      class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                       [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
                       *ngIf="field.code !== 'gradeLevel'">
                       <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name">
@@ -169,7 +169,7 @@
                     </sui-multi-select>
                     <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
                       defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                      class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16"
+                      class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                       [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect
                       *ngIf="field.code === 'gradeLevel'">
                       <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
@@ -179,7 +179,7 @@
                     <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
                       name={{field.code}} defaultSelectionText={{field.name}}
                       zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                      class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple w-100 mb-16"
+                      class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                       [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
                       valueField="identifier" #multiSelect>
                       <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option">

@@ -110,18 +110,21 @@
     }
   }
 
-  /* rtl for sbt filter */
-  .sbt-filter {
-    .sbt-filter-text {
-      right: calculateRem(24px);
-      padding: 0 calculateRem(48px) 0 calculateRem(16px);
-      left: inherit;
-    }
-    .sbt-filter-switcher {
-      right: calculateRem(24px);
-    }
-  }
+.sbt-filter-bar .treepicker-parent input.topic-picker-selector {
+  padding-left: calculateRem(16px);
+  background: var(--sbt-theme-purple-selectbox-lbg) !important;
+  color: var(--sbt-theme-purple-selectbox);
+  border: 0px;
+  border-radius: calculateRem(24px);
+  height: calculateRem(40px);
+  width: 100%;
+  margin-bottom: calculateRem(16px);
+  font-size: calculateRem(12px);
+  font-weight: bold;
 }
+
+}
+
 
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
@@ -266,7 +269,7 @@
     position: relative;
     overflow-y: auto;
     height: calc(100vh - 64px);
-
+    padding-bottom: calculateRem(8px);
     @include respond-between(sm, md) {
       max-height: calc(100vh - 158px);
       height: auto;
