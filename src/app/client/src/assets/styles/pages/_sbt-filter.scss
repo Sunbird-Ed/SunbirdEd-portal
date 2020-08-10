@@ -167,7 +167,7 @@
     // margin-top: calculateRem(-72px);
     position: fixed;
     // z-index: 1111;
-    top: calculateRem(188px);
+    top: calculateRem(224px);
 
     &-overlay {
       position: fixed;
@@ -246,6 +246,7 @@
     }
   }
   &-scrollable {
+    position: relative;
     overflow-y: auto;
     padding-right: calculateRem(24px);
     height: calc(100vh - 64px);
@@ -263,7 +264,9 @@
       // max-height: inherit;
     }
   }
-
+  &-noscrollable {
+    overflow-y: inherit !important;
+  }
   .state-medium-container {
     position: relative;
     z-index: 999;
