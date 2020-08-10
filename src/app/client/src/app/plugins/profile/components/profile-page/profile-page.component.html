@@ -82,18 +82,18 @@
       </div>
     </div>
 
-    <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+    <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.block">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'block')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.block}}</div>
       </div>
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.district">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'district')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.district}}</div>
       </div>
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.state">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'state')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.state}}</div>
       </div>
     </div>
 

@@ -73,6 +73,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
+  nonCustodianUserLocation : object = {};
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
@@ -102,9 +103,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
         this.getTrainingAttended();
+        this.setNonCustodianUserLocation();
       }
     });
     this.setInteractEventData();
+  }
+
+  setNonCustodianUserLocation() {
+    const subOrgs = _.filter(this.userProfile.organisations, (org) => {
+      if (this.userProfile.rootOrgId !== org.organisationId) {
+        return org;
+      }
+    });
+    if (!_.isEmpty(subOrgs)) {
+      const sortedSubOrgs = _.reverse(_.sortBy(subOrgs, 'orgjoindate'));
+      if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
+        _.forEach(sortedSubOrgs[0].locations, (location) => {
+          this.nonCustodianUserLocation[location.type] = location.name;
+        })
+      }
+    }
   }
 
   initLayout() {
