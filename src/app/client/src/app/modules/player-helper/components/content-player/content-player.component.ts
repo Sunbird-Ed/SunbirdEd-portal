@@ -42,7 +42,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @Input() contentData;
   @Input() layoutConfiguration;
   isLoading: Boolean = false; // To restrict player loading multiple times
-  constructor(public router: Router, public layoutService:LayoutService) {
+  constructor(public router: Router, public layoutService: LayoutService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -80,8 +80,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });

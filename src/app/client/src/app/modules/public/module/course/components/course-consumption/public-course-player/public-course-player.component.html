@@ -1,7 +1,7 @@
 <div *ngIf="!loader">
   <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
-      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         <!-- Course details -->
         <div class="training-info" *ngIf="courseHierarchy">
           <h4 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h4>
@@ -78,7 +78,7 @@
                           <div *ngFor="let child of item?.children">
                             <div>
                               <sb-toc-child-item [childData]="child"
-                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType">
+                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType" class="sb-toc-child-item">
                               </sb-toc-child-item>
                             </div>
                           </div>
@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3">
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
 
         <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy"
           (allBatchDetails)="getAllBatchDetails($event)">

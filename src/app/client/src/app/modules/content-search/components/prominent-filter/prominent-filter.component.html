@@ -1,4 +1,4 @@
-<div class="sb-prominent-filter" *ngIf="showFilters && refresh">
+<div [ngClass]="layoutConfiguration ? 'sbt-prominent-filter relative9' : 'sb-prominent-filter'" *ngIf="showFilters && refresh">
   <div class="ui container">
 
     <!--Header-->
@@ -14,10 +14,10 @@
     <!--/Header-->
     
     <!--Filter-->
-    <div class="ui active sb-prominent-filter-container" [suiCollapse]="collapse" *ngIf="formFieldProperties">
+    <div class="" [ngClass]="layoutConfiguration ? 'd-flex flex-dc' : 'ui active sb-prominent-filter-container'" [suiCollapse]="collapse" *ngIf="formFieldProperties">
 
       <div class="sb-prominent-filter-field" *ngFor="let field of formFieldProperties">
-        <label>{{field.label}}</label>
+        <label [ngClass]="layoutConfiguration ? 'fnormal font-weight-bold d-flex' : ''">{{field.label}}</label>
         <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
           <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field" (selectedValue)="selectedValue($event, field.code);setFilterInteractData()"></app-custom-multi-select>
         </ng-container>

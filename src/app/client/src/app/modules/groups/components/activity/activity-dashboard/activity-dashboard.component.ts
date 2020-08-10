@@ -52,8 +52,8 @@ export class ActivityDashboardComponent implements OnInit {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
       this.layoutConfiguration = layoutConfig.layout;
     }
    });
@@ -128,7 +128,7 @@ export class ActivityDashboardComponent implements OnInit {
     this.enrolmentCount = _.get(enrolmentInfo, 'value');
     this.leafNodesCount = _.get(leafNodesInfo, 'value');
     this.membersCount = _.get(aggResponse, 'members.length');
-    this.memberListUpdatedOn = _.max(_.get(aggResponse, 'activity.agg').map(agg => agg.lastUpdatedOn))
+    this.memberListUpdatedOn = _.max(_.get(aggResponse, 'activity.agg').map(agg => agg.lastUpdatedOn));
 
     this.members = aggResponse.members.map((item, index) => {
       /* istanbul ignore else */

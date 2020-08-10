@@ -166,11 +166,13 @@ describe('ExploreComponent', () => {
 
   it('should navigate to search page', () => {
     component.selectedFilters = RESPONSE.selectedFilters;
+    component.pageTitle = RESPONSE.selectedFilters.pageTitle;
     const router = TestBed.get(Router);
     component.navigateToExploreContent();
     expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
       queryParams: {
         ...component.selectedFilters,
+        pageTitle : RESPONSE.selectedFilters.pageTitle,
         appliedFilters: false,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
