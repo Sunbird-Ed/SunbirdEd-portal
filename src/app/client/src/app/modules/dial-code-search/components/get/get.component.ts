@@ -1,8 +1,11 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import {ResourceService, NavigationHelperService, COLUMN_TYPE, LayoutService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+
 @Component({
   selector: 'app-get',
   templateUrl: './get.component.html',
@@ -30,9 +33,11 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   public router: Router;
   instance: string;
+  layoutConfiguration: any;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.resourceService = resourceService;
     this.router = router;
   }
@@ -40,6 +45,16 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
     this.instance = _.upperCase(this.resourceService.instance);
+    this.initLayout();
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
   }
 
   ngAfterViewInit () {

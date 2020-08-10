@@ -65,8 +65,9 @@
                 <div class="re-issue-status">{{userData?.district}}</div>
               </div>
               <div class="two wide column px-0">
-                <div class="re-issue-status" *ngIf="batch?.progress === 100">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
-                <div class="re-issue-status" *ngIf="batch?.progress < 100">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
+                <div class="re-issue-status" *ngIf="batch?.progress === 2">{{resourceService?.frmelmnts?.lbl?.completed}}</div>
+                <div class="re-issue-status" *ngIf="batch?.progress === 1">{{resourceService?.frmelmnts?.lbl?.inProgress}}</div>
+                <div class="re-issue-status" *ngIf="batch?.progress === 0">{{resourceService?.frmelmnts?.lbl?.yetToStart}}</div>
               </div>
               <div class="two wide column pl-0" *ngIf="batch?.certificates">
                 <div class="re-issue-status">

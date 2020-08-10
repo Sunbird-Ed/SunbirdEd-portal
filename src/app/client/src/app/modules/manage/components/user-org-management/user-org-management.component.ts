@@ -2,14 +2,15 @@ import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
-import { ToasterService, NavigationHelperService } from '@sunbird/shared';
+import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
+import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';
 import * as moment from 'moment';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-user-org-management',
@@ -73,9 +74,12 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public userDownloadInteractEdata: IInteractEventEdata;
   public teacherDetailsInteractEdata: IInteractEventEdata;
   public selectFileInteractEdata: IInteractEventEdata;
+  layoutConfiguration: any;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService) {
+    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
+              public layoutService: LayoutService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -88,6 +92,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.initLayout();
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
@@ -117,6 +122,14 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
   downloadFile(path) {
     window.open(path, '_blank');
   }

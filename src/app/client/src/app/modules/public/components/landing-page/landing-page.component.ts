@@ -10,7 +10,7 @@ export class LandingPageComponent implements OnInit {
 
   layoutConfiguration;
 
-  constructor(public layoutService:LayoutService) { }
+  constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();

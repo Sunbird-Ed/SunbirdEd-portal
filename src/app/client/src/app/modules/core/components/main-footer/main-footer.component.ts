@@ -35,7 +35,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
-  
+
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
       public tenantService: TenantService, public layoutService: LayoutService
@@ -60,7 +60,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   redoLayout() {
       if (this.layoutConfiguration != null) {
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine) + ' sbt-page-content-area';
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
       } else {
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
