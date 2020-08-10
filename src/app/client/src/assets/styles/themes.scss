@@ -452,7 +452,19 @@ html[layout='joy'] {
   }
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown {
     background: var(--white);
+    font-size: calculateRem(12px);
+    width: 100%;
+    min-height: calculateRem(32px);
+    padding: calculateRem(4px) calculateRem(8px);
+    border-color: var(--gray-200);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .text {
+      padding: 0;
+    }
   }
+  .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown
   .ui.active.selection.dropdown, .ui.selection.active.dropdown .menu, .ui.dropdown.selection, .ui.dropdown.selection .menu {
     border-radius: var(--sbt-bradius-24) !important;
   }
@@ -830,6 +842,9 @@ html[layout='joy'] {
     width:auto;
   }
 
+  .popup-content {
+    width: calculateRem(896px) !important;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
