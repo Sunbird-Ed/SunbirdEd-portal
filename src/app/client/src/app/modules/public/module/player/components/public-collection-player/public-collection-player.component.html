@@ -46,13 +46,13 @@
         </section>
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16" [ngClass]="{'toggleInMobile': isMobile}">
         <div class="toc-box-shadow mb-2">
-          <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
+          <!-- <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
             (click)="showChapter()">
             <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
             <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto opacity50"><svg class="icon icon-svg--primary">
                 <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use>
               </svg></i>
-          </div>
+          </div> -->
           <sb-library-filters [hidden]="isSelectChapter" [list]="mimeTypeFilters" [layout]="'round-with-icon'"
             (selectedMimeType)="selectedFilter($event)">
           </sb-library-filters>
