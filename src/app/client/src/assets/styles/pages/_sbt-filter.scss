@@ -110,19 +110,6 @@
     }
   }
 
-  /* rtl for sbt filter */
-  .sbt-filter {
-    .sbt-filter-text {
-      right: calculateRem(24px);
-      padding: 0 calculateRem(48px) 0 calculateRem(16px);
-      left: inherit;
-    }
-    .sbt-filter-switcher {
-      right: calculateRem(24px);
-    }
-  }
-
-
 .sbt-filter-bar .treepicker-parent input.topic-picker-selector {
   padding-left: calculateRem(16px);
   background: var(--sbt-theme-purple-selectbox-lbg) !important;

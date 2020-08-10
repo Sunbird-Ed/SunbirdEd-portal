@@ -559,3 +559,17 @@ app-workspace {
   }
 
 }
+
+  /* rtl for sbt filter */
+  html[dir="rtl"] {
+    .sbt-filter {
+      .sbt-filter-text {
+        right: calculateRem(24px);
+        padding: 0 calculateRem(48px) 0 calculateRem(16px);
+        left: inherit;
+      }
+      .sbt-filter-switcher {
+        right: calculateRem(24px);
+      }
+    }
+  }
