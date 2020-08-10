@@ -52,7 +52,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isFullScreenView = false;
   isCourseCompleted = false;
   showCourseCompleteMessage = false;
-  isCertificateAttached = false;
+  certificateDescription = '';
   parentCourse;
   prevModule;
   nextModule;
@@ -165,7 +165,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
+              this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
