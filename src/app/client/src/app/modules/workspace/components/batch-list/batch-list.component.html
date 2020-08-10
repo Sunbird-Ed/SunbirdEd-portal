@@ -1,3 +1,6 @@
+<app-landing-section [noTitle]="true" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9':''">
 <div class="ui container">
    <div class="content-grid mt-24">
       <div class="sb-pageSection">
@@ -40,4 +43,5 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
     <router-outlet></router-outlet>
+</div>
 </div>
