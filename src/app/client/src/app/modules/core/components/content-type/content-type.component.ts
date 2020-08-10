@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
-import {ResourceService} from '@sunbird/shared';
+import {LayoutService, ResourceService} from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 
 
@@ -17,7 +17,7 @@ export class ContentTypeComponent implements OnInit {
 
   constructor(public formService: FormService, public resourceService: ResourceService,
               public router: Router, public userService: UserService,
-              public activatedRoute: ActivatedRoute) {
+              public activatedRoute: ActivatedRoute, public layoutService: LayoutService) {
   }
 
   ngOnInit() {
@@ -35,19 +35,22 @@ export class ContentTypeComponent implements OnInit {
     });
   }
 
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
-  }
-
-  getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
   }
 
   getIcon(contentType) {
     return _.get(contentType, 'theme.className');
   }
 
+  getTitle(contentType) {
+    return _.get(this.resourceService, _.get(contentType, 'title'));
+  }
 
   showContentType(data) {
     this.selectedContentType = data.contentType;

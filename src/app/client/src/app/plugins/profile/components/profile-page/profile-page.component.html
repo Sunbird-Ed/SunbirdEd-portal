@@ -1,5 +1,6 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
@@ -391,6 +392,7 @@
         <!-- / certificates-->
       </div>  
   </div>
+</div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
   [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">

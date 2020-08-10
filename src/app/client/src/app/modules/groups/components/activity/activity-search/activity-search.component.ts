@@ -1,6 +1,13 @@
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
-import { ConfigService, ResourceService, ToasterService, PaginationService, UtilService } from '@sunbird/shared';
+import {
+  ConfigService,
+  ResourceService,
+  ToasterService,
+  PaginationService,
+  UtilService,
+  LayoutService
+} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject, of, combineLatest } from 'rxjs';
 import { takeUntil, map, catchError, first, debounceTime, tap, delay } from 'rxjs/operators';
@@ -37,6 +44,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   groupData;
   groupId: string;
   telemetryImpression: IImpressionEventInput;
+  layoutConfiguration: any;
+
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
@@ -53,10 +62,12 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private cacheService: CacheService,
     private router: Router,
-    private groupsService: GroupsService
+    private groupsService: GroupsService,
+    public layoutService: LayoutService
   ) { }
 
   ngOnInit() {
+    this.initLayout();
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
@@ -79,6 +90,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
   private fetchContentOnParamChange() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams, this.groupsService.getGroupById(this.groupId, true, true)])
       .pipe(debounceTime(5), // to sync params and queryParams events

@@ -100,7 +100,9 @@
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get"
     },
     "CERTIFICATE": {
-      "FETCH_CERTIFICATES": "v1/certs/search"
+      "FETCH_CERTIFICATES": "v1/certs/search",
+      "FETCH_USER": "v1/user/search",
+      "REISSUE_CERTIFICATE": "v1/cert/reissue"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
