@@ -620,6 +620,7 @@ html[layout='joy'] {
     padding: calculateRem(8px) calculateRem(16px);
     min-height: calculateRem(48px);
     margin-bottom: calculateRem(16px);
+    border: calculateRem(1px) solid #E4E8EE;
     .course-content {
       border-radius: calc(var(--sbt-bradius) * 16);
       padding-left: 24px;
@@ -627,6 +628,10 @@ html[layout='joy'] {
       box-shadow: none;
       margin-bottom: calculateRem(16px);
     }
+  }
+
+  .sbchapter__item--active, .sbchapter__item--active:hover, .sbchapter__item:hover {
+    border: calculateRem(1px) solid var(--primary-300);
   }
 
   .sbchapter__title {
