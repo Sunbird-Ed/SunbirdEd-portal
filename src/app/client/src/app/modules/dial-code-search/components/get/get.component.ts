@@ -74,6 +74,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public navigateToSearch() {
+    sessionStorage.removeItem('l1parent');  // l1parent value is removed (SB-19982)
     if (this.searchKeyword) {
       this.router.navigate(['/get/dial', _.trim(this.searchKeyword)]);
     }

@@ -535,7 +535,7 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.1.28":
+"@project-sunbird/client-services@^3.1.29":
   version "3.1.29"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.29.tgz#843a0c941f47884133a6956facb9a8a72def2494"
   integrity sha512-zNFwksrD3xklp2qRYQlMUvtt6T0caHkm6ypO1K7TUH0AeXlS4vGnDaAo6WZ8LR/36mLwQXtPmsnnCzEQj/SiAQ==
