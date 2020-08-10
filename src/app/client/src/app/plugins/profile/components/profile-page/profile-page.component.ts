@@ -111,12 +111,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   setNonCustodianUserLocation() {
     const subOrgs = _.filter(this.userProfile.organisations, (org) => {
+      /*istanbul ignore else */
       if (this.userProfile.rootOrgId !== org.organisationId) {
         return org;
       }
     });
+    /*istanbul ignore else */
     if (!_.isEmpty(subOrgs)) {
       const sortedSubOrgs = _.reverse(_.sortBy(subOrgs, 'orgjoindate'));
+      /*istanbul ignore else */
       if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
         _.forEach(sortedSubOrgs[0].locations, (location) => {
           this.nonCustodianUserLocation[location.type] = location.name;
