@@ -45,7 +45,7 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
     district = await getDistrictName(req, requestParams);
   }
 
-  const courseData = await getCreatorBatches(req, courseId, currentUser, _.get(userData, 'identifier'))
+  const courseData = await getUserEnrolledCourses(req, courseId, _.get(userData, 'identifier'))
   const resObj = {
     userId: _.get(userData, 'identifier'),
     userName: _.get(userData, 'firstName') + (_.get(userData, 'lastName') || ''),
@@ -54,8 +54,6 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
   };
   return resObj;
 };
-
-
 
 const getDistrictName = async (req, requestParams) => {
   logger.info({ msg: `getDistrictName() is called with ${JSON.stringify(requestParams)} url: ${certRegURL + 'data/v1/location/search'}` })
@@ -66,70 +64,29 @@ const getDistrictName = async (req, requestParams) => {
   return (_.get(response, 'data.result.response[0].name'));
 };
 
-
-const getCreatorBatches = async (req, courseId, currentUser, userId) => {
-  logger.info({ msg: `getCreatorBatches() is called with ${courseId}, currentUser ${currentUser} userId: ${userId} with url: ${certRegURL + 'content/v1/read'}` });
-  const requestParams = {
-      request: {
-        filters: {
-          courseId: courseId,
-          createdBy:  currentUser,
-          status: ['0', '1', '2']
-        },
-        sort_by: {
-          createdDate: 'desc'
-        }
-      }
-  };
-  logger.info({ msg: `HTTPService is called in  getBatchList() of current user with ${certRegURL + 'course/v1/batch/list'}` });
-  const response = await HTTPService.post(`${certRegURL + 'course/v1/batch/list'}`, requestParams, getHeaders()).toPromise().catch(err => {
-    logger.error({ msg: `Error occurred in batchList() while fetching course error:  ${err}` });	
-  });
-
-  const creatorBatches = _.get(response, 'data.result.response.content');
-  const enrolledBatches = await getUserEnrolledCourses(req, userId);
-  const data = filterUserBatches(courseId, creatorBatches, enrolledBatches);
-  logger.info({msg: `returning response from getCreatorBatches for courseId: ${courseId}, currentUser ${currentUser} userId: ${userId} Data: ${creatorBatches}`})
-
-  return data ;
-}
-
-const getUserEnrolledCourses = async (req, userId) => {
+const getUserEnrolledCourses = async (req, courseId, userId) => {
   logger.info({ msg: `getUserEnrolledCourses() is called with userId ${userId}` });
     const appConfig = getHeaders();
     appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
-    const response = await HTTPService.get(`${certRegURL + 'course/v1/user/enrollment/list'}/${userId}`, appConfig).toPromise().catch(err => {
+    const response = await HTTPService.get(`${certRegURL + 'course/v1/user/enrollment/list'}/${userId}?fields=name,contentType,pkgVersion&batchDetails=name,createdBy,certificates`, appConfig).toPromise().catch(err => {
       logger.error({ msg: `Error occurred in getBatches() while fetching course error:  ${err}` });
     });
-    logger.info({msg: `returning response from getUserEnrolledCourses for userId: ${userId} Data: ${_.get(response, 'data.result.courses')}`})
-    return _.get(response, 'data.result.courses');
-}
+    logger.info({msg: `returning response from getUserEnrolledCourses for userId: ${userId} Data: ${_.get(response, 'data.result.courses')}`});
 
-const filterUserBatches = (courseId, creatorBatches, enrolledBatches) => {
-  logger.info({ msg: `filterUserBatches() is called with courseId ${courseId}` });
-
-  let courseData = {};
-  for (let batch of enrolledBatches) {
-        if (batch) {
-          if (_.isEqual(_.get(batch, 'courseId'), courseId)) {
-              courseData = {
-                courseId: _.get(batch, 'courseId'),
-                name: _.get(batch, 'content.name'),
-                contentType: _.get(batch, 'content.contentType'),
-                pkgVersion: _.get(batch, 'content.pkgVersion'),
-                batches: [],
-              };
-            const creatorBatch = _.find(creatorBatches, {batchId: _.get(batch, 'batchId')});
-              if (creatorBatch) {
-                batch.createdBy = _.get(creatorBatch, 'createdBy');
-                batch.progress =  _.get(batch, 'progress') > 0 ? (_.get(batch, 'progress') === _.get(batch, 'leafNodesCount') ? 2 : 1) : 0;
-                batch.name = _.get(creatorBatch, 'name');
-                courseData.batches.push(_.omit(batch, 'content'));
-              }
-          }
-        }
-  }
-  logger.info({msg: `returning response from filterUserBatches for courseId: ${courseId} Data: ${JSON.stringify(courseData)}`})
-  return courseData;
+    let batchList = _.map(_.get(response, 'data.result.courses'), batch => {
+      if (_.get(batch, 'courseId') === courseId) {
+        batch.name = _.get(batch, 'batch.name');
+        return batch;
+      }
+    });
+    batchList = _.compact(batchList);
+    const courseData = {
+        courseId: courseId,
+        name: _.get(batchList, '[0].name'),
+        contentType: _.get(batchList, '[0].content.contentType'),
+        pkgVersion: _.get(batchList, '[0].content.pkgVersion'),
+        batches: batchList
+    }
+    return courseData;
 }
 module.exports = { getUserCertificates };

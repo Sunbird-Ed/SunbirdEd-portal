@@ -17,9 +17,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   @Input() userName;
   courseId: string;
   userData: IUserCertificate;
-  certList: Array<{}>;
   channelName: string;
-  batchList = [];
   showModal = false;
   userBatch: {};
   telemetryImpression: IImpressionEventInput;
@@ -45,24 +43,31 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   }
 
   searchCertificates() {
-    this.batchList = [];
+    let value = !_.isEmpty(this.userData) ? this.userData['courses'].batches = [] : [];
     this.button.nativeElement.disabled = true;
     this.button.nativeElement.classList.add('sb-btn-disabled');
     this.button.nativeElement.classList.remove('sb-btn-outline-primary');
     this.certService.getUserCertList(this.userName.trim(), this.courseId, this.userService.userid)
     .pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.modifyCss();
-      if (_.isEmpty(_.get(data, 'result.response.err'))) {
+      if (!this.isErrorOccurred(_.get(data, 'result.response'))) {
         this.userData = _.get(data, 'result.response');
-        this.batchList = _.get(data, 'result.response.courses.batches');
-        const value = _.isEmpty(this.batchList) ? this.toasterService.error(this.resourceService.messages.dashboard.emsg.m002) : [];
-      } else {
-        this.showErrorMsg();
       }
-    }, err => {
+    }, (err) => {
       this.modifyCss();
-      this.showErrorMsg();
+      this.showErrorMsg(this.resourceService.messages.dashboard.emsg.m001);
+      value = !_.isEmpty(this.userData) ? this.userData['courses'].batches = [] : [];
     });
+  }
+
+  isErrorOccurred(response) {
+    const errMsg = _.isEmpty(response) ? (this.resourceService.messages.emsg.m004).replace('{instance}', this.channelName) :
+        (_.isEmpty(_.get(response, 'courses.batches')) ? this.resourceService.messages.dashboard.emsg.m002 : '');
+      if (!_.isEmpty(errMsg)) {
+        this.showErrorMsg(errMsg);
+        return true;
+      }
+      return false;
   }
 
   modifyCss() {
@@ -71,8 +76,8 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
     this.button.nativeElement.classList.add('sb-btn-outline-primary');
   }
 
-  showErrorMsg()  {
-    this.toasterService.error(this.resourceService.messages.dashboard.emsg.m001);
+  showErrorMsg(msg)  {
+    this.toasterService.error(msg);
   }
 
   reIssueCert (batch) {
@@ -95,7 +100,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   toggleModal(visibility = false, batch?: {}) {
       if (batch) {
       this.showModal = !_.isEqual(_.get(batch, 'createdBy'), this.userService.userid)
-      ? (this.toasterService.error(this.resourceService.messages.dashboard.emsg.m004), false) : visibility;
+      ? (this.showErrorMsg(this.resourceService.messages.dashboard.emsg.m004), false) : visibility;
       this.userBatch = batch;
     } else {
       this.showModal = visibility;
@@ -158,7 +163,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
 
   resetValues() {
     this.userName = this.userName ? this.userName.trim() : this.userName;
-    this.batchList = [];
+    const value = !_.isEmpty(this.userData) ? this.userData['courses'].batches = [] : [];
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
