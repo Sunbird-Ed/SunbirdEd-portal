@@ -1,6 +1,13 @@
 @import "variables";
 @import "mixins/mixins";
 
+.item a.item.active, .item a.item:hover {
+  outline: none;
+  color: var(--primary-color) !important;
+}
+.item a.item.active {
+  font-weight: bold;
+}
 /* new styles */
 .sb-linkmenu {
   overflow: auto;
@@ -20,6 +27,9 @@
     align-items: center;
     cursor: pointer;
     white-space: nowrap;
+    @include respond-above(md){
+      min-width: 180px;
+    }
     &.active,
     &:hover {
       color: var(--white);

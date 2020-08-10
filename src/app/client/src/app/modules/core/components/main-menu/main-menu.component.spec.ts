@@ -47,7 +47,7 @@ describe('MainMenuComponent', () => {
     });
   });
   it('should create with layout config', () => {
-    component.layoutConfiguration ={};
+    component.layoutConfiguration = {};
     expect(component).toBeTruthy();
-  })
+  });
 });

@@ -10,8 +10,8 @@
 
 <ng-container *ngIf="layoutConfiguration">
   <div class="sb-field mb-24 w-100">
-    <label class="fmedium">{{title}}</label>
-    <sui-select class="selection sbt-dropdown sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
+    <label class="fnormal font-weight-bold d-flex">{{title}}</label>
+    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
       <div class="sbt-dropdown-section" *ngIf="showHeader">
         <div *ngFor="let group of optionData">
           <!-- <div class="header">{{group.label}}</div> -->
@@ -28,25 +28,3 @@
     </sui-select>
   </div>
 </ng-container>
-<!-- 
-<div class="sb-field mb-24 w-100">
-  <label class="fmedium">Board</label>
-  <sui-select class="selection sbt-dropdown sbt-dropdown--normal sbt-purple" [(ngModel)]="preSelectedValue">
-    <div class="state-selection__section" *ngFor="let group of optionData">
-      <div class="header">{{group.label}}</div>
-      <sui-select-option class="active" *ngFor="let option of group.option" [value]="option.name"
-        (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
-    </div>
-  </sui-select>
-</div>
-
-<div class="sb-field mb-24 w-100">
-  <label class="fmedium">Medium</label>
-  <sui-select class="selection sbt-dropdown sbt-dropdown--normal sbt-green" [(ngModel)]="preSelectedValue">
-    <div class="state-selection__section" *ngFor="let group of optionData">
-      <div class="header">{{group.label}}</div>
-      <sui-select-option class="active" *ngFor="let option of group.option" [value]="option.name"
-        (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
-    </div>
-  </sui-select>
-</div>  -->

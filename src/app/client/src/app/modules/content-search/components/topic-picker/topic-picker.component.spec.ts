@@ -14,7 +14,7 @@ describe('TopicPickerComponent', () => {
         identifier: '01',
         name: 'topic_1',
         children: []
-    },{
+    }, {
         identifier: '02',
         name: 'topic_2',
         children: []

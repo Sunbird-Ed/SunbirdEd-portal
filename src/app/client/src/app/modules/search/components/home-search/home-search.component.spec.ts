@@ -193,7 +193,7 @@ describe('HomeSearchComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should redo layout on render',() => {
+  it('should redo layout on render', () => {
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout();
