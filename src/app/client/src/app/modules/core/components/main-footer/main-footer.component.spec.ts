@@ -3,7 +3,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
+import {ResourceService, ConfigService, SharedModule, NavigationHelperService, UtilService} from '@sunbird/shared';
 import { MainFooterComponent } from './main-footer.component';
 import { CacheService } from 'ng2-cache-service';
 import { of } from 'rxjs';
@@ -67,7 +67,7 @@ describe('MainFooterComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            providers: [CacheService, ConfigService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
+            providers: [CacheService, ConfigService, NavigationHelperService, UtilService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
                 provide: ActivatedRoute, useValue: mockActivatedRoute
             }],
             imports: [CoreModule, HttpClientModule, WebExtensionModule.forRoot(),

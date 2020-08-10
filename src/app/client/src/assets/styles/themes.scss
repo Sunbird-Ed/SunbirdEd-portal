@@ -577,6 +577,9 @@ html[layout='joy'] {
 
   .contentViewerIframeShadow {
     border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0px 0px;
+    &.player-fullscreen{
+      border-radius: initial;
+    }
   }
 
   .content-video__player__details {
