@@ -229,4 +229,17 @@ describe('ProfilePageComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
+  
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
+    component.userProfile = Response.userData;
+    component.setNonCustodianUserLocation();
+    expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
+    expect(component.nonCustodianUserLocation['district']).toBe('MUNGER');
+    expect(component.nonCustodianUserLocation['state']).toBe('Bihar');
+  });
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation error case', () => {
+    component.userProfile = Response.userProfile;
+    component.setNonCustodianUserLocation();
+    expect(Object.values(component.nonCustodianUserLocation).length).toBe(0);
+  });
 });

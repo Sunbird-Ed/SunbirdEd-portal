@@ -113,7 +113,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!_.isEmpty(subOrgs)) {
       const sortedSubOrgs = _.reverse(_.sortBy(subOrgs, 'orgjoindate'));
       if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
-        this.nonCustodianUserLocation = sortedSubOrgs[0].locations;
+        _.forEach(sortedSubOrgs[0].locations, (location) => {
+          this.nonCustodianUserLocation[location.type] = location.name;
+        })
       }
     }
   }
