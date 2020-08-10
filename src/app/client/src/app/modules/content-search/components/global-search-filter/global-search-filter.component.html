@@ -8,7 +8,7 @@
     <sui-accordion class="sbt-filter-accordion">
       <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
         <ng-container content>
-          <div class="sbt-filter-bar mr-16">
+          <div class="sbt-filter-bar mr-16 pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
                 (click)="resetFilters()" appTelemetryInteract
@@ -21,8 +21,8 @@
                 </i>
               </span>
             </div>
-            <div class="sbt-filter-scrollable relative o-y-visible">
-              <div class="fnormal mb-8">Based on your preferences</div>
+            <div class="sbt-filter-scrollable relative o-y-visible pr-24">
+              <div class="fnormal mb-8 text-left">Based on your preferences</div>
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label>

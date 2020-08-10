@@ -110,20 +110,31 @@
     }
   }
 
+  /* rtl for sbt filter */
+  .sbt-filter {
+    .sbt-filter-text {
+      right: calculateRem(24px);
+      padding: 0 calculateRem(48px) 0 calculateRem(16px);
+      left: inherit;
+    }
+    .sbt-filter-switcher {
+      right: calculateRem(24px);
+    }
+  }
 }
-
-
 
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
   z-index: 9;
   position: relative;
+
   &-text,
   &-overlay {
     display: none;
   }
-  &-close{
-    background: #fff;
+
+  &-close {
+    background: var(--white);
     box-shadow: var(--sbt-box-shadow-3px);
     border-radius: 50%;
     width: 24px;
@@ -131,10 +142,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     @include respond-above(md) {
       display: none;
     }
   }
+
   &-switcher {
     width: calculateRem(40px);
     height: calculateRem(40px);
@@ -151,23 +164,27 @@
     top: 0px;
     z-index: 999;
     cursor: pointer;
-
+    html[dir="rtl"] & {
+      right:calculateRem(24px);
+    }
     i {
       margin-top: calculateRem(-10px);
       margin-left: calculateRem(3px);
       font-size: calculateRem(20px);
     }
   }
+
   @include respond-above(md) {
     position: sticky;
     top: calculateRem(188px);
     // margin-top: calculateRem(-72px);
   }
+
   @include respond-between(sm, md) {
     // margin-top: calculateRem(-72px);
     position: fixed;
     // z-index: 1111;
-    top: calculateRem(188px);
+    top: calculateRem(224px);
 
     &-overlay {
       position: fixed;
@@ -206,8 +223,13 @@
       justify-content: center;
       box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
+      html[dir="rtl"] & {
+        right: calculateRem(24px);
+        padding: 0 calculateRem(48px) 0 calculateRem(16px);
+      }
     }
   }
+
   &-bar {
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-6px);
@@ -222,7 +244,7 @@
     z-index: 9999;
     margin: 0;
     border-radius: calculateRem(24px);
-  
+
     @include respond-between(sm, md) {
       position: absolute;
       top: 0;
@@ -230,7 +252,7 @@
       z-index: 1112;
       height: auto;
     }
-  
+
     @include respond-above(md) {
       z-index: initial;
       position: relative;
@@ -238,30 +260,29 @@
       height: auto;
       // margin-top:calculateRem(-72px);
     }
-  
-    &.mr-16 {
-      @include respond-below(sm) {
-        margin-right: 0 !important;
-      }
-    }
   }
+
   &-scrollable {
+    position: relative;
     overflow-y: auto;
-    padding-right: calculateRem(24px);
     height: calc(100vh - 64px);
 
     @include respond-between(sm, md) {
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 158px);
       height: auto;
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 388px);
+      max-height: calc(100vh - 158px);
       height: auto;
       // height: auto;
       // overflow: initial;
       // max-height: inherit;
     }
+  }
+
+  &-noscrollable {
+    overflow-y: inherit !important;
   }
 
   .state-medium-container {
@@ -294,7 +315,5 @@
     }
   }
 
-
-
-
 }
+

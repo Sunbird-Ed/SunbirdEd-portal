@@ -43,7 +43,7 @@
         <sui-accordion class="sbt-filter-accordion">
             <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
               <ng-container content>
-            <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16">
+            <div *ngIf="(boards.length || emptyBoard) && refresh" class="sbt-filter-bar mr-16 pl-24">
                 <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
                     <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer hide">Reset <i class="icon undo"></i></button>
                     <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">	
@@ -53,8 +53,8 @@
                     </i>
                   </span>
                    </div>
-                <div class="fnormal mb-8">Based on your preferences</div>
-                <div class="sbt-filter-scrollable relative position">
+                <div class="fnormal mb-8 text-left">Based on your preferences</div>
+                <div class="sbt-filter-scrollable sbt-filter-noscrollable pr-24">
                     <!-- State and Medium sections -->
                         <div *ngIf="boards?.length" class="w-100">
                             <!-- state section -->
