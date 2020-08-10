@@ -36,7 +36,8 @@ const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -70,6 +71,32 @@ app.all([
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
+
+app.use(['/user/*', '/merge/*', '/device/*', '/google/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/v1/user/*' , '/logoff', '/logout', '/sso/sign-in/*'], 
+  morgan((tokens, req, res) => {
+  const tokensList = [
+    "reqId: " + req.get('X-Request-ID'),
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+  ];
+  if(logger.level === "debug"){ // add more info when log level is debug
+    tokensList.push(
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      "requestBody:", req.body ? JSON.stringify(req.body) : "empty"
+    )
+  }
+  return tokensList.join(' ');
+})); // , { skip: (req, res) => !(logger.level === "debug") })); // skip logging if logger level is not debug
+
+app.get('/enableDebugMode', (req, res, next) => {
+  const logLevel = req.query.logLevel || "debug";
+  const timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
+  console.log("enable debug mode called", logLevel, timeInterval);
+  logger.level = logLevel;
+  res.send('debug enabled');
+});
 
 app.all('/sessionExpired', endSession, (req, res) => {
   const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
