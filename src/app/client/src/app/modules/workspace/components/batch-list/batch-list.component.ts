@@ -4,7 +4,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
-  ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService
+  ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService,LayoutService
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
@@ -41,7 +41,8 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
   public activatedRoute: ActivatedRoute;
 
   public closeIntractEdata: IInteractEventEdata;
-
+  layoutConfiguration: any;
+  public unsubscribe$ = new Subject<void>();
   /**
    * Contains list of batchList  of logged-in user
   */
@@ -160,7 +161,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public navigationhelperService: NavigationHelperService) {
+    config: ConfigService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -178,6 +179,7 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
   }
 
   ngOnInit() {
+    this.initLayout();
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       map(results => ({ params: results[0], queryParams: results[1] })),
       filter(res => this.pageNumber !== Number(res.params.pageNumber) || !_.isEqual(this.queryParams, res.queryParams)),
@@ -200,6 +202,16 @@ export class BatchListComponent extends WorkSpace implements OnInit, OnDestroy, 
       this.noResult = true;
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   /**

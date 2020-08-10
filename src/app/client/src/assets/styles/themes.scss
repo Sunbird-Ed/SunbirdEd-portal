@@ -380,6 +380,9 @@ html[layout='joy'] {
     border-radius: 0px calc(var(--sbt-bradius) * 8) calc(var(--sbt-bradius) * 8) 0px;
     box-shadow: none;
   }
+  .sbt-prominent-filter .treepicker-parent input {
+    padding-left:8px;
+  }
   // modal styles
   .sb-modal {
     .ui.modal {
@@ -442,8 +445,10 @@ html[layout='joy'] {
   }
   .sb-field .ui.selection.dropdown, sui-multi-select.ui.selection.dropdown{
     border-radius: calc(var(--sbt-bradius) * 12) !important;
+    padding-left: 16px;
+  }
+  .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown {
     background: var(--white);
-    padding-left: 16px !important;
   }
   .ui.active.selection.dropdown, .ui.selection.active.dropdown .menu, .ui.dropdown.selection, .ui.dropdown.selection .menu {
     border-radius: calc(var(--sbt-bradius) * 12) !important;
@@ -475,7 +480,7 @@ html[layout='joy'] {
   //end
 
   // Groups
-  .sb-back-btn-panel, .sbt-back-header .content-header,.sbt-activity-search .sb-prominent-filter, .sbt-add-member .sb-bg-color-white, .sbt-mygroups-details .sb-bg-color-white {
+  .sb-back-btn-panel, .sbt-back-header .content-header,.sbt-activity-search .sb-prominent-filter, .sbt-add-member .sb-bg-color-white, .sbt-mygroups-details .sb-bg-color-white, .sbt-groups-login .content-header {
     background: var(--sbt-compt-bg) !important;
   }
   .sb-back-btn-panel  {
@@ -506,6 +511,11 @@ html[layout='joy'] {
   .sb-search-box {
     border-radius: 24px;
     overflow: hidden;
+  }
+  .sbt-groups-login .content-header {
+    border-radius: 24px;
+    margin-top:24px;
+    padding:0px 16px;
   }
   .sb-members-list-item:hover,.sb-members-list-item.active {
     border-radius: 8px;
@@ -806,6 +816,10 @@ html[layout='joy'] {
 
   .sb-no-course-found {
     border: none;
+  }
+
+  .sbt-home-search-component .sb-grid .sb-card {
+    width:auto;
   }
 
 }
