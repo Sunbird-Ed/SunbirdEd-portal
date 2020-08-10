@@ -47,7 +47,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.type = this.optionLabel.Board;
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
-
     // screen size
     if (window.innerWidth <= 992 ) {
       this.isOpen = false;
@@ -172,7 +171,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private updateRoute() {
     this.router.navigate([], {
       queryParams: this.getSelectedFilter(),
-      relativeTo: this.activatedRoute.parent
+      relativeTo: this.activatedRoute.parent,
+
     });
   }
 
@@ -211,6 +211,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     } else {
       filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
     }
+    filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'Textbook';
     return filters;
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {
