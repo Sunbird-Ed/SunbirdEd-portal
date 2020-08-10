@@ -26,11 +26,11 @@ const routes: Routes = [
         }
       },
       {
-        path: 'progress', component: CourseProgressComponent, canActivate: [AuthGuard],
+        path: 'batches', component: CourseProgressComponent, canActivate: [AuthGuard],
         data: {
           roles: 'courseBatchRoles',
           telemetry: {
-            env: telemetryEnv, pageid: 'progress', uri: '/dashboard/progress',
+            env: telemetryEnv, pageid: 'batches', uri: '/dashboard/batches',
             type: 'view', object: { ver: '1.0', type: 'course' }
           }
         }
