@@ -252,12 +252,12 @@
     height: calc(100vh - 64px);
 
     @include respond-between(sm, md) {
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 158px);
       height: auto;
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 388px);
+      max-height: calc(100vh - 158px);
       height: auto;
       // height: auto;
       // overflow: initial;

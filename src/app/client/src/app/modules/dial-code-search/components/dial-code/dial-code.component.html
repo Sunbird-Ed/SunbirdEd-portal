@@ -1,10 +1,9 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-dial-code relative9':''" >
 <!-- Back button -->
-<div class="sb-bg-color-white">
+<div class="sb-bg-color-white sb-back-btn-panel">
   <div class="ui container py-8">
     <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
       [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
