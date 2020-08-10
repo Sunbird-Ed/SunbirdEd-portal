@@ -210,7 +210,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     } else {
       filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
     }
-    filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'Textbook';
+    filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
     return filters;
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {
