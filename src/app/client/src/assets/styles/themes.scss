@@ -552,6 +552,9 @@ html[layout='joy'] {
 
   .contentViewerIframeShadow {
     border-radius: calc(var(--sbt-bradius) * 12) calc(var(--sbt-bradius) * 12) 0px 0px;
+    &.player-fullscreen{
+      border-radius: initial;
+    }
   }
 
   .content-video__player__details {

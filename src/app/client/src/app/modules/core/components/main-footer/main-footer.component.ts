@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit, Input} from '@angular/core';
-import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
+import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService} from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
@@ -35,10 +35,12 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
+  isFullScreenView;
 
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
-      public tenantService: TenantService, public layoutService: LayoutService
+      public tenantService: TenantService, public layoutService: LayoutService,
+      public navigationHelperService: NavigationHelperService
     ) {
     this.resourceService = resourceService;
   }
@@ -53,6 +55,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
       helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
     };
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
   initlayout() {
     this.redoLayout();
