@@ -552,10 +552,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-styles@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.5.tgz#27af369701e96d1dbf095dbafc41c99701721897"
-  integrity sha512-4Eizp8eIn38BKFdrVI9uuLuwCi/dx4yGcqLyprnzVwJR6oCw70tsCaYH6zrkU4eDORADN81XBUx4PdgTgyLWKw==
+"@project-sunbird/sb-styles@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
+  integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
 "@project-sunbird/telemetry-sdk@^0.0.26":
   version "0.0.26"
