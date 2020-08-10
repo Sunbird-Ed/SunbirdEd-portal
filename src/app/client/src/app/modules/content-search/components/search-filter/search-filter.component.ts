@@ -171,8 +171,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private updateRoute() {
     this.router.navigate([], {
       queryParams: this.getSelectedFilter(),
-      relativeTo: this.activatedRoute.parent,
-
+      relativeTo: this.activatedRoute.parent
     });
   }
 
