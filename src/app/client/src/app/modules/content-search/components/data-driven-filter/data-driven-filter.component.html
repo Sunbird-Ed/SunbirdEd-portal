@@ -111,7 +111,7 @@
       <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
         <!--Toggle Content-->
         <ng-container content>
-          <div class="sbt-filter-bar mr-16">
+          <div class="sbt-filter-bar mr-16 pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
                 (click)="resetFilters()" appTelemetryInteract
@@ -124,7 +124,7 @@
                 </i>
               </span>
             </div>
-            <div class="sbt-filter-scrollable relative">
+            <div class="sbt-filter-scrollable relative pr-24">
               <!--Selected Filters list-->
               <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
                 <ng-container *ngFor="let field of filtersDetails">

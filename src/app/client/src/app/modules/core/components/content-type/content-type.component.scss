@@ -1,6 +1,15 @@
 @import "variables";
 @import "mixins/mixins";
-
+:host ::ng-deep {
+  .sb-linkmenu {
+    .item {
+      html[dir="rtl"] & {
+      margin-left: 24px;
+      margin-right: inherit;
+      }
+    }
+}
+}
 .item a.item.active, .item a.item:hover {
   outline: none;
   color: var(--primary-color) !important;
@@ -9,15 +18,15 @@
   font-weight: bold;
 }
 /* new styles */
+
 .sb-linkmenu {
   overflow: auto;
   padding: 8px 0;
-
   .item {
     background: var(--white);
     padding: 8px 16px;
     border-radius: 6px;
-    box-shadow: 5px 5px 2px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 2px 0 rgba(12, 12, 12, 0.1);
     font-size: 12px;
     font-weight: bold;
     margin-right: 24px;

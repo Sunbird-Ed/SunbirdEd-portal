@@ -448,7 +448,7 @@ html[layout='joy'] {
   }
   .sb-field .ui.selection.dropdown, sui-multi-select.ui.selection.dropdown{
     border-radius: var(--sbt-bradius-24) !important;
-    padding-left: calculateRem(8px);
+    padding-left: calculateRem(16px);
   }
   .sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown {
     background: var(--white);
@@ -495,10 +495,10 @@ html[layout='joy'] {
   //end
 
   // Groups
-  .sb-back-btn-panel, .sbt-back-header .content-header,.sbt-activity-search .sb-prominent-filter, .sbt-add-member .sb-bg-color-white, .sbt-mygroups-details .sb-bg-color-white, .sbt-groups-login .content-header {
+  .sb-back-btn-panel, .sbt-back-header .content-header,.sbt-activity-search .sb-prominent-filter, .sbt-add-member .sb-bg-color-white, .sbt-mygroups-details .sb-bg-color-white, .sbt-groups-login .content-header, .sbt-dial-code .sb-bg-color-white {
     background: var(--sbt-compt-bg) !important;
   }
-  .sb-back-btn-panel  {
+  .sb-back-btn-panel {
     border-radius: var(--sbt-bradius-24) !important;
     padding:0px 16px;
     margin-top: 16px;
