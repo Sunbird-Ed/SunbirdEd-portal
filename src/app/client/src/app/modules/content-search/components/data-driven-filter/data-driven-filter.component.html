@@ -102,9 +102,10 @@
 <ng-container *ngIf="layoutConfiguration">
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
-    <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">
+    <div class="sbt-filter-switcher-container cursor-pointer" appTelemetryInteract
+    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="isOpen = !isOpen">
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-      <div class="sbt-filter-text">Filter</div>
+      <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
     </div>
     <sui-accordion class="sbt-filter-accordion">
       <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
@@ -124,15 +125,6 @@
               </span>
             </div>
             <div class="sbt-filter-scrollable relative">
-              <!--Toggle Header-->
-              <div *ngIf="isShowFilterLabel" title class="sb-data-driven-filter-header" appTelemetryInteract
-                [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-                (click)="accordionDefaultOpen = !accordionDefaultOpen">
-                <i class="icon filter"></i>
-                {{resourceService.frmelmnts?.lbl?.filters}}
-                <i class="dropdown icon"></i>
-              </div>
-              <!--/Toggle Header-->
               <!--Selected Filters list-->
               <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
                 <ng-container *ngFor="let field of filtersDetails">
