@@ -70,7 +70,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   externalIds: {};
   schoolObj: { idType: string, provider: string, id: string };
   instance: string;
-
+  nonCustodianUserLocation : object = {};
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
@@ -98,10 +98,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
         this.getTrainingAttended();
+        this.setNonCustodianUserLocation();
       }
     });
     this.setInteractEventData();
   }
+
+  setNonCustodianUserLocation() {
+    const subOrgs = _.filter(this.userProfile.organisations, (org) => {
+      if (this.userProfile.rootOrgId !== org.organisationId) {
+        return org;
+      }
+    });
+    if (!_.isEmpty(subOrgs)) {
+      const sortedSubOrgs = _.reverse(_.sortBy(subOrgs, 'orgjoindate'));
+      if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
+        this.nonCustodianUserLocation = sortedSubOrgs[0].locations;
+      }
+    }
+  }
+
 
   populateLocationDetails() {
     const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
