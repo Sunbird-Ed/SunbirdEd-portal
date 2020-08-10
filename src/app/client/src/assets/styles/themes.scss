@@ -195,9 +195,9 @@ html[data-theme='Default'] {
   --sbt-pill-bg-active: hsl(var(--sbt-pill-hs), 61%); // #6338ff
   --sbt-compt-bg: #F2F4F6;
   --sbt-bradius: 0.125rem;
-  --sbt-bradius-16: var(--sbt-bradius-16);
-  --sbt-bradius-24: var(--sbt-bradius-24);
-  --sbt-bradius-32: var(--sbt-bradius-32);
+  --sbt-bradius-16: calc(var(--sbt-bradius) * 8);	
+  --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
+  --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
 
   --sbt-textbooks: #0091FF;
   --sbt-courses: #0531FF;
@@ -259,9 +259,9 @@ html[data-theme='Green'] {
   --sbt-pill-bg-active: hsl(var(--sbt-pill-hs), 61%); // #6338ff
   --sbt-compt-bg: #F2F4F6;
   --sbt-bradius: 0.125rem;
-  --sbt-bradius-16: var(--sbt-bradius-16);
-  --sbt-bradius-24: var(--sbt-bradius-24);
-  --sbt-bradius-32: var(--sbt-bradius-32);
+  --sbt-bradius-16: calc(var(--sbt-bradius) * 8);	
+  --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
+  --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
 
   --sbt-textbooks: #0091FF;
   --sbt-courses: #0531FF;
