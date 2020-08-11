@@ -5,10 +5,11 @@ import { ActivityDashboardComponent } from './activity-dashboard.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { of, BehaviorSubject } from 'rxjs';
+import { of, BehaviorSubject, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { courseHierarchy, nestedCourse, activityData, groupData } from './activity-dashboard.component.spec.data';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -37,6 +38,7 @@ describe('ActivityDashboardComponent', () => {
     'messages': {
       'fmsg': {
         'm0087': 'Please wait',
+        'm0051': 'Something went wrong, try again later'
       },
       'emsg': {
         'm002': 'Could not find the group. Try again later',
@@ -172,4 +174,99 @@ describe('ActivityDashboardComponent', () => {
     const members = component.getSortedMembers();
     expect(members).toEqual(sortedMembers);
   });
+
+  it ('should call getCollectionHierarchy()', () => {
+    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(of (courseHierarchy));
+    spyOn(component, 'updateArray');
+    spyOn(component, 'flattenDeep').and.returnValue(nestedCourse);
+    component.activityId = 'do_21307962614412902412404';
+    component.groupData = { activities: [{ id: 'do_1234', activityInfo: { name: 'activity1' } }, { id: 'do_0903232', activityInfo: { name: 'activity2' } }] };
+    component.checkForNestedCourses(activityData);
+    component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
+      expect(component.updateArray).toHaveBeenCalledWith(courseHierarchy.result.content);
+      expect(component.flattenDeep).toHaveBeenCalledWith(courseHierarchy.result.content.children);
+      expect(component.showLoader).toBeFalsy();
+    });
+  });
+
+  it ('should throw error in checkForNestedCourses()', () => {
+    spyOn(component['playerService'], 'getCollectionHierarchy').and.returnValue(throwError ({}));
+    component.activityId = 'do_21307962614412902412404';
+    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'navigateBack');
+    component.checkForNestedCourses(activityData);
+    component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
+    }, err => {
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
+      expect(component.navigateBack).toHaveBeenCalled();
+    });
+  });
+
+  it('should push course to nested[]', () => {
+    component.nestedCourses = [{identifier: '1', name: 'Test 1', leafNodesCount: 1}];
+    component.updateArray({identifier: '123', name: 'Test 2', leafNodesCount: 2});
+    expect(component.nestedCourses.length).toEqual(2);
+    expect(component.selectedCourse).toEqual({identifier: '1', name: 'Test 1', leafNodesCount: 1});
+
+  });
+
+  it('should flatten nested courses', () => {
+   const response = component.flattenDeep(courseHierarchy.result.content.children);
+    expect(response.length).toEqual(4);
+  });
+
+  it('should flatten nested courses where there is no children', () => {
+    const response = component.flattenDeep(nestedCourse);
+     expect(response.length).toEqual(2);
+   });
+
+  it ('should handleSelectedCourse', () => {
+    component.groupData = groupData;
+    component.nestedCourses = [
+    {identifier: 'do_1234', name: 'Test 1', leafNodesCount: 1},
+    {identifier: 'do_0903232', name: 'Test 2', leafNodesCount: 2}
+    ];
+    component.groupId = 'ddebb90c-59b5-4e82-9805-0fbeabed9389';
+    spyOn(component['groupService'], 'getActivity').and.returnValue(of (activityData));
+    spyOn(component, 'processData');
+    spyOn(component, 'toggleDropdown');
+    component.handleSelectedCourse({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
+    expect(component.selectedCourse).toEqual({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
+    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
+    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData).subscribe(data => {
+      expect(component.showLoader).toBeFalsy();
+      expect(component.processData).toHaveBeenCalledWith(data);
+      expect(component.toggleDropdown).toHaveBeenCalled();
+    });
+    expect(component['groupService'].getActivity).toHaveBeenCalledWith('ddebb90c-59b5-4e82-9805-0fbeabed9389',
+    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData);
+  });
+
+  it ('should throw error on handleSelectedCourse()', () => {
+    spyOn(component, 'toggleDropdown');
+    spyOn(component['groupService'], 'getActivity').and.returnValue(throwError ({}));
+    spyOn(component['toasterService'], 'error');
+    component.handleSelectedCourse({identifier: 'do_2125636421522554881918', name: 'Test 2', leafNodesCount: 2});
+    component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
+    {id: 'do_2125636421522554881918' , type: 'Course'}, groupData).subscribe(data => {
+    }, err => {
+      expect(component.showLoader).toBeFalsy();
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+    });
+  });
+
+  it('should toggledropdown', () => {
+    component.dropdownContent = false;
+    component.toggleDropdown();
+    expect(component.dropdownContent).toBeTruthy();
+  });
+
+  it('should unsubscribe', () => {
+    spyOn(component['unsubscribe$'], 'next');
+    spyOn(component['unsubscribe$'], 'complete');
+    component.ngOnDestroy();
+    expect(component['unsubscribe$'].next).toHaveBeenCalled();
+    expect(component['unsubscribe$'].complete).toHaveBeenCalled();
+  });
+
 });

@@ -27,12 +27,25 @@
       </div>
     </div>
   </div>
-
   <div class="ui container mt-24">
-    <div class="status-container sb-bg-color-white flex-dc d-flex p-8 py-16 br-4" style="width:40%;">
-      <div class="mr-8 mb-8 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>
-
-      <div class="px-8">
+    <div class="status-container sb-bg-color-white flex-dc d-flex pb-8 br-4" style="width:40%;">
+      <div class="nested-group-content">
+      <div class="nested-course-area" *ngIf="nestedCourses.length > 1">
+        <div class="d-flex flex-ai-center flex-jc-space-between p-24" (click)="toggleDropdown();addTelemetry('course-dropdown', [])">
+          <div class="font-weight-bold">{{selectedCourse?.name}}</div>
+          <div><img src="assets/images/arrow-dropdown.svg"></div>
+        </div>
+      </div>
+      <div class="dropdown-content p-24" [hidden]="dropdownContent">
+        <div class="members-group-list d-flex">
+          <div class="members-group-list-item d-flex flex-dc w-100">
+            <div class="member-name" (click)="handleSelectedCourse(course);addTelemetry('select-course', [{id: course?.identifier, type: 'SelectedDropdown'}], {selectedCourse: {id: course?.identifier }})" *ngFor="let course of nestedCourses">
+              <span [ngClass]="{'font-weight-bold': course?.identifier === selectedCourse?.identifier }">{{course?.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
         <div class="sb-search-box no-btn mb-16">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
@@ -41,16 +54,15 @@
           </div>
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
+        <div class="mr-8 py-16 pr-16 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      <div class="px-24">
       </div>
-      <div class="d-flex flex-dc">
+      <div class="d-flex flex-dc p-16">
         <div *ngFor="let member of memberListToShow" class="relative">
           <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
             [progressDisplay]="member?.progress" [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
           </sb-member-card>
         </div>
       </div>
-
-
       <div class="member-no-result p-24" *ngIf="showSearchResults && !memberListToShow?.length" >
         <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
           <img width="197" src="./assets/images/add-member.png" alt="">
@@ -65,5 +77,4 @@
       </div>
     </div>
   </div>
-
 </div>
