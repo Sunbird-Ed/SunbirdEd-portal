@@ -109,6 +109,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setInteractEventData();
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
+
   setNonCustodianUserLocation() {
     const subOrgs = _.filter(this.userProfile.organisations, (org) => {
       /*istanbul ignore else */
@@ -126,15 +135,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         })
       }
     }
-  }
-
-  initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-      if (layoutConfig != null) {
-        this.layoutConfiguration = layoutConfig.layout;
-      }
-    });
   }
 
   populateLocationDetails() {
