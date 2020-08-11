@@ -36,6 +36,7 @@
     align-items: center;
     cursor: pointer;
     white-space: nowrap;
+    color: var(--gray-800);
     @include respond-above(md){
       min-width: 180px;
     }
@@ -43,11 +44,12 @@
     &:hover {
       color: var(--white);
       text-decoration: none;
+      background-color: var(--primary-color);
       .sb-icon {
         background-color: var(--white);
       }
     }
-
+/*
     &--textbooks {
       color: var(--sbt-textbooks-text);
 
@@ -127,6 +129,7 @@
         background-color: var(--sbt-all-bg);
       }
     }
+    */
   }
 }
 
@@ -137,7 +140,7 @@
   mask-repeat: no-repeat;
   display: inline-block;
   cursor: pointer;
-
+  background: var(--primary-color);
   &--xxs {
     width: var(--icon-svg-xxs);
     height: var(--icon-svg-xxs);
