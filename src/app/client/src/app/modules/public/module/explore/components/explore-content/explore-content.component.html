@@ -17,11 +17,12 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT" >
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div class="content-grid mt-24 relative9">
-          <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
+          <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
             <div class="sb-pageSection-header">
               <div class="">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                interpolate:'{searchString}':this.queryParams.key "></h4>
+                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:'*' "></h4> 
+                <span class="badge">{{totalCount}}</span>
               </div>
             </div>
           </div>
