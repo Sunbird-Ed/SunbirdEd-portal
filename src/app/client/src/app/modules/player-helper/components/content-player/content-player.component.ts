@@ -71,6 +71,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   ngOnInit() {
+    this.checkFullScreenView();
     if (this.contentProgressEvents$) {
       this.contentProgressEvents$.subscribe(data => {
         this.contentProgressEvents$.next(data);
@@ -83,6 +84,13 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
       this.isFullScreenView = isFullScreen;
     });
   }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().

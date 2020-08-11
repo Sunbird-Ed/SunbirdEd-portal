@@ -47,6 +47,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.initlayout();
+    this.checkFullScreenView();
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
@@ -60,6 +61,13 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       this.isFullScreenView = isFullScreen;
     });
   }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
   initlayout() {
     this.redoLayout();
   }

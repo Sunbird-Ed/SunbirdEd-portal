@@ -484,6 +484,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.checkFullScreenView();
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
@@ -522,6 +523,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
   }
