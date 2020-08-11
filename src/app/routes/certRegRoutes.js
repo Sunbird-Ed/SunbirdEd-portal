@@ -9,6 +9,7 @@ const _ = require('lodash')
 const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { getUserCertificates } = require('./../helpers/certHelper');
+const { logError } = require('./../helpers/utilityService');
 
 
 var certRegServiceApi = {
@@ -51,7 +52,7 @@ module.exports = function (app) {
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        logger.info({ msg: `${certRegServiceApi.getUserDetails} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
+        logger.debug({ msg: `${req.url} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
         currentUser = _.get(req, 'body.request.filters.createdBy');
         delete req.body.request.filters['courseId'];
@@ -68,7 +69,7 @@ module.exports = function (app) {
             return data;
           } else return proxyUtils.handleSessionExpiry(proxyRes, _.omit(data, ['result.response.content', 'result.response.count']), req, res);
         } catch (err) {
-          logger.error({ msg: `Error occurred while searching userData with: ${certRegServiceApi.getUserDetails}, Error: ${err}` });
+          logError(req, err, `Error occurred while searching userData with: ${certRegServiceApi.getUserDetails}`);
           return proxyUtils.handleSessionExpiry(proxyRes, err , req, res);
         }
       },
@@ -83,8 +84,13 @@ module.exports = function (app) {
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        logger.info({ msg: `/course/batch/cert/v1/issue?reissue=true is called with ${JSON.stringify(_.get(req, 'body'))}` });
-        return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reissue=true').path;
+        logger.debug({ msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
+        if (_.get(req.body, 'request.createdBy') === req.session['userId']) {
+          return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reissue=true').path;
+        } else {
+          logError(req, 'UNAUTHORIZED_USER', `createdBy,${_.get(req.body, 'request.createdBy')},  userID: ${req.session['userId']} should be equal`);
+          throw new Error('UNAUTHORIZED_USER');
+        }
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
@@ -93,7 +99,7 @@ module.exports = function (app) {
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
-          logger.error({ msg: 'Error Occurred while reIssuing certificate:', err });
+          logError(req, err, 'Error occurred while reIssuing certificate');
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       },
