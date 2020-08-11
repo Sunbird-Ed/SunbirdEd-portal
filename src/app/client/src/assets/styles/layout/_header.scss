@@ -73,6 +73,9 @@
   border: 0;
   margin-bottom: calculateRem(-1px);
 
+  &.player-fullscreen-header{
+    display: none !important;
+  }
   .logo {
     img {
       height: calculateRem(56px);

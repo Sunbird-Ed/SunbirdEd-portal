@@ -5,6 +5,9 @@
 :host ::ng-deep{
   .new-layout-footer{
     margin-top:calculateRem(24px);
+    &.player-fullscreen-footer{
+      display: none;
+    }
     .sbt-footer-container {
       height: calculateRem(272px); //296px
       width: 100%;
