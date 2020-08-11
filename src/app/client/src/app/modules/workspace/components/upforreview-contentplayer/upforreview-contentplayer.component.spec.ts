@@ -81,5 +81,10 @@ describe('UpforreviewContentplayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.layoutConfiguration = null;
+  });
 
 });
