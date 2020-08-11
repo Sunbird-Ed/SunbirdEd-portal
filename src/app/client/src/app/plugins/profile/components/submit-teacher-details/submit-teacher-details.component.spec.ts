@@ -124,13 +124,10 @@ describe('SubmitTeacherDetailsComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'impression');
     spyOn(component, 'setTelemetryData');
-    spyOn(component, 'setFormDetails');
-    spyOn(component, 'initializeFormFields');
     userService._userData$.next({err: null, userProfile: {}});
     component.ngOnInit();
     expect(telemetryService.impression).toHaveBeenCalled();
     expect(component.setTelemetryData).toHaveBeenCalled();
-    expect(component.setFormDetails).toHaveBeenCalled();
   });
 
   it('should call setTelemetryData', () => {
@@ -164,26 +161,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  it('should call setFormDetails and get success', () => {
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.formData));
-    spyOn(component, 'initializeFormFields');
-    component.setFormDetails();
-    expect(component.formData).toEqual(mockRes.formData);
-    expect(component.initializeFormFields).toHaveBeenCalled();
-  });
-
-  it('should call setFormDetails and get error', () => {
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableThrowError({}));
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    spyOn(component, 'closeModal');
-    component.setFormDetails();
-    expect(component.closeModal).toHaveBeenCalled();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-  });
-
   it('should call onSubmitForm with success', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'getOrganisationDetails').and.returnValue(observableOf(mockRes.orgSearch));
@@ -206,17 +183,6 @@ describe('SubmitTeacherDetailsComponent', () => {
   it('should call setValidations and should return data', () => {
     const returnData = component.setValidations(mockRes.checkValidationInput);
     expect(returnData).toBeDefined();
-  });
-
-  it('should call getState and get success', () => {
-    const state = component.userDetailsForm.controls['state'];
-    state.setValue('');
-    component.userProfile = mockRes.userData;
-    const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(mockRes.stateData));
-    spyOn(component, 'initializeFormFields');
-    component.getState();
-    expect(component.allStates).toBe(mockRes.stateData.result.response);
   });
 
   it('should call getState and get error', () => {
@@ -250,11 +216,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.getDistrict('');
     expect(component.closeModal).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0017);
-  });
-
-  it('should return false as state not changed', () => {
-    const data = component.isStateChanged();
-    expect(data).toBe(false);
   });
 
   it('should fetch tnc configuration', () => {
@@ -295,7 +256,7 @@ describe('SubmitTeacherDetailsComponent', () => {
 
   it('should return add operation as form action is submit', () => {
     component.formAction = 'submit';
-    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    const data = component.getOperation();
     expect(data).toBe('add');
   });
 
@@ -306,7 +267,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.formAction = 'update';
     userData.externalIds = mockRes.externalId;
     component.userProfile = userData;
-    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    const data = component.getOperation();
     expect(data).toBe('add');
   });
 
@@ -317,7 +278,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.formAction = 'update';
     userData.externalIds = mockRes.externalId;
     component.userProfile = userData;
-    const data = component.getOperation('declared-school-name', 'tp', '2222');
+    const data = component.getOperation();
     expect(data).toBe('edit');
   });
 
@@ -345,7 +306,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.userDetailsForm.addControl('emailVerified', new FormControl());
     component.onVerificationSuccess({email: '22'});
     expect(component.isOtpVerificationRequired).toBe(false);
-    expect(component.validationType.email.isVerified).toBe(true);
+    expect(component.validationType['declared-email'].isVerified).toBe(true);
   });
 
   it('should generate otp for email', () => {
@@ -409,21 +370,6 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(emailControl.value).toBe(true);
   });
 
-  it('should get proper external ID data for state', () => {
-    const userData = mockRes.userData.result.response;
-    const userService = TestBed.get(UserService);
-    userData.externalIds = mockRes.externalId;
-    component.userProfile = userData;
-    userService._userData$.next({err: null, userProfile: userData});
-    const data = component.getExternalIdObject('declared-state');
-    expect(data.id).toBe('29');
-  });
-
-  it('should not get external ID for email as data not present', () => {
-    const data = component.getExternalId('declared-email');
-    expect(data).toBe(undefined);
-  });
-
   it('should set form data and user profile email from userprofile', () => {
     const tncService = TestBed.get(TncService);
     const userService = TestBed.get(UserService);
@@ -438,8 +384,8 @@ describe('SubmitTeacherDetailsComponent', () => {
     userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
     fixture.detectChanges();
     const emailControl = component.userDetailsForm.controls.email;
-    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
-    expect(component.validationType.email.isVerified).toBe(true);
+    expect(component.prepopulatedValue['declared-email']).toBe('so******@techjoomla.com');
+    expect(component.validationType['declared-email'].isVerified).toBe(true);
     expect(emailControl.value).toBe('so******@techjoomla.com');
   });
 
@@ -457,9 +403,9 @@ describe('SubmitTeacherDetailsComponent', () => {
     emailControl.setValue('differentmailid@yopmail.com');
     tick(500);
     fixture.detectChanges();
-    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
-    expect(component.validationType.email.isVerificationRequired).toBe(true);
-    expect(component.validationType.email.isVerified).toBe(false);
+    expect(component.prepopulatedValue['declared-email']).toBe('so******@techjoomla.com');
+    expect(component.validationType['declared-email'].isVerificationRequired).toBe(true);
+    expect(component.validationType['declared-email'].isVerified).toBe(false);
   }));
 
   it('should as not ask for verification as form not correct', fakeAsync(() => {
@@ -472,13 +418,13 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(telemetryService, 'impression');
     userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
     component.ngOnInit();
-    const emailControl = component.userDetailsForm.controls.email;
+    const emailControl = component.userDetailsForm.controls['declared-email'];
     emailControl.setValue('asd');
     tick(500);
     fixture.detectChanges();
-    expect(component.prepopulatedValue.email).toBe('so******@techjoomla.com');
-    expect(component.validationType.email.isVerificationRequired).toBe(false);
-    expect(component.validationType.email.isVerified).toBe(false);
+    expect(component.prepopulatedValue['declared-email']).toBe('so******@techjoomla.com');
+    expect(component.validationType['declared-email'].isVerificationRequired).toBe(false);
+    expect(component.validationType['declared-email'].isVerified).toBe(false);
   }));
 
 
@@ -492,15 +438,15 @@ describe('SubmitTeacherDetailsComponent', () => {
     spyOn(telemetryService, 'impression');
     userService._userData$.next({err: null, userProfile: mockRes.userData.result.response});
     component.ngOnInit();
-    const phoneControl = component.userDetailsForm.controls.phone;
+    const phoneControl = component.userDetailsForm.controls['declared-phone'];
     phoneControl.setValue('9656989656');
     tick(500);
     fixture.detectChanges();
     phoneControl.setValue('');
     tick(500);
     fixture.detectChanges();
-    expect(component.validationType.phone.isVerificationRequired).toBe(false);
-    expect(component.validationType.phone.isVerified).toBe(false);
+    expect(component.validationType['declared-email'].isVerificationRequired).toBe(false);
+    expect(component.validationType['declared-email'].isVerified).toBe(false);
   }));
 
 });

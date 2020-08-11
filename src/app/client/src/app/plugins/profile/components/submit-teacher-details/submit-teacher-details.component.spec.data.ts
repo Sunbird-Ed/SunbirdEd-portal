@@ -150,38 +150,9 @@ export const mockRes = {
       'errors': []
     }
   },
-  formData: [{
-    'code': 'state',
-    'dataType': 'text',
-    'name': 'state',
-    'label': 'State',
-    'description': 'Select state',
-    'editable': true,
-    'inputType': 'select',
-    'required': true,
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 1
-  }, {
-    'code': 'district',
-    'dataType': 'text',
-    'name': 'district',
-    'label': 'District',
-    'description': 'Select district',
-    'editable': true,
-    'inputType': 'select',
-    'required': true,
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 2
-  }, {
-      'code': 'phone',
+  formData: [
+    {
+    'code': 'phone',
     'dataType': 'number',
     'name': 'phone',
     'label': 'Phone Number',
@@ -622,7 +593,23 @@ export const mockRes = {
         'createdDate': '2020-05-30 06:22:55:836+0000',
         'createdBy': null,
         'location': null,
-        'tncAcceptedVersion': 'v1'
+        'tncAcceptedVersion': 'v1',
+        'declarations': [
+          {
+            'persona': 'volunteer',
+            'errorType': null,
+            'orgId': '013016492159606784174',
+            'status': 'PENDING',
+            'info': {
+              'declared-email': 'dev-user-10@yopmail.com',
+              'declared-ext-id': 'EKL12345',
+              'declared-phone': '8867003222',
+              'declared-school-name': 'Ekstep dev school',
+              'declared-school-udise-code': '12312312311',
+              'type': 'Kendria Vidhyalaya 1'
+            }
+          }
+        ],
       }
     }
   },
@@ -677,5 +664,75 @@ export const mockRes = {
     'name': 'mock state',
     'id': '969dd3c1-4e9',
     'type': 'state'
-  }
+  },
+  tenantsList: [
+    {
+        'code': 'tenants',
+        'name': 'tenants',
+        'label': 'Tenants',
+        'range': [
+            {
+                'label': 'Andhra Pradesh',
+                'value': '01232241426855526450',
+                'index': 1
+            },
+            {
+                'label': 'CBSE',
+                'value': '013016492159606784174',
+                'index': 3
+            }
+        ]
+    }
+],
+teacherDetailForm: [
+    {
+        'code': 'type',
+        'dataType': 'text',
+        'name': 'type',
+        'label': 'NCERT type',
+        'index': 1
+    },
+    {
+        'code': 'declared-phone',
+        'dataType': 'number',
+        'name': 'phone',
+        'label': 'Mobile Number',
+        'index': 2
+    },
+    {
+        'code': 'declared-email',
+        'dataType': 'text',
+        'name': 'email',
+        'label': 'Email Address',
+        'index': 3
+    },
+    {
+        'code': 'declared-school-name',
+        'dataType': 'text',
+        'name': 'school',
+        'label': 'Andhra pradesh School name',
+        'index': 4
+    },
+    {
+        'code': 'declared-school-udise-code',
+        'dataType': 'text',
+        'name': 'udiseId',
+        'label': 'Andhra pradesh UDISE ID',
+        'index': 5
+    },
+    {
+        'code': 'declared-ext-id',
+        'dataType': 'text',
+        'name': 'teacherId',
+        'label': 'Andhra pradesh teacher ID',
+        'index': 6
+    },
+    {
+        'code': 'tnc',
+        'dataType': 'text',
+        'name': 'tnc',
+        'description': '',
+        'index': 7
+    }
+],
 };
