@@ -118,7 +118,7 @@ $columns: 12;
 /* sb grid responsive grid styles */
 .sb-card-grid, .sbgrid, .sb-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(252.98px, 1fr));
   grid-gap: 1rem;
   @include respond-above(sm) {
     grid-row-gap: 1.5rem;

@@ -55,7 +55,12 @@ export class LayoutService {
     if (layoutConfigExternal) {
         return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + resultLayout + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
     } else {
-      return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + total + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
+      if(columnType[0] != total) {
+        return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + resultLayout + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
+      } else {
+        return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + total + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
+      }
+      
 
     }
   }
