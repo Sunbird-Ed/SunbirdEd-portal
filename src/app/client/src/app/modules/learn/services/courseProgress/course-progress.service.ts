@@ -44,7 +44,9 @@ export class CourseProgressService {
   public getContentState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
-    if (courseProgress) {
+    const fetchedContents = _.map(_.get(courseProgress, 'content'), 'contentId');
+    const contentToBeFetched = _.difference(req.contentIds, fetchedContents);
+    if (!contentToBeFetched.length && courseProgress) {
       this.courseProgressData.emit(_.cloneDeep(courseProgress));
       return observableOf(_.cloneDeep(courseProgress));
     }
