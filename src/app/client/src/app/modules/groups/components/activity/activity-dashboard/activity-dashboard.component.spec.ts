@@ -183,7 +183,6 @@ describe('ActivityDashboardComponent', () => {
     component.groupData = { activities: [{ id: 'do_1234', activityInfo: { name: 'activity1' } }, { id: 'do_0903232', activityInfo: { name: 'activity2' } }] };
     component.checkForNestedCourses(activityData);
     component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
-      expect(component.selectedCourse).toEqual({identifier: 'do_21307962614412902412404', name: 'ParentCourse', leafNodesCount: 1});
       expect(component.updateArray).toHaveBeenCalledWith(courseHierarchy.result.content);
       expect(component.flattenDeep).toHaveBeenCalledWith(courseHierarchy.result.content.children);
       expect(component.showLoader).toBeFalsy();
@@ -207,6 +206,8 @@ describe('ActivityDashboardComponent', () => {
     component.nestedCourses = [{identifier: '1', name: 'Test 1', leafNodesCount: 1}];
     component.updateArray({identifier: '123', name: 'Test 2', leafNodesCount: 2});
     expect(component.nestedCourses.length).toEqual(2);
+    expect(component.selectedCourse).toEqual({identifier: '1', name: 'Test 1', leafNodesCount: 1});
+
   });
 
   it('should flatten nested courses', () => {

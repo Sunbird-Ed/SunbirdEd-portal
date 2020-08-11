@@ -176,9 +176,6 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   .pipe(takeUntil(this.unsubscribe$))
   .subscribe((data) => {
     const courseHierarchy = data.result.content;
-    this.selectedCourse = {identifier: _.get(courseHierarchy, 'identifier'),
-    name: _.get(courseHierarchy, 'name'), leafNodesCount: _.get(courseHierarchy, 'leafNodesCount')};
-
     this.updateArray(courseHierarchy);
     const childCourses = this.flattenDeep(courseHierarchy.children).filter(c => c.contentType === 'Course');
     if (childCourses.length > 0) {
@@ -197,6 +194,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   updateArray(course) {
     this.nestedCourses.push({identifier: _.get(course, 'identifier'),
     name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount')});
+    this.selectedCourse = this.nestedCourses[0];
   }
 
   flattenDeep(contents) {
