@@ -39,9 +39,9 @@ describe('AppLoaderComponent', () => {
 
   it('should init layout with old configuration', () => {
     const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'data'}));
+    spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'data'});
     component.ngOnInit();
-    expect(component.layoutConfiguration).toBe('data');
+    expect(component.layoutConfiguration).toEqual({layout: 'data'});
   });
 
 });

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
 import {LayoutService, ResourceService} from '../../services/index';
@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
   selector: 'app-loader',
   templateUrl: './app-loader.component.html'
 })
-export class AppLoaderComponent implements OnInit, OnDestroy {
+export class AppLoaderComponent implements OnInit {
   @Input() data: ILoaderMessage;
   headerMessage: string;
   loaderMessage: string;
