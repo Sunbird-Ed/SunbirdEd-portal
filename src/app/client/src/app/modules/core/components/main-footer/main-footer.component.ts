@@ -67,15 +67,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   initlayout() {
     this.redoLayout();
   }
-  redoLayout() {
-      if (this.layoutConfiguration != null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-      } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-      }
-  }
+
  ngAfterViewInit() {
     // this.footerAlign();
   }
@@ -83,6 +75,15 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   onResize(event) {
     // this.footerAlign();
   }
+
+  setTelemetryInteractEdata(type): IInteractEventEdata {
+    return {
+      id: type,
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
+    };
+  }
+
   // footer dynamic height
   footerAlign() {
     const footerHeight = $('footer').outerHeight();
@@ -95,6 +96,16 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
       (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
+    }
+  }
+
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
 
@@ -136,13 +147,5 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   redirect(url) {
     window.location.href = url;
-  }
-
-  setTelemetryInteractEdata(type): IInteractEventEdata {
-    return {
-      id: type,
-      type: 'click',
-      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
-    };
   }
 }
