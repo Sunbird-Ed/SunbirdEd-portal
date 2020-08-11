@@ -21,7 +21,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   public closeInteractEdata: IInteractEventEdata;
 
-  private unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
   /**
    * To navigate to other pages
    */
@@ -147,6 +147,13 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
       this.closeUrl = this.navigationHelperService.getPreviousUrl();
     });
   }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.publishWarningModal) {
+      this.publishWarningModal.deny();
+    }
+  }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -155,13 +162,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
-  }
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-    if (this.publishWarningModal) {
-      this.publishWarningModal.deny();
-    }
   }
   public handleSceneChangeEvent(data) {
     if (this.stageId !== data.stageId) {
