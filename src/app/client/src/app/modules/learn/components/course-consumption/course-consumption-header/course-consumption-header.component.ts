@@ -1,6 +1,6 @@
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
-import { takeUntil, delay } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -109,7 +109,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
-      delay(100),
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         if (this.batchId) {
