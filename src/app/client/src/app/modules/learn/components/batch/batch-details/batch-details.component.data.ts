@@ -16,6 +16,26 @@ export const enrolledBatch = {
       }
     }
   };
+
+  export const enrolledBatchWithCertificate = {
+    'id': 'api.course.batch.read', 'ver': 'v1', 'ts': '2018-05-30 03:32:04:000+0000',
+    'params': { 'resmsgid': null, 'msgid': '6ed12357-0075-5766-1151-996c48bf714e', 'err': null, 'status': 'success', 'errmsg': null },
+    'responseCode': 'OK', 'result': {
+      'response': {
+        'cert_templates': {'template_22': {'description' : 'This course certificate is only for Rajasthan users scoring 80% or above'}},
+        'identifier': '01250836468775321655', 'participant': { 'ac918519-f8b8-4150-bd90-56ead42454d0': true }, 'createdFor': ['ORG_001'],
+        'courseAdditionalInfo': {
+          'courseName': 'logu-test-may-21', 'leafNodesCount': '3', 'description': 'test',
+          'courseLogoUrl': 'https://ekstep-public-4117ad59083b2a_1475430290462.thumb.jpeg',
+          'tocUrl': 'https://do_1125083286221291521153toc.json', 'status': 'Live'
+        }, 'endDate': '2018-05-28T18:30:00.000Z', 'description': 'cccccc', 'countIncrementDate': '2018-05-21 12:00:02:439+0000',
+        'updatedDate': '2018-05-21 12:00:02:439+0000', 'countIncrementStatus': true, 'createdDate': '2018-05-21 10:41:09:529+0000',
+        'createdBy': '6d4da241-a31b-4041-bbdb-dd3a898b3f85', 'courseCreator': '6d4da241-a31b-4041-bbdb-dd3a898b3f85',
+        'hashTagId': '01250836468775321655', 'mentors': [], 'name': 'fffff', 'countDecrementStatus': false, 'id': '01250836468775321655',
+        'enrollmentType': 'open', 'courseId': 'do_1125083286221291521153', 'startDate': '2018-05-21T10:40:43.781Z', 'status': 1
+      }
+    }
+  };
 export  const allBatchDetails = {
     'id': 'api.course.batch.search', 'ver': 'v1', 'ts': '2018-05-30 04:02:30:798+0000',
     'params': {

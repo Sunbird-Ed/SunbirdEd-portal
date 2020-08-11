@@ -1,0 +1,277 @@
+<!-- first screen -->
+<div class="certificate-container py-16" *ngIf="!showscreen">
+  <div class="ui container">
+    <div class="ui stackable grid m-0">
+      <div class="four wide column">
+        <div class="certificate-sidebar px-24">
+          <div class="py-24 font-weight-bold certificates-label">Configure certificates</div>
+          <div class="certificate-sbcard mb-16" *ngFor="let item of configureCertificate">
+            <div class="d-flex flex-ai-center flex-jc-space-between">
+              <div class="certificate-card-title">{{item.title}}</div>
+              <div class="d-flex flex-ai-center">
+                <div class="certificate-card-img"> <img src={{item.imagePath}} width="25px" height="20px" /></div>
+                <div class="certificate-card-count pl-8">{{item.count}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="eight wide column">
+        <div class="select-template-content p-24">
+          <div class="d-flex flex-dc flex-ai-center text-center mt-32">
+            <div><img src="../../assets/images/addcertificate.png"></div>
+            <p class="no-template-text pt-16 pb-24 mb-0">You do not have any certificates attached yet.
+              To proceed, click the <b>Add certificate</b> button</p>
+            <button type="button" (click)="secondscreen()"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn px-32">Add
+              Certificate<i class="plus icon"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- second screen -->
+<div class="certificate-container py-16" *ngIf="showscreen && !showanotherscreen">
+  <div class="ui container">
+    <div class="ui stackable grid m-0">
+      <div class="eight wide column">
+        <div class="certificate-content-area sb-bg-color-white p-24">
+          <div class='ui stackable grid mt-0'>
+            <div class="six wide column pt-0">
+              <div class="pb-24 font-weight-bold certificates-label">Add Cerificate</div>
+              <div class="d-flex flex-dc">
+                <label class="fnormal font-weight-normal">Certificate Type</label>
+                <!-- <sui-select class="selection" placeholder="Select" labelField="name" valueField="id" #select>
+                  <sui-select-option>Merit certificate</sui-select-option>
+                  <sui-select-option>2</sui-select-option>
+                </sui-select> -->
+              </div>
+            </div>
+          </div>
+
+          <div class='ui stackable grid mt-0'>
+            <div class="six wide column">
+              <div class="py-16 pb-24 font-weight-bold certificates-label">Cerificate Rules</div>
+              <div class="d-flex flex-dc">
+                <label class="fnormal font-weight-normal">Issue Certificate to?</label>
+                <!-- <sui-select class="selection" placeholder="Select" labelField="name" valueField="id"
+                  [isSearchable]="true" #select>
+                  <sui-select-option>1</sui-select-option>
+                  <sui-select-option>2</sui-select-option>
+                </sui-select> -->
+              </div>
+            </div>
+          </div>
+
+          <div class='ui stackable grid mt-0'>
+            <div class="six wide column">
+              <div class="pt-32">
+                <div class="d-flex flex-ai-center flex-jc-space-between">
+                  <div class="fnormal font-weight-bold">Current Template</div>
+                  <div class="fsmall date-text">Added : 29:07:2020</div>
+                </div>
+                <div class="d-flex flex-ai-center flex-dc py-16">
+                  <div class="template-image p-16">
+                    <img src="assets/images/certificate-img.png" class="template-img">
+                    <div class="d-flex flex-ai-center flex-jc-flex-end pt-16">
+                      <div class="remove-label fsmall font-weight-bold" (click)="showErrorModal = !showErrorModal">
+                        Remove
+                      </div>
+                      <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                        class="sb-btn sb-btn-outline-primary sb-btn-normal ml-16 font-weight-bold">Preview</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sb-checkbox sb-checkbox-secondary py-32">
+            <input type="checkbox" id="check2" name="example">
+            <label for="check2">All the elements and attributes are throughly verified</label>
+          </div>
+        </div>
+      </div>
+      <div class="four wide column">
+        <div class="select-template-content p-24">
+          <div class="fnormal pb-16 font-weight-bold">Templates</div>
+
+          <div class="mb-16">
+            <div class="d-flex flex-ai-center flex-jc-center flex-dc p-24 select-template-area">
+              <div><img src="assets/images/addcertificate.png"></div>
+              <div class="no-template-text py-16">No templates to show</div>
+            </div>
+            <p class="fnormal py-16 select-certificate-text">Select certificate type to see available templates</p>
+          </div>
+
+          <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
+            <div class="select-template-container__content">
+              <div class="template-checkbox">
+                <div class="sb-checkbox sb-checkbox-secondary py-32">
+                  <input type="checkbox" id="check3" name="example">
+                  <label for="check3"></label></div>
+              </div>
+              <div class="template-image">
+                <img src="assets/images/certificate-img.png" class="template-img"></div>
+            </div>
+          </div>
+
+          <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
+            <div class="select-template-container__content">
+              <div class="template-checkbox">
+                <div class="sb-checkbox sb-checkbox-secondary py-32">
+                  <input type="checkbox" id="check3" name="example">
+                  <label for="check3"></label></div>
+              </div>
+              <div class="template-image">
+                <img src="assets/images/certificate-img.png" class="template-img"></div>
+            </div>
+            <div class="overlay-container">
+              <div class="overlay-buttons">
+                <button type="button" (click)="showTemplateDetectModal = !showTemplateDetectModal"
+                  class="d-block sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn"><i
+                    class="expand icon"></i>Select</button>
+                <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                  class="d-block sb-btn sb-btn-normal sb-btn-outline-primary my-16">
+                  preview</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- third screen -->
+<div class="certificate-container py-16" *ngIf="showanotherscreen">
+  <div class="ui stackable grid m-0">
+    <div class="four wide column">
+      <div class="certificate-sidebar px-24">
+        <div class="py-24 font-weight-bold certificates-label">Configure certificates</div>
+        <div class="certificate-sbcard mb-16" *ngFor="let item of configureCertificate">
+          <div class="d-flex flex-ai-center flex-jc-space-between">
+            <div class="certificate-card-title">{{item.title}}</div>
+            <div class="d-flex flex-ai-center">
+              <div class="certificate-card-img"> <img src={{item.imagePath}} width="25px" height="20px" /></div>
+              <div class="certificate-card-count pl-8">{{item.count}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="eight wide column">
+      <div class="certificate-edit-content p-24">
+        <div class="content">
+          <div class="fnormal pb-16 font-weight-bold">Certificate</div>
+          <div class="certificate-edit-area">
+            <div class="certificate-edit-sbcard">
+              <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
+                <div class="certificate-frame">
+                  <img src="assets/images/certificate-img.png"></div>
+                <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
+                  <div class="remove-label" (click)="showErrorModal = !showErrorModal">Remove</div>
+                  <div class="d-flex flex-ai-center">
+                    <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                      class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button>
+                    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="certificate-edit-sbcard">
+              <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
+                <div class="d-flex flex-ai-center flex-jc-center addcertificate-content">
+                  <div class="addcertificate-content__title">Add Certificate <span class="plus-icon">+</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer certificate -->
+<div class="ui container" *ngIf="showscreen">
+  <div class="ui stackable grid m-0">
+    <div class="twelve wide column">
+      <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel</button>
+        <button class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="thirdscreen()">Add Certificate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <sui-modal *ngIf="showErrorModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal sb-error" appBodyScroll (dismissed)="showErrorModal = !showErrorModal" #modal>
+  <div class="sb-modal-header">
+    Remove Certificate?
+  </div>
+  <div class="sb-modal-content">
+    <p class="pt-16 pb-24 px-16 mb-0">The configurations saved will be lost when the certificate is removed</p>
+    <p class="pb-16 px-16 mb-0">Would you really want to remove this certificate?</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="showErrorModal = !showErrorModal">
+      Remove
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="showErrorModal = !showErrorModal">
+      Cancel
+    </button>
+  </div>
+</sui-modal> -->
+
+<!-- <sui-modal *ngIf="showPreviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal" appBodyScroll (dismissed)="showPreviewModal = !showPreviewModal" #modal>
+  <div class="sb-modal-header">
+    Certificate Preview
+  </div>
+  <div class="sb-modal-content">
+    <div><img src="assets/images/certificate-img.png" class="w-100"></div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Select template
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Close
+    </button>
+  </div>
+</sui-modal> -->
+
+<!-- <sui-modal *ngIf="showTemplateDetectModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-batch-update-modal" appBodyScroll
+  (dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #modal>
+  <div class="sb-modal-header">
+    Template Change detected!
+  </div>
+  <div class="sb-modal-content">
+    <div class="ui stackable grid mt-16 mb-8">
+      <div class="two wide column p-0">
+        <div class="checkbox-img"></div>
+      </div>
+      <div class="nine wide column p-0">
+        <p class="fnormal">
+          All the participants who already have recieved
+          certifices with previous template will be be re-issued
+          certificates this new template and old certificates will be revoked automatically</p>
+        <p class="fnormal mb-0">Would you really want to change the template?</p>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary">
+      Yes
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      No
+    </button>
+  </div>
+</sui-modal> -->

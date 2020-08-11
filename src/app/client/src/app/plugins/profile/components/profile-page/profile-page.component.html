@@ -360,7 +360,7 @@
          <!-- certificates-->
         <div class="container my-16 sb-certificate-trained" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
-            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
+            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
             <div class="list-items" *ngIf="data.issuingAuthority">

@@ -6,15 +6,16 @@
       <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
       <div class="course-complete-data font-weight-bold">
         <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
-        <div>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</div>
+        <p>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="!isCertificateAttached">
+    <div class="course-complete-para mt-32" *ngIf="certificateDescription === ''; else withCertificate">
       <span>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
     </div>
   </div>
 
   <ng-template #withCertificate>
-    <span>{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</span>
+    <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription}}</p>
+    <p class="fsmall mb-0">{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
   </ng-template>
 </sui-modal>
