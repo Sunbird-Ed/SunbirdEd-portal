@@ -5,6 +5,7 @@
 
       .sb-grade-pills-container {
         background: inherit !important;
+        padding-top:0px !important;
       }
 
       .sb-pills-container {
@@ -91,8 +92,8 @@
 
   .sbt-reset-bar {
     position: absolute;
-    top: calculateRem(12px);
-    right: calculateRem(16px);
+    top: calculateRem(8px);
+    right: calculateRem(8px);
 
     html[dir="rtl"] & {
       left: calculateRem(16px);
@@ -118,9 +119,10 @@
   border-radius: calculateRem(24px);
   height: calculateRem(40px);
   width: 100%;
-  margin-bottom: calculateRem(16px);
+  margin-bottom: calculateRem(8px);
   font-size: calculateRem(12px);
   font-weight: bold;
+  box-shadow: var(--sbt-box-shadow-3px);
 }
 
 }
@@ -152,6 +154,7 @@
   }
 
   &-switcher {
+    --primary-color:#024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--primary-color);
@@ -180,14 +183,12 @@
   @include respond-above(md) {
     position: sticky;
     top: calculateRem(188px);
-    // margin-top: calculateRem(-72px);
+    margin-top: calculateRem(-128px);
   }
 
   @include respond-between(sm, md) {
-    // margin-top: calculateRem(-72px);
     position: fixed;
-    // z-index: 1111;
-    top: calculateRem(224px);
+    top: calculateRem(192px);
 
     &-overlay {
       position: fixed;
@@ -237,7 +238,7 @@
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-6px);
     min-width: calculateRem(232px);
-    padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
+    padding: calculateRem(24px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
     position: fixed;
     top: 4px;
     right: 0;
@@ -271,13 +272,11 @@
     height: calc(100vh - 64px);
     padding-bottom: calculateRem(8px);
     @include respond-between(sm, md) {
-      max-height: calc(100vh - 158px);
-      height: auto;
+      height: calc(100vh - 280px); 
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 158px);
-      height: auto;
+      height: calc(100vh - 256px);  
       // height: auto;
       // overflow: initial;
       // max-height: inherit;
