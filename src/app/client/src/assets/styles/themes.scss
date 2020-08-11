@@ -839,6 +839,10 @@ html[layout='joy'] {
   .popup-content {
     width: calculateRem(896px) !important;
   }
+
+  app-batch-card .link.cards {
+    width: 100%;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
