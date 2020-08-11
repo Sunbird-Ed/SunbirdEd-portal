@@ -10,7 +10,7 @@ import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEv
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { combineLatest, merge, Subject } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, delay } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
@@ -193,6 +193,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
       });
     this.courseProgressService.courseProgressData.pipe(
+      delay(100),
       takeUntil(this.unsubscribe))
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
@@ -236,6 +237,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseProgressService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+        this.progress = res.progress ? Math.floor(res.progress) : 0; // update progress
         this.contentStatus = res.content || [];
         this.calculateProgress();
       },

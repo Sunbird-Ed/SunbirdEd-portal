@@ -43,6 +43,11 @@ export class CourseProgressService {
   */
   public getContentState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
+    const courseProgress = this.courseProgress[courseId_batchId];
+    if (courseProgress) {
+      this.courseProgressData.emit(_.cloneDeep(courseProgress));
+      return observableOf(_.cloneDeep(courseProgress));
+    }
       const channelOptions = {
         url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_READ,
         data: {
