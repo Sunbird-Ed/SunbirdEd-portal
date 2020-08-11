@@ -103,8 +103,6 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
 
   showPublishWarningModal = false;
   layoutConfiguration: any;
-  FIRST_PANEL_LAYOUT;
-  SECOND_PANEL_LAYOUT;
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
