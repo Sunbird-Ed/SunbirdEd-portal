@@ -21,14 +21,14 @@
                 </i>
               </span>
             </div>
-            <div class="sbt-filter-scrollable relative o-y-visible pr-24">
-              <div class="fnormal mb-8 text-left">Based on your preferences</div>
+            <div class="sbt-filter-scrollable pr-24">
+              <div class="fsmall my-8 text-left">Based on your preferences</div>
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label>
                   <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
+                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-8"
                     [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
                     (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
                     #multiSelect>

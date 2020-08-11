@@ -11,7 +11,7 @@
   <app-group-header [groupData]="groupData"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">
         <div class="sb-pageSection">
           <div class="sb-pageSection-header">
             <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity" (click)="toggleActivityModal(true)">
@@ -26,7 +26,7 @@
         <app-add-activity *ngIf="!groupData?.activities?.length"></app-add-activity>
         <app-activity-list *ngIf="groupData?.activities?.length" [groupData]="groupData"></app-activity-list>
       </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 ">
         <app-group-members [config]="config" [members]="members" [groupData]="groupData"></app-group-members>
       </div>
     </div>
