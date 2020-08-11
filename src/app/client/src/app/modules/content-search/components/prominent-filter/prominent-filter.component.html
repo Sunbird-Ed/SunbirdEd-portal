@@ -103,7 +103,7 @@
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
     <div class="sbt-filter-switcher-container cursor-pointer" appTelemetryInteract
-    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="isOpen = !isOpen">
+    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="accordionDefaultOpen = !accordionDefaultOpen">
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
       <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
     </div>
@@ -117,7 +117,7 @@
                 (click)="resetFilters()" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
                   class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">	
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="accordionDefaultOpen = !accordionDefaultOpen">	
                     <svg class="icon icon-svg--red">	
                         <use xlink:href="./assets/images/sprite.svg#close"></use>	
                     </svg>	
