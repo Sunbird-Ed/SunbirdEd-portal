@@ -119,7 +119,7 @@
   border-radius: calculateRem(24px);
   height: calculateRem(40px);
   width: 100%;
-  margin-bottom: calculateRem(8px);
+  margin-bottom: calculateRem(16px);
   font-size: calculateRem(12px);
   font-weight: bold;
   box-shadow: var(--sbt-box-shadow-3px);
@@ -276,8 +276,8 @@
     }
 
     @include respond-above(md) {
-      height: calc(100vh - 256px);  
-      // height: auto;
+      max-height: calc(100vh - 256px);
+      height: auto;
       // overflow: initial;
       // max-height: inherit;
     }
