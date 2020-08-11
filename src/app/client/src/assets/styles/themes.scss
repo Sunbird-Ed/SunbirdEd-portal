@@ -866,6 +866,11 @@ html[layout='joy'] {
   app-batch-card .link.cards {
     width: 100%;
   }
+
+  .cc-player__border-fix {
+    border-top-left-radius: calculateRem(24px);
+    border-top-right-radius: calculateRem(24px);
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
