@@ -285,7 +285,7 @@ describe('MainHeaderComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
@@ -294,7 +294,7 @@ describe('MainHeaderComponent', () => {
   it('should make isFullScreenView to true', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
     expect(component.isFullScreenView).toBe(true);
