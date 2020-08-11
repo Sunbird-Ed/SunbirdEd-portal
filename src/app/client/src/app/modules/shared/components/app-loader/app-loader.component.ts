@@ -3,8 +3,6 @@ import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
 import {LayoutService, ResourceService} from '../../services/index';
 import * as _ from 'lodash-es';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 
 /**
  * loader component
@@ -18,7 +16,6 @@ export class AppLoaderComponent implements OnInit, OnDestroy {
   headerMessage: string;
   loaderMessage: string;
   layoutConfiguration: any;
-  unsubscribe$ = new Subject<void>();
 
   constructor(public resourceService: ResourceService, public layoutService: LayoutService) {
     this.resourceService = resourceService;
@@ -35,18 +32,7 @@ export class AppLoaderComponent implements OnInit, OnDestroy {
   }
 
   initLayout() {
-    this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
-      if (layoutConfig != null) {
-        this.layoutConfiguration = layoutConfig.layout;
-      }
-    });
+    this.layoutConfiguration = this.layoutService.getLayoutConfig();
   }
 
-  ngOnDestroy() {
-    if (this.unsubscribe$) {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
-    }
-  }
 }

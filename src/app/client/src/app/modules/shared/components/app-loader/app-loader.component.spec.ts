@@ -44,13 +44,4 @@ describe('AppLoaderComponent', () => {
     expect(component.layoutConfiguration).toBe('data');
   });
 
-  it('should unsubscribe from all observable subscriptions', () => {
-    spyOn(component.unsubscribe$, 'complete');
-    spyOn(component.unsubscribe$, 'next');
-    component.ngOnInit();
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
-    expect(component.unsubscribe$.next).toHaveBeenCalled();
-  });
-
 });
