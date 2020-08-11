@@ -236,7 +236,7 @@ html[data-theme='Green'] {
   --primary-200: #AFCAB1;
   --primary-100:  #d5e9d7;
   --primary-0:  #f0faf1;
-  --primary-800: #07bc81;
+  --primary-800: #0b8242;
   --sbt-body-bg: #e9f1ea;
   --sbt-header-bg: var(--primary-300);
   --sbt-menu-bg: var(--sbt-header-bg);
@@ -355,6 +355,9 @@ html[layout='joy'] {
   .sb-btn-link-primary {
     border-radius: 0px;
     box-shadow: none;
+    &:hover {
+      border-radius: calculateRem(16px);
+    }
   }
   .sb-btn-square.sb-btn-sm {
     box-shadow: none;
@@ -516,6 +519,8 @@ html[layout='joy'] {
   .sbt-back-header .content-header {
     border-radius: 0px 0px calculateRem(24px) calculateRem(24px) !important;
     padding:0px 16px;
+    position: relative;
+    z-index: 3;
   }
   .sb-search-box {
     border-radius: var(--sbt-bradius-24);
@@ -640,6 +645,7 @@ html[layout='joy'] {
     min-height: calculateRem(48px);
     margin-bottom: calculateRem(16px);
     border: calculateRem(1px) solid var(--sbt-body-bg);
+    box-shadow: none;
     .course-content {
       border-radius: var(--sbt-bradius-32);
       padding-left: calculateRem(24px);
@@ -720,7 +726,7 @@ html[layout='joy'] {
   .relative9 {
    @include respond-above(md) {
     position: relative;
-    z-index: 8;
+    z-index: 2;
    }
   }
   .right-flower-position-adjust-container {
