@@ -133,9 +133,19 @@ describe('MainFooterComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of(false));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
     component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to true', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
   });
 
 });
