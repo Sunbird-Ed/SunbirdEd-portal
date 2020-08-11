@@ -45,6 +45,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public globalSearchFacets: Array<string>;
     public allTabData;
     public selectedFilters;
+    public totalCount;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -187,10 +188,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.contentList = data.result.content || [];
+                this.totalCount = data.result.count;
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
                 this.facetsList = [];
+                this.totalCount = 0;
                 this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.toasterService.error(this.resourceService.messages.fmsg.m0051);
