@@ -507,6 +507,9 @@ app-workspace {
 .sbt-sticky-topbar {
   top: 0;
   z-index: 10;
+  &.player-fullscreen-header{
+    display: none;
+  }
 }
 
 .sbt-sticky.sbt-sticky-topbar {
@@ -514,7 +517,6 @@ app-workspace {
     position: inherit;
   }
 }
-
 .new-footer {
   min-height: calc(100vh - 296px);
 }
