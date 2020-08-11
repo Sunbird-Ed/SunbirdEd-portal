@@ -139,7 +139,7 @@ describe('MainFooterComponent', () => {
     expect(component.isFullScreenView).toBe(false);
   });
 
-  it('should make isFullScreenView to true', () => {
+  it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
