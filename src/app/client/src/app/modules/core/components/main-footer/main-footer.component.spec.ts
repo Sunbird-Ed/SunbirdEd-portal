@@ -130,4 +130,12 @@ describe('MainFooterComponent', () => {
         expect(component).toBeTruthy();
     });
 
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of(false));
+    component.ngOnInit();
+    expect(component.isFullScreenView).toBe(false);
+  });
+
 });
