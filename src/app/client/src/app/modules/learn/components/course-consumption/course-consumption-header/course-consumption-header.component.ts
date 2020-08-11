@@ -138,7 +138,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   showDashboard() {
-    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'progress']);
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);
   }
 
   // To close the dashboard

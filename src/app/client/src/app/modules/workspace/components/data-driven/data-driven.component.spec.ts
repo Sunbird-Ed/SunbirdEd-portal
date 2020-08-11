@@ -337,13 +337,13 @@ describe('DataDrivenComponent', () => {
     componentParent.setFrameworkData(mockFrameworkData.channelData);
     expect(componentParent.frameworkCardData).toEqual([
       {
-        title: 'Academic',
-        description: `Create courses for concepts from the syllabus, across grades and subjects, for example; for fractions, photosynthesis, reading comprehension, etc.`,
+        title: 'Curriculum courses',
+        description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
         framework: 'NCFCOPY'
       },
       {
-        title: 'Non Academic',
-        description: `Create course that help develop a learner's professional skills, for example; for classroom management, pedagogy, ICT, Leadership, etc.`,
+        title: 'Generic courses',
+        description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
         framework: 'TPD'
       }
     ]);
@@ -351,7 +351,7 @@ describe('DataDrivenComponent', () => {
 
   it('should select a framework card and fires an interact event', () => {
     const mockCardData =  {
-      title: 'Academic',
+      title: 'Curriculum courses',
       description: `Create courses for concepts from the syllabus, across grades and subjects, for example;
       for fractions, photosynthesis, reading comprehension, etc.`,
       framework: 'NCFCOPY'

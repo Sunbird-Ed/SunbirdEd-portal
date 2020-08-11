@@ -19,6 +19,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
 telemtryEventConfig['pdata']['pid'] = appId
+// TODO: handle telemetry event config
+const pdata = {id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend'};
 
 module.exports = {
   /**
@@ -44,7 +46,10 @@ module.exports = {
     dims = dims ? _.concat(dims, channel) : channel
     const edata = telemetry.startEventData('session')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)})
+    const context = telemetry.getContextData({
+      channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata),
+      pdata: pdata
+    });
     context.sid = req.sessionID
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
@@ -66,7 +71,10 @@ module.exports = {
     const actor = telemetry.getActorData(req.session.userId, 'user');
     var dims = _.clone(req.session.orgs || []);
     var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id');
-    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)});
+    const context = telemetry.getContextData({
+      channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata),
+      pdata: pdata
+    });
     context.sid = req.sessionID;
     context.did = req.session.deviceId;
     console.log('logging session end event', context.did);
