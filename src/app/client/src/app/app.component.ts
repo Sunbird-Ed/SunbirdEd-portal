@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType');
+    const layoutType = localStorage.getItem('layoutType') || 'joy';
     if (layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
@@ -161,7 +161,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   setTheme() {
     const themeColour = localStorage.getItem('layoutColour') || 'Default';
-    this.selectThemeColour(themeColour);
+    this.setSelectedThemeColour(themeColour);
     document.documentElement.setAttribute('data-theme', themeColour);
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }
@@ -233,11 +233,11 @@ export class AppComponent implements OnInit, OnDestroy {
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
-  setThemeColour(value) {
+  storeThemeColour(value) {
     localStorage.setItem('layoutColour', value);
   }
 
-  selectThemeColour(value) {
+  setSelectedThemeColour(value) {
     const element = (<HTMLInputElement>document.getElementById(value));
     if (element) {
       element.checked = true;
