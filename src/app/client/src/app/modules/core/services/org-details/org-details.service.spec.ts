@@ -8,7 +8,8 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { serverRes } from './org-details.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
-
+import { PublicDataService } from './../public-data/public-data.service';
+import { LearnerService } from './../learner/learner.service';
 
 describe('OrgDetailsService', () => {
   class RouterStub {
@@ -18,7 +19,7 @@ describe('OrgDetailsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
-      providers: [OrgDetailsService, { provide: Router, useClass: RouterStub }]
+      providers: [LearnerService, PublicDataService, OrgDetailsService, { provide: Router, useClass: RouterStub }]
     });
   });
 
@@ -49,5 +50,53 @@ describe('OrgDetailsService', () => {
       expect(service.orgInfo).toBeDefined();
       expect(service).toBeTruthy();
     }));
+
+    it('Get a org details', () => {
+      const service = TestBed.get(OrgDetailsService);
+      const publicDataService = TestBed.get(PublicDataService);
+      const contentService = TestBed.get(ContentService);
+      spyOn(contentService, 'post').and.callFake(() => observableOf(serverRes.orgDetails));
+    //  spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.orgDetails));
+
+service.getOrgDetails('ap');
+
+      // service.searchOrg().subscribe(
+      //   apiResponse => {
+      //     expect(apiResponse).toBe(serverRes.orgDetails.result.response);
+      //   }
+      // );
+    });
+
+it('Call getCommingSoonMessageObj', () => {
+  const service = TestBed.get(OrgDetailsService);
+  const publicDataService = TestBed.get(PublicDataService);
+  spyOn(publicDataService, 'postWithHeaders').and.callFake(() => observableOf(serverRes.orgDetails));
+  service.getCommingSoonMessage(['1', '2']);
+  const returnValue = service.getCommingSoonMessageObj([{ rootOrgId: '1' }], ['1', '2']);
+  expect(returnValue).toEqual({ rootOrgId: '1' });
+});
+
+it('Call setOrgDetailsToRequestHeaders', () => {
+  const service = TestBed.get(OrgDetailsService);
+  service.orgDetails = { rootOrgId: '12345'};
+  const learnerService = TestBed.get(LearnerService);
+  service.setOrgDetailsToRequestHeaders();
+  expect(learnerService.rootOrgId).toEqual('12345');
+});
+
+it('Call getOrg', () => {
+  const service = TestBed.get(OrgDetailsService);
+  service.orgInfo = {};
+  const returnValue = service.getOrg();
+  expect(returnValue).toEqual({});
+});
+
+it('Call getCustodianOrgDetails', () => {
+  const service = TestBed.get(OrgDetailsService);
+  service._custodianOrg$ = {};
+  const returnValue = service.getCustodianOrgDetails();
+  expect(returnValue).toEqual({});
+});
+
 });
 
