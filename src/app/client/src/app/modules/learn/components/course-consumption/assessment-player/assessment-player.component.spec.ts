@@ -20,18 +20,15 @@ import { AssessmentScoreService } from '../../../services/assessment/assessment-
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { AssessmentPlayerComponent } from './assessment-player.component';
 import { assessmentPlayerMockData } from './assessment-player.component.data.spec';
-
 describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
   let fixture: ComponentFixture<AssessmentPlayerComponent>;
-
   const resourceMockData = {
     messages: {
       fmsg: { m0051: 'Fetching districts failed. Try again later' },
       stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
     }
   };
-
   const fakeActivatedRoute = {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
     queryParams: of({ batchId: '12312433', selectedContent: assessmentPlayerMockData.activeContent.identifier }),
@@ -52,7 +49,7 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService, CsContentProgressCalculator,
+        UserService, CsContentProgressCalculator, NavigationHelperService,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService
@@ -61,36 +58,30 @@ describe('AssessmentPlayerComponent', () => {
     })
       .compileComponents();
   }));
-
   beforeEach(() => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
   it('should call ngOnInit', () => {
     spyOn<any>(component, 'subscribeToQueryParam');
     component.ngOnInit();
     expect(component['subscribeToQueryParam']).toHaveBeenCalled();
   });
-
   it('should go to courseDetails page', () => {
     spyOn(component['router'], 'navigate');
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
   });
-
   it('should call subscribeToQueryParam', () => {
     spyOn<any>(component, 'setTelemetryCourseImpression');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
   });
-
   it('should call subscribeToQueryParam, on error', () => {
     component.batchId = '0130272832104038409';
     const toasterService = TestBed.get(ToasterService);
@@ -101,7 +92,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
     expect(component.goBack).toHaveBeenCalled();
   });
-
   it('should call subscribeToQueryParam, and get collection', () => {
     component.isParentCourse = false;
     const playerService = TestBed.get(PlayerService);
@@ -127,7 +117,6 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
     expect(component['getCollectionInfo']).toHaveBeenCalled();
   });
-
   it('should call getCollectionInfo', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -137,7 +126,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(courseConsumptionService.getCourseHierarchy).toHaveBeenCalled();
     expect(courseBatchService.getEnrolledBatchDetails).toHaveBeenCalled();
   });
-
   it('should call setActiveContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -149,7 +137,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isContentPresent).toBe(true);
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
   });
-
   it('should setActiveContent when its single content', () => {
     component.courseHierarchy = assessmentPlayerMockData.activeContent;
     spyOn<any>(component, 'getContentState');
@@ -159,12 +146,10 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
     expect(component['getContentState']).toHaveBeenCalled();
   });
-
   it('should call firstNonCollectionContent', () => {
     const resp = component['firstNonCollectionContent']([]);
     expect(resp).toEqual(undefined);
   });
-
   xit('should call initPlayer success', () => {
     component.collectionId = 'do_11287204084174028818';
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -175,7 +160,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['setTelemetryContentImpression']).toHaveBeenCalled();
     expect(component.playerConfig).toEqual({});
   });
-
   it('should call initPlayer on error', () => {
     component.collectionId = 'do_11287204084174028818';
     const toasterService = TestBed.get(ToasterService);
@@ -186,7 +170,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(courseConsumptionService.getConfigByContent).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith('Cannot un-enrol now. Try again later');
   });
-
   it('should call onTocCardClick', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
@@ -196,7 +179,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
     expect(component.highlightContent).toHaveBeenCalled();
   });
-
   it('should call getContentState', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -210,7 +192,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(courseConsumptionService.parseChildren).toHaveBeenCalled();
     expect(component.highlightContent);
   });
-
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
@@ -219,7 +200,6 @@ describe('AssessmentPlayerComponent', () => {
     const resp = component.contentProgressEvent(event);
     expect(resp).toBe(undefined);
   });
-
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
@@ -233,7 +213,6 @@ describe('AssessmentPlayerComponent', () => {
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
-
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
@@ -249,21 +228,17 @@ describe('AssessmentPlayerComponent', () => {
     };
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
-
   });
-
   it('should not update content state if, batch id is not present', () => {
     component.batchId = undefined;
     const resp = component['contentProgressEvent']({});
     expect(resp).toBe(undefined);
   });
-
   it('should not proceed further if batchId not found inside contentProgressEvent()', () => {
     component.batchId = undefined;
     component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
     expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
-
   it('should  proceed further if batch status is 1 inside contentProgressEvent()', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.batchId = '11259794895';
@@ -274,7 +249,6 @@ describe('AssessmentPlayerComponent', () => {
     component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
     expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
-
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
@@ -283,7 +257,6 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(component, 'calculateProgress').and.stub();
     component.onAssessmentEvents({});
   });
-
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 1 };
@@ -294,7 +267,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(assessmentScoreService.receiveTelemetryEvents).toHaveBeenCalled();
     expect(component.calculateProgress).toHaveBeenCalled();
   });
-
   it('should call onQuestionScoreSubmitEvents', () => {
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'handleSubmitButtonClickEvent');
@@ -303,7 +275,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(assessmentScoreService.handleSubmitButtonClickEvent).toHaveBeenCalledWith(true);
     expect(component.contentProgressEvent).toHaveBeenCalled();
   });
-
   it('should call calculate method to get the courseProgress', () => {
     const playerSummury = assessmentPlayerMockData.playerSummuryData;
     const mimeType = 'application/vnd.ekstep.ecml-archive';
@@ -313,7 +284,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
     expect(component.courseProgress).toEqual(100);
   });
-
   it('should not call calculate method if the contentType is selfAssess', () => {
     component.activeContent = assessmentPlayerMockData.activeContent;
     component.activeContent.contentType = 'SelfAssess';
@@ -321,14 +291,12 @@ describe('AssessmentPlayerComponent', () => {
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
-
   it('should call calculateProgress', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.calculateProgress();
     expect(component.courseHierarchy).toBeDefined();
   });
-
   it('should call subscribeToContentProgressEvents', () => {
     component['contentProgressEvents$'].next({ progress: 100 });
     const resp = component['subscribeToContentProgressEvents']();
@@ -336,13 +304,11 @@ describe('AssessmentPlayerComponent', () => {
       expect(data.contentProgressEvent.progress).toEqual(100);
     });
   });
-
   it('should call ngOnDestroy', () => {
     spyOn(component['unsubscribe'], 'complete');
     component.ngOnDestroy();
     expect(component['unsubscribe'].complete).toHaveBeenCalled();
   });
-
   it('should call onShareLink', () => {
     spyOn(component, 'setTelemetryShareData');
     component.courseId = 'do_2130355309225574401298';
@@ -351,7 +317,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
     expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
-
   it('should call logAuditEvent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.activeContent = assessmentPlayerMockData.activeContent;
@@ -363,35 +328,27 @@ describe('AssessmentPlayerComponent', () => {
     component.logAuditEvent(true);
     expect(telemetryService.audit).toHaveBeenCalled();
   });
-
-  it('should make isFullScreenView to TRUE', () => {
-    component.isFullScreenView = false;
-    expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
-    component.ngOnInit();
-    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeTruthy();
-      expect(component.isFullScreenView).toBeTruthy();
-    });
-  });
-
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
     component.ngOnInit();
-    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeFalsy();
-      expect(component.isFullScreenView).toBeFalsy();
-    });
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
   });
-
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
+  });
   it('should check for course completion', () => {
     spyOn(component, 'getCourseCompletionStatus');
     component.onRatingPopupClose();
     expect(component.getCourseCompletionStatus).toHaveBeenCalled();
   });
-
   it('should call setTelemetryShareData', () => {
     const param = {
       identifier: 'do_123232534312',
@@ -401,7 +358,6 @@ describe('AssessmentPlayerComponent', () => {
     component.setTelemetryShareData(param);
     expect(component.telemetryShareData).toBeDefined();
   });
-
   it('should check for course Completion', () => {
     component.isCourseCompleted = false;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
@@ -411,7 +367,6 @@ describe('AssessmentPlayerComponent', () => {
       contentIds: [],
       batchId: '221243'
     }));
-
     const response = {
       content: [
         { identifier: 'do_2121', status: 2 }, { identifier: 'do_232343', status: 2 }, { identifier: 'do_45454', status: 2 }
@@ -423,7 +378,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isCourseCompleted).toBe(true);
     expect(component.showCourseCompleteMessage).toBe(true);
   });
-
   it('should call navigateToPlayerPage', () => {
     spyOn(component['router'], 'navigate');
     component.batchId = 'do_1130272760359813121209';
@@ -433,12 +387,10 @@ describe('AssessmentPlayerComponent', () => {
     const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' } };
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
   });
-
   it('should call onCourseCompleteClose', () => {
     component.onCourseCompleteClose();
     expect(component.showCourseCompleteMessage).toBe(false);
   });
-
   it('should call highlightContent', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.activeContent = {
