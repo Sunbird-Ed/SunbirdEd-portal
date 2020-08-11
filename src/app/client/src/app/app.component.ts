@@ -107,7 +107,13 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    const layoutType = localStorage.getItem('layoutType');
+    if (layoutType === 'joy') {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+      document.documentElement.setAttribute('layout', 'joy');
+    } else {
+      document.documentElement.setAttribute('layout', '');
+    }
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -149,8 +155,17 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     });
     }
+    this.setTheme();
     // themeing code
   }
+
+  setTheme() {
+    const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    this.selectThemeColour(themeColour);
+    document.documentElement.setAttribute('data-theme', themeColour);
+    this.layoutService.setLayoutConfig(this.layoutConfiguration);
+  }
+
   ngOnInit() {
     this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
@@ -218,13 +233,26 @@ export class AppComponent implements OnInit, OnDestroy {
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
+  setThemeColour(value) {
+    localStorage.setItem('layoutColour', value);
+  }
+
+  selectThemeColour(value) {
+    const element = (<HTMLInputElement>document.getElementById(value));
+    if (element) {
+      element.checked = true;
+    }
+  }
+
   switchLayout() {
     if (this.layoutConfiguration) {
       this.layoutConfiguration = null;
       document.documentElement.setAttribute('layout', '');
+      localStorage.setItem('layoutType', 'default');
     } else {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
+      localStorage.setItem('layoutType', 'joy');
     }
     this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }

@@ -41,12 +41,12 @@
 <div class="container2">
   <ul>
   <li>
-    <input type="radio" id="Default" checked value="Default" name="selector">
+    <input type="radio" id="Default" (click)="setThemeColour('Default')" value="Default" name="selector">
     <label for="Default">Default</label>
     <div class="check"><div class="inside"></div></div>
   </li>
   <li>
-    <input type="radio" id="Green" value="Green" name="selector">
+    <input type="radio" id="Green" (click)="setThemeColour('Green')" value="Green" name="selector">
     <label for="Green">Green</label>
     <div class="check"></div>
   </li>
