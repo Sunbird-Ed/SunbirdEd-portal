@@ -43,7 +43,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
   userSubscription: Subscription;
-  orgDetails = [];
+  orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
   state: string;
@@ -74,6 +74,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
   nonCustodianUserLocation : object = {};
+  declarationDetails;
+  tenantInfo;
+  selfDeclaredInfo = [];
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
@@ -88,22 +91,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+      /* istanbul ignore else */
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        this.populateLocationDetails();
         this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
         this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
-        this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
-        this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
-        this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
-        this.phoneObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-phone');
-        this.emailObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-email');
         this.getOrgDetails();
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
+        /* istanbul ignore else */
+        if (_.get(this.userProfile, 'declarations')) {
+          this.declarationDetails = _.get(this.userProfile, 'declarations')[0];
+          this.getSelfDeclaraedDetails();
+        }
       }
     });
     this.setInteractEventData();
@@ -112,13 +115,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      /* istanbul ignore else */
       if (layoutConfig != null) {
         this.layoutConfiguration = layoutConfig.layout;
       }
     });
   }
 
-  
   setNonCustodianUserLocation() {
     const subOrgs = _.filter(this.userProfile.organisations, (org) => {
       /*istanbul ignore else */
@@ -133,28 +136,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
         _.forEach(sortedSubOrgs[0].locations, (location) => {
           this.nonCustodianUserLocation[location.type] = location.name;
-        })
-      }
-    }
-  }
-
-  populateLocationDetails() {
-    const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
-    fields.forEach((fieldKey, userProfileKey) => {
-      const externalIdData = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === fieldKey);
-      if (externalIdData) {
-        const requestData = {'filters': {'code': externalIdData && externalIdData.id}};
-        this.profileService.getUserLocation(requestData).subscribe(res => {
-          if (_.get(res, 'result.response[0].name')) {
-            this[userProfileKey] = {
-              id: _.get(res, 'result.response[0].name')
-            };
-          }
-        }, err => {
-          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0016'));
         });
       }
-    });
+    }
   }
 
   getOrgDetails() {
@@ -434,5 +418,23 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.telemetryService.interact(interactData);
     this.router.navigate([`learn/course/${courseId}`]);
+  }
+
+  /**
+   * @since - #SH-815
+   * @description - This method will map self declared values with teacher details dynamic fields to display on profile page
+   */
+  getSelfDeclaraedDetails() {
+    this.selfDeclaredInfo = [];
+    this.profileService.getTenants().subscribe(res => {
+      this.tenantInfo = _.find(res[0].range, (o) => o.value === this.declarationDetails.orgId);
+      this.profileService.getTeacherDetailForm('submit', this.declarationDetails.orgId).subscribe(data => {
+        for (const [key, value] of Object.entries(this.declarationDetails.info)) {
+          const field = _.find(data, (o) => o.code === key);
+          this.selfDeclaredInfo.push({ label: field.label, value, code: field.code, index: field.index });
+        }
+        this.selfDeclaredInfo = _.orderBy(this.selfDeclaredInfo, ['index'], ['asc']);
+      });
+    });
   }
 }

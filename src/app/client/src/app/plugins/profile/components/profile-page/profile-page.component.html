@@ -75,7 +75,7 @@
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj && !stateObj && !districtObj"
+                *ngIf="!declarationDetails"
                 (click)="navigate('/profile/teacher-declaration','submit')"
                 class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
@@ -228,55 +228,34 @@
   </section>
 
   <!-- 4 section start teacher profile-->
-  <section class="py-24 d-flex flex-jc-center profile-bg-c-3"
-           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj || stateObj || districtObj">
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="declarationDetails || !userProfile.stateValidated">
   <div class="flex-ai-jc-center flex-dc text-center school-id-section">
     <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
-    <div class="my-8">
-      <div class="fnormal white-space-nowrap">Status:</div>
-      <div class="fnormal font-w-bold mt-4 mb-8">PENDING</div>
-      <div class="sb-toaster sb-toast-danger sb-toast-normal">
-        <div class="sb-toast-body mr-0">
-          <div class="sb-toast-texts w-100 text-center">
-            <div class="sb-toast-title">ERROR</div>
-            <div class="sb-toast-message">Error Type Message</div>
-            <ul class="error-lists p-0 my-8">
-              <li class="error-list mb-4">SCHOOL/ORG NAME</li>
-              <li class="error-list mb-0">SCHOOL/ORG ID</li>
-            </ul>
+      <div>
+        I am {{ declarationDetails?.persona }} with <span>{{ tenantInfo.label }}</span>
+      </div>
+
+      <div *ngFor="let item of selfDeclaredInfo">
+        <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
+      </div>
+      
+      <div class="my-8">
+        <div class="fnormal white-space-nowrap">Status:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{declarationDetails.status || 'PENDING'}}</div>
+          <div class="sb-toaster sb-toast-danger sb-toast-normal" *ngIf="declarationDetails.error">
+            <div class="sb-toast-body mr-0">
+              <div class="sb-toast-texts w-100 text-center">
+                <div class="sb-toast-title">ERROR</div>
+                <div class="sb-toast-message">Error Type Message</div>
+                <ul class="error-lists p-0 my-8">
+                  <li class="error-list mb-4">SCHOOL/ORG NAME</li>
+                  <li class="error-list mb-0">SCHOOL/ORG ID</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div *ngIf="stateObj">
-      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.state}}:</div>
-      <div class="fnormal font-w-bold mt-4 mb-8"> {{stateObj?.id}}</div>
-    </div>
-    <div *ngIf="districtObj">
-      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.district}}:</div>
-      <div class="fnormal font-w-bold mt-4 mb-8"> {{districtObj?.id}}</div>
-    </div>
-      <div *ngIf="phoneObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.phoneNumber}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">+91 {{phoneObj?.id}}</div>
-      </div>
-      <div *ngIf="emailObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.emailId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{emailObj?.id}}</div>
-      </div>
-      <div *ngIf="schoolObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{schoolObj?.id}}</div>
-      </div>
-      <div *ngIf="udiseObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{udiseObj?.id}}</div>
-      </div>
-      <div *ngIf="teacherObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{teacherObj?.id}}</div>
-      </div>
       <div class="my-8">
         <button appTelemetryInteract
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
