@@ -1,7 +1,7 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
-<div class="ui container" *ngIf="!layoutConfiguration">
+<div class="ui container" *ngIf="false">
   <div class="ui stackable grid mt-30">
     <div class="three wide column pt-0">
       <app-workspacesidebar ></app-workspacesidebar>
@@ -13,19 +13,18 @@
   <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
 </div>
 
-<div *ngIf="layoutConfiguration">
+
   <div class="sbt-fluid-content-bg">
-    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content relative9' : 'sb-g'">
-      <div class="relative9" [ngClass]="FIRST_PANEL_LAYOUT">
+    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sbt-container sbt-page-content relative9' : 'stackable mt-30 mg-pad'">
+      <div class="relative9" [ngClass]="FIRST_TO_PANEL_LAYOUT">
         <app-workspacesidebar ></app-workspacesidebar>
       </div>
-      <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div [ngClass]="SECOND_TO_PANEL_LAYOUT">
         <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'workspacesegment'">
           <router-outlet></router-outlet>
         </div>
       </div>
       </div>
-  </div>
   </div>
 
   <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
