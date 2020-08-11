@@ -132,6 +132,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   hrefPath = '/resources';
   helpLinkVisibility: string;
   isFullScreenView;
+  public unsubscribe$ = new Subject<void>();
   /**
    * Workspace access roles
    */
@@ -520,11 +521,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
-
-    this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
   }
 
   checkFullScreenView() {

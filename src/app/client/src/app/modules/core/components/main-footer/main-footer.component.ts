@@ -56,10 +56,6 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
       helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
     };
-    this.navigationHelperService.contentFullScreenEvent.
-    pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
-      this.isFullScreenView = isFullScreen;
-    });
   }
 
   checkFullScreenView() {
