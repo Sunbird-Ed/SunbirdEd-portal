@@ -46,22 +46,22 @@ module.exports = function (app) {
   let courseId, currentUser;
   app.post(`/+${certRegServiceApi.getUserDetails}`,
     bodyParser.json({ limit: '10mb' }),
+    isAPIWhitelisted.isAllowed(),
     permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        isAPIWhitelisted.isAllowed(),
         logger.info({ msg: `${certRegServiceApi.getUserDetails} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
         currentUser = _.get(req, 'body.request.filters.createdBy');
         delete req.body.request.filters['courseId'];
         delete req.body.request.filters['createdBy'];
-        return (certRegURL + '/user/v1/search');
+        return require('url').parse(certRegURL + 'user/v1/search').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
           const data = JSON.parse(proxyResData.toString('utf8'));
-          logger.info({ msg: `getUserCertificates() is calling from certRegRoutes with ${_.get(data, 'result.response.content[0]')}` });
+          logger.info({ msg: `getUserCertificates() is calling from certRegRoutes with ${JSON.stringify(data)}` });
           if (data && !_.isEmpty(_.get(data, 'result.response.content'))) {
             const certificates = await getUserCertificates(req, _.get(data, 'result.response.content[0]'), courseId, currentUser);
             data.result.response = certificates;
@@ -78,13 +78,13 @@ module.exports = function (app) {
   // To ReIssue certificate 
   app.post(`/+${certRegServiceApi.reIssueCertificate}`,
     bodyParser.json({ limit: '10mb' }),
+    isAPIWhitelisted.isAllowed(),
     permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        isAPIWhitelisted.isAllowed(),
         logger.info({ msg: `/course/batch/cert/v1/issue?reissue=true is called with ${JSON.stringify(_.get(req, 'body'))}` });
-        return (certRegURL + '/course/batch/cert/v1/issue?reissue=true');
+        return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reissue=true').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
