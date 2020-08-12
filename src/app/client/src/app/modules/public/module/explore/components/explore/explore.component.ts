@@ -291,7 +291,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
         let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-        if(this.queryParams.key) {
+        if (this.queryParams.key) {
           const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
           const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
           title = title_part1 + ' ' + title_part2;
@@ -300,7 +300,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
           'title': title,
           'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
           'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-          'showExploreContentButton': false
+          'showExploreContentButton': true
         };
       });
   }
