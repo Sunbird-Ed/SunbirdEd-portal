@@ -38,6 +38,9 @@ export class CsLibInitializerService {
               },
               userServiceConfig: {
                 apiPath: '/learner/user/v2',
+              },
+              formServiceConfig: {
+                apiPath: '/learner/data/v1/form',
               }
           }
       });

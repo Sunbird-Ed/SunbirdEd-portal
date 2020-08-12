@@ -16,6 +16,7 @@ export interface IActivity {
   organisation: string[];
   subject: string;
   type: string;
+  contentType?: string;
 }
 @Component({
   selector: 'app-activity-list',
@@ -28,7 +29,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
-  activityList = [];
+  showActivityList = false;
+  @Input() activityList = [];
   showMenu = false;
   selectedActivity: IActivity;
   showModal = false;
@@ -62,8 +64,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   getActivities() {
+    const response = this.groupService.getActivityList(false, this.groupData, false);
+    this.activityList = response.activities;
+    this.showActivityList = response.showList;
     this.showLoader = false;
-    this.activityList =  this.groupData.activities.map(item => item.activityInfo);
   }
 
   openActivity(event: any, activity) {
@@ -95,7 +99,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
+        this.activityList = _.map(this.activityList, list => {
+            if ((list.title).toLowerCase() === `${_.get(this.selectedActivity, 'contentType')}s`.toLowerCase()) {
+              list.items =  _.reject(list.items, {id: this.selectedActivity.identifier});
+                return list;
+            } else {
+              return list;
+            }
+        });
+        this.showActivityList = this.groupService.getActivityList(false, this.groupData, false).showList;
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {

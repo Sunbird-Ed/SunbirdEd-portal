@@ -50,6 +50,9 @@ if (!CsModule.instance.isInitialised) {
          },
          userServiceConfig: {
           apiPath: '/learner/user/v1',
+        },
+        formServiceConfig: {
+          apiPath: '/learner/data/v1/form',
         }
      }
  });

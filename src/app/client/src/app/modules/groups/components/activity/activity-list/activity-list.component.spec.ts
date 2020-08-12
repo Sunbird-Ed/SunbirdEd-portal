@@ -7,15 +7,16 @@ import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { mockActivityList } from './activity-list.component.data.spec';
 import { GroupsService } from '../../../services/groups/groups.service';
+import * as _ from 'lodash-es';
 
 describe('ActivityListComponent', () => {
   let component: ActivityListComponent;
   let fixture: ComponentFixture<ActivityListComponent>;
-  let activatedRoute, router;
+  let router;
 
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
@@ -72,6 +73,7 @@ describe('ActivityListComponent', () => {
     fixture = TestBed.createComponent(ActivityListComponent);
     component = fixture.componentInstance;
     component.groupData = mockActivityList.groupData;
+    component.activityList = mockActivityList.groupData.activitiesGrouped;
     fixture.detectChanges();
   });
 
@@ -88,9 +90,12 @@ describe('ActivityListComponent', () => {
   });
 
   it('should call getActivities', () => {
+    spyOn(component['groupService'], 'getActivityList').and.returnValue(
+      {showList: false, activities: mockActivityList.groupData.activitiesGrouped});
     component.getActivities();
     expect(component.showLoader).toBe(false);
-    expect(component.activityList).toBeDefined();
+    expect(component.activityList).toEqual(mockActivityList.groupData.activitiesGrouped);
+    expect(component.showActivityList).toBe(false);
   });
 
 
@@ -161,17 +166,35 @@ describe('ActivityListComponent', () => {
     expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
   });
 
-  xit('should call removeActivity', () => {
-    component.selectedActivity = component.groupData.activities.map(item => item.activityInfo);
-    const groupService = TestBed.get(GroupsService);
+  it('should call removeActivity', () => {
+    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0].activityInfo;
+    spyOn(component['groupService'], 'removeActivities').and.returnValue(of ({}));
     const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'toggleModal');
-    spyOn(groupService, 'removeActivities');
     spyOn(toasterService, 'success');
     component.removeActivity();
-    expect(component.activityList.length).toEqual(3);
+    component['groupService'].removeActivities('4130b072-fb0a-453b-a07b-4c93812c741b',
+    {activityIds: ['do_21271200473210880012152']}).subscribe(data => {
+      component.activityList = mockActivityList.removedList;
+    });
+    expect(component.activityList[0].title).toEqual('Course');
+    expect(component.activityList[0].items.length).toEqual(3);
     expect(component.toggleModal).toHaveBeenCalled();
     expect(toasterService.success).toHaveBeenCalled();
+  });
+
+  it('should throw error on removeActivity', () => {
+    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0].activityInfo;
+    spyOn(component['groupService'], 'removeActivities').and.returnValue(throwError ({}));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    component.removeActivity();
+    component['groupService'].removeActivities('4130b072-fb0a-453b-a07b-4c93812c741b',
+    {activityIds: ['do_21271200473210880012152']}).subscribe(data => {
+    }, err => {
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.activityRemove);
+    });
+    expect(component.activityList[0].items.length).toEqual(4);
   });
 
   it('should call ngOnDestroy', () => {

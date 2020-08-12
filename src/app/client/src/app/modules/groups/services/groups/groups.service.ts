@@ -8,7 +8,6 @@ import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@s
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -99,8 +98,8 @@ export class GroupsService {
     return this.groupCservice.search(request);
   }
 
-  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean) {
-    return this.groupCservice.getById(groupId, { includeMembers, includeActivities });
+  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
+    return this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
   }
 
   deleteGroupById(groupId: string) {
@@ -245,5 +244,17 @@ getActivity(groupId, activity, mergeGroup) {
 
   emitMenuVisibility(visibility) {
     this.showMenu.emit(visibility);
+  }
+
+  getActivityList (showList, groupData, changeTitle) {
+    if (_.get(groupData, 'activitiesGrouped')) {
+        const activities = _.map(groupData.activitiesGrouped, (item) => {
+        item.title = changeTitle ? this.resourceService.frmelmnts.lbl[item.title] : item.title;
+        showList = !showList ? item.items.length > 0 : showList;
+        return item;
+       });
+       return { showList, activities };
+    }
+    return { showList, activities: [] };
   }
 }

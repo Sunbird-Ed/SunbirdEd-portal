@@ -47,6 +47,7 @@
       </div>
       </div>
       <div class="px-16 pt-16">
+        <div *ngIf="activity?.contentType !== 'Course'" class="pb-16"><span class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span> {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (activity?.contentType).toLowerCase()}}</div>
         <div class="sb-search-box no-btn">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
@@ -56,7 +57,7 @@
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
       </div>
-        <div class="mr-8 py-16 pr-16 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      <div class="px-24">
+        <div class="mr-8 pt-16 pr-16 fxsmall text-right" *ngIf="activity?.contentType === 'Course'">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      <div class="px-24">
       </div>
       <div class="d-flex flex-dc p-16">
         <div *ngFor="let member of memberListToShow" class="relative">
