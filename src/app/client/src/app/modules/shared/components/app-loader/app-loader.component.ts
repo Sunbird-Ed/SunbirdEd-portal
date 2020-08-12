@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
-import {LayoutService, ResourceService} from '../../services/index';
+import {ConfigService, LayoutService, ResourceService} from '../../services/index';
 import * as _ from 'lodash-es';
 
 /**
@@ -17,7 +17,8 @@ export class AppLoaderComponent implements OnInit {
   loaderMessage: string;
   layoutConfiguration: any;
 
-  constructor(public resourceService: ResourceService, public layoutService: LayoutService) {
+  constructor(public resourceService: ResourceService, public layoutService: LayoutService,
+              private configService: ConfigService) {
     this.resourceService = resourceService;
   }
 
@@ -32,7 +33,10 @@ export class AppLoaderComponent implements OnInit {
   }
 
   initLayout() {
-    this.layoutConfiguration = this.layoutService.getLayoutConfig();
+    const layoutType = localStorage.getItem('layoutType') || this.configService.constants.DEFAULT_THEME;
+    if (layoutType === this.configService.constants.DEFAULT_THEME) {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    }
   }
 
 }

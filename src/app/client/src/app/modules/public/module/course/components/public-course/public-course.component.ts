@@ -41,6 +41,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   SECOND_PANEL_LAYOUT;
   pageTitle;
   svgToDisplay;
+  formData: any;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
@@ -63,10 +64,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
    this.initLayout();
-   this.getFormData();
     combineLatest(
       this.orgDetailsService.getOrgDetails(this.userService.slug),
-      this.getFrameWork()
+      this.getFrameWork(),
+      this.getFormData()
     ).pipe(
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
@@ -93,21 +94,25 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
+
   getFormData() {
     const formServiceInputParams = {
       formType: 'contentcategory',
       formAction: 'menubar',
       contentType: 'global'
     };
-    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+    return this.formService.getFormConfig(formServiceInputParams).pipe(map((data: any) => {
       _.forEach(data, (value, key) => {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
           this.svgToDisplay = _.get(value, 'theme.imageName');
         }
       });
-    }, error => {
-    });
+      this.formData = data;
+      return data;
+    }), catchError((error) => {
+      return of(false);
+    }));
   }
     initLayout() {
       this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -165,7 +170,13 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchPageData();
       });
   }
+
+  public getPageData(data) {
+    return _.find(this.formData, (o) => o.contentType === data);
+  }
+
   private fetchPageData() {
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
@@ -178,7 +189,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       name: 'Course',
       organisationId: this.hashTagId || '*',
       filters: filters,
-      fields: this.configService.urlConFig.params.CourseSearchField,
+      fields: _.get(currentPageData, 'search.fields') || this.configService.urlConFig.params.CourseSearchField,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
       // exists: [],

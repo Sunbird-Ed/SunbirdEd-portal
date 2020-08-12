@@ -25,7 +25,6 @@ describe('AppLoaderComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -37,11 +36,15 @@ describe('AppLoaderComponent', () => {
     expect(component.initLayout).toHaveBeenCalled();
   });
 
-  it('should init layout with old configuration', () => {
+  it('should init layout with new configuration', () => {
     const layoutService = TestBed.get(LayoutService);
     spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'data'});
     component.ngOnInit();
-    expect(component.layoutConfiguration).toEqual({layout: 'data'});
+    expect(component.layoutConfiguration).toEqual({
+      'source': '',
+      'name': 'newLayout',
+      'options': ''
+    });
   });
 
 });

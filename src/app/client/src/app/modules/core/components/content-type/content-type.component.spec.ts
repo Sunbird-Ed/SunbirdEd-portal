@@ -74,7 +74,6 @@ describe('ContentTypeComponent', () => {
       loggedInUserRoute: {route: '/resources', queryParam: 'textbooks'},
       contentType: 'textbook'
     });
-    expect(component.selectedContentType).toBe('textbook');
     expect(router.navigate).toHaveBeenCalledWith(
       ['/resources'], {queryParams: {selectedTab: 'textbooks'}});
   });
@@ -95,7 +94,6 @@ describe('ContentTypeComponent', () => {
       anonumousUserRoute: {route: '/explore', queryParam: 'textbooks'},
       contentType: 'tv'
     });
-    expect(component.selectedContentType).toBe('tv');
     expect(router.navigate).toHaveBeenCalledWith(
       ['/explore'], {queryParams: {selectedTab: 'textbooks'}});
   });
@@ -108,5 +106,55 @@ describe('ContentTypeComponent', () => {
     });
     expect(icon).toEqual('textbook');
   });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should set selected content type for profile page', () => {
+    component.setSelectedContentType('/profile', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type for play url', () => {
+    component.setSelectedContentType('/play', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type for play when content type is textbook', () => {
+    component.setSelectedContentType('/play', {contentType: 'TextBook'}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for explore-course', () => {
+    component.setSelectedContentType('/explore-course', {}, {});
+    expect(component.selectedContentType).toBe('course');
+  });
+
+  it('should set selected content type for learn', () => {
+    component.setSelectedContentType('/learn', {}, {});
+    expect(component.selectedContentType).toBe('course');
+  });
+
+  it('should set selected content type for explore page', () => {
+    component.setSelectedContentType('/explore', {}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for resources page', () => {
+    component.setSelectedContentType('/resources', {}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for resources page when selected tab is tv', () => {
+    component.setSelectedContentType('/resources', {selectedTab: 'tv'}, {});
+    expect(component.selectedContentType).toBe('tv');
+  });
+
 
 });
