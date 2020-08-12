@@ -139,7 +139,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    const currentPageData = this.getPageData(this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute,'snapshot.queryParams.selectedTab') || 'textbook');
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
@@ -205,25 +205,25 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private  fetchCourses() {
-    this.cardData = [];
-    this.isLoading = true;
-    const request = {
-      filters: this.selectedFilters,
-      isCustodianOrg: this.custodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
-    };
-    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
-    this.isLoading = false;
+  // private  fetchCourses() {
+  //   this.cardData = [];
+  //   this.isLoading = true;
+  //   const request = {
+  //     filters: this.selectedFilters,
+  //     isCustodianOrg: this.custodianOrg,
+  //     channelId: this.channelId,
+  //     frameworkId: this.contentSearchService.frameworkId
+  //   };
+  //   this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+  //   this.isLoading = false;
 
-    this.cardData = _.sortBy(cardData, ['title']);
-  }, err => {
-      this.isLoading = false;
-      this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-  });
-  }
+  //   this.cardData = _.sortBy(cardData, ['title']);
+  // }, err => {
+  //     this.isLoading = false;
+  //     this.cardData = [];
+  //     this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  // });
+  // }
 
   navigateToCourses(event) {
     const telemetryData = {
