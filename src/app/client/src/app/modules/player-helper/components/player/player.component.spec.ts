@@ -244,10 +244,6 @@ describe('PlayerComponent', () => {
     });
   });
 
-  it('should call ngOnInit', () => {
-    sessionStorage.setItem('UTM', '{"name":"test"}');
-    component.ngOnInit();
-  });
 
   it('should call emitFullScreenEvent', () => {
     spyOn(component.navigationHelperService, 'emitFullScreenEvent');
