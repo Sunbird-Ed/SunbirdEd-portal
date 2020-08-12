@@ -229,4 +229,49 @@ describe('ProfilePageComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
+    component.userProfile = Response.userData;
+    component.setNonCustodianUserLocation();
+    expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
+    expect(component.nonCustodianUserLocation['district']).toBe('MUNGER');
+    expect(component.nonCustodianUserLocation['state']).toBe('Bihar');
+  });
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation error case', () => {
+    component.userProfile = Response.userProfile;
+    component.setNonCustodianUserLocation();
+    expect(Object.values(component.nonCustodianUserLocation).length).toBe(0);
+  });
+  it('should call getLocationDetails', () => {
+    const locationData = [{
+      'code': '1024',
+      'name': 'MUNGER',
+      'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
+      'type': 'district',
+      'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
+  }]
+   const locationName =  component.getLocationDetails(locationData,'district');
+   expect(locationName).toBe('MUNGER')
+  });
+  it('should call getLocationDetails error case', () => {
+    const locationData = [{
+      'code': '1024',
+      'name': 'MUNGER',
+      'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
+      'type': 'district',
+      'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
+  }]
+   const locationName =  component.getLocationDetails(locationData,'state');
+   expect(locationName).toBeFalsy()
+  });
+  it('should call toggle', () => {
+    component.roles = ['Book Creator','Membership Management','Content Creation']
+    component.toggle(true);
+   expect(component.showMoreRoles).toBeFalsy();
+   expect(component.showMoreRolesLimit).toBe(3)
+  });
+  it('should call toggle error case', () => {
+    component.toggle(false);
+   expect(component.showMoreRoles).toBeTruthy();
+   expect(component.showMoreRolesLimit).toBe(4)
+  });
 });
