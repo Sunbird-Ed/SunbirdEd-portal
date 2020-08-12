@@ -18,6 +18,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
+  @Input() layoutConfiguration;
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
@@ -101,6 +102,19 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
         extra: { filters: this.selectedFilters }
       };
     }, 5);
+  }
+
+  removeFilterSelection(data) {
+    _.map(this.selectedFilters, (value, key) => {
+      if (this.selectedFilters[data.type] && !_.isEmpty(this.selectedFilters[data.type])) {
+        _.remove(value, (n) => {
+          return n === data.value;
+        });
+      }
+      if (_.isEmpty(value)) { delete this.selectedFilters[key]; }
+    });
+    this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
+    this.updateRoute();
   }
 
   ngOnDestroy() {

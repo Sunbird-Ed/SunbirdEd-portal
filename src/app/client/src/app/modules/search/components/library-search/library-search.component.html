@@ -2,14 +2,9 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <ng-container *ngIf="!layoutConfiguration">
-        <app-data-driven-filter [enrichFilters]="facetsList" (dataDrivenFilter)="getFilters($event)"
-          [pageId]="'library-search'" [ignoreQuery]="['key']" *ngIf="initFilters" [filterEnv]="filterType"
-          [accordionDefaultOpen]=false [isShowFilterLabel]=true></app-data-driven-filter>
-      </ng-container>
-      <ng-container *ngIf="layoutConfiguration">
-        <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
-          (filterChange)="getFilters($event)">
+      <ng-container>
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
         </app-global-search-filter>
       </ng-container>
     </div>
