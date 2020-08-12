@@ -29,12 +29,18 @@
                   <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
-                    [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
-                    (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
-                    #multiSelect>
-                    <sui-select-option *ngFor="let dropdownValue of multiSelect.filteredOptions"
-                      [value]="dropdownValue">
-                    </sui-select-option>
+                    [(ngModel)]="selectedFilters[facet.name]"
+                    (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});">
+                    <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
+                      <sui-select-option class="text-capitalize"
+                        *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+                      </sui-select-option>
+                    </div>
+                    <ng-template #gradeLevel>
+                      <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
+                        [value]="dropdownValue">
+                      </sui-select-option>
+                    </ng-template>
                   </sui-multi-select>
                 </div>
               </div>
@@ -83,11 +89,17 @@
                 <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                   class="ui selection dropdown multiple" [(ngModel)]="selectedFilters[facet.name]"
-                  [options]="facet.values"
-                  (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
-                  #multiSelect>
-                  <sui-select-option *ngFor="let dropdownValue of multiSelect.filteredOptions" [value]="dropdownValue">
-                  </sui-select-option>
+                  (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});">
+                  <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
+                    <sui-select-option class="text-capitalize"
+                      *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+                    </sui-select-option>
+                  </div>
+                  <ng-template #gradeLevel>
+                    <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
+                      [value]="dropdownValue">
+                    </sui-select-option>
+                  </ng-template>
                 </sui-multi-select>
               </div>
               <div class="sb-prominent-filter-field">
