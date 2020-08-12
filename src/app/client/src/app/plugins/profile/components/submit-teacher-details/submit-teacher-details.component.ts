@@ -92,7 +92,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        if (_.get(this.userProfile, 'declarations')) {
+        if (_.get(this.userProfile, 'declarations') && this.userProfile.declarations.length > 0) {
           this.declaredDetails = _.get(this.userProfile, 'declarations')[0] ||  '';
         }
         this.formGroupObj['persona'] = new FormControl(null, Validators.required);

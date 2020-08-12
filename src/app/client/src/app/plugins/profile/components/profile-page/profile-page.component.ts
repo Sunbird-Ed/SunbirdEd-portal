@@ -77,6 +77,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   declarationDetails;
   tenantInfo;
   selfDeclaredInfo = [];
+  selfDeclaredErrorTypes = [];
 
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
@@ -103,8 +104,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
         /* istanbul ignore else */
-        if (_.get(this.userProfile, 'declarations')) {
+        if (_.get(this.userProfile, 'declarations') && this.userProfile.declarations.length > 0) {
           this.declarationDetails = _.get(this.userProfile, 'declarations')[0];
+          if (this.declarationDetails.errorType) {
+            this.selfDeclaredErrorTypes = this.declarationDetails.errorType.split(',');
+          }
           this.getSelfDeclaraedDetails();
         }
       }

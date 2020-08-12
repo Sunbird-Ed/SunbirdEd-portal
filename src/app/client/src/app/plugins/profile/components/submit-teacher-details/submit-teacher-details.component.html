@@ -14,7 +14,7 @@
           <div class="twelve wide column p-0">
             <div class="d-flex fields-selection">
               <div class="d-flex flex-ai-center sb-field">
-               <span class="pr-4 sb-field-label">I am a </span> 
+               <span class="pr-4 sb-field-label">{{resourceService?.frmelmnts?.lbl?.iam}} </span> 
                   <sui-select [isSearchable]="false" class="selection" [options]="personaList" labelField="label" valueField="value" name="label"
                     placeholder="Select persona" [ngClass]="{'is-invalid': userDetailsForm.controls.persona.touched && userDetailsForm.controls.persona.errors}"
                     formControlName="persona"  #personaDiv>
@@ -23,7 +23,7 @@
                   </sui-select>
               </div>
               <div class="d-flex flex-ai-center sb-field">
-                  <span class="px-8">with </span> 
+                  <span class="px-8">{{resourceService?.frmelmnts?.lbl?.with}} </span> 
                   <sui-select [isSearchable]="false" class="selection"
                     [ngClass]="{'is-invalid': userDetailsForm.controls.tenants.touched && userDetailsForm.controls.tenants.errors}"
                     formControlName="tenants" [options]="allTenants" labelField="label" name="label" valueField="value"
@@ -35,9 +35,9 @@
             </div>
           </div>
           <div class="twelve wide column p-0 mt-8">
-            <p>Name : <span>{{ userProfile.firstName }} {{ userProfile.lastName ? userProfile.lastName : '' }}</span></p> 
-            <p>State : <span>{{ selectedState ? selectedState.name : 'Enter location from Profile page' }}</span></p> 
-            <p>District : <span>{{ selectedDistrict ? selectedDistrict.name : 'Enter location from Profile page' }}</span></p>
+            <p>{{resourceService?.frmelmnts?.lbl?.name}} : <span>{{ userProfile.firstName }} {{ userProfile.lastName ? userProfile.lastName : '' }}</span></p> 
+            <p>{{resourceService?.frmelmnts?.lbl?.state}} : <span>{{ selectedState ? selectedState.name : 'Enter location from Profile page' }}</span></p> 
+            <p>{{resourceService?.frmelmnts?.lbl?.district}} : <span>{{ selectedDistrict ? selectedDistrict.name : 'Enter location from Profile page' }}</span></p>
           </div>
         </div>
 ​
