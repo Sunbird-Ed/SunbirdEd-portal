@@ -44,6 +44,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
     } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
       this.selectedContentType = 'course';
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.selectedContentType = null;
     } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
     } else {
