@@ -209,7 +209,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should reIssue certificate', () => {
-    const batch = {batchId: '1', name: 'batch 1', certificates: [] };
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], createdBy: '123' };
     component.userData = {
           userId: 'testUser',
           userName: 'user',
@@ -229,17 +229,18 @@ describe('ReIssueCertificateComponent', () => {
     spyOn(component, 'toggleModal');
     spyOn(component['toasterService'], 'success');
     component.reIssueCert(batch);
-    component['certService'].reIssueCertificate({request: {courseId: '123', batchId: '1', userIds: ['testUser']}}).subscribe(data => {
+    component['certService'].reIssueCertificate({request: {courseId: '123',
+    batchId: '1', userIds: ['testUser'], createdBy: '123'}}).subscribe(data => {
       expect(component.toggleModal).toHaveBeenCalledWith(false);
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.dashboard.smsg.m001);
     });
     expect(component['certService'].reIssueCertificate).toHaveBeenCalledWith(
-    {request: {courseId: '123', batchId: '1', userIds: ['testUser']}});
+    {request: {courseId: '123', batchId: '1', userIds: ['testUser'], createdBy: '123'}});
   });
 
 
   it('reIssue certificate should throw error', () => {
-    const batch = {batchId: '1', name: 'batch 1', certificates: [] };
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], createdBy: '123' };
     component.userData = {
           userId: 'testUser',
           userName: 'user',
@@ -259,13 +260,14 @@ describe('ReIssueCertificateComponent', () => {
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'toggleModal');
     component.reIssueCert(batch);
-    component['certService'].reIssueCertificate({request: {courseId: '123', batchId: '1', userIds: ['testUser']}}).subscribe(data => {},
+    component['certService'].reIssueCertificate({request:
+      {courseId: '123', batchId: '1', userIds: ['testUser'], createdBy: '123'}}).subscribe(data => {},
       (err) => {
         expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m003);
         expect(component.toggleModal).toHaveBeenCalledWith(false);
     });
     expect(component['certService'].reIssueCertificate).toHaveBeenCalledWith(
-    {request: {courseId: '123', batchId: '1', userIds: ['testUser']}});
+    {request: {courseId: '123', batchId: '1', userIds: ['testUser'], createdBy: '123'}});
   });
 
   it('should assign showModal TRUE', () => {
