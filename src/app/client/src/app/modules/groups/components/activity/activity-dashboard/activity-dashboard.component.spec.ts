@@ -221,6 +221,7 @@ describe('ActivityDashboardComponent', () => {
    });
 
   it ('should handleSelectedCourse', () => {
+    component.searchInputBox = {nativeElement: { value: '' }};
     component.groupData = groupData;
     component.nestedCourses = [
     {identifier: 'do_1234', name: 'Test 1', leafNodesCount: 1},
@@ -243,6 +244,7 @@ describe('ActivityDashboardComponent', () => {
   });
 
   it ('should throw error on handleSelectedCourse()', () => {
+    component.searchInputBox = {nativeElement: { value: '' }};
     spyOn(component, 'toggleDropdown');
     spyOn(component['groupService'], 'getActivity').and.returnValue(throwError ({}));
     spyOn(component['toasterService'], 'error');
