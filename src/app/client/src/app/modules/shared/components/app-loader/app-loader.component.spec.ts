@@ -37,8 +37,6 @@ describe('AppLoaderComponent', () => {
   });
 
   it('should init layout with new configuration', () => {
-    const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'data'});
     component.ngOnInit();
     expect(component.layoutConfiguration).toEqual({
       'source': '',
