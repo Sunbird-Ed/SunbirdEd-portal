@@ -125,7 +125,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
   }
   /**
-   * loadPlayer method will be called
+   * loadPlayer method will be called.
    */
   ngAfterViewInit() {
     if (this.playerConfig) {
