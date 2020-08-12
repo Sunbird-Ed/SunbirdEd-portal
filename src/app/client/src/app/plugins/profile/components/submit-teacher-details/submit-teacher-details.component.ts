@@ -100,7 +100,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.userDetailsForm = this.sbFormBuilder.group(this.formGroupObj);
         this.getPersona();
         this.getTenants();
-        this.getState();
+        this.getLocations();
         this.showLoader = false;
       }
     });
@@ -180,8 +180,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   getPersona() {
-    this.profileService.getPersonas().subscribe((formData) => {
-      this.personaList = formData[0].range;
+    this.profileService.getPersonas().subscribe((personas) => {
+      this.personaList = personas[0].range;
       const declaredPersona = _.get(this.declaredDetails, 'persona');
       if (declaredPersona && this.formAction === 'update') {
         this.forChanges.prevPersonaValue = declaredPersona;
@@ -191,8 +191,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTenants() {
-    this.profileService.getTenants().subscribe((formData) => {
-      this.allTenants = formData[0].range;
+    this.profileService.getTenants().subscribe((tenants) => {
+      this.allTenants = tenants[0].range;
       this.onTenantChange();
       const declaredTentant = _.get(this.declaredDetails, 'orgId');
       if (declaredTentant && this.formAction === 'update') {
@@ -350,26 +350,14 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return returnValue;
   }
 
-  getState() {
-    const requestData = { 'filters': { 'type': 'state' } };
-    this.profileService.getUserLocation(requestData).subscribe(res => {
-      const statesData = res.result.response;
-      const location =  _.find(this.userProfile.userLocations, (locations) => {
-        return locations.type === 'state';
-      });
-      let locationExist: any;
-      if (location) {
-        locationExist = _.find(statesData, (locations) => {
-          return locations.code === location.code;
-        });
+  getLocations() {
+    _.map(this.userProfile.userLocations, (locations) => {
+      if (locations.type === 'state') {
+        this.selectedState = locations.name;
       }
-      this.selectedState = locationExist;
-      if (!_.isEmpty(this.selectedState)) {
-        this.getDistrict(this.selectedState.id);
+      if (locations.type === 'district') {
+        this.selectedDistrict = locations.name;
       }
-    }, err => {
-      this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0016);
     });
   }
 
@@ -384,34 +372,12 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.tenantControl.valueChanges.subscribe(
       (data: string) => {
         if (_.get(this.tenantControl, 'value')) {
-          this.profileService.getTeacherDetailForm(this.formAction, _.get(this.tenantControl, 'value')).subscribe((formData) => {
-            this.formData = _.filter(formData, (field) => !_.includes(['state', 'district'], field.name));
+          this.profileService.getTeacherDetailForm(this.formAction, _.get(this.tenantControl, 'value')).subscribe((teacherForm) => {
+            this.formData = _.filter(teacherForm, (field) => !_.includes(['state', 'district'], field.name));
             this.initializeFormFields();
           });
         }
       });
-  }
-
-  getDistrict(stateId) {
-    this.districtControl = this.userDetailsForm.get('district');
-    this.showDistrictDivLoader = true;
-    const requestData = { 'filters': { 'type': 'district', parentId: stateId } };
-    this.profileService.getUserLocation(requestData).subscribe(res => {
-      const districts = res.result.response;
-      const location =  _.find(this.userProfile.userLocations, (locations) => {
-        return locations.type === 'district';
-      });
-      let locationExist: any;
-      if (location) {
-        locationExist = _.find(districts, (locations) => {
-          return locations.code === location.code;
-        });
-      }
-      this.selectedDistrict = locationExist;
-    }, err => {
-      this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0017);
-    });
   }
 
   getUpdateTelemetry() {

@@ -150,139 +150,6 @@ export const mockRes = {
       'errors': []
     }
   },
-  formData: [
-    {
-    'code': 'phone',
-    'dataType': 'number',
-    'name': 'phone',
-    'label': 'Phone Number',
-    'description': 'Enter phone number',
-    'editable': true,
-    'inputType': 'number',
-    'required': true,
-    'validation': [
-      {
-        'type': 'minlength',
-        'value': '10',
-        'message': 'Entered phone number is incorrect'
-      },
-      {
-        'type': 'maxlength',
-        'value': '10',
-        'message': 'Entered phone number is incorrect'
-      },
-      {
-        'type': 'required',
-        'message': 'Phone number is required'
-      }
-    ],
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 3
-  },
-    {
-      'code': 'email',
-      'dataType': 'text',
-      'name': 'email',
-      'label': 'Email Id',
-      'description': 'Enter Email Id',
-      'editable': true,
-      'inputType': 'email',
-      'required': false,
-      'validation': [
-        {
-          'type': 'email',
-          'message': 'Entered email ID is incorrect'
-        },
-        {
-          'type': 'required',
-          'message': 'Phone number is required'
-        }
-      ],
-      'displayProperty': 'Editable',
-      'visible': true,
-      'renderingHints': {
-        'fieldColumnWidth': 'twelve'
-      },
-      'index': 4
-    },
-    {
-      'code': 'school',
-      'dataType': 'text',
-      'name': 'school',
-      'label': 'School/ Org name',
-      'description': 'Enter school name',
-      'editable': true,
-      'inputType': 'input',
-      'required': false,
-      'displayProperty': 'Editable',
-      'visible': true,
-      'renderingHints': {
-        'fieldColumnWidth': 'twelve'
-      },
-      'index': 5
-    },
-     {
-    'code': 'udiseId',
-    'dataType': 'text',
-    'name': 'udiseId',
-    'label': 'School UDISE ID/ Org ID',
-    'description': 'Enter UDISE ID',
-    'editable': true,
-    'inputType': 'input',
-    'required': false,
-    'validation': [{
-      'type': 'minlength',
-      'value': '11',
-      'message': 'Minimum length should be 11 numbers'
-    }, {
-      'type': 'maxlength',
-      'value': '11',
-      'message': 'Maximum length should be 11 numbers'
-    }, {
-      'type': 'pattern',
-      'value': '^[0-9]*$',
-      'message': 'Only 11 digit number is allowed'
-    }],
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 6
-  }, {
-    'code': 'teacherId',
-    'dataType': 'text',
-    'name': 'teacherId',
-    'label': 'Enter ID as requested by your State/ Board/ Org',
-    'description': 'Enter ID',
-    'editable': true,
-    'inputType': 'input',
-    'required': true,
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 7
-  }, {
-    'code': 'tnc',
-    'dataType': 'text',
-    'name': 'tnc',
-    'description': '',
-    'editable': true,
-    'inputType': 'checkbox',
-    'required': true,
-    'displayProperty': 'Editable',
-    'visible': true,
-    'renderingHints': {
-      'fieldColumnWidth': 'twelve'
-    },
-    'index': 8
-  }],
   checkValidationInput: {
     'code': 'udiseId',
     'dataType': 'text',
@@ -293,11 +160,11 @@ export const mockRes = {
     'inputType': 'input',
     'required': true,
     'validation': [{
-      'type': 'min',
+      'type': 'minlength',
       'value': '11',
       'message': 'Minimum length should be 11 numbers'
     }, {
-      'type': 'max',
+      'type': 'maxlength',
       'value': '11',
       'message': 'Maximum length should be 11 numbers'
     }, {
@@ -659,12 +526,33 @@ export const mockRes = {
       'id': '29'
     }
   ],
-  stateDetails: {
-    'code': '50',
-    'name': 'mock state',
-    'id': '969dd3c1-4e9',
-    'type': 'state'
-  },
+  personas: [
+    {
+      'code': 'persona',
+      'dataType': 'text',
+      'name': 'persona',
+      'label': 'Persona',
+      'description': 'Select persona',
+      'range': [
+          {
+              'label': 'Teacher',
+              'value': 'teacher',
+              'index': 1
+          },
+          {
+              'label': 'Admin',
+              'value': 'admin',
+              'index': 2
+          },
+          {
+              'label': 'Volunteer',
+              'value': 'volunteer',
+              'index': 3
+          }
+      ],
+      'index': 1
+    }
+  ],
   tenantsList: [
     {
         'code': 'tenants',
@@ -683,56 +571,55 @@ export const mockRes = {
             }
         ]
     }
-],
-teacherDetailForm: [
-    {
-        'code': 'type',
-        'dataType': 'text',
-        'name': 'type',
-        'label': 'NCERT type',
-        'index': 1
-    },
-    {
-        'code': 'declared-phone',
-        'dataType': 'number',
-        'name': 'phone',
-        'label': 'Mobile Number',
-        'index': 2
-    },
-    {
-        'code': 'declared-email',
-        'dataType': 'text',
-        'name': 'email',
-        'label': 'Email Address',
-        'index': 3
-    },
-    {
-        'code': 'declared-school-name',
-        'dataType': 'text',
-        'name': 'school',
-        'label': 'Andhra pradesh School name',
-        'index': 4
-    },
-    {
-        'code': 'declared-school-udise-code',
-        'dataType': 'text',
-        'name': 'udiseId',
-        'label': 'Andhra pradesh UDISE ID',
-        'index': 5
-    },
-    {
-        'code': 'declared-ext-id',
-        'dataType': 'text',
-        'name': 'teacherId',
-        'label': 'Andhra pradesh teacher ID',
-        'index': 6
-    },
-    {
-        'code': 'tnc',
-        'dataType': 'text',
-        'name': 'tnc',
-        'description': '',
-        'index': 7
-    }
-],
+  ],
+  teacherDetailForm: [
+      {
+          'code': 'declared-phone',
+          'dataType': 'number',
+          'name': 'phone',
+          'label': 'Mobile Number',
+          'visible': true,
+          'index': 2
+      },
+      {
+          'code': 'declared-email',
+          'dataType': 'text',
+          'name': 'email',
+          'label': 'Email Address',
+          'visible': true,
+          'index': 3
+      },
+      {
+          'code': 'declared-school-name',
+          'dataType': 'text',
+          'name': 'school',
+          'label': 'Andhra pradesh School name',
+          'visible': true,
+          'index': 4
+      },
+      {
+          'code': 'declared-school-udise-code',
+          'dataType': 'text',
+          'name': 'udiseId',
+          'label': 'Andhra pradesh UDISE ID',
+          'visible': true,
+          'index': 5
+      },
+      {
+          'code': 'declared-ext-id',
+          'dataType': 'text',
+          'name': 'teacherId',
+          'label': 'Andhra pradesh teacher ID',
+          'visible': true,
+          'index': 6
+      },
+      {
+          'code': 'tnc',
+          'dataType': 'text',
+          'name': 'tnc',
+          'description': '',
+          'visible': true,
+          'index': 7
+      }
+  ],
 };
