@@ -76,6 +76,7 @@ const getUserEnrolledCourses = async (req, courseId, userId) => {
     let batchList = _.map(_.get(response, 'data.result.courses'), batch => {
       if (_.get(batch, 'courseId') === courseId) {
         batch.name = _.get(batch, 'batch.name');
+        batch.createdBy = _.get(batch, 'batch.createdBy');
         return batch;
       }
     });
