@@ -351,13 +351,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    */
   setFrameworkData(channelData) {
     this.frameworkCardData = [{
-      title: 'Academic',
-      description: `Create courses for concepts from the syllabus, across grades and subjects, for example; for fractions, photosynthesis, reading comprehension, etc.`,
+      title: 'Curriculum courses',
+      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
       framework: _.get(channelData, 'result.channel.defaultFramework')
     },
     {
-      title: 'Non Academic',
-      description: `Create course that help develop a learner's professional skills, for example; for classroom management, pedagogy, ICT, Leadership, etc.`,
+      title: 'Generic courses',
+      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
       framework: _.get(channelData, 'result.channel.defaultCourseFramework')
     }
     ];

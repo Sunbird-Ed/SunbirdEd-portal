@@ -6,11 +6,12 @@
 
     &::before {
       content: "";
-      background: url(/assets/images/translate.svg) no-repeat !important;
+      background: url(/assets/images/Language.svg) no-repeat !important;
       height: calculateRem(20px);
       width: calculateRem(20px);
       display: block;
       margin-right: calculateRem(8px);
+      margin-top: calculateRem(4px);
 
       html[dir="rtl"] & {
         margin-left: calculateRem(8px);
@@ -42,7 +43,7 @@
     }
   }
 }
-
+ 
 .ui.selection.sbt-dropdown.dropdown {
   color: var(--white);
   border-radius: calculateRem(20px);

@@ -56,10 +56,10 @@ export class ContentTypeComponent implements OnInit {
     this.selectedContentType = data.contentType;
     if (this.userService.loggedIn) {
       this.router.navigate([data.loggedInUserRoute.route],
-        {queryParams: {selectedTab: data.loggedInUserRoute.queryParam}});
+        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam}});
     } else {
       this.router.navigate([data.anonumousUserRoute.route],
-        {queryParams: {selectedTab: data.anonumousUserRoute.queryParam}});
+        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam}});
     }
   }
 
