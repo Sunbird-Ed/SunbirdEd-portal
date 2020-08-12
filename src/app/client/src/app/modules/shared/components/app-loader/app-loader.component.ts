@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { Input } from '@angular/core';
+import {Input} from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
 import {ConfigService, LayoutService, ResourceService} from '../../services/index';
 import * as _ from 'lodash-es';
@@ -22,6 +22,13 @@ export class AppLoaderComponent implements OnInit {
     this.resourceService = resourceService;
   }
 
+  initLayout() {
+    const layoutType = localStorage.getItem('layoutType') || this.configService.constants.DEFAULT_THEME;
+    if (layoutType === this.configService.constants.DEFAULT_THEME) {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+    }
+  }
+
   ngOnInit() {
     this.initLayout();
     this.headerMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
@@ -29,13 +36,6 @@ export class AppLoaderComponent implements OnInit {
     if (this.data) {
       this.headerMessage = this.data.headerMessage || this.headerMessage;
       this.loaderMessage = this.data.loaderMessage || this.loaderMessage;
-    }
-  }
-
-  initLayout() {
-    const layoutType = localStorage.getItem('layoutType') || this.configService.constants.DEFAULT_THEME;
-    if (layoutType === this.configService.constants.DEFAULT_THEME) {
-      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
     }
   }
 

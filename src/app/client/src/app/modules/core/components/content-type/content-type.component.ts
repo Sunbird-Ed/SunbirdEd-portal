@@ -27,16 +27,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.getContentTypes();
   }
 
-  getContentTypes() {
-    const formServiceInputParams = {
-      formType: 'contentcategory',
-      formAction: 'menubar',
-      contentType: 'global'
-    };
-    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      this.processFormData(data);
-      this.setContentTypeOnUrlChange();
-    });
+  getTitle(contentType) {
+    return _.get(this.resourceService, _.get(contentType, 'title'));
   }
 
   setContentTypeOnUrlChange() {
@@ -63,19 +55,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 
-  processFormData(formData) {
-    this.contentTypes = _.sortBy(formData, 'index');
-    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
-  }
-
-  getIcon(contentType) {
-    return _.get(contentType, 'theme.className');
-  }
-
-  getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
-  }
-
   showContentType(data) {
     if (this.userService.loggedIn) {
       this.router.navigate([data.loggedInUserRoute.route],
@@ -86,9 +65,30 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
+  processFormData(formData) {
+    this.contentTypes = _.sortBy(formData, 'index');
+    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
+  }
+
+  getIcon(contentType) {
+    return _.get(contentType, 'theme.className');
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
+
+  getContentTypes() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      this.processFormData(data);
+      this.setContentTypeOnUrlChange();
+    });
+  }
 }
