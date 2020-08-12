@@ -1,4 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit, Input} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  ChangeDetectorRef,
+  HostListener,
+  AfterViewInit,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService} from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -11,7 +22,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './main-footer.component.html',
   styleUrls: ['./main-footer.component.scss']
 })
-export class MainFooterComponent implements OnInit, AfterViewInit {
+export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() layoutConfiguration;
   @ViewChild('footerFix') footerFix: ElementRef;
   /**
@@ -147,5 +158,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   redirect(url) {
     window.location.href = url;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
