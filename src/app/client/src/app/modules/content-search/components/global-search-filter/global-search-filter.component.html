@@ -1,4 +1,4 @@
-<ng-container *ngIf="facets">
+<ng-container *ngIf="facets && layoutConfiguration">
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
     <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">
@@ -29,12 +29,18 @@
                   <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
-                    [(ngModel)]="selectedFilters[facet.name]" [options]="facet.values"
-                    (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});"
-                    #multiSelect>
-                    <sui-select-option *ngFor="let dropdownValue of multiSelect.filteredOptions"
-                      [value]="dropdownValue">
-                    </sui-select-option>
+                    [(ngModel)]="selectedFilters[facet.name]"
+                    (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});">
+                    <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
+                      <sui-select-option class="text-capitalize"
+                        *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+                      </sui-select-option>
+                    </div>
+                    <ng-template #gradeLevel>
+                      <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
+                        [value]="dropdownValue">
+                      </sui-select-option>
+                    </ng-template>
                   </sui-multi-select>
                 </div>
               </div>
@@ -43,5 +49,69 @@
         </ng-container>
       </sui-accordion-panel>
     </sui-accordion>
+  </div>
+</ng-container>
+
+
+<ng-container *ngIf="facets && !layoutConfiguration">
+  <div class="sb-prominent-filter pb-8 px-16">
+    <div class="ui container">
+      <sui-accordion [closeOthers]="false">
+        <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
+          <div title class="sb-data-driven-filter-header" appTelemetryInteract
+            [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+            (click)="isOpen = !isOpen">
+            <i class="icon filter"></i>
+            {{resourceService.frmelmnts?.lbl?.filters}}
+            <i class="dropdown icon"></i>
+          </div>
+          <ng-container content>
+            <div class="mb-16" *ngIf="facets">
+              <ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
+                <div class="d-inline-block">
+                  <div class="d-flex flex-ai-center pr-8">
+                    <div *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
+                      <label>{{facet.label}} :&nbsp;</label>
+                      <ng-container *ngFor="let item of selectedFilters[facet.name]">
+                        <a class="ui label mt-8 mr-8 text-capitalize" *ngIf="item && item.length > 0">
+                          {{item}}
+                          <i class="delete icon" (click)="removeFilterSelection({type: facet.name, value: item})"></i>
+                        </a>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="sb-prominent-filter-container" *ngIf="refresh">
+              <div class="sb-prominent-filter-field" *ngFor="let facet of facets | sortBy:'index':'asc'">
+                <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
+                <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
+                  zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
+                  class="ui selection dropdown multiple" [(ngModel)]="selectedFilters[facet.name]"
+                  (ngModelChange)="filterChangeEvent.next({ event: selectedFilters[facet.name], type: facet.name});">
+                  <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
+                    <sui-select-option class="text-capitalize"
+                      *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+                    </sui-select-option>
+                  </div>
+                  <ng-template #gradeLevel>
+                    <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
+                      [value]="dropdownValue">
+                    </sui-select-option>
+                  </ng-template>
+                </sui-multi-select>
+              </div>
+              <div class="sb-prominent-filter-field">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()"
+                  appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
+                  {{resourceService.frmelmnts?.btn?.reset}}
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </sui-accordion-panel>
+      </sui-accordion>
+    </div>
   </div>
 </ng-container>
