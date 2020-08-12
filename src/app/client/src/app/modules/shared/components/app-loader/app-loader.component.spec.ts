@@ -37,6 +37,7 @@ describe('AppLoaderComponent', () => {
   });
 
   it('should init layout with new configuration', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('joy');
     component.ngOnInit();
     expect(component.layoutConfiguration).toEqual({
       'source': '',
