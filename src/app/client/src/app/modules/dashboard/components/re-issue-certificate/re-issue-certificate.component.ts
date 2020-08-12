@@ -85,7 +85,8 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       request: {
         courseId: this.courseId,
         batchId: _.get(batch, 'batchId'),
-        userIds: [_.get(this.userData, 'userId')]
+        userIds: [_.get(this.userData, 'userId')],
+        createdBy: _.get(batch, 'createdBy')
       }
     };
     this.certService.reIssueCertificate(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
