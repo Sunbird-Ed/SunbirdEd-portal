@@ -137,9 +137,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
-  layoutConfiguration:any;
-  FIRST_PANEL_LAYOUT:string;
-  SECOND_PANEL_LAYOUT:string;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
 
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
@@ -203,14 +203,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
-    
+
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
       this.layoutConfiguration = layoutConfig.layout;
     }
     this.redoLayout();
@@ -423,12 +423,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   redoLayout() {
-    if(this.layoutConfiguration) {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+    if (this.layoutConfiguration) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
     } else {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
 

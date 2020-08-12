@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, RecaptchaService } from '@sunbird/shared';
+import {ResourceService, ToasterService, RecaptchaService, LayoutService} from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
@@ -34,6 +34,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   captchaResponse = '';
   googleCaptchaSiteKey = '';
   isCaptchEnabled = false;
+  layoutConfiguration: any;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
     private toasterService: ToasterService,
@@ -42,17 +43,28 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     public recaptchaService: RecaptchaService,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    public layoutService: LayoutService
     ) {
   }
 
   ngOnInit() {
+    this.initLayout();
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
   }
 
   initRecaptcha() {
@@ -98,7 +110,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   verifyMember() {
     this.showLoader = true;
-      this.groupsService.getUserData((this.memberId).trim(), this.captchaResponse).pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
+      this.groupsService.getUserData((this.memberId).trim(), {token: this.captchaResponse})
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         this.verifiedMember = this.groupsService.addFields(member);
         if (member.exists && !this.isExistingMember()) {
           this.showLoader = false;

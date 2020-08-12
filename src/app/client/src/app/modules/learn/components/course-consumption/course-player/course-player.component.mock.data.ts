@@ -3919,4 +3919,4 @@ export const enrolledCourseMockData = {
         }
       ]
     }
-  }
+  };

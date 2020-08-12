@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Input } from '@angular/core';
 import {ILoaderMessage} from '../../interfaces';
-import { ResourceService } from '../../services/index';
+import {LayoutService, ResourceService} from '../../services/index';
 import * as _ from 'lodash-es';
 
 /**
@@ -9,18 +9,21 @@ import * as _ from 'lodash-es';
  */
 @Component({
   selector: 'app-loader',
-  templateUrl: './app-loader.component.html'
+  templateUrl: './app-loader.component.html',
+  styleUrls: ['./app-loader.component.scss']
 })
 export class AppLoaderComponent implements OnInit {
   @Input() data: ILoaderMessage;
   headerMessage: string;
   loaderMessage: string;
+  layoutConfiguration: any;
 
-  constructor(public resourceService: ResourceService) {
+  constructor(public resourceService: ResourceService, public layoutService: LayoutService) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.initLayout();
     this.headerMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
     this.loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0088');
     if (this.data) {
@@ -28,4 +31,9 @@ export class AppLoaderComponent implements OnInit {
       this.loaderMessage = this.data.loaderMessage || this.loaderMessage;
     }
   }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.getLayoutConfig();
+  }
+
 }

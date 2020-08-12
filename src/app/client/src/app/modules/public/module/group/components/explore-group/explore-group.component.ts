@@ -17,8 +17,8 @@ export class ExploreGroupComponent implements OnInit {
   layoutConfiguration;
   public unsubscribe$ = new Subject<void>();
   constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute,
-    private telemetryService: TelemetryService, private router: Router, 
-    private navigationhelperService: NavigationHelperService, public layoutService:LayoutService) { }
+    private telemetryService: TelemetryService, private router: Router,
+    private navigationhelperService: NavigationHelperService, public layoutService: LayoutService) { }
 
   redirectTologin() {
     window.location.href = MY_GROUPS;
@@ -47,8 +47,8 @@ export class ExploreGroupComponent implements OnInit {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-    if(layoutConfig!=null) {
+    pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
       this.layoutConfiguration = layoutConfig.layout;
     }
    });

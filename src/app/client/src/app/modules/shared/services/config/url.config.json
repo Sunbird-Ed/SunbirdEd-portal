@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "organisations,roles,locations"
+      "fields": "organisations,roles,locations,declarations,externalIds"
     },
     "LibrarySearchField": [
       "name",
@@ -74,7 +74,7 @@
       "SIGNUP": "user/v1/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
-      "GET_PROFILE": "user/v2/read/",
+      "GET_PROFILE": "user/v3/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
@@ -97,10 +97,13 @@
       "SWITCH_USER": "user/v1/switch",
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
-      "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get"
+      "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
+      "USER_DECLARATION": "user/v1/declarations"
     },
     "CERTIFICATE": {
-      "FETCH_CERTIFICATES": "v1/certs/search"
+      "FETCH_CERTIFICATES": "v1/certs/search",
+      "FETCH_USER": "v1/user/search",
+      "REISSUE_CERTIFICATE": "v1/cert/reissue"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"

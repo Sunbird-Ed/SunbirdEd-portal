@@ -1,6 +1,7 @@
 @import "variables";
 @import "mixins/mixins";
 
+
 .divider {
   color: var(--gray-100);
 
@@ -14,7 +15,11 @@
   color: var(--primary-color);
 }
 
-.ui.menu {
+.ui.text.menu .active.item, .ui.text.menu .item:hover {
+  color: var(--primary-color);
+  outline: none;
+}
+.ui.menu {  
   &.text {
     .item {
       // padding: $base-block-space $base-block-space*3 $base-block-space 0;

@@ -1,8 +1,14 @@
+<app-landing-section [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-add-member relative9' : ''">
+
 <app-back-button></app-back-button>
 
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-g mt-24">
-    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
       <div class="sb-bg-color-white p-24">
         <div class="title mb-16 text-left font-weight-bold">
           {{resourceService?.frmelmnts?.lbl?.addNewMember}}
@@ -47,10 +53,10 @@
       </div>
     </div>
 
-    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-members-column">
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sb-members-column">
       <app-group-members [members]="membersList" [groupData]="groupData"></app-group-members>
     </div>
   </div>
 </div>
-
+</div>
 <app-ftu-popup *ngIf="showModal" [showMemberPopup]="showModal" (close)="toggleModal(false)"></app-ftu-popup>

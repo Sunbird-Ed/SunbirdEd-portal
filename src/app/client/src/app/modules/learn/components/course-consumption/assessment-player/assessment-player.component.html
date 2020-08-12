@@ -1,9 +1,9 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
-  <div class="sb-bg-color-white relative position back-btn-container">
+  <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
     <div class="ui container">
       <div class="py-8 d-flex flex-ai-center">
         <!-- Back button -->
@@ -33,10 +33,10 @@
     </div>
   </div>
 
-  <div class="textbook-container" [ngClass]="{'header-block': isFullScreenView}">
+  <div class="textbook-container cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
     <div class="ui container">
       <div class="textbook py-16 sb-g">
-        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
+        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
           <!-- Textbook details -->
           <div class="textbook__details d-flex flex-ai-center">
             <!-- Textbook image -->
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 certified-course">
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
             <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
@@ -78,7 +78,7 @@
   <!-- CC-Player Video -->
   <div class="ui container">
     <div class="cc-player sb-g">
-      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column">
+      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
         <div class="toc-content text-left">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
@@ -97,7 +97,7 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
         <div class="cc-player__list px-0">
         <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
         <div class="side-toc-content chapter-box">

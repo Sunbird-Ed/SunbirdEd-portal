@@ -16,8 +16,9 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'course-stats', component: CourseDashboardComponent,
+        path: 'course-stats', component: CourseDashboardComponent, canActivate: [AuthGuard],
         data: {
+          roles: 'courseBatchRoles',
           telemetry: {
             env: telemetryEnv, pageid: 'course-stats', uri: '/dashboard/course-stats',
             type: 'view', object: { ver: '1.0', type: 'course' }
@@ -25,17 +26,19 @@ const routes: Routes = [
         }
       },
       {
-        path: 'progress', component: CourseProgressComponent,
+        path: 'batches', component: CourseProgressComponent, canActivate: [AuthGuard],
         data: {
+          roles: 'courseBatchRoles',
           telemetry: {
-            env: telemetryEnv, pageid: 'progress', uri: '/dashboard/progress',
+            env: telemetryEnv, pageid: 'batches', uri: '/dashboard/batches',
             type: 'view', object: { ver: '1.0', type: 'course' }
           }
         }
       },
       {
-        path: 'certificates', component: ReIssueCertificateComponent,
+        path: 'certificates', component: ReIssueCertificateComponent, canActivate: [AuthGuard],
         data: {
+          roles: 'courseBatchRoles',
           telemetry: {
             env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
             type: 'view', object: { ver: '1.0', type: 'course' }

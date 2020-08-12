@@ -12,7 +12,6 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
-            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
@@ -34,7 +33,6 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
-            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
             proxyReqPathResolver: function (req) {
@@ -63,7 +61,6 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
-            timeout: sunbird_api_request_timeout,
             limit: reqDataLimitOfContentUpload,
             proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {

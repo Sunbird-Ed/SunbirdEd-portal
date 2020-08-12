@@ -1,3 +1,8 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9':''" >
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between ui container">
@@ -21,7 +26,7 @@
     </div>
   </div>
 
-  <div class="ui container sb-multi-rows">
+  <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
 
@@ -161,7 +166,7 @@
 </div>
 
 </div>
-
+</div>
 <!-- Upload validation status modal -->
 
 <!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
@@ -205,3 +210,4 @@
   </button>
 </div>
 </sui-modal> -->
+

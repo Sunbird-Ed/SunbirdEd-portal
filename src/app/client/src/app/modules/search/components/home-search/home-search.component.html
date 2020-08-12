@@ -1,4 +1,6 @@
-<div class="sb-g">
+<app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
+  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
         <ng-container *ngIf="!layoutConfiguration">
           <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']"
@@ -12,7 +14,7 @@
         </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div class="ui container mt-16">
+      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
   <div class="content-grid">
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
         <div  class="sb-pageSection-header">
@@ -28,8 +30,8 @@
       <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
-        class="masonry-grid dynamic-section-card ">
-        <div in-view-item [id]="index" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
+        class="sb-grid dynamic-section-card ">
+        <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
           <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
             [data]="content" (clickEvent)="playContent($event)"></app-card>
         </div>
@@ -55,5 +57,6 @@
   </div>
       </div>
     </div>
+</div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>

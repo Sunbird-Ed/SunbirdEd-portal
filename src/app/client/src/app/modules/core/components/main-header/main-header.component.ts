@@ -15,6 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData, LayoutService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -63,6 +64,17 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     width: '38px'
   };
   avtarDesktopStyle = {
+    backgroundColor: '#ffffff',
+    color: '#333333',
+    fontFamily: 'inherit',
+    fontSize: '17px',
+    lineHeight: '38px',
+    border: '1px solid #E8E8E8',
+    borderRadius: '50%',
+    height: '38px',
+    width: '38px'
+  };
+  SbtavtarDesktopStyle = {
     backgroundColor: '#ffffff',
     color: '#333333',
     fontFamily: 'inherit',
@@ -119,6 +131,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   signInIntractEdata: IInteractEventEdata;
   hrefPath = '/resources';
   helpLinkVisibility: string;
+  isFullScreenView;
+  public unsubscribe$ = new Subject<void>();
   /**
    * Workspace access roles
    */
@@ -130,7 +144,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
+    public navigationHelperService: NavigationHelperService) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       } catch (error) {
@@ -154,6 +169,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   updateHrefPath(url) {
     if (url.indexOf('explore-course') >= 0) {
       this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.hrefPath = url.replace('explore-groups', MY_GROUPS);
     } else if (url.indexOf('explore') >= 0) {
       this.hrefPath = url.replace('explore', 'resources');
     } else if (url.indexOf('play') >= 0) {
@@ -468,6 +485,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.checkFullScreenView();
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
@@ -503,6 +521,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 
   ngOnDestroy() {

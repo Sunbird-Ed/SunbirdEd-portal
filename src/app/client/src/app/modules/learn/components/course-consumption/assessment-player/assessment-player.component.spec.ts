@@ -52,7 +52,7 @@ describe('AssessmentPlayerComponent', () => {
         RouterTestingModule,
         CommonModule],
       providers: [
-        UserService, CsContentProgressCalculator,
+        UserService, CsContentProgressCalculator, NavigationHelperService,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService
@@ -364,26 +364,22 @@ describe('AssessmentPlayerComponent', () => {
     expect(telemetryService.audit).toHaveBeenCalled();
   });
 
-  it('should make isFullScreenView to TRUE', () => {
-    component.isFullScreenView = false;
-    expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
-    component.ngOnInit();
-    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeTruthy();
-      expect(component.isFullScreenView).toBeTruthy();
-    });
-  });
-
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
-    expect(component.isFullScreenView).toBeTruthy();
-    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
     component.ngOnInit();
-    component['navigationHelperService'].contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeFalsy();
-      expect(component.isFullScreenView).toBeFalsy();
-    });
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
   });
 
   it('should check for course completion', () => {

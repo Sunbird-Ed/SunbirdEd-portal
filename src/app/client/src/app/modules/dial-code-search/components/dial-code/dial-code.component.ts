@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest as observableCombineLatest, of } from 'rxjs';
-import { ResourceService, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, UtilService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { mergeMap, tap, retry, catchError, map, finalize, debounceTime } from 'rxjs/operators';
+import {mergeMap, tap, retry, catchError, map, finalize, debounceTime, takeUntil} from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
 
@@ -61,16 +61,19 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   textbookList = [];
   courseList = [];
   isTextbookDetailsPage = false;
+  layoutConfiguration: any;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public publicPlayerService: PublicPlayerService, private dialCodeService: DialCodeService) {
+    public publicPlayerService: PublicPlayerService, private dialCodeService: DialCodeService,
+    public layoutService: LayoutService) {
   }
 
   ngOnInit() {
+    this.initLayout();
     observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
@@ -82,6 +85,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
+        if (_.get(this.searchResults[0], 'contentType') === 'TextBook') {
+          sessionStorage.setItem('l1parent', this.searchResults[0].identifier);
+        }
         this.appendItems(0, this.itemsToLoad);
         if (this.searchResults.length === 1) {
           if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
@@ -112,6 +118,15 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }, () => {
         this.showLoader = false;
       });
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
   }
 
   private initialize = (params) => {
@@ -244,7 +259,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     } else {
       this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
-        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent },
+        { queryParams: { dialCode: this.dialCode, l1Parent: sessionStorage.getItem('l1parent') || event.data.metaData.l1Parent },
           state: { 'isSingleContent': this.searchResults.length > 1 ? false : true} });
     }
   }
