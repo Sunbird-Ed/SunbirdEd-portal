@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
@@ -16,6 +16,7 @@ import { PublicPlayerService } from '@sunbird/public';
   styleUrls: ['./activity-dashboard.component.scss']
 })
 export class ActivityDashboardComponent implements OnInit, OnDestroy {
+  @ViewChild('searchInputBox') searchInputBox;
   unsubscribe$ = new Subject<void>();
   showLoader = true;
   queryParams;
@@ -211,6 +212,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   handleSelectedCourse(course) {
+    this.searchInputBox.nativeElement.value = '';
     this.selectedCourse = course;
     this.toggleDropdown();
     const activityData = { id: this.selectedCourse.identifier, type: 'Course'};
