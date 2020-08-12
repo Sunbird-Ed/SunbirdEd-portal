@@ -3,8 +3,9 @@
 <!-- welcome screen -->
   <app-explore-ftu-popup *ngIf="showWelcomePopup" (close)="showFtuPopup(false)"></app-explore-ftu-popup>
 
+  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login' : 'sb-g'"> 
 <!-- login screen -->
-<div class="content-header sb-bg-color-white" [appTelemetryImpression]="telemetryImpression">
+<div class="content-header sb-bg-color-white relative9" [appTelemetryImpression]="telemetryImpression">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="flex-basis-1 mr-32">
@@ -30,4 +31,5 @@
   <button class="sb-btn sb-btn-primary sb-btn-normal mt-16 mb-8 w-50" type="button"  (click)="redirectTologin();addTelemetry('group-login')">{{ resourceService.frmelmnts.btn.login }}</button>
    <!-- content comes from CC -->
 
+</div>
 </div>

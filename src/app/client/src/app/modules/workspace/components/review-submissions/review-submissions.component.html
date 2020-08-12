@@ -18,7 +18,7 @@
 
 <div class="ui grid">
   <div class="two wide column"></div>
-  <div class="ten wide column pt-0">
+  <div class="ten wide column pt-0 uzindex">
     <div class="pb-10" *ngIf="reviewContent && totalCount> config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
       <div class="ui pagination menu mt-10 right-floated pt-0 " *ngIf="pager.pages.length">
         <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>

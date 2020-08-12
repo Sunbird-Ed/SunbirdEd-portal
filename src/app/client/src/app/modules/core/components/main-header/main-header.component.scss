@@ -308,14 +308,14 @@ __textbooks {
 
 :host ::ng-deep {
   @include respond-below(sm) {
-
-    .sbt-dropdown-profile-area,
-    app-language-dropdown {
-      width: 100%;
-    }
-
-    .ui.selection.sbt-dropdown.dropdown {
-      min-width: 100%;
+    html[layout='joy'] {
+      .sbt-dropdown-profile-area,
+      app-language-dropdown {
+        width: 100%;
+      }
+      .ui.selection.sbt-dropdown.dropdown {
+        min-width: 100%;
+      }
     }
   }
 }

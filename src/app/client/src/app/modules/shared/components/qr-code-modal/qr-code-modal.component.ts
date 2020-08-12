@@ -34,6 +34,7 @@ export class QrCodeModalComponent implements OnInit {
     if (!_.isEmpty(dialCode)) {
       this.setsubmitDialCodeInteractEdata(dialCodeVal);
       this.modal.approve();
+      sessionStorage.removeItem('l1parent');  // l1parent value is removed (SB-19982)
       this.router.navigate(['/get/dial/', dialCode]);
     }
   }
