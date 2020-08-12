@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed, tick, fakeAsync} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed, tick, fakeAsync, discardPeriodicTasks} from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
@@ -387,6 +387,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     phoneControl.setValue('');
     tick(500);
     fixture.detectChanges();
+    discardPeriodicTasks();
     expect(component.validationType['declared-phone'].isVerificationRequired).toBe(false);
     expect(component.validationType['declared-phone'].isVerified).toBe(false);
   }));

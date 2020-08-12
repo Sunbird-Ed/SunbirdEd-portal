@@ -219,6 +219,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
       if (this.prepopulatedValue[key]) {
         this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
+        if (key === 'declared-phone' && this.prepopulatedValue[key].includes('**')) {
+          this.userDetailsForm.get([key]).setValidators(Validators.pattern(''));
+          this.userDetailsForm.get([key]).updateValueAndValidity();
+        }
         this.setValidators(key);
         this.validationType[key].isVerified = true;
       }
@@ -229,6 +233,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
+        if (key === 'declared-phone') {
+          this.userDetailsForm.get([key]).setValidators(Validators.pattern('^[6-9]\\d{9}$'));
+          this.userDetailsForm.get([key]).updateValueAndValidity();
+        }
         if (userFieldValue === newValue && keyControl.status === 'VALID') {
           this.validationType[key].isVerified = true;
           this.validationType[key].isVerificationRequired = false;
