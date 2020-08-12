@@ -355,6 +355,7 @@ html[layout='joy'] {
   .sb-btn-link-primary {
     border-radius: 0px;
     box-shadow: none;
+    padding: calculateRem(8px) calculateRem(16px);
     &:hover {
       border-radius: calculateRem(16px);
     }
@@ -560,8 +561,14 @@ html[layout='joy'] {
     margin-bottom: calculateRem(24px);
     box-shadow: none;
     background: var(--sbt-compt-bg);
+    padding-top:0px;
   }
-
+  .cc-player__content-header .ui.container.py-16 {
+    padding:0px 0px 0px 0px !important;
+  }
+  .cc-player__content-header .ui.container .cc-player {
+    width:100%;
+  }
   .header-info {
     display: flex;
     align-items: center;
@@ -644,7 +651,11 @@ html[layout='joy'] {
     max-height: 100%;
     padding: calculateRem(4px) calculateRem(16px) calculateRem(16px) calculateRem(16px);
   }
-
+  .sbchapter {
+    border-bottom: 0px;
+    padding: 0 0 0rem;
+    margin-bottom: 0rem;
+  }
   .sbchapter__item {
     border-radius: var(--sbt-bradius-32);
     padding: calculateRem(8px) calculateRem(16px);
@@ -859,6 +870,10 @@ html[layout='joy'] {
   .cc-player__border-fix {
     border-top-left-radius: calculateRem(24px);
     border-top-right-radius: calculateRem(24px);
+  }
+
+  .sb-pageSection-content .slick-slider .slick-track .slick-slide .sb--card {
+    width: calculateRem(320px);
   }
 }
 

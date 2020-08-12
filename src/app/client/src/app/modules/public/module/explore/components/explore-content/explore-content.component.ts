@@ -62,6 +62,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+        this.queryParams = { ...queryParams };
+    });
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.formData = formData;
@@ -269,8 +272,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   private setNoResultMessage() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
+        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        if(this.queryParams.key) {
+          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+          title = title_part1 + ' ' + title_part2;
+        }
         this.noResultMessage = {
-          'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+          'title': title,
           'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
           'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
           'showExploreContentButton': false
