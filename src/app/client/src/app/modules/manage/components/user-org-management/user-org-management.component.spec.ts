@@ -209,9 +209,9 @@ describe('UserOrgManagementComponent', () => {
       }
     }));
     spyOn(window, 'open');
-    component.downloadFile('user.csv');
+    component.downloadFile('user.zip');
     expect(window.open).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith('user.csv', '_blank');
+    expect(window.open).toHaveBeenCalledWith('user.zip', '_blank');
   });
 
 });
