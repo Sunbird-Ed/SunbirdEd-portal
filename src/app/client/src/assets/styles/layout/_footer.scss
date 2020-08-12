@@ -101,6 +101,10 @@
   font-size: calculateRem(14px);
   position: relative;
   width: 100%;
+  &.player-fullscreen-footer{
+    display: none;
+  }
+
 
   a {
     color: $white-color !important;

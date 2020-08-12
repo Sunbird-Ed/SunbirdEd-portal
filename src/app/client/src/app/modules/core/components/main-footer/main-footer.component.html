@@ -1,5 +1,5 @@
 <div *ngIf="showFooter">
-  <footer class="footer" #footerFix *ngIf="!layoutConfiguration">
+  <footer class="footer" #footerFix *ngIf="!layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div  class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
@@ -73,7 +73,7 @@
     </div>
   </footer>
   
-  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration">
+  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div class="sb-g sbt-fluid-content-bg sbt-footer-container relative">
       <div [ngClass]="FIRST_PANEL_LAYOUT"></div>
       <div [ngClass]="SECOND_PANEL_LAYOUT"></div>

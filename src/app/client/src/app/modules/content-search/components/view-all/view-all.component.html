@@ -1,8 +1,8 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">    
+    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">    
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-        <app-data-driven-filter [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
+        <app-data-driven-filter [isOpen]="true" [layoutConfiguration]="layoutConfiguration" [pageId]="'view-all'" *ngIf="filterType" [filterEnv]="filterType"
             [viewAllMode]="true" [accordionDefaultOpen]=false [isShowFilterLabel]=true [hashTagId]="hashTagId"
             [formAction]="formAction" [frameworkName]="frameWorkName"></app-data-driven-filter>
     </div>
