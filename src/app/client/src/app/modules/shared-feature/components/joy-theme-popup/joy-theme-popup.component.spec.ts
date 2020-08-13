@@ -1,16 +1,20 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {SuiModule} from 'ng2-semantic-ui';
 
-import { JoyThemePopupComponent } from './joy-theme-popup.component';
+import {JoyThemePopupComponent} from './joy-theme-popup.component';
+import {configureTestSuite} from '@sunbird/test-util';
 
 describe('JoyThemePopupComponent', () => {
   let component: JoyThemePopupComponent;
   let fixture: ComponentFixture<JoyThemePopupComponent>;
+  configureTestSuite();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JoyThemePopupComponent ]
+      imports: [SuiModule],
+      declarations: [JoyThemePopupComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
