@@ -300,7 +300,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
           'title': title,
           'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
           'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-          'showExploreContentButton': false
+          'showExploreContentButton': true
         };
       });
   }
