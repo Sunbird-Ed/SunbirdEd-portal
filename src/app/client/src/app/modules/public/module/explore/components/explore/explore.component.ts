@@ -45,6 +45,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   SECOND_PANEL_LAYOUT;
   pageTitle;
   svgToDisplay;
+  queryParams;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -59,6 +60,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+      this.queryParams = { ...queryParams };
+  });
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     this.initLayout();
     const formServiceInputParams = {
@@ -285,14 +289,20 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private setNoResultMessage() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-    .subscribe(item => {
-      this.noResultMessage = {
-        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-        'showExploreContentButton': true
-      };
-    });
+      .subscribe(item => {
+        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        if (this.queryParams.key) {
+          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+          title = title_part1 + ' ' + title_part2;
+        }
+        this.noResultMessage = {
+          'title': title,
+          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+          'showExploreContentButton': true
+        };
+      });
   }
 
   public navigateToExploreContent() {

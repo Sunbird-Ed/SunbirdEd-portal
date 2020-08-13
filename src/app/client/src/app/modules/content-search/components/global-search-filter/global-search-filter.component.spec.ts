@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject } from 'rxjs';
+import { Response } from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
+
 
 describe('GlobalSearchFilterComponent', () => {
   let component: GlobalSearchFilterComponent;
@@ -50,5 +52,12 @@ describe('GlobalSearchFilterComponent', () => {
   it('should reset filters', () => {
     component.resetFilters();
     expect(component.router.navigate).toHaveBeenCalled();
+  });
+
+  it('should call removeFilterSelection', () => {
+    component.facets = Response.facets;
+    component.selectedFilters = Response.selectedFilters;
+    component.removeFilterSelection({type: 'medium', value: 'assamese'});
+    expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
 });
