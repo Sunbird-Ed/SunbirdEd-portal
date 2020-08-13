@@ -85,5 +85,12 @@
     }
   }
 }
+.sb-field {
+  margin-bottom: calculateRem(16px) 0px;
+  width: 100%;
+  .sb-field-label{
+    width:calculateRem(72px);
+  }
+}
 
 

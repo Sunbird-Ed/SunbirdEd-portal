@@ -4,10 +4,16 @@
 
 :host ::ng-deep{
   .new-layout-footer{
+    margin-top:calculateRem(24px);
+    &.player-fullscreen-footer{
+      display: none;
+    }
     .sbt-footer-container {
-      height: calculateRem(296px);
+      height: calculateRem(272px); //296px
       width: 100%;
       padding: 0% 2%;
+      background: none;
+      margin-top:calculateRem(8px);
     }
     .sbt-page-content-area {
       border-radius: 0rem 0 0 0;
@@ -22,10 +28,10 @@
       box-shadow: var(--sbt-box-shadow-6px);
       left:0;
       position:absolute;
-      top:calculateRem(24px);
+      top:calculateRem(0px); //24px
       bottom: 0;
       right:0;
-      z-index:9;
+      z-index:8;
       @include respond-below(sm){
         bottom: auto;
       }

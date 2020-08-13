@@ -35,4 +35,37 @@ describe('CertRegService', () => {
     const options = { url: 'v1/certs/search', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
   });
+
+
+  it('should fetch all user certificates', () => {
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+    spyOn(certRegService, 'post').and.returnValue(observableOf({}));
+    const params = {
+      request: {
+        filters: {
+          userName: 'testUser',
+          courseId: '123',
+          createdBy: 'user1'
+        }
+      }
+    };
+    certRegService.getUserCertList('testUser', '123', 'user1');
+    const options = { url: 'v1/user/search', data: params };
+    expect(certRegService.post).toHaveBeenCalledWith(options);
+  });
+
+  it('should re issue user certificate', () => {
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+    spyOn(certRegService, 'post').and.returnValue(observableOf({}));
+    const params = {
+      request: {
+          courseId: '123',
+          batchId: '1',
+          userId: ['tes-user']
+      }
+    };
+    certRegService.reIssueCertificate(params);
+    const options = { url: 'v1/cert/reissue', data: params };
+    expect(certRegService.post).toHaveBeenCalledWith(options);
+  });
 });

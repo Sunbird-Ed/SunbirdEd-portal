@@ -62,14 +62,6 @@
                             </div> -->
 
               <div class="batch-details__edit d-flex flex-ai-center py-8">
-                <!-- <div class="sb-color-primary fnormal font-weight-bold">
-                                    <a href="#addcertificate">Add Certificate</a></div> -->
-
-                <div class="sb-color-primary fnormal font-weight-bold">
-                                        <a href="#managecertificate">Manage Certificate</a></div>
-
-                <!-- <div class="text-disabled fnormal font-weight-bold">Not a certified course</div> -->
-
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
                   (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
                   {{resourceService?.frmelmnts?.lbl?.edit}}

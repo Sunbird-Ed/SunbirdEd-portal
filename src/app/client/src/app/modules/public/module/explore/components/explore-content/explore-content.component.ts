@@ -46,9 +46,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   public globalSearchFacets: Array<string>;
   public allTabData;
   public selectedFilters;
+  public formData;
   layoutConfiguration;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
+  public totalCount;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -60,8 +62,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+        this.queryParams = { ...queryParams };
+    });
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.formData = formData;
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
       this.setNoResultMessage();
       this.initFilters = true;
@@ -96,20 +102,20 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
         this.redoLayout();
       });
   }
   redoLayout() {
-      if(this.layoutConfiguration!=null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,this.layoutConfiguration,COLUMN_TYPE.threeToNine);
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
       } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0,null,COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1,null,COLUMN_TYPE.fullLayout);
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
       }
   }
   public getFilters(filters) {
@@ -139,11 +145,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
+    const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    _.forEach(this.formData, (form, key) => {
+      const pageTitle = _.get(this.resourceService, form.title);
+      if (pageTitle === pageType) {
+        filters.contentType = _.get(form, 'search.filters.contentType');
+      }
+    });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
     if (this.queryParams.key) {
       delete softConstraints['board'];
@@ -177,10 +190,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.contentList = data.result.content || [];
+        this.totalCount = data.result.count;
       }, err => {
         this.showLoader = false;
         this.contentList = [];
         this.facetsList = [];
+        this.totalCount = 0;
         this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
@@ -257,8 +272,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   private setNoResultMessage() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
+        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        if(this.queryParams.key) {
+          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+          title = title_part1 + ' ' + title_part2;
+        }
         this.noResultMessage = {
-          'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+          'title': title,
           'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
           'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
           'showExploreContentButton': false

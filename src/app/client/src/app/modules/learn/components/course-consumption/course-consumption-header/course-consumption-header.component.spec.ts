@@ -216,7 +216,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.courseId  = 'do_212347136096788480178';
     component.showDashboard();
-    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId, 'dashboard', 'course-stats']);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId, 'dashboard', 'batches']);
   });
 
   it('should close the dashboard', () => {

@@ -337,7 +337,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   /**
    * @description - Function to be called on form submit
-   * @since - release-3.1.0 
+   * @since - release-3.1.0
    */
   submitForm() {
     if (this.isP1CaptchaEnabled === 'true') {

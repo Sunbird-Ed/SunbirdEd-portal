@@ -27,7 +27,6 @@ module.exports = function (app) {
   app.patch('/learner/portal/user/v1/update',
     proxyUtils.verifyToken(),
     proxy(envHelper.learner_Service_Local_BaseUrl, {
-      timeout: envHelper.sunbird_api_request_timeout,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/update';
@@ -105,12 +104,11 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     bodyParser.json(),
-    isAPIWhitelisted.isAllowed(),
+    isAPIWhitelisted.isAllowed(),<<<<<<< SB_19714_learner_routes
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
     proxy(learnerURL, {
-      timeout: envHelper.sunbird_api_request_timeout,
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
@@ -146,7 +144,6 @@ module.exports = function (app) {
 
 function proxyManagedUserRequest() {
   return proxy(learnerURL, {
-    timeout: envHelper.sunbird_api_request_timeout,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
     proxyReqPathResolver: function (req) {
@@ -178,7 +175,6 @@ function proxyManagedUserRequest() {
 
 function checkForValidUser() {
   return proxy(learnerURL, {
-    timeout: envHelper.sunbird_api_request_timeout,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
     proxyReqBodyDecorator: function (bodyContent, srcReq) {
@@ -220,7 +216,6 @@ function checkForValidUser() {
 
 function proxyObj (){
   return proxy(learnerURL, {
-    timeout: envHelper.sunbird_api_request_timeout,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
     proxyReqPathResolver: function (req) {

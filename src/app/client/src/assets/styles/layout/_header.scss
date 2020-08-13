@@ -29,7 +29,7 @@
   position: relative;
   display: flex;    
   align-items: flex-start;
-  padding: calculateRem(24px) calculateRem(16px) calculateRem(0px) calculateRem(16px);
+  padding: calculateRem(16px) calculateRem(16px) calculateRem(0px) calculateRem(16px);
   @include respond-above(sm) {
     padding: 0px 0px;
     min-height: calculateRem(86px);
@@ -73,6 +73,9 @@
   border: 0;
   margin-bottom: calculateRem(-1px);
 
+  &.player-fullscreen-header{
+    display: none !important;
+  }
   .logo {
     img {
       height: calculateRem(56px);

@@ -57,7 +57,15 @@
         display: flex;
         align-items: center;
         color: var(--primary-color);
-
+        a {
+          padding: calculateRem(16px) calculateRem(20px);
+          width: 100%;
+          display: flex;
+          align-items: center;
+          &:hover {
+            text-decoration: none;
+          }
+        }
         img {
           width: calculateRem(24px);
           height: calculateRem(24px);
@@ -300,14 +308,25 @@ __textbooks {
 
 :host ::ng-deep {
   @include respond-below(sm) {
-
-    .sbt-dropdown-profile-area,
-    app-language-dropdown {
-      width: 100%;
-    }
-
-    .ui.selection.sbt-dropdown.dropdown {
-      min-width: 100%;
+    html[layout='joy'] {
+      .sbt-dropdown-profile-area,
+      app-language-dropdown {
+        width: 100%;
+      }
+      .ui.selection.sbt-dropdown.dropdown {
+        min-width: 100%;
+      }
     }
   }
+}
+
+.sbt-logo {
+  height: 80px;
+  display:flex;
+  align-items: center;
+  img {
+    min-height: 65%;
+    height: 80%;
+  }
+
 }

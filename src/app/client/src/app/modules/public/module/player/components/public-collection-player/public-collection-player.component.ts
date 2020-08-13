@@ -152,8 +152,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig=> {
-        if(layoutConfig!=null) {
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });

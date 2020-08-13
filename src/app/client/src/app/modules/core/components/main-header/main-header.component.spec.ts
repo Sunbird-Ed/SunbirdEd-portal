@@ -11,7 +11,8 @@ import {
   SharedModule,
   BrowserCacheTtlService,
   UtilService,
-  LayoutService
+  LayoutService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import {
   UserService,
@@ -61,7 +62,7 @@ describe('MainHeaderComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
-        PermissionService, ManagedUserService, UtilService, LayoutService,
+        PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
         LearnerService, CoursesService]
@@ -242,6 +243,11 @@ describe('MainHeaderComponent', () => {
     expect(component.hrefPath).toBe('/resources');
   });
 
+  it('should give login redirection path for group course', () => {
+    component.updateHrefPath('/explore-groups');
+    expect(component.hrefPath).toBe('/my-groups');
+  });
+
   it('should give login redirection path for play content', () => {
     component.updateHrefPath('/play');
     expect(component.hrefPath).toBe('/resources/play');
@@ -274,6 +280,24 @@ describe('MainHeaderComponent', () => {
     spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
     const layoutData = component.isLayoutAvailable();
     expect(layoutData).toBe(true);
+  });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to true', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
   });
 
 });

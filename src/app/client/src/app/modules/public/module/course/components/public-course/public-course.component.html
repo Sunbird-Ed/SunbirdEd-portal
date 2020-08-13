@@ -1,18 +1,19 @@
-<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.course" 
+<app-landing-section [textToDisplay]="pageTitle" [svgToDisplay]="svgToDisplay" 
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-fluid-content-bg sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-  <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
+  <app-prominent-filter [layoutConfiguration]="layoutConfiguration" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
     [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [notToUseFramework]="toUseFrameWorkData"
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
   <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-    <div class="ui grid">
+    <div class="ui grid relative9">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
-        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
+        <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
@@ -23,6 +24,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
