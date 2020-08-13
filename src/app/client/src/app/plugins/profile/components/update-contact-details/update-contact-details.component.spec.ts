@@ -1,25 +1,45 @@
-import { UpdateContactDetailsComponent } from './update-contact-details.component';
-import { SuiModule } from 'ng2-semantic-ui';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, SharedModule } from '@sunbird/shared';
-import { CoreModule } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProfileService } from './../../services';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CoreModule, OtpService } from '@sunbird/core';
+import { ProfileService } from '@sunbird/profile';
+import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { SuiModule } from 'ng2-semantic-ui';
+import { of, throwError } from 'rxjs';
+import { UpdateContactDetailsComponent } from './update-contact-details.component';
 
 describe('UpdateContactDetailsComponent', () => {
   let component: UpdateContactDetailsComponent;
   let fixture: ComponentFixture<UpdateContactDetailsComponent>;
+
+  const resourceBundle = {
+    'messages': {
+      'smsg': {
+        'm0047': 'Your Mobile Number has been updated',
+        'm0048': 'Your email address has been updated'
+      },
+      'emsg': {
+        'm0014': 'Could not update mobile number',
+        'm0015': 'Could not update email address'
+      }
+    },
+    'frmelmnts': {
+      'lbl': {}
+    }
+  };
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [UpdateContactDetailsComponent],
-      providers: [ResourceService, ProfileService],
+      providers: [
+        ProfileService,
+        { provide: ResourceService, useValue: resourceBundle },
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -107,5 +127,115 @@ describe('UpdateContactDetailsComponent', () => {
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
+  });
+
+  it('should call closeModal', () => {
+    component.contactTypeModal = { deny: jasmine.createSpy('deny') };
+    spyOn(component.close, 'emit');
+    component.closeModal();
+    expect(component.contactTypeModal.deny).toHaveBeenCalled();
+    expect(component.close.emit).toHaveBeenCalled();
+  });
+
+  it('should call showParentForm', () => {
+    spyOn(component, 'initializeFormFields');
+    component.showParentForm('true');
+    expect(component.initializeFormFields).toHaveBeenCalled();
+    expect(component.showForm).toBe(true);
+  });
+
+  it('should call onSubmitForm', () => {
+    component.contactTypeForm = new FormGroup({
+      email: new FormControl('test@demo.com', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
+      uniqueContact: new FormControl(true, [Validators.required])
+    });
+    spyOn(component, 'generateOTP');
+    component.onSubmitForm();
+    expect(component.enableSubmitBtn).toBe(false);
+    expect(component.generateOTP).toHaveBeenCalled();
+  });
+
+  it('should call updateProfile for contact type phone', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toastService = TestBed.get(ToasterService);
+    spyOn(component, 'closeModal');
+    spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+    spyOn(toastService, 'success');
+    component.contactType = 'phone';
+    component.updateProfile({});
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(toastService.success).toHaveBeenCalledWith('Your Mobile Number has been updated');
+  });
+
+  it('should call updateProfile for contact type email', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toastService = TestBed.get(ToasterService);
+    spyOn(component, 'closeModal');
+    spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+    spyOn(toastService, 'success');
+    component.contactType = 'email';
+    component.updateProfile({});
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(toastService.success).toHaveBeenCalledWith('Your email address has been updated');
+  });
+
+
+  it('should close the modal and show appropriate message on update fail for type phone', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toastService = TestBed.get(ToasterService);
+    spyOn(component, 'closeModal');
+    spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
+    spyOn(toastService, 'error');
+    component.contactType = 'phone';
+    component.updateProfile({});
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(toastService.error).toHaveBeenCalledWith('Could not update mobile number');
+  });
+
+  it('should close the modal and show appropriate message on update fail for type email', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toastService = TestBed.get(ToasterService);
+    spyOn(component, 'closeModal');
+    spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
+    spyOn(toastService, 'error');
+    component.contactType = 'email';
+    component.updateProfile({});
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(toastService.error).toHaveBeenCalledWith('Could not update email address');
+  });
+
+  it('should call generateOTP', () => {
+    component.contactTypeForm = new FormGroup({
+      email: new FormControl('test@demo.com', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
+      uniqueContact: new FormControl(true, [Validators.required])
+    });
+    component.contactType = 'email';
+    const otpService = TestBed.get(OtpService);
+    spyOn(otpService, 'generateOTP').and.returnValue(of({}));
+    spyOn(component, 'prepareOtpData');
+    component.generateOTP();
+    expect(otpService.generateOTP).toHaveBeenCalled();
+    expect(component.prepareOtpData).toHaveBeenCalled();
+    expect(component.showForm).toBe(false);
+  });
+
+  it('should show appropriate message when fails to generate OTP', () => {
+    component.contactTypeForm = new FormGroup({
+      email: new FormControl('test@demo.com', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
+      uniqueContact: new FormControl(true, [Validators.required])
+    });
+    component.contactType = 'email';
+    const otpService = TestBed.get(OtpService);
+    const toasterService =  TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(otpService, 'generateOTP').and.returnValue(throwError({ error: { params: { status: 'EMAIL_IN_USE', errmsg: 'error' } } }));
+    component.generateOTP();
+    expect(otpService.generateOTP).toHaveBeenCalled();
+    expect(component.enableSubmitBtn).toBe(true);
+    expect(toasterService.error).toHaveBeenCalledWith('error');
   });
 });
