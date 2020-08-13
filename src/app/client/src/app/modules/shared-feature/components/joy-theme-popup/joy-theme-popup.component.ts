@@ -7,6 +7,8 @@ import {Component, OnInit} from '@angular/core';
 })
 export class JoyThemePopupComponent implements OnInit {
 
+  isShown = true;
+
   constructor() {
   }
 
