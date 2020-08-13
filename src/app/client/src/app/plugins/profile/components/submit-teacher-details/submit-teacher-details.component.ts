@@ -165,7 +165,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   initializeFormFields() {
     for (const key of this.formData) {
       const validation = this.setValidations(key);
-      if (key.visible && !_.includes(['state', 'district'], key.name)) {
+      if (key.visible && !_.includes(['state', 'district', 'name'], key.name)) {
         this.formGroupObj[key.code] = new FormControl(null, validation);
         if (this.formAction === 'update' && this.forChanges.prevTenantValue === this.userDetailsForm.controls.tenants.value) {
           this.formGroupObj[key.code].setValue(this.declaredDetails.info[key.code]);
@@ -234,7 +234,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
         newValue = newValue.trim();
         if (key === 'declared-phone') {
-          this.userDetailsForm.get([key]).setValidators(Validators.pattern('^[6-9]\\d{9}$'));
+          const field = this.formData.find((e) => e.code === 'declared-phone');
+          this.userDetailsForm.get([key]).setValidators(this.setValidations(field));
           this.userDetailsForm.get([key]).updateValueAndValidity();
         }
         if (userFieldValue === newValue && keyControl.status === 'VALID') {
@@ -381,7 +382,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       (data: string) => {
         if (_.get(this.tenantControl, 'value')) {
           this.profileService.getTeacherDetailForm(this.formAction, _.get(this.tenantControl, 'value')).subscribe((teacherForm) => {
-            this.formData = _.filter(teacherForm, (field) => !_.includes(['state', 'district'], field.name));
+            this.formData = teacherForm;
             this.initializeFormFields();
           });
         }
@@ -392,9 +393,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const fieldsChanged = [];
     if (this.forChanges.prevPersonaValue !== _.get(this.userDetailsForm, 'value.persona')) { fieldsChanged.push('Persona'); }
     if (this.forChanges.prevTenantValue !== _.get(this.tenantControl, 'value.tenant')) { fieldsChanged.push('Tenant'); }
-    if (this.declaredDetails) {
+    if (this.declaredDetails && this.formData) {
       for (const key of this.formData) {
-        if (this.declaredDetails.info[key.code] !== this.userDetailsForm.controls[key.code].value) {
+        if (!_.includes(['state', 'district', 'name'], key.name) &&
+            this.declaredDetails.info[key.code] !== this.userDetailsForm.controls[key.code].value) {
           fieldsChanged.push(key.label);
         }
       }
@@ -435,6 +437,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
+    this.enableSubmitBtn = false;
     const declaredInfo = {};
       this.formData.map((field) => {
         if (field.code && field.code !== 'tnc') {
@@ -467,6 +470,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   updateProfile(data) {
     this.profileService.declarations(data).subscribe(res => {
+      this.enableSubmitBtn = true;
       if (this.formAction === 'update') {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
         this.closeModal();
