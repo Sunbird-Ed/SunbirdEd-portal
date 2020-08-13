@@ -115,7 +115,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initLayout();
     this.subscribeToQueryParam();
-    this.subscribeToContentProgressEvents().subscribe(data => { });
+    this.subscribeToContentProgressEvents();
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
@@ -446,7 +446,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToContentProgressEvents() {
-    return this.contentProgressEvents$.pipe(
+    this.contentProgressEvents$.pipe(
       map(event => {
         this.contentProgressEvent(event);
         return {
@@ -454,7 +454,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         };
       }),
       takeUntil(this.unsubscribe)
-    );
+    ).subscribe(data => { });
   }
 
 
