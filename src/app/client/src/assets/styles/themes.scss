@@ -875,6 +875,10 @@ html[layout='joy'] {
   .sb-pageSection-content .slick-slider .slick-track .slick-slide .sb--card {
     width: calculateRem(320px);
   }
+  
+  app-usage-reports .sb-workspace-bg .sb-sidebar-menu {
+    position: inherit !important;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
