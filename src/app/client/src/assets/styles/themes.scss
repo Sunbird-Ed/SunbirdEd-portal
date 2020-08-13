@@ -879,6 +879,9 @@ html[layout='joy'] {
   app-usage-reports .sb-workspace-bg .sb-sidebar-menu {
     position: inherit !important;
   }
+  .sbt-page-gap{
+    padding-top: calculateRem(0px);
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
