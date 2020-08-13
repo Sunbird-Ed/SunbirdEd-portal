@@ -92,7 +92,10 @@
 
             <div class="ui container py-16">
               <div class="twelve wide column">
-                <div id="report-body" class="my-16">
+                <div *ngIf="type === 1">
+                  <app-dataset [dataset]="report?.reportconfig?.dataset"></app-dataset>
+                </div>
+                <div id="report-body" class="my-16" *ngIf="type === 0">
                   <sui-tabset>
                     <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                       <a appTelemetryInteract

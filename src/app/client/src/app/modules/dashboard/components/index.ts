@@ -8,3 +8,5 @@ export * from './report/report.component';
 export * from './report-summary/report-summary.component';
 export * from './list-all-reports/list-all-reports.component';
 export * from './add-summary-modal/add-summary-modal.component';
+export * from './dataset/dataset.component';
+export * from './download-datasets/download-datasets.component';

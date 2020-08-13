@@ -12,7 +12,7 @@ import {
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
   OfflineCardService, RecaptchaService
 } from './services';
-import { ContentDirectionDirective } from './directives';
+import { ContentDirectionDirective, MarkdownDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe } from './pipes';
@@ -37,13 +37,14 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent,
-    SelectOptionGroupComponent],
+    SelectOptionGroupComponent,
+    MarkdownDirective],
   exports: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
-    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent]
+    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent, MarkdownDirective]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
