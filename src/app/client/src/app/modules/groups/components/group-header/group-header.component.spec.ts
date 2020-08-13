@@ -96,15 +96,17 @@ describe('GroupHeaderComponent', () => {
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
     spyOn(component, 'toggleModal');
+    spyOn(component, 'navigateToPreviousPage');
     spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
     component.deleteGroup();
     expect(component.toggleModal).toHaveBeenCalledWith(false);
-    tick();
+    tick(1500);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       component['groupService'].deleteGroupById('123').subscribe(response => {
         expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
+        expect(component.navigateToPreviousPage).toHaveBeenCalled();
       });
     });
   }));

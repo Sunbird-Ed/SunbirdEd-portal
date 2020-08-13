@@ -5,7 +5,7 @@
   <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
 <div *ngIf="!layoutConfiguration">
-  <div class="ui relative main menu bs-0 d-block">
+  <div class="ui relative main menu bs-0 d-block" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
@@ -124,7 +124,7 @@
   </div>
 </div>
 
-<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar">
+<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
   <div class="sbt-header sbt-fluid-header-bg">
     <div class="sbt-container">
       <!--Header section-->

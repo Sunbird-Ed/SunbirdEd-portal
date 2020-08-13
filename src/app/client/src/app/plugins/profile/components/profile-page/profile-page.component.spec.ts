@@ -1,6 +1,6 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService} from '@sunbird/core';
+import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService, OrgDetailsService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -70,7 +70,7 @@ describe('ProfilePageComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService, CertRegService, TelemetryService],
+        ToasterService, CertRegService, TelemetryService, OrgDetailsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -274,4 +274,56 @@ describe('ProfilePageComponent', () => {
    expect(component.showMoreRoles).toBeTruthy();
    expect(component.showMoreRolesLimit).toBe(4)
   });
+
+
+  it('should check user is custodian user of not', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({result: { response: { value: '0126684405' } }}));
+    component.ngOnInit();
+    component['getCustodianOrgUser']();
+    expect(component.isCustodianOrgUser).toBeFalsy();
+  });
+
+  it('should convert to string if value is array', () => {
+    const stringArray = ['one', 'tow', 'three'];
+    const result = component.convertToString(stringArray);
+    expect(result).toString();
+  });
+
+  it('should return undefined if value is not an array', () => {
+    const stringArray = 'One';
+    const result = component.convertToString(stringArray);
+    expect(result).toBeUndefined();
+  });
+
+  it ('should navigate to submit self declare details form ', () => {
+    const router = TestBed.get(Router);
+    component.navigate('/profile/teacher-declaration', 'submit');
+    expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], {queryParams: {formaction: 'submit'}});
+  });
+
+  it('should not show self declared information if declaration is not available', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    spyOn(component, 'getSelfDeclaraedDetails').and.callThrough();
+    component.ngOnInit();
+    expect(component.declarationDetails).toBeDefined();
+    expect(component.getSelfDeclaraedDetails).toHaveBeenCalled();
+  });
+
+  it('should get self declared details', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getTenants').and.returnValue(observableOf(Response.tenantsList));
+    spyOn(profileService, 'getTeacherDetailForm').and.returnValue(observableOf(Response.teacherDetailForm));
+    component.ngOnInit();
+    component.getSelfDeclaraedDetails();
+    expect(component.tenantInfo).toBeDefined();
+    expect(component.selfDeclaredInfo).toEqual(Response.finalDeclarationObjStructure);
+  });
+
+
 });

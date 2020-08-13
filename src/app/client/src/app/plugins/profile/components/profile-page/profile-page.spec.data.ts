@@ -271,7 +271,23 @@ export const Response = {
         'lastLoginTime': 1541747671701,
         'createdDate': '2017-10-31 10:47:05:083+0000',
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45',
-        'location': 'Bangalore'
+        'location': 'Bangalore',
+        'declarations': [
+            {
+              'persona': 'volunteer',
+              'errorType': null,
+              'orgId': '013016492159606784174',
+              'status': 'PENDING',
+              'info': {
+                'declared-email': 'dev-user-10@yopmail.com',
+                'declared-ext-id': 'EKL12345',
+                'declared-phone': '8867003222',
+                'declared-school-name': 'Ekstep dev school',
+                'declared-school-udise-code': '12312312311',
+                'type': 'Kendria Vidhyalaya 1'
+              }
+            }
+          ],
     },
     success: {
         'id': 'api.v1.search',
@@ -528,5 +544,114 @@ export const Response = {
             'State (Assam)'
           ]
         }
-      }
+      },
+    tenantsList: [
+        {
+            'code': 'tenants',
+            'name': 'tenants',
+            'label': 'Tenants',
+            'range': [
+                {
+                    'label': 'Andhra Pradesh',
+                    'value': '01232241426855526450',
+                    'index': 1
+                },
+                {
+                    'label': 'CBSE',
+                    'value': '013016492159606784174',
+                    'index': 3
+                }
+            ]
+        }
+    ],
+    teacherDetailForm: [
+        {
+            'code': 'type',
+            'dataType': 'text',
+            'name': 'type',
+            'label': 'NCERT type',
+            'index': 1
+        },
+        {
+            'code': 'declared-phone',
+            'dataType': 'number',
+            'name': 'phone',
+            'label': 'Mobile Number',
+            'index': 2
+        },
+        {
+            'code': 'declared-email',
+            'dataType': 'text',
+            'name': 'email',
+            'label': 'Email Address',
+            'index': 3
+        },
+        {
+            'code': 'declared-school-name',
+            'dataType': 'text',
+            'name': 'school',
+            'label': 'Andhra pradesh School name',
+            'index': 4
+        },
+        {
+            'code': 'declared-school-udise-code',
+            'dataType': 'text',
+            'name': 'udiseId',
+            'label': 'Andhra pradesh UDISE ID',
+            'index': 5
+        },
+        {
+            'code': 'declared-ext-id',
+            'dataType': 'text',
+            'name': 'teacherId',
+            'label': 'Andhra pradesh teacher ID',
+            'index': 6
+        },
+        {
+            'code': 'tnc',
+            'dataType': 'text',
+            'name': 'tnc',
+            'description': '',
+            'index': 7
+        }
+    ],
+    finalDeclarationObjStructure: [
+        {
+          'label': 'NCERT type',
+          'value': 'Kendria Vidhyalaya 1',
+          'code': 'type',
+          'index': 1
+        },
+        {
+          'label': 'Mobile Number',
+          'value': '8867003222',
+          'code': 'declared-phone',
+          'index': 2
+        },
+        {
+          'label': 'Email Address',
+          'value': 'dev-user-10@yopmail.com',
+          'code': 'declared-email',
+          'index': 3
+        },
+        {
+          'label': 'Andhra pradesh School name',
+          'value': 'Ekstep dev school',
+          'code': 'declared-school-name',
+          'index': 4
+        },
+        {
+          'label': 'Andhra pradesh UDISE ID',
+          'value': '12312312311',
+          'code': 'declared-school-udise-code',
+          'index': 5
+        },
+        {
+          'label': 'Andhra pradesh teacher ID',
+          'value': 'EKL12345',
+          'code': 'declared-ext-id',
+          'index': 6
+        }
+    ]
+
 };

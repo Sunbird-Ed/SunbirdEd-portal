@@ -93,3 +93,9 @@
     }
   }   
 }
+
+.open {
+ img {
+   transform: rotate(180deg);
+ }
+}
