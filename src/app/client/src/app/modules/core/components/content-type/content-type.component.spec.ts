@@ -121,6 +121,16 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toBe(null);
   });
 
+  it('should set selected content type for explore-groups', () => {
+    component.setSelectedContentType('/explore-groups', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type as url has selectedTab as query', () => {
+    component.setSelectedContentType('/profile', {selectedTab: 'textbook'}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
   it('should set selected content type for play url', () => {
     component.setSelectedContentType('/play', {}, {});
     expect(component.selectedContentType).toBe(null);
