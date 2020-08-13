@@ -300,4 +300,14 @@ describe('MainHeaderComponent', () => {
     expect(component.isFullScreenView).toBe(true);
   });
 
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+
 });
