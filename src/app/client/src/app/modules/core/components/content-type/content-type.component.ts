@@ -39,19 +39,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       });
   }
 
-  setSelectedContentType(url, queryParams, pathParams) {
-    if (url.indexOf('play') >= 0) {
-      this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
-    } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
-      this.selectedContentType = 'course';
-    } else if (url.indexOf('explore-groups') >= 0) {
-      this.selectedContentType = null;
-    } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
-      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
-    } else {
-      this.selectedContentType = null;
-    }
-  }
 
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
@@ -92,5 +79,19 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.processFormData(data);
       this.setContentTypeOnUrlChange();
     });
+  }
+
+  setSelectedContentType(url, queryParams, pathParams) {
+    if (url.indexOf('play') >= 0) {
+      this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
+    } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
+      this.selectedContentType = 'course';
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.selectedContentType = null;
+    } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
+    } else {
+      this.selectedContentType = null;
+    }
   }
 }
