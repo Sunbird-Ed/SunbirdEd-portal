@@ -875,6 +875,17 @@ html[layout='joy'] {
   .sb-pageSection-content .slick-slider .slick-track .slick-slide .sb--card {
     width: calculateRem(320px);
   }
+  
+  app-usage-reports .sb-workspace-bg .sb-sidebar-menu {
+    position: inherit !important;
+  }
+
+  .sbt-dropdown-profile-area, app-language-dropdown, .sbt-dropdown-language {
+    @include respond-below(sm) {
+      width: 100%;
+      margin-bottom: calculateRem(8px);
+    }
+  }
 }
 
 html[layout='joy'][dir='rtl'] {

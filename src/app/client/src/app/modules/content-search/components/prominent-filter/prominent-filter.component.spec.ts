@@ -106,5 +106,10 @@ describe('ProminentFilterComponent', () => {
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
+  it('should remove filter selection', () => {
+    component.formInputData = { 'subject': ['English'] };
+    component.removeFilterSelection('subject', 'English');
+    expect(component.formInputData.subject).toEqual([]);
+  });
 
 });
