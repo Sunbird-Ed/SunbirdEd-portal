@@ -880,6 +880,9 @@ html[layout='joy'] {
     position: inherit !important;
   }
 
+  .sbt-page-gap{
+    padding-top: calculateRem(0px);
+  }
   .sbt-dropdown-profile-area, app-language-dropdown, .sbt-dropdown-language {
     @include respond-below(sm) {
       width: 100%;

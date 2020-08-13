@@ -1,6 +1,21 @@
-<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal">
+<!-- <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal">
   <div class="sb-modal-header">
-    Joy theme Popup
+   
   </div>
-</sui-modal>
+</sui-modal> -->
 
+<div class="sb-group-page-container">
+  <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
+    <a class="close"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--white">
+      <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
+    <!-- below content comes from CC -->
+    <div class="text-left">
+    <h4 class="sb-group-container__title">SUNBIRD has got a new look and feel</h4>
+    <p class="sb-group-container__description mt-16 w-75">The new design makes it easier for you to find content you need, and adds a splash of joy to your learning experience.</p>
+  </div>
+  <div class="text-left">
+    <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="isShown = false">OK, Got it!</button>
+    <p class="sb-group-container__description mt-16 fnormal">If you want to go back to Classic SUNBIRD, you can always do so from your preferences.</p>
+  </div>
+  </div>
+</div>
