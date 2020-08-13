@@ -62,10 +62,14 @@
         "CREATE": "/summary/create"
       }
     },
+    "DATASET": {
+      "PREFIX": "/dataset",
+      "READ": "/get"
+    },
     "RESOURCEBUNDLES": {
       "ENG": "/read"
     },
-    "REVIEW_COMMENT":{
+    "REVIEW_COMMENT": {
       "READ": "review/comment/v1/read/comment",
       "DELETE": "review/comment/v1/delete/comment",
       "CREATE": "review/comment/v1/create/comment"
@@ -107,16 +111,16 @@
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
-    "SYSTEM_SETTING":{
-      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId",
-      "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg",
+    "SYSTEM_SETTING": {
+      "CUSTODIAN_ORG": "data/v1/system/settings/get/custodianOrgId",
+      "COMMING_SOON_MESSAGE": "data/v1/system/settings/get/contentComingSoonMsg",
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
       "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
       "TENANT_CONFIG": "data/v1/system/settings/get",
       "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
     },
-    "COURSE_FRAMEWORK":{
-      "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
+    "COURSE_FRAMEWORK": {
+      "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"
     },
     "COURSE": {
       "SEARCH": "course/v1/search",
@@ -126,8 +130,8 @@
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
-      "UNENROLL_USER_COURSE":"course/v1/unenrol",
-      "GET_QR_CODE_FILE":"course/v1/qrcode/download",
+      "UNENROLL_USER_COURSE": "course/v1/unenrol",
+      "GET_QR_CODE_FILE": "course/v1/qrcode/download",
       "GET_REPORTS_METADATA": "course-reports/metadata"
     },
     "CONTENT": {
@@ -156,7 +160,7 @@
       "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
       "COURSE_PROGRESS": "dashboard/v1/progress/course",
       "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
-      "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
+      "COURSE_PROGRESS_V2": "dashboard/v2/progress/course"
     },
     "DEVICE": {
       "REGISTER": "register/",
@@ -241,13 +245,13 @@
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export",
-      "UPDATE":"content/v1/update",
+      "UPDATE": "content/v1/update",
       "APP_UPDATE": "desktop/v1/update",
-      "RESUME_IMPORT":"content/v1/import/resume",
-      "CANCEL_IMPORT":"content/v1/import/cancel",
-      "PAUSE_IMPORT":"content/v1/import/pause",
-      "RETRY_IMPORT":"content/v1/import/retry",
-      "REPORT_OTHER_ISSUE":"help/v1/report/issue",
+      "RESUME_IMPORT": "content/v1/import/resume",
+      "CANCEL_IMPORT": "content/v1/import/cancel",
+      "PAUSE_IMPORT": "content/v1/import/pause",
+      "RETRY_IMPORT": "content/v1/import/retry",
+      "REPORT_OTHER_ISSUE": "help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
       "UPDATE_USER": "desktop/user/v1/update",
@@ -256,11 +260,11 @@
       "LOCATION_READ": "data/v1/location/read",
       "APP_INFO": "app/v1/info",
       "SYSTEM_INFO": "desktop/v1/system-info",
-      "RESUME_DOWNLOAD":"content/v1/download/resume",
-      "CANCEL_DOWNLOAD":"content/v1/download/cancel",
-      "PAUSE_DOWNLOAD":"content/v1/download/pause",
-      "RETRY_DOWNLOAD":"content/v1/download/retry",
-      "DELETE_CONTENT":"content/v1/delete",
+      "RESUME_DOWNLOAD": "content/v1/download/resume",
+      "CANCEL_DOWNLOAD": "content/v1/download/cancel",
+      "PAUSE_DOWNLOAD": "content/v1/download/pause",
+      "RETRY_DOWNLOAD": "content/v1/download/retry",
+      "DELETE_CONTENT": "content/v1/delete",
       "TELEMTRY_INFO": "telemetry/v1/info",
       "EXPORT_TELEMETRY": "telemetry/v1/export",
       "IMPORT_TELEMETRY": "telemetry/v1/import",
@@ -279,18 +283,18 @@
       "TELEMETRY_EXPORT": "telemetry/export",
       "TELEMETRY_IMPORT": "telemetry/import"
     },
-    "CONTRIBUTION_PROGRAMS":{
+    "CONTRIBUTION_PROGRAMS": {
       "SEARCH": "program/v1/search"
     },
-    "ASSESSMENT": { 
-      "CREATE": "assessment/v3/items/create", 
-      "READ": "assessment/v3/items/read", 
+    "ASSESSMENT": {
+      "CREATE": "assessment/v3/items/create",
+      "READ": "assessment/v3/items/read",
       "UPDATE": "assessment/v3/items/update",
       "RETIRE": "assessment/v3/itemsets/retire"
     },
-    "ASSET": { 
-      "CREATE": "content/v3/create", 
-      "UPDATE": "content/v3/upload" 
+    "ASSET": {
+      "CREATE": "content/v3/create",
+      "UPDATE": "content/v3/upload"
     },
     "ITEMSET": {
       "CREATE": "itemset/v3/create",

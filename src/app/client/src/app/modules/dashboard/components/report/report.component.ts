@@ -11,6 +11,11 @@ import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
 
+enum ReportType {
+  report,
+  dataset
+}
+
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
@@ -43,6 +48,7 @@ export class ReportComponent implements OnInit {
   private materializedReport = false;
   private hash: string;
   public getParametersValueForDropDown$: Observable<any>;
+  public type: ReportType = ReportType.report;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
@@ -112,8 +118,8 @@ export class ReportComponent implements OnInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
-            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') &&
-              !this.reportService.isUserSuperAdmin()) {
+            this.type = _.get(report, 'type') === 'report' ? ReportType.report : ReportType.dataset;
+            if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length')) {
               return throwError({ messageText: 'messages.emsg.mutliParametersFound' });
             }
             this.setParametersHash = this.report;
@@ -134,11 +140,10 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
-                  _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
-                result['files'] = files || [];
+                result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
                 return result;
               })
@@ -166,7 +171,7 @@ export class ReportComponent implements OnInit {
    * @param url
    */
   public setDownloadUrl(url) {
-    this.downloadUrl = url;
+    this.downloadUrl = this.reportService.resolveParameterizedPath(url, this.hash ? this.reportService.getParameterFromHash(this.hash) : null);
   }
 
   public getTelemetryInteractEdata = ({ id = 'report-chart', type = 'click', pageid = this.activatedRoute.snapshot.data.telemetry.pageid,

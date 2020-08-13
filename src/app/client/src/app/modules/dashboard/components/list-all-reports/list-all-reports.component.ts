@@ -29,7 +29,14 @@ export class ListAllReportsComponent implements OnInit {
 
   @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
-    this.prepareTable(element.nativeElement);
+    const [reports, datasets] = this.reports;
+    this.prepareTable(element.nativeElement, reports);
+  }
+
+  @ViewChild('all_datasets') set datasetTable(element: ElementRef | null) {
+    if (!element) { return; }
+    const [reports, datasets] = this.reports;
+    this.prepareTable(element.nativeElement, datasets);
   }
 
   ngOnInit() {
@@ -69,9 +76,9 @@ export class ListAllReportsComponent implements OnInit {
     return this.reportService.listAllReports(filters).pipe(
       mergeMap(res => this.filterReportsBasedOnRoles(res.reports)),
       map(reports => {
-        this.reports = reports;
+        const [reportsArr, datasetsArr] = this.reports = _.partition(reports, report => _.toLower(_.get(report, 'type')) === 'report');
         const count = _.get(reports, 'length');
-        return { count, reports };
+        return { count, reportsArr, datasetsArr };
       })
     );
   }
@@ -126,21 +133,46 @@ export class ListAllReportsComponent implements OnInit {
   }
 
   /**
-   * @description initializes the datatables with relevant configurations
+   * @description returns default config options for master and child table
+   * @private
+   * @memberof ListAllReportsComponent
+   */
+  private getDefaultTableOptions = () => ({
+    paging: true,
+    lengthChange: true,
+    searching: true,
+    ordering: true,
+    info: true,
+    autoWidth: true,
+  });
+
+
+  private indexColumn(table) {
+    table.on('order.dt search.dt', function () {
+      table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        cell.innerHTML = i + 1;
+      });
+    }).draw();
+  }
+
+  /**
+   * @description initializes the dataTables with relevant configurations
    * @param {*} el
    * @memberof ListAllReportsComponent
    */
-  public prepareTable(el) {
+  public prepareTable(el, data = []) {
     const masterTable = $(el).DataTable({
-      paging: true,
-      lengthChange: true,
-      searching: true,
+      ...this.getDefaultTableOptions(),
       order: [[1, 'desc']],
-      ordering: true,
-      info: true,
-      autoWidth: true,
-      data: this.reports,
+      data,
       columns: [
+        {
+          title: "Serial No.",
+          searchable: false,
+          orderable: false,
+          data: null
+        },
+        { title: 'Created On', data: 'createdon', visible: false },
         ...(this.reportService.isUserReportAdmin() ? [{
           class: 'details-control',
           orderable: false,
@@ -158,7 +190,6 @@ export class ListAllReportsComponent implements OnInit {
           defaultContent: ''
         }] : []),
         { title: 'Report Id', data: 'reportid', visible: false },
-        { title: 'Created On', data: 'createdon', visible: false },
         {
           title: 'Title', data: 'title', render: (data, type, row) => {
             const { title, description } = row;
@@ -191,6 +222,8 @@ export class ListAllReportsComponent implements OnInit {
         }] : [])]
     });
 
+    this.indexColumn(masterTable);
+
     $(el).on('click', 'tbody tr td:not(.details-control)', (event) => {
       const rowData = masterTable && masterTable.row(event.currentTarget).data();
       if (_.get(rowData, 'isParameterized') && _.has(rowData, 'children') && rowData.children.length > 0) { return false; }
@@ -221,28 +254,34 @@ export class ListAllReportsComponent implements OnInit {
 
         row.child(getChildTable(id)).show();
         const childTable = $(`#${id}`).DataTable({
-          paging: true,
+          ...this.getDefaultTableOptions(),
           lengthChange: false,
-          searching: true,
-          ordering: false,
           info: false,
-          autoWidth: false,
           data: rowData.children,
-          columns: [{
-            title: 'Parameter',
-            data: 'hashed_val',
-            className: 'text-center',
-            render: data => {
-              const parameters = _.split(atob(data), '__');
-              return parameters;
-            }
-          }, {
-            title: 'Status',
-            data: 'status',
-            render: this.renderStatus.bind(this),
-            className: 'text-center'
-          }]
+          columns: [
+            {
+              title: "Serial No.",
+              searchable: false,
+              orderable: false,
+              data: null
+            },
+            {
+              title: 'Parameter',
+              data: 'hashed_val',
+              className: 'text-center',
+              render: data => {
+                const parameters = _.split(atob(data), '__');
+                return parameters;
+              }
+            }, {
+              title: 'Status',
+              data: 'status',
+              render: this.renderStatus.bind(this),
+              className: 'text-center'
+            }]
         });
+
+        this.indexColumn(childTable);
 
         $(`#${id}`).on('click', 'td', e => {
           const { reportid, hashed_val, materialize } = childTable.row(e.currentTarget).data();
