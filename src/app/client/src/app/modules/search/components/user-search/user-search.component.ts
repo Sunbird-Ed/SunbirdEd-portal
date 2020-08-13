@@ -5,7 +5,7 @@ import {
   NavigationHelperService, IPagination, LayoutService
 } from '@sunbird/shared';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
-import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
+import {Component, OnInit, NgZone, AfterViewInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { UserSearchService } from './../../services';
@@ -17,7 +17,7 @@ import {takeUntil} from 'rxjs/operators';
   selector: 'app-user-search',
   templateUrl: './user-search.component.html'
 })
-export class UserSearchComponent implements OnInit, AfterViewInit {
+export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchService: SearchService;
   private resourceService: ResourceService;
   /**
@@ -395,6 +395,11 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     this.telemetryImpression.edata.visits = this.inviewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

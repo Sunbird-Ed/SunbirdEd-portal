@@ -170,6 +170,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
       }
     }
+    if (!_.includes(['Users', 'profile'], this.selectedOption)) {
+      this.queryParam['selectedTab'] = 'all';
+    }
     this.route.navigate([redirectUrl, 1], {
       queryParams: this.queryParam
     });

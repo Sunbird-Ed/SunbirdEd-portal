@@ -1,18 +1,13 @@
 <app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
+
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
     <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-        <ng-container *ngIf="!layoutConfiguration">
-            <app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
-            *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
-            [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
-            [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-          </ng-container>
-          <ng-container *ngIf="layoutConfiguration">
-            <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
-              (filterChange)="getFilters($event)">
-            </app-global-search-filter>
-          </ng-container>
+        <ng-container>
+          <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+            *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+          </app-global-search-filter>
+        </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
         <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
