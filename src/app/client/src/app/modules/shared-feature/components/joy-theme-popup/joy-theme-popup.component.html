@@ -4,9 +4,9 @@
   </div>
 </sui-modal> -->
 
-<div class="sb-group-page-container">
+<div class="sb-group-page-container" *ngIf="isShown">
   <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
-    <a class="close"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--white">
+    <a class="close"><i class="icon-svg icon-svg--xs icon-close" (click)="isShown = false"><svg class="icon icon-svg--white">
       <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
     <!-- below content comes from CC -->
     <div class="text-left">
