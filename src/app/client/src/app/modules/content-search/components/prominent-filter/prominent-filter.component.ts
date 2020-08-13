@@ -334,6 +334,17 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         return [];
       }));
   }
+
+  public removeFilterSelection(field, item) {
+    const itemIndex = this.formInputData[field].indexOf(item);
+    if (itemIndex !== -1) {
+      this.formInputData[field].splice(itemIndex, 1);
+      this.formInputData = _.pickBy(this.formInputData);
+      this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+      this.hardRefreshFilter();
+      this.setFilterInteractData();
+    }
+  }
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
