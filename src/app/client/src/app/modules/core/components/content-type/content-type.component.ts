@@ -27,9 +27,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.getContentTypes();
   }
 
-  getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
-  }
 
   setContentTypeOnUrlChange() {
     combineLatest(this.activatedRoute.queryParams, this.activatedRoute.params)
@@ -38,6 +35,24 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         this.setSelectedContentType(this.router.url, result[0], result[1]);
       });
   }
+
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  showContentType(data) {
+    if (this.userService.loggedIn) {
+      this.router.navigate([data.loggedInUserRoute.route],
+        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam}});
+    } else {
+      this.router.navigate([data.anonumousUserRoute.route],
+        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam}});
+    }
+  }
+
 
   setSelectedContentType(url, queryParams, pathParams) {
     if (url.indexOf('play') >= 0) {
@@ -53,34 +68,18 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
-  }
-
-  showContentType(data) {
-    if (this.userService.loggedIn) {
-      this.router.navigate([data.loggedInUserRoute.route],
-        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam}});
-    } else {
-      this.router.navigate([data.anonumousUserRoute.route],
-        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam}});
-    }
-  }
-
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
   }
 
+  getTitle(contentType) {
+    return _.get(this.resourceService, _.get(contentType, 'title'));
+  }
+
   getIcon(contentType) {
     return _.get(contentType, 'theme.className');
   }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
 
   getContentTypes() {
     const formServiceInputParams = {
@@ -93,4 +92,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.setContentTypeOnUrlChange();
     });
   }
+
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
 }
