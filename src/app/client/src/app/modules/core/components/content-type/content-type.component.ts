@@ -27,9 +27,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.getContentTypes();
   }
 
-  getTitle(contentType) {
-    return _.get(this.resourceService, _.get(contentType, 'title'));
-  }
 
   setContentTypeOnUrlChange() {
     combineLatest(this.activatedRoute.queryParams, this.activatedRoute.params)
@@ -39,23 +36,12 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       });
   }
 
-  setSelectedContentType(url, queryParams, pathParams) {
-    if (url.indexOf('play') >= 0) {
-      this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
-    } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
-      this.selectedContentType = 'course';
-    } else if (url.indexOf('explore-groups') >= 0) {
-      this.selectedContentType = null;
-    } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
-      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
-    } else {
-      this.selectedContentType = null;
-    }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
-  isLayoutAvailable() {
-    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
-  }
 
   showContentType(data) {
     if (this.userService.loggedIn) {
@@ -67,20 +53,33 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  setSelectedContentType(url, queryParams, pathParams) {
+    if (url.indexOf('play') >= 0) {
+      this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
+    } else if (url.indexOf('explore-course') >= 0 || url.indexOf('learn') >= 0) {
+      this.selectedContentType = 'course';
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.selectedContentType = null;
+    } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
+    } else {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
+    }
+  }
+
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
   }
 
+  getTitle(contentType) {
+    return _.get(this.resourceService, _.get(contentType, 'title'));
+  }
+
   getIcon(contentType) {
     return _.get(contentType, 'theme.className');
   }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
 
   getContentTypes() {
     const formServiceInputParams = {
@@ -93,4 +92,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.setContentTypeOnUrlChange();
     });
   }
+
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
 }
