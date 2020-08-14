@@ -94,6 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
   layoutConfiguration;
   title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
+  showJoyThemePopUp = false;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -207,7 +208,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
-        this.checkTncAndFrameWorkSelected();
+        this.joyThemePopup();
         this.initApp = true;
         this.changeDetectorRef.detectChanges();
       }, error => {
@@ -226,6 +227,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
+  }
+
+  joyThemePopup() {
+    const joyThemePopup = localStorage.getItem('joyThemePopup');
+    if (joyThemePopup === 'true') {
+      this.checkTncAndFrameWorkSelected();
+    } else {
+      this.showJoyThemePopUp = true;
+    }
+  }
+
+  onCloseJoyThemePopup() {
+    this.showJoyThemePopUp = false;
+    this.checkTncAndFrameWorkSelected();
   }
 
   isBotdisplayforRoute () {
