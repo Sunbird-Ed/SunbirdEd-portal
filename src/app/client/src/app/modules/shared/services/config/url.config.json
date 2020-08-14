@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "organisations,roles,locations,declarations,externalIds"
+      "fields": "organisations,roles,locations,declarations"
     },
     "LibrarySearchField": [
       "name",

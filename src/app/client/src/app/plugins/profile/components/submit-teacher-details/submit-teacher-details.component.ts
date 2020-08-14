@@ -440,8 +440,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.enableSubmitBtn = false;
     const declaredInfo = {};
       this.formData.map((field) => {
-        if (field.code && field.code !== 'tnc') {
-            Object.assign(declaredInfo, {[field.code]: this.userDetailsForm.value[field.code]});
+        if (field.code && !_.includes(['state', 'district', 'name', 'tnc'], field.name)) {
+          const value = this.userDetailsForm.value[field.code] || '';
+          Object.assign(declaredInfo, {[field.code]: value });
         }
       });
     const operation = this.getOperation();
