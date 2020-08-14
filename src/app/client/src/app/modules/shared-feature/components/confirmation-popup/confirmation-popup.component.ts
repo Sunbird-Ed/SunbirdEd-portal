@@ -7,7 +7,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 })
 export class ConfirmationPopupComponent implements OnInit {
   @ViewChild('confirmationModal') confirmationModal;
-  @Input() popupMode: boolean;
+  @Input() popupMode: string;
   @Output() close = new EventEmitter<any>();
 
   constructor() { }
