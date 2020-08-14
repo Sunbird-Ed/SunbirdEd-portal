@@ -208,8 +208,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
-        this.joyThemePopup();
         this.initApp = true;
+        this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
@@ -229,15 +229,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['title'] = this.botObject['header'] = this.title;
   }
 
-  joyThemePopup() {
-    const joyThemePopup = localStorage.getItem('joyThemePopup');
-    if (joyThemePopup === 'true') {
-      this.checkTncAndFrameWorkSelected();
-    } else {
-      this.showJoyThemePopUp = true;
-    }
-  }
-
+  
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -275,6 +267,15 @@ export class AppComponent implements OnInit, OnDestroy {
   isLocationStatusRequired() {
     const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  joyThemePopup() {
+    const joyThemePopup = localStorage.getItem('joyThemePopup');
+    if (joyThemePopup === 'true') {
+      this.checkTncAndFrameWorkSelected();
+    } else {
+      this.showJoyThemePopUp = true;
+    }
   }
 
   checkLocationStatus() {
