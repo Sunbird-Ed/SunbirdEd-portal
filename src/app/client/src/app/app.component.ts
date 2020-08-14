@@ -246,6 +246,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
+    this.changeDetectorRef.detectChanges();
     this.checkTncAndFrameWorkSelected();
   }
 
