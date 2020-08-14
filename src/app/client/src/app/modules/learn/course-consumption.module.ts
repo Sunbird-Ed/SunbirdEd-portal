@@ -3,6 +3,7 @@ import { CourseConsumptionRoutingModule } from './course-consumption-routing.mod
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { FormsModule } from '@angular/forms';
 import {
   CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent,
@@ -25,6 +26,7 @@ import { CourseDetailsComponent } from './components/course-consumption/course-d
   imports: [
     CommonModule,
     SharedModule,
+    SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
     SuiProgressModule, SuiRatingModule, SuiCollapseModule,
     FormsModule,

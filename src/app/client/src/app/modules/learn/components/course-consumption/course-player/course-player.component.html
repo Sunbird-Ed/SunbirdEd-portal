@@ -203,6 +203,8 @@
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
 
+<app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" (close)="onPopupClose($event)"></app-confirmation-popup>
+
 <!-- new UI -->
 <div class="sb-bg-color-gray-0 textbook-container hide">
   <div class="ui container">

@@ -14,6 +14,7 @@ const ROLE = {
   CONTENT_REVIEW: 'CONTENT_REVIEW',
   CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
+  COURSE_MENTOR: 'COURSE_MENTOR',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
   COURSE_MENTOR: 'COURSE_MENTOR',
@@ -276,6 +277,10 @@ const API_LIST = {
     '/learner/badging/v1/issuer/badge/assertion/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/org/v2/preferences/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
 
     //Batch related APIs

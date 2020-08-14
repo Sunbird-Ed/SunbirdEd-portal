@@ -178,6 +178,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   * initializes form fields and apply field level validation
   */
   private initializeUpdateForm(): void {
+    const issueCertificate = _.get(this.batchDetails, 'cert_templates') && Object.keys(_.get(this.batchDetails, 'cert_templates')).length ? 'yes' : 'no';
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
@@ -193,7 +194,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate)
+      enrollmentEndDate: new FormControl(enrollmentEndDate),
+      issueCertificate: new FormControl(issueCertificate, [Validators.required])
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {
@@ -372,7 +374,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       startDate: startDate,
       endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors)
+      mentors: _.compact(mentors),
+      cert_templates: []
     };
     if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
       requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
