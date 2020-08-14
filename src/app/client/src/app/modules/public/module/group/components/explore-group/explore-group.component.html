@@ -3,7 +3,7 @@
 <!-- welcome screen -->
   <app-explore-ftu-popup *ngIf="showWelcomePopup" (close)="showFtuPopup(false)"></app-explore-ftu-popup>
 
-  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login' : 'sb-g'"> 
+  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login' : ''"> 
 <!-- login screen -->
 <div class="content-header sb-bg-color-white relative9" [appTelemetryImpression]="telemetryImpression">
   <div class="ui container py-16">
