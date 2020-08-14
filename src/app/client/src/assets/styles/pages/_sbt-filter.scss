@@ -5,6 +5,7 @@
 
       .sb-grade-pills-container {
         background: inherit !important;
+        padding-top:0px !important;
       }
 
       .sb-pills-container {
@@ -91,8 +92,8 @@
 
   .sbt-reset-bar {
     position: absolute;
-    top: calculateRem(12px);
-    right: calculateRem(16px);
+    top: calculateRem(8px);
+    right: calculateRem(8px);
 
     html[dir="rtl"] & {
       left: calculateRem(16px);
@@ -110,20 +111,35 @@
     }
   }
 
+.sbt-filter-bar .treepicker-parent input.topic-picker-selector {
+  padding-left: calculateRem(16px);
+  background: var(--sbt-theme-purple-selectbox-lbg) !important;
+  color: var(--sbt-theme-purple-selectbox);
+  border: 0px;
+  border-radius: calculateRem(24px);
+  height: calculateRem(40px);
+  width: 100%;
+  margin-bottom: calculateRem(16px);
+  font-size: calculateRem(12px);
+  font-weight: bold;
+  box-shadow: var(--sbt-box-shadow-3px);
 }
 
+}
 
 
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
   z-index: 9;
   position: relative;
+
   &-text,
   &-overlay {
     display: none;
   }
-  &-close{
-    background: #fff;
+
+  &-close {
+    background: var(--white);
     box-shadow: var(--sbt-box-shadow-3px);
     border-radius: 50%;
     width: 24px;
@@ -131,11 +147,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     @include respond-above(md) {
       display: none;
     }
   }
+
   &-switcher {
+    --primary-color:#024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--primary-color);
@@ -151,23 +170,49 @@
     top: 0px;
     z-index: 999;
     cursor: pointer;
-
+    html[dir="rtl"] & {
+      right:calculateRem(24px);
+    }
     i {
       margin-top: calculateRem(-10px);
       margin-left: calculateRem(3px);
       font-size: calculateRem(20px);
     }
   }
+
   @include respond-above(md) {
     position: sticky;
     top: calculateRem(188px);
-    // margin-top: calculateRem(-72px);
+    margin-top: calculateRem(-128px);
   }
+
+  @include respond-below(md) {
+    &-text {
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+      height: 2.5rem;
+      margin-top: -1.25rem;
+      background: var(--white);
+      padding: 0 calculateRem(16px) 0 calculateRem(48px);
+      display: flex;
+      align-items: center;
+      z-index: 3;
+      font-size: calculateRem(12px);
+      font-weight: bold;
+      justify-content: center;
+      box-shadow: var(--sbt-box-shadow-3px);
+      border-radius: calculateRem(20px);
+      html[dir="rtl"] & {
+        right: calculateRem(24px);
+        padding: 0 calculateRem(48px) 0 calculateRem(16px);
+      }
+    }
+  }
+
   @include respond-between(sm, md) {
-    // margin-top: calculateRem(-72px);
     position: fixed;
-    // z-index: 1111;
-    top: calculateRem(188px);
+    top: calculateRem(192px);
 
     &-overlay {
       position: fixed;
@@ -190,29 +235,13 @@
       box-shadow: none;
     }
 
-    &-text {
-      position: absolute;
-      left: 1.5rem;
-      top: 0;
-      height: 2.5rem;
-      margin-top: -1.25rem;
-      background: var(--white);
-      padding: 0 calculateRem(16px) 0 calculateRem(48px);
-      display: flex;
-      align-items: center;
-      z-index: 3;
-      font-size: calculateRem(12px);
-      font-weight: bold;
-      justify-content: center;
-      box-shadow: var(--sbt-box-shadow-3px);
-      border-radius: calculateRem(20px);
-    }
   }
+
   &-bar {
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-6px);
     min-width: calculateRem(232px);
-    padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
+    padding: calculateRem(24px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
     position: fixed;
     top: 4px;
     right: 0;
@@ -222,7 +251,7 @@
     z-index: 9999;
     margin: 0;
     border-radius: calculateRem(24px);
-  
+
     @include respond-between(sm, md) {
       position: absolute;
       top: 0;
@@ -230,7 +259,7 @@
       z-index: 1112;
       height: auto;
     }
-  
+
     @include respond-above(md) {
       z-index: initial;
       position: relative;
@@ -238,30 +267,27 @@
       height: auto;
       // margin-top:calculateRem(-72px);
     }
-  
-    &.mr-16 {
-      @include respond-below(sm) {
-        margin-right: 0 !important;
-      }
-    }
   }
-  &-scrollable {
-    overflow-y: auto;
-    padding-right: calculateRem(24px);
-    height: calc(100vh - 64px);
 
+  &-scrollable {
+    position: relative;
+    overflow-y: auto;
+    height: calc(100vh - 64px);
+    padding-bottom: calculateRem(100px);
     @include respond-between(sm, md) {
-      max-height: calc(100vh - 320px);
-      height: auto;
+      height: calc(100vh - 280px); 
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 388px);
+      max-height: calc(100vh - 256px);
       height: auto;
-      // height: auto;
       // overflow: initial;
       // max-height: inherit;
     }
+  }
+
+  &-noscrollable {
+    overflow-y: inherit !important;
   }
 
   .state-medium-container {
@@ -294,7 +320,5 @@
     }
   }
 
-
-
-
 }
+

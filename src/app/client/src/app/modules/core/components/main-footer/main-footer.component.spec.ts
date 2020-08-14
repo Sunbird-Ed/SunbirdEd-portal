@@ -3,7 +3,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
+import {ResourceService, ConfigService, SharedModule, NavigationHelperService, UtilService} from '@sunbird/shared';
 import { MainFooterComponent } from './main-footer.component';
 import { CacheService } from 'ng2-cache-service';
 import { of } from 'rxjs';
@@ -67,7 +67,7 @@ describe('MainFooterComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            providers: [CacheService, ConfigService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
+            providers: [CacheService, ConfigService, NavigationHelperService, UtilService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
                 provide: ActivatedRoute, useValue: mockActivatedRoute
             }],
             imports: [CoreModule, HttpClientModule, WebExtensionModule.forRoot(),
@@ -129,5 +129,32 @@ describe('MainFooterComponent', () => {
         component.redoLayout();
         expect(component).toBeTruthy();
     });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
 
 });

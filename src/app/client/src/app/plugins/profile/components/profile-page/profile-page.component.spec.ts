@@ -1,6 +1,6 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService} from '@sunbird/core';
+import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService, OrgDetailsService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -70,7 +70,7 @@ describe('ProfilePageComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService, CertRegService, TelemetryService],
+        ToasterService, CertRegService, TelemetryService, OrgDetailsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -229,4 +229,101 @@ describe('ProfilePageComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
+    component.userProfile = Response.userData;
+    component.setNonCustodianUserLocation();
+    expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
+    expect(component.nonCustodianUserLocation['district']).toBe('MUNGER');
+    expect(component.nonCustodianUserLocation['state']).toBe('Bihar');
+  });
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation error case', () => {
+    component.userProfile = Response.userProfile;
+    component.setNonCustodianUserLocation();
+    expect(Object.values(component.nonCustodianUserLocation).length).toBe(0);
+  });
+  it('should call getLocationDetails', () => {
+    const locationData = [{
+      'code': '1024',
+      'name': 'MUNGER',
+      'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
+      'type': 'district',
+      'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
+  }]
+   const locationName =  component.getLocationDetails(locationData,'district');
+   expect(locationName).toBe('MUNGER')
+  });
+  it('should call getLocationDetails error case', () => {
+    const locationData = [{
+      'code': '1024',
+      'name': 'MUNGER',
+      'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
+      'type': 'district',
+      'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
+  }]
+   const locationName =  component.getLocationDetails(locationData,'state');
+   expect(locationName).toBeFalsy()
+  });
+  it('should call toggle', () => {
+    component.roles = ['Book Creator','Membership Management','Content Creation']
+    component.toggle(true);
+   expect(component.showMoreRoles).toBeFalsy();
+   expect(component.showMoreRolesLimit).toBe(3)
+  });
+  it('should call toggle error case', () => {
+    component.toggle(false);
+   expect(component.showMoreRoles).toBeTruthy();
+   expect(component.showMoreRolesLimit).toBe(4)
+  });
+
+
+  it('should check user is custodian user of not', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({result: { response: { value: '0126684405' } }}));
+    component.ngOnInit();
+    component['getCustodianOrgUser']();
+    expect(component.isCustodianOrgUser).toBeFalsy();
+  });
+
+  it('should convert to string if value is array', () => {
+    const stringArray = ['one', 'tow', 'three'];
+    const result = component.convertToString(stringArray);
+    expect(result).toString();
+  });
+
+  it('should return undefined if value is not an array', () => {
+    const stringArray = 'One';
+    const result = component.convertToString(stringArray);
+    expect(result).toBeUndefined();
+  });
+
+  it ('should navigate to submit self declare details form ', () => {
+    const router = TestBed.get(Router);
+    component.navigate('/profile/teacher-declaration', 'submit');
+    expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], {queryParams: {formaction: 'submit'}});
+  });
+
+  it('should not show self declared information if declaration is not available', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    spyOn(component, 'getSelfDeclaraedDetails').and.callThrough();
+    component.ngOnInit();
+    expect(component.declarationDetails).toBeDefined();
+    expect(component.getSelfDeclaraedDetails).toHaveBeenCalled();
+  });
+
+  it('should get self declared details', () => {
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getTenants').and.returnValue(observableOf(Response.tenantsList));
+    spyOn(profileService, 'getTeacherDetailForm').and.returnValue(observableOf(Response.teacherDetailForm));
+    component.ngOnInit();
+    component.getSelfDeclaraedDetails();
+    expect(component.tenantInfo).toBeDefined();
+    expect(component.selfDeclaredInfo).toEqual(Response.finalDeclarationObjStructure);
+  });
+
+
 });

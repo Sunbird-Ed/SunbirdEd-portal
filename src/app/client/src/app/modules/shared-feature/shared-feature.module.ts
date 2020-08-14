@@ -3,9 +3,17 @@ import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
-  OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-  UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent
+  ProfileFrameworkPopupComponent,
+  TermsAndConditionsPopupComponent,
+  OtpPopupComponent,
+  BatchInfoComponent,
+  SsoMergeConfirmationComponent,
+  ValidateTeacherIdentifierPopupComponent,
+  UserLocationComponent,
+  UserOnboardingComponent,
+  OnboardingUserSelectionComponent,
+  OnboardingLocationSelectionComponent,
+  JoyThemePopupComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -32,10 +40,12 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     UserLocationComponent,
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
-    OnboardingLocationSelectionComponent
+    OnboardingLocationSelectionComponent,
+    JoyThemePopupComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-    UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent]
+    UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent
+    , JoyThemePopupComponent]
 })
 export class SharedFeatureModule { }

@@ -46,7 +46,7 @@
   background: var(--sbt-header-bg);
   @include respond-below(sm) {
   overflow-x: auto;
-  padding: calculateRem(8px) calculateRem(16px);
+  padding: 0 calculateRem(8px) calculateRem(8px) calculateRem(16px);
   }
   @include respond-above(sm) {
     height:calculateRem(72px);
@@ -73,6 +73,9 @@
   border: 0;
   margin-bottom: calculateRem(-1px);
 
+  &.player-fullscreen-header{
+    display: none !important;
+  }
   .logo {
     img {
       height: calculateRem(56px);

@@ -150,7 +150,6 @@ require('./routes/certRegRoutes.js')(app);
 
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',
-  timeout: envHelper.sunbird_api_request_timeout,
   proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.TELEMETRY_SERVICE_LOCAL_URL),
   proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
 }))

@@ -785,7 +785,7 @@ async@^0.9.0, async@~0.9.0:
   resolved "https://registry.yarnpkg.com/async/-/async-0.9.2.tgz#aea74d5e61c1f899613bf64bda66d4c78f2fd17d"
   integrity sha1-rqdNXmHB+JlhO/ZL2mbUx48v0X0=
 
-async@^2.4.1, async@^2.6.2:
+async@^2.4.1, async@^2.5.0, async@^2.6.2:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
   integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
@@ -796,6 +796,11 @@ async@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/async/-/async-3.2.0.tgz#b3a2685c5ebb641d3de02d161002c60fc9f85720"
   integrity sha512-TR2mEZFVOj2pLStYxLht7TyfuRzaydfpxr3k9RpHIzMgw7A64dzsdqCxH1WJyQdoe8T10nDXd9wnEigmiuHIZw==
+
+async@~0.2.7:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+  integrity sha1-trvgsGdLnXGXCMo43owjfLUmw9E=
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -1002,18 +1007,10 @@ bindings@^1.3.1, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bl@^1.0.0:
+bl@^1.0.0, bl@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.2.tgz#a160911717103c07410cef63ef51b397c025af9c"
   integrity sha512-e8tQYnZodmebYDWGH7KMRvtzKXaJHx3BbilrgZCfvyLUYdKpK1t5PSPmpkny/SgiTSCnjfLW7v5rlONXVFkQEA==
-  dependencies:
-    readable-stream "^2.3.5"
-    safe-buffer "^5.1.1"
-
-bl@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/bl/-/bl-2.2.0.tgz#e1a574cdf528e4053019bb800b041c0ac88da493"
-  integrity sha512-wbgvOpqopSr7uq6fJrLH8EsvYMJf9gzfo2jCsL2eTy75qXPukA4pCgHamOQkZtY5vmfVtjB+P3LNlMHW5CEZXA==
   dependencies:
     readable-stream "^2.3.5"
     safe-buffer "^5.1.1"
@@ -4813,14 +4810,14 @@ jwt-decode@^2.2.0:
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
   integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
 
-kafka-node@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/kafka-node/-/kafka-node-4.1.1.tgz#710246f78867e9f1eba9d70336c5884b8baf3702"
-  integrity sha512-Nsx1vdxWFU7mUI59etH210QmjBsMGWAN4lz0WRmzC1QwFK4hFLgoRM3F4RtxUeDVx8PsswMA1Z0T2eJTgoV9tQ==
+kafka-node@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/kafka-node/-/kafka-node-3.0.1.tgz#7d0a630a952f742f7c792be24fa762e0b9b488d6"
+  integrity sha512-id9bdOQ35OkrQHHbIjtpC02Y2kTpmLQw/B9wbe6uAzjkLaRyu30GnJoz22vZ8uBB9DZ0JgwjHrKOK7sB3i41LA==
   dependencies:
-    async "^2.6.2"
+    async "^2.5.0"
     binary "~0.3.0"
-    bl "^2.2.0"
+    bl "^1.2.0"
     buffer-crc32 "~0.2.5"
     buffermaker "~1.2.0"
     debug "^2.1.3"
@@ -4828,6 +4825,7 @@ kafka-node@4.1.1:
     lodash "^4.17.4"
     minimatch "^3.0.2"
     nested-error-stacks "^2.0.0"
+    node-zookeeper-client "~0.2.2"
     optional "^0.1.3"
     retry "^0.10.1"
     uuid "^3.0.0"
@@ -5917,6 +5915,14 @@ node-uuid@~1.4.0:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
   integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
+
+node-zookeeper-client@~0.2.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/node-zookeeper-client/-/node-zookeeper-client-0.2.3.tgz#48c79129c56b8e898df9bd3bdad9e27dcad63851"
+  integrity sha512-V4gVHxzQ42iwhkANpPryzfjmqi3Ql3xeO9E/px7W5Yi774WplU3YtqUpnvcL/eJit4UqcfuLOgZLkpf0BPhHmg==
+  dependencies:
+    async "~0.2.7"
+    underscore "~1.4.4"
 
 node.extend@1.0.8:
   version "1.0.8"

@@ -11,7 +11,8 @@ import {
   SharedModule,
   BrowserCacheTtlService,
   UtilService,
-  LayoutService
+  LayoutService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import {
   UserService,
@@ -61,7 +62,7 @@ describe('MainHeaderComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
-        PermissionService, ManagedUserService, UtilService, LayoutService,
+        PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
         LearnerService, CoursesService]
@@ -280,5 +281,33 @@ describe('MainHeaderComponent', () => {
     const layoutData = component.isLayoutAvailable();
     expect(layoutData).toBe(true);
   });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to true', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
 
 });

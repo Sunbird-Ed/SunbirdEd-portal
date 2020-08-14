@@ -49,7 +49,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   formData: any;
   pageTitle;
   svgToDisplay;
-
+  queryParams;
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -62,6 +62,9 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+      this.queryParams = { ...queryParams };
+    });
     this.initLayout();
     this.slideConfig = _.cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     if (_.get(this.userService, 'userProfile.framework')) {
@@ -102,8 +105,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   redoLayout() {
       if (this.layoutConfiguration != null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
       } else {
         this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
         this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
@@ -136,7 +139,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    const currentPageData = this.getPageData(this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute,'snapshot.queryParams.selectedTab') || 'textbook');
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
@@ -202,25 +205,25 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private  fetchCourses() {
-    this.cardData = [];
-    this.isLoading = true;
-    const request = {
-      filters: this.selectedFilters,
-      isCustodianOrg: this.custodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
-    };
-    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
-    this.isLoading = false;
+  // private  fetchCourses() {
+  //   this.cardData = [];
+  //   this.isLoading = true;
+  //   const request = {
+  //     filters: this.selectedFilters,
+  //     isCustodianOrg: this.custodianOrg,
+  //     channelId: this.channelId,
+  //     frameworkId: this.contentSearchService.frameworkId
+  //   };
+  //   this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+  //   this.isLoading = false;
 
-    this.cardData = _.sortBy(cardData, ['title']);
-  }, err => {
-      this.isLoading = false;
-      this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-  });
-  }
+  //   this.cardData = _.sortBy(cardData, ['title']);
+  // }, err => {
+  //     this.isLoading = false;
+  //     this.cardData = [];
+  //     this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  // });
+  // }
 
   navigateToCourses(event) {
     const telemetryData = {
@@ -324,14 +327,20 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private setNoResultMessage() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-    .subscribe(item => {
-      this.noResultMessage = {
-        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-        'showExploreContentButton': true
-      };
-    });
+      .subscribe(item => {
+        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        if(this.queryParams.key) {
+          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+          title = title_part1 + ' ' + title_part2;
+        }
+        this.noResultMessage = {
+          'title': title,
+          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+          'showExploreContentButton': true
+        };
+      });
   }
 
   public navigateToExploreContent() {

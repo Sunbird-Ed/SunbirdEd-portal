@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import {Component, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
@@ -17,7 +17,7 @@ import {Subject} from 'rxjs';
   templateUrl: 'user-org-management.component.html',
   styleUrls: ['user-org-management.component.scss']
 })
-export class UserOrgManagementComponent implements OnInit, AfterViewInit {
+export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public showModal = false;
   public userService: UserService;
@@ -75,7 +75,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public teacherDetailsInteractEdata: IInteractEventEdata;
   public selectFileInteractEdata: IInteractEventEdata;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
@@ -137,7 +137,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   fetchDeclaredUserDetails() {
     let channelName = _.get(this.userProfile, 'rootOrg.channel');
     if (channelName) {
-      channelName = channelName + '.csv';
+      channelName = channelName + '.zip';
       this.manageService.getData('declared_user_detail', channelName).subscribe(response => {
           const url = (_.get(response, 'result.signedUrl'));
           if (url) {
@@ -397,5 +397,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -34,7 +34,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   public router: Router;
   instance: string;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
@@ -74,12 +74,15 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public navigateToSearch() {
+    sessionStorage.removeItem('l1parent');  // l1parent value is removed (SB-19982)
     if (this.searchKeyword) {
       this.router.navigate(['/get/dial', _.trim(this.searchKeyword)]);
     }
   }
   ngOnDestroy() {
     EkTelemetry.config.batchsize = 10;
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
