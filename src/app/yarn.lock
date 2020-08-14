@@ -144,10 +144,10 @@
     joi "^13.4.0"
     lodash "^4.17.10"
 
-"@project-sunbird/logger@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/logger/-/logger-0.0.7.tgz#77cbcade1e4ff9ac985187d5e85746a5e93a9eb7"
-  integrity sha512-j9JeERT05GlMQ1zInpepIBgJZ4UJ1T/5Ws0Td0SU/oDMBW2UPPfeomHKuMR/5+h9itrvH2PgLZRb+4291E0OHw==
+"@project-sunbird/logger@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/logger/-/logger-0.0.8.tgz#afd317b3c2c9070af8e8749f39c1cb69440f852f"
+  integrity sha512-UH+qqxLsJCX/z8cJN5/f7Pzl9EUkjOyOVDQnry6yb80mK0G6VfaeDfPr+rcmqooHX08KFzMj099O0ebIPZl6lQ==
   dependencies:
     "@types/lodash" "^4.14.149"
     "@types/node" "^13.9.0"

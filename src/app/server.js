@@ -10,7 +10,7 @@ enableLogger({
     adopter: 'winston'
   }
 });
-const { logger } = require('@project-sunbird/logger');
+const { logger, enableDebugMode } = require('@project-sunbird/logger');
 const express = require('express');
 const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
@@ -94,7 +94,7 @@ app.get('/enableDebugMode', (req, res, next) => {
   const logLevel = req.query.logLevel || "debug";
   const timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
   console.log("enable debug mode called", logLevel, timeInterval);
-  logger.level = logLevel;
+  enableDebugMode(timeInterval, logLevel)
   res.send('debug enabled');
 });
 

@@ -10,6 +10,7 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const {decodeToken} = require('./jwtHelper');
 const { logger } = require('@project-sunbird/logger');
+const { ProxyLogger } = require("@project-sunbird/logger/decorator");
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -224,4 +225,4 @@ const getHeaders = (req) => {
     'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
   }
 }
-module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };
+module.exports = ProxyLogger({ googleOauth, createSession, fetchUserByEmailId, createUserWithMailId }, 'googleOauthHelper');
