@@ -1,0 +1,40 @@
+<sui-modal 
+[mustScroll]="true"
+[isClosable]="true"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal sb-batch-update-modal"
+appBodyScroll
+(dismissed)="closeModal()"
+#confirmationModal>
+
+<!-- Header-->
+  <div class="sb-modal-header">
+
+  </div>
+
+  <!-- Content-->
+  <div class="sb-modal-content">
+    <div class="ui stackable grid my-8">
+      <div class="one wide column">
+        <div class="checkbox-img"></div>
+      </div>
+      <div class="eleven wide column">
+        <div *ngIf="popupMode === 'create'" class="pb-16 font-weight-bold">Batch created Successfully</div>
+        <div *ngIf="popupMode === 'edit'" class="pb-16 font-weight-bold">Batch edited Successfully</div>
+        <div class="">Would you like to add and configure the certificate for this batch?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action-->
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()">
+      Close
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="navigateToAddCertificate()">
+      Add Certificate
+    </button>
+  </div>
+
+</sui-modal>

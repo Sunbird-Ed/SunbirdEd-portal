@@ -82,6 +82,7 @@ describe('CreateBatchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateBatchComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'checkIssueCertificate').and.stub();
   });
   afterEach(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -172,6 +173,9 @@ describe('CreateBatchComponent', () => {
 
   it('should call redirect', () => {
     const router = TestBed.get(Router);
+    component['createBatchModel'] = {
+      deny: jasmine.createSpy('deny')
+    };
     component.redirect();
     expect(router.navigate).toHaveBeenCalled();
   });
