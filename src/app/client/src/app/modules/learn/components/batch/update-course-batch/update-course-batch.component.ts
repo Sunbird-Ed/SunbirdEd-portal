@@ -491,8 +491,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       startDate: startDate,
       endDate: endDate || null,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors),
-      cert_templates: []
+      mentors: _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
       requestBody['enrollmentEndDate'] = dayjs(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
