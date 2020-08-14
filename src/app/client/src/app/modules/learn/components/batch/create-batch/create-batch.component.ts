@@ -230,8 +230,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: endDate || null,
       createdBy: this.userService.userid,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors),
-      cert_templates: []
+      mentors: _.compact(mentors)
     };
     if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
       requestBody['enrollmentEndDate'] = dayjs(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
