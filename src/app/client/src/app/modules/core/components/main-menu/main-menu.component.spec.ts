@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 import {TelemetryService} from '@sunbird/telemetry';
-import {mockData} from './main-menu.component.spec.data';
+import {mockData} from '../main-menu/main-menu.component.spec.data';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
