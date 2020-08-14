@@ -280,7 +280,7 @@ const API_LIST = {
     },
     '/learner/org/v2/preferences/read': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.PUBLIC]
     },
 
     //Batch related APIs
