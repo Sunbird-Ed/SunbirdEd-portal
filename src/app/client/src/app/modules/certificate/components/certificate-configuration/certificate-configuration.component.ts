@@ -38,6 +38,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   courseDetails: any;
   showLoader = true;
   certTemplateList: any;
+  batchDetails: any;
 
   constructor(
     private certificateService: CertificateService,
@@ -62,11 +63,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     combineLatest(
     this.getCertConfigFields(),
     this.getCourseDetails(_.get(this.queryParams, 'courseId')),
+    this.getBatchDetails(_.get(this.queryParams, 'batchId')),
     this.getTemplateList(),
-    // this.getBatchDetails(_.get(this.queryParams, 'courseId'))
     ).subscribe((data) => {
       this.showLoader = false;
-      const [cert, config] = data;
+      const [cert, courseDetails, batchDetails, config] = data;
     }, (error) => {
       this.showLoader = false;
     });
@@ -105,7 +106,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         key: 'certList'
       }
     };
-
     return this.certificateService.fetchCertificatePreferences(request).pipe(
       tap((certTemplateData) => {
         this.certTemplateList = _.get(certTemplateData, 'result.response.data.range');
@@ -113,6 +113,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }),
       catchError(error => {
         return of({});
+      })
+    );
+  }
+
+  getBatchDetails(batchId) {
+    return this.certificateService.getBatchDetails(batchId).pipe(
+      tap(batchDetails => {
+        this.batchDetails = batchDetails;
+        console.log('this.batchDetails', this.batchDetails);
       })
     );
   }

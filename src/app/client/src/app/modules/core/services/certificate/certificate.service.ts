@@ -29,4 +29,11 @@ export class CertificateService {
     };
     return this.learnerService.post(option);
   }
+
+  getBatchDetails(bathId) {
+    const option = {
+      url: `${this.configService.urlConFig.URLS.BATCH.GET_DETAILS}/${bathId}`
+    };
+    return this.learnerService.get(option);
+  }
 }

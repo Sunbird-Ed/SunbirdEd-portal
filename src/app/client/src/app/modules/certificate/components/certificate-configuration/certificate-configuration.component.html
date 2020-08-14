@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="eight wide column">
-        <div class="select-template-content p-24">
+        <div *ngIf="!(batchDetails && batchDetails?.cert_templates)" class="select-template-content p-24">
           <div class="d-flex flex-dc flex-ai-center text-center mt-32">
             <div><img src="../../assets/images/addcertificate.png"></div>
             <p class="no-template-text pt-16 pb-24 mb-0">You do not have any certificates attached yet.
@@ -74,7 +74,7 @@
               Certificate<i class="plus icon"></i></button>
           </div>
         </div>
-        <div *ngIf="false" class="certificate-edit-content p-24">
+        <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
             <div class="content">
               <div class="fnormal pb-16 font-weight-bold">Certificate</div>
               <div class="certificate-edit-area">
