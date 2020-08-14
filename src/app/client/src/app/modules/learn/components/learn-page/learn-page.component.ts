@@ -197,6 +197,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private buildOption(): Observable<any> {
+    this.queryParams = _.omit(this.queryParams, 'selectedTab');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;

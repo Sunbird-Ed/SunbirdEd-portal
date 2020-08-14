@@ -186,6 +186,30 @@
     margin-top: calculateRem(-128px);
   }
 
+  @include respond-below(md) {
+    &-text {
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
+      height: 2.5rem;
+      margin-top: -1.25rem;
+      background: var(--white);
+      padding: 0 calculateRem(16px) 0 calculateRem(48px);
+      display: flex;
+      align-items: center;
+      z-index: 3;
+      font-size: calculateRem(12px);
+      font-weight: bold;
+      justify-content: center;
+      box-shadow: var(--sbt-box-shadow-3px);
+      border-radius: calculateRem(20px);
+      html[dir="rtl"] & {
+        right: calculateRem(24px);
+        padding: 0 calculateRem(48px) 0 calculateRem(16px);
+      }
+    }
+  }
+
   @include respond-between(sm, md) {
     position: fixed;
     top: calculateRem(192px);
@@ -211,27 +235,6 @@
       box-shadow: none;
     }
 
-    &-text {
-      position: absolute;
-      left: 1.5rem;
-      top: 0;
-      height: 2.5rem;
-      margin-top: -1.25rem;
-      background: var(--white);
-      padding: 0 calculateRem(16px) 0 calculateRem(48px);
-      display: flex;
-      align-items: center;
-      z-index: 3;
-      font-size: calculateRem(12px);
-      font-weight: bold;
-      justify-content: center;
-      box-shadow: var(--sbt-box-shadow-3px);
-      border-radius: calculateRem(20px);
-      html[dir="rtl"] & {
-        right: calculateRem(24px);
-        padding: 0 calculateRem(48px) 0 calculateRem(16px);
-      }
-    }
   }
 
   &-bar {
@@ -270,7 +273,7 @@
     position: relative;
     overflow-y: auto;
     height: calc(100vh - 64px);
-    padding-bottom: calculateRem(8px);
+    padding-bottom: calculateRem(100px);
     @include respond-between(sm, md) {
       height: calc(100vh - 280px); 
     }
