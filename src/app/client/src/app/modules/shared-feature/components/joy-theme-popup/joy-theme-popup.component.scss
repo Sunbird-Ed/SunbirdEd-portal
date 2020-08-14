@@ -1,0 +1,42 @@
+@import './mixins/mixins';
+@import './pages/page-center-view';
+
+.sbt-welcome-theme-container {
+  background: #4444b7 url(/assets/images/theme-welcom-bg.svg) no-repeat;
+  background-position: center;
+  background-size: cover;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  &.sb-group-container--md {
+    width: 100%;
+    height: calc(100vh - 33.33%);
+
+    @include respond-below(sm) {
+      height: 100%;
+    }
+  }
+
+  h4.sb-group-container__title,
+  p.sb-group-container__description {
+    color: #fff;
+    line-height: normal;
+  }
+
+  h4.sb-group-container__title {
+    font-size: 32px;
+    text-align: left;
+  }
+
+  p.sb-group-container__description {
+    font-size: 20px;
+    line-height: 28px;
+
+    @include respond-below(sm) {
+      &.w-75 {
+        max-width: 100%;
+    width: 100%;
+      }
+    }
+  }
+}

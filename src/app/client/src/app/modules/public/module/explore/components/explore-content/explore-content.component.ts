@@ -146,7 +146,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   private fetchContents() {
     const pageType = _.get(this.queryParams, 'pageTitle');
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }

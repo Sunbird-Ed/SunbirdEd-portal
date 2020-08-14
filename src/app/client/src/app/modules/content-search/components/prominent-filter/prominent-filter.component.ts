@@ -115,6 +115,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // screen size
+    if (window.innerWidth <= 992 ) {
+      this.accordionDefaultOpen = false;
+    }
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
