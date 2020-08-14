@@ -40,14 +40,17 @@ const resourceBundle = {
       'uniquePhone': 'uniquePhone',
       'passwderr': 'Password cannot be same as your username.',
       'phoneOrEmail': 'Enter mobile number or email address',
-      'parentOrGuardian': 'of your Parent/ Guardian'
+      'parentOrGuardian': 'of your Parent/ Guardian',
+      'captchaValidationFailed': 'captchaValidationFailed',
+      'blockedUserError': 'blockedUserError'
     },
   },
   'messages': {
     'smsg': {},
     'fmsg': {
       'm0001': 'api failed, please try again',
-      'm0004': 'api failed, please try again'
+      'm0004': 'api failed, please try again',
+      'm0085': 'api failed, please try again'
     }
   },
   languageSelected$: of({value: ''}),
@@ -443,4 +446,131 @@ describe('SignUpComponent', () => {
     expect(signupService.generateOTPforAnonymousUser).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp, undefined);
   });
 
+  it('should show parent form', () => {
+    spyOn(component, 'initializeFormFields');
+    component.showParentForm('true');
+    expect(component.showSignUpForm).toBe(true);
+    expect(component.initializeFormFields).toHaveBeenCalled();
+  });
+
+  it('should submit signup form', () => {
+    spyOn(component, 'generateOTP');
+    component.onSubmitSignUpForm('true');
+    expect(component.disableSubmitBtn).toBe(true);
+    expect(component.generateOTP).toHaveBeenCalled();
+  });
+
+  it('should resolved if captcha present', () => {
+    spyOn(component, 'onSubmitSignUpForm');
+    component.resolved('mock captcha response');
+    expect(component.onSubmitSignUpForm).toHaveBeenCalled();
+  });
+
+  it('should resolved if captcha present and form input type', () => {
+    spyOn(component, 'vaidateUserContact');
+    component.formInputType = 'email';
+    component.resolved('mock captcha response');
+    expect(component.vaidateUserContact).toHaveBeenCalled();
+    expect(component.formInputType).toBe(undefined);
+  });
+
+  it('should submit sign up form', () => {
+    spyOn(component, 'onSubmitSignUpForm');
+    component.submitSignupForm();
+    expect(component.onSubmitSignUpForm).toHaveBeenCalled();
+  });
+
+  it('should throw error for validate user contact type for phone number', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({}));
+    component.vaidateUserContact(undefined);
+    expect(component.showUniqueError).toBe('');
+    expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
+  it('should throw error for validate user contact type for phone number for 418 error status', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({status: 418}));
+    component.vaidateUserContact(undefined);
+    expect(component.showUniqueError).toBe(resourceBundle.frmelmnts.lbl.captchaValidationFailed);
+    expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
+  it('should throw error for validate user contact type for blocked user acccount', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({
+      error: {params: {status: 'USER_ACCOUNT_BLOCKED'}}
+    }));
+    component.vaidateUserContact(undefined);
+    expect(component.showUniqueError).toBe(resourceBundle.frmelmnts.lbl.blockedUserError);
+  });
+
+  it('should fail to generate otp as errored', () => {
+    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
+    const toasterService = TestBed.get(ToasterService);
+    component.isP1CaptchaEnabled = 'true';
+    spyOn(component, 'resetGoogleCaptcha');
+    spyOn(toasterService, 'error');
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableThrowError({}));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtp.request.key);
+    component.generateOTP();
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0085);
+  });
+
+
+  it('should fail to generate otp as phone already in use', () => {
+    const signupService = TestBed.get(SignupService);
+    const tncService = TestBed.get(TncService);
+    const toasterService = TestBed.get(ToasterService);
+    component.isP1CaptchaEnabled = 'true';
+    spyOn(component, 'resetGoogleCaptcha');
+    spyOn(toasterService, 'error');
+    spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    spyOn(signupService, 'generateOTPforAnonymousUser').and.returnValue(observableThrowError({
+      error: {params: {status: 'EMAIL_IN_USE'}, errmsg: 'EMAIL_IN_USE'}
+    }));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtp.request.key);
+    component.generateOTP();
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should get ReCaptcha Token', () => {
+    component.isP1CaptchaEnabled = 'false';
+    spyOn(component, 'vaidateUserContact');
+    component.getReCaptchaToken('email');
+    expect(component.vaidateUserContact).toHaveBeenCalled();
+  });
 });
