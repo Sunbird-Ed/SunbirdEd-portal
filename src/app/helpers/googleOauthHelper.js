@@ -225,4 +225,4 @@ const getHeaders = (req) => {
     'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
   }
 }
-module.exports = ProxyLogger({ googleOauth, createSession, fetchUserByEmailId, createUserWithMailId }, 'googleOauthHelper');
+module.exports = { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId };
