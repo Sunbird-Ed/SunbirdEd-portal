@@ -233,6 +233,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   * initializes form fields and apply field level validation
   */
   private initializeUpdateForm(): void {
+    const issueCertificate = _.get(this.batchDetails, 'cert_templates') && Object.keys(_.get(this.batchDetails, 'cert_templates')).length ? 'yes' : 'no';
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!dayjs(this.batchDetails.startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
@@ -249,7 +250,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate)
+      enrollmentEndDate: new FormControl(enrollmentEndDate),
+      issueCertificate: new FormControl(issueCertificate, [Validators.required])
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
@@ -512,6 +514,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
+      this.checkIssueCertificate();
     }, (err) => {
       this.disableSubmitBtn = false;
       if (err.error && err.error.params && err.error.params.errmsg) {
@@ -520,6 +523,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.toasterService.error(this.resourceService.messages.fmsg.m0052);
       }
     });
+  }
+  checkIssueCertificate() {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate, mode: 'edit' });
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
