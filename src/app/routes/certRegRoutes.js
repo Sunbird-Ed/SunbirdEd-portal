@@ -8,7 +8,7 @@ const logger = require('sb_logger_util_v2')
 const _ = require('lodash')
 const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
-const { getUserCertificates } = require('./../helpers/certHelper');
+const { getUserCertificates, addTemplateToBatch } = require('./../helpers/certHelper');
 const { logError } = require('./../helpers/utilityService');
 
 
@@ -16,6 +16,8 @@ var certRegServiceApi = {
   searchCertificate: 'certreg/v1/certs/search',
   getUserDetails: 'certreg/v1/user/search',
   reIssueCertificate: 'certreg/v1/cert/reissue',
+  addTemplateProxy: 'certreg/v1/add/template',
+  addTemplate: 'course/batch/cert/v1/template/add'
 }
 
 
@@ -99,6 +101,32 @@ module.exports = function (app) {
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
           logError(req, err, 'Error occurred while reIssuing certificate');
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
+      },
+    }))
+
+  // add the template to course batch;
+  app.patch(`/+${certRegServiceApi.addTemplateProxy}`,
+    bodyParser.json({ limit: '10mb' }),
+    isAPIWhitelisted.isAllowed(),
+    permissionsHelper.checkPermission(),
+    addTemplateToBatch(),
+    proxy(certRegURL, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
+      proxyReqPathResolver: function (req) {
+        const batch = _.pick(_.get(req, 'body.request'), ['batchId', 'courseId', 'template']);
+        req.body.request = {batch: batch};
+        logger.debug({msg: `${req.url} is called with requestBody: ${JSON.stringify(req.body)}`});
+        return require('url').parse(certRegURL + certRegServiceApi.addTemplate).path;
+      },
+      userResDecorator:  (proxyRes, proxyResData, req, res) => {
+        try {
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          logError(req, err, `Error while addTemplate to courseId ${courseId} batchId: ${batchId}, err: ${err}`,);
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       },

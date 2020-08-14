@@ -2,7 +2,8 @@ const { HTTPService } = require('@project-sunbird/ext-framework-server/services'
 const envHelper = require('./environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const logger = require('sb_logger_util_v2')
-const _ = require('lodash')
+const _ = require('lodash');
+const { logError } = require('./utilityService.js');
 
 getHeaders = () => {
   return {
@@ -90,4 +91,36 @@ const getUserEnrolledCourses = async (req, courseId, userId) => {
     }
     return courseData;
 }
-module.exports = { getUserCertificates };
+
+const addTemplateToBatch = () => {
+  return async function (req, res, next) {
+    try {
+      logger.info({msg: `addTemplateToBatch() is called`});
+        const criteria = _.get(req, 'body.request.criteria') || {};
+        let templateData = {};
+        if (!_.isEmpty(criteria)) {
+          templateData = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+          templateData['criteria'] = criteria;
+        } else {
+          templateData = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+        }
+        logger.info({msg: `returning success response from ${JSON.stringify(_.get(templateData, 'data.result.response.data'))}`});
+        req.body.request.template = _.get(templateData, 'data.result.response.data');
+        next();
+    } catch(err) {
+      logError(req, err, 'Error occurred while fetching template');
+      next(err);
+    }
+}
+}
+
+const getTemplateData = async (req, requestParams) => {
+  logger.info({msg: `getTemplateData() is called`});
+  const appConfig = getHeaders();
+  appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+  const response = await HTTPService.post(`${certRegURL + 'org/v2/preferences/read'}`, {request: requestParams}, appConfig).toPromise();
+  logger.info({msg: `returning response from getTemplateData() with data ${_.get(response, 'data')}`});
+  return response;
+}
+
+module.exports = { getUserCertificates, addTemplateToBatch };
