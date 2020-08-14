@@ -1,12 +1,12 @@
-import { RouterTestingModule } from '@angular/router/testing';
-import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SharedModule, ResourceService } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui';
-import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { APP_BASE_HREF } from '@angular/common';
-import { MemberActionsComponent } from './member-actions.component';
-import { configureTestSuite } from '@sunbird/test-util';
+import {RouterTestingModule} from '@angular/router/testing';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
+import {SharedModule, ResourceService} from '@sunbird/shared';
+import {SuiModule} from 'ng2-semantic-ui';
+import {HttpClientModule} from '@angular/common/http';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {APP_BASE_HREF} from '@angular/common';
+import {MemberActionsComponent} from './member-actions.component';
+import {configureTestSuite} from '@sunbird/test-util';
 
 describe('MemberActionsComponent', () => {
   let component: MemberActionsComponent;
@@ -20,9 +20,22 @@ describe('MemberActionsComponent', () => {
         dismissAdmin: 'dismissAdmin',
       },
       lbl: {
-        leaveGroup: 'leaveGroup'
+        leaveGroup: 'leaveGroup',
+        makeAdmin: 'i am {memberName}'
       }
     }
+  };
+  const memberData = {
+    identifier: 'identifier',
+    initial: 'string',
+    title: 'title',
+    isAdmin: true,
+    isMenu: true,
+    indexOfMember: 1,
+    isCreator: true,
+    userId: 'user id',
+    role: 'admin',
+    name: 'admin user'
   };
 
   beforeEach(async(() => {
@@ -30,8 +43,8 @@ describe('MemberActionsComponent', () => {
       declarations: [MemberActionsComponent],
       imports: [SuiModule, SharedModule.forRoot(), HttpClientModule, TelemetryModule, RouterTestingModule],
       providers: [TelemetryService,
-        { provide: APP_BASE_HREF, useValue: '/' },
-        { provide: ResourceService, useValue: resourceBundle }
+        {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: ResourceService, useValue: resourceBundle}
       ]
     })
       .compileComponents();
@@ -47,7 +60,7 @@ describe('MemberActionsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+/*  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -92,6 +105,20 @@ describe('MemberActionsComponent', () => {
     };
     component.performAction();
     expect(component.actionConfirm.emit).toHaveBeenCalled();
+  });*/
+
+
+  it('should promote As Admin on init', () => {
+    component.action = 'promoteAsAdmin';
+    component.member = memberData;
+    component.ngOnInit();
+    expect(component.memberActionData).toEqual({
+      title: 'makeAdmin',
+      description: 'here',
+      buttonText: 'i am title',
+      theme: 'primary',
+      eid: 'promote-admin'
+    });
   });
 
 });
