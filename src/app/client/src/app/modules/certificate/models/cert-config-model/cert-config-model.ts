@@ -24,6 +24,8 @@ export class CertConfigModel {
     }
 
     processCriteria(criteria) {
+        console.log(criteria);
+        const dropDowns = {};
         this._issueTo = [];
         this._certTypes = [];
     }

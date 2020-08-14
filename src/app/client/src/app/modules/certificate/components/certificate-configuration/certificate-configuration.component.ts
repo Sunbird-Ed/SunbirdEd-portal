@@ -1,4 +1,4 @@
-import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
+import { CertConfigModel, Modes } from './../../models/cert-config-model/cert-config-model';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CertificateService, UserService, PlayerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -10,7 +10,8 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { response } from './certificate-configuration.component.spec.data';
 
 export enum ProcessingModes {
-  PROCESS_DROPDOWNS = 'processDropdowns'
+  PROCESS_DROPDOWNS = 'processDropdowns',
+  PROCESS_CRITERIA = 'processCriteria'
 }
 
 @Component({
@@ -145,6 +146,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.playerService.getCollectionHierarchy(courseId).pipe(
       tap(courseData => {
         this.courseDetails = _.get(courseData, 'result.content');
+        console.log('response.criteria', response.criteria);
+        this.processCriteria(response.criteria);
       }, catchError(error => {
         return of({});
       }))
@@ -162,14 +165,19 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }
     };
     // make the api call to add certificate
-    console.log('request layload', request);
+    console.log('request payload', request);
   }
 
   getCriteria(rawDropdownValues) {
-    const criteriaInstance = new CertConfigModel(
+    const processedData = new CertConfigModel(
       { mode: ProcessingModes.PROCESS_DROPDOWNS, values: rawDropdownValues, rootOrgId: _.get(this.userService, 'userProfile.rootOrgId') }
     );
-   return criteriaInstance._criteria;
+   return processedData._criteria;
+  }
+
+  processCriteria(criteria) {
+    console.log('>>>>>', criteria);
+    const processedData = new CertConfigModel({ mode: ProcessingModes.PROCESS_CRITERIA, values: criteria });
   }
 
   ngOnDestroy() {
