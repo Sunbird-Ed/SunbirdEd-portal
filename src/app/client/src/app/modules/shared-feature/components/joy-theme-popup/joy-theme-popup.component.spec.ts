@@ -26,4 +26,14 @@ describe('JoyThemePopupComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should close popup', () => {
+    component.isShown = true;
+    spyOn(localStorage, 'setItem');
+    spyOn(component.closeJoyThemePopup, 'emit');
+    component.closePopup();
+    expect(component.isShown).toBe(false);
+    expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
+    expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
+  });
 });
