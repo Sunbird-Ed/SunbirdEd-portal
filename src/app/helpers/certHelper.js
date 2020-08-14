@@ -95,7 +95,7 @@ const getUserEnrolledCourses = async (req, courseId, userId) => {
 const addTemplateToBatch = () => {
   return async function (req, res, next) {
     try {
-      logger.info({msg: `addTemplateToBatch() is called`});
+      logger.info({msg: `addTemplateToBatch() is called with requestbody ${JSON.stringify(req.body)}`});
         const criteria = _.get(req, 'body.request.criteria') || {};
         let templateData = {};
         if (!_.isEmpty(criteria)) {
@@ -105,17 +105,17 @@ const addTemplateToBatch = () => {
           templateData = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
         }
         logger.info({msg: `returning success response from ${JSON.stringify(_.get(templateData, 'data.result.response.data'))}`});
-        req.body.request.template = _.get(templateData, 'data.result.response.data');
+        req.body.request['template'] = _.get(templateData, 'data.result.response.data');
         next();
     } catch(err) {
-      logError(req, err, 'Error occurred while fetching template');
+      logError(req, err, `Error occurred while fetching template ${JSON.stringify(req.body)}`);
       next(err);
     }
 }
 }
 
 const getTemplateData = async (req, requestParams) => {
-  logger.info({msg: `getTemplateData() is called`});
+  logger.info({msg: `getTemplateData() is called with ${requestParams}`});
   const appConfig = getHeaders();
   appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
   const response = await HTTPService.post(`${certRegURL + 'org/v2/preferences/read'}`, {request: requestParams}, appConfig).toPromise();

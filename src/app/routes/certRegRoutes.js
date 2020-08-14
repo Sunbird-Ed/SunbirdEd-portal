@@ -122,11 +122,12 @@ module.exports = function (app) {
       },
       userResDecorator:  (proxyRes, proxyResData, req, res) => {
         try {
+          logger.info({msg: `Adding certificate {} to a  courseId ${_.get(req, 'body.request.batch.courseId')}',batchId: ${_.get(req, 'body.request.batch.batchId')}, template id ${_.get(req, 'body.request.batch.template.identifier')}`});
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
-          logError(req, err, `Error while addTemplate to courseId ${courseId} batchId: ${batchId}, err: ${err}`,);
+          logError(req, err, `Error while addTemplate to courseId ${_.get(req, 'body.request.batch.courseId')} batchId: ${_.get(req, 'body.request.batch.batchId')}, err: ${err} , template id ${_.get(req, 'body.request.batch.template.identifier')}`,);
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       },
