@@ -49,6 +49,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     FIRST_PANEL_LAYOUT;
     SECOND_PANEL_LAYOUT;
     public totalCount;
+    public searchAll;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -92,6 +93,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.fetchContentOnParamChange();
                 this.setNoResultMessage();
             });
+            this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();

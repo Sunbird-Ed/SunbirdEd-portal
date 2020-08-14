@@ -51,6 +51,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   public totalCount;
+  public searchAll;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -97,6 +98,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['']);
       }
     );
+    this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
