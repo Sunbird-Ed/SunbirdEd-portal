@@ -13,7 +13,6 @@ export class ConfirmationPopupComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.popupMode);
   }
 
   closeModal() {

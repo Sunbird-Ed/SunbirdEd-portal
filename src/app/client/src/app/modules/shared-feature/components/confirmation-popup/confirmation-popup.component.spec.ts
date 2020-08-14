@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { SuiModule } from 'ng2-semantic-ui';
 import { ConfirmationPopupComponent } from './confirmation-popup.component';
 
 describe('ConfirmationPopupComponent', () => {
@@ -8,7 +9,9 @@ describe('ConfirmationPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConfirmationPopupComponent ]
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ ConfirmationPopupComponent ],
+      imports: [SuiModule]
     })
     .compileComponents();
   }));
