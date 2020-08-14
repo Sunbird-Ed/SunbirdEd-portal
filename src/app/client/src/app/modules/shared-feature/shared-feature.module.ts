@@ -34,7 +34,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent
+    ConfirmationPopupComponent, JoyThemePopupComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
