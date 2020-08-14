@@ -12,7 +12,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip} from 'rxjs';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -95,6 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
   layoutConfiguration;
   title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
   showJoyThemePopUp = false;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -168,6 +169,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
     this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
       if (_.some(_.intersection(utmParams, _.keys(params)))) {
@@ -249,19 +255,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (element) {
       element.checked = true;
     }
-  }
-
-  switchLayout() {
-    if (this.layoutConfiguration) {
-      this.layoutConfiguration = null;
-      document.documentElement.setAttribute('layout', '');
-      localStorage.setItem('layoutType', 'default');
-    } else {
-      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
-      localStorage.setItem('layoutType', 'joy');
-    }
-    this.layoutService.setLayoutConfig(this.layoutConfiguration);
   }
 
   isLocationStatusRequired() {
@@ -611,6 +604,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
