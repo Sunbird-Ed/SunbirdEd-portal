@@ -169,7 +169,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: new FormControl(),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl()
+      enrollmentEndDate: new FormControl(),
+      issueCertificate: new FormControl(null, [Validators.required])
     });
     this.createBatchForm.valueChanges.subscribe(val => {
       if (this.createBatchForm.status === 'VALID') {
@@ -242,6 +243,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
+          this.checkIssueCertificate();
         }
       },
         (err) => {
@@ -262,6 +264,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
+        this.checkIssueCertificate();
       },
         (err) => {
           this.disableSubmitBtn = false;
@@ -273,6 +276,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
   public redirect() {
+    this.createBatchModel.deny();
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
   private reload() {
@@ -280,6 +284,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.courseBatchService.updateEvent.emit({ event: 'create' });
       this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
     }, 1000);
+  }
+
+  checkIssueCertificate() {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.createBatchForm.value.issueCertificate, mode: 'create' });
   }
 
   private getUserOtherDetail(userData) {

@@ -72,6 +72,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   layoutConfiguration;
   certificateDescription = '';
 
+  showConfirmationPopup = false;
+  popupMode: string;
+
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   constructor(
@@ -198,6 +201,30 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseProgressData = courseProgressData;
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
       });
+
+    this.courseBatchService.updateEvent.subscribe((event) => {
+      setTimeout(() => {
+        if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
+          this.showConfirmationPopup = true;
+          this.popupMode = _.get(event, 'mode');
+        }
+      }, 1000);
+    });
+  }
+
+  onPopupClose(event) {
+    if (_.get(event, 'mode') === 'add-certificates') {
+      this.navigateToConfigureCertificate('add');
+    }
+    this.showConfirmationPopup = false;
+  }
+
+  navigateToConfigureCertificate(mode: string) {
+    this.router.navigate([`/certs/configure/certificate`], {
+      queryParams: {
+        type: mode
+      }
+    });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
