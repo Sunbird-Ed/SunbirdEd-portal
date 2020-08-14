@@ -104,7 +104,7 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     bodyParser.json(),
-    isAPIWhitelisted.isAllowed(),<<<<<<< SB_19714_learner_routes
+    isAPIWhitelisted.isAllowed(),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
