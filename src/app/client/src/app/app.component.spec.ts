@@ -255,4 +255,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.joyThemePopup();
     expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
   });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
 });
