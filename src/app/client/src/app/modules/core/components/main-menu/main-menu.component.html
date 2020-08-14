@@ -42,9 +42,9 @@
 <div class="mobile only">
 	<div class="ui sidebar right vertical menu">
 
-    <ng-container>
+    <div class="mobile only">
       <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
-    </ng-container>
+    </div>
 
     <!--Logged in user-->
 		<ng-container *ngIf="userService.loggedIn">
