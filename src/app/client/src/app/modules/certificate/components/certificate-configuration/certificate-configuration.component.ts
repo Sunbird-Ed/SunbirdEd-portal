@@ -1,12 +1,12 @@
-import { CertConfigModel, Modes } from './../../models/cert-config-model/cert-config-model';
+import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ServerResponse, ResourceService } from '@sunbird/shared';
+import { ServerResponse, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError, tap, subscribeOn } from 'rxjs/operators';
 import { response } from './certificate-configuration.component.spec.data';
 
 export enum ProcessingModes {
@@ -31,7 +31,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   showTemplateDetectModal;
 
   certTypes: any;
-  recipients: any;
+  issueTo: any;
 
   userPreference: FormGroup;
   disableAddCertificate = true;
@@ -40,6 +40,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   showLoader = true;
   certTemplateList: any;
   batchDetails: any;
+  selectedTemplate: any;
+  configurationMode: string;
+  certConfigModalInstance = new CertConfigModel();
 
   constructor(
     private certificateService: CertificateService,
@@ -47,10 +50,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private playerService: PlayerService,
     private resourceService: ResourceService,
     public activatedRoute: ActivatedRoute,
-    private certRegService: CertRegService) { }
+    private certRegService: CertRegService,
+    private navigationHelperService: NavigationHelperService) { }
 
   secondscreen() {
     this.showscreen = !this.showscreen;
+    this.initializeFormFields();
   }
   thirdscreen() {
     this.showanotherscreen = !this.showanotherscreen;
@@ -59,17 +64,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
+      this.configurationMode = _.get(this.queryParams, 'type');
     });
-    this.initializeFormFields();
-
     combineLatest(
-    this.getCertConfigFields(),
     this.getCourseDetails(_.get(this.queryParams, 'courseId')),
     this.getBatchDetails(_.get(this.queryParams, 'batchId')),
     this.getTemplateList(),
     ).subscribe((data) => {
       this.showLoader = false;
-      const [cert, courseDetails, batchDetails, config] = data;
+      const [courseDetails, batchDetails, config] = data;
     }, (error) => {
       this.showLoader = false;
     });
@@ -82,23 +85,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         key: 'certRules'
       }
     };
-    return this.certificateService.fetchCertificatePreferences(request).pipe(
-      tap((certRulesData) => {
-        const dropDownValues = _.get(certRulesData, 'result.response.data.fields');
-        const certTypes = dropDownValues.filter(data => {
-          return data.code === 'certTypes';
-        });
-        this.certTypes = _.get(certTypes[0], 'range');
-
-        const recipients = dropDownValues.filter(data => {
-          return data.code === 'issueTo';
-        });
-        this.recipients = _.get(recipients[0], 'range');
-      }),
-      catchError(error => {
-        return of({});
-      })
-    );
+    this.certificateService.fetchCertificatePreferences(request).subscribe(certRulesData => {
+      const dropDownValues = this.certConfigModalInstance.getDropDownValues(_.get(certRulesData, 'result.response.data.fields'));
+      this.certTypes = _.get(dropDownValues, 'certTypes');
+      this.issueTo = _.get(dropDownValues, 'issueTo');
+    }, error => {
+      // error toast
+    });
   }
 
   getTemplateList() {
@@ -123,6 +116,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.certificateService.getBatchDetails(batchId).pipe(
       tap(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
+        if (!_.get(this.batchDetails, 'cert_templates')) {
+          this.getCertConfigFields();
+        }
         console.log('this.batchDetails', this.batchDetails);
       })
     );
@@ -147,8 +143,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.playerService.getCollectionHierarchy(courseId).pipe(
       tap(courseData => {
         this.courseDetails = _.get(courseData, 'result.content');
-        console.log('response.criteria', response.criteria);
-        this.processCriteria(response.criteria);
       }, catchError(error => {
         return of({});
       }))
@@ -167,22 +161,31 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     };
     // make the api call to add certificate
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
-      console.log('add cert data', data);
+      // show a success toast message
+      this.getBatchDetails(_.get(this.queryParams, 'batchId'));
     }, error => {
+      // show an error toast message
       console.log('add cert error', error);
     });
   }
 
+  editCertificate(certTemplateDetails) {
+    console.log('certTemplateDetails', certTemplateDetails);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
+    this.selectedTemplate = _.get(templateData, 'identifier');
+    this.processCriteria( _.get(templateData, 'criteria'));
+    this.secondscreen();
+  }
+
   getCriteria(rawDropdownValues) {
-    const processedData = new CertConfigModel(
-      { mode: ProcessingModes.PROCESS_DROPDOWNS, values: rawDropdownValues, rootOrgId: _.get(this.userService, 'userProfile.rootOrgId') }
-    );
-   return processedData._criteria;
+   const processedData = this.certConfigModalInstance.processDropDownValues(rawDropdownValues, _.get(this.userService, 'userProfile.rootOrgId'));
+   return processedData;
   }
 
   processCriteria(criteria) {
-    console.log('>>>>>', criteria);
-    const processedData = new CertConfigModel({ mode: ProcessingModes.PROCESS_CRITERIA, values: criteria });
+    const abc = this.certConfigModalInstance.processCriteria(criteria);
+    this.issueTo = _.get(abc, 'issueTo');
+    this.certTypes = _.get(abc, 'certTypes');
   }
 
   ngOnDestroy() {

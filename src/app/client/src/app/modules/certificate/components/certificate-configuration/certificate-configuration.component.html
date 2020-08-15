@@ -86,7 +86,7 @@
                       <div class="d-flex flex-ai-center">
                         <button type="button" (click)="showPreviewModal = !showPreviewModal"
                           class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button>
-                        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                        <button type="button" (click)="editCertificate(batchDetails.cert_templates)" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
                       </div>
                     </div>
                   </div>
@@ -114,9 +114,11 @@
                 <label class="fnormal font-weight-normal">Certificate Type</label>
                 <sui-select class="selection form-control"
                     formControlName="certificateType"
-                    [options]="certTypes" [placeholder]="'Select certificate'"
-                    labelField="type"
+                    [options]="certTypes"
+                    [placeholder]="'Select certificate'"
+                    labelField="name"
                     [isSearchable]="false"
+                    [isDisabled]="configurationMode === 'edit'"
                     #selectCertType>
                   <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option"> </sui-select-option>
                 </sui-select>
@@ -131,9 +133,11 @@
                 <label class="fnormal font-weight-normal">Issue Certificate to?</label>
                 <sui-select class="selection form-control"
                     formControlName="issueTo"
-                    [options]="recipients" [placeholder]="'Select'"
-                    labelField="type" 
-                    [isSearchable]="false" 
+                    [options]="issueTo"
+                    [placeholder]="'Select'"
+                    labelField="name" 
+                    [isSearchable]="false"
+                    [isDisabled]="configurationMode === 'edit'" 
                     #selectRecipient>
                   <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option"></sui-select-option>
                 </sui-select>
