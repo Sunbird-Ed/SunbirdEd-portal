@@ -395,7 +395,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        console.log('-------SSS->', this.collectionData);
         return of({ data: response.result.content });
       }));
   }
