@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
 import {LayoutService, ResourceService} from '@sunbird/shared';
@@ -13,6 +13,7 @@ import {takeUntil} from 'rxjs/operators';
   styleUrls: ['./content-type.component.scss']
 })
 export class ContentTypeComponent implements OnInit, OnDestroy {
+  @Output() closeSideMenu = new EventEmitter<any>();
   @Input() layoutConfiguration;
   contentTypes;
   selectedContentType;
