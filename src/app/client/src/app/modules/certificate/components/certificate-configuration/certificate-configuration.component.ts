@@ -24,7 +24,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('selectRecipient') selectRecipient;
 
   public unsubscribe$ = new Subject<void>();
-  showscreen: boolean;
   showanotherscreen: boolean;
   showErrorModal;
   showPreviewModal;
@@ -40,6 +39,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   showLoader = true;
   certTemplateList: Array<{}>;
   batchDetails: any;
+  currentState: any;
+  screenStates: any = {'default': 'default', 'certRules': 'certRules' }
   selectedTemplate: any;
   configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
@@ -63,19 +64,22 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private playerService: PlayerService,
     private resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute,
     private certRegService: CertRegService,
-    private navigationHelperService: NavigationHelperService) { }
+    private navigationHelperService: NavigationHelperService,
+    public activatedRoute: ActivatedRoute) { }
 
-  secondscreen() {
-    this.showscreen = !this.showscreen;
-    this.initializeFormFields();
+  showCertRulesScreen(stateName) {
+    // this.initializeFormFields();
+    this.currentState = stateName;
   }
   thirdscreen() {
     this.showanotherscreen = !this.showanotherscreen;
   }
 
   ngOnInit() {
+    this.currentState = this.screenStates.default;
+    this.navigationHelperService.setNavigationUrl();
+    this.initializeFormFields();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
       this.configurationMode = _.get(this.queryParams, 'type');
@@ -189,7 +193,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.processCriteria( _.get(templateData, 'criteria'));
-    this.secondscreen();
+    this.currentState = this.screenStates.certRules
   }
 
   getCriteria(rawDropdownValues) {
@@ -201,6 +205,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const abc = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(abc, 'issueTo');
     this.certTypes = _.get(abc, 'certTypes');
+  }
+
+  goBack() {
+    if(this.currentState === this.screenStates.certRules){
+      // Goback to cert list screen
+      this.currentState = this.screenStates.default;
+    } else {
+      this.navigationHelperService.navigateToLastUrl();
+    }
   }
 
   handleCertificateEvent(name: string, template: {}, showPreview?: boolean) {
