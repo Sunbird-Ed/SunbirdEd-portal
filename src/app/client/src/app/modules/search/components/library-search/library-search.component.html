@@ -14,7 +14,7 @@
           <div class="sb-pageSection">
             <div class="sb-pageSection-header" *ngIf="!showLoader && totalCount > 0">
               <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                        interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:'*'"></h4> 
+                        interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll"></h4> 
               <span class="badge">{{totalCount}}</span>
               <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->
               <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-joy-theme-popup',
@@ -7,10 +7,19 @@ import {Component, OnInit} from '@angular/core';
 })
 export class JoyThemePopupComponent implements OnInit {
 
+  isShown = true;
+  @Output() closeJoyThemePopup = new EventEmitter<any>();
+
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  closePopup() {
+    localStorage.setItem('joyThemePopup', 'true');
+    this.isShown = false;
+    this.closeJoyThemePopup.emit();
   }
 
 }

@@ -9,11 +9,6 @@
   <!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
 
-		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
-			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
-			{{resourceService?.frmelmnts?.tab?.contribute}}
-		</a>
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
@@ -33,12 +28,7 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.explore)" 
-		*ngIf="!router.isActive('', true)" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-		[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-		<span class="item divider">|</span>
-		<a class="item font-weight-bold sb-color-primary pr-0" href="{{hrefPath}}" appTelemetryInteract
+  		<a class="item font-weight-bold sb-color-primary pr-10" href="{{hrefPath}}" appTelemetryInteract
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}
 		</a>
@@ -51,7 +41,12 @@
 <!--Mobile-->
 <div class="mobile only">
 	<div class="ui sidebar right vertical menu">
-		<!--Logged in user-->
+
+    <div class="mobile only">
+      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+    </div>
+
+    <!--Logged in user-->
 		<ng-container *ngIf="userService.loggedIn">
 			<div class="item font-weight-bold" *ngIf='userProfile'>
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
@@ -61,25 +56,10 @@
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
-				routerLink="/resources">
-				{{resourceService?.frmelmnts?.tab?.resources}}
-			</a>
-			<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
-				routerLink="/learn">
-				{{resourceService?.frmelmnts?.tab?.courses}}
-			</a>
 			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
-			
-			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
-				{{resourceService?.frmelmnts?.tab?.contribute}}
-			</a>
+
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
 				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
@@ -119,7 +99,13 @@
 			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
-			</ng-container>
+
+      <a class="item" (click)="showSideBar(false);switchLayout()">
+        <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
+        <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
+        <span class="group__type mx-8">New</span>
+      </a>
+    </ng-container>
 		<!--/Not Logged in user-->
 	</div>
 </div>
@@ -157,11 +143,6 @@
 			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
 		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
 		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
-			</a>
-			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
-				{{resourceService?.frmelmnts?.tab?.contribute}}
 			</a>
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
 				(click)="showSideBar()" routerLink="/profile">
