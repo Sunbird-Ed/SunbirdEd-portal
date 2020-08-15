@@ -26,4 +26,20 @@ describe('LayoutService', () => {
     expect(service.getLayoutConfig()).toBeTruthy();
     expect(service).toBeTruthy();
   });
+
+  it('should switchLayout to new UI', () => {
+    const service: LayoutService = TestBed.get(LayoutService);
+    const configService = TestBed.get(ConfigService);
+    service.layoutConfig = null;
+    service.initiateSwitchLayout();
+    expect(service.layoutConfig).toEqual(configService.appConfig.layoutConfiguration);
+  });
+
+  it('should switchLayout to old UI', () => {
+    const service: LayoutService = TestBed.get(LayoutService);
+    const configService = TestBed.get(ConfigService);
+    service.layoutConfig = configService.appConfig.layoutConfiguration;
+    service.initiateSwitchLayout();
+    expect(service.layoutConfig).toBe(null);
+  });
 });

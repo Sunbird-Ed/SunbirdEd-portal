@@ -1,7 +1,9 @@
 
 import { Observable, of } from 'rxjs';
-import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService } from '@sunbird/shared';
+import {
+  ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
+  BrowserCacheTtlService, LayoutService
+} from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
   PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
@@ -223,15 +225,53 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(userService.getFeedData).not.toHaveBeenCalled();
   });
 
-  it('should switchLayout to new UI', () => {
-    component.layoutConfiguration = null;
-    component.switchLayout();
-    expect(component.layoutConfiguration).toEqual(configService.appConfig.layoutConfiguration);
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
   });
 
-  it('should switchLayout to old UI', () => {
-    component.layoutConfiguration = configService.appConfig.layoutConfiguration;
-    component.switchLayout();
-    expect(component.layoutConfiguration).toBe(null);
+
+  it('should show joy theme popup first time', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+    component.joyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(true);
+  });
+
+  it('should show tnc popup second time', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('true');
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.joyThemePopup();
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
+  it('Should subscribe to layout service and retrieve layout config', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const tenantService = TestBed.get(TenantService);
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
+    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
+    component.ngOnInit();
+    expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
+    expect(component.layoutConfiguration).toEqual('new layout');
+    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
 });

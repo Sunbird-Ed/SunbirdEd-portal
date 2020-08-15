@@ -1,6 +1,6 @@
 import { CertConfigModel, Modes } from './../../models/cert-config-model/cert-config-model';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { CertificateService, UserService, PlayerService } from '@sunbird/core';
+import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ServerResponse, ResourceService } from '@sunbird/shared';
@@ -46,7 +46,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private playerService: PlayerService,
     private resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute) { }
+    public activatedRoute: ActivatedRoute,
+    private certRegService: CertRegService) { }
 
   secondscreen() {
     this.showscreen = !this.showscreen;
@@ -121,7 +122,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   getBatchDetails(batchId) {
     return this.certificateService.getBatchDetails(batchId).pipe(
       tap(batchDetails => {
-        this.batchDetails = batchDetails;
+        this.batchDetails = _.get(batchDetails, 'result.response');
         console.log('this.batchDetails', this.batchDetails);
       })
     );
@@ -154,18 +155,22 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
-  addCertificate() {
+  attachCertificateToBatch() {
     const request = {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
-        key: 'abcd',
+        key: 'iGOTCourseTemplate',
         orgId: _.get(this.userService, 'slug'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };
     // make the api call to add certificate
-    console.log('request payload', request);
+    this.certRegService.addCertificateTemplate(request).subscribe(data => {
+      console.log('add cert data', data);
+    }, error => {
+      console.log('add cert error', error);
+    });
   }
 
   getCriteria(rawDropdownValues) {
