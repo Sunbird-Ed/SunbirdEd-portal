@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ServerResponse, ResourceService } from '@sunbird/shared';
+import { ServerResponse, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
@@ -24,7 +24,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('selectRecipient') selectRecipient;
 
   public unsubscribe$ = new Subject<void>();
-  showscreen: boolean;
   showanotherscreen: boolean;
   showErrorModal;
   showPreviewModal;
@@ -40,26 +39,33 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   showLoader = true;
   certTemplateList: any;
   batchDetails: any;
+  selectedCertTemplate: any = {};
+  currentState: any;
+  screenStates: any = {'default': 'default', 'certRules': 'certRules' }
 
   constructor(
     private certificateService: CertificateService,
     private userService: UserService,
     private playerService: PlayerService,
     private resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute,
-    private certRegService: CertRegService) { }
+    private certRegService: CertRegService,
+    private navigationHelperService: NavigationHelperService,
+    public activatedRoute: ActivatedRoute) { }
 
-  secondscreen() {
-    this.showscreen = !this.showscreen;
+  showCertRulesScreen(stateName) {
+    this.currentState = stateName;
   }
   thirdscreen() {
     this.showanotherscreen = !this.showanotherscreen;
   }
 
   ngOnInit() {
+    this.currentState = this.screenStates.default;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
     });
+
+    this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
 
     combineLatest(
@@ -183,6 +189,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCriteria(criteria) {
     console.log('>>>>>', criteria);
     const processedData = new CertConfigModel({ mode: ProcessingModes.PROCESS_CRITERIA, values: criteria });
+  }
+
+  goBack() {
+    if(this.currentState === this.screenStates.certRules){
+      // Goback to cert list screen
+      this.currentState = this.screenStates.default;
+    } else {
+      this.navigationHelperService.navigateToLastUrl();
+    }    
   }
 
   ngOnDestroy() {

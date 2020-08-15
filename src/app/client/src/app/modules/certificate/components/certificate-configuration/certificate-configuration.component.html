@@ -6,9 +6,29 @@
 
 <div *ngIf="!showLoader">
 <!-- Header -->
+<div _ngcontent-lts-c70="" class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+  <div _ngcontent-lts-c70="" class="ui container">
+    <div _ngcontent-lts-c70="" class="py-8 d-flex flex-ai-center">
+      <button _ngcontent-lts-c70=""
+        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button" (click)="goBack()">
+        <i _ngcontent-lts-c70="" class="icon-svg icon-svg--xxs icon-back mr-4">
+          <svg _ngcontent-lts-c70=""
+            class="icon icon-svg--primary">
+            <use _ngcontent-lts-c70="" xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>  
+          {{resourceService?.frmelmnts?.btn?.back}} 
+      </button>
+      <div _ngcontent-lts-c70="" class="d-flex flex-ai-center">
+        <!---->
+        <!---->
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="textbook-container">
-    <div _ngcontent-lts-c70="" class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9"><div _ngcontent-lts-c70="" class="ui container"><div _ngcontent-lts-c70="" class="py-8 d-flex flex-ai-center"><button _ngcontent-lts-c70="" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button"><i _ngcontent-lts-c70="" class="icon-svg icon-svg--xxs icon-back mr-4"><svg _ngcontent-lts-c70="" class="icon icon-svg--primary"><use _ngcontent-lts-c70="" xlink:href="assets/images/sprite.svg#arrow-long-left"></use></svg></i> Back </button><div _ngcontent-lts-c70="" class="d-flex flex-ai-center"><!----><!----><!----></div></div></div></div>
-  <div class="ui container">
+    <div class="ui container">
     <div class="textbook py-16 sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
         <!-- Textbook details -->
@@ -37,7 +57,7 @@
 <!-- / Header-->
 
 <!-- first screen -->
-<div class="certificate-container py-16" *ngIf="!showscreen">
+<div class="certificate-container py-16" *ngIf="currentState === screenStates.default">
   <div class="ui container">
     <div class="ui stackable grid m-0">
       <div class="four wide column">
@@ -60,7 +80,7 @@
             <div><img src="../../assets/images/addcertificate.png"></div>
             <p class="no-template-text pt-16 pb-24 mb-0">You do not have any certificates attached yet.
               To proceed, click the <b>Add certificate</b> button</p>
-            <button type="button" (click)="secondscreen()"
+            <button type="button" (click)="currentState = screenStates.certRules"
               class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn px-32">Add
               Certificate<i class="plus icon"></i></button>
           </div>
@@ -77,7 +97,7 @@
                       <div class="d-flex flex-ai-center">
                         <button type="button" (click)="showPreviewModal = !showPreviewModal"
                           class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button>
-                        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" (click)="currentState = screenStates.certRules">Edit</button>
                       </div>
                     </div>
                   </div>
@@ -92,113 +112,114 @@
 </div>
 
 <!-- second screen -->
-<div class="certificate-container py-16" *ngIf="showscreen && !showanotherscreen">
-  <div class="ui container">
-    <div class="ui stackable grid m-0">
-      <div class="eight wide column">
-        <div class="certificate-content-area sb-bg-color-white p-24">
-          <form [formGroup]="userPreference">
-          <div class='ui stackable grid mt-0'>
-            <div class="six wide column pt-0">
-              <div class="pb-24 font-weight-bold certificates-label">Add Cerificate</div>
-              <div class="d-flex flex-dc">
-                <label class="fnormal font-weight-normal">Certificate Type</label>
-                <sui-select class="selection form-control"
-                    formControlName="certificateType"
-                    [options]="certTypes" [placeholder]="'Select certificate'"
-                    labelField="type"
-                    [isSearchable]="false"
-                    #selectCertType>
-                  <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option"> </sui-select-option>
-                </sui-select>
-              </div>
-            </div>
-          </div>
-
-          <div class='ui stackable grid mt-0'>
-            <div class="six wide column">
-              <div class="py-16 pb-24 font-weight-bold certificates-label">Cerificate Rules</div>
-              <div class="d-flex flex-dc">
-                <label class="fnormal font-weight-normal">Issue Certificate to?</label>
-                <sui-select class="selection form-control"
-                    formControlName="issueTo"
-                    [options]="recipients" [placeholder]="'Select'"
-                    labelField="type" 
-                    [isSearchable]="false" 
-                    #selectRecipient>
-                  <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option"></sui-select-option>
-                </sui-select>
-              </div>
-            </div>
-          </div>
-          <!-- <div class='ui stackable grid mt-0'>
-            <div class="six wide column">
-              <div class="pt-32">
-                <div class="d-flex flex-ai-center flex-jc-space-between">
-                  <div class="fnormal font-weight-bold">Current Template</div>
-                  <div class="fsmall date-text">Added : 29:07:2020</div>
+<div class="certificate-container py-16" *ngIf="currentState === screenStates.certRules">
+    <div class="ui container">
+      <div class="ui stackable grid m-0">
+        <div class="eight wide column">
+          <div class="certificate-content-area sb-bg-color-white p-24">
+            <form [formGroup]="userPreference">
+            <div class='ui stackable grid mt-0'>
+              <div class="six wide column pt-0">
+                <div class="pb-24 font-weight-bold certificates-label">Add Cerificate</div>
+                <div class="d-flex flex-dc">
+                  <label class="fnormal font-weight-normal">Certificate Type</label>
+                  <sui-select class="selection form-control"
+                      formControlName="certificateType"
+                      [options]="certTypes" [placeholder]="'Select certificate'"
+                      labelField="type"
+                      [isSearchable]="false"
+                      #selectCertType>
+                    <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option"> </sui-select-option>
+                  </sui-select>
                 </div>
-                <div class="d-flex flex-ai-center flex-dc py-16">
-                  <div class="template-image p-16">
-                    <img src="assets/images/certificate-img.png" class="template-img">
-                    <div class="d-flex flex-ai-center flex-jc-flex-end pt-16">
-                      <div class="remove-label fsmall font-weight-bold" (click)="showErrorModal = !showErrorModal">
-                        Remove
+              </div>
+            </div>
+  
+            <div class='ui stackable grid mt-0'>
+              <div class="six wide column">
+                <div class="py-16 pb-24 font-weight-bold certificates-label">Cerificate Rules</div>
+                <div class="d-flex flex-dc">
+                  <label class="fnormal font-weight-normal">Issue Certificate to?</label>
+                  <sui-select class="selection form-control"
+                      formControlName="issueTo"
+                      [options]="recipients" [placeholder]="'Select'"
+                      labelField="type" 
+                      [isSearchable]="false" 
+                      #selectRecipient>
+                    <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option"></sui-select-option>
+                  </sui-select>
+                </div>
+              </div>
+            </div>
+            <!-- <div class='ui stackable grid mt-0'>
+              <div class="six wide column">
+                <div class="pt-32">
+                  <div class="d-flex flex-ai-center flex-jc-space-between">
+                    <div class="fnormal font-weight-bold">Current Template</div>
+                    <div class="fsmall date-text">Added : 29:07:2020</div>
+                  </div>
+                  <div class="d-flex flex-ai-center flex-dc py-16">
+                    <div class="template-image p-16">
+                      <img src="assets/images/certificate-img.png" class="template-img">
+                      <div class="d-flex flex-ai-center flex-jc-flex-end pt-16">
+                        <div class="remove-label fsmall font-weight-bold" (click)="showErrorModal = !showErrorModal">
+                          Remove
+                        </div>
+                        <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                          class="sb-btn sb-btn-outline-primary sb-btn-normal ml-16 font-weight-bold">Preview</button>
                       </div>
-                      <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                        class="sb-btn sb-btn-outline-primary sb-btn-normal ml-16 font-weight-bold">Preview</button>
                     </div>
                   </div>
                 </div>
               </div>
+            </div> -->
+  
+            <div class="sb-checkbox sb-checkbox-secondary py-32">
+              <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
+              <label for="check2">All the elements and attributes are throughly verified</label>
             </div>
-          </div> -->
-
-          <div class="sb-checkbox sb-checkbox-secondary py-32">
-            <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
-            <label for="check2">All the elements and attributes are throughly verified</label>
+          </form>
           </div>
-        </form>
         </div>
-      </div>
-
-      <!-- Side panel of cert-templates -->
-      <div class="four wide column">
-        <div class="select-template-content p-24">
-          <div class="fnormal pb-16 font-weight-bold">Templates</div>
-          <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
-            <div>
-            <div *ngFor="let template of certTemplateList, let i = index " class="select-template-container__content">
-              <div class="template-checkbox">
-                <div class="sb-checkbox sb-checkbox-secondary py-32">
-                  <input type="checkbox" id="check3" name="example">
-                  <label for="check3"></label></div>
-              </div>
-              <div class="template-image">
-                <img src="assets/images/certificate-img.png" class="template-img"></div>
-                <div class="overlay-container">
-                    <div class="overlay-buttons">
-                      <button type="button" (click)="showTemplateDetectModal = !showTemplateDetectModal"
-                        class="d-block sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn"><i
-                          class="expand icon"></i>Select</button>
-                      <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                        class="d-block sb-btn sb-btn-normal sb-btn-outline-primary my-16">
-                        preview</button>
-                    </div>
+  
+        <!-- Side panel of cert-templates -->
+        <div class="four wide column">
+          <div class="select-template-content p-24">
+            <div class="fnormal pb-16 font-weight-bold">Templates</div>
+            <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
+              <div>
+              <div *ngFor="let template of certTemplateList, let i = index " class="select-template-container__content">
+                <div class="template-checkbox">
+                  <div class="sb-checkbox sb-checkbox-secondary py-32">
+                    <input type="checkbox" id="check3" name="example">
+                    <label for="check3"></label></div>
                 </div>
+                <div class="template-image">
+                  <img src="assets/images/certificate-img.png" class="template-img"></div>
+                  <div class="overlay-container">
+                      <div class="overlay-buttons">
+                        <button type="button" (click)="showTemplateDetectModal = !showTemplateDetectModal"
+                          class="d-block sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn"><i
+                            class="expand icon"></i>Select</button>
+                        <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                          class="d-block sb-btn sb-btn-normal sb-btn-outline-primary my-16">
+                          preview</button>
+                      </div>
+                  </div>
+              </div>
+              
             </div>
-            
-          </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="ui container" *ngIf="showscreen">
+  <div class="ui container" *ngIf="currentState === screenStates.certRules">
     <div class="ui stackable grid m-0">
       <div class="twelve wide column">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel</button>
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
           <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
         </div>
       </div>
@@ -239,8 +260,6 @@
     </div>
   </div>
 </div> -->
-
-</div>
 
 <!-- footer certificate -->
 
