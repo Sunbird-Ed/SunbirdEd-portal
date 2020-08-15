@@ -103,7 +103,8 @@
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
       "FETCH_USER": "v1/user/search",
-      "REISSUE_CERTIFICATE": "v1/cert/reissue"
+      "REISSUE_CERTIFICATE": "v1/cert/reissue",
+      "ADD_CERTIFICATE" : "v1/add/template"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
