@@ -41,6 +41,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certTemplateList: any;
   batchDetails: any;
   selectedTemplate: any;
+  configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
 
   constructor(
@@ -54,6 +55,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   secondscreen() {
     this.showscreen = !this.showscreen;
+    this.initializeFormFields();
   }
   thirdscreen() {
     this.showanotherscreen = !this.showanotherscreen;
@@ -62,9 +64,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
+      this.configurationMode = _.get(this.queryParams, 'type');
     });
-    this.initializeFormFields();
-
     combineLatest(
     this.getCourseDetails(_.get(this.queryParams, 'courseId')),
     this.getBatchDetails(_.get(this.queryParams, 'batchId')),

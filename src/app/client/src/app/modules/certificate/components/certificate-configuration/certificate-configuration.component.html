@@ -114,9 +114,11 @@
                 <label class="fnormal font-weight-normal">Certificate Type</label>
                 <sui-select class="selection form-control"
                     formControlName="certificateType"
-                    [options]="certTypes" [placeholder]="'Select certificate'"
+                    [options]="certTypes"
+                    [placeholder]="'Select certificate'"
                     labelField="name"
                     [isSearchable]="false"
+                    [isDisabled]="configurationMode === 'edit'"
                     #selectCertType>
                   <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option"> </sui-select-option>
                 </sui-select>
@@ -131,9 +133,11 @@
                 <label class="fnormal font-weight-normal">Issue Certificate to?</label>
                 <sui-select class="selection form-control"
                     formControlName="issueTo"
-                    [options]="issueTo" [placeholder]="'Select'"
+                    [options]="issueTo"
+                    [placeholder]="'Select'"
                     labelField="name" 
-                    [isSearchable]="false" 
+                    [isSearchable]="false"
+                    [isDisabled]="configurationMode === 'edit'" 
                     #selectRecipient>
                   <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option"></sui-select-option>
                 </sui-select>
