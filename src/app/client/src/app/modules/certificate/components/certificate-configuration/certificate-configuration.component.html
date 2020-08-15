@@ -83,7 +83,6 @@
                     <div class="certificate-frame">
                       <img src="assets/images/certificate-img.png"></div>
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                      <div class="remove-label" (click)="showErrorModal = !showErrorModal">Remove</div>
                       <div class="d-flex flex-ai-center">
                         <button type="button" (click)="showPreviewModal = !showPreviewModal"
                           class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button>
@@ -95,7 +94,7 @@
               </div>
             </div>
           </div>
-
+          
       </div>
     </div>
   </div>
@@ -209,7 +208,7 @@
       <div class="twelve wide column">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="addCertificate()">Add certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
         </div>
       </div>
     </div>
@@ -217,7 +216,7 @@
 </div>
 
 <!-- third screen -->
-<div class="certificate-container py-16" *ngIf="showanotherscreen">
+<!-- <div class="certificate-container py-16" *ngIf="showanotherscreen">
   <div class="ui stackable grid m-0">
     <div class="four wide column">
       <div class="certificate-sidebar px-24">
@@ -248,7 +247,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 </div>
 
