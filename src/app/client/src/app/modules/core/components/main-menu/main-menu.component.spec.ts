@@ -7,6 +7,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
+import {TelemetryService} from '@sunbird/telemetry';
+import {mockData} from '../main-menu/main-menu.component.spec.data';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
@@ -23,9 +25,9 @@ describe('MainMenuComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
-      providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutService,
-        LearnerService, ContentService, { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useClass: RouterStub }]
+      providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutService, TelemetryService,
+        LearnerService, ContentService, {provide: ActivatedRoute, useClass: FakeActivatedRoute},
+        {provide: Router, useClass: RouterStub}]
     })
       .compileComponents();
   }));
@@ -50,4 +52,30 @@ describe('MainMenuComponent', () => {
     component.layoutConfiguration = {};
     expect(component).toBeTruthy();
   });
+
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = null;
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
+  });
+
+  it('should switch layout and generate telemetry for joy', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = {options: 'option1'};
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventJoy);
+  });
+
+
 });

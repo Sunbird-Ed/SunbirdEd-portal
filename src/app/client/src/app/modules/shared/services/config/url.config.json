@@ -302,6 +302,9 @@
     },
     "RECAPTCHA": {
       "VALIDATE": "/validate/recaptcha"
+    },
+    "TENANT_PREFERENCE" : {
+      "READ": "org/v2/preferences/read"
     }
   }
 }

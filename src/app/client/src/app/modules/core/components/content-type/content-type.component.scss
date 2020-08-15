@@ -1,5 +1,7 @@
 @import "variables";
 @import "mixins/mixins";
+@import "../main-header/main-header.component.scss";
+
 :host ::ng-deep {
   .sb-linkmenu {
     .item {
