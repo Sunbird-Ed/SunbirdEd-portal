@@ -125,8 +125,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.userPreference = new FormGroup({
-      certificateType: new FormControl('Completion certificate', [Validators.required]),
-      issueTo: new FormControl('Mukherjee', [Validators.required]),
+      certificateType: new FormControl('', [Validators.required]),
+      issueTo: new FormControl('', [Validators.required]),
       allowPermission: new FormControl('', [Validators.required])
     });
     this.userPreference.valueChanges.subscribe(val => {
