@@ -133,12 +133,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       showContentRating: true
     };
     this.mimeTypeFilters = [
-      this.resourceService.frmelmnts.btn.all,
-      this.resourceService.frmelmnts.btn.video,
-      this.resourceService.frmelmnts.btn.interactive,
-      this.resourceService.frmelmnts.btn.docs
+      {text: this.resourceService.frmelmnts.btn.all, value: 'all'},
+      {text: this.resourceService.frmelmnts.btn.video, value: 'video'},
+      {text: this.resourceService.frmelmnts.btn.interactive, value: 'interactive'},
+      {text: this.resourceService.frmelmnts.btn.docs, value: 'docs'}
     ];
-    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
+    this.activeMimeTypeFilter = [ 'all' ];
   }
   ngOnInit() {
     this.initLayout();
@@ -395,6 +395,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
+        console.log('-------SSS->', this.collectionData);
         return of({ data: response.result.content });
       }));
   }
