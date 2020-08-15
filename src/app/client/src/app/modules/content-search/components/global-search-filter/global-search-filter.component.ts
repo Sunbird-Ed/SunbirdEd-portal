@@ -36,7 +36,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
   public resetFilters() {
-    this.selectedFilters = _.pick(this.selectedFilters, ['key']);
+    this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (_.get(this.activatedRoute, 'snapshot.params.pageNumber')) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
@@ -57,6 +57,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
+        if (queryParams.selectedTab){
+          queryFilters['selectedTab'] = queryParams.selectedTab;
+        }
         return queryFilters;
       })).subscribe(filters => {
         this.selectedFilters = _.cloneDeep(filters);
