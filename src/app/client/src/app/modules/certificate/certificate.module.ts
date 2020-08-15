@@ -1,3 +1,4 @@
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CertificateRoutingModule } from './certificate-routing.module';
@@ -7,6 +8,7 @@ import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CertificateConfigurationComponent, CertificateDetailsComponent} from './components';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { CertificateConfigurationComponent, CertificateDetailsComponent} from '.
     SuiSelectModule,
     SuiDropdownModule,
     SuiPopupModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonConsumptionModule,
+    SharedFeatureModule
   ]
 })
 export class CertificateModule { }

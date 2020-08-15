@@ -180,27 +180,13 @@
         <div class="select-template-content p-24">
           <div class="fnormal pb-16 font-weight-bold">Templates</div>
           <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
-            <div>
-            <div *ngFor="let template of certTemplateList, let i = index " class="select-template-container__content">
-              <div class="template-checkbox">
-                <div class="sb-checkbox sb-checkbox-secondary py-32">
-                  <input type="checkbox" id="check3" name="example">
-                  <label for="check3"></label></div>
+            <div *ngIf="certTemplateList">
+              <div *ngFor="let template of certTemplateList">
+                <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
+                [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal" [template]="template?.value"
+                (selectClick)="handleCertificateEvent('Select', template)" (previewClick)="handleCertificateEvent('Preview', template, true)" (removeClick)="handleCertificateEvent('Remove', template)"
+                ></sb-certificate-actions>
               </div>
-              <div class="template-image">
-                <img src="assets/images/certificate-img.png" class="template-img"></div>
-                <div class="overlay-container">
-                    <div class="overlay-buttons">
-                      <button type="button" (click)="showTemplateDetectModal = !showTemplateDetectModal"
-                        class="d-block sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn"><i
-                          class="expand icon"></i>Select</button>
-                      <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                        class="d-block sb-btn sb-btn-normal sb-btn-outline-primary my-16">
-                        preview</button>
-                    </div>
-                </div>
-            </div>
-            
           </div>
           </div>
         </div>
@@ -219,6 +205,25 @@
   </div>
 </div>
 
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="selectedTemplate"></app-cert-preview-popup>
+
+<!-- <sui-modal [mustScroll]="true" *ngIf="showPreviewModal" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal" appBodyScroll (dismissed)="modal.deny()" #modal>
+  <div class="sb-modal-header">
+    Certificate Preview
+  </div>
+  <div class="sb-modal-content">
+    <div><img src="assets/images/certificate-img.png" class="w-100"></div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Select template
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Close
+    </button>
+  </div>
+</sui-modal> -->
 <!-- third screen -->
 <!-- <div class="certificate-container py-16" *ngIf="showanotherscreen">
   <div class="ui stackable grid m-0">
@@ -274,24 +279,6 @@
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="showErrorModal = !showErrorModal">
       Cancel
-    </button>
-  </div>
-</sui-modal> -->
-
-<!-- <sui-modal *ngIf="showPreviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal" appBodyScroll (dismissed)="showPreviewModal = !showPreviewModal" #modal>
-  <div class="sb-modal-header">
-    Certificate Preview
-  </div>
-  <div class="sb-modal-content">
-    <div><img src="assets/images/certificate-img.png" class="w-100"></div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Select template
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Close
     </button>
   </div>
 </sui-modal> -->
