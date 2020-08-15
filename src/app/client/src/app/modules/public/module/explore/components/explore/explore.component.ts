@@ -293,7 +293,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
         let subTitle = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
         let buttonText = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-        if (this.queryParams.key) {
+        if (this.queryParams.key || (_.get(this.queryParams,'selectedTab') !== 'textbook')) {
           const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
           const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
           title = title_part1 + ' ' + title_part2;
