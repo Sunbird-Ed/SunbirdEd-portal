@@ -40,7 +40,9 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   districtControl: any;
   forChanges = {
     prevPersonaValue: '',
-    prevTenantValue: ''
+    prevTenantValue: '',
+    prevPhoneValue: '',
+    prevEmailValue: ''
   };
   formData;
   showLoader = true;
@@ -215,7 +217,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.prepopulatedValue[key] = this.declaredDetails.info[key];
       } else {
         const profileKey = key === 'declared-email' ? 'email' : 'phone';
-        this.prepopulatedValue[key] = this.userProfile[profileKey];
+        const prevValue = key === 'declared-email' ? this.forChanges.prevEmailValue : this.forChanges.prevPhoneValue;
+        this.prepopulatedValue[key] = this.userProfile[profileKey] || prevValue;
       }
       if (this.prepopulatedValue[key]) {
         this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
@@ -298,6 +301,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.validationType[fieldType].isVerified = true;
     this.userDetailsForm.controls[fieldType + 'Verified'].setValue(true);
     this.validationType[fieldType].isVerificationRequired = false;
+    if (fieldType === 'declared-phone') {
+      this.forChanges.prevPhoneValue = this.userDetailsForm.controls[fieldType].value;
+    } else {
+      this.forChanges.prevEmailValue = this.userDetailsForm.controls[fieldType].value;
+    }
   }
 
   getFieldType(data) {
