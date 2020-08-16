@@ -514,7 +514,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
-      this.checkIssueCertificate();
+      this.checkIssueCertificate(this.batchId);
     }, (err) => {
       this.disableSubmitBtn = false;
       if (err.error && err.error.params && err.error.params.errmsg) {
@@ -524,8 +524,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       }
     });
   }
-  checkIssueCertificate() {
-    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate, mode: 'edit' });
+  checkIssueCertificate(batchId) {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
+    mode: 'edit', batchId: batchId });
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
