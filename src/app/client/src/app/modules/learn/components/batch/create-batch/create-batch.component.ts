@@ -243,7 +243,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
-          this.checkIssueCertificate();
+          this.checkIssueCertificate(response.result.batchId);
         }
       },
         (err) => {
@@ -264,7 +264,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
-        this.checkIssueCertificate();
+        this.checkIssueCertificate(batchId);
       },
         (err) => {
           this.disableSubmitBtn = false;
@@ -286,8 +286,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
 
-  checkIssueCertificate() {
-    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.createBatchForm.value.issueCertificate, mode: 'create' });
+  checkIssueCertificate(batchId) {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.createBatchForm.value.issueCertificate,
+    mode: 'create', batchId: batchId });
   }
 
   private getUserOtherDetail(userData) {
