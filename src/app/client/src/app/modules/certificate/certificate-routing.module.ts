@@ -5,12 +5,13 @@ import { CertificateDetailsComponent, CertificateConfigurationComponent} from '.
 
 const routes: Routes = [
   {
-    path: ':mode/certificate', component: CertificateConfigurationComponent, canActivate: [AuthGuard],
+    path: 'configure/certificate', component: CertificateConfigurationComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
         env: 'certs', pageid: 'certificate-details', type: 'view'
       },
-      roles: 'courseBatchRoles'
+      roles: 'courseBatchRoles',
+      hideHeaderNFooter: false
     }
   },
   {

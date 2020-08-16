@@ -240,3 +240,45 @@
     mask-repeat: no-repeat;
   }
 }
+
+//back-header
+.back-bar {
+  width: 100%;
+}
+// textbook header
+.textbook {
+  &-container {
+    box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+    background-color: #FAFAFA;
+    width: 100%;
+    position: relative;
+    top: 0px;
+    z-index: 2;
+  }
+  &__details {
+    flex: 1;
+    min-width: 0;
+  }
+  &__bookimg {
+    width: calculateRem(48px);
+    height: calculateRem(48px);
+    img {
+      width: calculateRem(48px);
+      height: calculateRem(48px);
+    }
+  }
+  &__heading {
+    min-width: 0;
+    .textbook__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 18px;
+    }
+  }
+  &__addbtn {
+    white-space: nowrap;
+  }
+}
+
+

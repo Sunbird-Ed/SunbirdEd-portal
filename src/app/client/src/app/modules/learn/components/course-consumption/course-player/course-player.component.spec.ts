@@ -580,4 +580,23 @@ describe('CoursePlayerComponent', () => {
     component.isCourseModifiedAfterEnrolment();
     expect(component.isEnrolledCourseUpdated).toBeFalsy();
   });
+
+  it('should show course completion message when course progress is 100', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
+    component.ngOnInit();
+    courseProgressService.courseProgressData.emit({progress: 100});
+    expect(component.showCourseCompleteMessage).toBeTruthy();
+  });
+
+  it('should not show course completion message when course progress is less than 100', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
+    component.ngOnInit();
+    courseProgressService.courseProgressData.emit({progress: 90});
+    expect(component.showCourseCompleteMessage).toBeFalsy();
+  });
+
 });

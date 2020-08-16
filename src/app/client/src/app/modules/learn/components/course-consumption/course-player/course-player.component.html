@@ -203,7 +203,7 @@
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
 
-<app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" (close)="onPopupClose($event)"></app-confirmation-popup>
+<app-confirmation-popup *ngIf="showConfirmationPopup" [popupMode]="popupMode" [batchId]="createdBatchId" (close)="onPopupClose($event)"></app-confirmation-popup>
 
 <!-- new UI -->
 <div class="sb-bg-color-gray-0 textbook-container hide">
@@ -222,3 +222,4 @@
     </div>
   </div>
 </div>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
