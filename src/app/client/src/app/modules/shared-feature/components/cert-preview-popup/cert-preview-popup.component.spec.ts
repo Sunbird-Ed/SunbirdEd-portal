@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CertPreviewPopupComponent } from './cert-preview-popup.component';
+import { SuiModule } from 'ng2-semantic-ui';
 
 describe('CertPreviewPopupComponent', () => {
   let component: CertPreviewPopupComponent;
@@ -8,6 +9,7 @@ describe('CertPreviewPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SuiModule],
       declarations: [ CertPreviewPopupComponent ]
     })
     .compileComponents();
