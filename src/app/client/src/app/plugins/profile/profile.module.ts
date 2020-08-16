@@ -22,7 +22,7 @@ import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
-function csCourseServiceFactory(csLibInitializerService: CsLibInitializerService) {
+export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
     csLibInitializerService.initializeCs();
   }
