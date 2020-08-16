@@ -40,7 +40,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certTemplateList: Array<{}>;
   batchDetails: any;
   currentState: any;
-  screenStates: any = {'default': 'default', 'certRules': 'certRules' }
+  screenStates: any = {'default': 'default', 'certRules': 'certRules' };
   selectedTemplate: any;
   configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
@@ -67,14 +67,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private certRegService: CertRegService,
     private navigationHelperService: NavigationHelperService,
     public activatedRoute: ActivatedRoute) { }
-
-  showCertRulesScreen(stateName) {
-    // this.initializeFormFields();
-    this.currentState = stateName;
-  }
-  thirdscreen() {
-    this.showanotherscreen = !this.showanotherscreen;
-  }
 
   ngOnInit() {
     this.currentState = this.screenStates.default;
@@ -193,7 +185,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.processCriteria( _.get(templateData, 'criteria'));
-    this.currentState = this.screenStates.certRules
+    this.currentState = this.screenStates.certRules;
   }
 
   getCriteria(rawDropdownValues) {
@@ -208,12 +200,16 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    if(this.currentState === this.screenStates.certRules){
+    if (this.currentState === this.screenStates.certRules) {
       // Goback to cert list screen
       this.currentState = this.screenStates.default;
     } else {
       this.navigationHelperService.navigateToLastUrl();
     }
+  }
+
+  showCertRulesScreen(stateName) {
+    this.currentState = stateName;
   }
 
   handleCertificateEvent(name: string, template: {}, showPreview?: boolean) {

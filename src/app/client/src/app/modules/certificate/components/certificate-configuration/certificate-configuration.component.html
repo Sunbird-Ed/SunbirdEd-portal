@@ -217,85 +217,22 @@
   </div>
 </div>
 
-<!-- <app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="selectedTemplate"></app-cert-preview-popup> -->
-
-<!-- <sui-modal [mustScroll]="true" *ngIf="showPreviewModal" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal" appBodyScroll (dismissed)="modal.deny()" #modal>
-  <div class="sb-modal-header">
-    Certificate Preview
-  </div>
-  <div class="sb-modal-content">
-    <div><img src="assets/images/certificate-img.png" class="w-100"></div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Select template
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      Close
-    </button>
-  </div>
-</sui-modal> -->
-<!-- third screen -->
-<!-- <div class="certificate-container py-16" *ngIf="showanotherscreen">
-  <div class="ui stackable grid m-0">
-    <div class="four wide column">
-      <div class="certificate-sidebar px-24">
-        <div class="py-24 font-weight-bold certificates-label">Configure certificates</div>
-      </div>
-    </div>
-    <div class="eight wide column">
-      <div class="certificate-edit-content p-24">
-        <div class="content">
-          <div class="fnormal pb-16 font-weight-bold">Certificate</div>
-          <div class="certificate-edit-area">
-            <div class="certificate-edit-sbcard">
-              <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
-                <div class="certificate-frame">
-                  <img src="assets/images/certificate-img.png"></div>
-                <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                  <div class="remove-label" (click)="showErrorModal = !showErrorModal">Remove</div>
-                  <div class="d-flex flex-ai-center">
-                    <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                      class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button>
-                    <button type="button" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="selectedTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
 
 
 
-<!-- <sui-modal *ngIf="showErrorModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal sb-error" appBodyScroll (dismissed)="showErrorModal = !showErrorModal" #modal>
-  <div class="sb-modal-header">
-    Remove Certificate?
-  </div>
-  <div class="sb-modal-content">
-    <p class="pt-16 pb-24 px-16 mb-0">The configurations saved will be lost when the certificate is removed</p>
-    <p class="pb-16 px-16 mb-0">Would you really want to remove this certificate?</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="showErrorModal = !showErrorModal">
-      Remove
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="showErrorModal = !showErrorModal">
-      Cancel
-    </button>
-  </div>
-</sui-modal> -->
 
-<!-- <sui-modal *ngIf="showTemplateDetectModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal sb-batch-update-modal" appBodyScroll
-  (dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #modal>
+
+<sui-modal *ngIf="showTemplateDetectModal"
+[mustScroll]="true"
+[isClosable]="true"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal sb-batch-update-modal"
+appBodyScroll
+(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #modal>
   <div class="sb-modal-header">
     Template Change detected!
   </div>
@@ -321,4 +258,4 @@
       No
     </button>
   </div>
-</sui-modal> -->
+</sui-modal>
