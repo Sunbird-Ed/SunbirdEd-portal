@@ -183,8 +183,7 @@
             <div *ngIf="certTemplateList">
               <div *ngFor="let template of certTemplateList">
                 <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
-                [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal" [template]="template?.value"
-                (selectClick)="handleCertificateEvent('Select', template)" (previewClick)="handleCertificateEvent('Preview', template, true)" (removeClick)="handleCertificateEvent('Remove', template)"
+                [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal" [template]="template?.value" (buttonClick) = "handleCertificateEvent($event, template)"
                 ></sb-certificate-actions>
               </div>
           </div>
@@ -205,7 +204,7 @@
   </div>
 </div>
 
-<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="selectedTemplate"></app-cert-preview-popup>
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- <sui-modal [mustScroll]="true" *ngIf="showPreviewModal" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
   class="sb-modal" appBodyScroll (dismissed)="modal.deny()" #modal>
