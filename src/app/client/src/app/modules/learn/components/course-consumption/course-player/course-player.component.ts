@@ -74,6 +74,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   showConfirmationPopup = false;
   popupMode: string;
+  createdBatchId: string;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -205,6 +206,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseBatchService.updateEvent.subscribe((event) => {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
+          this.createdBatchId = _.get(event, 'batchId');
           this.showConfirmationPopup = true;
           this.popupMode = _.get(event, 'mode');
         }
@@ -214,15 +216,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   onPopupClose(event) {
     if (_.get(event, 'mode') === 'add-certificates') {
-      this.navigateToConfigureCertificate('add');
+      this.navigateToConfigureCertificate('add', _.get(event, 'batchId'));
     }
     this.showConfirmationPopup = false;
   }
 
-  navigateToConfigureCertificate(mode: string) {
+  navigateToConfigureCertificate(mode: string, batchId: string) {
     this.router.navigate([`/certs/configure/certificate`], {
       queryParams: {
-        type: mode
+        type: mode,
+        courseId: this.courseId,
+        batchId: batchId
       }
     });
   }

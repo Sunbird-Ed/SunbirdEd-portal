@@ -6,7 +6,7 @@ import {
   ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-  ConfirmationPopupComponent, JoyThemePopupComponent
+  ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -34,11 +34,11 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent]
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent]
 })
 export class SharedFeatureModule { }

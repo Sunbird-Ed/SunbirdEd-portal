@@ -33,6 +33,10 @@
     color:var(--gray-100);
   }
 
+  .no-cert-text {
+    color:#F7B500; 
+  }
+
   ::ng-deep {
   .ui.accordion .active.title .chevron.down.icon {
       margin-top:calculateRem(6px);
