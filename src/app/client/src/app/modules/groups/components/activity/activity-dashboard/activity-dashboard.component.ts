@@ -134,11 +134,12 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
       /* istanbul ignore else */
       if (_.get(item, 'status') === 'active') {
         const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value');
+        const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0'; 
         return {
           title: _.get(item, 'userId') === this.userService.userid ?
           `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
-          progress: completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0',
+          progress: progress > 100 ? '100' : progress,
           initial: _.get(item, 'name[0]'),
           indexOfMember: index
         };
