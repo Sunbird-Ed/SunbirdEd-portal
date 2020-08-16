@@ -3,11 +3,10 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ServerResponse, ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest, of, Subject, forkJoin, Observable, throwError, Subscription } from 'rxjs';
-import { map, catchError, tap, subscribeOn } from 'rxjs/operators';
-import { response } from './certificate-configuration.component.spec.data';
+import { combineLatest, of, Subject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 export enum ProcessingModes {
   PROCESS_DROPDOWNS = 'processDropdowns',
@@ -149,7 +148,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   initializeFormFields() {
-    this.selectedTemplate = 'iGOTCourseTemplate'
     this.userPreference = new FormGroup({
       certificateType: new FormControl('', [Validators.required]),
       issueTo: new FormControl('', [Validators.required]),

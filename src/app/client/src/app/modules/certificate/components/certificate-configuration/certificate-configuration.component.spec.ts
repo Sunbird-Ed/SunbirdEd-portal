@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CertificateConfigurationComponent } from './certificate-configuration.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
+import { CoreModule } from '@sunbird/core';
+import { BrowserCacheTtlService, ConfigService, NavigationHelperService, UtilService, ResourceService } from '@sunbird/shared';
+import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
@@ -8,7 +16,21 @@ describe('CertificateConfigurationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CertificateConfigurationComponent ]
+      imports: [SuiModule, SuiTabsModule, CoreModule,
+        FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([])],
+      declarations: [ CertificateConfigurationComponent ],
+      providers: [
+        ConfigService,
+        NavigationHelperService,
+        UtilService,
+        ResourceService,
+        CertificateService,
+        UserService,
+        PlayerService,
+        CertRegService,
+        BrowserCacheTtlService
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
