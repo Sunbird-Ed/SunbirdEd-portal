@@ -15,7 +15,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-fdescribe('PublicCourseComponent', () => {
+describe('PublicCourseComponent', () => {
   let component: PublicCourseComponent;
   let fixture: ComponentFixture<PublicCourseComponent>;
   let toasterService, formService, pageApiService, orgDetailsService, cacheService;
