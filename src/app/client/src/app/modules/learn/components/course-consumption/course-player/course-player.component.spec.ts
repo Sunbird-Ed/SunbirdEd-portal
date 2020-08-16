@@ -19,7 +19,7 @@ describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
   let contentUtilsServiceService;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -97,7 +97,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.certificateDescription).toBe('This course certificate is only for Rajasthan users scoring 80% or above');
+    expect(component.certificateDescription['description']).toBe('This course certificate is only for Rajasthan users scoring 80% or above');
   });
 
   it('should fetch courseHierarchy from courseConsumptionService', () => {
@@ -112,7 +112,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.certificateDescription).toBe('');
+    expect(component.certificateDescription['description']).toBe('');
   });
 
   it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
