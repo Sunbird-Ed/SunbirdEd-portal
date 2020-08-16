@@ -128,6 +128,7 @@
                     [options]="certTypes"
                     [placeholder]="'Select certificate'"
                     labelField="name"
+                    valueField="name"
                     [isSearchable]="false"
                     [isDisabled]="configurationMode === 'edit'"
                     #selectCertType>
@@ -147,6 +148,7 @@
                     [options]="issueTo"
                     [placeholder]="'Select'"
                     labelField="name" 
+                    valueField="name"
                     [isSearchable]="false"
                     [isDisabled]="configurationMode === 'edit'" 
                     #selectRecipient>
