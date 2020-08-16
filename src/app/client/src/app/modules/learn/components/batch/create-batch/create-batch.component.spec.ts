@@ -104,7 +104,7 @@ describe('CreateBatchComponent', () => {
     expect(component.createBatchForm).toBeDefined();
     expect(component.showCreateModal).toBeTruthy();
   });
-  xit('should create batch and show success message if api return success', () => {
+  it('should create batch and show success message if api return success', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
@@ -171,7 +171,7 @@ describe('CreateBatchComponent', () => {
     expect(toasterService.success).toHaveBeenCalledWith('success');
   });
 
-  xit('should call redirect', () => {
+  it('should call redirect', () => {
     const router = TestBed.get(Router);
     component['createBatchModel'] = {
       deny: jasmine.createSpy('deny')
@@ -180,7 +180,7 @@ describe('CreateBatchComponent', () => {
     expect(router.navigate).toHaveBeenCalled();
   });
 
-  xit('should call reload', (done) => {
+  it('should call reload', (done) => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const router = TestBed.get(Router);
     spyOn(courseBatchService.updateEvent, 'emit');
