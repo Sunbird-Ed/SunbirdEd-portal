@@ -46,11 +46,21 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   showContentType(data) {
     if (this.userService.loggedIn) {
-      this.router.navigate([data.loggedInUserRoute.route],
-        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam}});
+      if (data.contentType === 'course') {
+        this.router.navigate([data.loggedInUserRoute.route],
+          { queryParams: { selectedTab: data.loggedInUserRoute.queryParam } });
+      } else {
+        this.router.navigate([data.loggedInUserRoute.route],
+          { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
+      }
     } else {
-      this.router.navigate([data.anonumousUserRoute.route],
-        {queryParams: {...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam}});
+      if (data.contentType === 'course') {
+        this.router.navigate([data.anonumousUserRoute.route],
+          { queryParams: { selectedTab: data.anonumousUserRoute.queryParam } });
+      } else {
+        this.router.navigate([data.anonumousUserRoute.route],
+          { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam } });
+      }
     }
   }
 
