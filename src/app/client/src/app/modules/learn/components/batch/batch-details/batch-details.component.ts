@@ -46,7 +46,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showAllBatchError = false;
   showJoinModal = false;
   telemetryCdata: Array<{}> = [];
-  certTemplateLength: number;
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
 
@@ -126,8 +125,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       ).pipe(takeUntil(this.unsubscribe))
        .subscribe((data) => {
            this.batchList = _.union(data[0].result.response.content, data[1].result.response.content);
-           this.certTemplateLength = _.get(this.batchList, 'cert_templates') ?
-           Object.keys(_.get(this.batchList, 'cert_templates')).length : 0;
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
            } else {
@@ -145,8 +142,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           this.allBatchDetails.emit(_.get(data, 'result.response'));
           if (data.result.response.content && data.result.response.content.length > 0) {
             this.batchList = data.result.response.content;
-            this.certTemplateLength = _.get(this.batchList, 'cert_templates') ?
-           Object.keys(_.get(this.batchList, 'cert_templates')).length : 0;
             this.fetchUserDetails();
           } else {
             this.showBatchList = true;
