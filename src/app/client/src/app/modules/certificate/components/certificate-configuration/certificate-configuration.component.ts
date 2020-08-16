@@ -72,6 +72,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private navigationHelperService: NavigationHelperService,
     public activatedRoute: ActivatedRoute) { }
 
+  showCertRulesScreen(stateName) {
+    this.currentState = stateName;
+  }
+  thirdscreen() {
+    this.showanotherscreen = !this.showanotherscreen;
+  }
+
   ngOnInit() {
     this.currentState = this.screenStates.default;
     this.navigationHelperService.setNavigationUrl();
@@ -192,8 +199,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     console.log('certTemplateDetails', certTemplateDetails);
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
-    this.processCriteria( _.get(templateData, 'criteria'));
     this.currentState = this.screenStates.certRules;
+    this.processCriteria( _.get(templateData, 'criteria'));
   }
 
   getCriteria(rawDropdownValues) {
@@ -205,6 +212,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const abc = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(abc, 'issueTo');
     this.certTypes = _.get(abc, 'certTypes');
+    
+    let certTypeFormEle = this.userPreference.controls['certificateType'];
+    let issueToFormEle = this.userPreference.controls['issueTo'];
+    this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
+    this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
 
   handleCertificateEvent(event, template: {}) {
