@@ -92,12 +92,12 @@
                 <div class="certificate-edit-sbcard">
                   <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
                     <div class="certificate-frame">
-                      <img src="assets/images/certificate-img.png"></div>
+                      <img src="{{previewUrl}}"></div>
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
                           class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button> -->
-                        <button type="button" (click)="editCertificate(batchDetails.cert_templates)" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                        <button type="button" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
                       </div>
                     </div>
                   </div>
@@ -120,7 +120,8 @@
           <form [formGroup]="userPreference">
           <div class='ui stackable grid mt-0'>
             <div class="six wide column pt-0">
-              <div class="pb-24 font-weight-bold certificates-label">Add Cerificate</div>
+              <div *ngIf="configurationMode === 'add'" class="pb-24 font-weight-bold certificates-label">Add Certificate</div>
+              <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">Edit Certificate</div>
               <div class="d-flex flex-dc">
                 <label class="fnormal font-weight-normal">Certificate Type</label>
                 <sui-select class="selection form-control"
@@ -157,30 +158,7 @@
               </div>
             </div>
           </div>
-            <!-- <div class='ui stackable grid mt-0'>
-              <div class="six wide column">
-                <div class="pt-32">
-                  <div class="d-flex flex-ai-center flex-jc-space-between">
-                    <div class="fnormal font-weight-bold">Current Template</div>
-                    <div class="fsmall date-text">Added : 29:07:2020</div>
-                  </div>
-                  <div class="d-flex flex-ai-center flex-dc py-16">
-                    <div class="template-image p-16">
-                      <img src="assets/images/certificate-img.png" class="template-img">
-                      <div class="d-flex flex-ai-center flex-jc-flex-end pt-16">
-                        <div class="remove-label fsmall font-weight-bold" (click)="showErrorModal = !showErrorModal">
-                          Remove
-                        </div>
-                        <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                          class="sb-btn sb-btn-outline-primary sb-btn-normal ml-16 font-weight-bold">Preview</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-  
-            <div class="sb-checkbox sb-checkbox-secondary py-32">
+          <div class="sb-checkbox sb-checkbox-secondary py-32">
               <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
               <label for="check2">All the elements and attributes are throughly verified</label>
             </div>
@@ -211,7 +189,8 @@
       <div class="twelve wide column">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Update certificate</button>
         </div>
       </div>
     </div>
@@ -221,11 +200,6 @@
 <app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
-
-
-
-
-
 <sui-modal *ngIf="showTemplateDetectModal"
 [mustScroll]="true"
 [isClosable]="true"

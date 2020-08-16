@@ -45,6 +45,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   previewTemplate: any;
   configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
+  previewUrl: string;
   config = {
     select: {
         label: 'Select',
@@ -139,6 +140,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.batchDetails = _.get(batchDetails, 'result.response');
         if (!_.get(this.batchDetails, 'cert_templates')) {
           this.getCertConfigFields();
+        } else {
+          this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
         }
         console.log('this.batchDetails', this.batchDetails);
       })
@@ -146,6 +149,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   initializeFormFields() {
+    this.selectedTemplate = 'iGOTCourseTemplate'
     this.userPreference = new FormGroup({
       certificateType: new FormControl('', [Validators.required]),
       issueTo: new FormControl('', [Validators.required]),
@@ -157,6 +161,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
+    console.log('this.userPreference', this.userPreference.value);
     if (this.userPreference.status === 'VALID'
     && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
       this.disableAddCertificate = false;
@@ -180,27 +185,32 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
-        key: 'iGOTCourseTemplate',
+        key: this.selectedTemplate,
         orgId: _.get(this.userService, 'slug'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };
+    console.log('request', request);
     // make the api call to add certificate
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       // show a success toast message
       this.getBatchDetails(_.get(this.queryParams, 'batchId'));
+      this.goBack();
     }, error => {
       // show an error toast message
       console.log('add cert error', error);
     });
   }
 
-  editCertificate(certTemplateDetails) {
+  processCertificateDetails(certTemplateDetails) {
     console.log('certTemplateDetails', certTemplateDetails);
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
-    this.currentState = this.screenStates.certRules;
+    this.previewUrl = _.get(templateData, 'previewUrl');
     this.processCriteria( _.get(templateData, 'criteria'));
+  }
+  editCertificate() {
+    this.currentState = this.screenStates.certRules;
   }
 
   getCriteria(rawDropdownValues) {
@@ -212,9 +222,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const abc = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(abc, 'issueTo');
     this.certTypes = _.get(abc, 'certTypes');
-    
-    let certTypeFormEle = this.userPreference.controls['certificateType'];
-    let issueToFormEle = this.userPreference.controls['issueTo'];
+    const certTypeFormEle = this.userPreference.controls['certificateType'];
+    const  issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
     this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
@@ -254,6 +263,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.showPreviewModal = false;
     this.selectedTemplate = _.get(event, 'name') ? _.get(event, 'template') : this.selectedTemplate;
     this.validateForm();
+  }
+
+  goBack() {
+    if (this.currentState === this.screenStates.certRules) {
+      // Goback to cert list screen
+      this.currentState = this.screenStates.default;
+    } else {
+      this.navigationHelperService.navigateToLastUrl();
+    }
   }
 
   ngOnDestroy() {

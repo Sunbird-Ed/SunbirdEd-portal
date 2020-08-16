@@ -11,8 +11,8 @@ export class CertConfigModel {
 
     processDropDownValues(rawValues, rootOrgId) {
         const criteria = {};
-        criteria['user'] = _.get(rawValues, 'issueTo.type') === this.dropDownFields.ALL ? {} : { rootOrgId: rootOrgId };
-        criteria['enrollment'] = _.get(rawValues, 'certificateType.value');
+        criteria['user'] = _.get(rawValues, 'issueTo') === this.dropDownFields.ALL ? {rootOrgId: ''} : { rootOrgId: rootOrgId };
+        criteria['enrollment'] = _.get(rawValues, 'certificateType') === this.dropDownFields.COMPLETION_CERTIFICATE ? { status: 2 } : { };
         return criteria;
     }
 
