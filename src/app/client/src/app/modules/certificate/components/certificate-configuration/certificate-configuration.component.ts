@@ -183,7 +183,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
-        key: this.selectedTemplate,
+        key: this.selectedTemplate.name,
         orgId: _.get(this.userService, 'slug'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
