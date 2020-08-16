@@ -173,9 +173,9 @@
           <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
             <div *ngIf="certTemplateList">
               <div *ngFor="let template of certTemplateList">
-                <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
+                <!-- <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
                 [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal" [template]="template?.value" (buttonClick) = "handleCertificateEvent($event, template)"
-                ></sb-certificate-actions>
+                ></sb-certificate-actions> -->
               </div>
           </div>
           </div>
