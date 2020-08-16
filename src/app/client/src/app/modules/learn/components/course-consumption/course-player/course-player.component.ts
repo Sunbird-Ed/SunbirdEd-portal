@@ -201,7 +201,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.courseProgressData = courseProgressData;
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
-          this.showCourseCompleteMessage = this.progress === 100 ? true : false;
+          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
           this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
         }
       });
