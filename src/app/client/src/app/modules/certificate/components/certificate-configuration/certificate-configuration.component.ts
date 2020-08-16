@@ -24,7 +24,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('selectRecipient') selectRecipient;
 
   public unsubscribe$ = new Subject<void>();
-  showscreen: boolean;
   showanotherscreen: boolean;
   showErrorModal;
   showPreviewModal;
@@ -40,6 +39,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   showLoader = true;
   certTemplateList: Array<{}>;
   batchDetails: any;
+  currentState: any;
+  screenStates: any = {'default': 'default', 'certRules': 'certRules' };
   selectedTemplate: any;
   previewTemplate: any;
   configurationMode: string;
@@ -67,19 +68,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private playerService: PlayerService,
     private resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute,
     private certRegService: CertRegService,
-    private navigationHelperService: NavigationHelperService) { }
-
-  secondscreen() {
-    this.showscreen = !this.showscreen;
-    this.initializeFormFields();
-  }
-  thirdscreen() {
-    this.showanotherscreen = !this.showanotherscreen;
-  }
+    private navigationHelperService: NavigationHelperService,
+    public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.currentState = this.screenStates.default;
+    this.navigationHelperService.setNavigationUrl();
+    this.initializeFormFields();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
       this.configurationMode = _.get(this.queryParams, 'type');
@@ -197,7 +193,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.processCriteria( _.get(templateData, 'criteria'));
-    this.secondscreen();
+    this.currentState = this.screenStates.certRules;
   }
 
   getCriteria(rawDropdownValues) {

@@ -8,6 +8,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 export class ConfirmationPopupComponent implements OnInit {
   @ViewChild('confirmationModal') confirmationModal;
   @Input() popupMode: string;
+  @Input() batchId: string;
   @Output() close = new EventEmitter<any>();
 
   constructor() { }
@@ -22,7 +23,7 @@ export class ConfirmationPopupComponent implements OnInit {
 
   navigateToAddCertificate() {
     this.confirmationModal.deny();
-    this.close.emit({mode: 'add-certificates'});
+    this.close.emit({mode: 'add-certificates', batchId: this.batchId});
   }
 
 }
