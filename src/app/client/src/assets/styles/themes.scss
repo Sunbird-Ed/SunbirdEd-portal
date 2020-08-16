@@ -332,12 +332,16 @@ html[layout='joy'] {
   --sbt-body-bg: #E4E8EE;
   --sbt-body-bg2: #F2F4F6;
   --sbt-primary-bg: #0091FF;
-
+  
+  .sbt-fluid-header-bg {
+    display: block;
+  }
   .sbt-center-container {
     width: calc(100% - 4%);
     margin:0 auto;
     padding:0 2%;
   }
+
   .sbt-bg-container {
 
   }

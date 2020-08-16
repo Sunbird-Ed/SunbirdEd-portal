@@ -303,6 +303,7 @@ app-workspace {
 
 /* new theme */
 .sbt-fluid-header-bg {
+  display: none;
   background: none;
 
   @include respond-above(sm) {
