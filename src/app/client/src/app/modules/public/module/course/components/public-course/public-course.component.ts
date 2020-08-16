@@ -107,7 +107,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
           this.pageTitle = _.get(this.resourceService, value.title);
           this.svgToDisplay = _.get(value, 'theme.imageName');
         } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
-          if(value.contentType == "course") {
+          if (value.contentType === 'course') {
             this.pageTitle = _.get(this.resourceService, value.title);
             this.svgToDisplay = _.get(value, 'theme.imageName');
           }
