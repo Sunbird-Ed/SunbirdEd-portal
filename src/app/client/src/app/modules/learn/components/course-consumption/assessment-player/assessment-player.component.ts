@@ -52,7 +52,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isFullScreenView = false;
   isCourseCompleted = false;
   showCourseCompleteMessage = false;
-  certificateDescription = '';
+  certificateDescription = {};
   parentCourse;
   prevModule;
   nextModule;
