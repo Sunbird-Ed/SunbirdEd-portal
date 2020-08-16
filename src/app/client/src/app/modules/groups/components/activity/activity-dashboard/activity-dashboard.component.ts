@@ -139,7 +139,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
           title: _.get(item, 'userId') === this.userService.userid ?
           `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
-          progress: progress > 100 ? '100' : progress,
+          progress: progress >= 100 ? '100' : progress,
           initial: _.get(item, 'name[0]'),
           indexOfMember: index
         };
