@@ -38,6 +38,10 @@ export class CsLibInitializerService {
               },
               userServiceConfig: {
                 apiPath: '/learner/user/v2',
+              },
+              courseServiceConfig: {
+                apiPath: '/learner/course/v1',
+                certRegistrationApiPath: '/learner/certreg/v2/certs'
               }
           }
       });
