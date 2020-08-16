@@ -59,6 +59,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   totalContents = 0;
   consumedContents = 0;
   layoutConfiguration;
+  isCourseCompletionPopupShown = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -132,7 +133,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+    const paramas = {};
+    if (!this.isCourseCompletionPopupShown) {
+      paramas['showCourseCompleteMessage'] = true;
+    }
+    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
   }
 
   private subscribeToQueryParam() {
@@ -219,6 +224,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           if (_.get(res, 'content.length')) {
             this.isCourseCompleted = _.every(res.content, ['status', 2]);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+            this.isCourseCompletionPopupShown = this.isCourseCompleted;
           }
 
         }, err => console.error(err, 'content read api failed'));

@@ -222,3 +222,4 @@
     </div>
   </div>
 </div>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>

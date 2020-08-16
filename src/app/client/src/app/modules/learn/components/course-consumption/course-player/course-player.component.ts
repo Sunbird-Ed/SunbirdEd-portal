@@ -71,7 +71,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isEnrolledCourseUpdated = false;
   layoutConfiguration;
   certificateDescription = '';
-
+  showCourseCompleteMessage = false;
   showConfirmationPopup = false;
   popupMode: string;
   createdBatchId: string;
@@ -201,6 +201,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
+          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
+          this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
+        }
       });
 
     this.courseBatchService.updateEvent.subscribe((event) => {
@@ -538,5 +542,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const courseLastUpdatedOn = new Date(this.courseHierarchy.lastUpdatedOn).getTime();
         this.isEnrolledCourseUpdated = (enrolledCourse && (enrolledCourseDateTime < courseLastUpdatedOn)) || false;
       });
+  }
+
+  onCourseCompleteClose() {
+    this.showCourseCompleteMessage = false;
   }
 }
