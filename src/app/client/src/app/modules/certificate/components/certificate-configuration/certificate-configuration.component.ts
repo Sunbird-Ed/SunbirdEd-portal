@@ -40,21 +40,25 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certTemplateList: Array<{}>;
   batchDetails: any;
   currentState: any;
-  screenStates: any = {'default': 'default', 'certRules': 'certRules' }
+  screenStates: any = {'default': 'default', 'certRules': 'certRules' };
   selectedTemplate: any;
+  previewTemplate: any;
   configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
   config = {
     select: {
         label: 'Select',
+        name: 'Select',
         show: true
     },
     preview: {
         label: 'Preview',
+        name: 'Preview',
         show: true
     },
     remove: {
         label: 'Remove',
+        name: 'Remove',
         show: false
     }
   };
@@ -148,13 +152,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       allowPermission: new FormControl('', [Validators.required])
     });
     this.userPreference.valueChanges.subscribe(val => {
-      if (this.userPreference.status === 'VALID'
-      && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
-        this.disableAddCertificate = false;
-      } else {
-        this.disableAddCertificate = true;
-      }
+        this.validateForm();
     });
+  }
+
+  validateForm() {
+    if (this.userPreference.status === 'VALID'
+    && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
+      this.disableAddCertificate = false;
+    } else {
+      this.disableAddCertificate = true;
+    }
   }
 
   getCourseDetails(courseId: string) {
@@ -191,7 +199,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     console.log('certTemplateDetails', certTemplateDetails);
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
-    this.currentState = this.screenStates.certRules
+    this.currentState = this.screenStates.certRules;
     this.processCriteria( _.get(templateData, 'criteria'));
   }
 
@@ -211,61 +219,41 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
 
-  goBack() {
-    if(this.currentState === this.screenStates.certRules){
-      // Goback to cert list screen
-      this.currentState = this.screenStates.default;
-    } else {
-      this.navigationHelperService.navigateToLastUrl();
-    }
-  }
-
-  handleCertificateEvent(name: string, template: {}, showPreview?: boolean) {
-    console.log('certTemplateList', this.certTemplateList);
+  handleCertificateEvent(event, template: {}) {
     const show = _.get(this.selectedTemplate, 'name') === _.get(template, 'name');
-    this.selectedTemplate = template;
-    switch (name.toLowerCase()) {
+    switch (_.lowerCase(_.get(event, 'name'))) {
       case 'select' :
+        this.selectedTemplate = template;
         this.config.remove.show = show;
         this.config.select.show = !show;
-        this.orderTemplateBySelection(template);
+        this.validateForm();
         break;
       case 'remove' :
         this.selectedTemplate = {};
         this.config.select.show = show;
         this.config.remove.show = !show;
+        this.validateForm();
         break;
       case 'preview':
-        this.config.remove.show = false;
-        this.config.select.show = true;
-        this.selectedTemplate = template;
-        this.showPreviewModal = showPreview;
+        this.previewTemplate = template;
+        this.showPreviewModal = true;
         break;
     }
   }
 
-  orderTemplateBySelection(template) {
-    this.certTemplateList = _.reject(this.certTemplateList, template);
-    this.certTemplateList.unshift(template);
-  }
-
-  getConfig(config: {show: boolean, label: string}, template) {
+  getConfig(config: {show: boolean, label: string, name: string}, template) {
     const show = _.get(this.selectedTemplate, 'name') === _.get(template, 'name');
     if (_.lowerCase(_.get(config, 'label')) === 'select') {
-        return ({show: !show, label: config.label});
+        return ({show: !show, label: config.label, name: config.name});
     } else {
-      return ({show: show, label: config.label});
+      return ({show: show, label: config.label, name: config.name});
     }
   }
 
   closeModal(event) {
     this.showPreviewModal = false;
-    if (_.get(event, 'name')) {
-      this.selectedTemplate = _.get(event, 'template');
-      this.orderTemplateBySelection(_.get(event, 'template'));
-    } else {
-      this.selectedTemplate = {};
-    }
+    this.selectedTemplate = _.get(event, 'name') ? _.get(event, 'template') : this.selectedTemplate;
+    this.validateForm();
   }
 
   ngOnDestroy() {
