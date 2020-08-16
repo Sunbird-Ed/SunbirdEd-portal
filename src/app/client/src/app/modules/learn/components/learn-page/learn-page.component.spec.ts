@@ -22,6 +22,7 @@ describe('LearnPageComponent', () => {
   let sendEnrolledCourses = true;
   let sendPageApi = true;
   let sendFormApi = true;
+  let activatedRouteStub;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = '/learn';
@@ -74,9 +75,11 @@ describe('LearnPageComponent', () => {
     cacheService = TestBed.get(CacheService);
     coursesService = TestBed.get(CoursesService);
     frameworkService = TestBed.get(FrameworkService);
+    activatedRouteStub = TestBed.get(ActivatedRoute);
     sendEnrolledCourses = true;
     sendPageApi = true;
     sendFormApi = true;
+    activatedRouteStub.snapshot.queryParams = {};
     spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(custOrgDetails));
     spyOn(learnerService, 'get').and.callFake((options) => {
       if (sendEnrolledCourses) {
@@ -211,6 +214,28 @@ it('should redo layout on render', () => {
     component.layoutConfiguration = null;
     component.ngOnInit();
     component.redoLayout();
+  });
+  it('should getFormData', () => {
+    const response = [
+      { 'index': 0, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
+      { 'index': 1, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
+    ];
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(of(response));
+    component['getFormData']();
+    
+  });
+  it('should getFormData', () => {
+    activatedRouteStub.snapshot.queryParams.selectedTab = "course";
+    fixture.detectChanges();
+    const response = [
+      { 'index': 0, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
+      { 'index': 1, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
+    ];
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(of(response));
+    component['getFormData']();
+    
   });
 
 });
