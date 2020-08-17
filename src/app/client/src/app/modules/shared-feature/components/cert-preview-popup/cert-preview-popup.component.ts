@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-cert-preview-popup',
@@ -11,6 +11,11 @@ export class CertPreviewPopupComponent implements OnInit {
   @Output() close = new EventEmitter();
   @ViewChild('modal') modal;
   constructor() { }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+   this.modal.deny();
+  }
 
   ngOnInit() {
   }
