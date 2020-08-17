@@ -14,6 +14,9 @@ import { mockManageData } from './user-org-management.mock.spec';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { mockRes } from './user-org-management.mock.spec';
+import {  TelemetryService } from '@sunbird/telemetry';
+
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -32,7 +35,8 @@ const resourceMockData = {
   frmelmnts: {
     btn: {
       viewdetails: 'View Details',
-      viewless: 'View less'
+      viewless: 'View less',
+      selectCsvFile: 'Select CSV'
     },
     lbl: {
       admindshheader: {
@@ -41,8 +45,33 @@ const resourceMockData = {
         blocks: 'Blocks',
         schools: 'Schools',
         teachers: 'Regd. Teachers'
-      }
-    }
+      },
+      fileUploadSuccessMessage: 'file upload success',
+      uploadFileError: 'uploda file error'
+    },
+
+  }
+};
+const event = {
+  target: {
+    files: [{
+      name: 'test.csv',
+      lastModified: 1593411651030,
+      lastModifiedDate: new Date(),
+      size: 4343,
+      type: 'text/csv'
+    }]
+  }
+};
+const eventText = {
+  target: {
+    files: [{
+      name: 'test.txt',
+      lastModified: 1593411651030,
+      lastModifiedDate: new Date(),
+      size: 4343,
+      type: 'text/csv'
+    }]
   }
 };
 
@@ -191,12 +220,12 @@ describe('UserOrgManagementComponent', () => {
     const manageService = TestBed.get(ManageService);
     const userService = TestBed.get(UserService);
     spyOn(manageService, 'getData').and.returnValue(of({
-      result: {signedUrl: 'signedUrl'}
+      result: { signedUrl: 'signedUrl' }
     }));
     spyOn(window, 'open');
     component.slug = 'sunbird';
     component.userJSON = 'user';
-    userService._userData$.next({err: null, userProfile: {rootOrg: {channel: 'MOCKCHANNEL'}}});
+    userService._userData$.next({ err: null, userProfile: { rootOrg: { channel: 'MOCKCHANNEL' } } });
     component.fetchDeclaredUserDetails();
     expect(component.userDeclaredDetailsUrl).toBe('signedUrl');
   });
@@ -223,4 +252,60 @@ describe('UserOrgManagementComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 
+  it('should call uploadCSV method with error response giving invalid coloumn', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const manageService = TestBed.get(ManageService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    component.fileUpload = event.target.files[0]
+    resourceService.messages = mockRes.resourceBundle.messages;
+    spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorUpload));
+    component.uploadCSV();
+    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
+    expect(toasterService.error).toHaveBeenCalled();
+
+  });
+
+  it('should call uploadCSV method with invalid file', () => {
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    component.fileUpload = eventText.target.files[0];
+    component.uploadCSV();
+    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+  it('should call fileChanged method', () => {
+    component.fileChanged(event);
+    expect(component.fileUpload).toBe(event.target.files[0]);
+  });
+  it('should call interact telemetry while closing upload user validation status modal', () => {
+    spyOn(component.telemetryService, 'interact');
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    const interactData = {
+      context: {
+        env: activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'close-upload-validation-status-modal',
+        type: 'click',
+        pageid: activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    component.closeUserValidationModal();
+    expect(component.showUploadUserModal).toBeFalsy();
+    expect(component.telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+  it('should call uploadUsersCSV method with success response', () => {
+    const manageService = TestBed.get(ManageService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success').and.callThrough();
+    component.fileUpload = event.target.files[0];
+    spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableOf(mockRes.successResponse));
+     component.uploadCSV();
+    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
+    expect(toasterService.success).toHaveBeenCalled();
+    expect(component.showUploadUserModal).toBeFalsy();
+  });
 });
