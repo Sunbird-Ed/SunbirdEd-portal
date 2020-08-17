@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-cert-preview-popup',
@@ -10,7 +11,7 @@ export class CertPreviewPopupComponent implements OnInit {
   @Input() template;
   @Output() close = new EventEmitter();
   @ViewChild('modal') modal;
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
   }
