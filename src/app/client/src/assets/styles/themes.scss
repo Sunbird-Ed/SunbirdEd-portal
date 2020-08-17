@@ -855,6 +855,7 @@ html[layout='joy'] {
     .sb-slider-pills-container .sb-grade-pills-container {
       background: var(--sbt-compt-bg) !important;
     }
+   
     h5 {
       padding: 0 calculateRem(16px) calculateRem(16px) 0 !important;
     }
@@ -910,6 +911,9 @@ html[layout='joy'] {
   .header .title {
     font-weight: normal !important;
     color: var(--gray-800) !important;
+  }
+  .sb-slider-pills-container .sb-pills-container .pill {
+    white-space: normal;
   }
 }
 

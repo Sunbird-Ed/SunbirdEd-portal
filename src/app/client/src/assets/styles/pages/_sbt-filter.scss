@@ -183,7 +183,7 @@
   @include respond-above(md) {
     position: sticky;
     top: calculateRem(188px);
-    margin-top: calculateRem(-128px);
+    margin-top: calculateRem(-96px);
   }
 
   @include respond-below(md) {
