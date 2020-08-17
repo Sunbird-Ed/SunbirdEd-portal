@@ -75,8 +75,8 @@ describe('PublicCourseComponent', () => {
     sendMenuConfig = true;
     activatedRouteStub.snapshot.queryParams = {};
     const responseToForm = [
-      { 'index': 0, 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
-      { 'index': 1, 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
+      { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
+      { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
@@ -178,7 +178,7 @@ describe('PublicCourseComponent', () => {
   it('should getFormData', () => {
     sendFormApi = false;
     component.ngOnInit();
-    const formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     component['getFormData']();
   });
   it('should getFormData', () => {
@@ -186,7 +186,7 @@ describe('PublicCourseComponent', () => {
     fixture.detectChanges();
     sendFormApi = false;
     component.ngOnInit();
-    const formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     component['getFormData']();
   });
 });
