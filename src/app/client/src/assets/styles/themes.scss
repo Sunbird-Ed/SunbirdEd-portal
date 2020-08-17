@@ -174,7 +174,7 @@ html[data-theme='Default'] {
   // --sbt-primary-border:var(--primary-color); // % with percentage value
   // --sbt-gray-border: var(--gray-800); // % with percentage value
   --sbt-body-bg: #E5EDF5;
-  --sbt-header-bg: #FFD954; //var(--primary-300);
+  --sbt-header-bg:var(--primary-300); //var(--primary-300);
   --sbt-menu-bg: var(--sbt-header-bg);
   --sbt-page-header-bg: var(--sbt-menu-bg);
   --sbt-body-bg2: #f0f7ff;
@@ -331,9 +331,10 @@ html[data-theme='Default'][layout='joy'] {
 }
 
 html[layout='joy'] {
+  --primary-theme: #FFD954;
+  --sbt-header-bg:var(--primary-theme);
   --sbt-body-bg: #F2F2EA;
   --sbt-body-bg2: #E9E8D9;
-  --primary-theme: #FFD954;
   --sbt-primary-bg: var(--primary-theme);
   
   .sbt-fluid-header-bg {
