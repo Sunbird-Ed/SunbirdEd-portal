@@ -134,6 +134,36 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     window.open(path, '_blank');
   }
 
+  uploadCSV() {
+    const file: any = this.fileUpload;
+    if (file && file.name.match(/.(csv)$/i)) {
+      // this.manageService.fileUpload(file)
+      this.uploadButton = 'Uploading';
+      const formData = new FormData();
+      formData.set('user', file);
+      formData.set('operation', 'selfdeclared');
+      console.log(formData.get('user'))
+      this.manageService.bulkUserUpload(formData).subscribe(res=>{
+        this.uploadButton = 'Select CSV file for Upload';
+        if(res.result){
+          this.toasterService.success('File uploaded successfully. All record status updates will be processed within 24 hours. Use the Download User Details button to see updated status values');
+        }else{
+          this.toasterService.error(res.params.errmsg);
+        }
+      },error=>{
+        this.uploadButton = 'Select CSV file for Upload';
+        this.toasterService.error('Uploaded file not in expected format.');
+      });
+    } else if (file && !(file.name.match(/.(csv)$/i))) {
+      this.toasterService.error(this.resourceService.messages.stmsg.m0080);
+    }
+  }
+
+  public fileChanged(event) {
+    this.fileUpload =  (event.target as HTMLInputElement).files[0];
+  }
+
+
   fetchDeclaredUserDetails() {
     let channelName = _.get(this.userProfile, 'rootOrg.channel');
     if (channelName) {
