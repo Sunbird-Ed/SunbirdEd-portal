@@ -1,5 +1,5 @@
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -76,11 +76,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService ) { }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    if (this.isTemplateChanged) {
+      this.isTemplateChanged = false;
+    }
+  }
+
   showCertRulesScreen(stateName) {
     this.currentState = stateName;
-  }
-  thirdscreen() {
-    this.showanotherscreen = !this.showanotherscreen;
   }
 
   ngOnInit() {
@@ -200,6 +204,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };
+    if (this.isTemplateChanged) {
+      request['request']['oldTemplateId'] = this.templateIdentifier;
+    }
     console.log('request', request);
     // make the api call to add certificate
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
@@ -221,7 +228,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       if (this.configurationMode === 'add') {
         this.toasterService.error('Failed to add the certificate. Try again later.');
       } else {
-        this.toasterService.success('Failed to edit the certificate. Try again later.');
+        this.toasterService.error('Failed to update the certificate. Try again later.');
       }
     });
   }
