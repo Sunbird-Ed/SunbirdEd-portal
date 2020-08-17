@@ -21,7 +21,7 @@
 <div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-grid" *ngIf="showLoader">
     <div in-view-item [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
-      <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
+      <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
     </div>
   </div>
   <div class="dial-code-section-result">
@@ -61,7 +61,7 @@
             *ngFor="let content of textbookList;let i = index;">
 
             <!-- START - Results page -->
-            <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" *ngIf="content.contentType.toLowerCase() !== 'course' && !isTextbookDetailsPage"
+            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="content.contentType.toLowerCase() !== 'course' && !isTextbookDetailsPage"
               (cardClick)="getEvent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'"
               appTelemetryInteract appContentDirection [data]="content" [type]="'qrcode_result'"
               [moreInfoLabel]="resourceService?.frmelmnts?.lbl?.section"
@@ -73,7 +73,7 @@
             <!-- END - Results page -->
 
             <!-- START - Flattened page -->
-            <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
+            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
               *ngIf="content.contentType.toLowerCase() !== 'course' && !content.metaData.childTextbookUnit && isTextbookDetailsPage"
               (cardClick)="getEvent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'"
               appTelemetryInteract appContentDirection [data]="content"
