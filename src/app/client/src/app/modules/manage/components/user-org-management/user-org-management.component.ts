@@ -80,8 +80,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public fileUpload = null;
   public selectUserValidationFileInteractEdata: IInteractEventEdata;
   public userValidationUploadInteractEdata: IInteractEventEdata;
+  public openUploadModalInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
   public showUploadUserModal = false;
+  public disableBtn = true;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
@@ -144,18 +146,23 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   uploadCSV() {
     const file: any = this.fileUpload;
     if (file && file.name.match(/.(csv)$/i)) {
-      this.uploadButton = this.resourceService.frmelmnts.btn.uploading
+      this.disableBtn = true;
+      this.uploadButton = this.resourceService.frmelmnts.btn.uploading;
       const formData = new FormData();
       formData.set('user', file);
       formData.set('operation', 'selfdeclared');
-      this.manageService.bulkUserUpload(formData).subscribe(res=>{
+      this.manageService.bulkUserUpload(formData).subscribe(res => {
         this.showUploadUserModal = false;
-        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
-          this.toasterService.success(this.resourceService.frmelmnts.lbl.fileUploadSuccessMessage);
-      },error=>{
-        if (_.get(error, 'error.params.errmsg')) {
-          this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
+        this.disableBtn = false;
+        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
+        this.toasterService.success(this.resourceService.frmelmnts.lbl.fileUploadSuccessMessage);
+      }, error => {
+        this.disableBtn = false;
+        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
+        if (_.get(error, 'error.params.err') === 'MANDATORY_PARAMETER_MISSING') {
           this.toasterService.error(_.get(error, 'error.params.errmsg'));
+        } else {
+          this.toasterService.error(this.resourceService.frmelmnts.lbl.uploadFileError);
         }
       });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
@@ -165,8 +172,9 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
 
   public fileChanged(event) {
     this.fileUpload =  (event.target as HTMLInputElement).files[0];
+    this.disableBtn = false;
   }
-  openModel(){
+  openModel() {
     this.showUploadUserModal = !this.showUploadUserModal;
     this.fileUpload = null;
   }
@@ -256,6 +264,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       };
       this.userValidationUploadInteractEdata = {
         id: 'upload-user-validation-status',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.openUploadModalInteractEdata = {
+        id: 'open-upload-validation-status-modal',
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };

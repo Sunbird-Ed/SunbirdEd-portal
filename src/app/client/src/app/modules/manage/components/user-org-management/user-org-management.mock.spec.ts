@@ -24,22 +24,24 @@ export const mockManageData = {
 
 export const mockRes = {
     successResponse: {
-        'id': 'api.user.upload',
-        'ver': 'v1',
-        'ts': '2018-03-23 08:05:31:230+0000',
-        'params': {
-            'resmsgid': null,
-            'msgid': 'cbda6b44-e60f-e0a1-c7b7-0c4ac6ae607f',
-            'err': null,
-            'status': 'success',
-            'errmsg': null
+        "id":"api.bulk.user.upload",
+        "ver":"v2",
+        "ts":"2020-08-17 11:04:03:513+0000",
+        "params":{
+           "resmsgid":null,
+           "msgid":"f0f4031a-a73c-b967-c344-a82b09290c20",
+           "err":null,
+           "status":"success",
+           "errmsg":null
         },
-        'responseCode': 'OK',
-        'result': {
-            'processId': '01246652828212428826',
-            'response': 'SUCCESS'
+        "responseCode":"OK",
+        "result":{
+           "processId":"01308805080585011210",
+           "response":{
+              "isUserExists":true
+           }
         }
-    },
+     },
     errorResponse: {
         'id': 'api.user.upload',
         'ver': 'v1',

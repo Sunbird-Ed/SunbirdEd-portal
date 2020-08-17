@@ -35,7 +35,8 @@ const resourceMockData = {
   frmelmnts: {
     btn: {
       viewdetails: 'View Details',
-      viewless: 'View less'
+      viewless: 'View less',
+      selectCsvFile: 'Select CSV'
     },
     lbl: {
       admindshheader: {
@@ -44,8 +45,11 @@ const resourceMockData = {
         blocks: 'Blocks',
         schools: 'Schools',
         teachers: 'Regd. Teachers'
-      }
-    }
+      },
+      fileUploadSuccessMessage: 'file upload success',
+      uploadFileError: 'uploda file error'
+    },
+
   }
 };
 const event = {
@@ -75,7 +79,6 @@ describe('UserOrgManagementComponent', () => {
 
   let component: UserOrgManagementComponent;
   let fixture: ComponentFixture<UserOrgManagementComponent>;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 7000;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -267,7 +270,7 @@ describe('UserOrgManagementComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
-    component.fileUpload = eventText.target.files[0]
+    component.fileUpload = eventText.target.files[0];
     component.uploadCSV();
     expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
     expect(toasterService.error).toHaveBeenCalled();
@@ -299,8 +302,8 @@ describe('UserOrgManagementComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'success').and.callThrough();
     component.fileUpload = event.target.files[0];
-    spyOn(manageService, 'bulkUserUpload').and.returnValue(of(mockRes.successResponse));
-    component.uploadCSV();
+    spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableOf(mockRes.successResponse));
+     component.uploadCSV();
     expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
     expect(toasterService.success).toHaveBeenCalled();
     expect(component.showUploadUserModal).toBeFalsy();

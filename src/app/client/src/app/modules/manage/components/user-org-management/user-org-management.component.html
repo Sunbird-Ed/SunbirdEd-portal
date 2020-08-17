@@ -1,7 +1,5 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
-
 </app-landing-section>
-
 <div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9':''" >
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows py-16">
@@ -19,17 +17,14 @@
           <img src="./assets/images/icon-info.svg" height="16px">
           <label class="no-data-label font-weight-normal ml-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
         </div>
-        
       </div>
-      <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal">Upload Validation Status</button>
-      <!-- (click) = "showUploadUserModal = !showUploadUserModal" -->
+      <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button>
     </div>
   </div>
-
   <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
-
   <div class="sb-pageSection sb-multi-rows">
     <div class="ui container py-20">
       <div class="sb-pageSection-content">
@@ -72,7 +67,6 @@
       </div>
    </div>
   </div>
-
   <div class="sb-pageSection sb-multi-rows">
       <div class="ui container py-20">
         <div class="sb-pageSection-content">
@@ -123,7 +117,6 @@
          </div>
       </div>
     </div>
-
   <div class="sb-pageSection sb-multi-rows" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
     <div class="ui container py-20">
       <div class="sb-pageSection-header sb-user-list">
@@ -161,14 +154,11 @@
         </div>
       </div>
     </div>
-
   <app-user-upload *ngIf="showModal"></app-user-upload>
 </div>
-
 </div>
 </div>
 <!-- Upload validation status modal -->
-
 <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
 [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="closeUserValidationModal()" #modal>
 <div class="sb-modal-header">
@@ -178,7 +168,6 @@
   <div class="m-0">
     <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}</span>
   </div>
-
   <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
     {{uploadButton}}
     <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
@@ -188,7 +177,6 @@
     <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
     <label>{{fileUpload.name}}</label>
   </div>
-
   <div class="ui info message">
     <div class="header">
       {{resourceService?.frmelmnts?.scttl?.instructions}}
@@ -201,14 +189,13 @@
         <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
         <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0112}}  </li>
     </ol>
-
   </div>
 </div>
 <div class="sb-modal-actions">
   <button (click)="uploadCSV()" class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract 
   [telemetryInteractObject]="telemetryInteractObject" 
   [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'sb-btn-disabled': !fileUpload}"
-  [disabled]="!fileUpload">
+  [disabled]="disableBtn">
     {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
   </button>
 </div>
