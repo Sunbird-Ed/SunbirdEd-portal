@@ -141,6 +141,11 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
           this.svgToDisplay = _.get(value, 'theme.imageName');
+        } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
+          if (value.contentType === 'course') {
+            this.pageTitle = _.get(this.resourceService, value.title);
+            this.svgToDisplay = _.get(value, 'theme.imageName');
+          }
         }
       });
     });
@@ -197,12 +202,13 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private buildOption(): Observable<any> {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;
     });
+    filters = _.omit(filters, 'selectedTab');
     let hashTagId = this.userService.hashTagId;
     if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
       hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');

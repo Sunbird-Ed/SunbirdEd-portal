@@ -2,16 +2,11 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-        <ng-container *ngIf="!layoutConfiguration">
-          <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']"
-            [accordionDefaultOpen]=false [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType">
-          </app-data-driven-filter>
-        </ng-container>
-        <ng-container *ngIf="layoutConfiguration">
-          <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
-            (filterChange)="getFilters($event)">
-          </app-global-search-filter>
-        </ng-container>
+      <ng-container>
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+      </ng-container>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">

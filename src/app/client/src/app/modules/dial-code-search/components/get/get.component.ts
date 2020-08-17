@@ -34,7 +34,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   public router: Router;
   instance: string;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
@@ -81,6 +81,8 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnDestroy() {
     EkTelemetry.config.batchsize = 10;
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

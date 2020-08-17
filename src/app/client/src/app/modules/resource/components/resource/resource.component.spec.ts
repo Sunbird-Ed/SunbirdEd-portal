@@ -2,7 +2,7 @@ import { SlickModule } from 'ngx-slick';
 import {BehaviorSubject, of as observableOf, of} from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
-import {CoreModule, CoursesService, PlayerService, FormService} from '@sunbird/core';
+import {CoreModule, CoursesService, PlayerService, FormService, SearchService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -44,7 +44,7 @@ describe('ResourceComponent', () => {
     languageSelected$: of({})
   };
   class FakeActivatedRoute {
-    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'], selectedTab: 'textbook' });
     params = of({});
     get queryParams() { return this.queryParamsMock.asObservable(); }
     snapshot = {
@@ -60,7 +60,7 @@ describe('ResourceComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ResourceComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [OrgDetailsService, SearchService, { provide: ResourceService, useValue: resourceBundle },
         FormService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
@@ -158,11 +158,36 @@ describe('ResourceComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
   it('should redo layout on render', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
     component.layoutConfiguration = {};
     component.ngOnInit();
     component.redoLayout();
     component.layoutConfiguration = null;
     component.ngOnInit();
     component.redoLayout();
+  });
+  it('should call the getFilter Method and set the filter', () => {
+    const data = {
+      filters: {},
+      status: 'NotFetching'
+    };
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.searchSuccessData));
+    component.formData = Response.formData;
+    spyOn(component, 'getFilters').and.callThrough();
+    component.getFilters(data);
+    component.getPageData('textbook');
+    expect(component.getFilters).toHaveBeenCalledWith(data);
+  });
+  it('should call the getPageData Method', () => {
+    const data = {
+      filters: {},
+      status: 'FETCHING'
+    };
+    component.formData = Response.formData;
+    component.getFilters(data);
+    spyOn(component, 'getPageData').and.callThrough();
+    component.getPageData('textbook');
+    expect(component.getPageData).toHaveBeenCalledWith('textbook');
   });
 });

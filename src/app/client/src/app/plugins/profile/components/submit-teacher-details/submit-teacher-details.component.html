@@ -34,14 +34,15 @@
               </div>
             </div>
           </div>
-          <div class="twelve wide column p-0 mt-8">
-            <p>{{resourceService?.frmelmnts?.lbl?.name}} : <span>{{ userProfile.firstName }} {{ userProfile.lastName ? userProfile.lastName : '' }}</span></p> 
-            <p>{{resourceService?.frmelmnts?.lbl?.state}} : <span>{{ selectedState ? selectedState.name : 'Enter location from Profile page' }}</span></p> 
-            <p>{{resourceService?.frmelmnts?.lbl?.district}} : <span>{{ selectedDistrict ? selectedDistrict.name : 'Enter location from Profile page' }}</span></p>
-          </div>
         </div>
-​
         <div class="ui stackable grid"  *ngFor="let field of formData">
+          <div class="twelve wide column mb-10 mx-16" *ngIf="field.inputType==='label' && field.visible===true">
+            <p>{{field.label}} : 
+              <span *ngIf="field.code === 'user-name'">{{ userProfile.firstName }} {{ userProfile.lastName ? userProfile.lastName : '' }}</span>
+              <span *ngIf="field.code === 'state'">{{ selectedState ? selectedState : 'Enter location from Profile page' }}</span>
+              <span *ngIf="field.code === 'district'">{{ selectedDistrict ? selectedDistrict : 'Enter location from Profile page' }}</span>
+            </p> 
+          </div>
 
           <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='select' && field.visible===true">
             <div class="fields-selection p-0">

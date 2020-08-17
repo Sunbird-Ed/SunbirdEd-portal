@@ -303,6 +303,7 @@ app-workspace {
 
 /* new theme */
 .sbt-fluid-header-bg {
+  display: none;
   background: none;
 
   @include respond-above(sm) {
@@ -418,7 +419,7 @@ app-workspace {
   top: 38%;
   width: calculateRem(332px);
   opacity: 0.25;
-  z-index: -1;
+  z-index: 1;
 
   html[dir="rtl"] & {
     right: calculateRem(-106px);

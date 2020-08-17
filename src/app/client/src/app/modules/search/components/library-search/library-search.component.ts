@@ -49,6 +49,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     FIRST_PANEL_LAYOUT;
     SECOND_PANEL_LAYOUT;
     public totalCount;
+    public searchAll;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -92,6 +93,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.fetchContentOnParamChange();
                 this.setNoResultMessage();
             });
+            this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -142,7 +144,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+      let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
@@ -150,6 +152,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             filters.channel = this.hashTagId;
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {
             filters,
             fields: _.get(this.allTabData, 'search.fields'),
@@ -157,6 +160,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             pageNumber: this.paginationDetails.currentPage,
             query: this.queryParams.key,
             mode: 'soft',
+            softConstraints: softConstraints,
             facets: this.globalSearchFacets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };

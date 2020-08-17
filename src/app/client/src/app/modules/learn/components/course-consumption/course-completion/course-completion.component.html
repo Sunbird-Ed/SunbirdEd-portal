@@ -9,13 +9,13 @@
         <p>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="certificateDescription === ''; else withCertificate">
+    <div class="course-complete-para mt-32" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
       <span>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</span>
     </div>
   </div>
 
-  <ng-template #withCertificate>
-    <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription}}</p>
+  <ng-template  [ngIf]="certificateDescription && certificateDescription?.description !== ''">
+    <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
     <p class="fsmall mb-0">{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
   </ng-template>
 </sui-modal>

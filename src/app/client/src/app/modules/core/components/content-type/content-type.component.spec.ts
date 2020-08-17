@@ -71,12 +71,11 @@ describe('ContentTypeComponent', () => {
     const router = TestBed.get(Router);
     userService._authenticated = true;
     component.showContentType({
-      loggedInUserRoute: {route: '/resources', queryParam: 'textbooks'},
-      contentType: 'textbook'
+      loggedInUserRoute: {route: '/course', queryParam: 'course'},
+      contentType: 'course'
     });
-    expect(component.selectedContentType).toBe('textbook');
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/resources'], {queryParams: {selectedTab: 'textbooks'}});
+      ['/course'], {queryParams: {selectedTab: 'course'}});
   });
 
   it('should inint the component', () => {
@@ -92,12 +91,11 @@ describe('ContentTypeComponent', () => {
     const router = TestBed.get(Router);
     userService._authenticated = false;
     component.showContentType({
-      anonumousUserRoute: {route: '/explore', queryParam: 'textbooks'},
-      contentType: 'tv'
+      anonumousUserRoute: {route: '/explore-course', queryParam: 'course'},
+      contentType: 'course'
     });
-    expect(component.selectedContentType).toBe('tv');
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/explore'], {queryParams: {selectedTab: 'textbooks'}});
+      ['/explore-course'], {queryParams: {selectedTab: 'course'}});
   });
 
   it('should get Icon', () => {
@@ -107,6 +105,87 @@ describe('ContentTypeComponent', () => {
       }
     });
     expect(icon).toEqual('textbook');
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should set selected content type for profile page', () => {
+    component.setSelectedContentType('/profile', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type for explore-groups', () => {
+    component.setSelectedContentType('/explore-groups', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type as url has selectedTab as query', () => {
+    component.setSelectedContentType('/profile', {selectedTab: 'textbook'}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for play url', () => {
+    component.setSelectedContentType('/play', {}, {});
+    expect(component.selectedContentType).toBe(null);
+  });
+
+  it('should set selected content type for play when content type is textbook', () => {
+    component.setSelectedContentType('/play', {contentType: 'TextBook'}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for explore-course', () => {
+    component.setSelectedContentType('/explore-course', {}, {});
+    expect(component.selectedContentType).toBe('course');
+  });
+
+  it('should set selected content type for learn', () => {
+    component.setSelectedContentType('/learn', {}, {});
+    expect(component.selectedContentType).toBe('course');
+  });
+
+  it('should set selected content type for explore page', () => {
+    component.setSelectedContentType('/explore', {}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for resources page', () => {
+    component.setSelectedContentType('/resources', {}, {});
+    expect(component.selectedContentType).toBe('textbook');
+  });
+
+  it('should set selected content type for resources page when selected tab is tv', () => {
+    component.setSelectedContentType('/resources', {selectedTab: 'tv'}, {});
+    expect(component.selectedContentType).toBe('tv');
+  });
+  it('should fetch title for non logged in user', () => {
+    const userService = TestBed.get(UserService);
+    const router = TestBed.get(Router);
+    userService._authenticated = false;
+    component.showContentType({
+      anonumousUserRoute: {route: '/explore', queryParam: 'textbook'},
+      contentType: 'textbook'
+    });
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/explore'], {queryParams: {selectedTab: 'textbook'}});
+  });
+  it('should fetch title for logged in user', () => {
+    const userService = TestBed.get(UserService);
+    const router = TestBed.get(Router);
+    userService._authenticated = true;
+    component.showContentType({
+      loggedInUserRoute: {route: '/resource', queryParam: 'textbook'},
+      contentType: 'textbook'
+    });
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/resource'], {queryParams: {selectedTab: 'textbook'}});
   });
 
 });

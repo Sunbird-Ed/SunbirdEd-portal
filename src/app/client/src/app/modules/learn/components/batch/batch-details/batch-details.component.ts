@@ -47,6 +47,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showJoinModal = false;
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
+  allowBatchCreation: boolean;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -76,6 +77,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('batchId', this.batchId);
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
@@ -97,6 +99,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.getAllBatchDetails();
       });
+    this.showCreateBatch();
   }
   getAllBatchDetails() {
     this.showBatchList = false;
@@ -245,6 +248,17 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
   }
+
+  navigateToConfigureCertificate(mode: string, batchId) {
+    this.router.navigate([`/certs/configure/certificate`], {
+      queryParams: {
+        type: mode,
+        courseId: this.courseId,
+        batchId: batchId
+      }
+    });
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -259,7 +273,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const isCourseCreator = (_.get(this.courseHierarchy, 'createdBy') === this.userService.userid) ? true : false;
     const isPermissionAvailable = (this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) &&
     this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])) ? true : false;
-    return (isCourseCreator && isPermissionAvailable);
+    this.allowBatchCreation =  (isCourseCreator && isPermissionAvailable);
   }
 
   logTelemetry(id, content?: {}, batchId?) {

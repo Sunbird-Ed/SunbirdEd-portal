@@ -300,4 +300,36 @@ describe('MainHeaderComponent', () => {
     expect(component.isFullScreenView).toBe(true);
   });
 
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = null;
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
+  });
+
+  it('should switch layout and generate telemetry for joy', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = {options: 'option1'};
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventJoy);
+  });
 });

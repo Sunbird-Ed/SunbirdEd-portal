@@ -1,5 +1,7 @@
 @import "variables";
 @import "mixins/mixins";
+@import "../main-header/main-header.component.scss";
+
 :host ::ng-deep {
   .sb-linkmenu {
     .item {
@@ -21,7 +23,7 @@
 
 .sb-linkmenu {
   overflow: auto;
-  padding: 8px 0;
+  padding: 0 0 calculateRem(8px) 0;
   .item {
     background: var(--white);
     padding: 8px 16px;
