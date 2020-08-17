@@ -190,7 +190,7 @@
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
           <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Update certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="updateCertificate()">Update certificate</button>
         </div>
       </div>
     </div>
@@ -200,14 +200,14 @@
 <app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
-<sui-modal *ngIf="showTemplateDetectModal"
+<sui-modal *ngIf="isTemplateChanged"
 [mustScroll]="true"
 [isClosable]="true"
 [transitionDuration]="0"
 [size]="'normal'"
 class="sb-modal sb-batch-update-modal"
 appBodyScroll
-(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #modal>
+(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #templateChangeModal>
   <div class="sb-modal-header">
     Template Change detected!
   </div>
@@ -218,18 +218,17 @@ appBodyScroll
       </div>
       <div class="nine wide column p-0">
         <p class="fnormal">
-          All the participants who already have recieved
-          certifices with previous template will be be re-issued
-          certificates this new template and old certificates will be revoked automatically</p>
+          The change in template will not reflect for users who have already received their certificates.
+          Users with the older template have to contact the State admin for any changes required</p>
         <p class="fnormal mb-0">Would you really want to change the template?</p>
       </div>
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="attachCertificateToBatch()"class="sb-btn sb-btn-normal sb-btn-primary">
       Yes
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
       No
     </button>
   </div>

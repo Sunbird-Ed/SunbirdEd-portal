@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, NavigationHelperService, UtilService, ResourceService } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 
 describe('CertificateConfigurationComponent', () => {
@@ -27,7 +27,8 @@ describe('CertificateConfigurationComponent', () => {
         UserService,
         PlayerService,
         CertRegService,
-        BrowserCacheTtlService
+        BrowserCacheTtlService,
+        ToasterService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
