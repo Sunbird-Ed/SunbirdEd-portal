@@ -360,7 +360,7 @@ app-workspace {
   }
 
   h1 {
-    color: var(--white);
+    color: var(--primary-color);
     font-size: calculateRem(24px);
     font-weight: bold;
 
@@ -428,7 +428,7 @@ app-workspace {
   }
 
   .st0 {
-    fill: var(--primary-color);
+    fill: var(--primary-theme);
   }
 
   // &--right {
