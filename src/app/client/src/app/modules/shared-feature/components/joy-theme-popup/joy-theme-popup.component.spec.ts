@@ -1,9 +1,10 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui';
-
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {JoyThemePopupComponent} from './joy-theme-popup.component';
 import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService, InterpolatePipe} from '@sunbird/shared';
 import {configureTestSuite} from '@sunbird/test-util';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('JoyThemePopupComponent', () => {
   let component: JoyThemePopupComponent;
@@ -19,7 +20,7 @@ describe('JoyThemePopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule],
+      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [JoyThemePopupComponent, InterpolatePipe],
       providers: [LayoutService, {provide: ResourceService, useValue: resourceBundle}, ConfigService]
     })
@@ -49,11 +50,11 @@ describe('JoyThemePopupComponent', () => {
   it('should not switch to old layout as already in old ui', () => {
     component.isShown = true;
     const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'getLayoutConfig').and.returnValue(null);
+    spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'layout'});
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
-    component.switchToOldLayout();
+    component.switchToNewLayout();
     expect(component.isShown).toBe(false);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
@@ -63,14 +64,26 @@ describe('JoyThemePopupComponent', () => {
   it('should switch to old layout as already', () => {
     component.isShown = true;
     const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'layout'});
+    spyOn(layoutService, 'getLayoutConfig').and.returnValue(null);
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
-    component.switchToOldLayout();
+    component.switchToNewLayout();
     expect(component.isShown).toBe(false);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
     expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();
+  });
+
+  it('should set telemetry data on init', () => {
+    component.ngOnInit();
+    expect(component.joyThemeIntractEdata).toEqual({
+      id: 'joy-theme', type: 'click', pageid: 'joy-themePopup'
+    });
+    expect(component.oldThemeIntractEdata).toEqual({
+      id: 'classic-theme',
+      type: 'click',
+      pageid: 'joy-themePopup'
+    });
   });
 });

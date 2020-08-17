@@ -1,5 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {LayoutService, ResourceService} from '@sunbird/shared';
+import {IInteractEventEdata} from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-joy-theme-popup',
@@ -11,6 +12,8 @@ export class JoyThemePopupComponent implements OnInit {
   isShown = true;
   @Output() closeJoyThemePopup = new EventEmitter<any>();
   instance: string;
+  joyThemeIntractEdata: IInteractEventEdata;
+  oldThemeIntractEdata: IInteractEventEdata;
 
 
   constructor(public layoutService: LayoutService, public resourceService: ResourceService) {
@@ -19,6 +22,7 @@ export class JoyThemePopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setInteractEventData();
   }
 
   closePopup() {
@@ -27,9 +31,23 @@ export class JoyThemePopupComponent implements OnInit {
     this.closeJoyThemePopup.emit();
   }
 
-  switchToOldLayout() {
+  setInteractEventData() {
+    this.joyThemeIntractEdata = {
+      id: 'joy-theme',
+      type: 'click',
+      pageid: 'joy-themePopup'
+    };
+    this.oldThemeIntractEdata = {
+      id: 'classic-theme',
+      type: 'click',
+      pageid: 'joy-themePopup'
+    };
+  }
+
+
+  switchToNewLayout() {
     const layoutConfig = this.layoutService.getLayoutConfig();
-    if (layoutConfig) {
+    if (!layoutConfig) {
       this.layoutService.initiateSwitchLayout();
     }
     this.closePopup();
