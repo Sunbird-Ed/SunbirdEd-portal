@@ -240,7 +240,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.templateIdentifier =  _.get(templateData, 'identifier');
-    this.previewUrl = null;//_.get(templateData, 'previewUrl');
+    this.previewUrl = _.get(templateData, 'previewUrl');
     this.setCertEditable();
     this.processCriteria( _.get(templateData, 'criteria'));
   }
