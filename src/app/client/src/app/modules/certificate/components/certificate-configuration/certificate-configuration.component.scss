@@ -27,7 +27,6 @@
     }
   
     .template-image {
-      border: calculateRem(1px) solid var(--primary-400);
       border-radius: calculateRem(4px);
       width: 100%;
   
@@ -170,7 +169,6 @@
       }
 
       .template-image {
-        border: calculateRem(1px) solid var(--primary-400);
         border-radius: calculateRem(4px);
         width: 100%;
     
