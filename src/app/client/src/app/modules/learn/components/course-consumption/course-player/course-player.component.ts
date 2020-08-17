@@ -70,7 +70,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isModuleExpanded = false;
   isEnrolledCourseUpdated = false;
   layoutConfiguration;
-  certificateDescription = '';
+  certificateDescription = {};
   showCourseCompleteMessage = false;
   showConfirmationPopup = false;
   popupMode: string;
