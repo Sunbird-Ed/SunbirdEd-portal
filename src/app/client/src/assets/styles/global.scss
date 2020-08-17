@@ -349,7 +349,7 @@ app-workspace {
   align-items: center;
   border-radius: 0 0 0 calculateRem(40px);
   height: calculateRem(112px);
-
+  padding-bottom:calculateRem(16px);
   @include respond-above(sm) {
 
     align-items: flex-end;
