@@ -328,13 +328,13 @@ html[data-theme='Default'][layout='joy'] {
   --primary-300: #74B9EB;
   --primary-200: #AFCCE1;
   --primary-800: hsl(var(--primary-hs), 40%);
-  --primary-theme: #FFD954;
 }
 
 html[layout='joy'] {
-  --sbt-body-bg: #E4E8EE;
-  --sbt-body-bg2: #F2F4F6;
-  --sbt-primary-bg: #0091FF;
+  --sbt-body-bg: #F2F2EA;
+  --sbt-body-bg2: #E9E8D9;
+  --primary-theme: #FFD954;
+  --sbt-primary-bg: var(--primary-theme);
   
   .sbt-fluid-header-bg {
     display: block;

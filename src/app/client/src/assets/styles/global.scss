@@ -363,7 +363,7 @@ app-workspace {
     color: var(--primary-color);
     font-size: calculateRem(24px);
     font-weight: bold;
-
+    position: relative;
     @include respond-above(sm) {
       font-size: calculateRem(58px);
     }
