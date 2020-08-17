@@ -254,7 +254,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (_.get(value, 'identifier')) {
 
          this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
-           console.log(resp);
            this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
          });
         }
