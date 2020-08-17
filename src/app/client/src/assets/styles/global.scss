@@ -257,7 +257,7 @@ app-workspace {
 }
 
 .toc-box-shadow {
-  box-shadow: 0 0 0.625rem 0 rgba(var(--rc-rgba-black), 0.25) !important;
+  box-shadow: 0 4px 8px 0px rgba(var(--rc-rgba-black), 0.25) !important;
 }
 
 // Footer fix 
@@ -360,10 +360,10 @@ app-workspace {
   }
 
   h1 {
-    color: var(--white);
+    color: var(--primary-color);
     font-size: calculateRem(24px);
     font-weight: bold;
-
+    position: relative;
     @include respond-above(sm) {
       font-size: calculateRem(58px);
     }
@@ -428,7 +428,7 @@ app-workspace {
   }
 
   .st0 {
-    fill: var(--primary-color);
+    fill: var(--primary-theme);
   }
 
   // &--right {

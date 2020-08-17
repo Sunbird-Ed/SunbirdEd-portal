@@ -6,7 +6,7 @@
   .sb-linkmenu {
     .item {
       html[dir="rtl"] & {
-      margin-left: 24px;
+      margin-left: calculateRem(24px);
       margin-right: inherit;
       }
     }
@@ -26,13 +26,13 @@
   padding: 0 0 calculateRem(8px) 0;
   .item {
     background: var(--white);
-    padding: 8px 16px;
-    border-radius: 6px;
-    box-shadow: 5px 5px 2px 0 rgba(12, 12, 12, 0.1);
+    padding: calculateRem(8px) calculateRem(16px);
+    border-radius: calculateRem(6px);
+    box-shadow: var(--sbt-box-shadow-6px);
     font-size: 12px;
     font-weight: bold;
-    margin-right: 24px;
-    height: 48px;
+    margin-right: calculateRem(24px);
+    height: calculateRem(48px);
     transition: all ease .3s;
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@
     white-space: nowrap;
     color: var(--gray-800);
     @include respond-above(md){
-      min-width: 180px;
+      min-width: calculateRem(180px);
     }
     &.active,
     &:hover {

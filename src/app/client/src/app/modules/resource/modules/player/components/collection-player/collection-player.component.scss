@@ -48,8 +48,8 @@
 
   .main-side-toc-content {
     overflow-y: auto;
-    max-height: calc(100vh - 265px);
-    height: auto;
+    // max-height: calc(100vh - 265px);
+    // height: auto;
 
     @include respond-below(sm) {
       height: auto;
