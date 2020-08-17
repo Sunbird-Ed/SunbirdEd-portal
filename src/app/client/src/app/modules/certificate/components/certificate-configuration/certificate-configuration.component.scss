@@ -120,6 +120,10 @@
               width: 100%;
             }
 
+            .no-cert {
+              min-height: calculateRem(300px);
+            }
+
             .certificate-checkbox {
               position: absolute;
               top: calculateRem(-20px);

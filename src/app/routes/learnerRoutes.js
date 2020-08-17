@@ -95,7 +95,7 @@ module.exports = function (app) {
   app.get('/learner/isUserExists/user/v1/get/phone/*', proxyObj());
 
   app.get('/learner/isUserExists/user/v1/get/email/*', proxyObj());
-
+  app.post('/learner/user/v2/bulk/upload', proxyObj());
   // Route to handle user registration
   app.all('/learner/user/v1/signup',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
