@@ -1,10 +1,10 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal" appBodyScroll (dismissed)="closeModal()" #modal>
+  class="sb-modal sb-cert-preview-modal" appBodyScroll (dismissed)="closeModal()" #modal>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
   </div>
   <div class="sb-modal-content">
-    <div><img [src]="template?.value" class="w-100"></div>
+    <div class="cert-preview-img"><img [src]="template?.value"></div>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal('select')">

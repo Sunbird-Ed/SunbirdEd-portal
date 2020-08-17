@@ -2,7 +2,7 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { CertRegService, UserService } from '@sunbird/core';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IUserCertificate } from '../../interfaces';
@@ -33,6 +33,13 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private userService: UserService,
     ) { }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    if (this.showModal) {
+      this.showModal = false;
+    }
+  }
 
   ngOnInit() {
     this.channelName = _.upperCase(this.resourceService.instance);
