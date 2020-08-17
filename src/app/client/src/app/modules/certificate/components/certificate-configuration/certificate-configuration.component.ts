@@ -13,6 +13,12 @@ export enum ProcessingModes {
   PROCESS_CRITERIA = 'processCriteria'
 }
 
+export interface IConfigLabels {
+  label: string;
+  name: string;
+  show: boolean;
+}
+
 @Component({
   selector: 'app-certificate-configuration',
   templateUrl: './certificate-configuration.component.html',
@@ -49,24 +55,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   templateIdentifier: string;
   isTemplateChanged = false;
   certEditable = true;
+  config: {select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels};
 
-  config = {
-    select: {
-        label: 'Select',
-        name: 'Select',
-        show: true
-    },
-    preview: {
-        label: 'Preview',
-        name: 'Preview',
-        show: true
-    },
-    remove: {
-        label: 'Remove',
-        name: 'Remove',
-        show: false
-    }
-  };
 
   constructor(
     private certificateService: CertificateService,
@@ -90,6 +80,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initializeLabels();
     this.currentState = this.screenStates.default;
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
@@ -107,6 +98,26 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }, (error) => {
       this.showLoader = false;
     });
+  }
+
+  initializeLabels() {
+    this.config = {
+      select: {
+        label: this.resourceService.frmelmnts.lbl.Select,
+        name: 'Select',
+        show: true
+    },
+    preview: {
+        label: this.resourceService.frmelmnts.cert.lbl.preview,
+        name: 'Preview',
+        show: true
+    },
+    remove: {
+        label: this.resourceService.frmelmnts.cert.lbl.unselect,
+        name: 'Remove',
+        show: false
+    }
+  };
   }
 
   getCertConfigFields() {
@@ -213,9 +224,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     // make the api call to add certificate
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       if (this.configurationMode === 'add') {
-        this.toasterService.success('Certificate addedd successfully');
+        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certAddSuccess);
       } else {
-        this.toasterService.success('Certificate updated successfully.');
+        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certUpdateSuccess);
       }
       this.closeTemplateDetectModal();
       this.certificateService.getBatchDetails(_.get(this.queryParams, 'batchId')).subscribe(batchDetails => {
@@ -228,9 +239,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       // show an error toast message
       console.log('add cert error', error);
       if (this.configurationMode === 'add') {
-        this.toasterService.error('Failed to add the certificate. Try again later.');
+        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
       } else {
-        this.toasterService.error('Failed to update the certificate. Try again later.');
+        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certEditError);
       }
     });
   }

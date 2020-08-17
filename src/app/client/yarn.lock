@@ -9236,10 +9236,10 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-svg2pdf@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/sb-svg2pdf/-/sb-svg2pdf-0.0.3.tgz#a36f02e03a6a6c87ab04b2e21ae98f7c297bdeb7"
-  integrity sha512-AdOkjyRXrKmQex4kzC7VTkmkT472bXGWIh5lK9YKeYZ8/DBNlz/2VJmY6jT1p9Z0hk0ScUJJOuN6XKGLJoMidA==
+sb-svg2pdf@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/sb-svg2pdf/-/sb-svg2pdf-0.0.5.tgz#2453bf7996c1cc250346327f24d97b3d41dad3b9"
+  integrity sha512-cXZZaVOVytjhWA4LNEiVYmT81SBRDlksTyVNqXO/vflEztgapm0La7nG2fgkZOhcp4Hk/h7VOkVqSCsKP6MxEg==
   dependencies:
     tslib "^1.9.0"
 
