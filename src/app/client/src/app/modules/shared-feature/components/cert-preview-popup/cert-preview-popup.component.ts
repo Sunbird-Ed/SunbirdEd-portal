@@ -20,6 +20,11 @@ export class CertPreviewPopupComponent implements OnInit {
 
   constructor(public resourceService: ResourceService) { }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+   this.modal.deny();
+  }
+
   ngOnInit() {
   }
 
