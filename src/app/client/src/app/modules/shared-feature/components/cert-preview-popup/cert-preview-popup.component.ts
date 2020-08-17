@@ -11,14 +11,13 @@ export class CertPreviewPopupComponent implements OnInit {
   @Input() template;
   @Output() close = new EventEmitter();
   @ViewChild('modal') modal;
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event) {
-    if (this.modal) {
-      this.modal.deny();
-    }
-  }
 
   constructor(public resourceService: ResourceService) { }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+   this.modal.deny();
+  }
 
   ngOnInit() {
   }

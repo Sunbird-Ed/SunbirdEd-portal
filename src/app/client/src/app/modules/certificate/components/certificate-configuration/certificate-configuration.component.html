@@ -86,22 +86,20 @@
           </div>
         </div>
         <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
-            <div class="content">
-              <div class="fnormal pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>
-              <div class="certificate-edit-area">
-                <div class="certificate-edit-sbcard">
-                  <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
-                    <div class="certificate-frame">
-                      <div><img src="{{previewUrl}}"></div>
-                      <div class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100">
-                        Edit action for this Certificate is not allowed. 
-                        Contact support team for any updates</div>
+          <div class="content">
+            <div class="fnormal pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>
+            <div class="certificate-edit-area">
+              <div class="certificate-edit-sbcard">
+                <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
+                  <div class="certificate-frame">        
+                      <div *ngIf="certEditable"><img src="{{previewUrl}}"></div>
+                      <div *ngIf="!certEditable" class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100 no-cert">
+                        <h3>Edit action for this Certificate is not allowed. 
+                          Contact support team for any updates</h3></div>
                     </div>
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
-                        <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                          class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button> -->
-                        <button type="button" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+                        <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
                       </div>
                     </div>
                   </div>
@@ -194,7 +192,7 @@
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
           <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
         </div>
       </div>
     </div>
@@ -213,7 +211,7 @@
 [size]="'normal'"
 class="sb-modal sb-batch-update-modal"
 appBodyScroll
-(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #templateChangeModal>
+(dismissed)="closeTemplateDetectModal()" #templateChangeModal>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}
   </div>

@@ -54,6 +54,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   previewUrl: string;
   templateIdentifier: string;
   isTemplateChanged = false;
+  certEditable = true;
   config: {select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels};
 
 
@@ -251,8 +252,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.templateIdentifier =  _.get(templateData, 'identifier');
     this.previewUrl = _.get(templateData, 'previewUrl');
+    this.setCertEditable();
     this.processCriteria( _.get(templateData, 'criteria'));
   }
+
+  setCertEditable() {
+    this.certEditable = this.previewUrl ? true : false;
+  }
+
   editCertificate() {
     this.currentState = this.screenStates.certRules;
     this.configurationMode = 'edit';
