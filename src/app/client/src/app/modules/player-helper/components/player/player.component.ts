@@ -153,10 +153,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
-          this.playerLoaded = true;
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+          if (!this.playerLoaded) {
+            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+            this.playerLoaded = true;
+          }
         } catch (err) {
           console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();

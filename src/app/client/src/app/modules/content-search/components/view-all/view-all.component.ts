@@ -264,7 +264,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   private manipulateQueryParam(results) {
     this.filters = {};
     const queryFilters = _.omit(results, ['key', 'softConstraintsFilter', 'appliedFilters',
-      'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic']);
+      'sort_by', 'sortType', 'defaultSortBy', 'exists', 'dynamic', 'selectedTab']);
     if (!_.isEmpty(queryFilters)) {
       _.forOwn(queryFilters, (queryValue, queryKey) => {
         this.filters[queryKey] = queryValue;

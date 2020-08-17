@@ -332,11 +332,16 @@ html[layout='joy'] {
   --sbt-body-bg: #E4E8EE;
   --sbt-body-bg2: #F2F4F6;
   --sbt-primary-bg: #0091FF;
-
+  
+  .sbt-fluid-header-bg {
+    display: block;
+  }
   .sbt-center-container {
     width: calc(100% - 4%);
     margin:0 auto;
+    padding:0 2%;
   }
+
   .sbt-bg-container {
 
   }
@@ -348,6 +353,9 @@ html[layout='joy'] {
     border-radius: var(--sbt-bradius-24);
     height: calculateRem(40px);
     padding: calculateRem(8px) calculateRem(24px);
+  }
+  .sb-btn-sm {
+    border-radius: var(--sbt-bradius-24);
   }
   .sb-btn-xs {
     border-radius: var(--sbt-bradius-24);
@@ -772,7 +780,7 @@ html[layout='joy'] {
   }
 
   .sb-toc-credits .sb-bg-color-gray-0 .sbaccordion__panel-header {
-    height: calculateRem(48px) !important;
+    height: calculateRem(56px) !important;
   }
 
   sb-accordion-header[aria-expanded="false"] {
@@ -870,6 +878,8 @@ html[layout='joy'] {
   .cc-player__border-fix {
     border-top-left-radius: calculateRem(24px);
     border-top-right-radius: calculateRem(24px);
+    padding-top:calculateRem(16px);
+    margin-top:calculateRem(16px);
   }
 
   .sb-pageSection-content .slick-slider .slick-track .slick-slide .sb--card {
@@ -880,6 +890,9 @@ html[layout='joy'] {
     position: inherit !important;
   }
 
+  .sbt-page-gap{
+    padding-top: calculateRem(0px);
+  }
   .sbt-dropdown-profile-area, app-language-dropdown, .sbt-dropdown-language {
     @include respond-below(sm) {
       width: 100%;

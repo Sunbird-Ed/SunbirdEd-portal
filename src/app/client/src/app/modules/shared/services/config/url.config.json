@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "organisations,roles,locations,declarations,externalIds"
+      "fields": "organisations,roles,locations,declarations"
     },
     "LibrarySearchField": [
       "name",
@@ -103,7 +103,8 @@
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
       "FETCH_USER": "v1/user/search",
-      "REISSUE_CERTIFICATE": "v1/cert/reissue"
+      "REISSUE_CERTIFICATE": "v1/cert/reissue",
+      "ADD_CERTIFICATE" : "v1/add/template"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
@@ -302,6 +303,9 @@
     },
     "RECAPTCHA": {
       "VALIDATE": "/validate/recaptcha"
+    },
+    "TENANT_PREFERENCE" : {
+      "READ": "org/v2/preferences/read"
     }
   }
 }

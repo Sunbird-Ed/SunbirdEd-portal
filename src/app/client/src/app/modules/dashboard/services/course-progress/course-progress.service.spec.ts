@@ -48,7 +48,10 @@ describe('CourseProgressService', () => {
       data: {
         'limit': 200,
         'offset': 0
-      }
+      },
+      sortBy: 'name',
+      sortOrder: '1',
+      username: 'test'
     };
     courseProgressService.getDashboardData(params).subscribe(
       apiResponse => {
@@ -94,5 +97,13 @@ describe('CourseProgressService', () => {
         expect(telemetryService.log).toHaveBeenCalled();
       }
     );
+  });
+  it('should call parseDasboardResponse method', () => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    const data = {
+        series:[{}]
+      };
+    const tableData = courseProgressService.parseDasboardResponse(data)
+    expect(tableData).toEqual([]);
   });
 });

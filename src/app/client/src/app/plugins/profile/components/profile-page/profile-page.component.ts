@@ -1,5 +1,5 @@
 import {ProfileService} from '../../services';
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
 import {
   CertRegService,
   CoursesService,
@@ -23,10 +23,13 @@ import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, Teleme
 import {ActivatedRoute, Router} from '@angular/router';
 import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss']
+  styleUrls: ['./profile-page.component.scss'],
+  providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('profileModal') profileModal;
@@ -79,12 +82,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   selfDeclaredInfo = [];
   selfDeclaredErrorTypes = [];
 
-  constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
+  constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService, 
+  public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
-    private telemetryService: TelemetryService, public layoutService: LayoutService) {
+    private telemetryService: TelemetryService, public layoutService: LayoutService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService) {
   }
 
   ngOnInit() {
@@ -229,21 +234,30 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
-        const request = {
-          request: {
-            pdfUrl: _.get(value, 'url')
-          }
-        };
-        this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
-          const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
-          if (signedPdfUrl) {
-            window.open(signedPdfUrl, '_blank');
-          } else {
+        if (_.get(value, 'url')) {
+
+          const request = {
+            request: {
+              pdfUrl: _.get(value, 'url')
+            }
+          };
+          this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
+            const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
+            if (signedPdfUrl) {
+              window.open(signedPdfUrl, '_blank');
+            } else {
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            }
+          }, (err) => {
             this.toasterService.error(this.resourceService.messages.emsg.m0076);
-          }
-        }, (err) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0076);
-        });
+          });
+        } else if (_.get(value, 'identifier')) {
+
+         this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
+           console.log(resp);
+           this.certDownloadAsPdf.download(resp.printUri);
+         });
+        }
       }
     });
   }

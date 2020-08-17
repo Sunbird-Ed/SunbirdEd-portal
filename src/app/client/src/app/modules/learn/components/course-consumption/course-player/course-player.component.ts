@@ -70,7 +70,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isModuleExpanded = false;
   isEnrolledCourseUpdated = false;
   layoutConfiguration;
-  certificateDescription = '';
+  certificateDescription = {};
+  showCourseCompleteMessage = false;
+  showConfirmationPopup = false;
+  popupMode: string;
+  createdBatchId: string;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -197,7 +201,38 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(courseProgressData => {
         this.courseProgressData = courseProgressData;
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
+          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
+          this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
+        }
       });
+
+    this.courseBatchService.updateEvent.subscribe((event) => {
+      setTimeout(() => {
+        if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
+          this.createdBatchId = _.get(event, 'batchId');
+          this.showConfirmationPopup = true;
+          this.popupMode = _.get(event, 'mode');
+        }
+      }, 1000);
+    });
+  }
+
+  onPopupClose(event) {
+    if (_.get(event, 'mode') === 'add-certificates') {
+      this.navigateToConfigureCertificate('add', _.get(event, 'batchId'));
+    }
+    this.showConfirmationPopup = false;
+  }
+
+  navigateToConfigureCertificate(mode: string, batchId: string) {
+    this.router.navigate([`/certs/configure/certificate`], {
+      queryParams: {
+        type: mode,
+        courseId: this.courseId,
+        batchId: batchId
+      }
+    });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -507,5 +542,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const courseLastUpdatedOn = new Date(this.courseHierarchy.lastUpdatedOn).getTime();
         this.isEnrolledCourseUpdated = (enrolledCourse && (enrolledCourseDateTime < courseLastUpdatedOn)) || false;
       });
+  }
+
+  onCourseCompleteClose() {
+    this.showCourseCompleteMessage = false;
   }
 }
