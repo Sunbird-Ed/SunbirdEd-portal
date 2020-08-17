@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-confirmation-popup',
@@ -11,6 +11,10 @@ export class ConfirmationPopupComponent implements OnInit {
   @Input() batchId: string;
   @Output() close = new EventEmitter<any>();
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeModal();
+  }
   constructor() { }
 
   ngOnInit() {

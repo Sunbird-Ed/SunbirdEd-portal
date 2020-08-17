@@ -118,5 +118,12 @@ describe('SearchComponent', () => {
     component.isLayoutAvailable();
     expect(component).toBeTruthy();
   });
+  it('should call setSearchPlaceHolderValue method', () => {
+    component.selectedOption = 'Users';
+    component.searchDisplayValueMappers = {User: 'user'};
+    spyOn(component, 'setSearchPlaceHolderValue');
+    component.setSearchPlaceHolderValue();
+    expect(component.setSearchPlaceHolderValue).toHaveBeenCalled();
+  });
 
 });

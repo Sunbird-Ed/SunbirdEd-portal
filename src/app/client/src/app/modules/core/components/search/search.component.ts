@@ -92,9 +92,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.config = config;
     this.userService = userService;
     this.searchDisplayValueMappers = {
-      'All': 'all',
-      'Library': 'resources',
-      'Courses': 'courses',
       'Users': 'users'
     };
   }
@@ -143,7 +140,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   setSearchPlaceHolderValue () {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
-    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
+    if (keyName) {
+      this.searchPlaceHolderValue = this.selectedOption;
+    }
   }
 
   /**

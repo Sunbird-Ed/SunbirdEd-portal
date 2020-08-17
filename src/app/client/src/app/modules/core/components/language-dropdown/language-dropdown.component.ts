@@ -38,8 +38,12 @@ export class LanguageDropdownComponent implements OnInit {
   }
 
   getTelemetryInteractEdata(language): IInteractEventEdata {
+    let pageId = this.router.url.split('/')[1];
+    if (pageId.indexOf('?selectedTab') > 0) {
+      pageId = pageId.split('?')[0];
+    }
     return {
-      id: `${language}-lang`, type: 'click', pageid: this.router.url.split('/')[1] ||
+      id: `${language}-lang`, type: 'click', pageid: pageId ||
         _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
     };
   }
