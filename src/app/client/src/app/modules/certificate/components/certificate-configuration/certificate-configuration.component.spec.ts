@@ -6,12 +6,25 @@ import { RouterModule } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, NavigationHelperService, UtilService, ResourceService } from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
+
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        Select: 'Select',
+      },
+      cert: {
+        lbl: {
+          preview: 'preview',
+        }
+    }
+  }
+};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,12 +35,13 @@ describe('CertificateConfigurationComponent', () => {
         ConfigService,
         NavigationHelperService,
         UtilService,
-        ResourceService,
         CertificateService,
         UserService,
         PlayerService,
         CertRegService,
-        BrowserCacheTtlService
+        BrowserCacheTtlService,
+        ToasterService,
+        {provide: ResourceService, useValue: resourceBundle}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

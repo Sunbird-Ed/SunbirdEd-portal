@@ -1,9 +1,9 @@
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,6 +11,12 @@ import { catchError, tap } from 'rxjs/operators';
 export enum ProcessingModes {
   PROCESS_DROPDOWNS = 'processDropdowns',
   PROCESS_CRITERIA = 'processCriteria'
+}
+
+export interface IConfigLabels {
+  label: string;
+  name: string;
+  show: boolean;
 }
 
 @Component({
@@ -21,6 +27,7 @@ export enum ProcessingModes {
 export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('selectCertType') selectCertType;
   @ViewChild('selectRecipient') selectRecipient;
+  @ViewChild('templateChangeModal') templateChangeModal;
 
   public unsubscribe$ = new Subject<void>();
   showanotherscreen: boolean;
@@ -45,23 +52,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   configurationMode: string;
   certConfigModalInstance = new CertConfigModel();
   previewUrl: string;
-  config = {
-    select: {
-        label: 'Select',
-        name: 'Select',
-        show: true
-    },
-    preview: {
-        label: 'Preview',
-        name: 'Preview',
-        show: true
-    },
-    remove: {
-        label: 'Remove',
-        name: 'Remove',
-        show: false
-    }
-  };
+  templateIdentifier: string;
+  isTemplateChanged = false;
+  certEditable = true;
+  config: {select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels};
+
 
   constructor(
     private certificateService: CertificateService,
@@ -70,16 +65,22 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private resourceService: ResourceService,
     private certRegService: CertRegService,
     private navigationHelperService: NavigationHelperService,
-    public activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private toasterService: ToasterService ) { }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    if (this.isTemplateChanged) {
+      this.isTemplateChanged = false;
+    }
+  }
 
   showCertRulesScreen(stateName) {
     this.currentState = stateName;
   }
-  thirdscreen() {
-    this.showanotherscreen = !this.showanotherscreen;
-  }
 
   ngOnInit() {
+    this.initializeLabels();
     this.currentState = this.screenStates.default;
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
@@ -97,6 +98,26 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }, (error) => {
       this.showLoader = false;
     });
+  }
+
+  initializeLabels() {
+    this.config = {
+      select: {
+        label: this.resourceService.frmelmnts.lbl.Select,
+        name: 'Select',
+        show: true
+    },
+    preview: {
+        label: this.resourceService.frmelmnts.cert.lbl.preview,
+        name: 'Preview',
+        show: true
+    },
+    remove: {
+        label: this.resourceService.frmelmnts.cert.lbl.unselect,
+        name: 'Remove',
+        show: false
+    }
+  };
   }
 
   getCertConfigFields() {
@@ -178,25 +199,50 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+  updateCertificate() {
+    if (this.templateIdentifier !== _.get(this.selectedTemplate, 'name')) {
+      this.isTemplateChanged = true;
+    } else {
+      this.attachCertificateToBatch();
+    }
+  }
+
   attachCertificateToBatch() {
     const request = {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
-        key: this.selectedTemplate.name,
+        key: _.get(this.selectedTemplate, 'name'),
         orgId: _.get(this.userService, 'slug'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };
+    if (this.isTemplateChanged) {
+      request['request']['oldTemplateId'] = this.templateIdentifier;
+    }
     console.log('request', request);
     // make the api call to add certificate
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
-      // show a success toast message
-      this.getBatchDetails(_.get(this.queryParams, 'batchId'));
-      this.goBack();
+      if (this.configurationMode === 'add') {
+        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certAddSuccess);
+      } else {
+        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certUpdateSuccess);
+      }
+      this.closeTemplateDetectModal();
+      this.certificateService.getBatchDetails(_.get(this.queryParams, 'batchId')).subscribe(batchDetails => {
+        this.batchDetails = _.get(batchDetails, 'result.response');
+        this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
+        this.goBack();
+      }, error => {
+      });
     }, error => {
       // show an error toast message
       console.log('add cert error', error);
+      if (this.configurationMode === 'add') {
+        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
+      } else {
+        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certEditError);
+      }
     });
   }
 
@@ -204,11 +250,19 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     console.log('certTemplateDetails', certTemplateDetails);
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
+    this.templateIdentifier =  _.get(templateData, 'identifier');
     this.previewUrl = _.get(templateData, 'previewUrl');
+    this.setCertEditable();
     this.processCriteria( _.get(templateData, 'criteria'));
   }
+
+  setCertEditable() {
+    this.certEditable = this.previewUrl ? true : false;
+  }
+
   editCertificate() {
     this.currentState = this.screenStates.certRules;
+    this.configurationMode = 'edit';
   }
 
   getCriteria(rawDropdownValues) {
@@ -261,6 +315,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.showPreviewModal = false;
     this.selectedTemplate = _.get(event, 'name') ? _.get(event, 'template') : this.selectedTemplate;
     this.validateForm();
+  }
+
+  closeTemplateDetectModal () {
+    this.isTemplateChanged = false;
   }
 
   goBack() {
