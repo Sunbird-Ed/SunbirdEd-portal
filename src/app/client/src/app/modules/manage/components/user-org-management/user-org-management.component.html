@@ -21,7 +21,7 @@
         </div>
         
       </div>
-      <button type="button" (click) = "showUploadUserModal = !showUploadUserModal" class="sb-btn sb-btn-outline-primary sb-btn-normal">Upload Validation Status</button>
+      <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal">Upload Validation Status</button>
       <!-- (click) = "showUploadUserModal = !showUploadUserModal" -->
     </div>
   </div>
@@ -170,7 +170,7 @@
 <!-- Upload validation status modal -->
 
 <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showUploadUserModal = !showUploadUserModal" #modal>
+[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="closeUserValidationModal()" #modal>
 <div class="sb-modal-header">
   {{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}
 </div>
@@ -181,7 +181,12 @@
 
   <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
     {{uploadButton}}
-    <input type="file" class="sb-btn-upload upload-btn" (change)="fileChanged($event)"  />
+    <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+    [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="sb-btn-upload upload-btn" (change)="fileChanged($event)"  />
+  </div>
+  <div *ngIf="fileUpload">
+    <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
+    <label>{{fileUpload.name}}</label>
   </div>
 
   <div class="ui info message">
@@ -200,7 +205,10 @@
   </div>
 </div>
 <div class="sb-modal-actions">
-  <button (click)="uploadCSV()" class="sb-btn sb-btn-normal sb-btn-primary">
+  <button (click)="uploadCSV()" class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract 
+  [telemetryInteractObject]="telemetryInteractObject" 
+  [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'sb-btn-disabled': !fileUpload}"
+  [disabled]="!fileUpload">
     {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
   </button>
 </div>

@@ -3,7 +3,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
 import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
-import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -76,10 +76,16 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public selectFileInteractEdata: IInteractEventEdata;
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
+  public uploadButton;
+  public fileUpload = null;
+  public selectUserValidationFileInteractEdata: IInteractEventEdata;
+  public userValidationUploadInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
+  public showUploadUserModal = false;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
-              public layoutService: LayoutService) {
+              public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -93,6 +99,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit(): void {
     this.initLayout();
+    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
@@ -137,22 +144,19 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   uploadCSV() {
     const file: any = this.fileUpload;
     if (file && file.name.match(/.(csv)$/i)) {
-      // this.manageService.fileUpload(file)
-      this.uploadButton = 'Uploading';
+      this.uploadButton = this.resourceService.frmelmnts.btn.uploading
       const formData = new FormData();
       formData.set('user', file);
       formData.set('operation', 'selfdeclared');
-      console.log(formData.get('user'))
       this.manageService.bulkUserUpload(formData).subscribe(res=>{
-        this.uploadButton = 'Select CSV file for Upload';
-        if(res.result){
-          this.toasterService.success('File uploaded successfully. All record status updates will be processed within 24 hours. Use the Download User Details button to see updated status values');
-        }else{
-          this.toasterService.error(res.params.errmsg);
-        }
+        this.showUploadUserModal = false;
+        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
+          this.toasterService.success(this.resourceService.frmelmnts.lbl.fileUploadSuccessMessage);
       },error=>{
-        this.uploadButton = 'Select CSV file for Upload';
-        this.toasterService.error('Uploaded file not in expected format.');
+        if (_.get(error, 'error.params.errmsg')) {
+          this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
+          this.toasterService.error(_.get(error, 'error.params.errmsg'));
+        }
       });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
@@ -162,7 +166,26 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public fileChanged(event) {
     this.fileUpload =  (event.target as HTMLInputElement).files[0];
   }
+  openModel(){
+    this.showUploadUserModal = !this.showUploadUserModal;
+    this.fileUpload = null;
+  }
 
+  closeUserValidationModal() {
+    this.showUploadUserModal = false;
+    const interactData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'close-upload-validation-status-modal',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
 
   fetchDeclaredUserDetails() {
     let channelName = _.get(this.userProfile, 'rootOrg.channel');
@@ -225,6 +248,21 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         id: 'upload-user',
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.selectUserValidationFileInteractEdata = {
+        id: 'select-user-validation-file',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.userValidationUploadInteractEdata = {
+        id: 'upload-user-validation-status',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.telemetryInteractObject = {
+        id: this.userService.userid,
+        type: 'User',
+        ver: '1.0'
       };
     });
   }
