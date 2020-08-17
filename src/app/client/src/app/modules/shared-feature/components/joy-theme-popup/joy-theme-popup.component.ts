@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {LayoutService, ResourceService} from '@sunbird/shared';
 
 @Component({
   selector: 'app-joy-theme-popup',
@@ -9,8 +10,12 @@ export class JoyThemePopupComponent implements OnInit {
 
   isShown = true;
   @Output() closeJoyThemePopup = new EventEmitter<any>();
+  instance: string;
 
-  constructor() {
+
+  constructor(public layoutService: LayoutService, public resourceService: ResourceService) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
   ngOnInit() {
@@ -20,6 +25,14 @@ export class JoyThemePopupComponent implements OnInit {
     localStorage.setItem('joyThemePopup', 'true');
     this.isShown = false;
     this.closeJoyThemePopup.emit();
+  }
+
+  switchToOldLayout() {
+    const layoutConfig = this.layoutService.getLayoutConfig();
+    if (layoutConfig) {
+      this.layoutService.initiateSwitchLayout();
+    }
+    this.closePopup();
   }
 
 }
