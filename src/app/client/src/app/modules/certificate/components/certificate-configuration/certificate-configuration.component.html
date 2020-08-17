@@ -85,20 +85,22 @@
               Certificate<i class="plus icon"></i></button>
           </div>
         </div>
-        <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
+        <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certifica<div *ngIf="!certEditable" class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100">Edit action for this certificate is not allowed. Contact support team for any updates.
+</div>
+                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
+                      <div class="d-flex flex-ai-center ml-auto d-flex">
+                        <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
+                          class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button> -->
+                        <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" (click)="editCertificate()" [disabled]="!certEditable" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                      </div>te-edit-content p-24">
             <div class="content">
               <div class="fnormal pb-16 font-weight-bold">Certificate</div>
               <div class="certificate-edit-area">
                 <div class="certificate-edit-sbcard">
                   <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
                     <div class="certificate-frame">
-                      <img src="{{previewUrl}}"></div>
-                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                      <div class="d-flex flex-ai-center ml-auto d-flex">
-                        <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
-                          class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button> -->
-                        <button type="button" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
-                      </div>
+                      <img *ngIf="certEditable" src="{{previewUrl}}"></div>
+                      
                     </div>
                   </div>
                 </div>
@@ -190,7 +192,7 @@
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
           <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="updateCertificate()">Update certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Update certificate</button>
         </div>
       </div>
     </div>
@@ -200,14 +202,14 @@
 <app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
-<sui-modal *ngIf="isTemplateChanged"
+<sui-modal *ngIf="showTemplateDetectModal"
 [mustScroll]="true"
 [isClosable]="true"
 [transitionDuration]="0"
 [size]="'normal'"
 class="sb-modal sb-batch-update-modal"
 appBodyScroll
-(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #templateChangeModal>
+(dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #modal>
   <div class="sb-modal-header">
     Template Change detected!
   </div>
@@ -218,17 +220,18 @@ appBodyScroll
       </div>
       <div class="nine wide column p-0">
         <p class="fnormal">
-          The change in template will not reflect for users who have already received their certificates.
-          Users with the older template have to contact the State admin for any changes required</p>
+          All the participants who already have recieved
+          certifices with previous template will be be re-issued
+          certificates this new template and old certificates will be revoked automatically</p>
         <p class="fnormal mb-0">Would you really want to change the template?</p>
       </div>
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="attachCertificateToBatch()"class="sb-btn sb-btn-normal sb-btn-primary">
+    <button class="sb-btn sb-btn-normal sb-btn-primary">
       Yes
     </button>
-    <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
       No
     </button>
   </div>

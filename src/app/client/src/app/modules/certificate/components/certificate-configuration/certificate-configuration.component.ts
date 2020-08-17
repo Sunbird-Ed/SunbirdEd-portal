@@ -48,6 +48,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   previewUrl: string;
   templateIdentifier: string;
   isTemplateChanged = false;
+  certEditable = true;
+
   config = {
     select: {
         label: 'Select',
@@ -231,9 +233,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.templateIdentifier =  _.get(templateData, 'identifier');
-    this.previewUrl = _.get(templateData, 'previewUrl');
+    this.previewUrl = null;//_.get(templateData, 'previewUrl');
+    this.setCertEditable();
     this.processCriteria( _.get(templateData, 'criteria'));
   }
+
+  setCertEditable() {
+    this.certEditable = this.previewUrl ? true : false;
+  }
+
   editCertificate() {
     this.currentState = this.screenStates.certRules;
     this.configurationMode = 'edit';
