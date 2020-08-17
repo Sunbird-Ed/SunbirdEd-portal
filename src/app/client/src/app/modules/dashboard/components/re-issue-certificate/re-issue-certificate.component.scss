@@ -41,6 +41,9 @@
      /* autoprefixer: off */
     -webkit-box-orient: vertical;
   /* autoprefixer: on */
+   a{
+     text-decoration:underline;
+   }
   }
   .re-issue-list-content{
     border:calculateRem(0.5px) solid var(--gray-100);

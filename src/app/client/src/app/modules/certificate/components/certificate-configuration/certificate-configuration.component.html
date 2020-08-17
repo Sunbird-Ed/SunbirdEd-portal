@@ -62,7 +62,7 @@
     <div class="ui stackable grid m-0">
       <div class="four wide column">
         <div class="certificate-sidebar px-24">
-          <div class="py-24 font-weight-bold certificates-label">Configure certificates</div>
+          <div class="py-24 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.configure}}</div>
           <div class="certificate-scrollbar">
             <div class="certificate-sbcard mb-16">
               <div class="d-flex flex-ai-center flex-jc-space-between">
@@ -80,16 +80,14 @@
         <div *ngIf="!(batchDetails && batchDetails?.cert_templates)" class="select-template-content p-24">
           <div class="d-flex flex-dc flex-ai-center text-center mt-32">
             <div><img src="../../assets/images/addcertificate.png"></div>
-            <p class="no-template-text pt-16 pb-24 mb-0">You do not have any certificates attached yet.
-              To proceed, click the <b>Add certificate</b> button</p>
+            <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}} <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b> {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
             <button type="button" (click)="currentState = screenStates.certRules"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn px-32">Add
-              Certificate<i class="plus icon"></i></button>
+              class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn px-32">{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}<i class="plus icon"></i></button>
           </div>
         </div>
         <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
             <div class="content">
-              <div class="fnormal pb-16 font-weight-bold">Certificate</div>
+              <div class="fnormal pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>
               <div class="certificate-edit-area">
                 <div class="certificate-edit-sbcard">
                   <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
@@ -103,7 +101,7 @@
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
                           class="sb-btn sb-btn-outline-primary sb-btn-normal mr-16">Preview</button> -->
-                        <button type="button" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                        <button type="button" (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
                       </div>
                     </div>
                   </div>
@@ -125,10 +123,10 @@
           <form [formGroup]="userPreference">
           <div class='ui stackable grid mt-0'>
             <div class="four wide column pt-0">
-              <div *ngIf="configurationMode === 'add'" class="pb-24 font-weight-bold certificates-label">Add Certificate</div>
-              <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">Edit Certificate</div>
+              <div *ngIf="configurationMode === 'add'" class="pb-24 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</div>
+              <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
               <div class="d-flex flex-dc">
-                <label class="fnormal font-weight-normal">Certificate Type</label>
+                <label class="fnormal font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.certType}}</label>
                 <sui-select class="selection form-control"
                     formControlName="certificateType"
                     [options]="certTypes"
@@ -146,9 +144,9 @@
 
           <div class='ui stackable grid mt-0'>
             <div class="four wide column">
-              <div class="pb-16 font-weight-bold certificates-label">Cerificate Rules</div>
+              <div class="pb-16 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
               <div class="d-flex flex-dc">
-                <label class="fnormal font-weight-normal">Issue Certificate to?</label>
+                <label class="fnormal font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
                 <sui-select class="selection form-control"
                     formControlName="issueTo"
                     [options]="issueTo"
@@ -166,7 +164,7 @@
 
           <div class="sb-checkbox sb-checkbox-secondary pt-24">
               <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
-              <label for="check2">All the elements and attributes are throughly verified</label>
+              <label for="check2">{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</label>
             </div>
           </form>
         </div>
@@ -176,7 +174,7 @@
       <div class="three wide column">
         <div class="select-template-content p-24">
           <div class="select-template-container d-flex flex-dc mb-16">
-            <div class="certificates-label pb-16 font-weight-bold">Templates</div>
+            <div class="certificates-label pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</div>
             <div *ngIf="certTemplateList" class="certificate-scrollbar">
               <div *ngFor="let template of certTemplateList">
                 <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
@@ -194,9 +192,9 @@
     <div class="ui stackable grid m-0">
       <div class="twelve wide column">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Update certificate</button>
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
         </div>
       </div>
     </div>
@@ -217,7 +215,7 @@ class="sb-modal sb-batch-update-modal"
 appBodyScroll
 (dismissed)="showTemplateDetectModal = !showTemplateDetectModal" #templateChangeModal>
   <div class="sb-modal-header">
-    Template Change detected!
+    {{resourceService?.frmelmnts?.cert?.lbl?.changeDetected}}
   </div>
   <div class="sb-modal-content">
     <div class="ui stackable grid mt-16 mb-8">
@@ -225,19 +223,17 @@ appBodyScroll
         <div class="checkbox-img"></div>
       </div>
       <div class="nine wide column p-0">
-        <p class="fnormal">
-          The change in template will not reflect for users who have already received their certificates.
-          Users with the older template have to contact the State admin for any changes required</p>
-        <p class="fnormal mb-0">Would you really want to change the template?</p>
+        <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
+        <p class="fnormal mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.confirmTemplateChange}}</p>
       </div>
     </div>
   </div>
   <div class="sb-modal-actions">
     <button (click)="attachCertificateToBatch()"class="sb-btn sb-btn-normal sb-btn-primary">
-      Yes
+      {{resourceService?.frmelmnts?.btn?.yes}}
     </button>
     <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      No
+      {{resourceService?.frmelmnts?.btn?.no}}
     </button>
   </div>
 </sui-modal>
