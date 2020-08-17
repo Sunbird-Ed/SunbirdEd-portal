@@ -109,7 +109,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-    const layoutType = localStorage.getItem('layoutType') || 'joy';
+    const layoutType = localStorage.getItem('layoutType') || '';
     if (layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
