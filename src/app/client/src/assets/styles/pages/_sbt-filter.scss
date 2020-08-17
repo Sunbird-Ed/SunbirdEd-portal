@@ -157,14 +157,14 @@
     --primary-color:#024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
-    background-color: var(--primary-color);
+    background-color: var(--sbt-header-bg);
     box-shadow: var(--sbt-box-shadow-3px);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: calculateRem(-20px);
     border-radius: 100%;
-    color: var(--white);
+    color: var(--primary-color);
     position: absolute;
     left: calculateRem(24px);
     top: 0px;
