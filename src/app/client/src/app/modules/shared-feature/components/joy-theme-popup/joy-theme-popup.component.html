@@ -1,15 +1,26 @@
 <div class="sb-group-page-container" *ngIf="isShown">
   <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
-    <a class="close" (click)="closePopup()"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--white">
-      <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
+    <a class="close" (click)="closePopup()"><i class="icon-svg icon-svg--xs icon-close">
+      <svg class="icon icon-svg--white">
+        <use xlink:href="./assets/images/sprite.svg#close"></use>
+      </svg>
+    </i></a>
     <!-- below content comes from CC -->
     <div class="text-left">
-    <h4 class="sb-group-container__title">SUNBIRD has got a new look and feel</h4>
-    <p class="sb-group-container__description mt-16 w-75">The new design makes it easier for you to find content you need, and adds a splash of joy to your learning experience.</p>
-  </div>
-  <div class="text-left">
-    <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="closePopup()">OK, Got it!</button>
-    <p class="sb-group-container__description mt-16 fnormal">If you want to go back to Classic SUNBIRD, you can always do so from your preferences.</p>
-  </div>
+      <h4
+        class="sb-group-container__title">{{resourceService.frmelmnts?.lbl?.newLookAndFeel | interpolate:'{instance}': instance}}</h4>
+      <p class="sb-group-container__description mt-16 w-75">{{resourceService.frmelmnts?.lbl?.joyThemeText}}.</p>
+    </div>
+    <div class="text-left">
+      <button class="sb-btn sb-btn-secondary sb-btn-normal"
+              (click)="closePopup()">{{resourceService.frmelmnts?.lbl?.okGotIt}}!
+      </button>
+      <p
+        class="sb-group-container__description mt-16 fnormal">{{resourceService.frmelmnts?.lbl?.goBackToClassicTheme | interpolate:'{instance}': instance }}</p>
+
+      <button class="sb-btn sb-btn-tertiary sb-btn-normal"
+              (click)="switchToOldLayout()">{{resourceService.frmelmnts?.lbl?.switchToOldLayout}}</button>
+
+    </div>
   </div>
 </div>
