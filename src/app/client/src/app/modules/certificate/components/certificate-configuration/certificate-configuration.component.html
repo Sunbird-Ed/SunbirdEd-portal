@@ -1,74 +1,76 @@
 <!-- Loader -->
 <div class="two wide column" *ngIf="showLoader">
-    <app-loader></app-loader>
+  <app-loader></app-loader>
 </div>
 <!-- /Loader-->
 
 <div *ngIf="!showLoader">
 <!-- Header -->
-<div _ngcontent-lts-c70="" class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
-  <div _ngcontent-lts-c70="" class="ui container">
-    <div _ngcontent-lts-c70="" class="py-8 d-flex flex-ai-center">
-      <button _ngcontent-lts-c70=""
-        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button" (click)="goBack()">
-        <i _ngcontent-lts-c70="" class="icon-svg icon-svg--xxs icon-back mr-4">
-          <svg _ngcontent-lts-c70=""
-            class="icon icon-svg--primary">
-            <use _ngcontent-lts-c70="" xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>  
-          {{resourceService?.frmelmnts?.btn?.back}} 
-      </button>
-      <div _ngcontent-lts-c70="" class="d-flex flex-ai-center">
-        <!---->
-        <!---->
-        <!---->
+<div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+<div class="ui container">
+  <div class="py-8 d-flex flex-ai-center">
+    <button 
+      class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button" (click)="goBack()">
+      <i  class="icon-svg icon-svg--xxs icon-back mr-4">
+        <svg 
+          class="icon icon-svg--primary">
+          <use  xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i>  
+        {{resourceService?.frmelmnts?.btn?.back}} 
+    </button>
+    <div class="d-flex flex-ai-center">
+      <!---->
+      <!---->
+      <!---->
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="textbook-container cc-player__content-header relative9">
+  <div class="ui container">
+  <div class="textbook py-16 sb-g cc-player">
+    <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+      <!-- Textbook details -->
+      <div class="textbook__details d-flex flex-ai-center">
+          <!-- Textbook image -->
+          <div class="textbook__bookimg">
+            <img src="{{courseDetails?.appIcon}}" alt="textbook">
+          </div>
+          <div class="ml-8 textbook__heading">
+            <!-- Textbook title -->
+            <div class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseDetails?.name}}</div>
+            <div class="fs-1 pt-8">{{courseDetails?.contentType}}</div>
+          </div>
+        </div>
+    </div>
+    <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
+      <div class="ml-auto text-right mt-8">
+        <!-- <button class="sb-btn sb-btn-primary sb-btn-normal px-24">
+          Save Configuration
+        </button> -->
       </div>
     </div>
   </div>
 </div>
-
-<div class="textbook-container">
-    <div class="ui container">
-    <div class="textbook py-16 sb-g">
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9">
-        <!-- Textbook details -->
-        <div class="textbook__details d-flex flex-ai-center">
-            <!-- Textbook image -->
-            <div class="textbook__bookimg">
-              <img src="{{courseDetails?.appIcon}}" alt="textbook">
-            </div>
-            <div class="ml-8 textbook__heading">
-              <!-- Textbook title -->
-              <div class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseDetails?.name}}</div>
-              <div class="fs-1 pt-8">{{courseDetails?.contentType}}</div>
-            </div>
-          </div>
-      </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 certified-course">
-        <div class="ml-auto text-right mt-8">
-          <!-- <button class="sb-btn sb-btn-primary sb-btn-normal px-24">
-            Save Configuration
-          </button> -->
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 <!-- / Header-->
 
 <!-- first screen -->
-<div class="certificate-container py-16" *ngIf="currentState === screenStates.default">
+<div class="certificate-container py-16 cc-player__content-header relative9" *ngIf="currentState === screenStates.default">
   <div class="ui container">
     <div class="ui stackable grid m-0">
       <div class="four wide column">
         <div class="certificate-sidebar px-24">
           <div class="py-24 font-weight-bold certificates-label">Configure certificates</div>
-          <div class="certificate-sbcard mb-16">
-            <div class="d-flex flex-ai-center flex-jc-space-between">
-              <div class="certificate-card-title">{{courseDetails?.name}}</div>
-              <div class="d-flex flex-ai-center">
-                <div class="certificate-card-img"> <img src="assets/images/certificate-icon.png" width="25px" height="20px" /></div>
-                <div class="certificate-card-count pl-8">0</div>
+          <div class="certificate-scrollbar">
+            <div class="certificate-sbcard mb-16">
+              <div class="d-flex flex-ai-center flex-jc-space-between">
+                <div class="certificate-card-title sb__ellipsis sb__ellipsis--three">{{courseDetails?.name}}</div>
+                <div class="d-flex flex-ai-center">
+                  <div class="certificate-card-img pl-16"> <img src="assets/images/certificate-icon.png" width="25px" height="20px" /></div>
+                  <div class="certificate-card-count pl-8">0</div>
+                </div>
               </div>
             </div>
           </div>
@@ -92,7 +94,11 @@
                 <div class="certificate-edit-sbcard">
                   <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
                     <div class="certificate-frame">
-                      <img src="{{previewUrl}}"></div>
+                      <div><img src="{{previewUrl}}"></div>
+                      <div class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100">
+                        Edit action for this Certificate is not allowed. 
+                        Contact support team for any updates</div>
+                    </div>
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <!-- <button type="button" (click)="showPreviewModal = !showPreviewModal"
@@ -104,22 +110,21 @@
                 </div>
               </div>
             </div>
-          </div>
-          
+        </div>    
       </div>
     </div>
   </div>
 </div>
 
 <!-- second screen -->
-<div class="certificate-container py-16" *ngIf="currentState === screenStates.certRules">
+<div class="certificate-container py-16 cc-player__content-header relative9" *ngIf="currentState === screenStates.certRules">
   <div class="ui container">
     <div class="ui stackable grid m-0">
       <div class="eight wide column">
         <div class="certificate-content-area sb-bg-color-white p-24">
           <form [formGroup]="userPreference">
           <div class='ui stackable grid mt-0'>
-            <div class="six wide column pt-0">
+            <div class="four wide column pt-0">
               <div *ngIf="configurationMode === 'add'" class="pb-24 font-weight-bold certificates-label">Add Certificate</div>
               <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">Edit Certificate</div>
               <div class="d-flex flex-dc">
@@ -140,8 +145,8 @@
           </div>
 
           <div class='ui stackable grid mt-0'>
-            <div class="six wide column">
-              <div class="py-16 pb-24 font-weight-bold certificates-label">Cerificate Rules</div>
+            <div class="four wide column">
+              <div class="pb-16 font-weight-bold certificates-label">Cerificate Rules</div>
               <div class="d-flex flex-dc">
                 <label class="fnormal font-weight-normal">Issue Certificate to?</label>
                 <sui-select class="selection form-control"
@@ -158,7 +163,8 @@
               </div>
             </div>
           </div>
-          <div class="sb-checkbox sb-checkbox-secondary py-32">
+
+          <div class="sb-checkbox sb-checkbox-secondary pt-24">
               <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
               <label for="check2">All the elements and attributes are throughly verified</label>
             </div>
@@ -167,11 +173,11 @@
       </div>
 
       <!-- Side panel of cert-templates -->
-      <div class="four wide column">
+      <div class="three wide column">
         <div class="select-template-content p-24">
-          <div class="fnormal pb-16 font-weight-bold">Templates</div>
-          <div class="select-template-container d-flex flex-ai-center flex-jc-center flex-dc mb-16">
-            <div *ngIf="certTemplateList">
+          <div class="select-template-container d-flex flex-dc mb-16">
+            <div class="certificates-label pb-16 font-weight-bold">Templates</div>
+            <div *ngIf="certTemplateList" class="certificate-scrollbar">
               <div *ngFor="let template of certTemplateList">
                 <sb-certificate-actions [select]="getConfig(config?.select, template)"  [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
                 [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal" [template]="template?.value" (buttonClick) = "handleCertificateEvent($event, template)"
@@ -184,17 +190,19 @@
     </div>
   </div>
 
-  <div class="ui container" *ngIf="currentState === screenStates.certRules">
+  <div *ngIf="currentState === screenStates.certRules">
     <div class="ui stackable grid m-0">
       <div class="twelve wide column">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="currentState = screenStates.default">Cancel</button>
           <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Add certificate</button>
-          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="updateCertificate()">Update certificate</button>
+          <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" (click)="attachCertificateToBatch()">Update certificate</button>
         </div>
       </div>
     </div>
   </div>
+
+</div>
 </div>
 
 <app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
