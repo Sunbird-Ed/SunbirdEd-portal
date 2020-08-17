@@ -93,7 +93,7 @@
                   </a>
                 </li>
                 <li class="contact-info">
-                  <label class="d-block contact-info-title">
+                  <label class="d-block contact-info-title mb-0">
                     {{resourceService.frmelmnts?.lnk?.footerContact}}
                   </label>
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
@@ -119,11 +119,16 @@
                 </li>
               </ul>
             </div>
-            <label class="d-block footer-terms-info text-left">
+            <div>
+            <label class="d-block footer-terms-info text-left font-weight-normal">
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
+            <label class="d-block text-left fsmall">
+              <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img src="/assets/images/CCby.svg"></span>
+            </label>
+          </div>
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
