@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
@@ -272,7 +272,7 @@
   <!-- my badges section ends -->
 
   <div class="pt-30">
-    <div class="ui container">
+    <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}

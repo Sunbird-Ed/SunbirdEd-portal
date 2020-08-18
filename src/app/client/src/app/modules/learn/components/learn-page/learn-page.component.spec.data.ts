@@ -56,14 +56,71 @@ export const Response = {
             }]
         }
     },
-    enrolledCourses: {
-        'enrolledCourses': [
-             {
-              'courseId': 'do_2123412199319552001265', 'courseName': '27-sept',
-                'description': 'test', 'leafNodesCount': 0, 'progress': 0, 'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
-            }
-        ]
-    },
+    enrolledCourses: [
+          {
+            'dateTime': null,
+            'lastReadContentStatus': null,
+            'enrolledDate': '2019-03-05 11:06:54:750+0000',
+            'addedBy': null,
+            'contentId': 'do_21270640678434406411819',
+            'batch': {
+              'identifier': '0127122190812528640',
+              'endDate': '2019-04-30',
+              'createdBy': '5a850e24-fc96-4bab-9248-bda165efae80',
+              'name': 'upcoming ',
+              'batchId': '0127122190812528640',
+              'enrollmentType': 'invite-only',
+              'startDate': '2019-04-01',
+              'status': 2
+            },
+            'active': true,
+            'description': 'Sample Slate',
+            'courseLogoUrl': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21270640678434406411819/artifact/book-image_1549031828330.thumb.jpg',
+            'batchId': '0127122190812528640',
+            'userId': '0b96635f-fe2b-4ab0-a511-05cfce8faa3f',
+            'content': {
+              'identifier': 'do_21270640678434406411819',
+              'orgDetails': {
+                'orgName': 'First Org',
+                'email': null
+              },
+              'subject': [
+                'Chemistry'
+              ],
+              'channel': '0126825293972439041',
+              'description': 'Sample Slate',
+              'mimeType': 'application/vnd.ekstep.content-collection',
+              'medium': [
+                'English'
+              ],
+              'pkgVersion': 1,
+              'objectType': 'Content',
+              'gradeLevel': [
+                'Class 1'
+              ],
+              'appIcon': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21270640678434406411819/artifact/book-image_1549031828330.thumb.jpg',
+              'leafNodesCount': 1,
+              'name': 'Neurology ',
+              'topic': [
+                'Science'
+              ],
+              'contentType': 'Course',
+              'resourceType': 'Course'
+            },
+            'contentStatus': {
+            },
+            'completionPercentage': null,
+            'courseName': 'Neurology ',
+            'certificates': [
+            ],
+            'completedOn': null,
+            'leafNodesCount': 1,
+            'progress': 0,
+            'lastReadContentId': null,
+            'courseId': 'do_21270640678434406411819',
+            'status': 1
+          }
+        ],
     noCourses: {'id': 'api.course.getbyuser', 'params': {
         'resmsgid': 'null', 'msgid': 'c9099093-7305-8258-9781-014df666da36',
         'status': 'success', 'err': 'null', 'errmsg': 'null'

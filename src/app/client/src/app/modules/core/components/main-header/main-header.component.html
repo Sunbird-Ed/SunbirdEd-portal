@@ -9,7 +9,7 @@
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
-        <div class="six wide column p-0">
+        <div class="five wide column p-0">
           <!--Logo-->
           <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
@@ -17,7 +17,7 @@
           </a>
           <!--/Logo-->
         </div>
-        <div class="six wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
+        <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
           <!--Hamburger Icon-->
 <!--
           <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
@@ -30,7 +30,7 @@
           <!--Avtar Dropdown-->
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-              <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+              <div class="" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
                 src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
               <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
                 initialsSize="1" name="{{userProfile?.firstName}}">
@@ -316,6 +316,9 @@
             </a>
           </li>
           <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
+            <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+            </svg></i>
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             <span class="group__type mx-8">New</span>
@@ -349,11 +352,14 @@
               {{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+              </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item p-0" *ngIf="layoutConfiguration" (click)="toggleSideMenu(false)" appTelemetryInteract
+            <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
               <a href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
