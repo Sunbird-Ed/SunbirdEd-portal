@@ -139,15 +139,31 @@ describe('PublishedComponent', () => {
   });
 
   it('should navigate to given pageNumber along with the filter if added', () => {
-      const route = TestBed.get(Router);
-      spyOn(route, 'navigate').and.stub();
-      component.pager = testData.pager;
-      const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
-      component.queryParams = bothParams.queryParams ;
-      component.pageNumber = 1;
-      component.navigateToPage(1);
-      fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/published', 1],
-      { queryParams: component.queryParams });
-    });
+    const route = TestBed.get(Router);
+    spyOn(route, 'navigate').and.stub();
+    component.pager = testData.pager;
+    const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+    component.queryParams = bothParams.queryParams ;
+    component.pageNumber = 1;
+    component.navigateToPage(1);
+    fixture.detectChanges();
+    expect(route.navigate).toHaveBeenCalledWith(['workspace/content/published', 1],
+    { queryParams: component.queryParams });
+  });
+
+  it('should call isPublishedCourse and showCourseQRCodeBtn should be true', () => {
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'compositeSearch').and.returnValue(observableOf(mockData.mockRes.searchSuccess));
+    component.isPublishedCourse();
+    expect(component.showCourseQRCodeBtn).toBeTruthy();
+  });
+
+  it('should call getCourseQRCsv', () => {
+    const returnData = { result: { fileUrl: 'test'}};
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(window, 'open');
+    spyOn(coursesService, 'getQRCodeFile').and.returnValue(observableOf(returnData));
+    component.getCourseQRCsv();
+    expect(window.open).toHaveBeenCalledWith(returnData.result.fileUrl, '_blank');
+  });
 });
