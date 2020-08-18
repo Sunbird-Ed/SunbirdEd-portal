@@ -5,7 +5,7 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
@@ -107,7 +107,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService) {
+    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
+    private telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -403,5 +404,20 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  handleInputChange(inputType) {
+    const telemetryData = {
+      context: {
+        env:  this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: `issue-certificate-${inputType}`,
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }
