@@ -193,7 +193,7 @@ html[data-theme='Default'] {
   --sbt-pill-hs: 212, 100%;
   --sbt-pill-bg: hsl(var(--sbt-pill-hs), 90%);
   --sbt-pill-bg-active: hsl(var(--sbt-pill-hs), 50%); // #0076FE
-  --sbt-compt-bg: #F2F4F6;
+  --sbt-compt-bg: #E9E8D9;
   --sbt-bradius: 0.125rem;
   --sbt-bradius-8: calc(var(--sbt-bradius) * 4);
   --sbt-bradius-16: calc(var(--sbt-bradius) * 8);	
@@ -336,7 +336,6 @@ html[layout='joy'] {
   --sbt-body-bg: #F2F2EA;
   --sbt-body-bg2: #E9E8D9;
   --sbt-primary-bg: var(--primary-theme);
-  
   .sbt-fluid-header-bg {
     display: block;
   }
@@ -352,6 +351,7 @@ html[layout='joy'] {
   /* new button style */
   .sb-btn {
     box-shadow: var(--sbt-box-shadow-6px);
+    border:0px;
   }
   .sb-btn-normal {
     border-radius: var(--sbt-bradius-24);
@@ -907,7 +907,9 @@ html[layout='joy'] {
       margin-bottom: calculateRem(8px);
     }
   }
-
+  .ui.styled.accordion, .ui.styled.accordion .accordion {
+    background:var(--sbt-compt-bg);
+  }
   .header .title {
     font-weight: normal !important;
     color: var(--gray-800) !important;
