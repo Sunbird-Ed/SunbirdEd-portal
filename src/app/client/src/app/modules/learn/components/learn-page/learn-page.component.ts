@@ -315,6 +315,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = _.map(this.enrolledCourses, content => {
         let formatedContent;
+        /* istanbul ignore else */
         if (this.layoutConfiguration) {
           formatedContent = content.content;
           formatedContent['mimeType'] = 'application/vnd.ekstep.content-collection'; // to route to course page
