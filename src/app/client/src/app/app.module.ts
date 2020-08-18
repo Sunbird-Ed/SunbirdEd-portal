@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
@@ -19,6 +19,9 @@ import {ChatLibModule, ChatLibService} from 'sunbird-chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import ngx-translate and the http loader
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ChatLibModule,
     SharedFeatureModule,
     ...PluginModules,
+     // ngx-translate and the loader module
+     HttpClientModule,
+     TranslateModule.forRoot({
+         loader: {
+             provide: TranslateLoader,
+             useFactory: HttpLoaderFactory,
+             deps: [HttpClient]
+         }
+     }),
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -50,7 +62,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ]
 })
 export class AppModule {
-  constructor(bootstrapFramework: BootstrapFramework) {
+  constructor(bootstrapFramework: BootstrapFramework,private translate: TranslateService) {
     bootstrapFramework.initialize(WebExtensionsConfig);
   }
+}
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, "/resourcebundles/v1/readLang/"," ");
 }

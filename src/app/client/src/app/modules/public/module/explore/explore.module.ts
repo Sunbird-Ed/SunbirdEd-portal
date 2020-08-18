@@ -14,6 +14,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -26,9 +27,9 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, SlickModule
+    CommonConsumptionModule, ContentSearchModule, SlickModule,TranslateModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent, ExploreCurriculumCoursesComponent],
-  exports: [ExploreComponent]
+  exports: [ExploreComponent,TranslateModule]
 })
 export class ExploreModule { }
