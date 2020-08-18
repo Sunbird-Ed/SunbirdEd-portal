@@ -220,7 +220,7 @@ it('should redo layout on render', () => {
       { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-     formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['getFormData']();
   });
@@ -231,7 +231,7 @@ it('should redo layout on render', () => {
       { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-     formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['getFormData']();
   });
