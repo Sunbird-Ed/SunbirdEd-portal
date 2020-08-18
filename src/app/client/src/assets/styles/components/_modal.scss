@@ -260,3 +260,14 @@
     mask-repeat: no-repeat;
   }
 }
+
+.sb-cert-preview-modal{
+  .cert-preview-img{
+      height: calculateRem(490px); 
+      width: calculateRem(712px); 
+      margin:0 auto;
+      img{
+          max-width:100%;  
+      }
+  }
+}

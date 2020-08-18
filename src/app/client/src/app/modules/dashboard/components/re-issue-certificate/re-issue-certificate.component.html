@@ -71,7 +71,7 @@
                 <div class="re-issue-status" >{{batch?.completionPercentage || 0}}%</div>
               </div>
               <div class="two wide column pl-0" *ngIf="batch?.certificates?.length">
-                <div class="re-issue-status text-center">
+                <div class="re-issue-status text-center cursor-pointer">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
               </div>
