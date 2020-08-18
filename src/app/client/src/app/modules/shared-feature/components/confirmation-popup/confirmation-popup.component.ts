@@ -15,7 +15,7 @@ export class ConfirmationPopupComponent implements OnInit {
   onPopState(event) {
     this.closeModal();
   }
-  constructor(private resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
   }

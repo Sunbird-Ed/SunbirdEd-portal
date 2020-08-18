@@ -8,6 +8,7 @@ import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry'
 
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
@@ -41,6 +42,7 @@ describe('CertificateConfigurationComponent', () => {
         CertRegService,
         BrowserCacheTtlService,
         ToasterService,
+        TelemetryService,
         {provide: ResourceService, useValue: resourceBundle}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
