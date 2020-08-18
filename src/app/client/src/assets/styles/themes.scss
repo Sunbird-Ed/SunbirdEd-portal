@@ -342,7 +342,6 @@ html[layout='joy'] {
   .sbt-center-container {
     width: calc(100% - 4%);
     margin:0 auto;
-    padding:0 2%;
   }
 
   .sbt-bg-container {
@@ -433,7 +432,7 @@ html[layout='joy'] {
         height: calculateRem(24px);
         width: calculateRem(24px);
         border-radius: 50%;
-        box-shadow: var(--sbt-box-shadow-6px);
+        box-shadow: var(--sbt-box-shadow-3px);
         right: calculateRem(12px) !important;
         top: calculateRem(12px) !important;
         background-color: var(--white);
@@ -916,6 +915,9 @@ html[layout='joy'] {
   }
   .sb-slider-pills-container .sb-pills-container .pill {
     white-space: normal;
+  }
+  .sb-pageSection-header {
+    margin: 8px 0 0px 0;
   }
 }
 

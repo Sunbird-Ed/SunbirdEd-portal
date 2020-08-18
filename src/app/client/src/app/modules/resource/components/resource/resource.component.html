@@ -18,16 +18,16 @@
       </ngx-slick>
       </div>
         </div>
-        <div class="sb-library-cards right-flower-position-adjust-container">
-      <h4 class="sb-categories-title text-left mt-16"*ngIf="false">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+        <div class="sb-library-cards">
+            <h4 class="sb-categories-title text-left mt-16" *ngIf="false">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
-          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+          [maxCardCount]="3" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">
-          <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
+          <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="3"></sb-library-cards-grid>
       </div>
 
       <div *ngIf="apiContentList.length === 0 && !showLoader">

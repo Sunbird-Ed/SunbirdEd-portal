@@ -181,9 +181,9 @@
   }
 
   @include respond-above(md) {
-    position: sticky;
-    top: calculateRem(160px);
-    margin-top: calculateRem(-96px);
+    // position: sticky;
+    //top: calculateRem(160px);
+    margin-top: calculateRem(-64px);
   }
 
   @include respond-below(md) {
@@ -273,15 +273,15 @@
     position: relative;
     overflow-y: auto;
     height: calc(100vh - 64px);
-    padding-bottom: calculateRem(100px);
+    padding-bottom: calculateRem(8px);
     @include respond-between(sm, md) {
       height: calc(100vh - 280px); 
     }
 
     @include respond-above(md) {
-      max-height: calc(100vh - 256px);
+      //max-height: calc(100vh - 256px);
       height: auto;
-      // overflow: initial;
+      overflow: initial;
       // max-height: inherit;
     }
   }
