@@ -314,9 +314,16 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = _.map(this.enrolledCourses, content => {
-        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
-        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
-        formatedContent.metaData.contentType = 'Course'; // to route to course page
+        let formatedContent;
+        if (this.layoutConfiguration) {
+          formatedContent = content.content;
+          formatedContent['mimeType'] = 'application/vnd.ekstep.content-collection'; // to route to course page
+          formatedContent['contentType'] = 'Course'; // to route to course page
+        } else {
+          formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+          formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
+          formatedContent.metaData.contentType = 'Course'; // to route to course page
+        }
         return formatedContent;
       });
       enrolledSection.count = enrolledSection.contents.length;
