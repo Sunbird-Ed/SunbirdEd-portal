@@ -154,7 +154,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.certificateService.fetchCertificatePreferences(request).pipe(
       tap((certTemplateData) => {
         this.certTemplateList = _.get(certTemplateData, 'result.response.data.range');
-        console.log('this.certTemplateList', this.certTemplateList);
       }),
       catchError(error => {
         return of({});
@@ -171,7 +170,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         } else {
           this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
         }
-        console.log('this.batchDetails', this.batchDetails);
       })
     );
   }
@@ -188,7 +186,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
-    console.log('this.userPreference', this.userPreference.value);
     if (this.userPreference.status === 'VALID'
     && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
       this.disableAddCertificate = false;
@@ -216,7 +213,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   attachCertificateToBatch() {
-    this.sendAddCertificateTelemetry();
+    this.sendInteractData({id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change'});
     const request = {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
@@ -229,7 +226,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.isTemplateChanged) {
       request['request']['oldTemplateId'] = this.templateIdentifier;
     }
-    console.log('request', request);
+
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       this.isTemplateChanged = false;
       if (this.configurationMode === 'add') {
@@ -244,7 +241,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }, error => {
       });
     }, error => {
-      console.log('add cert error', error);
+
       if (this.configurationMode === 'add') {
         this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
       } else {
@@ -268,9 +265,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   editCertificate() {
-    this.sendInteractData({id: 'edit-certificate'});
-    this.currentState = this.screenStates.certRules;
     this.configurationMode = 'edit';
+    this.currentState = this.screenStates.certRules;
+    this.sendInteractData({id: 'edit-certificate'});
   }
 
   getCriteria(rawDropdownValues) {
@@ -283,7 +280,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.issueTo = _.get(abc, 'issueTo');
     this.certTypes = _.get(abc, 'certTypes');
     const certTypeFormEle = this.userPreference.controls['certificateType'];
-    const  issueToFormEle = this.userPreference.controls['issueTo'];
+    const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
     this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
@@ -324,11 +321,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   closeModal(event) {
     this.showPreviewModal = false;
-    this.sendInteractData({id: 'close-preview'});
     this.selectedTemplate = _.get(event, 'name') ? _.get(event, 'template') : this.selectedTemplate;
     this.validateForm();
     if (_.get(event, 'name')) {
       this.sendInteractData({id: 'select-template'});
+    } else {
+      this.sendInteractData({id: 'close-preview'});
     }
   }
 
@@ -364,11 +362,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: [{
-          type: 'batchId',
+          type: 'Batch',
           id: _.get(this.queryParams, 'batchId')
         },
         {
-          type: 'courseId',
+          type: 'Course',
           id: _.get(this.queryParams, 'courseId')
         }]
       },
@@ -388,45 +386,31 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: [{
-          type: 'batchId',
+          type: 'Batch',
           id: _.get(this.queryParams, 'batchId')
         },
         {
-          type: 'courseId',
+          type: 'Course',
           id: _.get(this.queryParams, 'courseId')
         }]
       },
       edata: {
         id: _.get(interactData, 'id'),
-        type: 'click',
+        type: 'CLICK',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-    if (interactObject) {
+
+    if (this.configurationMode === 'edit') {
       data['object'] = {
-        id: _.get(interactObject, 'id'),
-        type: _.get(interactObject, 'type'),
+        id: _.get(this.selectedTemplate, 'name'),
+        type: 'Certificate',
         ver: '1.0',
-        rollup: {}
+        rollup: { l1: _.get(this.queryParams, 'courseId') }
       };
     }
+
     this.telemetryService.interact(data);
-  }
-
-  sendAddCertificateTelemetry() {
-    const telemetryInteractData = {
-      id: this.configurationMode === 'add' ? 'add-certificate' : 'update-certificate',
-      type: 'click'
-    };
-    const telemetryObject = {
-      id: _.get(this.selectedTemplate, 'name'),
-      type: 'certificate'
-    };
-    this.sendInteractData(telemetryInteractData, telemetryObject);
-  }
-
-  onSelectedOptionChange(fieldName , event) {
-    this.sendInteractData({id: `${fieldName}-${event}`});
   }
 
   ngOnDestroy() {

@@ -124,7 +124,7 @@
               <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
               <div class="d-flex flex-dc">
                 <label class="fnormal font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.certType}}</label>
-                <sui-select (selectedOptionChange)="onSelectedOptionChange('certificate-type', $event)" class="selection form-control"
+                <sui-select class="selection form-control"
                     formControlName="certificateType"
                     [options]="certTypes"
                     [placeholder]="'Select certificate'"
@@ -144,7 +144,7 @@
               <div class="pb-16 font-weight-bold certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
               <div class="d-flex flex-dc">
                 <label class="fnormal font-weight-normal">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
-                <sui-select (selectedOptionChange)="onSelectedOptionChange('issue-to', $event)" class="selection form-control"
+                <sui-select class="selection form-control"
                     formControlName="issueTo"
                     [options]="issueTo"
                     [placeholder]="'Select'"

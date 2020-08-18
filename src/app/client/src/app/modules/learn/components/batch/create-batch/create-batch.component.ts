@@ -410,7 +410,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     const telemetryData = {
       context: {
         env:  this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        cdata: [{
+          id: this.courseId,
+          type: 'Course'
+        }]
       },
       edata: {
         id: `issue-certificate-${inputType}`,

@@ -619,7 +619,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     const telemetryData = {
       context: {
         env:  this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        cdata: [{
+          id: this.courseId,
+          type: 'Course'
+        }, {
+          id: this.batchId,
+          type: 'Batch'
+        }]
       },
       edata: {
         id: `issue-certificate-${inputType}`,
