@@ -86,6 +86,7 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
         logger.debug({ msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
+        // Only if loggedIn user & content creator is same, then only he can re-issue the certificate
         if (_.get(req.body, 'request.createdBy') === req.session['userId']) {
           return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reissue=true').path;
         } else {
