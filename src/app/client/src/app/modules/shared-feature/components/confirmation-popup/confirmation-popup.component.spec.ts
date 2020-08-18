@@ -10,6 +10,18 @@ describe('ConfirmationPopupComponent', () => {
   let fixture: ComponentFixture<ConfirmationPopupComponent>;
 
   const resourceBundle = {
+    frmelmnts: {
+      btn: {
+        close: 'Close'
+      },
+      cert: {
+        lbl: {
+          batchCreateSuccess: 'Batch created successfully.',
+          batchUpdateSuccess: 'Batch updated successfully.',
+          addCert: 'Add certificate'
+        }
+      }
+    }
   };
 
   beforeEach(async(() => {
