@@ -396,10 +396,11 @@ app-workspace {
 
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height:100%;
-  padding:calculateRem(24px);
+  padding:calculateRem(24px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
+    padding:calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
   }
 
   &__div {
