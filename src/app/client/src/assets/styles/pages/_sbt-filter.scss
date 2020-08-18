@@ -157,14 +157,14 @@
     --primary-color:#024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
-    background-color: var(--primary-color);
+    background-color: var(--sbt-header-bg);
     box-shadow: var(--sbt-box-shadow-3px);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: calculateRem(-20px);
     border-radius: 100%;
-    color: var(--white);
+    color: var(--primary-color);
     position: absolute;
     left: calculateRem(24px);
     top: 0px;
@@ -182,8 +182,8 @@
 
   @include respond-above(md) {
     position: sticky;
-    top: calculateRem(188px);
-    margin-top: calculateRem(-128px);
+    top: calculateRem(160px);
+    margin-top: calculateRem(-96px);
   }
 
   @include respond-below(md) {
@@ -243,7 +243,7 @@
     min-width: calculateRem(232px);
     padding: calculateRem(24px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
     position: fixed;
-    top: 4px;
+    top: 0px;
     right: 0;
     left: 0;
     width: calc(100% - 8px);

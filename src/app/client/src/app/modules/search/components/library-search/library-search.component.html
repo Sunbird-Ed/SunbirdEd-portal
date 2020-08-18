@@ -31,7 +31,7 @@
               *ngIf="!showLoader && contentList.length" class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
+                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                   [telemetryInteractEdata]="cardIntractEdata"
                   [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'Content',ver:'1.0'}"
                   (cardClick)="playContent($event)" [content]="content"
@@ -72,7 +72,7 @@
           <div class="twelve wide column" *ngIf="showLoader">
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item" *ngFor="let i of numberOfSections">
-                <sb-library-card [layoutConfig]="true" [isLoading]="true"></sb-library-card>
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
               </div>
             </div>
           </div>

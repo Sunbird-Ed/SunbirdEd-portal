@@ -27,7 +27,6 @@
     }
   
     .template-image {
-      border: calculateRem(1px) solid var(--primary-400);
       border-radius: calculateRem(4px);
       width: 100%;
   
@@ -121,6 +120,10 @@
               width: 100%;
             }
 
+            .no-cert {
+              min-height: calculateRem(300px);
+            }
+
             .certificate-checkbox {
               position: absolute;
               top: calculateRem(-20px);
@@ -170,7 +173,6 @@
       }
 
       .template-image {
-        border: calculateRem(1px) solid var(--primary-400);
         border-radius: calculateRem(4px);
         width: 100%;
     

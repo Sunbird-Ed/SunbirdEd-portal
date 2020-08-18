@@ -1,17 +1,17 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
   class="sb-modal sb-cert-preview-modal" appBodyScroll (dismissed)="closeModal()" #modal>
   <div class="sb-modal-header">
-    Certificate Preview
+    {{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
   </div>
   <div class="sb-modal-content">
     <div class="cert-preview-img"><img [src]="template?.value"></div>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal('select')">
-      Select template
+      {{resourceService?.frmelmnts?.cert?.lbl?.selectTemplate}}
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
-      Close
+      {{resourceService?.frmelmnts?.btn?.close}}
     </button>
   </div>
 </sui-modal>

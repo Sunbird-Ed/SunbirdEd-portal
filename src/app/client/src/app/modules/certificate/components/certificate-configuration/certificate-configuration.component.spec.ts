@@ -13,6 +13,19 @@ describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
 
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        Select: 'Select',
+      },
+      cert: {
+        lbl: {
+          preview: 'preview',
+        }
+    }
+  }
+};
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, CoreModule,
@@ -22,13 +35,13 @@ describe('CertificateConfigurationComponent', () => {
         ConfigService,
         NavigationHelperService,
         UtilService,
-        ResourceService,
         CertificateService,
         UserService,
         PlayerService,
         CertRegService,
         BrowserCacheTtlService,
-        ToasterService
+        ToasterService,
+        {provide: ResourceService, useValue: resourceBundle}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

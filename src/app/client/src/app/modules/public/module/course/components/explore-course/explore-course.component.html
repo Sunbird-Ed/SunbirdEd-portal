@@ -27,7 +27,7 @@
           <div class="sb-grid dynamic-section-card ">
             <div in-view-item [id]="i" [data]="content" class=""
               *ngFor="let content of contentList;let i = index;">
-              <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
+              <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                 [telemetryInteractEdata]="cardIntractEdata"
                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                 (cardClick)="playContent($event)" [content]="content"
