@@ -41,15 +41,15 @@ describe('CertPreviewPopupComponent', () => {
 
   it('Should close the modal by triggering emit event with name & template ', () => {
     spyOn(component.close, 'emit');
-    var mockObj = jasmine.createSpyObj({name: "select", template:  {value: "cert.svg"}})
+    const mockObj = jasmine.createSpyObj({name: 'select', template:  {value: 'cert.svg'}});
     component.template = mockObj.template;
     component.closeModal(mockObj.name);
     expect(component.close.emit).toHaveBeenCalledWith(mockObj);
   });
-  
+
   it('Should handle the "window.popstate" event', () => {
     spyOn(component, 'onPopState');
-    var popStateEvent = new Event('popstate');
+    const popStateEvent = new Event('popstate');
     window.dispatchEvent(popStateEvent);
     expect(component.onPopState).toHaveBeenCalledWith(popStateEvent);
   });
@@ -58,26 +58,22 @@ describe('CertPreviewPopupComponent', () => {
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
-    component.onPopState(new Event('popstate'));   
+    component.onPopState(new Event('popstate'));
     expect(component.modal.deny).toHaveBeenCalled();
-  })
-  
+  });
+
   it('Should close the modal if exist ', () => {
     // var modal = jasmine.createSpy('modal.deny() spy').and.callFake(() => { return true});
     // let modalElement = fixture.debugElement.query(By.css("sui-modal"));
     // let modal = modalElement.componentInstance;
     // component.modal = modal;
-    
-    // var certTemp = {value: "cert.svg"};    
+    // var certTemp = {value: "cert.svg"};
     // component.template = certTemp;
-     
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
-    component.closeModal();   
+    component.closeModal();
 
     expect(component.modal.deny).toHaveBeenCalled();
-  }); 
-
- 
+  });
 });
