@@ -101,7 +101,7 @@
     "ngx-md": "^8.1.6",
     "ngx-order-pipe": "^2.0.4",
     "ngx-slick": "0.2.1",
-    "rxjs": "^6.6.2",
+    "rxjs": "^6.5.5",
     "shepherd.js": "2.10.0",
     "slick-carousel": "^1.8.1",
     "sunbird-chatbot-client": "0.0.5",
