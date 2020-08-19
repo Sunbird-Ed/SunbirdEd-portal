@@ -930,6 +930,9 @@ html[layout='joy'] {
   .sb-pageSection-header {
     margin: 8px 0 0px 0;
   }
+  app-view-all .sbt-filter {
+    margin-top: calculateRem(-32px);
+  }
 }
 
 html[layout='joy'][dir='rtl'] {
