@@ -100,7 +100,7 @@ describe('ContentUploaderComponent', () => {
             useClass: TranslateFakeLoader
          }
       }),HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
-                  RouterTestingModule, TelemetryModule],
+                  RouterTestingModule, TelemetryModule, SharedModule.forRoot()],
       declarations: [ ContentUploaderComponent ],
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,

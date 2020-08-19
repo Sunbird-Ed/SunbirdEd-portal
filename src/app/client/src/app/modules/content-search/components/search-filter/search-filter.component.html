@@ -71,7 +71,7 @@
                     <!-- medium section -->
                 <div class="w-100">
                     <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" 
-                     [title]="resourceService.frmelmnts.lbl.medium | translate" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
+                     [title]="resourceService.frmelmnts?.lbl?.medium | translate" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
                      (selectedValue)="mediumFilterChange($event)" [selectedOption]="selectedOption"
                     appTelemetryInteract [telemetryInteractEdata]="getMediumInteractEdata()"></app-select-option-group> 
                 </div>

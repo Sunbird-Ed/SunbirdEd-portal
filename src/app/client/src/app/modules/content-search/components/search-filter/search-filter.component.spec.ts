@@ -56,7 +56,7 @@ describe('SearchFilterComponent', () => {
                         useClass: TranslateFakeLoader
                      }
                   }),
-                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]),SharedModule],
+                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]),SharedModule.forRoot()],
             providers: [ ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },
