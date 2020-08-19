@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'configure/certificate', component: CertificateConfigurationComponent, canActivate: [AuthGuard],
     data: {
       telemetry: {
-        env: 'certs', pageid: 'certificate-details', type: 'view'
+        env: 'certs', pageid: 'certificate-configuration', type: 'view', subtype: 'paginate', ver: '1.0'
       },
       roles: 'courseBatchRoles',
       hideHeaderNFooter: false

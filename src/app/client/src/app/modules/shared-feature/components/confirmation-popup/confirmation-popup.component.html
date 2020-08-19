@@ -20,9 +20,9 @@ appBodyScroll
         <div class="checkbox-img"></div>
       </div>
       <div class="eleven wide column">
-        <div *ngIf="popupMode === 'create'" class="pb-16 font-weight-bold">Batch created Successfully</div>
-        <div *ngIf="popupMode === 'edit'" class="pb-16 font-weight-bold">Batch edited Successfully</div>
-        <div class="">Would you like to add and configure the certificate for this batch?</div>
+        <div *ngIf="popupMode === 'create'" class="pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.batchCreateSuccess}}</div>
+        <div *ngIf="popupMode === 'edit'" class="pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.batchUpdateSuccess}}</div>
+        <div class="">{{resourceService?.frmelmnts?.cert?.lbl?.addCertToBatch}}</div>
       </div>
     </div>
   </div>
@@ -30,10 +30,10 @@ appBodyScroll
   <!-- Action-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()">
-      Close
+      {{resourceService?.frmelmnts.btn.close}}
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="navigateToAddCertificate()">
-      Add Certificate
+      {{resourceService?.frmelmnts.cert.lbl.addCert}}
     </button>
   </div>
 
