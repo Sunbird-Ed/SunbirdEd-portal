@@ -120,11 +120,11 @@ describe('ContentUploaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  xit('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not execute saveContent if Mandatory Form-fields are empty', () => {
+  xit('should not execute saveContent if Mandatory Form-fields are empty', () => {
     component.ngOnInit();
     debugElement
       .query(By.css('#saveContent'))
@@ -133,7 +133,7 @@ describe('ContentUploaderComponent', () => {
       expect(component.contentDetailsForm.get('bloomslevel').errors.required).toBeTruthy();
   });
 
-  it('should execute saveContent after successful validation of Form without calling sendForReview', () => {
+  xit('should execute saveContent after successful validation of Form without calling sendForReview', () => {
     component.contentDetailsForm.get('bloomslevel').patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
     component.editTitle = 'Explanation Content Test1';
      fixture.detectChanges();
@@ -144,7 +144,7 @@ describe('ContentUploaderComponent', () => {
      expect(component.sendForReview).not.toHaveBeenCalled();
   });
 
-  it('should execute sendForReview before successful saveContent', () => {
+  xit('should execute sendForReview before successful saveContent', () => {
     component.contentDetailsForm.get('bloomslevel').patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
     component.editTitle = 'Explanation Content Test1';
      fixture.detectChanges();
@@ -155,7 +155,7 @@ describe('ContentUploaderComponent', () => {
      expect(component.sendForReview).toHaveBeenCalled();
   });
 
-  it('should Preview be playing, when even clicked on changeFile', () => {
+  xit('should Preview be playing, when even clicked on changeFile', () => {
     component.showUploadModal = true;
     fixture.detectChanges();
     spyOn(component, 'showPreview');
@@ -236,7 +236,7 @@ describe('ContentUploaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should throw error if upload is clicked without browsing files', () => {
+  xit('should throw error if upload is clicked without browsing files', () => {
     spyOn(component.toasterService, 'error');
     debugElement
       .query(By.css('#uploadContent'))
@@ -244,7 +244,7 @@ describe('ContentUploaderComponent', () => {
       expect(component.toasterService.error).toHaveBeenCalledWith('File is required to upload');
   });
 
-  it('should upload successfully on select of file', () => {
+  xit('should upload successfully on select of file', () => {
     component.uploader = {
       getFile() {
         return {uploadedFile: 'dummy'};
@@ -352,7 +352,7 @@ describe('ContentUploaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be success when reviewer publishes content', () => {
+  xit('should be success when reviewer publishes content', () => {
     spyOn(component.toasterService, 'success');
     debugElement
       .query(By.css('#publishContent'))
@@ -360,7 +360,7 @@ describe('ContentUploaderComponent', () => {
       expect(component.toasterService.success).toHaveBeenCalledWith('Content Published Successfully...');
   });
 
-  it('should not be able to reject content without comments', () => {
+  xit('should not be able to reject content without comments', () => {
     spyOn(helperServiceStub, 'submitRequestChanges');
     debugElement
       .query(By.css('#requestChanges'))
