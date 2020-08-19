@@ -7,6 +7,7 @@ import { ResourceService, NavigationHelperService, ToasterService } from '@sunbi
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry'
 
 export enum ProcessingModes {
   PROCESS_DROPDOWNS = 'processDropdowns',
@@ -38,6 +39,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certTypes: any;
   issueTo: any;
 
+  telemetryImpression: IImpressionEventInput;
   userPreference: FormGroup;
   disableAddCertificate = true;
   queryParams: any;
@@ -66,7 +68,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private certRegService: CertRegService,
     private navigationHelperService: NavigationHelperService,
     private activatedRoute: ActivatedRoute,
-    private toasterService: ToasterService ) { }
+    private toasterService: ToasterService,
+    private router: Router,
+    private telemetryService: TelemetryService ) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -98,6 +102,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }, (error) => {
       this.showLoader = false;
     });
+  }
+
+  ngAfterViewInit() {
+    this.setTelemetryImpressionData();
   }
 
   initializeLabels() {
@@ -146,7 +154,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.certificateService.fetchCertificatePreferences(request).pipe(
       tap((certTemplateData) => {
         this.certTemplateList = _.get(certTemplateData, 'result.response.data.range');
-        console.log('this.certTemplateList', this.certTemplateList);
       }),
       catchError(error => {
         return of({});
@@ -163,7 +170,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         } else {
           this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
         }
-        console.log('this.batchDetails', this.batchDetails);
       })
     );
   }
@@ -180,7 +186,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
-    console.log('this.userPreference', this.userPreference.value);
     if (this.userPreference.status === 'VALID'
     && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
       this.disableAddCertificate = false;
@@ -208,6 +213,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   attachCertificateToBatch() {
+    this.sendInteractData({id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change'});
     const request = {
       request: {
         courseId: _.get(this.queryParams, 'courseId'),
@@ -220,15 +226,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.isTemplateChanged) {
       request['request']['oldTemplateId'] = this.templateIdentifier;
     }
-    console.log('request', request);
-    // make the api call to add certificate
+
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
+      this.isTemplateChanged = false;
       if (this.configurationMode === 'add') {
         this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certAddSuccess);
       } else {
         this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certUpdateSuccess);
       }
-      this.closeTemplateDetectModal();
       this.certificateService.getBatchDetails(_.get(this.queryParams, 'batchId')).subscribe(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
         this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
@@ -236,8 +241,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }, error => {
       });
     }, error => {
-      // show an error toast message
-      console.log('add cert error', error);
+
       if (this.configurationMode === 'add') {
         this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
       } else {
@@ -261,8 +265,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   editCertificate() {
-    this.currentState = this.screenStates.certRules;
     this.configurationMode = 'edit';
+    this.currentState = this.screenStates.certRules;
+    this.sendInteractData({id: 'edit-certificate'});
   }
 
   getCriteria(rawDropdownValues) {
@@ -275,7 +280,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.issueTo = _.get(abc, 'issueTo');
     this.certTypes = _.get(abc, 'certTypes');
     const certTypeFormEle = this.userPreference.controls['certificateType'];
-    const  issueToFormEle = this.userPreference.controls['issueTo'];
+    const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
     this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
@@ -288,16 +293,19 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.config.remove.show = show;
         this.config.select.show = !show;
         this.validateForm();
+        this.sendInteractData({id: 'select-template'});
         break;
       case 'remove' :
         this.selectedTemplate = {};
         this.config.select.show = show;
         this.config.remove.show = !show;
         this.validateForm();
+        this.sendInteractData({id: 'unselect-template'});
         break;
       case 'preview':
         this.previewTemplate = template;
         this.showPreviewModal = true;
+        this.sendInteractData({id: 'preview-template'});
         break;
     }
   }
@@ -315,10 +323,21 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.showPreviewModal = false;
     this.selectedTemplate = _.get(event, 'name') ? _.get(event, 'template') : this.selectedTemplate;
     this.validateForm();
+    if (_.get(event, 'name')) {
+      this.sendInteractData({id: 'select-template'});
+    } else {
+      this.sendInteractData({id: 'close-preview'});
+    }
   }
 
   closeTemplateDetectModal () {
     this.isTemplateChanged = false;
+    this.sendInteractData({id: 'cancel-template-change' });
+  }
+
+  navigateToCertRules() {
+    this.currentState = this.screenStates.certRules;
+    this.sendInteractData({ id: 'add-certificate' });
   }
 
   goBack() {
@@ -328,6 +347,70 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     } else {
       this.navigationHelperService.navigateToLastUrl();
     }
+  }
+
+  cancelSelection() {
+    this.currentState = this.screenStates.default;
+    this.sendInteractData({id: this.configurationMode === 'add' ? 'cancel-add-certificate' : 'cancel-update-certificate' });
+    if (this.configurationMode === 'add') {
+      this.userPreference.reset();
+    }
+  }
+
+  setTelemetryImpressionData(navigatedPageId?) {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: _.get(this.queryParams, 'batchId')
+        },
+        {
+          type: 'Course',
+          id: _.get(this.queryParams, 'courseId')
+        }]
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        pageid: navigatedPageId ? navigatedPageId : this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
+    this.telemetryService.impression(this.telemetryImpression);
+  }
+
+  sendInteractData(interactData, interactObject?) {
+    const data = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: _.get(this.queryParams, 'batchId')
+        },
+        {
+          type: 'Course',
+          id: _.get(this.queryParams, 'courseId')
+        }]
+      },
+      edata: {
+        id: _.get(interactData, 'id'),
+        type: 'CLICK',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+
+    if (this.configurationMode === 'edit') {
+      data['object'] = {
+        id: _.get(this.selectedTemplate, 'name'),
+        type: 'Certificate',
+        ver: '1.0',
+        rollup: { l1: _.get(this.queryParams, 'courseId') }
+      };
+    }
+
+    this.telemetryService.interact(data);
   }
 
   ngOnDestroy() {

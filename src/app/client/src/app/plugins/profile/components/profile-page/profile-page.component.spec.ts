@@ -35,9 +35,8 @@ describe('ProfilePageComponent', () => {
       }
     };
   }
-  class MockCanvg {
-    static from() {
-    }
+  class MockDomToImage {
+    toPng() {}
   }
   class MockJsPDF {
     addImage() {
@@ -85,7 +84,7 @@ describe('ProfilePageComponent', () => {
       providers: [ProfileService, UserService, SearchService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
-        { provide: 'CANVG', useValue: Promise.resolve(MockCanvg) },
+        { provide: 'DOMTOIMAGE', useValue: Promise.resolve(MockDomToImage) },
         { provide: 'JSPDF', useValue: Promise.resolve(MockJsPDF) },
         { provide: 'CS_COURSE_SERVICE', useClass: MockCSModule },
         { provide: ResourceService, useValue: resourceBundle },
