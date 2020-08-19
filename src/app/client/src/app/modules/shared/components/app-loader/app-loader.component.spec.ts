@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import {of} from 'rxjs';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 
 describe('AppLoaderComponent', () => {
@@ -13,7 +14,12 @@ describe('AppLoaderComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,SharedModule.forRoot()],
+      imports: [HttpClientTestingModule,TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),],
       declarations: [ AppLoaderComponent ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, LayoutService]
     })

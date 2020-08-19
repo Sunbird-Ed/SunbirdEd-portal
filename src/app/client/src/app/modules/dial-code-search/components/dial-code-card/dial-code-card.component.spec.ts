@@ -8,6 +8,7 @@ import { CacheService } from 'ng2-cache-service';
 import { DialCodeCardComponent } from './dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('DialCodeCardComponent', () => {
   let component: DialCodeCardComponent;
@@ -15,7 +16,12 @@ describe('DialCodeCardComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,SharedModule.forRoot()],
+      imports: [HttpClientTestingModule,TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),],
       declarations: [ DialCodeCardComponent, CdnprefixPipe ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]

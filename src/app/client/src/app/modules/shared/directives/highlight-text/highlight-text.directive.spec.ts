@@ -7,6 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { BrowserCacheTtlService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('HighlightTextDirective', () => {
   let highlightTextDirective: HighlightTextDirective;
@@ -14,6 +15,12 @@ describe('HighlightTextDirective', () => {
   beforeEach(() => {
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr' } };
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                })],
       providers: [HttpClientTestingModule, HttpClient, HttpHandler, CacheService, BrowserCacheTtlService,
         HighlightTextDirective, ConfigService, ResourceService,
         { provide: ElementRef, useValue: elementRefStub }
