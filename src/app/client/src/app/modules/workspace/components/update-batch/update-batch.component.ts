@@ -178,7 +178,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   * initializes form fields and apply field level validation
   */
   private initializeUpdateForm(): void {
-    const issueCertificate = _.get(this.batchDetails, 'cert_templates') && Object.keys(_.get(this.batchDetails, 'cert_templates')).length ? 'yes' : 'no';
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
@@ -194,8 +193,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate),
-      issueCertificate: new FormControl(issueCertificate, [Validators.required])
+      enrollmentEndDate: new FormControl(enrollmentEndDate)
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {

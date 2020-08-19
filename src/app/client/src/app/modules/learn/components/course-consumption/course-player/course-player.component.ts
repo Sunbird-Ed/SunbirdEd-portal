@@ -221,6 +221,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   onPopupClose(event) {
     if (_.get(event, 'mode') === 'add-certificates') {
       this.navigateToConfigureCertificate('add', _.get(event, 'batchId'));
+      this.logTelemetry('choose-to-add-certificate');
+    } else {
+      this.logTelemetry('deny-add-certificate');
     }
     this.showConfirmationPopup = false;
   }
