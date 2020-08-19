@@ -351,9 +351,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   cancelSelection() {
     this.currentState = this.screenStates.default;
+    this.userPreference.controls['allowPermission'].reset();
     this.sendInteractData({id: this.configurationMode === 'add' ? 'cancel-add-certificate' : 'cancel-update-certificate' });
     if (this.configurationMode === 'add') {
       this.userPreference.reset();
+      this.selectedTemplate = {};
     }
   }
 
