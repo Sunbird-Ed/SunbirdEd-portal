@@ -49,7 +49,7 @@ describe('SearchFilterComponent', () => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],
             imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),
-                SuiModule, HttpClientModule, SharedModule, RouterModule.forRoot([])],
+                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]),SharedModule],
             providers: [ ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },

@@ -11,7 +11,7 @@ import { UUID } from 'angular2-uuid';
 import * as dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateStore } from '@ngx-translate/core';
 /**
  * Service to fetch resource bundle
  */

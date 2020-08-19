@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CacheService } from 'ng2-cache-service';
 import { AppLoaderComponent } from './app-loader.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import {of} from 'rxjs';
 
@@ -13,7 +13,7 @@ describe('AppLoaderComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,SharedModule.forRoot()],
       declarations: [ AppLoaderComponent ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, LayoutService]
     })

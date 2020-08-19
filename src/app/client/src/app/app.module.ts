@@ -19,9 +19,10 @@ import {ChatLibModule, ChatLibService} from 'sunbird-chatbot-client';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import ngx-translate and the http loader
-import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateStore } from "@ngx-translate/core";
+
 
 @NgModule({
   declarations: [
@@ -36,19 +37,19 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+    }),
     DeviceDetectorModule.forRoot(),
     ChatLibModule,
     SharedFeatureModule,
     ...PluginModules,
      // ngx-translate and the loader module
      HttpClientModule,
-     TranslateModule.forRoot({
-         loader: {
-             provide: TranslateLoader,
-             useFactory: HttpLoaderFactory,
-             deps: [HttpClient]
-         }
-     }),
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
@@ -56,13 +57,14 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
   providers: [
     CacheService,
     ChatLibService,
+    TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
   ]
 })
 export class AppModule {
-  constructor(bootstrapFramework: BootstrapFramework,private translate: TranslateService) {
+  constructor(bootstrapFramework: BootstrapFramework) {
     bootstrapFramework.initialize(WebExtensionsConfig);
   }
 }

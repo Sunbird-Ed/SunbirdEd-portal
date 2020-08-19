@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
 import { DateFormatPipe, InterpolatePipe } from '@sunbird/shared';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -22,7 +22,7 @@ describe('CollectionPlayerMetadataComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
       imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [ResourceService, ConfigService, CacheService,
+      providers: [ResourceService, ConfigService, CacheService, SharedModule.forRoot(),
         BrowserCacheTtlService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
