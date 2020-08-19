@@ -38,7 +38,7 @@
         <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="twelve wide column right aligned py-0" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
+        <div class="twelve wide column right aligned py-0 mt-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager && pager.pages.length">
                 <div class="sb-pagination my-0">
                 <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
