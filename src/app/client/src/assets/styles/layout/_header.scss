@@ -3,7 +3,7 @@
 .sbt-header-bar {
   width: 100%;
   @include respond-above(sm) {
-  height:calculateRem(86px);
+  height:calculateRem(80px);
   }
 }
 .sbt-header-tool-bar {
@@ -32,7 +32,7 @@
   padding: calculateRem(16px) calculateRem(16px) calculateRem(0px) calculateRem(16px);
   @include respond-above(sm) {
     padding: 0px 0px;
-    min-height: calculateRem(86px);
+    min-height: calculateRem(80px);
     align-items: center;
     }
     .profile-avtar {
@@ -49,7 +49,7 @@
   padding: 0 calculateRem(8px) calculateRem(8px) calculateRem(16px);
   }
   @include respond-above(sm) {
-    height:calculateRem(72px);
+    height:calculateRem(64px);
     background: none;
     padding: 0px;
     }

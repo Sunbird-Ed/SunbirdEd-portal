@@ -192,8 +192,8 @@ select:-internal-autofill-selected {
   }
 
   &:focus-within {
-    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
-    border-radius: calculateRem(3px);
+    box-shadow: none;
+    border-radius:inherit;
   }
 
   &.no-btn {
@@ -236,9 +236,7 @@ select:-internal-autofill-selected {
     font-size: var(--font-size-sm);
     min-height: calculateRem(48px);
     border: 0;
-    // border-right: calculateRem(0.5px) solid var(--primary-300);
     outline: 0;
-    border-radius: 0px;
     padding: calculateRem(4px) calculateRem(88px) calculateRem(4px) calculateRem(40px);
     border-radius:calculateRem(28px);
     line-height: normal;
@@ -246,6 +244,12 @@ select:-internal-autofill-selected {
     color: var(--gray-200);
     html[dir="rtl"] & {
       padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
+    } 
+    &:hover {
+      box-shadow: var(--sbt-box-shadow-6px);
+    }
+    &:focus {
+      outline:0px;
     }
   }
 
@@ -262,6 +266,7 @@ select:-internal-autofill-selected {
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
+    box-shadow: none !important;
     html[dir="rtl"] & {
       left: 8px;
     right: inherit;
