@@ -324,7 +324,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
     const request: any = {
       userId: this.userService.userid,
-      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
       status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
