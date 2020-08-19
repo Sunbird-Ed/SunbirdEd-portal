@@ -243,6 +243,24 @@ describe('AssessmentPlayerComponent', () => {
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
 
+  it('should call contentProgressEvent', () => {
+    component.batchId = '121787782323';
+    component.enrolledBatchInfo = { status: 1 };
+    component.activeContent = {
+      contentType: 'SelfAssess'
+    };
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn<any>(component, 'validEndEvent').and.returnValue(true);
+    spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(throwError({}));
+    const event = {
+      detail: { telemetryData: { eid: undefined } },
+      data: 'renderer:question:submitscore'
+    };
+    component.contentProgressEvent(event);
+    expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
+
+  });
+
   it('should not update content state if, batch id is not present', () => {
     component.batchId = undefined;
     const resp = component['contentProgressEvent']({});

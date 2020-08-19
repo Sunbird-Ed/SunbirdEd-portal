@@ -13,6 +13,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
+const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
   selector: 'app-assessment-player',
@@ -323,18 +324,27 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     const telObject = _.get(event, 'detail.telemetryData');
     const eid = _.get(telObject, 'eid');
     /* istanbul ignore else */
-    if ((eid === 'END' && !this.validEndEvent(event))  || !eid) {
+    if (eid === 'END' && !this.validEndEvent(event)) {
       return;
     }
 
     const request: any = {
       userId: this.userService.userid,
-      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && this.courseProgress === 100) ? 2 : 1,
+      status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
+
+    /* istanbul ignore else */
+    if (!eid) {
+      const contentType = this.activeContent.contentType;
+      /* istanbul ignore else */
+      if (contentType === 'SelfAssess' && _.get(event, 'data') === ACCESSEVENT) {
+        request['status'] = 2;
+      }
+    }
 
     /* istanbul ignore else */
     if (request.status === 2 && !this.isUnitCompleted) {
