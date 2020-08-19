@@ -19,10 +19,10 @@
         <div class="five wide column">
           <div class="fsmall certificate-id-info">
             <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': channelName}} </div>
-            <div class="py-8">{{resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': channelName}}</div>
+            <div class="py-8">{{resourceService?.frmelmnts?.reissue?.lbl?.instructions | interpolate:'{instance}': channelName}}</div>
             <div class="pt-8">
               <div>{{resourceService?.frmelmnts?.lbl?.step1}} {{resourceService?.frmelmnts?.lbl?.profileTab}}</div>
-              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': channelName}}</div>
+              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.reissue?.lbl?.displayUser | interpolate:'{instance}': channelName}}</div>
             </div>
           </div>
         </div>

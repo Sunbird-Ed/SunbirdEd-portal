@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -69,6 +70,41 @@ describe('PageSectionComponent', () => {
     spyOn(component, 'reInitSlick');
     component.ngOnChanges();
     expect(component.reInitSlick).toHaveBeenCalled();
+  });
+  it('should call selectedLanguageTranslation', () => {
+    spyOn(component, 'updateSlick');
+    spyOn(component, 'selectedLanguageTranslation');
+    component.cardType = 'batch';
+    component.pageid = 'course';
+    component.section = {name: 'Section 1', length: 0, contents: []};
+    component.ngOnInit();
+    expect(component.updateSlick).toHaveBeenCalled();
+    component.resourceService.languageSelected$.subscribe(item => {
+      expect(component.selectedLanguageTranslation).toHaveBeenCalled();
+    });
+  });
+
+  it ('should call updateSlick on reInitSlick', () => {
+    spyOn(component, 'updateSlick');
+    spyOn(component['cdr'], 'detectChanges');
+    component.reInitSlick();
+    expect(component.updateSlick).toHaveBeenCalled();
+    expect(component.contentList.length).toEqual(0);
+    expect(component.maxSlide).toEqual(0);
+    expect(component.refresh).toBeTruthy();
+    expect(component['cdr'].detectChanges).toHaveBeenCalled();
+  });
+
+  it ('should emit view all', () => {
+    spyOn(component.viewAll, 'emit');
+    component.navigateToViewAll({});
+    expect(component.viewAll.emit).toHaveBeenCalledWith({});
+  });
+
+  it ('should call updateContentViewed()', () => {
+    spyOn(component, 'updateContentViewed');
+    component.ngOnDestroy();
+    expect(component.updateContentViewed).toHaveBeenCalled();
   });
 
 });

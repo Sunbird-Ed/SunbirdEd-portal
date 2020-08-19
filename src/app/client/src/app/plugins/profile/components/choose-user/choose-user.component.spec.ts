@@ -140,7 +140,7 @@ describe('ChooseUserComponent', () => {
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
 
-  xit('should switch selected user', () => {
+  it('should switch selected user', () => {
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
@@ -173,5 +173,15 @@ describe('ChooseUserComponent', () => {
     expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
+  it('should route to create-managed user', () => {
+    component.navigateToCreateUser();
+    expect(component.router.navigate).toHaveBeenCalledWith(['/profile/create-managed-user']);
+  });
+
+  it('should unsubscribe', () => {
+    spyOn(component['userDataSubscription'], 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component['userDataSubscription'].unsubscribe).toHaveBeenCalled();
+  });
 
 });
