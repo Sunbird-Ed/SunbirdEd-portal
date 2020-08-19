@@ -7,14 +7,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './content-credits.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
-describe('ContentCreditsComponent', () => {
+fdescribe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
   let fixture: ComponentFixture<ContentCreditsComponent>;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, HttpClientTestingModule, SharedModule.forRoot()],
+      imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      })],
       declarations: [ContentCreditsComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]

@@ -8,6 +8,7 @@ import { UserService, LearnerService, PermissionService, ContentService } from '
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 @Component({
   template: `<a appPermission id="permission" [permission]= 'adminDashboard'
   href="#">dashboard</a>`
@@ -15,13 +16,18 @@ import { configureTestSuite } from '@sunbird/test-util';
 class TestWrapperComponent {
   adminDashboard = [];
 }
-describe('PermissionDirective', () => {
+fdescribe('PermissionDirective', () => {
   let component: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, CoreModule],
+      imports: [HttpClientModule, CoreModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),],
       declarations: [TestWrapperComponent],
       providers: [ToasterService, ResourceService, PermissionService, UserService,
       CacheService, ContentService, ConfigService, LearnerService, HttpClient, BrowserCacheTtlService]

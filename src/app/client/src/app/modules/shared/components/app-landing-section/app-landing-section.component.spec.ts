@@ -3,8 +3,9 @@ import { SharedModule } from '@sunbird/shared';
 import { AppLandingSectionComponent } from './app-landing-section.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-describe('AppLandingSectionComponent', () => {
+fdescribe('AppLandingSectionComponent', () => {
   let component: AppLandingSectionComponent;
   let fixture: ComponentFixture<AppLandingSectionComponent>;
 
@@ -18,13 +19,13 @@ describe('AppLandingSectionComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(),TranslateModule.forRoot({
+      imports: [ HttpClientModule,SharedModule.forRoot(),TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
       }),],
-      providers: []
+      providers: [HttpClient]
     })
     .compileComponents();
   }));

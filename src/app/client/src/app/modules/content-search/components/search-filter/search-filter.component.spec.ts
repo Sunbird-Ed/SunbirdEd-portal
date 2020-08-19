@@ -17,7 +17,7 @@ import { ContentSearchService } from './../../services';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 
 
-describe('SearchFilterComponent', () => {
+fdescribe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
     let fixture: ComponentFixture<SearchFilterComponent>;
     const resourceBundle = {

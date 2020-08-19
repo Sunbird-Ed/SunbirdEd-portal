@@ -11,7 +11,8 @@ import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } 
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
-describe('CollectionPlayerMetadataComponent', () => {
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+fdescribe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
   const fakeActivatedRoute = {
@@ -21,8 +22,13 @@ describe('CollectionPlayerMetadataComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
-      imports: [HttpClientTestingModule, RouterTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      })],
+      providers: [ResourceService, ConfigService, CacheService,
         BrowserCacheTtlService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })

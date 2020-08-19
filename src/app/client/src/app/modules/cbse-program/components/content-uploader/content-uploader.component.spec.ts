@@ -23,8 +23,9 @@ import { HelperService } from '../../services/helper.service';
 import { ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
 // Following describe method is for 'PREVIEW' scenario
-describe('ContentUploaderComponent', () => {
+fdescribe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
   let fixture: ComponentFixture<ContentUploaderComponent>;
   let debugElement: DebugElement;
@@ -93,7 +94,12 @@ describe('ContentUploaderComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
+      imports: [SuiModule, SuiTabsModule, FormsModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
                   RouterTestingModule, TelemetryModule],
       declarations: [ ContentUploaderComponent ],
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
