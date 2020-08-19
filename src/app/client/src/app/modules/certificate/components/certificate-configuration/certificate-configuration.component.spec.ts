@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertificateConfigurationComponent } from './certificate-configuration.component';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
@@ -10,13 +10,29 @@ import { BrowserCacheTtlService, ConfigService, NavigationHelperService, Toaster
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 // import { By } from '@angular/platform-browser';
 // import { queryDebugElement } from 'src/app/testUtil/test-helper';
-
+import { TelemetryService } from '@sunbird/telemetry';
+import { of } from 'rxjs';
 
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
   let navigationHelperService: NavigationHelperService;
   let de: DebugElement;
+
+  const fakeActivatedRoute = {
+    snapshot: {
+      data: {
+        telemetry: {
+          env: 'certs',
+          pageid: 'certificate-configuration',
+          type: 'view',
+          subtype: 'paginate',
+          ver: '1.0'
+        }
+      }
+    },
+    queryParams: of({})
+  };
 
   const resourceBundle = {
     frmelmnts: {
@@ -46,7 +62,9 @@ describe('CertificateConfigurationComponent', () => {
         CertRegService,
         BrowserCacheTtlService,
         ToasterService,
-        {provide: ResourceService, useValue: resourceBundle}
+        TelemetryService,
+        {provide: ResourceService, useValue: resourceBundle},
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
