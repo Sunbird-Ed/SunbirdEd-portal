@@ -25,7 +25,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateLoader, TranslateFakeLoader, TranslateModule } from '@ngx-translate/core';
 // Following describe method is for 'PREVIEW' scenario
-fdescribe('ContentUploaderComponent', () => {
+describe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
   let fixture: ComponentFixture<ContentUploaderComponent>;
   let debugElement: DebugElement;

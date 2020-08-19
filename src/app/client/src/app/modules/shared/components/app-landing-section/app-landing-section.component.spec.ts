@@ -5,7 +5,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-fdescribe('AppLandingSectionComponent', () => {
+describe('AppLandingSectionComponent', () => {
   let component: AppLandingSectionComponent;
   let fixture: ComponentFixture<AppLandingSectionComponent>;
 

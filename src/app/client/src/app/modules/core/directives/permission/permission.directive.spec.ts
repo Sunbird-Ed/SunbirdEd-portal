@@ -16,7 +16,7 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-tran
 class TestWrapperComponent {
   adminDashboard = [];
 }
-fdescribe('PermissionDirective', () => {
+describe('PermissionDirective', () => {
   let component: TestWrapperComponent;
   let fixture: ComponentFixture<TestWrapperComponent>;
   configureTestSuite();

@@ -12,7 +12,7 @@ import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
-fdescribe('CollectionPlayerMetadataComponent', () => {
+describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
   const fakeActivatedRoute = {

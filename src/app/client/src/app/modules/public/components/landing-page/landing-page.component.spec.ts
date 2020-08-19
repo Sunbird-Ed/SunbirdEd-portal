@@ -5,7 +5,7 @@ import {  SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-fdescribe('LandingPageComponent', () => {
+describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
   let fixture: ComponentFixture<LandingPageComponent>;
   configureTestSuite();
