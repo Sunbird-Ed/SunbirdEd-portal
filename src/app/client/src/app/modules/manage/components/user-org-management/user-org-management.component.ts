@@ -1,9 +1,9 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import {Component, AfterViewInit, OnInit, OnDestroy} from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
 import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
-import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -17,7 +17,7 @@ import {Subject} from 'rxjs';
   templateUrl: 'user-org-management.component.html',
   styleUrls: ['user-org-management.component.scss']
 })
-export class UserOrgManagementComponent implements OnInit, AfterViewInit {
+export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public showModal = false;
   public userService: UserService;
@@ -75,11 +75,19 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public teacherDetailsInteractEdata: IInteractEventEdata;
   public selectFileInteractEdata: IInteractEventEdata;
   layoutConfiguration: any;
-  private unsubscribe$ = new Subject<void>();
+  public unsubscribe$ = new Subject<void>();
+  public uploadButton;
+  public fileUpload = null;
+  public selectUserValidationFileInteractEdata: IInteractEventEdata;
+  public userValidationUploadInteractEdata: IInteractEventEdata;
+  public openUploadModalInteractEdata: IInteractEventEdata;
+  public telemetryInteractObject: IInteractEventObject;
+  public showUploadUserModal = false;
+  public disableBtn = true;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
-              public layoutService: LayoutService) {
+              public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -93,6 +101,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initLayout();
+    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
@@ -132,6 +141,58 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
   downloadFile(path) {
     window.open(path, '_blank');
+  }
+
+  uploadCSV() {
+    const file: any = this.fileUpload;
+    if (file && file.name.match(/.(csv)$/i)) {
+      this.disableBtn = true;
+      this.uploadButton = this.resourceService.frmelmnts.btn.uploading;
+      const formData = new FormData();
+      formData.set('user', file);
+      formData.set('operation', 'selfdeclared');
+      this.manageService.bulkUserUpload(formData).subscribe(res => {
+        this.showUploadUserModal = false;
+        this.disableBtn = false;
+        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
+        this.toasterService.success(this.resourceService.frmelmnts.lbl.fileUploadSuccessMessage);
+      }, error => {
+        this.disableBtn = false;
+        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
+        if (_.get(error, 'error.params.err') === 'MANDATORY_PARAMETER_MISSING') {
+          this.toasterService.error(_.get(error, 'error.params.errmsg'));
+        } else {
+          this.toasterService.error(this.resourceService.frmelmnts.lbl.uploadFileError);
+        }
+      });
+    } else if (file && !(file.name.match(/.(csv)$/i))) {
+      this.toasterService.error(this.resourceService.messages.stmsg.m0080);
+    }
+  }
+
+  public fileChanged(event) {
+    this.fileUpload =  (event.target as HTMLInputElement).files[0];
+    this.disableBtn = false;
+  }
+  openModel() {
+    this.showUploadUserModal = !this.showUploadUserModal;
+    this.fileUpload = null;
+  }
+
+  closeUserValidationModal() {
+    this.showUploadUserModal = false;
+    const interactData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'close-upload-validation-status-modal',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   fetchDeclaredUserDetails() {
@@ -195,6 +256,26 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         id: 'upload-user',
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.selectUserValidationFileInteractEdata = {
+        id: 'select-user-validation-file',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.userValidationUploadInteractEdata = {
+        id: 'upload-user-validation-status',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.openUploadModalInteractEdata = {
+        id: 'open-upload-validation-status-modal',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.telemetryInteractObject = {
+        id: this.userService.userid,
+        type: 'User',
+        ver: '1.0'
       };
     });
   }
@@ -397,5 +478,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

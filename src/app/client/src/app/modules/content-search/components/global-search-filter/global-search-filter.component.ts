@@ -18,6 +18,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
   public resetFilterInteractEdata: IInteractEventEdata;
+  @Input() layoutConfiguration;
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
@@ -35,7 +36,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
   public resetFilters() {
-    this.selectedFilters = _.pick(this.selectedFilters, ['key']);
+    this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (_.get(this.activatedRoute, 'snapshot.params.pageNumber')) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
@@ -56,6 +57,9 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
+        if (queryParams.selectedTab){
+          queryFilters['selectedTab'] = queryParams.selectedTab;
+        }
         return queryFilters;
       })).subscribe(filters => {
         this.selectedFilters = _.cloneDeep(filters);
@@ -101,6 +105,19 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
         extra: { filters: this.selectedFilters }
       };
     }, 5);
+  }
+
+  removeFilterSelection(data) {
+    _.map(this.selectedFilters, (value, key) => {
+      if (this.selectedFilters[data.type] && !_.isEmpty(this.selectedFilters[data.type])) {
+        _.remove(value, (n) => {
+          return n === data.value;
+        });
+      }
+      if (_.isEmpty(value)) { delete this.selectedFilters[key]; }
+    });
+    this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
+    this.updateRoute();
   }
 
   ngOnDestroy() {

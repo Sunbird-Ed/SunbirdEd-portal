@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isLayoutAvailable()">
-  <div class="item py-8 pl-0 pr-24r">
+  <div class="item py-8 pr-8 computer only">
     <ng-container *ngFor="let contentType of contentTypes">
       <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)"
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
@@ -8,6 +8,20 @@
       </a>
     </ng-container>
   </div>
+  <div class="item mobile only">
+    <ng-container *ngFor="let contentType of contentTypes">
+      <div class="profile__actions">
+        <ul class="profile__actions__list pl-0">
+          <li *ngIf="contentType.isEnabled" (click)="showContentType(contentType);closeSideMenu.emit()"
+              [ngClass]="{'active': selectedContentType === contentType.contentType}"
+              class="list-item {{'item--' + getIcon(contentType)}}">
+            {{getTitle(contentType)}}
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+  </div>
+
 </ng-container>
 
 <ng-container *ngIf="isLayoutAvailable()">
@@ -21,5 +35,6 @@
       </a>
     </ng-container>
   </div>
+
 </ng-container>
 

@@ -92,9 +92,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.config = config;
     this.userService = userService;
     this.searchDisplayValueMappers = {
-      'All': 'all',
-      'Library': 'resources',
-      'Courses': 'courses',
       'Users': 'users'
     };
   }
@@ -143,7 +140,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   setSearchPlaceHolderValue () {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
-    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
+    if (keyName) {
+      this.searchPlaceHolderValue = this.selectedOption;
+    }
   }
 
   /**
@@ -169,6 +168,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       } else {
         redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
       }
+    }
+    if (!_.includes(['Users', 'profile'], this.selectedOption)) {
+      this.queryParam['selectedTab'] = 'all';
     }
     this.route.navigate([redirectUrl, 1], {
       queryParams: this.queryParam

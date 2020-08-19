@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
@@ -78,7 +78,7 @@
                 *ngIf="!declarationDetails"
                 (click)="navigate('/profile/teacher-declaration','submit')"
                 class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
+        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
       </div>
     </div>
 
@@ -272,7 +272,7 @@
   <!-- my badges section ends -->
 
   <div class="pt-30">
-    <div class="ui container">
+    <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}

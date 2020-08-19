@@ -139,7 +139,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!filters || status === 'FETCHING') {
       return; // filter yet to be fetched, only show loader
     }
-    const currentPageData = this.getPageData(this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute,'snapshot.queryParams.selectedTab') || 'textbook');
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
@@ -205,25 +205,25 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private  fetchCourses() {
-    this.cardData = [];
-    this.isLoading = true;
-    const request = {
-      filters: this.selectedFilters,
-      isCustodianOrg: this.custodianOrg,
-      channelId: this.channelId,
-      frameworkId: this.contentSearchService.frameworkId
-    };
-    this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
-    this.isLoading = false;
+  // private  fetchCourses() {
+  //   this.cardData = [];
+  //   this.isLoading = true;
+  //   const request = {
+  //     filters: this.selectedFilters,
+  //     isCustodianOrg: this.custodianOrg,
+  //     channelId: this.channelId,
+  //     frameworkId: this.contentSearchService.frameworkId
+  //   };
+  //   this.searchService.fetchCourses(request, ['Course']).pipe(takeUntil(this.unsubscribe$)).subscribe(cardData => {
+  //   this.isLoading = false;
 
-    this.cardData = _.sortBy(cardData, ['title']);
-  }, err => {
-      this.isLoading = false;
-      this.cardData = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-  });
-  }
+  //   this.cardData = _.sortBy(cardData, ['title']);
+  // }, err => {
+  //     this.isLoading = false;
+  //     this.cardData = [];
+  //     this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  // });
+  // }
 
   navigateToCourses(event) {
     const telemetryData = {
@@ -329,16 +329,22 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
         let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-        if(this.queryParams.key) {
+        let subTitle = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        let buttonText = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        if (this.queryParams.key) {
           const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
           const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
           title = title_part1 + ' ' + title_part2;
+        } else if (_.get(this.queryParams,'selectedTab') !== 'textbook') {
+          title = this.resourceService.frmelmnts.lbl.noContentfoundTitle;
+          subTitle = this.resourceService.frmelmnts.lbl.noContentfoundSubTitle;
+          buttonText = this.resourceService.frmelmnts.lbl.noContentfoundButtonText;
         }
         this.noResultMessage = {
           'title': title,
-          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-          'showExploreContentButton': false
+          'subTitle': subTitle,
+          'buttonText': buttonText,
+          'showExploreContentButton': true
         };
       });
   }

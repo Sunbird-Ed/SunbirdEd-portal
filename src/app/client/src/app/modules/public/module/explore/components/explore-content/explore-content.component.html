@@ -2,15 +2,9 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-        <ng-container *ngIf="!layoutConfiguration">
-          <app-data-driven-filter [pageId]="'explore-search'" *ngIf="initFilters" [filterEnv]="filterType"
-            [enrichFilters]="facetsList" [ignoreQuery]="['key']" [accordionDefaultOpen]=true [isShowFilterLabel]=true
-            [hashTagId]="hashTagId" [showSearchedParam]=true (dataDrivenFilter)="getFilters($event)">
-          </app-data-driven-filter>
-        </ng-container>
-        <ng-container *ngIf="layoutConfiguration">
-          <app-global-search-filter [facets]="facets" [isOpen]='true' *ngIf="initFilters && allTabData"
-            (filterChange)="getFilters($event)">
+        <ng-container>
+         <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+            *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
           </app-global-search-filter>
         </ng-container>
     </div>
@@ -21,7 +15,7 @@
             <div class="sb-pageSection-header">
               <div class="">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:'*' "></h4> 
+                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "></h4> 
                 <span class="badge">{{totalCount}}</span>
               </div>
             </div>
@@ -34,7 +28,7 @@
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                  (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
                 </sb-library-card>
@@ -50,7 +44,7 @@
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let i of numberOfSections">
-                <sb-library-card [layoutConfig]="true" [isLoading]="true"></sb-library-card>
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
               </div>
             </div>
           </div>

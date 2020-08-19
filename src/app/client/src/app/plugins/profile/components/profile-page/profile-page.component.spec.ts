@@ -1,16 +1,16 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService, OrgDetailsService} from '@sunbird/core';
+import { CoreModule, UserService, SearchService, PlayerService, LearnerService, CoursesService, CertRegService, OrgDetailsService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProfileService } from '@sunbird/profile';
-import {ProfilePageComponent} from './profile-page.component';
+import { ProfilePageComponent } from './profile-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { Response } from './profile-page.spec.data';
-import {of as observableOf,  throwError as observableThrowError } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
@@ -29,26 +29,41 @@ describe('ProfilePageComponent', () => {
   const env = 'profile';
   class ActivatedRouteStub {
     snapshot = {
-      root: { firstChild : {data: { telemetry: { env: env} } } },
-      data : {
-          telemetry: { env: env }
+      root: { firstChild: { data: { telemetry: { env: env } } } },
+      data: {
+        telemetry: { env: env }
       }
     };
   }
+  class MockDomToImage {
+    toPng() {}
+  }
+  class MockJsPDF {
+    addImage() {
+    }
+
+    save() {
+    }
+  }
+
+  class MockCSModule {
+    getSignedCourseCertificate() { return of({ printUri: '' }) }
+  }
+
   const resourceBundle = {
     'frmelmnts': {
       'instn': {
         't0015': 'Upload Organization',
         't0016': 'Upload User'
       },
-      'lbl' : {
+      'lbl': {
         'chkuploadsts': 'Check Status',
         'certificates': 'Certificates'
       },
     },
     'messages': {
       'smsg': {
-        'm0046' : 'Profile updated successfully...'
+        'm0046': 'Profile updated successfully...'
       },
       'fmsg': {
         'm0001': 'api failed, please try again',
@@ -63,17 +78,20 @@ describe('ProfilePageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,  SharedModule.forRoot(), CoreModule,
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
         TelemetryModule, NgInviewModule, SlickModule],
-      declarations: [ ProfilePageComponent ],
+      declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
+        { provide: 'DOMTOIMAGE', useValue: Promise.resolve(MockDomToImage) },
+        { provide: 'JSPDF', useValue: Promise.resolve(MockJsPDF) },
+        { provide: 'CS_COURSE_SERVICE', useClass: MockCSModule },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService, CertRegService, TelemetryService, OrgDetailsService],
+        ToasterService, CertRegService, TelemetryService, OrgDetailsService,],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -126,7 +144,7 @@ describe('ProfilePageComponent', () => {
   it('should call course service to get attended training data', () => {
     const courseService = TestBed.get(CoursesService);
     const learnerService = TestBed.get(LearnerService);
-    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses});
+    courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.courseSuccess.result.courses });
     courseService.initialize();
     component.getTrainingAttended();
     expect(component.attendedTraining).toBeDefined();
@@ -158,13 +176,13 @@ describe('ProfilePageComponent', () => {
     }]);
   });
 
-  it (`should show 'show more'`, () => {
+  it(`should show 'show more'`, () => {
     component.toggleCourse(true, 10);
     expect(component.courseLimit).toBe(10);
     expect(component.showMoreTrainings).toBe(false);
   });
 
-  it (`should show 'show less' after clicking 'show more'`, () => {
+  it(`should show 'show less' after clicking 'show more'`, () => {
     component.toggleCourse(false, 3);
     expect(component.courseLimit).toBe(3);
     expect(component.showMoreTrainings).toBe(true);
@@ -175,7 +193,7 @@ describe('ProfilePageComponent', () => {
     const profileService = TestBed.get(ProfileService);
     const toasterService = TestBed.get(ToasterService);
     component.userProfile = Response.userProfile;
-    component.profileModal =  { modal : { deny: () => {}  }};
+    component.profileModal = { modal: { deny: () => { } } };
     spyOn(profileService, 'updateProfile').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success');
     component.updateProfile(mockFrameworkData);
@@ -189,7 +207,7 @@ describe('ProfilePageComponent', () => {
     const profileService = TestBed.get(ProfileService);
     const toasterService = TestBed.get(ToasterService);
     component.userProfile = Response.userProfile;
-    component.profileModal =  { modal : { deny: () => {}  }};
+    component.profileModal = { modal: { deny: () => { } } };
     spyOn(toasterService, 'warning');
     spyOn(profileService, 'updateProfile').and.callFake(() => observableThrowError({}));
     component.updateProfile(mockFrameworkData);
@@ -248,9 +266,9 @@ describe('ProfilePageComponent', () => {
       'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
       'type': 'district',
       'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
-  }]
-   const locationName =  component.getLocationDetails(locationData,'district');
-   expect(locationName).toBe('MUNGER')
+    }]
+    const locationName = component.getLocationDetails(locationData, 'district');
+    expect(locationName).toBe('MUNGER')
   });
   it('should call getLocationDetails error case', () => {
     const locationData = [{
@@ -259,20 +277,20 @@ describe('ProfilePageComponent', () => {
       'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
       'type': 'district',
       'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
-  }]
-   const locationName =  component.getLocationDetails(locationData,'state');
-   expect(locationName).toBeFalsy()
+    }]
+    const locationName = component.getLocationDetails(locationData, 'state');
+    expect(locationName).toBeFalsy()
   });
   it('should call toggle', () => {
-    component.roles = ['Book Creator','Membership Management','Content Creation']
+    component.roles = ['Book Creator', 'Membership Management', 'Content Creation']
     component.toggle(true);
-   expect(component.showMoreRoles).toBeFalsy();
-   expect(component.showMoreRolesLimit).toBe(3)
+    expect(component.showMoreRoles).toBeFalsy();
+    expect(component.showMoreRolesLimit).toBe(3)
   });
   it('should call toggle error case', () => {
     component.toggle(false);
-   expect(component.showMoreRoles).toBeTruthy();
-   expect(component.showMoreRolesLimit).toBe(4)
+    expect(component.showMoreRoles).toBeTruthy();
+    expect(component.showMoreRolesLimit).toBe(4)
   });
 
 
@@ -280,7 +298,7 @@ describe('ProfilePageComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const orgDetailsService = TestBed.get(OrgDetailsService);
-    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({result: { response: { value: '0126684405' } }}));
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(observableOf({ result: { response: { value: '0126684405' } } }));
     component.ngOnInit();
     component['getCustodianOrgUser']();
     expect(component.isCustodianOrgUser).toBeFalsy();
@@ -298,10 +316,10 @@ describe('ProfilePageComponent', () => {
     expect(result).toBeUndefined();
   });
 
-  it ('should navigate to submit self declare details form ', () => {
+  it('should navigate to submit self declare details form ', () => {
     const router = TestBed.get(Router);
     component.navigate('/profile/teacher-declaration', 'submit');
-    expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], {queryParams: {formaction: 'submit'}});
+    expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], { queryParams: { formaction: 'submit' } });
   });
 
   it('should not show self declared information if declaration is not available', () => {

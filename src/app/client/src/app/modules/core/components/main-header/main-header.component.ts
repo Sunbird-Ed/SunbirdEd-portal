@@ -128,6 +128,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
+  themeSwitchInteractEdata: IInteractEventEdata;
   signInIntractEdata: IInteractEventEdata;
   hrefPath = '/resources';
   helpLinkVisibility: string;
@@ -532,6 +533,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 
@@ -564,5 +567,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (authroles) {
       return authroles.url;
     }
+  }
+
+  switchLayout() {
+    this.layoutService.initiateSwitchLayout();
+    this.generateInteractTelemetry();
+  }
+
+  generateInteractTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
+        cdata: []
+      },
+      edata: {
+        id: 'switch-theme',
+        type: 'click',
+        pageid: this.router.url,
+        subtype: this.layoutConfiguration ? 'joy' : 'classic'
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 }

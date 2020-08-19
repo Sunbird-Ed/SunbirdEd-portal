@@ -15,9 +15,11 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
+  <app-joy-theme-popup [hidden]="!showJoyThemePopUp"
+                       (closeJoyThemePopup)="onCloseJoyThemePopup()"></app-joy-theme-popup>
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
-  <lib-chat-window [inputValues]="botObject"></lib-chat-window>
+  <lib-chat-window class="computer only" [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
@@ -38,28 +40,6 @@
   </div>
 </sui-modal>
 
-<div class="container2">
-  <ul>
-  <li>
-    <input type="radio" id="Default" (click)="storeThemeColour('Default')" value="Default" name="selector">
-    <label for="Default">Default</label>
-    <div class="check"><div class="inside"></div></div>
-  </li>
-  <li>
-    <input type="radio" id="Green" (click)="storeThemeColour('Green')" value="Green" name="selector">
-    <label for="Green">Green</label>
-    <div class="check"></div>
-  </li>
-  <!-- <li>
-    <input type="radio" id="Dark"  value="Dark" name="selector">
-    <label for="Dark">Dark</label>
-    <div class="check"><div class="inside"></div></div>
-  </li> -->
-  <li><button (click)="switchLayout()" class="sb-btn sb-btn-xs sb-btn-outline-primary mr-8">
-    Switch Layout
-  </button></li>
-</ul>
-</div>
 <ng-container *ngIf="layoutConfiguration">
   <svg width="332px" height="358px" viewBox="0 0 332 358"  class="sbt-theme-bg-img computer only" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Illustration-&amp;-colour-palette-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

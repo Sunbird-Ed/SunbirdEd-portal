@@ -35,7 +35,7 @@ const routes: Routes = [
       telemetry: {
         env: 'library', pageid: 'library-search', type: 'view', subtype: 'paginate'
       },
-      softConstraints: {badgeAssertions: 98, board: 99, channel: 100}
+      softConstraints: {badgeAssertions: 98, channel: 100}
     }
 
   },

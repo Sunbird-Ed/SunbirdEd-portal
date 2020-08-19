@@ -26,6 +26,23 @@
             </div>
           </div>
         </div>
+        <div class="sb-field-group">
+          <div class="four wide column">
+            <div>
+              <label class="required">Issue Certificate</label>
+              <div class="d-flex py-8 flex-w-wrap">
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('yes')" formControlName="issueCertificate" value="yes" type="radio" id="yes">
+                  <label for="yes">Yes</label>
+                </div>
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('no')" formControlName="issueCertificate" value="no" type="radio" id="no">
+                  <label for="no">No</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="ui stackable grid mt-0">
@@ -147,30 +164,3 @@
   </div>
   <!--/Actions-->
 </sui-modal>
-
- <!-- Batch Updated Modal
-<sui-modal *ngIf="showBatchUpdateModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-batch-update-modal" appBodyScroll (dismissed)="showBatchUpdateModal = !showBatchUpdateModal" #modal>
-  <div class="sb-modal-header">
-
-  </div>
-  <div class="sb-modal-content">
-    <div class="ui stackable grid my-8">
-      <div class="one wide column">
-        <div class="checkbox-img"></div>
-      </div>
-      <div class="eleven wide column">
-        <div class="pb-16 font-weight-bold">Batch Created/Updated Successfully</div>
-        <div class="">Would you like to add and configure the certificate for this batch?</div>
-      </div>
-    </div>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="doSomething()">
-      Close
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="doSomething()">
-      Add Certificate
-    </button>
-  </div>
-</sui-modal> -->

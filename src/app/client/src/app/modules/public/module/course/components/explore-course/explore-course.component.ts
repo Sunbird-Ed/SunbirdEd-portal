@@ -46,6 +46,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public allTabData;
     public selectedFilters;
     public totalCount;
+    public searchAll;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -92,6 +93,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.router.navigate(['']);
             }
         );
+        this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
     }
     initLayout() {
         this.redoLayout();
@@ -153,7 +155,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
     private fetchContents() {
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }

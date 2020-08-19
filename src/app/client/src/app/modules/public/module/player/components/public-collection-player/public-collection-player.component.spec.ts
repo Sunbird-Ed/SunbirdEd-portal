@@ -9,10 +9,12 @@ import { PublicCollectionPlayerComponent } from './public-collection-player.comp
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree,
-  telemetryErrorData } from './public-collection-player.component.spec.data';
-  import { configureTestSuite } from '@sunbird/test-util';
+import { WindowScrollService, SharedModule, ResourceService, ToasterService, NavigationHelperService, ContentUtilsServiceService } from '@sunbird/shared';
+import {
+  CollectionHierarchyGetMockResponse, collectionTree,
+  telemetryErrorData
+} from './public-collection-player.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
@@ -65,13 +67,13 @@ describe('PublicCollectionPlayerComponent', () => {
       declarations: [PublicCollectionPlayerComponent],
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
         TelemetryModule.forRoot(), SharedModule.forRoot()],
-        providers: [ContentService, PublicPlayerService, ResourceService,
-          ToasterService, NavigationHelperService,
-          { provide: Router, useClass: RouterStub },
-          { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-          { provide: ResourceService, useValue: resourceBundle },
-          { provide: TelemetryService, useValue: new TelemetryServiceStub() }],
-        schemas: [NO_ERRORS_SCHEMA],
+      providers: [ContentService, PublicPlayerService, ResourceService,
+        ToasterService, NavigationHelperService,
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: TelemetryService, useValue: new TelemetryServiceStub() }],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();
   }));
@@ -164,17 +166,17 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
   it('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
-    spyOn(component, 'closeCollectionPlayer' );
+    spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       url: '/play/collection/do_11287198635947622412',
     };
-   spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
+    spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     const router = TestBed.get(Router);
     expect(router.navigate).toBeDefined(['/']);
   });
 
   it('should call closeCollectionPlayer method when you open  collection previously from search', () => {
-    spyOn(component, 'closeCollectionPlayer' );
+    spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       searchUrl: '/search',
       queryParams: { key: 'collection' }
@@ -184,7 +186,7 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(router.navigate).toBeDefined([previousUrl.searchUrl, previousUrl.queryParams]);
   });
   it('should call closeCollectionPlayer method and navigate to previous url ', () => {
-    spyOn(component, 'closeCollectionPlayer' );
+    spyOn(component, 'closeCollectionPlayer');
     const previousUrl = {
       otherUrl: '/browse/play/collection/do_3123405048187617282365',
     };
@@ -222,5 +224,125 @@ describe('PublicCollectionPlayerComponent', () => {
     const activeContent = component.setActiveContent('domain_44689');
     expect(activeContent).toBeDefined();
     expect(activeContent.identifier).toBe('domain_44689');
+  });
+
+  it('should call onShareLink', () => {
+    const contentUtilsService = TestBed.get(ContentUtilsServiceService);
+    component['collectionId'] = 'do_23242';
+    spyOn(contentUtilsService, 'getPublicShareUrl').and.returnValue('someURL');
+    spyOn(component, 'setTelemetryShareData');
+    component.onShareLink();
+    expect(component.shareLink).toEqual('someURL');
+    expect(component.setTelemetryShareData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryShareData', () => {
+    component.setTelemetryShareData({ identifier: 'do_1232121', contentType: 'TextBook', pkgVersion: 2 });
+    expect(component.telemetryShareData).toBeDefined();
+    expect(component.telemetryShareData).toEqual([{ id: 'public-do_1232121', type: 'TextBook', ver: '2' }]);
+  });
+
+  it('should call setTelemetryData', () => {
+    component.dialCode = 'CQPER';
+    component.setTelemetryData();
+    expect(component.telemetryCdata).toEqual([{ 'type': 'DialCode', 'id': 'CQPER' }]);
+  });
+
+  it('should call ngAfterViewInit', (done) => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    component['contentType'] = 'TextBook';
+    spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(232);
+    component.ngAfterViewInit();
+    expect(navigationHelperService.getPageLoadTime).toHaveBeenCalled();
+    setTimeout(() => {
+      expect(component.telemetryImpression).toBeDefined();
+      done();
+    }, 10);
+  });
+
+  it('should call ngAfterViewInit without contentType', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(232);
+    spyOn(component, 'triggerTelemetryErrorEvent');
+    component.ngAfterViewInit();
+    expect(navigationHelperService.getPageLoadTime).toHaveBeenCalled();
+    expect(component.triggerTelemetryErrorEvent).toHaveBeenCalledWith(404, 'contentType field unavailable');
+  });
+
+  it('should call selectedFilter', () => {
+    component.selectedFilter({ data: { value: 'pdf' } });
+    expect(component.activeMimeTypeFilter).toEqual('pdf');
+  });
+
+  it('should call showNoContent', () => {
+    component.showNoContent({ message: 'No Content Available' });
+    expect(component.isContentPresent).toBeFalsy();
+  });
+
+  it('should call setTelemetryInteractData', () => {
+    component.pageId = 'library';
+    component.setTelemetryInteractData();
+    expect(component.tocTelemetryInteractEdata).toEqual({ id: 'library-toc', type: 'click', pageid: 'library' });
+  });
+
+  it('should call tocCardClickHandler', () => {
+    spyOn(component, 'setTelemetryInteractData');
+    spyOn(component, 'callinitPlayer');
+    component.activeContent = { identifier: 'do_1125110622654464001294' };
+    component.tocCardClickHandler({});
+    expect(component.setTelemetryInteractData).toHaveBeenCalled();
+    expect(component.callinitPlayer).toHaveBeenCalled();
+    expect(component.isMobile).toBe(true);
+  });
+
+  it('should call tocChapterClickHandler', () => {
+    spyOn(component, 'callinitPlayer');
+    component.isSelectChapter = true;
+    component.tocChapterClickHandler({});
+    expect(component.callinitPlayer).toHaveBeenCalled();
+    expect(component.isSelectChapter).toBe(false);
+  });
+
+  it('should get getContentRollUp', () => {
+    const response = component.getContentRollUp(['do_123', 'do_456']);
+    expect(response).toEqual({ l1: 'do_123', l2: 'do_456' });
+  });
+
+  it('should call showChapter', () => {
+    component.isSelectChapter = true;
+    component.showChapter();
+    expect(component.isSelectChapter).toBe(false);
+  });
+
+  it('should call showChapter', () => {
+    component.isSelectChapter = false;
+    component.showChapter();
+    expect(component.isSelectChapter).toBe(true);
+  });
+
+  it('should call closeCollectionPlayer, if played in mobile', () => {
+    component.isMobile = true;
+    component.closeCollectionPlayer();
+    expect(component.isMobile).toBe(false);
+    expect(component.activeContent).toBe(null);
+  });
+
+  it('should call closeCollectionPlayer, for dialcode', () => {
+    component.isMobile = false;
+    component.dialCode = '61U24C';
+    spyOn(sessionStorage, 'setItem');
+    const router = TestBed.get(Router);
+    component.closeCollectionPlayer();
+    expect(sessionStorage.setItem).toHaveBeenCalledWith('singleContentRedirect', 'singleContentRedirect');
+    expect(router.navigate).toHaveBeenCalledWith(['/get/dial/', '61U24C']);
+  });
+
+  it('should call closeCollectionPlayer and navigate backt to previous url', () => {
+    component.isMobile = false;
+    component.dialCode = undefined;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl');
+    component.closeCollectionPlayer();
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/explore');
   });
 });

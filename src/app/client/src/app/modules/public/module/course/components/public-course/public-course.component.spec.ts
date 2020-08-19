@@ -23,6 +23,8 @@ describe('PublicCourseComponent', () => {
   let sendOrgDetails = true;
   let sendPageApi = true;
   let sendFormApi = true;
+  let sendMenuConfig = true;
+  let activatedRouteStub;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -66,9 +68,16 @@ describe('PublicCourseComponent', () => {
     pageApiService = TestBed.get(PageApiService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
+    activatedRouteStub = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
     sendPageApi = true;
     sendFormApi = true;
+    sendMenuConfig = true;
+    activatedRouteStub.snapshot.queryParams = {};
+    const responseToForm = [
+      { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
+      { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
+    ];
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
         return of({hashTagId: '123'});
@@ -84,8 +93,10 @@ describe('PublicCourseComponent', () => {
     spyOn(formService, 'getFormConfig').and.callFake((options) => {
       if (sendFormApi) {
         return of([{framework: 'TPD'}]);
+      } else {
+        return of(responseToForm);
       }
-      return throwError({});
+      //return throwError({});
     });
     spyOn(cacheService, 'get').and.callFake((options) => {
       return undefined;
@@ -163,5 +174,19 @@ describe('PublicCourseComponent', () => {
     component.layoutConfiguration = null;
     component.ngOnInit();
     component.redoLayout();
+  });
+  it('should getFormData', () => {
+    sendFormApi = false;
+    component.ngOnInit();
+    formService = TestBed.get(FormService);
+    component['getFormData']();
+  });
+  it('should getFormData', () => {
+    activatedRouteStub.snapshot.queryParams.selectedTab = 'course';
+    fixture.detectChanges();
+    sendFormApi = false;
+    component.ngOnInit();
+    formService = TestBed.get(FormService);
+    component['getFormData']();
   });
 });

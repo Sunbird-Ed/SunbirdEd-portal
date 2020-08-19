@@ -144,7 +144,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         };
 
         if (_.get(this.activity, 'contentType') === 'Course') {
-          userProgress['progress'] = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
+          const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
+          userProgress['progress'] = progress >= 100 ? '100' : progress;
         }
 
         return userProgress;
