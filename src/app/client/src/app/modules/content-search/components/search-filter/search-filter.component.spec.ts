@@ -18,7 +18,7 @@ import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 
-fdescribe('SearchFilterComponent', () => {
+describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
     let fixture: ComponentFixture<SearchFilterComponent>;
     const resourceBundle = {
