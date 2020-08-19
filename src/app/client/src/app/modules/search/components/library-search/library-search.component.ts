@@ -151,10 +151,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
+        if (Object.keys(this.queryParams).length > 0) {
+            filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
+        }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {
-            filters,
+            filters: filters,
             fields: _.get(this.allTabData, 'search.fields'),
             limit: _.get(this.allTabData, 'search.limit'),
             pageNumber: this.paginationDetails.currentPage,

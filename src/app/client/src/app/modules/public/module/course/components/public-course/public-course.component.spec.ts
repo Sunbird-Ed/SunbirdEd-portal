@@ -178,7 +178,7 @@ describe('PublicCourseComponent', () => {
   it('should getFormData', () => {
     sendFormApi = false;
     component.ngOnInit();
-     formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     component['getFormData']();
   });
   it('should getFormData', () => {
