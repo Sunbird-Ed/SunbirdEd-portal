@@ -338,7 +338,7 @@ app-workspace {
 
 .sbt-page-header {
   position: relative;
-  height: calculateRem(112px);
+  height: calculateRem(80px);
   overflow: hidden;
 }
 
@@ -348,8 +348,8 @@ app-workspace {
   display: flex;
   align-items: center;
   border-radius: 0 0 0 calculateRem(40px);
-  height: calculateRem(112px);
-  padding-bottom:calculateRem(16px);
+  height: calculateRem(80px);
+  padding-bottom:calculateRem(8px);
   @include respond-above(sm) {
 
     align-items: flex-end;
@@ -365,7 +365,7 @@ app-workspace {
     font-weight: bold;
     position: relative;
     @include respond-above(sm) {
-      font-size: calculateRem(58px);
+      font-size: calculateRem(40px);
     }
   }
 
@@ -389,19 +389,20 @@ app-workspace {
 
 .sbt-page-content-area {
   background: none;
-
-  @include respond-above(sm) {
-    background: var(--sbt-body-bg2);
-  }
-
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height:100%;
-  padding:calculateRem(24px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
+  padding:calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
-    padding:calculateRem(24px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
+    padding:calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
   }
+
+  @include respond-above(sm) {
+    background: var(--sbt-body-bg2);
+    padding:calculateRem(16px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
+  }
+
 
   &__div {
     position: relative;
@@ -463,11 +464,11 @@ app-workspace {
 .sbt-page-header-img {
   position: absolute;
   bottom: calculateRem(-12px);
-  width: calculateRem(200px);
+  width: calculateRem(184px);
   right: calculateRem(0px);
 
   @include respond-above(sm) {
-    width: calculateRem(248px);
+    width: calculateRem(168px);
   }
 
   html[dir="rtl"] & {
