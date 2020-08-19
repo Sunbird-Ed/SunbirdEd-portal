@@ -72,7 +72,6 @@
                     <div class="d-flex flex-ai-center">
                       <div class="certificate-card-img pl-16"> <img src="assets/images/certificate-icon.png"
                           width="25px" height="20px" /></div>
-                      <div class="certificate-card-count pl-8">0</div>
                     </div>
                   </div>
                 </div>
@@ -111,7 +110,7 @@
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable"
-                          (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                          (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
                       </div>
                     </div>
                   </div>
@@ -219,8 +218,7 @@
   </div>
 </div>
 
-<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate">
-</app-cert-preview-popup>
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
 <sui-modal *ngIf="isTemplateChanged" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
