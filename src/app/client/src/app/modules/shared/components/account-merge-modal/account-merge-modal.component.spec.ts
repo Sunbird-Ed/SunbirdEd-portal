@@ -33,7 +33,11 @@ describe('AccountMergeModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call initiateMerge and throwerror', () => {
+    const returnData = { responseCode: 'FAILED'};
+    spyOn(component['http'], 'get').and.returnValue(observableOf(returnData));
+    spyOn(component, 'closeModal');
+    component.initiateMerge();
+    expect(component.closeModal).toHaveBeenCalled();
   });
 });

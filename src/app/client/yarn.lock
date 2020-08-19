@@ -535,20 +535,20 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@~3.1.29":
-  version "3.1.29"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.1.29.tgz#843a0c941f47884133a6956facb9a8a72def2494"
-  integrity sha512-zNFwksrD3xklp2qRYQlMUvtt6T0caHkm6ypO1K7TUH0AeXlS4vGnDaAo6WZ8LR/36mLwQXtPmsnnCzEQj/SiAQ==
+"@project-sunbird/client-services@~3.2.4":
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.2.6.tgz#24c37ce9a8f5c3b7724983638c6013168149e7a0"
+  integrity sha512-zCkSY2cH1U6h4FSfDV2364xYF3y4qJYbyeWQyE/DFcJ6LZXKuBLIZenB++dBL4FBpjztqawTC793d2eFB5I0Vw==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@3.2.7":
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.2.7.tgz#8699bf64d4ea956f073d50b833e5a6d4fb343a68"
-  integrity sha512-0xA3muGpogRfbwWP5lzeEslsUt/DybG9IJtV37aT4Sdaky8ysLEoKf215GRlnwZFsbKyuP80Cu+jULIa8zSnEw==
+"@project-sunbird/common-consumption@3.2.11":
+  version "3.2.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.2.11.tgz#ea58c0cb99c80d9c77fd5b25f4d5c70adaec3912"
+  integrity sha512-g02cLa0EnMseK2nhaeRHxRb4JihtdvfzB9pDgazRNeQXAMNtFbcNa2A0LxOeotMpZYZ2Z7g6xEG9HEIEa6qbgQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -3335,6 +3335,11 @@ dom-serialize@^2.2.0:
     ent "~2.2.0"
     extend "^3.0.0"
     void-elements "^2.0.0"
+
+dom-to-image@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/dom-to-image/-/dom-to-image-2.6.0.tgz#8a503608088c87b1c22f9034ae032e1898955867"
+  integrity sha1-ilA2CAiMh7HCL5A0rgMuGJiVWGc=
 
 domain-browser@^1.1.1:
   version "1.2.0"
@@ -9194,6 +9199,13 @@ sax@>=0.6.0, sax@^1.1.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
+
+sb-svg2pdf@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/sb-svg2pdf/-/sb-svg2pdf-0.0.7.tgz#cfaeaa4f90280dd5440378a5b96e31d9db259b55"
+  integrity sha512-m6rnyxMmr2khEEjNX3MmRN2NSRvQPhnBc3ZR+sSawlgJrA4iTwWtg6iZtT8OJnUVPcPNT4OGrRHmM9BHGN36Lg==
+  dependencies:
+    tslib "^1.9.0"
 
 schema-utils@^0.3.0:
   version "0.3.0"

@@ -141,6 +141,11 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
           this.svgToDisplay = _.get(value, 'theme.imageName');
+        } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
+          if (value.contentType === 'course') {
+            this.pageTitle = _.get(this.resourceService, value.title);
+            this.svgToDisplay = _.get(value, 'theme.imageName');
+          }
         }
       });
     });
@@ -197,13 +202,13 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private buildOption(): Observable<any> {
-    this.queryParams = _.omit(this.queryParams, 'selectedTab');
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;
     });
+    filters = _.omit(filters, 'selectedTab');
     let hashTagId = this.userService.hashTagId;
     if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
       hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
@@ -309,9 +314,17 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = _.map(this.enrolledCourses, content => {
-        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
-        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
-        formatedContent.metaData.contentType = 'Course'; // to route to course page
+        let formatedContent;
+        /* istanbul ignore else */
+        if (this.layoutConfiguration) {
+          formatedContent = content.content;
+          formatedContent['mimeType'] = 'application/vnd.ekstep.content-collection'; // to route to course page
+          formatedContent['contentType'] = 'Course'; // to route to course page
+        } else {
+          formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+          formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
+          formatedContent.metaData.contentType = 'Course'; // to route to course page
+        }
         return formatedContent;
       });
       enrolledSection.count = enrolledSection.contents.length;

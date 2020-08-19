@@ -62,6 +62,14 @@
                             </div> -->
 
               <div class="batch-details__edit d-flex flex-ai-center py-8">
+                <div *ngIf="allowBatchCreation">
+                  <div *ngIf="!(batch.hasOwnProperty('cert_templates'))" class="sb-color-primary fnormal font-weight-bold">
+                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
+                  </div>
+                  <div *ngIf="batch?.cert_templates" class="sb-color-primary fnormal font-weight-bold"> 
+                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
+                  </div>
+                </div>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
                   (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
                   {{resourceService?.frmelmnts?.lbl?.edit}}
@@ -94,7 +102,7 @@
         <div class="batch-deatils__button text-right">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
-            *ngIf="showCreateBatch()">{{resourceService.frmelmnts.lbl.createbatch}}</button>
+            *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, HostListener } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
@@ -8,9 +8,14 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 export class ConfirmationPopupComponent implements OnInit {
   @ViewChild('confirmationModal') confirmationModal;
   @Input() popupMode: string;
+  @Input() batchId: string;
   @Output() close = new EventEmitter<any>();
 
-  constructor() { }
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeModal();
+  }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
   }
@@ -22,7 +27,7 @@ export class ConfirmationPopupComponent implements OnInit {
 
   navigateToAddCertificate() {
     this.confirmationModal.deny();
-    this.close.emit({mode: 'add-certificates'});
+    this.close.emit({mode: 'add-certificates', batchId: this.batchId});
   }
 
 }

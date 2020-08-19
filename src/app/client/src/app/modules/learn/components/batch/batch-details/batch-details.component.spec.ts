@@ -180,7 +180,7 @@ describe('BatchDetailsComponent', () => {
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
-    expect(component.showCreateBatch()).toBeTruthy();
+    expect(component.allowBatchCreation).toBe(true);
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {

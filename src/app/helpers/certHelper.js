@@ -98,14 +98,33 @@ const addTemplateToBatch = () => {
       logger.info({msg: `addTemplateToBatch() is called with requestbody ${JSON.stringify(req.body)}`});
         const criteria = _.get(req, 'body.request.criteria') || {};
         let templateData = {};
+        if (!_.isEmpty(_.get(req, 'body.request.oldTemplateId'))) {
+          const appConfig = getHeaders();
+          appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+          const requestParams = {
+                batch: {
+                  courseId: _.get(req, 'body.request.courseId'),
+                  batchId: _.get(req, 'body.request.batchId'),
+                  template: {
+                    identifier: _.get(req, 'body.request.oldTemplateId'),
+                  }
+                }
+          }
+          const response = await HTTPService.patch(`${certRegURL + 'course/batch/cert/v1/template/remove'}`, {request: requestParams}, appConfig).toPromise().catch(err => {
+            logger.error({msg: `Error occurred while removing certificate ${_.get(req, 'body.request.oldTemplateId')}, ERROR: ${err}`})
+          });
+          logger.info({msg: `response of removeTemplate from batch() ${_.get(response, 'data')}`});
+        }
         if (!_.isEmpty(criteria)) {
-          templateData = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+          const response = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+          templateData =  _.get(response, 'data.result.response.data')
           templateData['criteria'] = criteria;
         } else {
-          templateData = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+          const response = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
+          templateData =  _.get(response, 'data.result.response.data')
         }
         logger.info({msg: `returning success response from ${JSON.stringify(_.get(templateData, 'data.result.response.data'))}`});
-        req.body.request['template'] = _.get(templateData, 'data.result.response.data');
+        req.body.request['template'] = templateData;
         next();
     } catch(err) {
       logError(req, err, `Error occurred while fetching template ${JSON.stringify(req.body)}`);
@@ -118,7 +137,7 @@ const getTemplateData = async (req, requestParams) => {
   logger.info({msg: `getTemplateData() is called with ${requestParams}`});
   const appConfig = getHeaders();
   appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
-  const response = await HTTPService.post(`${certRegURL + 'org/v2/preferences/read'}`, {request: requestParams}, appConfig).toPromise();
+ const response = await HTTPService.post(`${certRegURL + 'org/v2/preferences/read'}`, {request: requestParams}, appConfig).toPromise();
   logger.info({msg: `returning response from getTemplateData() with data ${_.get(response, 'data')}`});
   return response;
 }

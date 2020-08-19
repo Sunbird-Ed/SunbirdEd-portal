@@ -87,4 +87,12 @@ export class CertRegService extends DataService {
     };
     return this.post(options);
   }
+
+  public addCertificateTemplate(request) {
+    const options = {
+      url: `${this.config.urlConFig.URLS.CERTIFICATE.ADD_CERTIFICATE}`,
+      data: request,
+    };
+    return this.patch(options);
+  }
 }

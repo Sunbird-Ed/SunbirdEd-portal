@@ -5,7 +5,7 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
@@ -107,7 +107,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService) {
+    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
+    private telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -243,7 +244,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           // this.disableSubmitBtn = false; // - On success; the button will be still disabled to avoid multiple clicks
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
-          this.checkIssueCertificate();
+          this.checkIssueCertificate(response.result.batchId);
         }
       },
         (err) => {
@@ -264,7 +265,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();
-        this.checkIssueCertificate();
+        this.checkIssueCertificate(batchId);
       },
         (err) => {
           this.disableSubmitBtn = false;
@@ -286,8 +287,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }, 1000);
   }
 
-  checkIssueCertificate() {
-    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.createBatchForm.value.issueCertificate, mode: 'create' });
+  checkIssueCertificate(batchId) {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.createBatchForm.value.issueCertificate,
+    mode: 'create', batchId: batchId });
   }
 
   private getUserOtherDetail(userData) {
@@ -402,5 +404,23 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  handleInputChange(inputType) {
+    const telemetryData = {
+      context: {
+        env:  this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: this.courseId,
+          type: 'Course'
+        }]
+      },
+      edata: {
+        id: `issue-certificate-${inputType}`,
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }
