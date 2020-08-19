@@ -18,13 +18,15 @@
       </ngx-slick>
     </div>
         </div>
-      <div class="sb-library-cards right-flower-position-adjust-container">
-      <h4 class="sb-categories-title text-left mt-16"*ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+      <div class="sb-library-cards relative9">
+       <div *ngIf="!layoutConfiguration">
+        <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+       </div>
       <div *ngFor="let section of pageSections; let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid [layoutConfig]="layoutConfiguration"
           [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
-          [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+          [maxCardCount]="3" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div *ngIf="showLoader">

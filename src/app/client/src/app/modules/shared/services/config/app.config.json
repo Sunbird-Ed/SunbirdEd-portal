@@ -844,7 +844,8 @@
       "LearningOutcomeDefinition",
       "ExplanationResource",
       "ExperientialResource",
-      "eTextBook"
+      "eTextBook",
+      "TVLesson"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
