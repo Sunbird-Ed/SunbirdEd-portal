@@ -15,11 +15,4 @@ describe('LandingpageGuard', () => {
     expect(guard).toBeTruthy();
     expect(res).toEqual(true);
   }));
-
-  it('should replace window location', inject([LandingpageGuard], (guard: LandingpageGuard) => {
-    document.body.innerHTML = document.body.innerHTML +
-      '<input id="defaultTenantIndexStatus" value="true" type="hidden" />';
-    const res = guard.canActivate(null, null);
-    expect(res).toEqual(false);
-  }));
 });
