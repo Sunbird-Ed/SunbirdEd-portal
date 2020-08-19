@@ -44,6 +44,8 @@ export class ResourceService {
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
+  public RESOURCE_CONSUMPTION_ROOT = 'result.consumption.';
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference

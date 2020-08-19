@@ -26,6 +26,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log(this.facets);
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();

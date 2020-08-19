@@ -14,6 +14,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { SlickModule } from 'ngx-slick';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
@@ -28,6 +29,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     SlickModule,
     CommonConsumptionModule,
     SharedModule,
+    TranslateModule,
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
   ],
