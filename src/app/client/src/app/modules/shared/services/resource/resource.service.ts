@@ -11,6 +11,7 @@ import { UUID } from 'angular2-uuid';
 import * as dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
+import { TranslateService, TranslateStore } from '@ngx-translate/core';
 /**
  * Service to fetch resource bundle
  */
@@ -43,13 +44,16 @@ export class ResourceService {
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
+  public RESOURCE_CONSUMPTION_ROOT = 'result.consumption.';
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http LearnerService reference
    */
   constructor(config: ConfigService, http: HttpClient,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    private translateService: TranslateService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
       this.config = config;
@@ -65,6 +69,7 @@ export class ResourceService {
   public initialize() {
     const range  = {value: 'en', label: 'English', dir: 'ltr'};
     this.getResource(this.cacheService.get('portalLanguage') || 'en', range);
+    this.translateService.setDefaultLang('en');
   }
   /**
    * method to fetch resource bundle
@@ -82,6 +87,8 @@ export class ResourceService {
         (err: ServerResponse) => {
         }
       );
+      
+      this.translateService.use(language);
   }
   get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {
@@ -122,6 +129,7 @@ export class ResourceService {
   }
 
   getLanguageChange(language) {
+    this.translateService.use(language.value);
     this._languageSelected.next(language);
   }
 }

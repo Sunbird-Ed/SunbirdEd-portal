@@ -3,7 +3,7 @@ import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule,ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './page-section.component.spec.data';
@@ -27,7 +27,7 @@ describe('PageSectionComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(), NgInviewModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [PageSectionComponent],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

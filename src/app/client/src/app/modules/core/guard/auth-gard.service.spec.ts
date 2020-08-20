@@ -6,6 +6,7 @@ import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('AuthGardService', () => {
     // const authGuard: AuthGuard;
@@ -36,7 +37,13 @@ describe('AuthGardService', () => {
                         },
                     }
                 }],
-            imports: [HttpClientTestingModule, CoreModule]
+            imports: [HttpClientTestingModule, CoreModule,
+                        TranslateModule.forRoot({
+                          loader: {
+                            provide: TranslateLoader,
+                            useClass: TranslateFakeLoader
+                          }
+                        })]
         });
     });
     it('be able to hit route when user is logged in', () => {
