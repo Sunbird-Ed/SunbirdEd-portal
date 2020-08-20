@@ -41,7 +41,7 @@ module.exports = (app) => {
       verifyToken(jwtPayload);
       errType = 'ORG_SEARCH';
       orgDetails = await orgSearch(jwtPayload.school_id, req);
-      if (!_.get(orgDetails, 'result.response.count') > 0) {
+      if (!(_.get(orgDetails, 'result.response.count') > 0)) {
         throw 'SCHOOL_ID_NOT_REGISTERED'
       }
       errType = 'USER_FETCH_API';
