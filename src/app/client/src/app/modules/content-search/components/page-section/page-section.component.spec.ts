@@ -79,9 +79,6 @@ describe('PageSectionComponent', () => {
     component.section = {name: 'Section 1', length: 0, contents: []};
     component.ngOnInit();
     expect(component.updateSlick).toHaveBeenCalled();
-    component.resourceService.languageSelected$.subscribe(item => {
-      expect(component.selectedLanguageTranslation).toHaveBeenCalled();
-    });
   });
 
   it ('should call updateSlick on reInitSlick', () => {

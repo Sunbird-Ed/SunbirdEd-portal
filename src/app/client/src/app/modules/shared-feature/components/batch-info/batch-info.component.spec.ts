@@ -93,31 +93,6 @@ describe('BatchInfoComponent', () => {
    expect(component.playerService.playContent).toHaveBeenCalledWith({mimeType: 'application/vnd.ekstep.content-collection', contentType: 'Course'});
   });
 
-  it('should call learnerService post()', () => {
-    spyOn(component['learnerService'], 'post').and.returnValue(of ({}));
-    component['userService'].setUserId('123');
-    const options = {
-      url: component.configService.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
-      data: {
-        request: {
-          courseId: 'do_2127644219762278401149',
-          userId: '123',
-          batchId: '0127644280892047364'
-        }
-      }
-    };
-    const event = {
-      identifier: '0127644280892047364',
-      courseId: 'do_2127644219762278401149'
-    };
-    component.handleEnrollEvent(event);
-    component.learnerService.post(options).pipe(
-    delay(2000),
-    ).subscribe(data => {
-    expect(component.router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_2127644219762278401149', 'batch', '0127644280892047364']);
-    });
-    expect(component.learnerService.post).toHaveBeenCalledWith(options);
-  });
 
   it('should throw error learnerService post()', () => {
     spyOn(component['learnerService'], 'post').and.returnValue(throwError ({}));
