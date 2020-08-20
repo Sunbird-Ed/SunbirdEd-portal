@@ -233,16 +233,15 @@
       </div>
       <div class="nine wide column p-0">
         <p class="fnormal">{{resourceService?.frmelmnts?.cert?.lbl?.templateChange}}</p>
-        <p class="fnormal mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.confirmTemplateChange}}</p>
       </div>
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="attachCertificateToBatch()" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{resourceService?.frmelmnts?.btn?.yes}}
+    <button (click)="attachCertificateToBatch()"class="sb-btn sb-btn-normal sb-btn-primary">
+      {{resourceService?.frmelmnts?.lbl?.continue}}
     </button>
     <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      {{resourceService?.frmelmnts?.btn?.no}}
+      {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
 </sui-modal>

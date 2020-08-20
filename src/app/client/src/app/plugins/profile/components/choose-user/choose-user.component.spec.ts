@@ -140,8 +140,8 @@ describe('ChooseUserComponent', () => {
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
 
-  xit('should switch selected user', () => {
-    const userService = TestBed.get(UserService);
+  it('should switch selected user', () => {
+    component.selectedUser = mockData.selectedUser;
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
@@ -155,9 +155,7 @@ describe('ChooseUserComponent', () => {
       }
       return {value: 'mock Id'};
     });
-    const coursesService = TestBed.get(CoursesService);
     const utilService = TestBed.get(UtilService);
-    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(observableOf({}));
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf({
         result: {response: mockData.userProfile}
@@ -168,10 +166,23 @@ describe('ChooseUserComponent', () => {
     spyOn(utilService, 'redirect').and.callFake(() => {
     });
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
-    component.selectedUser = mockData.selectedUser;
+    const switchUserRequest = {
+      userId: mockData.selectedUser.identifier,
+      isManagedUser: mockData.selectedUser.managedBy ? true : false
+    };
     component.switchUser();
-    expect(telemetryService.initialize).toHaveBeenCalled();
+    expect(managedUserService.initiateSwitchUser).toHaveBeenCalledWith(switchUserRequest);
   });
 
+  it('should route to create-managed user', () => {
+    component.navigateToCreateUser();
+    expect(component.router.navigate).toHaveBeenCalledWith(['/profile/create-managed-user']);
+  });
+
+  it('should unsubscribe', () => {
+    spyOn(component['userDataSubscription'], 'unsubscribe');
+    component.ngOnDestroy();
+    expect(component['userDataSubscription'].unsubscribe).toHaveBeenCalled();
+  });
 
 });
