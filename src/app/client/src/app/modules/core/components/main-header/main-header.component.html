@@ -359,7 +359,7 @@
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item p-0 mobile only" (click)="toggleSideMenu(false)" appTelemetryInteract
+            <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
               <a href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
