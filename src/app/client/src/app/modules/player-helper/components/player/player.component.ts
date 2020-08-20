@@ -148,9 +148,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           if (!this.playerLoaded) {
             playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
             this.playerLoaded = true;
           }
         } catch (err) {
@@ -169,9 +169,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           if (!this.playerLoaded) {
             playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
             this.playerLoaded = true;
           }
         } catch (err) {
