@@ -42,9 +42,8 @@ describe('RouterNavigationService', () => {
         ]
       }
     };
-    spyOn(service, 'navigateToParentUrl').and.returnValue(of({}));
     service.navigateToParentUrl(routeMock);
-    expect(service.navigateToParentUrl).toHaveBeenCalled();
+    expect(service.parentUrl).toEqual('/home');
   }));
 
 });
