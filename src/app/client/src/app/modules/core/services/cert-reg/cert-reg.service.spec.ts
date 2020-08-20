@@ -4,6 +4,7 @@ import { ConfigService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CertRegService } from './cert-reg.service';
 import {of as observableOf,  Observable } from 'rxjs';
+import { mockResponseData } from './cert-reg.service.spec.data';
 
 describe('CertRegService', () => {
   configureTestSuite();
@@ -67,5 +68,29 @@ describe('CertRegService', () => {
     certRegService.reIssueCertificate(params);
     const options = { url: 'v1/cert/reissue', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
+  });
+
+  it('should attach certificate to a batch', () => {
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+    spyOn(certRegService, 'patch').and.returnValue(observableOf(mockResponseData.addCertificateMockResponse));
+    const params = {
+      request: {
+        courseId: 'do_123456',
+        batchId: '124679456',
+        key: 'igotCourseTemplate',
+        orgId: 'sunbird',
+        criteria: {
+          'user': {
+            'rootOrgId': 'ORG_001'
+          },
+          'enrollment': {
+            'status': 2
+          }
+        }
+      }
+    };
+    certRegService.addCertificateTemplate(params);
+    const options = { url: 'v1/add/template', data: params };
+    expect(certRegService.patch).toHaveBeenCalledWith(options);
   });
 });

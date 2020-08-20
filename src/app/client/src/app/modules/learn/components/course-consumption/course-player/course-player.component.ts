@@ -218,6 +218,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @since - release-3.2.10
+   * @param  {object} event
+   * @description - it will navigate to add-certificate page or will trigger
+   *                telemetry event based on the event mode.
+   */
   onPopupClose(event) {
     if (_.get(event, 'mode') === 'add-certificates') {
       this.navigateToConfigureCertificate('add', _.get(event, 'batchId'));
@@ -228,6 +234,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.showConfirmationPopup = false;
   }
 
+  /**
+   * @since - release-3.2.10
+   * @param  {string} mode
+   * @param  {string} batchId
+   * @description - It will navigate to certificate-configuration page.
+   */
   navigateToConfigureCertificate(mode: string, batchId: string) {
     this.router.navigate([`/certs/configure/certificate`], {
       queryParams: {
