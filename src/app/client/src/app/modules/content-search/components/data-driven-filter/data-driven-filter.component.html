@@ -102,8 +102,13 @@
 <ng-container *ngIf="layoutConfiguration">
   <div class="sbt-filter">
     <div class="sbt-filter-overlay"></div>
-    <div class="sbt-filter-switcher-container cursor-pointer" appTelemetryInteract
+    <div class="sbt-filter-switcher-container cursor-pointer mobile only" appTelemetryInteract
     [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="isOpen = !isOpen">
+      <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+      <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
+    </div>
+    <div class="sbt-filter-switcher-container cursor-pointer computer only" appTelemetryInteract
+    [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata">
       <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
       <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters}}</div>
     </div>

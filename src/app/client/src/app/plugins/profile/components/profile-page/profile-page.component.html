@@ -247,7 +247,6 @@
             <div class="sb-toast-body mr-0">
               <div class="sb-toast-texts w-100 text-center">
                 <div class="sb-toast-title">{{resourceService.frmelmnts?.scttl?.error | uppercase }}</div>
-                <div class="sb-toast-message">{{resourceService?.frmelmnts?.lbl?.errorTypeMsg}}</div>
                 <ul class="error-lists p-0 my-8" *ngIf="selfDeclaredErrorTypes.length > 0">
                   <li class="error-list mb-4" *ngFor="let errorType of selfDeclaredErrorTypes">{{ errorType }}</li>
                 </ul>

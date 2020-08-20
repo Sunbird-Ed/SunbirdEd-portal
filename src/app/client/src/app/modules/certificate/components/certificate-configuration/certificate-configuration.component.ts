@@ -66,7 +66,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private playerService: PlayerService,
     private resourceService: ResourceService,
     private certRegService: CertRegService,
-    private navigationHelperService: NavigationHelperService,
+    public navigationHelperService: NavigationHelperService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService,
     private router: Router,
@@ -77,10 +77,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.isTemplateChanged) {
       this.isTemplateChanged = false;
     }
-  }
-
-  showCertRulesScreen(stateName) {
-    this.currentState = stateName;
   }
 
   ngOnInit() {
@@ -101,6 +97,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       const [courseDetails, batchDetails, config] = data;
     }, (error) => {
       this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
@@ -140,7 +137,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.certTypes = _.get(dropDownValues, 'certTypes');
       this.issueTo = _.get(dropDownValues, 'issueTo');
     }, error => {
-      // error toast
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
@@ -356,6 +353,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.configurationMode === 'add') {
       this.userPreference.reset();
       this.selectedTemplate = {};
+    } else {
+      this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
     }
   }
 

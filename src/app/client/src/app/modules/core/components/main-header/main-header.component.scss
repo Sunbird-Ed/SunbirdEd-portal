@@ -146,7 +146,7 @@
 
 @include respond-below(sm) {
   .profile__info {
-    padding: calculateRem(16px);
+    // padding: calculateRem(16px);
 
     .icon-close {
       right: calculateRem(16px);

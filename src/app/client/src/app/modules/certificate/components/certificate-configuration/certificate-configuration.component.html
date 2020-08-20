@@ -9,7 +9,7 @@
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
     <div class="ui container">
       <div class="py-8 d-flex flex-ai-center">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button"
+        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack" type="button"
           (click)="goBack()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
@@ -72,7 +72,6 @@
                     <div class="d-flex flex-ai-center">
                       <div class="certificate-card-img pl-16"> <img src="assets/images/certificate-icon.png"
                           width="25px" height="20px" /></div>
-                      <div class="certificate-card-count pl-8">0</div>
                     </div>
                   </div>
                 </div>
@@ -88,7 +87,7 @@
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                 <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                 {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-              <button type="button" (click)="currentState = screenStates.certRules"
+              <button type="button" id="addNewCert" (click)="currentState = screenStates.certRules"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                 <img src="assets/images/plus-icon.svg" width="8px" class="ml-4 plus-icon"></button>
@@ -111,7 +110,7 @@
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable"
-                          (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">Edit</button>
+                          (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
                       </div>
                     </div>
                   </div>
@@ -219,8 +218,7 @@
   </div>
 </div>
 
-<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate">
-</app-cert-preview-popup>
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
 
 <!-- footer certificate -->
 <sui-modal *ngIf="isTemplateChanged" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
