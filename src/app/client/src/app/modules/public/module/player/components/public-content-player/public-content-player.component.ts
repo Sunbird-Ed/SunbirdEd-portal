@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import { Subject, of, throwError, Subscription } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService, UtilService, ContentUtilsServiceService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ITelemetryShare
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -75,7 +75,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService, public utilService: UtilService, private contentUtilsService: ContentUtilsServiceService,
-    private location: PlatformLocation) {
+    private location: PlatformLocation, public layoutService: LayoutService) {
     this.playerOption = {
       showContentRating: true
     };
@@ -85,6 +85,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.layoutService.scrollTop();
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.paramsSub = this.activatedRoute.params.subscribe((params) => {
