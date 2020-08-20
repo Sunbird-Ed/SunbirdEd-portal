@@ -38,38 +38,32 @@ describe('JoyThemePopupComponent', () => {
   });
 
   it('should close popup', () => {
-    component.isShown = true;
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
     component.closePopup();
-    expect(component.isShown).toBe(false);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
   });
 
   it('should not switch to old layout as already in old ui', () => {
-    component.isShown = true;
     const layoutService = TestBed.get(LayoutService);
     spyOn(layoutService, 'getLayoutConfig').and.returnValue({layout: 'layout'});
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
     component.switchToNewLayout();
-    expect(component.isShown).toBe(false);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
     expect(layoutService.initiateSwitchLayout).not.toHaveBeenCalled();
   });
 
   it('should switch to old layout as already', () => {
-    component.isShown = true;
     const layoutService = TestBed.get(LayoutService);
     spyOn(layoutService, 'getLayoutConfig').and.returnValue(null);
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
     component.switchToNewLayout();
-    expect(component.isShown).toBe(false);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
     expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();

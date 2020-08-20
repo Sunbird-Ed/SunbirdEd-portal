@@ -1,12 +1,13 @@
-<sui-modal 
+<sui-modal
 [mustScroll]="true" 
   [isClosable]="false" 
   [transitionDuration]="0"
-  [size]="'normal'" 
-  class="sb-modal" 
-  appBodyScroll 
-   *ngIf="isShown">
- 
+  [size]="'normal'"
+  class="sb-modal"
+  #modal
+  (dismissed)="closePopup()"
+  appBodyScroll >
+
 
   <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
     <a class="close" (click)="closePopup()"><i class="d-flex icon-svg icon-svg--xxs icon-close">
