@@ -346,10 +346,6 @@ html[layout='joy'] {
     width: calc(100% - 4%);
     margin:0 auto;
   }
-
-  .sbt-bg-container {
-
-  }
   .kabab-menu-dropdown-content {
     border-radius: var(--sbt-bradius-16);
     .list{
@@ -460,6 +456,10 @@ html[layout='joy'] {
   .ui.modal>:last-child{
     border-bottom-left-radius: var(--sbt-bradius-24);
     border-bottom-right-radius: var(--sbt-bradius-24);
+  }
+  .ui.modal>.icon:first-child+*, .ui.modal>:first-child:not(.icon) {
+    border-top-left-radius: var(--sbt-bradius-24);
+    border-top-right-radius: var(--sbt-bradius-24);
   }
   .ui.grid.sb-form.m-0.sb-workspace-modal.p-16 {
     padding:0px !important;
@@ -925,10 +925,16 @@ html[layout='joy'] {
     color: var(--gray-800) !important;
   }
   .sb-slider-pills-container .sb-pills-container .pill {
-    white-space: normal;
+    white-space: normal !important;
   }
   .sb-pageSection-header {
     margin: 8px 0 0px 0;
+  }
+  .sb-content__bar {
+    background: none;
+  }
+  .sb-rating.ui.star.rating .active.icon, .sb-rating.ui.star.rating .icon.selected {
+    color: var(--primary-color) !important;
   }
   app-view-all .sbt-filter {
     margin-top: calculateRem(-32px);
