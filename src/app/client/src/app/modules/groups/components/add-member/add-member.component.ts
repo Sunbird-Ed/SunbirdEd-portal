@@ -100,6 +100,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   onVerifyMember() {
+    this.reset();
     if (this.isCaptchEnabled) {
       this.showLoader = true;
       this.captchaRef.execute();
