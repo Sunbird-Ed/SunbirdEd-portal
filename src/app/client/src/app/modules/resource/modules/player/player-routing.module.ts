@@ -7,10 +7,10 @@ const routes: Routes = [
     {
         path: 'collection/:collectionId', component: CollectionPlayerComponent,
         data: {
-            routeReuse: {
-                reuse: true,
-                path: 'resources/play/collection'
-            },
+            // routeReuse: {
+            //     reuse: true,
+            //     path: 'resources/play/collection'
+            // },
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'collection-player', type: 'play' }
         }

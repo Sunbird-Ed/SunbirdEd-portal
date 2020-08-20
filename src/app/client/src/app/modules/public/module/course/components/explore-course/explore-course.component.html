@@ -11,7 +11,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
         <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-    <div class="content-grid mt-24 relative9">
+    <div class="content-grid relative9">
         <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
             <div  class="sb-pageSection-header">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
@@ -27,7 +27,7 @@
           <div class="sb-grid dynamic-section-card ">
             <div in-view-item [id]="i" [data]="content" class=""
               *ngFor="let content of contentList;let i = index;">
-              <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
+              <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                 [telemetryInteractEdata]="cardIntractEdata"
                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                 (cardClick)="playContent($event)" [content]="content"

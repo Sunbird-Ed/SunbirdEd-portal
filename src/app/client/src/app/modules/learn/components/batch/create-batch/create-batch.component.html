@@ -32,11 +32,11 @@
               <label class="required">Issue Certificate</label>
               <div class="d-flex py-8 flex-w-wrap">
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                  <input formControlName="issueCertificate" value="yes" type="radio" id="yes">
+                  <input (change)="handleInputChange('yes')" formControlName="issueCertificate" value="yes" type="radio" id="yes">
                   <label for="yes">Yes</label>
                 </div>
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                  <input formControlName="issueCertificate" value="no" type="radio" id="no">
+                  <input (change)="handleInputChange('no')" formControlName="issueCertificate" value="no" type="radio" id="no">
                   <label for="no">No</label>
                 </div>
               </div>

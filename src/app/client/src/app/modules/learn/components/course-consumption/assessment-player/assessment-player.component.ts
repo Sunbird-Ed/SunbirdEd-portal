@@ -39,7 +39,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   playerOption;
   courseName: string;
   courseProgress: number;
-  private objectRollUp = [];
+  private objectRollUp = {};
   public treeModel: any;
   isParentCourse = false;
   telemetryContentImpression: IImpressionEventInput;
@@ -281,10 +281,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getConfigByContent(id, options)
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
-        this.objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
-        const objectRollUp = this.objectRollUp ? this.courseConsumptionService.getRollUp(this.objectRollUp) : {};
+        const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
+        this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
         if (config && config.context) {
-          config.context.objectRollup = objectRollUp;
+          config.context.objectRollup = this.objectRollUp;
         }
         this.playerConfig = config;
         this.showLoader = false;
@@ -330,7 +330,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
     const request: any = {
       userId: this.userService.userid,
-      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
       status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,

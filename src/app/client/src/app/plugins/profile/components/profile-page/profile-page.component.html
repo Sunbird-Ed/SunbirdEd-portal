@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
@@ -247,7 +247,6 @@
             <div class="sb-toast-body mr-0">
               <div class="sb-toast-texts w-100 text-center">
                 <div class="sb-toast-title">{{resourceService.frmelmnts?.scttl?.error | uppercase }}</div>
-                <div class="sb-toast-message">{{resourceService?.frmelmnts?.lbl?.errorTypeMsg}}</div>
                 <ul class="error-lists p-0 my-8" *ngIf="selfDeclaredErrorTypes.length > 0">
                   <li class="error-list mb-4" *ngFor="let errorType of selfDeclaredErrorTypes">{{ errorType }}</li>
                 </ul>
@@ -272,7 +271,7 @@
   <!-- my badges section ends -->
 
   <div class="pt-30">
-    <div class="ui container">
+    <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}
