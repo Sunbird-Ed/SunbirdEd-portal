@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {LayoutService, ResourceService} from '@sunbird/shared';
 import {IInteractEventEdata} from '@sunbird/telemetry';
 
@@ -8,8 +8,7 @@ import {IInteractEventEdata} from '@sunbird/telemetry';
   styleUrls: ['./joy-theme-popup.component.scss']
 })
 export class JoyThemePopupComponent implements OnInit {
-
-  isShown = true;
+  @ViewChild('modal') modal;
   @Output() closeJoyThemePopup = new EventEmitter<any>();
   instance: string;
   joyThemeIntractEdata: IInteractEventEdata;
@@ -27,7 +26,7 @@ export class JoyThemePopupComponent implements OnInit {
 
   closePopup() {
     localStorage.setItem('joyThemePopup', 'true');
-    this.isShown = false;
+    this.modal.deny();
     this.closeJoyThemePopup.emit();
   }
 

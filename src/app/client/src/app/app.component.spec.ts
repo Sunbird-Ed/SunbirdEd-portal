@@ -20,6 +20,7 @@ import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -50,7 +51,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
-        RouterTestingModule],
+        RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AppComponent
       ],

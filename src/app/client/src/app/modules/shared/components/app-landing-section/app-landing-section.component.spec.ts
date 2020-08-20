@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { AppLandingSectionComponent } from './app-landing-section.component';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 describe('AppLandingSectionComponent', () => {
   let component: AppLandingSectionComponent;
@@ -17,8 +19,13 @@ describe('AppLandingSectionComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot()],
-      providers: []
+      imports: [ HttpClientModule,SharedModule.forRoot(),TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),],
+      providers: [HttpClient]
     })
     .compileComponents();
   }));
