@@ -173,7 +173,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else if (url.indexOf('explore-groups') >= 0) {
       this.hrefPath = url.replace('explore-groups', MY_GROUPS);
     } else if (url.indexOf('explore') >= 0) {
-      this.hrefPath = url.replace('explore', 'resources');
+      if (url.indexOf('explore/') >= 0) {
+        this.hrefPath = url.replace('explore', 'search/Library');
+      } else {
+        this.hrefPath = url.replace('explore', 'resources');
+      }
     } else if (url.indexOf('play') >= 0) {
       this.hrefPath = '/resources' + url;
     } else {
