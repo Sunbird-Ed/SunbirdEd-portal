@@ -1,5 +1,4 @@
 import * as _ from 'lodash-es';
-
 export class CertConfigModel {
     private dropDownFields = {
         COMPLETION_CERTIFICATE: 'Completion certificate',
@@ -9,13 +8,24 @@ export class CertConfigModel {
     constructor() {
     }
 
+    /**
+     * @since - release-3.2.10
+     * @param  { object } rawValues
+     * @param  { string }rootOrgId
+     * @description - It returns the criteria extracted from the given drop-down raw values.
+     */
     processDropDownValues(rawValues, rootOrgId) {
         const criteria = {};
-        criteria['user'] = _.get(rawValues, 'issueTo') === this.dropDownFields.ALL ? {rootOrgId: ''} : { rootOrgId: rootOrgId };
+        criteria['user'] = _.get(rawValues, 'issueTo') === this.dropDownFields.ALL ? { rootOrgId: '' } : { rootOrgId: rootOrgId };
         criteria['enrollment'] = _.get(rawValues, 'certificateType') === this.dropDownFields.COMPLETION_CERTIFICATE ? { status: 2 } : { };
         return criteria;
     }
 
+    /**
+     * @since - release-3.2.10
+     * @param  { object } criteria
+     * @description - It returns the drop-down values extracted from the given criteria.
+     */
     processCriteria(criteria) {
         const dropDowns = {};
         dropDowns['issueTo'] = _.get(criteria, 'user.rootOrgId') ?
@@ -24,6 +34,11 @@ export class CertConfigModel {
         return dropDowns;
     }
 
+    /**
+     * @since - release-3.2.10
+     * @param  { object } certTypeData
+     * @description - It will take preference read api response and give back the drop-downs for cert rules page
+     */
     getDropDownValues(certTypeData) {
         const processedDropdownValues = {};
         const certTypes = certTypeData.filter(val => {
