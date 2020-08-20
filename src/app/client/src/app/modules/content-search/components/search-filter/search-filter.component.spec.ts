@@ -95,4 +95,9 @@ describe('SearchFilterComponent', () => {
         component.isLayoutAvailable();
         expect(component).toBeTruthy();
     });
+    it('should call getBoardInteractEdata', () => {
+        const returnData = component.getBoardInteractEdata();
+        expect(returnData).toEqual({ 'id': 'apply-filter', 'type': 'click',
+        'pageid': 'resource-search', 'extra': { 'filters': { 'medium': [], 'gradeLevel': [], 'board': [], 'selectedTab': 'textbook' } } });
+    });
 });
