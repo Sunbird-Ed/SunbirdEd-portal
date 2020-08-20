@@ -29,10 +29,10 @@ appBodyScroll
 
   <!-- Action-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()">
+    <button id="close-modal-btn"class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()">
       {{resourceService?.frmelmnts.btn.close}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="navigateToAddCertificate()">
+    <button id="add-certificate" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="navigateToAddCertificate()">
       {{resourceService?.frmelmnts.cert.lbl.addCert}}
     </button>
   </div>

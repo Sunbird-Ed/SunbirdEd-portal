@@ -94,7 +94,7 @@ describe('CertificateConfigurationComponent', () => {
 
   it('Should handle the "window.popstate" event', () => {
     spyOn(component, 'onPopState');
-    var popStateEvent = new Event('popstate');
+    const popStateEvent = new Event('popstate');
     window.dispatchEvent(popStateEvent);
     expect(component.onPopState).toHaveBeenCalledWith(popStateEvent);
   });
@@ -103,9 +103,9 @@ describe('CertificateConfigurationComponent', () => {
     // Template changed state value
     component.isTemplateChanged = true;
 
-    component.onPopState(new Event('popstate'));   
+    component.onPopState(new Event('popstate'));
     expect(component.isTemplateChanged).toBeFalsy();
-  })
+  });
 
   it('Should the screen state to certRule on click of "Add certificate" button', () => {
     // let de = fixture.debugElement;
@@ -113,10 +113,10 @@ describe('CertificateConfigurationComponent', () => {
     component.showLoader = false;
     // component.batchDetails = jasmine.createSpyObj({"cert_templates": {"name": "certName"}});
     fixture.detectChanges();
-    let buttonEle = fixture.debugElement.nativeElement.querySelector('#addNewCert');
+    const buttonEle = fixture.debugElement.nativeElement.querySelector('#addNewCert');
     buttonEle.click();
-    expect(component.currentState).toEqual(component.screenStates.certRules)
-  })
+    expect(component.currentState).toEqual(component.screenStates.certRules);
+  });
 
   it('Should go to default screen from certRules screen on click of back/cancel', () => {
     // let de = fixture.debugElement;
@@ -125,20 +125,20 @@ describe('CertificateConfigurationComponent', () => {
     // component.batchDetails = jasmine.createSpyObj({"cert_templates": {"name": "certName"}});
     component.currentState = component.screenStates.certRules;
     fixture.detectChanges();
-    let buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
+    const buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
     buttonEle.click();
-    expect(component.currentState).toEqual(component.screenStates.default)
-  })
+    expect(component.currentState).toEqual(component.screenStates.default);
+  });
 
   xit('Should close cert configuration screen from cert default screen on click of back button', () => {
     // let de = fixture.debugElement;
     // queryDebugElement(de, 'addNewCert');
     component.ngOnInit();
     component.showLoader = false;
-    component.currentState = component.screenStates.default;   
+    component.currentState = component.screenStates.default;
     fixture.detectChanges();
-    let buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
+    const buttonEle = fixture.debugElement.nativeElement.querySelector('#goBack');
     buttonEle.click();
     expect(component.navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
-  })
+  });
 });
