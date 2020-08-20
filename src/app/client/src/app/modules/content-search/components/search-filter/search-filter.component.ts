@@ -26,7 +26,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public selectedBoard: { label: string, value: string, selectedOption: string };
   public selectedChannel: { label: string, value: string, selectedOption: string };
   public selectedOption: { label: string, value: string, selectedOption: string };
-  public optionLabel = { Publisher: 'Publisher', Board: 'Board' };
+  public optionLabel = { Publisher: this.resourceService.RESOURCE_CONSUMPTION_ROOT+'frmelmnts.lbl.publisher', Board: this.resourceService.RESOURCE_CONSUMPTION_ROOT+'frmelmnts.lbl.boards' };
   public type: string;
   public publisher: any[] = [];
   public boards: any[] = [];

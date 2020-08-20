@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 const ContentServiceStub = {
   post() {
@@ -48,7 +49,13 @@ describe('CollectionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent ],
-      imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule,
+               TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                }),CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,
