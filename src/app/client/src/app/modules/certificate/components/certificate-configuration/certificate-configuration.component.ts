@@ -66,7 +66,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private playerService: PlayerService,
     private resourceService: ResourceService,
     private certRegService: CertRegService,
-    private navigationHelperService: NavigationHelperService,
+    public navigationHelperService: NavigationHelperService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService,
     private router: Router,
@@ -77,10 +77,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.isTemplateChanged) {
       this.isTemplateChanged = false;
     }
-  }
-
-  showCertRulesScreen(stateName) {
-    this.currentState = stateName;
   }
 
   ngOnInit() {

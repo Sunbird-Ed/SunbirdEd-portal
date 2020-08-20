@@ -9,7 +9,7 @@
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
     <div class="ui container">
       <div class="py-8 d-flex flex-ai-center">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" type="button"
+        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack" type="button"
           (click)="goBack()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
@@ -87,7 +87,7 @@
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                 <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                 {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-              <button type="button" (click)="currentState = screenStates.certRules"
+              <button type="button" id="addNewCert" (click)="currentState = screenStates.certRules"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                 <img src="assets/images/plus-icon.svg" width="8px" class="ml-4 plus-icon"></button>
