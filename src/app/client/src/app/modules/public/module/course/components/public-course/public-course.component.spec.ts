@@ -189,4 +189,45 @@ describe('PublicCourseComponent', () => {
     formService = TestBed.get(FormService);
     component['getFormData']();
   });
+
+  it('should redirect to viewall page with queryparams', () => {
+    const router = TestBed.get(Router);
+    const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
+    spyOn(component, 'viewAll').and.callThrough();
+    spyOn(cacheService, 'set').and.stub();
+    router.url = '/explore-course?selectedTab=course';
+    component.viewAll({searchQuery: searchQuery, name: 'Featured-courses'});
+    expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
+    {queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined }});
+    expect(cacheService.set).toHaveBeenCalled();
+  });
+
+  it('should call play content method', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn(publicPlayerService, 'playExploreCourse').and.callThrough();
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398'
+        }
+      }
+    };
+    component.playContent(event);
+    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+  });
+
+  it('should generate visit telemetry impression event', () => {
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398',
+          contentType: 'Course'
+        },
+        section: 'Featured courses'
+      }
+    };
+    component.prepareVisits(event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
+
 });
