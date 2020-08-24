@@ -165,7 +165,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               } else {
                 this.courseHierarchy = data.courseHierarchy;
               }
-              if (!isSingleContent && this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
+              if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !== 'application/vnd.ekstep.content-collection') {
                 isSingleContent = true;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
