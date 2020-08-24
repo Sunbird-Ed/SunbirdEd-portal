@@ -110,7 +110,7 @@
 </sui-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo">
+<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo && !courseMentor">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
