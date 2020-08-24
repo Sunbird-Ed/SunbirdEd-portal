@@ -31,7 +31,7 @@
           <label></label>
           <div class="sb-field">
             <button (click)="onSubmit()" type="submit"
-              class="sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+              class="sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
           </div>
         </div>
       </div>
@@ -62,17 +62,18 @@
             <div appMarkdown [input]="dataDictionary"
               *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
-              Data Not Available
+              {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
             <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
                 <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
-                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i> Edit</a>
+                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
+                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
               </div>
               <div class="ui bottom attached segment" suiTabContent="1">
                 <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
                 <div class="ui warning message" *ngIf="!dataDictionary?.length">
-                  Data Not Available
+                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
                 </div>
               </div>
               <div class="ui bottom attached segment" suiTabContent="2">
@@ -84,7 +85,7 @@
                 <div class="sb-table-container m-0">
                   <div class="sb-table-search-header px-0">
                     <button (click)="handleMarkdownSubmission('dataDictionary')" type="button"
-                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
                   </div>
                 </div>
               </div>
@@ -102,17 +103,18 @@
           <div class="sb-accordion-text">
             <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
             <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
-              Data Not Available
+              {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
             </div>
             <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
                 <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
-                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i> Edit</a>
+                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
+                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
               </div>
               <div class="ui bottom attached segment" suiTabContent="1">
                 <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
                 <div class="ui warning message" *ngIf="!examples?.length">
-                  Data Not Available
+                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
                 </div>
               </div>
               <div class="ui bottom attached segment" suiTabContent="2">
@@ -124,7 +126,7 @@
                 <div class="sb-table-container m-0">
                   <div class="sb-table-search-header px-0">
                     <button (click)="handleMarkdownSubmission('examples')" type="button"
-                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
                   </div>
                 </div>
               </div>

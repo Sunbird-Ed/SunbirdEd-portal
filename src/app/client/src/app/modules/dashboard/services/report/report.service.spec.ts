@@ -552,4 +552,48 @@ describe('ReportService', () => {
 
   });
 
+  it('should get table data', () => {
+    const data = [{ id: 'sample', result: 2 }, { id: 'sample2', result: 22 }]
+    const result = reportService['getTableData'](data, 'sample');
+    expect(result).toEqual(data[0].result);
+  });
+
+  it('should get paramterized files', () => {
+    spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ rootOrg: { slug: 'sunbird', hashTagId: '123' }, framework: { board: ['CBSE'] } });
+    const files = [{ downloadUrl: "/report/$slug/abc.json" }, { downloadUrl: "/report/HE/abc.json" }];
+    const hash = 'c3VuYmlyZA==';
+    const result = reportService.getParameterizedFiles(files, hash);
+    expect(result).toEqual([
+      { downloadUrl: '/report/sunbird/abc.json' },
+      { downloadUrl: "/report/HE/abc.json" }
+    ]);
+  });
+
+  it('should prepare table data', () => {
+    const input = {
+      tablesArray: [
+        {
+          "id": "board_wise_devices_12",
+          "columnsExpr": "keys",
+          "valuesExpr": "tableData"
+        }],
+      data: [
+        {
+          id: 'board_wise_devices_12',
+          result: {
+            keys: [],
+            tableData: []
+          }
+        }]
+    }
+    const result = reportService.prepareTableData(input.tablesArray, input.data, '');
+    expect(result).toEqual([{
+      id: input.tablesArray[0].id,
+      name: "Table",
+      header: [],
+      data: [],
+      downloadUrl: ''
+    }]);
+  })
+
 });

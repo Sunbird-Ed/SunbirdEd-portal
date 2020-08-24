@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { IDataset } from '../../interfaces'
@@ -28,7 +29,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
   };
 
   public get pickerMinDate() {
-    if (this.dataset.dataAvailableFrom) {
+    if (get(this.dataset, 'dataAvailableFrom')) {
       return dayjs(this.dataset.dataAvailableFrom);
     }
     return dayjs().subtract(6, 'month').toDate()
@@ -38,6 +39,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
   table: any;
   data: any;
   options: any = { maxLines: 1000, printMargin: false };
+
   private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(6, 'day').toDate(), to: dayjs().toDate() })
 
   @ViewChild('datasets') set initTable(element: ElementRef | null) {
@@ -46,7 +48,8 @@ export class DatasetComponent implements OnInit, OnDestroy {
   }
 
   constructor(private datasetService: DatasetService, private formBuilder: FormBuilder,
-    public reportService: ReportService, private activatedRoute: ActivatedRoute) { }
+    public reportService: ReportService, private activatedRoute: ActivatedRoute,
+    public resourceService: ResourceService) { }
 
   onMarkdownChange(updatedData: string, type: "dataDictionary" | "examples") {
     this[type] = updatedData;
@@ -66,11 +69,12 @@ export class DatasetComponent implements OnInit, OnDestroy {
   }
 
   private setMarkdowns() {
-    const { dataDictionary, examples } = this.dataset;
+    const { dataDictionary = '', examples = '' } = this.dataset || {};
     try {
-      this.dataDictionary = atob(dataDictionary || '');
-      this.examples = atob(examples || '');
+      this.dataDictionary = atob(dataDictionary);
+      this.examples = atob(examples);
     } catch (error) {
+      console.error(error);
       this.dataDictionary = this.examples = '';
     }
   }
@@ -113,7 +117,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
     const dateRange = this.getDateRange(from, to);
     const { hash } = this.activatedRoute.snapshot.params;
     return this.datasetService.getDataSet({
-      datasetId: "raw" || this.dataset.datasetId,
+      datasetId: this.dataset.datasetId || "raw",
       from: from.format('YYYY-MM-DD'), to: to.format('YYYY-MM-DD'),
       ...(hash && {
         header: {
