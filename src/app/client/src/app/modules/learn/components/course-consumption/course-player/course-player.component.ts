@@ -75,6 +75,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   showConfirmationPopup = false;
   popupMode: string;
   createdBatchId: string;
+  courseMentor = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -103,6 +104,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
     this.initLayout();
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
