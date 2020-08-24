@@ -1,4 +1,4 @@
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 import { of as observableOf, of, throwError } from 'rxjs';
 import {
@@ -10,7 +10,7 @@ import { CourseConsumptionHeaderComponent } from './course-consumption-header.co
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
-import { CoreModule, CoursesService, PermissionService } from '@sunbird/core';
+import { CoreModule, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
@@ -63,7 +63,8 @@ describe('CourseConsumptionHeaderComponent', () => {
       declarations: [CourseConsumptionHeaderComponent],
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }, PermissionService,
-        CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub }],
+        CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub },
+        TelemetryService, CopyContentService ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -238,10 +239,30 @@ describe('CourseConsumptionHeaderComponent', () => {
     });
   });
 
+  it('should show error if copy content fails', () => {
+    component.resourceService.messages = resourceServiceMockData.messages;
+    const copycontentService = TestBed.get(CopyContentService);
+    spyOn(copycontentService, 'copyContent').and.returnValue(throwError ({content: {}}));
+    spyOn(component.toasterService, 'error');
+    let content: ContentData;
+    component.copyContent(content);
+    expect(copycontentService.copyContent).toHaveBeenCalled();
+    expect(component.toasterService.error).toHaveBeenCalled();
+    expect(component.showCopyLoader).toBeFalsy();
+  });
+
   it('should call goBack and return to learn page', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const router = TestBed.get(Router);
     courseConsumptionService.coursePagePreviousUrl = { url: '/learn' };
+    component.goBack();
+    expect(router.navigate).toHaveBeenCalledWith(['/learn']);
+  });
+
+  it('should call goBack and return to learn page while previousPageUrl is undefiened', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const router = TestBed.get(Router);
+    courseConsumptionService.coursePagePreviousUrl = '';
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/learn']);
   });
@@ -253,4 +274,43 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.goBack();
     expect(router.navigate).toHaveBeenCalledWith(['/search/Courses/1'], {queryParams:  {key: 'misc course'} });
   });
+
+  it('should call logTelemetry', () => {
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.callThrough();
+    activatedRouteStub['snapshot'] = {
+      params: [ {
+        courseId: 'do_1125083286221291521153',
+      }],
+      data: {
+        telemetry: {
+          object: {}
+        }
+      }
+    };
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.logTelemetry('course-start', CourseHierarchyGetMockResponse.result.content);
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
+  it('should close share popup and log interact telemetry', () => {
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.callThrough();
+    activatedRouteStub['snapshot'] = {
+      params: [ {
+        courseId: 'do_1125083286221291521153',
+      }],
+      data: {
+        telemetry: {
+          object: {}
+        }
+      }
+    };
+    component.closeSharePopup('close-share-link-popup');
+    expect(component.sharelinkModal).toBeFalsy();
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
 });
