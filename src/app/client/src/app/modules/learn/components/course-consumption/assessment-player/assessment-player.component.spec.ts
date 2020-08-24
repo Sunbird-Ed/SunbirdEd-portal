@@ -123,7 +123,6 @@ describe('AssessmentPlayerComponent', () => {
     }));
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
-    expect(component.setActiveContent).toHaveBeenCalled();
   });
   it('should call subscribeToQueryParam, when no bachID present', () => {
     const playerService = TestBed.get(PlayerService);
@@ -451,5 +450,17 @@ describe('AssessmentPlayerComponent', () => {
     };
     component.highlightContent();
     expect(component.contentStatus).toBeDefined();
+  });
+
+  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
+    component.isParentCourse = false;
+    component.batchId = '0130928797865820162';
+    spyOn(component, 'setActiveContent');
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
+      courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
+      enrolledBatchDetails: {}
+    }));
+    component['subscribeToQueryParam']();
+    expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
 });
