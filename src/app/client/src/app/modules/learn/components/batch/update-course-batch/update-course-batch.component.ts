@@ -527,6 +527,12 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       }
     });
   }
+
+  /**
+   * @since - release-3.2.10
+   * @param  {string} batchId
+   * @description - It will emit an event;
+   */
   checkIssueCertificate(batchId) {
     this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
     mode: 'edit', batchId: batchId });
