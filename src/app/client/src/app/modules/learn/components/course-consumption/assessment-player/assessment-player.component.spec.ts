@@ -445,9 +445,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
     component.isParentCourse = false;
-    const playerService = TestBed.get(PlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue({ result: { content: assessmentPlayerMockData.activeContent } });
-    spyOn<any>(component, 'setTelemetryCourseImpression');
+    component.batchId = '0130928797865820162';
     spyOn(component, 'setActiveContent');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
       courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
