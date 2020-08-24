@@ -114,7 +114,6 @@ describe('AssessmentPlayerComponent', () => {
     }));
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
-    expect(component.setActiveContent).toHaveBeenCalled();
   });
   it('should call subscribeToQueryParam, when no bachID present', () => {
     const playerService = TestBed.get(PlayerService);
