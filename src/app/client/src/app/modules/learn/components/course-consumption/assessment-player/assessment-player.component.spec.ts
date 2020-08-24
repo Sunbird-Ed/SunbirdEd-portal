@@ -442,4 +442,18 @@ describe('AssessmentPlayerComponent', () => {
     component.highlightContent();
     expect(component.contentStatus).toBeDefined();
   });
+
+  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
+    component.isParentCourse = false;
+    const playerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'getCollectionHierarchy').and.returnValue({ result: { content: assessmentPlayerMockData.activeContent } });
+    spyOn<any>(component, 'setTelemetryCourseImpression');
+    spyOn(component, 'setActiveContent');
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
+      courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
+      enrolledBatchDetails: {}
+    }));
+    component['subscribeToQueryParam']();
+    expect(component['setActiveContent']).toHaveBeenCalledWith(undefined, true);
+  });
 });
