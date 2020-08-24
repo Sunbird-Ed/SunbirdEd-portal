@@ -1,5 +1,7 @@
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
+  SuiProgressModule, SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import {
   NoResultComponent, AppLoaderComponent, CardComponent,
@@ -37,9 +39,7 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent,
-    SelectOptionGroupComponent,
-    MarkdownDirective],
+    ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective],
   exports: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,

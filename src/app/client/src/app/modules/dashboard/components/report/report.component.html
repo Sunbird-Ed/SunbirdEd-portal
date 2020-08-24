@@ -49,7 +49,8 @@
                     </div>
                     <div *ngIf="isUserReportAdmin && !hideElements"
                       class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                      <button *ngIf="type === 0" appTelemetryInteract
+                        [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
                         (click)="openReportSummaryModal()" type="button"
                         class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
@@ -82,7 +83,7 @@
                   [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                 </p>
                 <div class="ml-auto d-flex flex-jc-flex-end sb-last-update-status fnormal sb-color-gray-400"
-                  *ngIf="currentReport?.lastUpdatedOn">
+                  *ngIf="currentReport?.lastUpdatedOn && type === 0">
                   <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
                   {{currentReport?.lastUpdatedOn}}
                 </div>
@@ -90,10 +91,11 @@
 
             </div>
 
-            <div class="ui container py-16">
+            <div class="ui container">
               <div class="twelve wide column">
                 <div *ngIf="type === 1">
-                  <app-dataset [dataset]="report?.reportconfig?.dataset"></app-dataset>
+                  <app-dataset [markdownUpdated$]="markdownUpdated$" [dataset]="report?.reportconfig?.dataset">
+                  </app-dataset>
                 </div>
                 <div id="report-body" class="my-16" *ngIf="type === 0">
                   <sui-tabset>
@@ -234,7 +236,8 @@
                     </ng-container>
                   </sui-tabset>
                 </div>
-                <div id="report-summary" class="my-16" *ngIf="currentReportSummary && currentReportSummary.length">
+                <div id="report-summary" class="my-16"
+                  *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
                   <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
                 </div>
               </div>

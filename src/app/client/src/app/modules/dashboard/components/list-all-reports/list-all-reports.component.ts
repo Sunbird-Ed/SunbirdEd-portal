@@ -19,7 +19,7 @@ import 'datatables.net';
 export class ListAllReportsComponent implements OnInit {
   reports: any;
 
-  constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute,
+  constructor(public resourceService: ResourceService, public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
     private telemetryService: TelemetryService) { }
 
@@ -35,7 +35,10 @@ export class ListAllReportsComponent implements OnInit {
 
   @ViewChild('all_datasets') set datasetTable(element: ElementRef | null) {
     if (!element) { return; }
-    const [reports, datasets] = this.reports;
+    let [reports, datasets] = this.reports;
+    if (this.reportService.isUserReportAdmin() && !this.reportService.isUserSuperAdmin()) {
+      datasets = datasets.filter(dataset => dataset.status === 'live');
+    }
     this.prepareTable(element.nativeElement, datasets);
   }
 

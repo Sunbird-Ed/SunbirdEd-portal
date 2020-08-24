@@ -63,8 +63,7 @@
       }
     },
     "DATASET": {
-      "PREFIX": "/dataset",
-      "READ": "/get"
+      "READ": "/dataset/get"
     },
     "RESOURCEBUNDLES": {
       "ENG": "/read"

@@ -1,33 +1,21 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BaseReportService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
-import { DataService, PublicDataService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import { pluck } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DatasetService extends DataService {
+export class DatasetService {
 
-  baseUrl: string;
-
-  constructor(public config: ConfigService, public http: HttpClient) {
-    super(http);
-    this.config = config;
-    this.baseUrl = this.config.urlConFig.URLS.DATASET.PREFIX;
+  constructor(public config: ConfigService, private baseReportService: BaseReportService) {
   }
 
-  public getDataSet({ datasetId, from, to, since = null }: { datasetId: string, from: string; to: string; since?: string }) {
-
+  public getDataSet({ datasetId, from, to, header = null }: { datasetId: string, from: string; to: string; header?: { [key: string]: string | string[] } }) {
     const req = {
-      url: `${this.config.urlConFig.URLS.DATASET.READ}/${datasetId}?from=${from}&to=${to}`
+      url: `${this.config.urlConFig.URLS.DATASET.READ}/${datasetId}?from=${from}&to=${to}`,
+      ...(header && { header })
     };
-
-    return super.get(req)
-      .pipe(
-        pluck('result')
-      );
-
+    return this.baseReportService.get(req).pipe(pluck('result'));
   }
-
 }

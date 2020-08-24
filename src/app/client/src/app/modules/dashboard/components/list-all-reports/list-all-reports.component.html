@@ -10,7 +10,8 @@
         <sui-tabset>
           <div class="ui top attached tabular menu report-menu">
             <a class="item" suiTabHeader="1"><i class="icon chart line alternate"></i> Reports</a>
-            <a class="item" suiTabHeader="2"><i class="icon download alternate"></i>Datasets</a>
+            <a *ngIf="reportService?.isUserReportAdmin()" class="item" suiTabHeader="2"><i
+                class="icon download alternate"></i>Datasets</a>
           </div>
           <div class="ui bottom attached segment" suiTabContent="1">
             <div class="ui bottom attached small p-0 b-0 no-bg py-24"
@@ -20,7 +21,7 @@
             </div>
           </div>
 
-          <div class="ui bottom attached segment" suiTabContent="2">
+          <div *ngIf="reportService?.isUserReportAdmin()" class="ui bottom attached segment" suiTabContent="2">
             <div class="ui bottom attached small p-0 b-0 no-bg py-24"
               [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: [{id: '' + reportsList.datasetsArr.count, type: 'CountDatasets'}]})">
               <table #all_datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">

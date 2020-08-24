@@ -384,7 +384,7 @@ export class ReportService {
         }
       },
       $board: {
-        value: _.get(this.userService, 'userProfile.framework.board')[0],
+        value: _.get(this.userService, 'userProfile.framework.board[0]'),
         masterData: () => {
           return this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
             .pipe(

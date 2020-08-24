@@ -1,93 +1,95 @@
 <div>
-  <div class="ui grid sb-form m-0 sb-workspace-modal">
-    <div class="twelve wide column pb-16">
-      <div class="sb-field-group d-flex flex-ai-center">
-        <label>
-          File Format
-        </label>
-        <div class="sb-field ml-16">
-          <sui-select class="selection">
-            <sui-select-option *ngFor="let option of ['csv', 'json']" [value]="option"></sui-select-option>
-          </sui-select>
-        </div>
-      </div>
-
-      <div class="d-flex flex-ai-center">
-        <div class="sb-field-group d-flex">
+  <div class="sb-table-container">
+    <div class="d-flex flex-ai-center">
+      <div class="d-flex flex-ai-center" [formGroup]="timeRangePicker">
+        <div class="sb-field-group">
           <label>
-            Pick Time Range
+            From
           </label>
-          <div class="sb-field d-flex flex-ai-center ml-16 mb-0">
-            <div class="sb-checkbox sb-checkbox-secondary">
-              <input type="checkbox" id="check2" name="example">
-              <label for="check2">Last 7 Days</label>
-            </div>
-            <div class="sb-checkbox sb-checkbox-warning">
-              <input type="checkbox" id="check3" name="example">
-              <label for="check3">Custom</label>
+          <div class="sb-field">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input formControlName="from" [pickerMode]="'date'" suiDatepicker placeholder="Select From"
+                [pickerUseNativeOnMobile]="false" [pickerMinDate]="pickerMinDate" [pickerMaxDate]="getPickerMaxDate()">
             </div>
           </div>
         </div>
 
-        <div class="ml-16 d-flex flex-ai-center">
-          <div class="sb-field-group">
-            <label>
-              From
-            </label>
-            <div class="sb-field">
-              <div class="ui left icon input">
-                <i class="calendar icon"></i>
-                <input suiDatepicker placeholder="Select From" [pickerUseNativeOnMobile]="false">
-              </div>
-            </div>
-          </div>
-
-          <div class="sb-field-group ml-16">
-            <label>
-              To
-            </label>
-            <div class="sb-field">
-              <div class="ui left icon input">
-                <i class="calendar icon"></i>
-                <input suiDatepicker placeholder="Select To" [pickerUseNativeOnMobile]="false">
-              </div>
+        <div class="sb-field-group ml-16">
+          <label>
+            To
+          </label>
+          <div class="sb-field">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input formControlName="to" suiDatepicker [pickerMode]="'date'" [pickerMinDate]="getPickerMinDate()"
+                [pickerMaxDate]="pickerMaxDate" placeholder="Select To" [pickerUseNativeOnMobile]="false">
             </div>
           </div>
         </div>
+        <div class="sb-field-group ml-16">
+          <label></label>
+          <div class="sb-field">
+            <button (click)="onSubmit()" type="submit"
+              class="sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="sb-field-group d-flex flex-ai-center">
-        <button class="sb-btn sb-btn-primary sb-left-icon-btn sb-btn-normal">Submit</button>
+    <div class="sb-table-responsive-div">
+      <div class="ui grid sb-form m-0 sb-workspace-modal">
+        <div class="twelve wide column pb-16" *ngIf="!showLoader">
+          <table #datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+          </table>
+        </div>
+        <div class="twelve wide column pb-16" *ngIf="showLoader">
+          <app-loader></app-loader>
+        </div>
       </div>
-
     </div>
   </div>
 
   <div>
     <sui-accordion class="styled fluid sb-accordion">
-
-      <sui-accordion-panel [isOpen]="false">
+      <sui-accordion-panel [isOpen]="true">
         <div title class="sb-accordion-title">
           Data Dictionary
           <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
         <div content class="sb-accordion-content">
-          <p class="sb-accordion-text">
-            <sui-tabset>
+          <div class="sb-accordion-text">
+            <div appMarkdown [input]="dataDictionary"
+              *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
+            <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
+              Data Not Available
+            </div>
+            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
                 <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
                 <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i> Edit</a>
               </div>
               <div class="ui bottom attached segment" suiTabContent="1">
-                <div appMarkdown [input]="markdown"></div>
+                <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
+                <div class="ui warning message" *ngIf="!dataDictionary?.length">
+                  Data Not Available
+                </div>
               </div>
               <div class="ui bottom attached segment" suiTabContent="2">
-                <div ace-editor [text]="markdown" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
+                <div ace-editor [text]="dataDictionary" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
                   [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
-                  (textChanged)="onChange($event)" style="min-height: 200px; width:100%; overflow: auto;"></div>
+                  (textChanged)="onMarkdownChange($event, 'dataDictionary')"
+                  style="min-height: 200px; width:100%; overflow: auto;">
+                </div>
+                <div class="sb-table-container m-0">
+                  <div class="sb-table-search-header px-0">
+                    <button (click)="handleMarkdownSubmission('dataDictionary')" type="button"
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+                  </div>
+                </div>
               </div>
             </sui-tabset>
-          </p>
+          </div>
         </div>
       </sui-accordion-panel>
 
@@ -97,26 +99,39 @@
           <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
         <div content class="sb-accordion-content">
-          <p class="sb-accordion-text">
-            <sui-tabset>
+          <div class="sb-accordion-text">
+            <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
+            <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
+              Data Not Available
+            </div>
+            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
                 <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
                 <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i> Edit</a>
               </div>
               <div class="ui bottom attached segment" suiTabContent="1">
-                <div appMarkdown [input]="markdown"></div>
+                <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
+                <div class="ui warning message" *ngIf="!examples?.length">
+                  Data Not Available
+                </div>
               </div>
               <div class="ui bottom attached segment" suiTabContent="2">
-                <div ace-editor [text]="markdown" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
+                <div ace-editor [text]="examples" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
                   [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
-                  (textChanged)="onChange($event)" style="min-height: 200px; width:100%; overflow: auto;"></div>
+                  (textChanged)="onMarkdownChange($event, 'examples')"
+                  style="min-height: 200px; width:100%; overflow: auto;"></div>
+
+                <div class="sb-table-container m-0">
+                  <div class="sb-table-search-header px-0">
+                    <button (click)="handleMarkdownSubmission('examples')" type="button"
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">Submit</button>
+                  </div>
+                </div>
               </div>
             </sui-tabset>
-          </p>
+          </div>
         </div>
       </sui-accordion-panel>
     </sui-accordion>
   </div>
 </div>
-
-<!-- <app-download-datasets></app-download-datasets> -->

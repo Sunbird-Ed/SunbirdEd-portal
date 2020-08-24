@@ -3,21 +3,16 @@ enum DatasetType {
     preComputed
 }
 
-export interface IDownloadFormat {
-    availableFormats: string[];
-    default: string;
-}
-
 export interface IDataset {
     datasetId: string;
     examples?: string;
     dataDictionary?: string;
-    granularity: string;
-    lastUpdatedOn: string;
-    type: DatasetType;
-    downloadFormat: IDownloadFormat;
+    granularity?: string;
+    lastUpdatedOn?: string;
+    type?: DatasetType;
+    downloadFormats: string[];
     months?: number;
-    datasetFields?: any
-
+    datasetFields?: any;
+    dataAvailableFrom: string;
 }
 
