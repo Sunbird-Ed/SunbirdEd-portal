@@ -201,7 +201,7 @@ export class ReportService {
     return files.map(file => ({
       ...file,
       downloadUrl: this.resolveParameterizedPath(file.downloadUrl, hash ? this.getParameterFromHash(hash) : null)
-    }))
+    }));
   }
 
   private getTableData(data: { result: any, id: string }[], tableId) {

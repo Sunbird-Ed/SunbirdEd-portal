@@ -14,7 +14,7 @@ describe('DatasetService', () => {
 
   beforeEach(() => {
     datasetService = TestBed.get(DatasetService);
-  })
+  });
 
   it('should be created', () => {
     const service: DatasetService = TestBed.get(DatasetService);
@@ -23,16 +23,16 @@ describe('DatasetService', () => {
 
   it('should fetch dataset', done => {
     const baseReportService = TestBed.get(BaseReportService);
-    const input = { datasetId: "raw", from: "2020-12-01", to: "2020-12-03" };
+    const input = { datasetId: 'raw', from: '2020-12-01', to: '2020-12-03' };
     const spy = spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
     datasetService.getDataSet(input).subscribe(res => {
       expect(res).toBeDefined();
       expect(res).toEqual({});
       expect(spy).toHaveBeenCalledWith({
         url: '/dataset/get/raw?from=2020-12-01&to=2020-12-03'
-      })
+      });
       done();
-    })
-  })
+    });
+  });
 
 });

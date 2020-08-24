@@ -379,22 +379,22 @@ describe('ReportComponent', () => {
     const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));
     component['reportConfig'] = {};
     const input = {
-      data: "# Hello",
-      type: "examples"
+      data: '# Hello',
+      type: 'examples'
     };
     component.markdownUpdated$.subscribe(res => {
       expect(res).toBeDefined();
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith("daily_metrics", {
+      expect(spy).toHaveBeenCalledWith('daily_metrics', {
         reportconfig: {
           dataset: {
-            'examples': "IyBIZWxsbw=="
+            'examples': 'IyBIZWxsbw=='
           }
         }
-      })
+      });
       done();
-    })
-    component.markdownUpdated$.next(input)
-  })
+    });
+    component.markdownUpdated$.next(input);
+  });
 
 });

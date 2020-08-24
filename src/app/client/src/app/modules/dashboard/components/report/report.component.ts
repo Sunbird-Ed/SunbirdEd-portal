@@ -143,7 +143,8 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), this.hash)) || [];
+                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
+                  this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
@@ -174,7 +175,8 @@ export class ReportComponent implements OnInit {
    * @param url
    */
   public setDownloadUrl(url) {
-    this.downloadUrl = this.reportService.resolveParameterizedPath(url, this.hash ? this.reportService.getParameterFromHash(this.hash) : null);
+    this.downloadUrl = this.reportService.resolveParameterizedPath(url, this.hash ?
+      this.reportService.getParameterFromHash(this.hash) : null);
   }
 
   public getTelemetryInteractEdata = ({ id = 'report-chart', type = 'click', pageid = this.activatedRoute.snapshot.data.telemetry.pageid,
@@ -512,9 +514,9 @@ export class ReportComponent implements OnInit {
         const { reportId } = this.activatedRoute.snapshot.params;
         return this.reportService.updateReport(reportId, {
           reportconfig: updatedReportConfig
-        })
+        });
       })
-    )
+    );
   }
 }
 

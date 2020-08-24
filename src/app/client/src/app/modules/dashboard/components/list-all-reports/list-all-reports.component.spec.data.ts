@@ -1,65 +1,65 @@
 export const data = [
     {
-        "reportid": "025cdcf4-01db-4b05-8aa2-2f48c5664bee",
-        "title": "Test Dataset",
-        "description": "Test Report description",
-        "authorizedroles": [
-            "ORG_ADMIN"
+        'reportid': '025cdcf4-01db-4b05-8aa2-2f48c5664bee',
+        'title': 'Test Dataset',
+        'description': 'Test Report description',
+        'authorizedroles': [
+            'ORG_ADMIN'
         ],
-        "status": "draft",
-        "visibility": "private",
-        "reportaccessurl": "https://dev.sunbirded.org/dashBoard/reports/025cdcf4-01db-4b05-8aa2-2f48c5664bee",
-        "createdon": "2020-08-10T07:25:32.606Z",
-        "updatedon": "2020-08-24T05:26:44.000Z",
-        "createdby": "ravinder kumar",
-        "reportconfig": {},
-        "templateurl": null,
-        "slug": "sunbird",
-        "reportgenerateddate": "2020-04-12T00:00:00.000Z",
-        "reportduration": {
-            "enddate": "Thu May 7 2020",
-            "startdate": "Thu May 7 2020"
+        'status': 'draft',
+        'visibility': 'private',
+        'reportaccessurl': 'https://dev.sunbirded.org/dashBoard/reports/025cdcf4-01db-4b05-8aa2-2f48c5664bee',
+        'createdon': '2020-08-10T07:25:32.606Z',
+        'updatedon': '2020-08-24T05:26:44.000Z',
+        'createdby': 'ravinder kumar',
+        'reportconfig': {},
+        'templateurl': null,
+        'slug': 'sunbird',
+        'reportgenerateddate': '2020-04-12T00:00:00.000Z',
+        'reportduration': {
+            'enddate': 'Thu May 7 2020',
+            'startdate': 'Thu May 7 2020'
         },
-        "tags": [
-            "Consumption",
-            "Engagement"
+        'tags': [
+            'Consumption',
+            'Engagement'
         ],
-        "updatefrequency": "DAILY",
-        "parameters": [
-            "$channel"
+        'updatefrequency': 'DAILY',
+        'parameters': [
+            '$channel'
         ],
-        "type": "dataset",
-        "isParameterized": true
+        'type': 'dataset',
+        'isParameterized': true
     },
     {
-        "reportid": "c2e6405a-7e8d-4d7e-b99d-d1b92fd54674",
-        "title": "Test Report",
-        "description": "Test Report description",
-        "authorizedroles": [
-            "ORG_ADMIN"
+        'reportid': 'c2e6405a-7e8d-4d7e-b99d-d1b92fd54674',
+        'title': 'Test Report',
+        'description': 'Test Report description',
+        'authorizedroles': [
+            'ORG_ADMIN'
         ],
-        "status": "live",
-        "visibility": "private",
-        "reportaccessurl": "https://dev.sunbirded.org/dashBoard/reports/c2e6405a-7e8d-4d7e-b99d-d1b92fd54674",
-        "createdon": "2020-08-10T07:25:25.738Z",
-        "updatedon": "2020-08-10T07:25:25.738Z",
-        "createdby": "ravinder kumar",
-        "reportconfig": {},
-        "templateurl": null,
-        "slug": "sunbird",
-        "reportgenerateddate": "2020-04-12T00:00:00.000Z",
-        "reportduration": {
-            "enddate": "Thu May 7 2020",
-            "startdate": "Thu May 7 2020"
+        'status': 'live',
+        'visibility': 'private',
+        'reportaccessurl': 'https://dev.sunbirded.org/dashBoard/reports/c2e6405a-7e8d-4d7e-b99d-d1b92fd54674',
+        'createdon': '2020-08-10T07:25:25.738Z',
+        'updatedon': '2020-08-10T07:25:25.738Z',
+        'createdby': 'ravinder kumar',
+        'reportconfig': {},
+        'templateurl': null,
+        'slug': 'sunbird',
+        'reportgenerateddate': '2020-04-12T00:00:00.000Z',
+        'reportduration': {
+            'enddate': 'Thu May 7 2020',
+            'startdate': 'Thu May 7 2020'
         },
-        "tags": [
-            "Consumption",
-            "Engagement"
+        'tags': [
+            'Consumption',
+            'Engagement'
         ],
-        "updatefrequency": "DAILY",
-        "parameters": null,
-        "type": "report",
-        "isParameterized": false
+        'updatefrequency': 'DAILY',
+        'parameters': null,
+        'type': 'report',
+        'isParameterized': false
     }
 ];
 

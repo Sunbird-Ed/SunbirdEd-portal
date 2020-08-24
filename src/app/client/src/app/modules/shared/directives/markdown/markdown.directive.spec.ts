@@ -23,5 +23,5 @@ describe('MarkdownDirective', () => {
         expect(markdownDirective).toBeTruthy();
     });
 
-    
+
 });

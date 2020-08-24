@@ -10,7 +10,7 @@ export class MarkdownDirective implements OnChanges {
   @Input() options = {};
 
   constructor(private el: ElementRef) {
-    this.setOptions()
+    this.setOptions();
     this.convertMd();
   }
 
@@ -31,6 +31,6 @@ export class MarkdownDirective implements OnChanges {
   }
 
   private convertMd() {
-    this.el.nativeElement.innerHTML = marked(this.input || '')
+    this.el.nativeElement.innerHTML = marked(this.input || '');
   }
 }

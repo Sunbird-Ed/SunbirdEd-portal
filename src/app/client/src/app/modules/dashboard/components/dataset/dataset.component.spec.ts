@@ -8,7 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatasetComponent } from './dataset.component';
 import { CoreModule } from '@sunbird/core';
 import { ReportService, DatasetService } from '../../services';
-import { mockDatasetConfig } from './dataset.component.spec.data'
+import { mockDatasetConfig } from './dataset.component.spec.data';
 import * as dayjs from 'dayjs';
 
 describe('DatasetComponent', () => {
@@ -91,7 +91,7 @@ describe('DatasetComponent', () => {
 
   it('should fetch dataset, by default last 7 days', done => {
     const datasetService = TestBed.get(DatasetService);
-    spyOn(datasetService, 'getDataSet').and.returnValue(of({ files: [], periodWiseFiles: {} }))
+    spyOn(datasetService, 'getDataSet').and.returnValue(of({ files: [], periodWiseFiles: {} }));
     component['getDataset']({
       from: dayjs('2020-12-01'),
       to: dayjs('2020-12-02')
@@ -100,18 +100,18 @@ describe('DatasetComponent', () => {
       expect(res).toEqual(
         [
           {
-            "date": "2020-12-01",
-            "json": [],
-            "csv": []
+            'date': '2020-12-01',
+            'json': [],
+            'csv': []
           },
           {
-            "date": "2020-12-02",
-            "json": [],
-            "csv": []
+            'date': '2020-12-02',
+            'json': [],
+            'csv': []
           }
         ]);
       done();
-    })
+    });
   });
 
   it('should get date range in between 2 selected dates', () => {
@@ -120,7 +120,7 @@ describe('DatasetComponent', () => {
     const result = component['getDateRange'](startDate, endDate);
     expect(result).toEqual(['2020-12-01', '2020-12-02', '2020-12-03']);
     expect(result.length).toBe(3);
-  })
+  });
 
   it('should divide date range into chunks', () => {
     const dates = ['2020-08-22', '2020-08-23', '2020-08-24'];
@@ -129,18 +129,18 @@ describe('DatasetComponent', () => {
   });
 
   it('should handle on submit button click handler', () => {
-    component.timeRangePicker.setValue({ from: "", to: "" });
+    component.timeRangePicker.setValue({ from: '', to: '' });
     const spy = spyOn(component['customTimePicker'], 'next');
     component.onSubmit();
-    expect(spy).toHaveBeenCalledWith({ from: "", to: "" });
+    expect(spy).toHaveBeenCalledWith({ from: '', to: '' });
   });
 
   it('should handle markdown submission', () => {
-    component.examples = 'examples'
+    component.examples = 'examples';
     component['markdownUpdated$'] = new Subject();
     const spy = spyOn(component['markdownUpdated$'], 'next');
     component.handleMarkdownSubmission('examples');
-    expect(spy).toHaveBeenCalledWith({ data: "examples", type: "examples" });
-  })
+    expect(spy).toHaveBeenCalledWith({ data: 'examples', type: 'examples' });
+  });
 
 });

@@ -29,13 +29,13 @@ export class ListAllReportsComponent implements OnInit {
 
   @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
-    const [reports, datasets] = this.reports;
+    const [reports,] = this.reports;
     this.prepareTable(element.nativeElement, reports);
   }
 
   @ViewChild('all_datasets') set datasetTable(element: ElementRef | null) {
     if (!element) { return; }
-    let [reports, datasets] = this.reports;
+    let [, datasets] = this.reports;
     if (this.reportService.isUserReportAdmin() && !this.reportService.isUserSuperAdmin()) {
       datasets = datasets.filter(dataset => dataset.status === 'live');
     }
@@ -147,12 +147,12 @@ export class ListAllReportsComponent implements OnInit {
     ordering: true,
     info: true,
     autoWidth: true,
-  });
+  })
 
 
   private indexColumn(table) {
-    table.on('order.dt search.dt', function () {
-      table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+    table.on('order.dt search.dt', () => {
+      table.column(0, { search: 'applied', order: 'applied' }).nodes().each((cell, i) => {
         cell.innerHTML = i + 1;
       });
     }).draw();
@@ -170,7 +170,7 @@ export class ListAllReportsComponent implements OnInit {
       data,
       columns: [
         {
-          title: "Serial No.",
+          title: 'Serial No.',
           searchable: false,
           orderable: false,
           data: null
@@ -180,7 +180,7 @@ export class ListAllReportsComponent implements OnInit {
           class: 'details-control',
           orderable: false,
           data: null,
-          render: (data, type, row) => {
+          render: (value, type, row) => {
             const isParameterized = _.get(row, 'isParameterized') || false;
             let count = 0;
             if (isParameterized && row.children) {
@@ -194,7 +194,7 @@ export class ListAllReportsComponent implements OnInit {
         }] : []),
         { title: 'Report Id', data: 'reportid', visible: false },
         {
-          title: 'Title', data: 'title', render: (data, type, row) => {
+          title: 'Title', data: 'title', render: (value, type, row) => {
             const { title, description } = row;
             return `<div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
                   ${title}</h6> <p class="media-description sb__ellipsis"> ${description}</p></div></div>`;
@@ -202,12 +202,12 @@ export class ListAllReportsComponent implements OnInit {
         },
         {
           title: 'Last Updated Date', data: 'reportgenerateddate',
-          render: (data) => {
-            const date = moment(data);
+          render: (value) => {
+            const date = moment(value);
             if (date.isValid()) {
-              return `<td> ${moment(data).format('YYYY/MM/DD')} </td>`;
+              return `<td> ${moment(value).format('YYYY/MM/DD')} </td>`;
             }
-            return _.startCase(_.toLower(data));
+            return _.startCase(_.toLower(value));
           }
         }, {
           title: 'Tags',
@@ -263,7 +263,7 @@ export class ListAllReportsComponent implements OnInit {
           data: rowData.children,
           columns: [
             {
-              title: "Serial No.",
+              title: 'Serial No.',
               searchable: false,
               orderable: false,
               data: null
@@ -272,8 +272,8 @@ export class ListAllReportsComponent implements OnInit {
               title: 'Parameter',
               data: 'hashed_val',
               className: 'text-center',
-              render: data => {
-                const parameters = _.split(atob(data), '__');
+              render: value => {
+                const parameters = _.split(atob(value), '__');
                 return parameters;
               }
             }, {
