@@ -156,7 +156,7 @@
       </div>
 
       <!-- 2. Course Progress bar -->
-        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup">
+        <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup && !courseMentor">
           <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
