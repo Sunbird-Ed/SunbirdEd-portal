@@ -452,6 +452,6 @@ describe('AssessmentPlayerComponent', () => {
       enrolledBatchDetails: {}
     }));
     component['subscribeToQueryParam']();
-    expect(component['setActiveContent']).toHaveBeenCalledWith(undefined, true);
+    expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
 });
