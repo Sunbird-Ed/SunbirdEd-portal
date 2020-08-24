@@ -48,6 +48,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
   pageTitle;
+  pageTitleSrc;
   svgToDisplay;
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
@@ -140,6 +141,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       _.forEach(data, (value, key) => {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
+          this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+value.title;
           this.svgToDisplay = _.get(value, 'theme.imageName');
         } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
           if (value.contentType === 'course') {

@@ -15,7 +15,7 @@
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-  <app-joy-theme-popup [hidden]="!showJoyThemePopUp"
+  <app-joy-theme-popup *ngIf="showJoyThemePopUp"
                        (closeJoyThemePopup)="onCloseJoyThemePopup()"></app-joy-theme-popup>
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
