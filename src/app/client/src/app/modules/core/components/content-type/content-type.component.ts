@@ -5,6 +5,7 @@ import {LayoutService, ResourceService} from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {TelemetryService} from '@sunbird/telemetry';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   constructor(public formService: FormService, public resourceService: ResourceService,
-              public router: Router, public userService: UserService,
+              public router: Router, public userService: UserService, private telemetryService: TelemetryService,
               public activatedRoute: ActivatedRoute, public layoutService: LayoutService) {
   }
 
@@ -43,8 +44,23 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  generateTelemetry(contentType) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'content-type',
+        cdata: []
+      },
+      edata: {
+        id: contentType,
+        type: 'click',
+        pageid: this.router.url || 'content-type'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
 
   showContentType(data) {
+    this.generateTelemetry(data.contentType);
     if (this.userService.loggedIn) {
       if (data.contentType === 'course') {
         this.router.navigate([data.loggedInUserRoute.route],
