@@ -8,6 +8,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CacheService} from 'ng2-cache-service';
 import {APP_BASE_HREF} from '@angular/common';
 import {mockData} from './content-type.component.spec.data';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 
 describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
@@ -34,7 +35,7 @@ describe('ContentTypeComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [ContentTypeComponent],
       providers: [{provide: ResourceService, useValue: resourceBundle}, CacheService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}, LayoutService,
