@@ -19,10 +19,10 @@
         <div class="five wide column">
           <div class="fsmall certificate-id-info">
             <div> {{resourceService?.frmelmnts?.lbl?.whatInstanceId | interpolate:'{instance}': channelName}} </div>
-            <div class="py-8">{{resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': channelName}}</div>
+            <div class="py-8">{{resourceService?.frmelmnts?.reissue?.lbl?.instructions | interpolate:'{instance}': channelName}}</div>
             <div class="pt-8">
               <div>{{resourceService?.frmelmnts?.lbl?.step1}} {{resourceService?.frmelmnts?.lbl?.profileTab}}</div>
-              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': channelName}}</div>
+              <div class="py-8">{{resourceService?.frmelmnts?.lbl?.step2}} {{resourceService?.frmelmnts?.reissue?.lbl?.displayUser | interpolate:'{instance}': channelName}}</div>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
                 <div class="re-issue-status" >{{batch?.completionPercentage || 0}}%</div>
               </div>
               <div class="two wide column pl-0" *ngIf="batch?.certificates?.length">
-                <div class="re-issue-status text-center">
+                <div class="re-issue-status text-center cursor-pointer">
                   <a class="font-weight-bold sb-color-primary" (click)="toggleModal(true, batch);addTelemetry('re-issue-cert', { userId: userData?.userId, courseId: userData?.courses?.courseId, batchId: userBatch?.batchId })" >{{resourceService?.frmelmnts?.lbl?.re_issue}}</a>
                 </div>
               </div>
@@ -93,7 +93,7 @@
     {{resourceService?.frmelmnts?.lbl?.cert}} ?
   </div>
   <div class="sb-modal-content">
-    <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}} ?</p>
+    <p> {{resourceService?.messages?.dashboard?.imsg?.m001 | interpolate:'{userName}': userData?.userName}}</p>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"

@@ -257,7 +257,7 @@ app-workspace {
 }
 
 .toc-box-shadow {
-  box-shadow: 0 0 0.625rem 0 rgba(var(--rc-rgba-black), 0.25) !important;
+  box-shadow: 0 4px 8px 0px rgba(var(--rc-rgba-black), 0.25) !important;
 }
 
 // Footer fix 
@@ -303,6 +303,7 @@ app-workspace {
 
 /* new theme */
 .sbt-fluid-header-bg {
+  display: none;
   background: none;
 
   @include respond-above(sm) {
@@ -337,7 +338,7 @@ app-workspace {
 
 .sbt-page-header {
   position: relative;
-  height: calculateRem(112px);
+  height: calculateRem(80px);
   overflow: hidden;
 }
 
@@ -347,8 +348,8 @@ app-workspace {
   display: flex;
   align-items: center;
   border-radius: 0 0 0 calculateRem(40px);
-  height: calculateRem(112px);
-
+  height: calculateRem(80px);
+  padding-bottom:calculateRem(8px);
   @include respond-above(sm) {
 
     align-items: flex-end;
@@ -359,12 +360,12 @@ app-workspace {
   }
 
   h1 {
-    color: var(--white);
+    color: var(--primary-color);
     font-size: calculateRem(24px);
     font-weight: bold;
-
+    position: relative;
     @include respond-above(sm) {
-      font-size: calculateRem(58px);
+      font-size: calculateRem(40px);
     }
   }
 
@@ -388,18 +389,20 @@ app-workspace {
 
 .sbt-page-content-area {
   background: none;
-
-  @include respond-above(sm) {
-    background: var(--sbt-body-bg2);
-  }
-
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height:100%;
-  padding:calculateRem(24px);
+  padding:calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
+    padding:calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
   }
+
+  @include respond-above(sm) {
+    background: var(--sbt-body-bg2);
+    padding:calculateRem(16px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
+  }
+
 
   &__div {
     position: relative;
@@ -418,7 +421,7 @@ app-workspace {
   top: 38%;
   width: calculateRem(332px);
   opacity: 0.25;
-  z-index: -1;
+  z-index: 1;
 
   html[dir="rtl"] & {
     right: calculateRem(-106px);
@@ -427,7 +430,7 @@ app-workspace {
   }
 
   .st0 {
-    fill: var(--primary-color);
+    fill: var(--primary-theme);
   }
 
   // &--right {
@@ -443,11 +446,11 @@ app-workspace {
 
 .sbt-theme-right-flower {
   position: fixed;
-  bottom: calculateRem(88px);
+  bottom: calculateRem(48px);
   width: calculateRem(288px);
   height: calculateRem(368px);
   right: calculateRem(-106px);
-  opacity: 0.75;
+  opacity: 0.6;
   z-index: 1;
   background: url(../images/sbt-right-flower.svg) no-repeat;
 
@@ -461,11 +464,11 @@ app-workspace {
 .sbt-page-header-img {
   position: absolute;
   bottom: calculateRem(-12px);
-  width: calculateRem(200px);
+  width: calculateRem(184px);
   right: calculateRem(0px);
 
   @include respond-above(sm) {
-    width: calculateRem(248px);
+    width: calculateRem(168px);
   }
 
   html[dir="rtl"] & {

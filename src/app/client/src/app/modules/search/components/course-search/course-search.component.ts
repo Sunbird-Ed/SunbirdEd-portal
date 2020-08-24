@@ -51,6 +51,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public globalSearchFacets: Array<string>;
   public allTabData;
   public selectedFilters;
+  public searchAll;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -103,6 +104,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       error => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
+    this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -144,7 +146,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab']);
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
     const option = {
       filters: filters,

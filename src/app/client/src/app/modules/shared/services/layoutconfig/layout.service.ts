@@ -82,4 +82,25 @@ export class LayoutService {
     }
     return false;
   }
+
+  initiateSwitchLayout() {
+    if (this.layoutConfig) {
+      this.layoutConfig = null;
+      document.documentElement.setAttribute('layout', '');
+      localStorage.setItem('layoutType', 'default');
+    } else {
+      this.layoutConfig = this.configService.appConfig.layoutConfiguration;
+      document.documentElement.setAttribute('layout', 'joy');
+      localStorage.setItem('layoutType', 'joy');
+    }
+    this.setLayoutConfig(this.layoutConfig);
+  }
+
+  scrollTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
 }

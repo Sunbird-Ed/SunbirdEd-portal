@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="pageTitle" [svgToDisplay]="svgToDisplay" 
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" 
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
@@ -12,7 +12,7 @@
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui grid stackable my-0'">
    
     <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length">
-      <app-page-section *ngIf="enrolledSection?.contents?.length" [layoutConfiguration]="layoutConfiguration" [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
+      <app-page-section *ngIf="enrolledSection?.contents?.length" [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>
     <div class="twelve wide column relative9" *ngFor="let section of pageSections;let last = last" [ngClass]="{'last mb-0':last}">
         <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration" [section]="section" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>

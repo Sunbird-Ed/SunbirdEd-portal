@@ -10,11 +10,11 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-    <div class="content-grid mt-24 relative9">
+    <div class="content-grid relative9">
         <div class="sb-pageSection">
             <div  class="sb-pageSection-header" *ngIf="!showLoader && totalCount > 0">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:'*' "> </h4>
+                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "> </h4>
                 <span class="badge">{{totalCount}}</span>
                 <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">
                     {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
@@ -26,7 +26,7 @@
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
             <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length" class="sb-grid dynamic-section-card">
                 <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
-                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
+                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                       [telemetryInteractEdata]="cardIntractEdata"
                       [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                       (cardClick)="playContent($event)" [content]="content"

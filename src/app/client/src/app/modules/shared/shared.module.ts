@@ -25,6 +25,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
 import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
+import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
     TelemetryModule,
+    TranslateModule.forChild()
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
@@ -40,7 +42,7 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective],
-  exports: [AppLoaderComponent, DateFormatPipe,
+  exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
@@ -55,7 +57,8 @@ export class SharedModule {
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
         DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService,
-        LayoutService]
+        LayoutService,TranslateStore]
     };
   }
 }
+

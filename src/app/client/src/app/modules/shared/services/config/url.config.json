@@ -1,7 +1,7 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "organisations,roles,locations"
+      "fields": "organisations,roles,locations,declarations"
     },
     "LibrarySearchField": [
       "name",
@@ -31,7 +31,7 @@
     },
     "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel,mimeType",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     }
   },
@@ -77,7 +77,7 @@
       "SIGNUP": "user/v1/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
-      "GET_PROFILE": "user/v2/read/",
+      "GET_PROFILE": "user/v3/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
@@ -100,12 +100,14 @@
       "SWITCH_USER": "user/v1/switch",
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
-      "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get"
+      "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
+      "USER_DECLARATION": "user/v1/declarations"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
       "FETCH_USER": "v1/user/search",
-      "REISSUE_CERTIFICATE": "v1/cert/reissue"
+      "REISSUE_CERTIFICATE": "v1/cert/reissue",
+      "ADD_CERTIFICATE" : "v1/add/template"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
@@ -304,6 +306,9 @@
     },
     "RECAPTCHA": {
       "VALIDATE": "/validate/recaptcha"
+    },
+    "TENANT_PREFERENCE" : {
+      "READ": "org/v2/preferences/read"
     }
   }
 }

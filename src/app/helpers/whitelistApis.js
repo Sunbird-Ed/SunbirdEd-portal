@@ -14,6 +14,7 @@ const ROLE = {
   CONTENT_REVIEW: 'CONTENT_REVIEW',
   CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
+  COURSE_MENTOR: 'COURSE_MENTOR',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
   COURSE_MENTOR: 'COURSE_MENTOR',
@@ -277,6 +278,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/org/v2/preferences/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     //Batch related APIs
     '/learner/course/v1/batch/create': {
@@ -361,7 +366,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v2/read/:userId': {
+    '/learner/user/v3/read/:userId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL]
+    },
+    '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
     },
@@ -414,7 +423,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-
+    '/learner/certreg/v2/certs/download/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     //Admin related APIs
     '/learner/data/v1/upload/status': {
       checksNeeded: ['ROLE_CHECK'],
@@ -537,7 +549,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
-
+    '/certreg/v1/add/template': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
+    },
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
@@ -548,7 +563,7 @@ const API_LIST = {
     '/content/content/v1/flag/reject/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
-    '/learner/user/v2/read/:userId',
+    '/learner/user/v3/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',
@@ -556,7 +571,8 @@ const API_LIST = {
     '/learner/user/v1/exists/email/:emailId',
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
-    '/learner/user/v2/exists/:key/:value'
+    '/learner/user/v2/exists/:key/:value',
+    '/learner/certreg/v2/certs/download/:id'
   ]
 };
 module.exports = API_LIST;

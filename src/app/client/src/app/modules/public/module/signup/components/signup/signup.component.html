@@ -98,7 +98,7 @@
 
           </form>
           <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0"
-            (click)="submitSignupForm()">{{resourceService.frmelmnts.lbl.signUp}}</button>
+            (click)="submitSignupForm()" [disabled]="disableSubmitBtn"  >{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
         <div *ngIf="!showSignUpForm">

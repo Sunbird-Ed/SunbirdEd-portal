@@ -1,6 +1,6 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
@@ -75,25 +75,25 @@
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                *ngIf="!udiseObj && !teacherObj && !schoolObj && !emailObj && !phoneObj && !stateObj && !districtObj"
+                *ngIf="!declarationDetails"
                 (click)="navigate('/profile/teacher-declaration','submit')"
                 class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}}<i class="question circle outline icon"></i> </button>
+        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
       </div>
     </div>
 
-    <div class="m-0 pl-0 computer only" *ngIf="orgDetails && orgDetails.locations && !isCustodianOrgUser">
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'block')">
+    <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.block">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'block')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.block}}</div>
       </div>
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'district')">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.district">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'district')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.district}}</div>
       </div>
-      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="getLocationDetails(orgDetails.locations, 'state')">
+      <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.state">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fmedium font-w-bold ml-5">{{getLocationDetails(orgDetails.locations, 'state')}}</div>
+        <div class="fmedium font-w-bold ml-5">{{nonCustodianUserLocation.state}}</div>
       </div>
     </div>
 
@@ -228,43 +228,37 @@
   </section>
 
   <!-- 4 section start teacher profile-->
-  <section class="py-24 d-flex flex-jc-center profile-bg-c-3"
-           *ngIf="udiseObj || teacherObj || schoolObj || phoneObj ||emailObj || stateObj || districtObj">
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="declarationDetails && !userProfile.stateValidated">
   <div class="flex-ai-jc-center flex-dc text-center school-id-section">
-    <div *ngIf="stateObj">
-      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.state}}:</div>
-      <div class="fnormal font-w-bold mt-4 mb-8"> {{stateObj?.id}}</div>
-    </div>
-    <div *ngIf="districtObj">
-      <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.district}}:</div>
-      <div class="fnormal font-w-bold mt-4 mb-8"> {{districtObj?.id}}</div>
-    </div>
-      <div *ngIf="phoneObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.phoneNumber}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">+91 {{phoneObj?.id}}</div>
+    <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
+      <div>
+        {{resourceService?.frmelmnts?.lbl?.iam}} {{ declarationDetails?.persona }} {{resourceService?.frmelmnts?.lbl?.with}} <span>{{ tenantInfo.label }}</span>
       </div>
-      <div *ngIf="emailObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.emailId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{emailObj?.id}}</div>
+
+      <div *ngFor="let item of selfDeclaredInfo">
+        <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
       </div>
-      <div *ngIf="schoolObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolName}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{schoolObj?.id}}</div>
-      </div>
-      <div *ngIf="udiseObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolUdiseId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{udiseObj?.id}}</div>
-      </div>
-      <div *ngIf="teacherObj">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.schoolTeacherId}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{teacherObj?.id}}</div>
+      
+      <div class="my-8">
+        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.status}}:</div>
+        <div class="fnormal font-w-bold mt-4 mb-8">{{declarationDetails.status || 'PENDING'}}</div>
+          <div class="sb-toaster sb-toast-danger sb-toast-normal" *ngIf="declarationDetails.status === 'ERROR'">
+            <div class="sb-toast-body mr-0">
+              <div class="sb-toast-texts w-100 text-center">
+                <div class="sb-toast-title">{{resourceService.frmelmnts?.scttl?.error | uppercase }}</div>
+                <ul class="error-lists p-0 my-8" *ngIf="selfDeclaredErrorTypes.length > 0">
+                  <li class="error-list mb-4" *ngFor="let errorType of selfDeclaredErrorTypes">{{ errorType }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
       </div>
       <div class="my-8">
         <button appTelemetryInteract
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
         (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
-      <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
      
     </div>
   </section>
@@ -277,7 +271,7 @@
   <!-- my badges section ends -->
 
   <div class="pt-30">
-    <div class="ui container">
+    <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}
@@ -343,7 +337,7 @@
          <!-- certificates-->
         <div class="container my-16 sb-certificate-trained" *ngIf="otherCertificates && otherCertificates.length">
           <div class="list-heading">
-            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.certificates}}&#x200E;</label>
+            <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
             <div class="list-items" *ngIf="data.issuingAuthority">

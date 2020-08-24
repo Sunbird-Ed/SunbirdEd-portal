@@ -10,11 +10,11 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div class="content-grid mt-24 relative9">
+        <div class="content-grid relative9">
           <div class="sb-pageSection">
             <div class="sb-pageSection-header" *ngIf="!showLoader && totalCount > 0">
               <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                        interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:'*'"></h4> 
+                        interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll"></h4> 
               <span class="badge">{{totalCount}}</span>
               <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->
               <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
@@ -31,7 +31,7 @@
               *ngIf="!showLoader && contentList.length" class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract
+                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                   [telemetryInteractEdata]="cardIntractEdata"
                   [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'Content',ver:'1.0'}"
                   (cardClick)="playContent($event)" [content]="content"
@@ -72,7 +72,7 @@
           <div class="twelve wide column" *ngIf="showLoader">
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item" *ngFor="let i of numberOfSections">
-                <sb-library-card [layoutConfig]="true" [isLoading]="true"></sb-library-card>
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
               </div>
             </div>
           </div>

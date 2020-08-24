@@ -39,7 +39,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   playerOption;
   courseName: string;
   courseProgress: number;
-  private objectRollUp = [];
+  private objectRollUp = {};
   public treeModel: any;
   isParentCourse = false;
   telemetryContentImpression: IImpressionEventInput;
@@ -52,13 +52,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isFullScreenView = false;
   isCourseCompleted = false;
   showCourseCompleteMessage = false;
-  isCertificateAttached = false;
+  certificateDescription = {};
   parentCourse;
   prevModule;
   nextModule;
   totalContents = 0;
   consumedContents = 0;
   layoutConfiguration;
+  isCourseCompletionPopupShown = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -132,7 +133,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId]);
+    const paramas = {};
+    if (!this.isCourseCompletionPopupShown) {
+      paramas['showCourseCompleteMessage'] = true;
+    }
+    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
   }
 
   private subscribeToQueryParam() {
@@ -166,7 +171,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
-              this.isCertificateAttached = Boolean(_.get(this.enrolledBatchInfo, 'cert_templates'));
+              this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
               console.error('Error while fetching data', error);
@@ -219,6 +224,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           if (_.get(res, 'content.length')) {
             this.isCourseCompleted = _.every(res.content, ['status', 2]);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+            this.isCourseCompletionPopupShown = this.isCourseCompleted;
           }
 
         }, err => console.error(err, 'content read api failed'));
@@ -275,10 +281,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getConfigByContent(id, options)
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
-        this.objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
-        const objectRollUp = this.objectRollUp ? this.courseConsumptionService.getRollUp(this.objectRollUp) : {};
+        const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
+        this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
         if (config && config.context) {
-          config.context.objectRollup = objectRollUp;
+          config.context.objectRollup = this.objectRollUp;
         }
         this.playerConfig = config;
         this.showLoader = false;
@@ -324,7 +330,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
     const request: any = {
       userId: this.userService.userid,
-      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
       status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,

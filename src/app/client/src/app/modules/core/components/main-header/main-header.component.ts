@@ -128,6 +128,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
+  themeSwitchInteractEdata: IInteractEventEdata;
   signInIntractEdata: IInteractEventEdata;
   hrefPath = '/resources';
   helpLinkVisibility: string;
@@ -172,7 +173,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else if (url.indexOf('explore-groups') >= 0) {
       this.hrefPath = url.replace('explore-groups', MY_GROUPS);
     } else if (url.indexOf('explore') >= 0) {
-      this.hrefPath = url.replace('explore', 'resources');
+      if (url.indexOf('explore/') >= 0) {
+        this.hrefPath = url.replace('explore', 'search/Library');
+      } else {
+        this.hrefPath = url.replace('explore', 'resources');
+      }
     } else if (url.indexOf('play') >= 0) {
       this.hrefPath = '/resources' + url;
     } else {
@@ -566,5 +571,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (authroles) {
       return authroles.url;
     }
+  }
+
+  switchLayout() {
+    this.layoutService.initiateSwitchLayout();
+    this.generateInteractTelemetry();
+  }
+
+  generateInteractTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
+        cdata: []
+      },
+      edata: {
+        id: 'switch-theme',
+        type: 'click',
+        pageid: this.router.url,
+        subtype: this.layoutConfiguration ? 'joy' : 'classic'
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 }

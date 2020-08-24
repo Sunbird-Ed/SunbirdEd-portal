@@ -154,12 +154,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       showContentRating: true
     };
     this.mimeTypeFilters = [
-      this.resourceService.frmelmnts.btn.all,
-      this.resourceService.frmelmnts.btn.video,
-      this.resourceService.frmelmnts.btn.interactive,
-      this.resourceService.frmelmnts.btn.docs
+      {text: this.resourceService.frmelmnts.btn.all, value: 'all'},
+      {text: this.resourceService.frmelmnts.btn.video, value: 'video'},
+      {text: this.resourceService.frmelmnts.btn.interactive, value: 'interactive'},
+      {text: this.resourceService.frmelmnts.btn.docs, value: 'docs'}
     ];
-    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
+    this.activeMimeTypeFilter = [ 'all' ];
   }
 
   ngOnInit() {
@@ -170,6 +170,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.scrollTop();
     this.layoutService.switchableLayout().
     pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
     if (layoutConfig != null) {

@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ConfigService, ICaraouselData } from '@sunbird/shared';
-import { Component, Input, EventEmitter, Output, OnDestroy, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -14,7 +14,7 @@ slick(jQuery);
   selector: 'app-page-section',
   templateUrl: './page-section.component.html'
 })
-export class PageSectionComponent implements OnInit, OnDestroy {
+export class PageSectionComponent implements OnInit, OnDestroy, OnChanges {
 
   cardInteractEdata: IInteractEventEdata;
   public telemetryInteractCdata: any;

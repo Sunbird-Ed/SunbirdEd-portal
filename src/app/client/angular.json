@@ -141,9 +141,10 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
+            "karmaConfig": "karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "sourceMap": true,
             "scripts": [
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
@@ -176,7 +177,9 @@
               "src/app/testUtil/index.ts",
               "src/app/client/src/**/*.spec.ts",
               "src/app/client/src/**/*.spec.data.ts",
-              "src/app/client/src/**/*.module.ts"
+              "src/app/client/src/**/*.module.ts",
+              "src/app/modules/cbse-program/**/**"
+
             ]
           }
         },

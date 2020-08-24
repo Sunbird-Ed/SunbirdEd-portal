@@ -40,6 +40,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   pageTitle;
+  pageTitleSrc;
   svgToDisplay;
   formData: any;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -105,7 +106,13 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       _.forEach(data, (value, key) => {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
+          this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+value.title;
           this.svgToDisplay = _.get(value, 'theme.imageName');
+        } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
+          if (value.contentType === 'course') {
+            this.pageTitle = _.get(this.resourceService, value.title);
+            this.svgToDisplay = _.get(value, 'theme.imageName');
+          }
         }
       });
       this.formData = data;

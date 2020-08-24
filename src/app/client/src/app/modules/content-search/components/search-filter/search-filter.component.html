@@ -36,9 +36,13 @@
 
     <div *ngIf="isLayoutAvailable()" class="sbt-filter">
         <!-- <div class="sbt-filter-overlay"></div>	 -->
-        <div class="sbt-filter-switcher-container cursor-pointer" (click)="isOpen = !isOpen">	
+        <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen">	
             <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
-            <div class="sbt-filter-text">Filter</div>	
+            <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>	
+        </div>
+        <div class="sbt-filter-switcher-container cursor-pointer computer only">	
+            <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
+            <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>	
         </div>
         <sui-accordion class="sbt-filter-accordion">
             <sui-accordion-panel [isOpen]="isOpen" [isDisabled]="true">
@@ -53,13 +57,13 @@
                     </i>
                   </span>
                    </div>
-                <div class="fsmall my-8 text-left">Based on your preferences</div>
+                <div class="fsmall my-8 text-left">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
                 <div class="sbt-filter-scrollable pr-24">
                     <!-- State and Medium sections -->
                         <div *ngIf="boards?.length" class="w-100">
                             <!-- state section -->
                             <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100"
-                                *ngIf="optionData" [title]="optionLabel.Board" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
+                                *ngIf="optionData" [title]="optionLabel.Board | translate" [showHeader]="true" [optionData]="optionData" [selectedOption]="selectedOption"
                                 (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
                             <!-- state section ends -->
                         </div>
@@ -67,14 +71,14 @@
                     <!-- medium section -->
                 <div class="w-100">
                     <app-select-option-group [layoutConfiguration]="layoutConfiguration" class="w-100" 
-                     [title]="'Medium'" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
+                     [title]="resourceService.frmelmnts?.lbl?.medium | translate" [showHeader]="false" [optionData]="mediums" [selectedOptionValue]="{index:selectedMediumIndex}" 
                      (selectedValue)="mediumFilterChange($event)" [selectedOption]="selectedOption"
                     appTelemetryInteract [telemetryInteractEdata]="getMediumInteractEdata()"></app-select-option-group> 
                 </div>
                 <!-- medium section ends -->
                     <!-- class section -->
                     <div class="sbt-class-bar text-left">
-                        <label class="fmedium">Class</label>
+                        <label class="fmedium">{{resourceService.frmelmnts?.lbl?.class | translate}}</label>
                         <sb-library-filters [list]="gradeLevels" [layout]="filterLayout.ROUND"
                             [selectedItems]="[selectedGradeLevelIndex]"
                             (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract

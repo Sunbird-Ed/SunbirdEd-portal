@@ -46,6 +46,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   pageTitle;
   svgToDisplay;
   queryParams;
+  pageTitleSrc;
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
@@ -137,7 +138,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
     this.apiContentList = [];
     this.pageSections = [];
-    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
+    this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+_.get(currentPageData, 'title');
+    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));;
     this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }
@@ -291,15 +293,21 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
         let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        let subTitle = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+        let buttonText = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
         if (this.queryParams.key) {
           const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
           const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
           title = title_part1 + ' ' + title_part2;
+        } else if (_.get(this.queryParams, 'selectedTab') !== 'textbook') {
+          title = this.resourceService.frmelmnts.lbl.noContentfoundTitle;
+          subTitle = this.resourceService.frmelmnts.lbl.noContentfoundSubTitle;
+          buttonText = this.resourceService.frmelmnts.lbl.noContentfoundButtonText;
         }
         this.noResultMessage = {
           'title': title,
-          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+          'subTitle': subTitle,
+          'buttonText': buttonText,
           'showExploreContentButton': true
         };
       });

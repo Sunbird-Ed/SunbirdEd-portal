@@ -1,5 +1,5 @@
 import {ProfileService} from '../../services';
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, Inject } from '@angular/core';
 import {
   CertRegService,
   CoursesService,
@@ -23,10 +23,13 @@ import {IImpressionEventInput, IInteractEventEdata, IInteractEventObject, Teleme
 import {ActivatedRoute, Router} from '@angular/router';
 import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
+import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss']
+  styleUrls: ['./profile-page.component.scss'],
+  providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('profileModal') profileModal;
@@ -43,7 +46,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
   userSubscription: Subscription;
-  orgDetails = [];
+  orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
   state: string;
@@ -73,13 +76,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
+  nonCustodianUserLocation : object = {};
+  declarationDetails;
+  tenantInfo;
+  selfDeclaredInfo = [];
+  selfDeclaredErrorTypes = [];
 
-  constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
+  constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService, 
+  public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
-    private telemetryService: TelemetryService, public layoutService: LayoutService) {
+    private telemetryService: TelemetryService, public layoutService: LayoutService,
+    private certDownloadAsPdf: CertificateDownloadAsPdfService) {
   }
 
   ngOnInit() {
@@ -87,21 +97,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+      /* istanbul ignore else */
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        this.populateLocationDetails();
         this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
         this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
-        this.udiseObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-udise-code');
-        this.teacherObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-ext-id');
-        this.schoolObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-school-name');
-        this.phoneObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-phone');
-        this.emailObj = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === 'declared-email');
         this.getOrgDetails();
         this.getContribution();
         this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
         this.getTrainingAttended();
+        this.setNonCustodianUserLocation();
+        /* istanbul ignore else */
+        if (_.get(this.userProfile, 'declarations') && this.userProfile.declarations.length > 0) {
+          this.declarationDetails = _.get(this.userProfile, 'declarations')[0];
+          if (this.declarationDetails.errorType) {
+            this.selfDeclaredErrorTypes = this.declarationDetails.errorType.split(',');
+          }
+          this.getSelfDeclaraedDetails();
+        }
       }
     });
     this.setInteractEventData();
@@ -110,29 +124,30 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      /* istanbul ignore else */
       if (layoutConfig != null) {
         this.layoutConfiguration = layoutConfig.layout;
       }
     });
   }
 
-  populateLocationDetails() {
-    const fields = new Map([['stateObj', 'declared-state'], ['districtObj', 'declared-district']]);
-    fields.forEach((fieldKey, userProfileKey) => {
-      const externalIdData = _.find(_.get(this.userProfile, 'externalIds'), (o) => o.idType === fieldKey);
-      if (externalIdData) {
-        const requestData = {'filters': {'code': externalIdData && externalIdData.id}};
-        this.profileService.getUserLocation(requestData).subscribe(res => {
-          if (_.get(res, 'result.response[0].name')) {
-            this[userProfileKey] = {
-              id: _.get(res, 'result.response[0].name')
-            };
-          }
-        }, err => {
-          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0016'));
-        });
+  setNonCustodianUserLocation() {
+    const subOrgs = _.filter(this.userProfile.organisations, (org) => {
+      /*istanbul ignore else */
+      if (this.userProfile.rootOrgId !== org.organisationId) {
+        return org;
       }
     });
+    /*istanbul ignore else */
+    if (!_.isEmpty(subOrgs)) {
+      const sortedSubOrgs = _.reverse(_.sortBy(subOrgs, 'orgjoindate'));
+      /*istanbul ignore else */
+      if (!_.isEmpty(sortedSubOrgs[0]) && !_.isEmpty(sortedSubOrgs[0].locations)) {
+        _.forEach(sortedSubOrgs[0].locations, (location) => {
+          this.nonCustodianUserLocation[location.type] = location.name;
+        });
+      }
+    }
   }
 
   getOrgDetails() {
@@ -219,21 +234,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
-        const request = {
-          request: {
-            pdfUrl: _.get(value, 'url')
-          }
-        };
-        this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
-          const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
-          if (signedPdfUrl) {
-            window.open(signedPdfUrl, '_blank');
-          } else {
+        if (_.get(value, 'url')) {
+
+          const request = {
+            request: {
+              pdfUrl: _.get(value, 'url')
+            }
+          };
+          this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
+            const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
+            if (signedPdfUrl) {
+              window.open(signedPdfUrl, '_blank');
+            } else {
+              this.toasterService.error(this.resourceService.messages.emsg.m0076);
+            }
+          }, (err) => {
             this.toasterService.error(this.resourceService.messages.emsg.m0076);
-          }
-        }, (err) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0076);
-        });
+          });
+        } else if (_.get(value, 'identifier')) {
+
+         this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
+           this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
+         });
+        }
       }
     });
   }
@@ -412,5 +435,23 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.telemetryService.interact(interactData);
     this.router.navigate([`learn/course/${courseId}`]);
+  }
+
+  /**
+   * @since - #SH-815
+   * @description - This method will map self declared values with teacher details dynamic fields to display on profile page
+   */
+  getSelfDeclaraedDetails() {
+    this.selfDeclaredInfo = [];
+    this.profileService.getTenants().subscribe(res => {
+      this.tenantInfo = _.find(res[0].range, (o) => o.value === this.declarationDetails.orgId);
+      this.profileService.getTeacherDetailForm('submit', this.declarationDetails.orgId).subscribe(data => {
+        for (const [key, value] of Object.entries(this.declarationDetails.info)) {
+          const field = _.find(data, (o) => o.code === key);
+          this.selfDeclaredInfo.push({ label: field.label, value, code: field.code, index: field.index });
+        }
+        this.selfDeclaredInfo = _.orderBy(this.selfDeclaredInfo, ['index'], ['asc']);
+      });
+    });
   }
 }

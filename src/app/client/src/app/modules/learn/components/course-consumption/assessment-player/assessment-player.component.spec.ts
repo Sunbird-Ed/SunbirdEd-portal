@@ -34,7 +34,7 @@ describe('AssessmentPlayerComponent', () => {
 
   const fakeActivatedRoute = {
     'params': of({ collectionId: 'Test_Textbook2_8907797' }),
-    queryParams: of({ batchId: '12312433', selectedContent: assessmentPlayerMockData.activeContent.identifier }),
+    queryParams: of({ batchId: '12312433', courseId: '12312433456', selectedContent: assessmentPlayerMockData.activeContent.identifier }),
     snapshot: { data: { telemetry: { env: 'course', type: '', pageid: 'course-read', object: { ver: '1.0', type: 'batch' } } } }
   };
   configureTestSuite();
@@ -80,8 +80,17 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should go to courseDetails page', () => {
     spyOn(component['router'], 'navigate');
+    component.isCourseCompletionPopupShown = true;
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
+  });
+
+  it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
+    spyOn(component['router'], 'navigate');
+    component.goBack();
+    const paramas = { showCourseCompleteMessage: true };
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: paramas});
   });
 
   it('should call subscribeToQueryParam', () => {
