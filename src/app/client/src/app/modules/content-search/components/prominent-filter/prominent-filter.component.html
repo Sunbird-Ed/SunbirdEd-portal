@@ -31,10 +31,10 @@
                     </a>
                   </ng-container>
 
-                  <ng-container *ngFor="let item of channelInputLabel">
-                    <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code === "channel"'>
-                      {{item.name}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
+                  <ng-container *ngFor="let item of formInputData[field.code]">
+                    <a class="ui label mt-8 mr-8" *ngIf='item && field.code === "channel"'>
+                      {{channelData(item)}}
+                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
                   </ng-container>
 
@@ -63,7 +63,7 @@
                   </sui-multi-select>
                 </div>
                 <div *ngIf="field.code === 'channel'">
-                  <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+                  <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}}
                     name={{field.code}} defaultSelectionText={{field.name}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple"
                     [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name"
@@ -147,10 +147,10 @@
                       </a>
                     </ng-container>
 
-                    <ng-container *ngFor="let item of channelInputLabel">
-                      <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code === "channel"'>
-                        {{item.name}}
-                        <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
+                    <ng-container *ngFor="let item of formInputData[field.code]">
+                      <a class="ui label mt-8 mr-8" *ngIf='item && field.code === "channel"'>
+                        {{channelData(item)}}
+                        <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
                       </a>
                     </ng-container>
 
@@ -181,7 +181,7 @@
                     </sui-multi-select>
                   </div>
                   <div *ngIf="field.code === 'channel'">
-                    <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
+                    <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}}
                       name={{field.code}} defaultSelectionText={{field.name}}
                       zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                       class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"

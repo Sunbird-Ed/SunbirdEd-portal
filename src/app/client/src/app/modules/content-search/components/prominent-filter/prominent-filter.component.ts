@@ -247,7 +247,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         _.forEach(this.formInputData.channel, (value, key) => {
           const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
           const range = _.find(orgDetails['range'], { 'identifier': value });
-          channel.push(range['name']);
+          channel.push(range['identifier']);
         });
         this.formInputData['channel'] = channel;
       }
@@ -267,6 +267,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   resetFilters() {
     if (!_.isEmpty(this.ignoreQuery)) {
+      this.ignoreQuery.push('selectedTab');
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     } else {
       this.formInputData = {};
@@ -313,7 +314,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     const channel = [];
     _.forEach(data, (value, key) => {
       const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
-      const range = _.find(orgDetails['range'], { name: value });
+      const range = _.find(orgDetails['range'], { identifier : value });
       channel.push(range['identifier']);
     });
     return channel;
@@ -356,5 +357,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+  }
+  channelData(item) {
+    const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
+    const range = _.find(orgDetails['range'], { identifier: item });
+    return range['name'];
   }
 }
