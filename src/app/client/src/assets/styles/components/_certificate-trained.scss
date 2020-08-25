@@ -31,32 +31,29 @@
   }
   @include respond-below(md){
     flex-direction: column;
-    // align-items: flex-start !important;
+    align-items: flex-start !important;
     &__item {
       margin: calculateRem(8px) 0px;
     }
   }
   &__item {
     text-align: center;
-    @include respond-below(md) {
-      text-align: center !important;
-    }
     &:first-child{
-      flex: 1 1 50%;
+      flex:0 0 50%;
       text-align: left;
       @include respond-below(sm) {
         flex:0 0 100%;
       }
     }
     &:nth-child(2){
-      flex: 1 1 20%;
+      flex:0 0 20%;
     }
     &:nth-child(3){
-      flex: 1 1 20%;
+      flex:0 0 20%;
     }
     &:last-child {
-      flex:1 1 10%;
-      min-width: calculateRem(172px);
+      text-align: right;
+      flex:0 0 10%;
     }
   }
 

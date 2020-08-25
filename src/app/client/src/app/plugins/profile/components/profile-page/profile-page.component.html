@@ -323,8 +323,8 @@
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="list-items__item status-progress fsmall font-weight-bold text-right" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
-              <div class="list-items__item status-completed fsmall font-weight-bold text-right" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
+              <div class="list-items__item status-progress fsmall font-weight-bold" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
+              <div class="list-items__item status-completed fsmall font-weight-bold" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
             </div>
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
