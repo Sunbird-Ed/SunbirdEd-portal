@@ -64,7 +64,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
           if (this.reportMetaData[0]) { this.renderReport(this.reportMetaData[0]); }
         }
       }, (err) => {
-        console.log(err);
         this.noResultMessage = {
           'messageText': 'messages.stmsg.m0131'
         };
@@ -124,10 +123,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
             this.renderFiles({}, data);
           }
         } else {
-          console.log(response);
         }
 
-      }, err => { console.log(err); });
+      });
   }
 
   renderFiles(files, data) {
@@ -232,7 +230,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
     }, (err) => {
-      console.log(err);
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
     });
   }

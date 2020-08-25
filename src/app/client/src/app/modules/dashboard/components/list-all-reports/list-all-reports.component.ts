@@ -84,7 +84,6 @@ export class ListAllReportsComponent implements OnInit {
   public rowClickEventHandler(reportId: string, hash?: string, materialize?: boolean) {
     this.router.navigate(['/dashBoard/reports', reportId, ...(hash ? [hash] : [])],
       { queryParams: { ...(this.reportService.isUserReportAdmin() && { materialize }) } }).catch(err => {
-        console.log({ err });
       });
   }
 

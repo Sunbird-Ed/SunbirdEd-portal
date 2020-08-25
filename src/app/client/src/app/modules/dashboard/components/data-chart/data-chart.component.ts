@@ -144,8 +144,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
           }
           this.getDataSetValue(res);
 
-        }, (err) => {
-          console.log(err);
         });
     }
   }
@@ -249,8 +247,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.filtersFormGroup.patchValue(currentFilterValue);
       }
-    }, err => {
-      console.log('failed to update chart data', err);
     });
   }
 

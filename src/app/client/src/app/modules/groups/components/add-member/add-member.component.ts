@@ -75,7 +75,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
           this.googleCaptchaSiteKey = captchaConfig.key || '';
           this.isCaptchEnabled = captchaConfig.isEnabled || false;
         } catch (e) {
-          console.log(_.get(res, 'result.response'));
+           console.log(_.get(res, 'result.response'));
         }
       }
     });

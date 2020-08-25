@@ -294,8 +294,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(res => {
         this.contentStatus = res.content || [];
         this.calculateProgress();
-      },
-        err => console.log(err, 'content read api failed'));
+      });
   }
 
   public findContentById(id: string) {

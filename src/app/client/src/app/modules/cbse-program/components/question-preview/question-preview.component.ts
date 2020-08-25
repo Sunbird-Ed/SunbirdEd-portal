@@ -27,8 +27,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         this.theme = theme;
         const context = this.getContext();
         this.playerConfig =  this.setPlayerConfig(context, theme);
-      }, error => {
-        console.log(error);
       });
     }
   }
@@ -45,8 +43,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
-        }, error => {
-          console.log(error);
         });
       }
     }

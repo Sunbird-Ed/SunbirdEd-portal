@@ -56,7 +56,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentPrintable();
   }
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes.contentData);
     this.contentPrintable();
   }
     onActionButtonClick(event, content) {
@@ -121,7 +120,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     }
   contentPrintable() {
     // selectedContent?.model?.itemSetPreviewUrl
-   // console.log('------>', this.contentData);
     _.forEach(this.actionButtons, data => {
       if (data.name === 'print') {
         if (this.contentData.itemSetPreviewUrl) {

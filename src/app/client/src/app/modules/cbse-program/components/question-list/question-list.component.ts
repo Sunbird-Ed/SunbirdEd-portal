@@ -531,7 +531,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       map(res => {
         return _.get(res, 'result');
       }, err => {
-        console.log(err);
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
       })
     );
@@ -549,7 +548,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.deleteAssessmentItemIdentifier = identifier;
-    console.log(this.deleteAssessmentItemIdentifier);
     this.showDeleteQuestionModal = true;
   }
 
@@ -569,8 +567,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goToNextQuestionStatus = true;
         this.fetchQuestionList();
       }
-    }, error => {
-      console.log(error);
     });
   }
 
@@ -640,8 +636,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.actionService.post(request).pipe(map((response) => {
       this.questionList.push(_.assign(request.data.request.assessment_item.metadata, {'identifier': _.get(response, 'result.node_id')}));
       return response;
-    }, err => {
-      console.log(err);
     }), catchError(err => {
       const errInfo = { errorMsg: 'Default question creation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -754,7 +748,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.itemsetService.createItemset(reqBody).pipe(map((response) => {
       return response;
     }, err => {
-      console.log(err);
     }), catchError(err => {
       const errInfo = { errorMsg: 'Itemsets creation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -766,8 +759,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     const reqBody = requestBody;
     return this.itemsetService.updateItemset(reqBody, identifier).pipe(map((response) => {
       return response;
-    }, err => {
-      console.log(err);
     }), catchError(err => {
       const errInfo = { errorMsg: 'Content updation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -778,8 +769,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
       this.existingContentVersionKey = _.get(response, 'result.versionKey');
       return response;
-    }, err => {
-      console.log(err);
     }), catchError(err => {
       const errInfo = { errorMsg: this.resourceService.messages.fmsg.m0098 };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -796,7 +785,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleQuestionFormChangeStatus(event: any) {
     this.goToNextQuestionStatus = event.status;
-    console.log(this.goToNextQuestionStatus);
   }
 
   ngOnDestroy(): void {

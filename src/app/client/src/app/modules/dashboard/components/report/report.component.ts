@@ -338,7 +338,6 @@ export class ReportComponent implements OnInit {
       .subscribe(res => {
         this.refreshComponent();
       }, err => {
-        console.log({ err });
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
   }

@@ -464,8 +464,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   callinitPlayer (event) {
-    // console.log('event---ID---->',event.data.identifier);
-    // console.log('activeContent---ID---->',_.get(this.activeContent, 'identifier'))
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
@@ -481,7 +479,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     };
   }
   tocCardClickHandler(event) {
-    // console.log(event);
     this.setTelemetryInteractData();
     this.callinitPlayer(event);
   }

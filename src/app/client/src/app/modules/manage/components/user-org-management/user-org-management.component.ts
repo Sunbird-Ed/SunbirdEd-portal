@@ -293,9 +293,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0,
           'accounts_eligible': result['accounts_eligible'] ? result['accounts_eligible'] : 0
         };
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -309,9 +306,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           'blocks': result['blocks'] ? result['blocks'] : 0,
           'schools': result['schools'] ? result['schools'] : 0
         };
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -327,9 +321,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           'subOrgRegistered': result['subOrgRegistered'] ? result['subOrgRegistered'] : 0,
           'rootOrgRegistered': result['rootOrgRegistered'] ? result['rootOrgRegistered'] : 0
         };
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -339,9 +330,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       data => {
         const result = _.get(data, 'result');
         this.geoSummary = result;
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -351,9 +339,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       data => {
         const result = _.get(data, 'result');
         this.validatedUserSummary = result;
-      },
-      error => {
-        console.log(error);
       }
     );
   }
@@ -456,9 +441,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         response => {
           const url = (_.get(response, 'result.signedUrl'));
           if (url) { window.open(url, '_blank'); }
-        },
-        error => {
-          console.log(error);
         }
       );
   }
@@ -474,7 +456,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           }
         },
         error => {
-          console.log(error);
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
