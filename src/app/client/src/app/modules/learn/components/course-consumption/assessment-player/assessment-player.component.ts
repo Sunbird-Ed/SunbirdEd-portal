@@ -151,7 +151,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
         const selectedContent = queryParams.selectedContent;
-        const isSingleContent = this.collectionId === selectedContent;
+        let isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
@@ -169,6 +169,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
                 this.courseHierarchy = data.courseHierarchy;
+              }
+              if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+              this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+                isSingleContent = true;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
