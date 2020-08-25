@@ -150,7 +150,6 @@ export class TenantService extends DataService {
         return iif(() => _.isEmpty(data), this.getTenantConfig(this._defaultTenant), of(data));
       }),
       catchError(err => {
-        console.error(err);
         return of({});
       }),
       tap(data => {

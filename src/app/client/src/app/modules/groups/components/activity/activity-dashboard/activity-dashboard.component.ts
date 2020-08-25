@@ -101,7 +101,6 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     })).subscribe(data => {
         this.checkForNestedCourses(data);
     }, err => {
-      console.error('Error', err);
       this.navigateBack();
     });
   }
@@ -223,7 +222,6 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         this.processData(data);
       }, error => {
         this.showLoader = false;
-        console.error('Error', error);
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
         this.groupService.goBack();
       });

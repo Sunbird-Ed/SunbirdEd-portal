@@ -72,7 +72,6 @@ export class ReportComponent implements OnInit {
             return isAuthenticated ? this.renderReport(reportId, hash) : throwError({ messageText: 'messages.stmsg.m0144' });
           }),
           catchError(err => {
-            console.error('Error while rendering report', err);
             this.noResultMessage = {
               'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
             };

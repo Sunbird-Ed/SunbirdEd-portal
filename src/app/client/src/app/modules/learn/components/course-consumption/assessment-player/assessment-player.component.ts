@@ -178,7 +178,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
               this.setActiveContent(selectedContent, isSingleContent);
             }, error => {
-              console.error('Error while fetching data', error);
               this.toasterService.error(this.resourceService.messages.fmsg.m0051);
               this.goBack();
             });
@@ -194,7 +193,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.setActiveContent(selectedContent);
               }
             }, error => {
-              console.error('Error while fetching data', error);
               this.toasterService.error(this.resourceService.messages.fmsg.m0051);
               this.goBack();
             });

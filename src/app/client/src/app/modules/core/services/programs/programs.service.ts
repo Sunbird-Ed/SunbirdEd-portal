@@ -50,7 +50,6 @@ export class ProgramsService implements CanActivate {
         }),
         retry(1),
         catchError(err => {
-          console.error(err);
           return of(false);
         }),
         tap(allowedToContribute => {

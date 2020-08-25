@@ -478,7 +478,6 @@ export class ReportService {
             return report;
           }),
           catchError(err => {
-            console.error(err);
             return of(report);
           }));
     });
