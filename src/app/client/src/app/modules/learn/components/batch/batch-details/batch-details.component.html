@@ -1,6 +1,6 @@
 <!-- Join Course Table -->
 <sui-modal *ngIf="showJoinModal && !courseMentor" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #modal>
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #batchListModal>
   <div class="sb-modal-header font-weight-normal">
     {{resourceService?.frmelmnts?.lbl?.selectBatch}}
   </div>

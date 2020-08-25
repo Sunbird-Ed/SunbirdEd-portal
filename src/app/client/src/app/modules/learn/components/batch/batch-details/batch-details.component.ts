@@ -3,7 +3,7 @@ import { takeUntil, first, share } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService, CourseConsumptionService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -48,6 +48,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
+  @ViewChild('batchListModal') batchListModal;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -260,6 +261,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.batchListModal && this.batchListModal.deny) {
+      this.batchListModal.deny();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
