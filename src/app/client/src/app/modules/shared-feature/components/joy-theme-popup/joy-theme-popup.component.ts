@@ -13,6 +13,7 @@ export class JoyThemePopupComponent implements OnInit {
   instance: string;
   joyThemeIntractEdata: IInteractEventEdata;
   oldThemeIntractEdata: IInteractEventEdata;
+  showPopup = false;
 
 
   constructor(public layoutService: LayoutService, public resourceService: ResourceService) {
@@ -21,12 +22,17 @@ export class JoyThemePopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    const joyThemePopup = localStorage.getItem('joyThemePopup');
+    if (!joyThemePopup) {
+      this.showPopup = true;
+    }
     this.setInteractEventData();
   }
 
   closePopup() {
     localStorage.setItem('joyThemePopup', 'true');
     this.modal.deny();
+    this.showPopup = false;
     this.closeJoyThemePopup.emit();
   }
 

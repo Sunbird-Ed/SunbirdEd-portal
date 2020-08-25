@@ -6,7 +6,8 @@
   class="sb-modal"
   #modal
   (dismissed)="closePopup()"
-  appBodyScroll >
+  appBodyScroll 
+  *ngIf="showPopup">
 
 
   <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
