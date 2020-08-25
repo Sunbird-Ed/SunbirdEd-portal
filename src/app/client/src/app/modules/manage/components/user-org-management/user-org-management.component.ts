@@ -474,7 +474,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           }
         },
         error => {
-          console.log(error);
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
