@@ -1,12 +1,12 @@
 <!--Show loader-->
-<div class="sb-card-grid" *ngIf="showLoader">
-  <div class="sb-grid--item" *ngFor="let i of numberOfSections">
+<div class="sb-card-grid my-24" *ngIf="showLoader">
+  <div class="sb-card-grid--item" *ngFor="let i of numberOfSections">
     <sb-course-card [isLoading]="true"></sb-course-card>
   </div>
 </div>
 
 <!--Show Activity List-->
-<div *ngIf="!showLoader && activityList?.length" class="sb-card-grid">
+<div *ngIf="!showLoader && activityList?.length" class="sb-card-grid my-24">
   <div class="sb-card-grid--item relative" *ngFor="let activity of activityList;">
     <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin"
       [cardImg]="activity?.appIcon || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
