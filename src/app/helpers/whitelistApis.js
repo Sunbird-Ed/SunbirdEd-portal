@@ -11,13 +11,13 @@ const CHECK = {
 };
 const ROLE = {
   CONTENT_CREATOR: 'CONTENT_CREATOR',
-  CONTENT_REVIEW: 'CONTENT_REVIEW',
-  CONTENT_CREATION: 'CONTENT_CREATION',
   CONTENT_REVIEWER: 'CONTENT_REVIEWER',
   COURSE_MENTOR: 'COURSE_MENTOR',
+  COURSE_CREATOR: 'COURSE_CREATOR',
+  BOOK_CREATOR: 'BOOK_CREATOR',
+  BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  COURSE_MENTOR: 'COURSE_MENTOR',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -26,27 +26,27 @@ const API_LIST = {
     // Content related APIs
     '/content/retire': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/reject': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/review': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/content/v1/publish': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/flag/accept': {
       checksNeeded: ['ROLE_CHECK'],
@@ -63,11 +63,11 @@ const API_LIST = {
     },
     '/content/content/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/v1/media/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/content/v1/read/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
@@ -75,11 +75,11 @@ const API_LIST = {
     },
     '/content/content/v1/retire': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/content/content/v1/reject': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/v1/flag': {
       checksNeeded: ['ROLE_CHECK'],
@@ -96,15 +96,15 @@ const API_LIST = {
 
     '/content/content/v1/copy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_CREATION, ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER]
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/content/v1/reject/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.CONTENT_REVIEW]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
     },
     '/content/content/v1/flag/accept/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
@@ -117,19 +117,25 @@ const API_LIST = {
 
     '/content/v3/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR,  ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/v3/review': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER
+      ]
     },
     '/content/v3/hierarchy/add': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/v3/hierarchy/remove': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/course/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -139,11 +145,11 @@ const API_LIST = {
     // Collection Editor
     '/action/content/v1/collaborator/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/action/content/v3/read': {
       checksNeeded: ['ROLE_CHECK'],
@@ -151,23 +157,29 @@ const API_LIST = {
     },
     '/content/lock/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/lock/v1/retire': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/lock/v1/list': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/action/content/v3/review': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_CREATOR,
+        ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER
+      ]
     },
     '/action/content/v3/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
 
     // Content Editor
@@ -179,11 +191,17 @@ const API_LIST = {
     // Generic Editor
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_CREATOR,
+        ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER
+      ]
     },
     '/action/content/v3/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     //System related APIs
     '/learner/data/v1/system/settings/get/contentComingSoonMsg': {
@@ -264,7 +282,7 @@ const API_LIST = {
     },
     '/learner/course/v1/qrcode/download': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_CREATOR]
     },
     '/learner/recommended/courses': {
       checksNeeded: ['ROLE_CHECK'],
@@ -286,15 +304,15 @@ const API_LIST = {
     //Batch related APIs
     '/learner/course/v1/batch/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/course/v1/batch/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/course/v1/batch/user/add': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/course/v1/batch/read/:batchId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -309,7 +327,7 @@ const API_LIST = {
     },
     '/learner/course/v1/batch/user/remove': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
 
     //User related APIs
@@ -454,15 +472,15 @@ const API_LIST = {
     },
     '/learner/dashboard/v1/progress/course': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/dashboard/v1/consumption/course': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
     '/learner/dashboard/v2/progress/course/:batchId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
 
     // Notes related APIs
