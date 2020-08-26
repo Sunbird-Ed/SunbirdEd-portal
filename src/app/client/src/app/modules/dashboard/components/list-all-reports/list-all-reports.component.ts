@@ -29,7 +29,7 @@ export class ListAllReportsComponent implements OnInit {
 
   @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
-    const [reports,] = this.reports;
+    const [reports, ] = this.reports;
     this.prepareTable(element.nativeElement, reports);
   }
 

@@ -25,30 +25,16 @@ describe('DatasetComponent', () => {
   };
 
   const resourceServiceMockData = {
-    messages: {
-      imsg: {
-        reportSummaryAdded: 'Summary Added Successfully',
-        reportPublished: 'Report Published Successfully',
-        reportRetired: 'Report Retired Successfully',
-        confirmReportPublish: 'Are you sure you want to publish the report ?',
-        confirmRetirePublish: 'Are you sure you want to retire the report ?'
-      },
-      emsg: {
-        m0076: 'No data available to download ',
-        m0005: 'Something went wrong, try later'
-      },
-      stmsg: {
-        m0131: 'Could not find any reports',
-        m0144: 'You do not have appropriate rights to access this page.'
-      }
-    },
     frmelmnts: {
       btn: {
         tryagain: 'tryagain',
         close: 'close'
       },
       lbl: {
-        reportSummary: 'Report Summary'
+        submit: 'Submit',
+        edit: 'Edit',
+        noDataAvailable: 'No data available',
+
       }
     }
   };

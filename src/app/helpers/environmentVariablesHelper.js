@@ -41,6 +41,7 @@ let envVariables = {
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
   sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird', 
+  reportsListVersion: env.reportsListVersion || 'v1',
 
 
   // TTL and Intervals

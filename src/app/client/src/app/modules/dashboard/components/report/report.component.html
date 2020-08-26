@@ -61,16 +61,18 @@
                         [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                         getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
-                        (click)="openConfirmationModal('retire')" *ngIf="report?.status !== 'retired'" type="button"
-                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                        (click)="openConfirmationModal('retire')"
+                        *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white minus alternate icon"></i> {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                       </button>
                       <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                         getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-publish'})"
-                        (click)="openConfirmationModal('publish')" *ngIf="report?.status === 'draft'" type="button"
-                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                        (click)="openConfirmationModal('publish')"
+                        *ngIf="report?.status === 'draft' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white check alternate icon"></i> Publish
                       </button>
                     </div>
