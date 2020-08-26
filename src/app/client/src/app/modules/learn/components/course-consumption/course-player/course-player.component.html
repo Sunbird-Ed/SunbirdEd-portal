@@ -172,7 +172,7 @@
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
         <!-- Credits & License information -->
-        <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata text-left">
+        <div class="course-player--metadata text-left">
           <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
         </div>
 
