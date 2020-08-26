@@ -43,15 +43,20 @@ const API_LIST = {
     },
     '/content/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
     },
     '/content/review': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/content/v1/publish': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/flag/accept': {
       checksNeeded: ['ROLE_CHECK'],
@@ -77,7 +82,12 @@ const API_LIST = {
     },
     '/content/v1/media/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
     },
     '/content/content/v1/read/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
@@ -110,11 +120,11 @@ const API_LIST = {
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER]
     },
     '/content/content/v1/reject/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER]
     },
     '/content/content/v1/flag/accept/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
