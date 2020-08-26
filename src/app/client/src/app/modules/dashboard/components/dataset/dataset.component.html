@@ -4,7 +4,7 @@
       <div class="d-flex flex-ai-center" [formGroup]="timeRangePicker">
         <div class="sb-field-group">
           <label>
-            From
+            {{ resourceService?.frmelmnts?.lbl?.tcfrom}}
           </label>
           <div class="sb-field">
             <div class="ui left icon input">
@@ -17,7 +17,7 @@
 
         <div class="sb-field-group ml-16">
           <label>
-            To
+            {{ resourceService?.frmelmnts?.lbl?.tcto}}
           </label>
           <div class="sb-field">
             <div class="ui left icon input">
@@ -54,7 +54,7 @@
     <sui-accordion class="styled fluid sb-accordion">
       <sui-accordion-panel [isOpen]="true">
         <div title class="sb-accordion-title">
-          Data Dictionary
+          {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
           <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
         <div content class="sb-accordion-content">
@@ -66,7 +66,8 @@
             </div>
             <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
-                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
+                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
+                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
                 <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
                   {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
               </div>
@@ -96,7 +97,7 @@
 
       <sui-accordion-panel [isOpen]="false">
         <div title class="sb-accordion-title">
-          Datasets Examples
+          {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
           <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
         <div content class="sb-accordion-content">
@@ -107,7 +108,8 @@
             </div>
             <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
               <div class="ui top attached tabular menu">
-                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i> Preview</a>
+                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
+                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
                 <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
                   {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
               </div>
