@@ -644,6 +644,155 @@ describe('CertificateConfigurationComponent', () => {
     expect(component.certTypes).toEqual([{
       name : 'Completion certificate'
     }]);
+  });
 
+  it('should handle "select" click on hover certificate templates', () => {
+    /** Arrange */
+    const mockEvent = { name: 'select'};
+    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    spyOn(component, 'validateForm').and.stub();
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.handleCertificateEvent( mockEvent, mockTemplate);
+
+    /** Assert */
+    expect(component.selectedTemplate).toEqual(mockTemplate);
+    expect(component.config.remove.show).toBeTruthy();
+    expect(component.config.select.show).toBeFalsy();
+    expect(component.validateForm).toHaveBeenCalled();
+    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'select-template'});
+  });
+
+  it('should handle "remove" click on hover certificate templates', () => {
+    /** Arrange */
+    const mockEvent = { name: 'remove'};
+    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    spyOn(component, 'validateForm').and.stub();
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.handleCertificateEvent( mockEvent, mockTemplate);
+
+    /** Assert */
+    expect(component.selectedTemplate).toEqual({});
+    expect(component.config.select.show).toBeTruthy();
+    expect(component.config.remove.show).toBeFalsy();
+    expect(component.validateForm).toHaveBeenCalled();
+    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'unselect-template'});
+  });
+
+  it('should handle "preview" click on hover certificate templates', () => {
+    /** Arrange */
+    const mockEvent = { name: 'preview'};
+    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    spyOn(component, 'validateForm').and.stub();
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.handleCertificateEvent( mockEvent, mockTemplate);
+
+    /** Assert */
+    expect(component.previewTemplate).toEqual(mockTemplate);
+    expect(component.showPreviewModal).toBeTruthy();
+    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'preview-template'});
+  });
+
+  it('should fetch the configs for "select" hover button', () => {
+    /** Arrange */
+    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    const mocConfig = {show: true, label: 'select', name: 'select'};
+
+    /** Act */
+    component.getConfig(mocConfig, mockTemplate);
+
+    /** Assert */
+    expect(component.getConfig(mocConfig, mockTemplate)).toEqual(jasmine.objectContaining({
+      show: false,
+      label: 'select',
+      name: 'select'
+    }));
+  });
+
+  it('should fetch the configs for hover buttons other than "select"', () => {
+    /** Arrange */
+    const mockTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    component.selectedTemplate = { name: 'SOME_MOCK_TEMPLATE'};
+    const mocConfig = {show: true, label: 'preview', name: 'preview'};
+
+    /** Act */
+    component.getConfig(mocConfig, mockTemplate);
+
+    /** Assert */
+    expect(component.getConfig(mocConfig, mockTemplate)).toEqual(jasmine.objectContaining({
+      show: true,
+      label: 'preview',
+      name: 'preview'
+    }));
+  });
+
+  it('should close preview modal if user clicks "Select template" from preview popup', () => {
+    /** Arrange */
+    const mockEvent = {
+      name: 'select',
+      template: {name: 'SOME_TEMPLATE'}
+    };
+    spyOn(component, 'validateForm').and.stub();
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.closeModal(mockEvent);
+
+    /** Assert */
+   expect(component.showPreviewModal).toBeFalsy();
+   expect(component.selectedTemplate).toEqual({name: 'SOME_TEMPLATE'});
+   expect(component.validateForm).toHaveBeenCalled();
+   expect(component.sendInteractData).toHaveBeenCalledWith({id: 'select-template'});
+  });
+
+  it('should close preview modal if user clicks "close" from preview popup', () => {
+    /** Arrange */
+    const mockEvent = {
+    };
+    component.selectedTemplate = { name: 'SOME_PRE_SELECTED_TEMPLATE' };
+    spyOn(component, 'validateForm').and.stub();
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.closeModal(mockEvent);
+
+    /** Assert */
+   expect(component.showPreviewModal).toBeFalsy();
+   expect(component.selectedTemplate).toEqual({ name: 'SOME_PRE_SELECTED_TEMPLATE' });
+   expect(component.validateForm).toHaveBeenCalled();
+   expect(component.sendInteractData).toHaveBeenCalledWith({id: 'close-preview'});
+  });
+
+  it('should close template detect modal', () => {
+    /** Arrange */
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.closeTemplateDetectModal();
+
+    /** Assert */
+    expect(component.isTemplateChanged).toBeFalsy();
+    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'cancel-template-change' });
+  });
+
+  it('should navigate to cert rules screen', () => {
+    /** Arrange */
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.navigateToCertRules();
+
+    /** Assert */
+    expect(component.currentState).toEqual('certRules');
+    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'add-certificate' });
   });
 });
