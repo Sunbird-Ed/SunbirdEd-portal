@@ -302,7 +302,7 @@ const API_LIST = {
     },
     '/learner/course/v1/qrcode/download': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_CREATOR]
+      ROLE_CHECK: [ROLE.COURSE_CREATOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/recommended/courses': {
       checksNeeded: ['ROLE_CHECK'],
