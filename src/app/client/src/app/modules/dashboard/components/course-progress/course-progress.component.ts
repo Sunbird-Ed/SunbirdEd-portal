@@ -472,7 +472,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             };
           })
           .subscribe(bothParams => {
-            console.log('paramsmssm', bothParams);
             this.courseId = bothParams.params.courseId;
             this.batchId = bothParams.params.batchId;
             this.queryParams = { ...bothParams.queryParams };
