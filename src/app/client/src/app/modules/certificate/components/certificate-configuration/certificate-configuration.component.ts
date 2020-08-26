@@ -379,7 +379,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTelemetryImpressionData(navigatedPageId?) {
+  setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -395,7 +395,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        pageid: navigatedPageId ? navigatedPageId : this.activatedRoute.snapshot.data.telemetry.pageid,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
         duration: this.navigationHelperService.getPageLoadTime()
       }
@@ -403,7 +403,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.telemetryService.impression(this.telemetryImpression);
   }
 
-  sendInteractData(interactData, interactObject?) {
+  sendInteractData(interactData) {
     const data = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,

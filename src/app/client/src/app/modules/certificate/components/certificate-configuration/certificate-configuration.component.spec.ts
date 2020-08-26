@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CertificateConfigurationComponent } from './certificate-configuration.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
@@ -15,6 +15,10 @@ import { response as CertMockResponse } from './certificate-configuration.compon
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
+
+  class RouterStub {
+    public url = '/cert/configure/add';
+  }
 
   const fakeActivatedRoute = {
     snapshot: {
@@ -74,7 +78,8 @@ describe('CertificateConfigurationComponent', () => {
         ToasterService,
         TelemetryService,
         {provide: ResourceService, useValue: resourceBundle},
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: Router, useClass: RouterStub},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
@@ -794,5 +799,153 @@ describe('CertificateConfigurationComponent', () => {
     /** Assert */
     expect(component.currentState).toEqual('certRules');
     expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'add-certificate' });
+  });
+
+  it('should reset the selected form fields and template for "add certificate" scenario', () => {
+    /** Arrange */
+    component.userPreference = new FormGroup({
+        certificateType: new FormControl('Completion certificate'),
+        issueTo: new FormControl('My state teacher'),
+        allowPermission: new FormControl(true)
+      });
+      component.configurationMode = 'add';
+      spyOn(component, 'sendInteractData').and.stub();
+      spyOn(component.userPreference, 'reset');
+
+    /** Act */
+    component.cancelSelection();
+
+    /** Assert */
+    expect(component.currentState).toEqual('default');
+    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-add-certificate' });
+    expect(component.userPreference.reset).toHaveBeenCalled();
+    expect(component.selectedTemplate).toEqual({});
+  });
+
+  it('should reset the selected form fields and template for "update certificate" scenario', () => {
+    /** Arrange */
+    component.batchDetails = CertMockResponse.batchDataWithCertificate.result.response;
+    component.userPreference = new FormGroup({
+        certificateType: new FormControl('Completion certificate'),
+        issueTo: new FormControl('My state teacher'),
+        allowPermission: new FormControl(true)
+      });
+      component.configurationMode = 'edit';
+      spyOn(component, 'sendInteractData').and.stub();
+      spyOn(component, 'processCertificateDetails').and.stub();
+
+    /** Act */
+    component.cancelSelection();
+
+    /** Assert */
+    expect(component.currentState).toEqual('default');
+    expect(component.sendInteractData).toHaveBeenCalledWith({ id: 'cancel-update-certificate' });
+    expect(component.processCertificateDetails).toHaveBeenCalledWith(
+      CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
+  });
+
+  it('should send telemetry impression event', () => {
+    /** Arrange */
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(10);
+    spyOn(telemetryService, 'impression').and.stub();
+    const mockTelemetryImpressionData = {
+      context: {
+        env: fakeActivatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: '124631256'
+        },
+        {
+          type: 'Course',
+          id: 'do_456789'
+        }]
+      },
+      edata: {
+        type: fakeActivatedRoute.snapshot.data.telemetry.type,
+        subtype: fakeActivatedRoute.snapshot.data.telemetry.subtype,
+        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid,
+        uri: '/cert/configure/add',
+        duration: 10
+      }
+    };
+
+    /** Act */
+    component.setTelemetryImpressionData();
+
+    /**Assert */
+    expect(telemetryService.impression).toHaveBeenCalledWith(mockTelemetryImpressionData);
+  });
+
+  it('should send telemetry interact event for all the clicks on "add certificate" mode', () => {
+    /** Arrange */
+    component.configurationMode = 'add';
+    const mockInteractData = {id: 'add-certificate'};
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    const mockTelemetryInteractObject = {
+      context: {
+        env: fakeActivatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: '124631256'
+        },
+        {
+          type: 'Course',
+          id: 'do_456789'
+        }]
+      },
+      edata: {
+        id: 'add-certificate',
+        type: 'CLICK',
+        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+
+    /** Act */
+    component.sendInteractData(mockInteractData);
+
+    /** Assert */
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockTelemetryInteractObject);
+  });
+
+  it('should send telemetry interact event for all the clicks on "edit certificate" mode', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.selectedTemplate = {name: 'SOME_MOCK_TEMPLATE'};
+    const mockInteractData = {id: 'add-certificate'};
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    const mockTelemetryInteractObject = {
+      context: {
+        env: fakeActivatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'Batch',
+          id: '124631256'
+        },
+        {
+          type: 'Course',
+          id: 'do_456789'
+        }]
+      },
+      edata: {
+        id: 'add-certificate',
+        type: 'CLICK',
+        pageid: fakeActivatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: {
+        id: 'SOME_MOCK_TEMPLATE',
+        type: 'Certificate',
+        ver: '1.0',
+        rollup: { l1: 'do_456789' }
+      }
+    };
+
+    /** Act */
+    component.sendInteractData(mockInteractData);
+
+    /** Assert */
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockTelemetryInteractObject);
   });
 });
