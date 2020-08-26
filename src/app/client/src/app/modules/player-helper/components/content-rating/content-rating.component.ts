@@ -107,7 +107,6 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           } else {
             feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
           }
-          console.log(feedbackTelemetryClone);
           this.telemetryService.feedback(feedbackTelemetryClone);
         }
       });

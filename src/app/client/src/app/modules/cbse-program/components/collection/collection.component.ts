@@ -254,7 +254,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   viewMoreClickHandler(event) {
-    console.log(event);
   }
 
   ngOnDestroy() {
