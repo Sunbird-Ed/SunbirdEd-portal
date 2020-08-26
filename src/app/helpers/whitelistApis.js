@@ -30,7 +30,7 @@ const API_LIST = {
     },
     '/content/reject': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -79,7 +79,7 @@ const API_LIST = {
     },
     '/content/content/v1/reject': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_REVIEWER, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER]
     },
     '/content/v1/flag': {
       checksNeeded: ['ROLE_CHECK'],
