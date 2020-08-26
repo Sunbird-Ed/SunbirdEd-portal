@@ -26,7 +26,7 @@ const API_LIST = {
     // Content related APIs
     '/content/retire': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR]
     },
     '/content/reject': {
       checksNeeded: ['ROLE_CHECK'],
@@ -75,7 +75,7 @@ const API_LIST = {
     },
     '/content/content/v1/retire': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/reject': {
       checksNeeded: ['ROLE_CHECK'],
