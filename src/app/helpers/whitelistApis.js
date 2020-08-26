@@ -34,7 +34,12 @@ const API_LIST = {
     },
     '/content/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
     },
     '/content/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -63,7 +68,12 @@ const API_LIST = {
     },
     '/content/content/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
     },
     '/content/v1/media/upload': {
       checksNeeded: ['ROLE_CHECK'],
