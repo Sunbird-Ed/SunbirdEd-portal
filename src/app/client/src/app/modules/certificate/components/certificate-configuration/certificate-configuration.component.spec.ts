@@ -43,6 +43,10 @@ describe('CertificateConfigurationComponent', () => {
       cert: {
         lbl: {
           preview: 'preview',
+          certAddSuccess: 'Certificate added successfully',
+          certUpdateSuccess: 'Certificate updated successfully.',
+          certAddError: 'Failed to add the certificate. Try again later.',
+          certEditError: 'Failed to edit the certificate. Try again later.'
         }
     }
   },
@@ -344,5 +348,302 @@ describe('CertificateConfigurationComponent', () => {
     component.getCourseDetails('do_123456').subscribe( data => {
       expect(component.courseDetails).toEqual(CertMockResponse.courseData.result.content);
     });
+  });
+
+  it('should return empty observable if course details api fails', () => {
+    /** Arrange */
+    const playerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'getCollectionHierarchy').and.callFake(() => observableThrowError({}));
+
+    /** Act */
+    component.getCourseDetails('do_123456');
+
+    /** Assert */
+    component.getCourseDetails('do_123456').subscribe( data => { }, error => {
+      expect(component.getCourseDetails).toEqual(jasmine.objectContaining({}));
+    });
+  });
+
+  it('should show template change modal on "update certificate" button click if template change detected', () => {
+    /** Arrange */
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
+    component.templateIdentifier = 'SOME_OTHER_IDENTIFIER';
+
+    /** Act */
+    component.updateCertificate();
+
+    /** Assert */
+    expect(component.isTemplateChanged).toBeTruthy();
+  });
+
+  it('should attach the certificate on "update certificate" button click if template change not detected', () => {
+    /** Arrange */
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
+    component.templateIdentifier = 'SOME_IDENTIFIER';
+    spyOn(component, 'attachCertificateToBatch').and.stub();
+
+    /** Act */
+    component.updateCertificate();
+
+    /** Assert */
+    expect(component.attachCertificateToBatch).toHaveBeenCalled();
+  });
+
+  it('should send interact telemetry on click of add certificate to the batch', () => {
+    /** Arrange */
+    component.configurationMode = 'add';
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(component.sendInteractData).toHaveBeenCalledWith({
+      id: 'attach-certificate'
+    });
+  });
+
+  it('should send interact telemetry on click of update certificate to the batch', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(component.sendInteractData).toHaveBeenCalledWith({
+      id: 'confirm-template-change'
+    });
+  });
+
+  it('should close template change modal if user changes template and make an update call', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
+    spyOn(component, 'processCertificateDetails').and.stub();
+    spyOn(component, 'goBack').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(component.isTemplateChanged).toBeFalsy();
+  });
+
+  it('should show success toast message if user adds certificate', () => {
+    /** Arrange */
+    component.configurationMode = 'add';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
+    spyOn(component, 'processCertificateDetails').and.stub();
+    spyOn(component, 'goBack').and.stub();
+    spyOn(toasterService, 'success').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(toasterService.success).toHaveBeenCalledWith('Certificate added successfully');
+  });
+
+  it('should show success toast message if user updates certificate', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf({}));
+    spyOn(component, 'processCertificateDetails').and.stub();
+    spyOn(component, 'goBack').and.stub();
+    spyOn(toasterService, 'success').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(toasterService.success).toHaveBeenCalledWith('Certificate updated successfully.');
+  });
+
+  it('should fetch updated batch details post adding / updating certificate', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
+    spyOn(component, 'processCertificateDetails').and.stub();
+    spyOn(component, 'goBack').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(component.batchDetails).toEqual(CertMockResponse.batchDataWithCertificate.result.response);
+
+  });
+
+  it('should process the certificate details and navigate back to first screen post adding / updating certificate', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.returnValue(observableOf(CertMockResponse.batchDataWithCertificate));
+    spyOn(component, 'processCertificateDetails').and.stub();
+    spyOn(component, 'goBack').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(component.processCertificateDetails).toHaveBeenCalledWith(
+      CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
+    expect(component.goBack).toHaveBeenCalled();
+  });
+
+  it('should show  error toast message if fetching batch details fail', () => {
+    /** Arrange */
+    component.configurationMode = 'edit';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const certificateService  = TestBed.get(CertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.returnValue(observableOf(CertMockResponse.certAddSuccess));
+    spyOn(certificateService, 'getBatchDetails').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+  });
+
+  it('should show error toast message if adding certificate fails', () => {
+    /** Arrange */
+    component.configurationMode = 'add';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Failed to add the certificate. Try again later.');
+  });
+
+  it('should show error toast message if updating certificate fails', () => {
+    /** Arrange */
+    component.configurationMode = 'edt';
+    component.isTemplateChanged = true;
+    const certRegService = TestBed.get(CertRegService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'sendInteractData').and.stub();
+    spyOn(certRegService, 'addCertificateTemplate').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.stub();
+    /** Act */
+    component.attachCertificateToBatch();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Failed to edit the certificate. Try again later.');
+  });
+
+  it('should process certificate details', () => {
+    /** Arrange */
+    spyOn(component, 'setCertEditable').and.stub();
+    spyOn(component, 'processCriteria').and.stub();
+
+    /** Act */
+    component.processCertificateDetails(CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
+
+    /** Assert */
+    expect(component.selectedTemplate).toEqual({ name: 'mock_cert_identifier' });
+    expect(component.templateIdentifier).toEqual('mock_cert_identifier');
+    expect(component.previewUrl).toEqual('https://cert.svg');
+    expect(component.setCertEditable).toHaveBeenCalled();
+    expect(component.processCriteria).toHaveBeenCalledWith({
+      'user': {
+        'rootOrgId': '0124784842112040965'
+      },
+      'enrollment': {
+        'status': 2
+      }
+    });
+  });
+
+  it('should set the flag for the certificate to be editable', () => {
+    /** Arrange */
+    component.previewUrl = 'SOME_PREVIEW_URL';
+
+    /** Act */
+    component.setCertEditable();
+
+    /** Assert */
+    expect(component.certEditable).toBeTruthy();
+  });
+
+  it('should set the flag for the certificate to be non-editable', () => {
+    /** Arrange */
+    component.previewUrl = undefined;
+
+    /** Act */
+    component.setCertEditable();
+
+    /** Assert */
+    expect(component.certEditable).toBeFalsy();
+  });
+
+  it('should navigate to rules screen for editing the certificate', () => {
+    /** Arrange */
+    spyOn(component, 'sendInteractData').and.stub();
+
+    /** Act */
+    component.editCertificate();
+
+    /** Assert */
+    expect(component.configurationMode).toEqual('edit');
+    expect(component.currentState).toEqual('certRules');
+    expect(component.sendInteractData).toHaveBeenCalledWith({id: 'edit-certificate'});
+  });
+
+  it('should process the criteria to get the drop-down values', () => {
+    /** Arrange */
+    const mockCriteria = {
+      'user': {
+        'rootOrgId': '0124784842112040965'
+      },
+      'enrollment': {
+        'status': 2
+      }
+    };
+
+    /** Act */
+    component.processCriteria(mockCriteria);
+
+    /** Assert */
+    expect(component.issueTo).toEqual([{
+      name : 'My state teacher'
+    }]);
+
+    expect(component.certTypes).toEqual([{
+      name : 'Completion certificate'
+    }]);
+
   });
 });

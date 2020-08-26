@@ -134,7 +134,7 @@ export const response = {
         ],
         'cert_templates': {
           'template_21': {
-            'identifier': 'abc',
+            'identifier': 'mock_cert_identifier',
             'previewUrl': 'https://cert.svg',
             'criteria': {
               'user': {
@@ -317,6 +317,22 @@ export const response = {
         'key': 'certRules',
         'orgId': 'od1'
       }
+    }
+  },
+  certAddSuccess: {
+    'id': 'api.course.batch.cert.template.add',
+    'ver': 'v1',
+    'ts': '2020-08-26 16:57:48:922+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': '55e3bad3-a0fb-0a18-0949-d658cf9e2f9e',
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': 'SUCCESS'
     }
   }
 };

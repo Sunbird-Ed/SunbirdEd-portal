@@ -183,9 +183,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * @description - It will initialize the form fields (drop-downs, consent checkbox, cert_template)
-   */
+
   initializeFormFields() {
     this.userPreference = new FormGroup({
       certificateType: new FormControl('', [Validators.required]),
@@ -197,9 +195,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * @description - It will validate the form and enable / disable the add/update certificate button.
-   */
+
   validateForm() {
     if (this.userPreference.status === 'VALID'
     && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
@@ -227,7 +223,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
    * @description - It will check for the template change or update the certificate.
    */
   updateCertificate() {
-    console.log('here');
     if (this.templateIdentifier !== _.get(this.selectedTemplate, 'name')) {
       this.isTemplateChanged = true;
     } else {
@@ -262,6 +257,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
         this.goBack();
       }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }, error => {
 
@@ -298,9 +294,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCriteria(criteria) {
-    const abc = this.certConfigModalInstance.processCriteria(criteria);
-    this.issueTo = _.get(abc, 'issueTo');
-    this.certTypes = _.get(abc, 'certTypes');
+    const data = this.certConfigModalInstance.processCriteria(criteria);
+    this.issueTo = _.get(data, 'issueTo');
+    this.certTypes = _.get(data, 'certTypes');
     const certTypeFormEle = this.userPreference.controls['certificateType'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
