@@ -245,7 +245,6 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }));
   }
   private fetchPageData(option) {
-    console.log(option);
     if (this.queryParams.sort_by) {
       option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType };
     }

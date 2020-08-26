@@ -531,7 +531,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       map(res => {
         return _.get(res, 'result');
       }, err => {
-        console.log(err);
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
       })
     );
@@ -549,7 +548,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.deleteAssessmentItemIdentifier = identifier;
-    console.log(this.deleteAssessmentItemIdentifier);
     this.showDeleteQuestionModal = true;
   }
 
@@ -796,7 +794,6 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleQuestionFormChangeStatus(event: any) {
     this.goToNextQuestionStatus = event.status;
-    console.log(this.goToNextQuestionStatus);
   }
 
   ngOnDestroy(): void {
