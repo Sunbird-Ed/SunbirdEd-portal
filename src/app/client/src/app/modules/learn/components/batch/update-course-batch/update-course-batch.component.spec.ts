@@ -22,6 +22,7 @@ import {
   selectedParticipants,
   participantList
 } from './update-course-batch.component.data';
+import { FormGroup, FormControl } from '@angular/forms';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -346,6 +347,20 @@ describe('UpdateCourseBatchComponent', () => {
    expect(toasterService.success).toHaveBeenCalledWith('success');
   });
 
+  it('should despatch an event which will be caught in course-player page to navigate', () => {
+    component.batchUpdateForm = new FormGroup({
+      issueCertificate: new FormControl('yes')
+    });
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService.updateEvent, 'emit');
+    component.checkIssueCertificate('13456789');
+    expect(courseBatchService.updateEvent.emit).toHaveBeenCalledWith({
+      event: 'issueCert',
+      value: 'yes',
+      mode: 'edit',
+      batchId: '13456789'
+    });
+  });
   it('should log issue-certificate-yes interact telemetry on changing input to yes', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact');
