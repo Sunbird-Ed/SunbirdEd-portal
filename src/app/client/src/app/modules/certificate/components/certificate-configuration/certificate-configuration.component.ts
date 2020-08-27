@@ -133,7 +133,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   getCertConfigFields() {
     const request = {
       request: {
-        orgId: this.userService.slug,
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         key: 'certRules'
       }
     };
@@ -152,7 +152,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   getTemplateList() {
     const request = {
       request: {
-        orgId: this.userService.slug,
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         key: 'certList'
       }
     };
@@ -237,7 +237,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
         key: _.get(this.selectedTemplate, 'name'),
-        orgId: _.get(this.userService, 'slug'),
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };

@@ -206,7 +206,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
-    spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableOf(CertMockResponse.certRulesData));
 
     /** Act */
@@ -251,7 +252,8 @@ describe('CertificateConfigurationComponent', () => {
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
-    spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.stub();
 
@@ -266,7 +268,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
-    spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableOf(CertMockResponse.certTemplateListData));
 
     /** Act */
@@ -295,7 +298,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
-    spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
 
     /** Act */
