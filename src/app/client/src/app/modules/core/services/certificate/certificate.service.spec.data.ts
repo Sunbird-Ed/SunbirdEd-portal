@@ -114,5 +114,122 @@ export const mockResponseData = {
         'validFrom': '2019-06-21',
         'signature': null,
         '@context': 'http://localhost:8080/_schemas/context.json'
+      },
+    preferenceReadAPiResponse: {
+      'id': 'api.org.preferences.read',
+      'params': {
+        'resmsgid': null,
+      },
+      'responseCode': 'OK',
+      'result': {
+        'response': {
+          'updatedBy': null,
+          'data': {
+            'templateName': 'certRules',
+            'action': 'save',
+            'fields': [
+              {
+                'code': 'certTypes',
+                'dataType': 'text',
+                'name': 'certTypes',
+                'label': 'Certificate type',
+                'description': 'Select certificate',
+                'editable': true,
+                'inputType': 'select',
+                'required': true,
+                'displayProperty': 'Editable',
+                'visible': true,
+                'renderingHints': {
+                  'fieldColumnWidth': 'twelve'
+                },
+                'range': [
+                  {
+                    'name': 'Completion certificate',
+                    'value': {
+                      'enrollment': {
+                        'status': 2
+                      }
+                    }
+                  },
+                  {
+                    'name': 'Merit certificate',
+                    'value': {
+                      'score': '>= 60'
+                    }
+                  }
+                ],
+                'index': 1
+              },
+              {
+                'code': 'issueTo',
+                'dataType': 'text',
+                'name': 'issueTo',
+                'label': 'Issue certificate to',
+                'description': 'Select',
+                'editable': true,
+                'inputType': 'select',
+                'required': true,
+                'displayProperty': 'Editable',
+                'visible': true,
+                'renderingHints': {
+                  'fieldColumnWidth': 'twelve'
+                },
+                'range': [
+                  {
+                    'name': 'All',
+                    'value': {
+                      'user': {
+                        'rootid': ''
+                      }
+                    }
+                  },
+                  {
+                    'name': 'My state teacher',
+                    'rootOrgId': ''
+                  }
+                ],
+                'index': 2
+              }
+            ]
+          },
+          'key': 'certRules',
+          'orgId': 'od1'
+        }
       }
+    },
+    batchDetailsApiResponse: {
+      'id': 'api.course.batch.read',
+      'ver': 'v1',
+      'ts': '2020-08-20 17:54:35:831+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': 'fa4ce6ff-aaec-6775-3177-621587488cd7',
+        'err': null,
+        'status': 'success',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'response': {
+          'identifier': '01307963768800870441',
+          'createdFor': [
+            '0124784842112040965'
+          ],
+          'endDate': null,
+          'description': '',
+          'updatedDate': '2020-08-07 08:45:33:726+0000',
+          'batchId': '01307963768800870441',
+          'createdDate': '2020-08-05 13:41:56:665+0000',
+          'createdBy': 'ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e',
+          'mentors': [],
+          'name': 'Sudip Mukherjee',
+          'id': '01307963768800870441',
+          'enrollmentType': 'open',
+          'courseId': 'do_21307528604532736012398',
+          'enrollmentEndDate': null,
+          'startDate': '2020-08-05',
+          'status': 1
+        }
+      }
+    }
 };

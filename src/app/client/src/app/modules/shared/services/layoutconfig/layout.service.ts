@@ -95,4 +95,12 @@ export class LayoutService {
     }
     this.setLayoutConfig(this.layoutConfig);
   }
+
+  scrollTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
 }

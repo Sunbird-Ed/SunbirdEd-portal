@@ -50,6 +50,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   pageTitle;
   svgToDisplay;
   queryParams;
+  pageTitleSrc;
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -144,6 +145,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
+    this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+_.get(currentPageData, 'title');
     this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }

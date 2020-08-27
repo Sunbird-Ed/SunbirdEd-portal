@@ -8,6 +8,7 @@ import { CacheService } from 'ng2-cache-service';
 import { BehaviorSubject } from 'rxjs';
 import { BrowserCacheTtlService } from '../../services';
 import { HighlightTextDirective } from './highlight-text.directive';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('HighlightTextDirective', () => {
   let highlightTextDirective: HighlightTextDirective;
@@ -20,6 +21,12 @@ describe('HighlightTextDirective', () => {
   beforeEach(() => {
     const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr' } };
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                })],
       providers: [HttpClientTestingModule, HttpClient, HttpHandler, CacheService, BrowserCacheTtlService,
         HighlightTextDirective, ConfigService,
         { provide: ElementRef, useValue: elementRefStub },

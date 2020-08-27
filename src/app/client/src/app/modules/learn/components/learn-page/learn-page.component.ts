@@ -48,6 +48,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
   pageTitle;
+  pageTitleSrc;
   svgToDisplay;
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
@@ -140,6 +141,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       _.forEach(data, (value, key) => {
         if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
           this.pageTitle = _.get(this.resourceService, value.title);
+          this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+value.title;
           this.svgToDisplay = _.get(value, 'theme.imageName');
         } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
           if (value.contentType === 'course') {
@@ -314,17 +316,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
       enrolledSection.contents = _.map(this.enrolledCourses, content => {
-        let formatedContent;
-        /* istanbul ignore else */
-        if (this.layoutConfiguration) {
-          formatedContent = content.content;
-          formatedContent['mimeType'] = 'application/vnd.ekstep.content-collection'; // to route to course page
-          formatedContent['contentType'] = 'Course'; // to route to course page
-        } else {
-          formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
-          formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
-          formatedContent.metaData.contentType = 'Course'; // to route to course page
-        }
+        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
+        formatedContent.metaData.contentType = 'Course'; // to route to course page
         return formatedContent;
       });
       enrolledSection.count = enrolledSection.contents.length;

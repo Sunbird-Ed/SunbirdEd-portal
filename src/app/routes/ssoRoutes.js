@@ -4,7 +4,8 @@ const envHelper = require('../helpers/environmentVariablesHelper');
 const {encrypt, decrypt} = require('../helpers/crypto');
 const {
   verifySignature, verifyIdentifier, verifyToken, fetchUserWithExternalId, createUser, fetchUserDetails,
-  createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser, freeUpUser, getIdentifier
+  createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser, freeUpUser, getIdentifier,
+  orgSearch
 } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelperService');
@@ -23,7 +24,7 @@ module.exports = (app) => {
 
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
     logger.info({msg: '/v2/user/session/create called'});
-    let jwtPayload, userDetails, redirectUrl, errType;
+    let jwtPayload, userDetails, redirectUrl, errType, orgDetails;
     try {
       errType = 'VERIFY_SIGNATURE';
       await verifySignature(req.query.token);
@@ -38,6 +39,11 @@ module.exports = (app) => {
       };
       errType = 'VERIFY_TOKEN';
       verifyToken(jwtPayload);
+      errType = 'ORG_SEARCH';
+      orgDetails = await orgSearch(jwtPayload.school_id, req);
+      if (!(_.get(orgDetails, 'result.response.count') > 0)) {
+        throw 'SCHOOL_ID_NOT_REGISTERED'
+      }
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       req.session.userDetails = userDetails;
@@ -487,6 +493,8 @@ const getErrorMessage = (error, errorType) => {
     return 'User account is blocked. Please contact admin';
   } else if (['VERIFY_SIGNATURE', 'PAYLOAD_DATA_MISSING', 'VERIFY_TOKEN'].includes(errorType) ) {
     return 'Your account could not be signed in to DIKSHA due to invalid credentials provided. Please try again with valid credentials.';
+  } else if (error === 'SCHOOL_ID_NOT_REGISTERED') {
+    return 'Login failed. Details received from your State seem to be invalid. Contact your State administration for more details';
   } else {
     return 'Your account could not be signed in to DIKSHA due to technical issue. Please try again after some time';
   }

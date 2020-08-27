@@ -599,4 +599,49 @@ describe('CoursePlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBeFalsy();
   });
 
+  it('should navigate to cert-configuration page if the event.mode is "add-certificates"', () => {
+    spyOn(component, 'navigateToConfigureCertificate').and.stub();
+    spyOn(component, 'logTelemetry').and.stub();
+    const eventData = {
+      mode: 'add-certificates',
+      batchId: '123456'
+    };
+    component.onPopupClose(eventData);
+    expect(component.navigateToConfigureCertificate).toHaveBeenCalledWith('add', '123456');
+    expect(component.logTelemetry).toHaveBeenCalledWith('choose-to-add-certificate');
+    expect(component.showConfirmationPopup).toBeFalsy();
+  });
+
+  it('should only log telemetry if the event.mode is other than "add-certificates"', () => {
+    spyOn(component, 'navigateToConfigureCertificate').and.stub();
+    spyOn(component, 'logTelemetry').and.stub();
+    const eventData = {
+      mode: 'OTHER_EVENT_MODE',
+      batchId: '123456'
+    };
+    component.onPopupClose(eventData);
+    expect(component.logTelemetry).toHaveBeenCalledWith('deny-add-certificate');
+    expect(component.showConfirmationPopup).toBeFalsy();
+  });
+
+  it('should only close the popup if the event does not contain any mode', () => {
+    spyOn(component, 'logTelemetry').and.stub();
+    const eventData = {
+    };
+    component.onPopupClose(eventData);
+    expect(component.showConfirmationPopup).toBeFalsy();
+  });
+
+  it('should navigate to cert-configuration page', () => {
+    component['courseId'] = 'do_123456';
+    const router = TestBed.get(Router);
+    component.navigateToConfigureCertificate('add', '123456');
+    expect(router.navigate).toHaveBeenCalledWith(['/certs/configure/certificate'], {
+      queryParams: {
+        type: 'add',
+        courseId: 'do_123456',
+        batchId: '123456'
+      }
+    });
+  });
 });
