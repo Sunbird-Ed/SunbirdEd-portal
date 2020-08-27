@@ -145,6 +145,9 @@
     <input type="hidden" id="p3reCaptchaEnabled" value="false" />
   <% } %>
     <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
+  <% if (reportsListVersion) { %>
+  <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>
