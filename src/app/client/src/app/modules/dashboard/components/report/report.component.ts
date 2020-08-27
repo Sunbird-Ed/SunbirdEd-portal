@@ -120,7 +120,7 @@ export class ReportComponent implements OnInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
-            this.type = _.get(report, 'type') === 'report' ? ReportType.report : ReportType.dataset;
+            this.type = _.get(report, 'report_type') === 'report' ? ReportType.report : ReportType.dataset;
             if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') &&
               !this.reportService.isUserSuperAdmin()) {
               return throwError({ messageText: 'messages.emsg.mutliParametersFound' });

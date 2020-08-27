@@ -79,7 +79,7 @@ export class ListAllReportsComponent implements OnInit {
     return this.reportService.listAllReports(filters).pipe(
       mergeMap(res => this.filterReportsBasedOnRoles(res.reports)),
       map(reports => {
-        const [reportsArr, datasetsArr] = this.reports = _.partition(reports, report => _.toLower(_.get(report, 'type')) === 'report');
+        const [reportsArr, datasetsArr] = this.reports = _.partition(reports, report => _.toLower(_.get(report, 'report_type')) === 'report');
         const count = _.get(reports, 'length');
         return { count, reportsArr, datasetsArr };
       })

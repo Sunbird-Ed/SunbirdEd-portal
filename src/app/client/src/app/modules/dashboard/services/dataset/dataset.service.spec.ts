@@ -21,7 +21,7 @@ describe('DatasetService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should fetch dataset', done => {
+  it('should fetch dataset if called without headers', done => {
     const baseReportService = TestBed.get(BaseReportService);
     const input = { datasetId: 'raw', from: '2020-12-01', to: '2020-12-03' };
     const spy = spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
@@ -30,6 +30,23 @@ describe('DatasetService', () => {
       expect(res).toEqual({});
       expect(spy).toHaveBeenCalledWith({
         url: '/dataset/get/raw?from=2020-12-01&to=2020-12-03'
+      });
+      done();
+    });
+  });
+
+  it('should fetch dataset if called with headers', done => {
+    const baseReportService = TestBed.get(BaseReportService);
+    const input = { datasetId: 'raw', from: '2020-12-01', to: '2020-12-03', header: { ['X-Channel-Id']: '123' } };
+    const spy = spyOn(baseReportService, 'get').and.returnValue(of({ result: {} }));
+    datasetService.getDataSet(input).subscribe(res => {
+      expect(res).toBeDefined();
+      expect(res).toEqual({});
+      expect(spy).toHaveBeenCalledWith({
+        url: '/dataset/get/raw?from=2020-12-01&to=2020-12-03',
+        header: {
+          ['X-Channel-Id']: '123'
+        }
       });
       done();
     });
