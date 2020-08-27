@@ -28,6 +28,9 @@ const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser')
 const logger = require('sb_logger_util_v2');
+const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
+const { loadTokenPublicKeys } = require('sb_api_interceptor');
+
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -173,8 +176,8 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
-function runApp() {
-
+async function runApp() {
+  await loadTokenPublicKeys(__dirname + kidTokenPublicKeyBasePath);
   app.all('*', (req, res) => res.redirect('/')) // redirect to home if nothing found
   // start server after building the configuration data and fetch default channel id
 
