@@ -221,6 +221,15 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return value.length;
     });
+    if (localStorage.getItem('userType')) {
+      const userType = localStorage.getItem('userType');
+      const userTypeMapping = this.configService.appConfig.userTypeMapping;
+      _.map(userTypeMapping, (value, key) => {
+        if (userType === key) {
+          filters['audience'] = value;
+        }
+      });
+    }
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
