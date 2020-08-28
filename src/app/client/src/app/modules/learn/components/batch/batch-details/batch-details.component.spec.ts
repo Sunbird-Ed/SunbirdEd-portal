@@ -1,15 +1,15 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, PermissionService, UserService } from '@sunbird/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
-import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
+import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 
@@ -32,7 +32,10 @@ const resourceServiceMockData = {
   messages : {
     imsg: { m0027: 'Something went wrong'},
     stmsg: { m0009: 'error' },
-    fmsg: { m0004: 'error'}
+    fmsg: { m0004: 'error'},
+    emsg: {
+      m009: `The course's batch is available from {startDate}`
+      }
   },
   frmelmnts: {
     btn: {
@@ -249,5 +252,14 @@ describe('BatchDetailsComponent', () => {
     };
     component.ngOnDestroy();
     expect(component.batchListModal.deny).toHaveBeenCalled();
+  });
+  it('should call getJoinCourseBatchDetails', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(of(allBatchDetailsWithFeactureBatch));
+    component.getJoinCourseBatchDetails();
+    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.allBatchList[0]['startDate']);
+    expect(toasterService.error).toHaveBeenCalledWith(message)
   });
 });
