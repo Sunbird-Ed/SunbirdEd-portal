@@ -27,9 +27,6 @@ module.exports = (app) => {
             }
         })
     )
-    app.get("/content/kid/test", proxyUtils.verifyToken(), (req, res, next) => {
-        res.send("verified");
-    })
     app.all('/content/*',
         // Generate telemetry for content service
         telemetryHelper.generateTelemetryForContentService,
