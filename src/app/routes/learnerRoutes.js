@@ -5,7 +5,6 @@
  */
 
 const proxyUtils        = require('../proxy/proxyUtils.js')
-const permissionsHelper = require('../helpers/permissionsHelper.js')
 const envHelper         = require('../helpers/environmentVariablesHelper.js')
 const learnerURL        = envHelper.LEARNER_URL
 const telemetryHelper   = require('../helpers/telemetryHelper.js')
@@ -54,37 +53,6 @@ module.exports = function (app) {
   app.get('/learner/user/v1/exists/phone/:phoneNumber', googleService.validateRecaptcha);
 
   app.post('/learner/anonymous/otp/v1/generate', googleService.validateRecaptcha);
-
-  /**
-   * @deprecated - release-3.2.0
-   * To be removed from release-3.3.0
-   */
-  // app.post('/learner/content/v1/media/upload',
-  //   proxyUtils.verifyToken(),
-  //   permissionsHelper.checkPermission(),
-  //   proxy(learnerURL, {
-  //     limit: reqDataLimitOfContentUpload,
-  //     timeout: envHelper.sunbird_api_request_timeout,
-  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-  //     proxyReqPathResolver: function (req) {
-  //       return require('url').parse(learnerURL + '/content/v1/media/upload').path
-  //     },
-  //     userResDecorator: function (proxyRes, proxyResData, req, res) {
-  //       try {
-  //         logger.info({ msg: '/learner/content/v1/media/upload called' });
-  //         let data = JSON.parse(proxyResData.toString('utf8'))
-  //         if (data.responseCode === 'OK') {
-  //           data.success = true
-  //           return JSON.stringify(data)
-  //         }
-  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-  //       } catch (err) {
-  //         logger.error({ msg: 'content api user res decorator json parse error:', proxyResData })
-  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-  //       }
-  //     }
-  //   })
-  // )
 
   // Route to check user email exists - SSO update contact workflow
   app.all('/learner/user/v1/get/email/*', googleService.validateRecaptcha, proxyObj());
