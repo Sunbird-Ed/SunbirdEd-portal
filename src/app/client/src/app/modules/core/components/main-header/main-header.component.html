@@ -262,7 +262,7 @@
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
           <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='adminDashboard' (click)="toggleSideMenu(false)" routerLink="dashBoard/organization">
+            [permission]='adminDashboard' (click)="toggleSideMenu(false)" [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
               </svg></i>

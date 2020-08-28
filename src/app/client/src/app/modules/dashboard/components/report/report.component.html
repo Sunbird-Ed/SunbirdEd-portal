@@ -49,7 +49,8 @@
                     </div>
                     <div *ngIf="isUserReportAdmin && !hideElements"
                       class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-                      <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                      <button *ngIf="type === 0" appTelemetryInteract
+                        [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
                         (click)="openReportSummaryModal()" type="button"
                         class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
@@ -60,16 +61,18 @@
                         [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                         getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
-                        (click)="openConfirmationModal('retire')" *ngIf="report?.status !== 'retired'" type="button"
-                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                        (click)="openConfirmationModal('retire')"
+                        *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white minus alternate icon"></i> {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                       </button>
                       <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                         getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-publish'})"
-                        (click)="openConfirmationModal('publish')" *ngIf="report?.status === 'draft'" type="button"
-                        class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                        (click)="openConfirmationModal('publish')"
+                        *ngIf="report?.status === 'draft' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                        type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                         <i class="white check alternate icon"></i> Publish
                       </button>
                     </div>
@@ -82,7 +85,7 @@
                   [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                 </p>
                 <div class="ml-auto d-flex flex-jc-flex-end sb-last-update-status fnormal sb-color-gray-400"
-                  *ngIf="currentReport?.lastUpdatedOn">
+                  *ngIf="currentReport?.lastUpdatedOn && type === 0">
                   <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
                   {{currentReport?.lastUpdatedOn}}
                 </div>
@@ -90,9 +93,13 @@
 
             </div>
 
-            <div class="ui container py-16">
+            <div class="ui container">
               <div class="twelve wide column">
-                <div id="report-body" class="my-16">
+                <div *ngIf="type === 1">
+                  <app-dataset [markdownUpdated$]="markdownUpdated$" [dataset]="report?.reportconfig?.dataset">
+                  </app-dataset>
+                </div>
+                <div id="report-body" class="my-16" *ngIf="type === 0">
                   <sui-tabset>
                     <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                       <a appTelemetryInteract
@@ -231,7 +238,8 @@
                     </ng-container>
                   </sui-tabset>
                 </div>
-                <div id="report-summary" class="my-16" *ngIf="currentReportSummary && currentReportSummary.length">
+                <div id="report-summary" class="my-16"
+                  *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
                   <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
                 </div>
               </div>

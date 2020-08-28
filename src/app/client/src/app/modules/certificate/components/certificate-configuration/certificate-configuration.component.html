@@ -208,7 +208,7 @@
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
               [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
-            <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'"
+            <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'"
               [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
           </div>
