@@ -1,5 +1,4 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
-const permissionsHelper = require('../helpers/permissionsHelper.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '50mb'
@@ -24,7 +23,6 @@ var certRegServiceApi = {
 module.exports = function (app) {
 
   app.all(`/+${certRegServiceApi.searchCertificate}`,
-    permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
@@ -49,7 +47,6 @@ module.exports = function (app) {
   app.post(`/+${certRegServiceApi.getUserDetails}`,
     bodyParser.json({ limit: '10mb' }),
     isAPIWhitelisted.isAllowed(),
-    permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
@@ -81,7 +78,6 @@ module.exports = function (app) {
   app.post(`/+${certRegServiceApi.reIssueCertificate}`,
     bodyParser.json({ limit: '10mb' }),
     isAPIWhitelisted.isAllowed(),
-    permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
@@ -111,7 +107,6 @@ module.exports = function (app) {
   app.patch(`/+${certRegServiceApi.addTemplateProxy}`,
     bodyParser.json({ limit: '10mb' }),
     isAPIWhitelisted.isAllowed(),
-    permissionsHelper.checkPermission(),
     addTemplateToBatch(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),

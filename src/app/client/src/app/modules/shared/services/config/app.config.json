@@ -1368,5 +1368,10 @@
   },
   "DIAL_CODE": {
     "PAGE_LIMIT": 10
+  },
+  "userTypeMapping" : {
+    "student": ["learner"],
+    "teacher": ["instructor"],
+    "other": ["learner", "instructor"] 
   }
 }
