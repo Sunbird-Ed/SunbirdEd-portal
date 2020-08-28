@@ -252,6 +252,7 @@ it('should redo layout on render', () => {
     const searchQueryParams = {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'filters': {}};
     spyOn(localStorage, 'getItem').and.returnValue('teacher');
     component.queryParams = {sort_by: 'name', sortType: 'desc'};
+    coursesService.initialize();
     component.ngOnInit();
     component['fetchPageData'](searchQueryParams);
     expect(pageApiService.getPageData).toHaveBeenCalledWith(
