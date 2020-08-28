@@ -443,9 +443,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         const data = this.setActiveContent(this.contentId);
         if (data) {
           event.data = data;
+          const queryParams = _.get(this.collectionData, 'contentType') === 'TextBook' ? { contentType: this.contentType } :
+            { contentType: this.contentType, contentId: this.contentId };
           const navigationExtras: NavigationExtras = {
             relativeTo: this.route,
-            queryParams: { contentType: this.contentType }
+            queryParams: queryParams
           };
           this.router.navigate([], navigationExtras);
         }
