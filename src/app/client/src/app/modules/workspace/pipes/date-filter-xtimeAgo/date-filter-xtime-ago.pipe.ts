@@ -5,7 +5,6 @@ dayjs.extend(relativeTime)
 
 /**
  * Pipe for date format
- *
  */
 @Pipe({
   name: 'fromNow'
@@ -13,10 +12,8 @@ dayjs.extend(relativeTime)
 export class DateFilterXtimeAgoPipe implements PipeTransform {
   /**
    * To create date format pipe
-   *
    * @param {Date} value current Date, string or number
    * @param {string} format format of Date
-   *
    */
   transform(value: Date | string | number, format: string): string {
       const local = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
