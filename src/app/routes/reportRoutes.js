@@ -96,7 +96,7 @@ module.exports = function (app) {
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
-        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER']),
+        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get('/admin-reports/:slug/:filename',
