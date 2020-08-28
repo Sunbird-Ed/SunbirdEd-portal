@@ -1,6 +1,6 @@
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -21,11 +21,13 @@ export class ListAllReportsComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService,
-    private telemetryService: TelemetryService) { }
+    private telemetryService: TelemetryService, private layoutService: LayoutService) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
   private _isUserReportAdmin: boolean;
+  layoutConfiguration: any;
+
 
   @ViewChild('all_reports') set inputTag(element: ElementRef | null) {
     if (!element) { return; }
@@ -43,6 +45,7 @@ export class ListAllReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initLayout();
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
         this._isUserReportAdmin = this.reportService.isUserReportAdmin();
@@ -342,6 +345,16 @@ export class ListAllReportsComponent implements OnInit {
 
   private getReportsCount({ reports = [], status = 'draft' }) {
     return _.size(_.filter(reports, report => _.get(report, 'status') === status));
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout()
+      .subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
 }
