@@ -6,9 +6,9 @@
 
   <div class="ui" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
     <div class="twelve wide column px-0">
-      <div *ngIf="!hideElements" class="sb-bg-white relative position cc-player__btn-back ">
+      <div *ngIf="!hideElements" class="sb-bg-white relative position cc-player__btn-back relative9 reports-back-btn">
         <div class="ui container py-8 px-0">
-          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
             (click)="gotoListPage()">
             <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -26,7 +26,7 @@
             <div *ngIf="!noResult" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
               <div id="report-header">
 
-                <div class="content-header">
+                <div class="textbook-container cc-player__content-header relative9 reports-content-header">
                   <div class="ui container py-16">
                     <div class="content-header__content">
                       <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
