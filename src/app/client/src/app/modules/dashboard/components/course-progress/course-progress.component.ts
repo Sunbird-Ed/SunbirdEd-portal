@@ -235,7 +235,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         } else {
           this.showWarningDiv = true;
         }
-        this.getReportUpdatedOnDate();
         this.paramSubcription.unsubscribe();
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -257,6 +256,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.currentBatch = batch;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
+    this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
   }
 
   /**
@@ -435,8 +435,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.populateCourseDashboardData();
       });
   }
-  getReportUpdatedOnDate() {
-    const batchId = _.get(this.queryParams, 'batchIdentifier');
+  getReportUpdatedOnDate(batchIdentifier: string) {
+    const batchId = batchIdentifier;
     const reportParams = {
       'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
       'assessment-reports': `assessment-reports/report-${batchId}.csv`
