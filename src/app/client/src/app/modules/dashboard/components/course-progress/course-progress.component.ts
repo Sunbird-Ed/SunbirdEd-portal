@@ -230,7 +230,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
-          this.setCounts(this.currentBatch);
+          this.setBatchId(this.currentBatch);
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
