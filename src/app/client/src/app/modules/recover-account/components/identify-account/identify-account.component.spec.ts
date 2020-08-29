@@ -145,4 +145,22 @@ describe('IdentifyAccountComponent', () => {
     expect(recapta).toBeTruthy();
   });
 
+  it('show call initializeForm invalid case', () => {
+    component.initializeForm();
+    component.form.patchValue({
+      identifier: 123456,
+      name:'test' 
+    })
+    expect(component.nameNotExist).toBeFalsy()
+    expect(component.disableFormSubmit).toBeTruthy();
+  })
+  it('show call initializeForm vaild case', () => {
+    component.initializeForm();
+    component.form.patchValue({
+      identifier: 'test001@yopmail.com',
+      name:'test' 
+    })
+    expect(component.nameNotExist).toBeFalsy()
+    expect(component.disableFormSubmit).toBeFalsy();
+  })
 });

@@ -308,4 +308,29 @@ describe('UserOrgManagementComponent', () => {
     expect(toasterService.success).toHaveBeenCalled();
     expect(component.showUploadUserModal).toBeFalsy();
   });
+  it('should call openModel', () => {
+    component.showUploadUserModal = true;
+    component.openModel();
+    expect(component.showUploadUserModal).toBeFalsy();
+    expect(component.fileUpload).toBe(null);
+  })
+  it('should call openModel', () => {
+    component.openModal();
+    expect(component.showModal ).toBeFalsy();
+    setTimeout(()=>{
+      expect(component.showModal ).toBeTruthy();
+    }, 600)
+  })
+  it('should call geoTableView', () => {
+    component.geoSummary = mockManageData.geoSummary;
+    component.geoButtonText  = 'View Details';
+    component.geoTableView();
+    expect(component.geoButtonText ).toBe('View less'); 
+  })
+  it('should call teachersTableView', () => {
+    component.validatedUserSummary = mockManageData.validatedUserSummary;
+    component.teachersButtonText   = 'View Details';
+    component.teachersTableView();
+    expect(component.teachersButtonText  ).toBe('View less'); 
+  });
 });
