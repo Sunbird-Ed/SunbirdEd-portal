@@ -177,7 +177,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   process.exit(1)
 }
 async function runApp() {
-  await loadTokenPublicKeys(__dirname + kidTokenPublicKeyBasePath);
+  await loadTokenPublicKeys(path.join(__dirname, kidTokenPublicKeyBasePath));
   app.all('*', (req, res) => res.redirect('/')) // redirect to home if nothing found
   // start server after building the configuration data and fetch default channel id
 
