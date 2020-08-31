@@ -8,6 +8,8 @@ var keyCloakAuthUtils = require('keycloak-auth-utils');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const kidToPublicKeyMap = {};
+const Token = require('keycloak-auth-utils/lib/token.js');
+let useKidBasedValidation = false;
 function ApiInterceptor(keyclock_config, cache_config, validIssuers) {
 	this.config = keyclock_config;
 	this.keyCloakConfig = new keyCloakAuthUtils.Config(this.config);
@@ -22,6 +24,11 @@ function ApiInterceptor(keyclock_config, cache_config, validIssuers) {
  * @return {[Function]} callback [its retrun err or object with fields(token, userId)]
  */
 ApiInterceptor.prototype.validateToken = function (token, cb) {
+    if (!useKidBasedValidation) {
+        return this.grantManager.validateToken(new Token(token))
+        .then(userData => cb(null, { token, userId: userData.content.sub }))
+        .catch(err => cb(err, null));
+    }
 	const decoded = jwt.decode(token, {complete: true});
     if(!decoded){
         console.error("invalid jwt token - 401");
@@ -49,9 +56,10 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
 function loadTokenPublicKeys(basePath){
     return new Promise((resolve, reject) => {
         fs.readdir(basePath, function(err, filenames) {
-            if (err) {
+            if (err || !filenames.length) {
               console.error("error while reading publicKey directory: " + basePath, err);
-              return reject(err);
+              console.info("Defaulting to Keycloak validation");
+              return resolve(err);
             }
             let fileCount = filenames.length;
             filenames.forEach(function(filename) {
@@ -63,7 +71,8 @@ function loadTokenPublicKeys(basePath){
                 }
                 kidToPublicKeyMap[filename] = content;
                 if (fileCount === 0) {
-					console.info("loaded all public key for authentication");
+                    console.info("loaded all public key for authentication");
+                    useKidBasedValidation = true;
                     resolve();
                 }
               });
