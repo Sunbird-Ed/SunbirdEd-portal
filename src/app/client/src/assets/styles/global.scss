@@ -582,23 +582,23 @@ app-workspace {
     .lib-chat-head {
       position: absolute !important;
       right: 4rem !important;
-      top: 13px !important;
+      top: calculateRem(13px) !important;
       bottom: inherit !important;
       z-index: 999 !important;
     }
     .chatbox-cover .chatboxImg {
-      width: 64px !important;
+      width: calculateRem(64px) !important;
       margin-left: 0px !important;
      }
      .chatbox-cover .chatbox {
-      margin-top: 12px !important;
+      margin-top: calculateRem(12px) !important;
       display: none;
      }
      .chatbox-cover .chatboxText {
-       font-size:14px !important;
+       font-size:calculateRem(14px) !important;
      }
      html[layout="joy"] .lib-chat-head {
-      top: 26px !important;
+      top: calculateRem(26px) !important;
       z-index: inherit !important;
      }
   }
