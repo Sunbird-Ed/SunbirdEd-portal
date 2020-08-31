@@ -576,3 +576,23 @@ app-workspace {
       }
     }
   }
+
+  /* tara chat box */
+@media only screen and (max-width: 767px) {
+  .lib-chat-head {
+    position: absolute !important;
+    right: 4rem !important;
+    top: 0px !important;
+    bottom: inherit !important;
+    z-index: 999 !important;
+   }
+  }
+  @media only screen and (max-width: 1023px) {
+    .lib-chat-head {
+      position: absolute !important;
+      right: 5rem !important;
+    top: -8px !important;
+      bottom: inherit !important;
+      z-index: 999 !important;
+    }
+  }
