@@ -114,9 +114,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupsService.getUserData((this.memberId).trim(), {token: this.captchaResponse})
       .pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         this.verifiedMember = this.groupsService.addFields(member);
-        if (member.exists && !this.isExistingMember()) {
+        if (member.exists) {
           this.showLoader = false;
-          this.isVerifiedUser = true;
+          this.isVerifiedUser = !this.isExistingMember();
           this.captchaRef.reset();
         } else {
           this.showInvalidUser();
@@ -166,7 +166,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   showErrorMsg(response?) {
-    this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors') || this.verifiedMember['title']));
+    this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
+    || _.get(this.verifiedMember, 'title')));
   }
 
   getUpdatedGroupData() {
