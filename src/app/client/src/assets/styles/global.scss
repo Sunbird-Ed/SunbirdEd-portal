@@ -578,21 +578,35 @@ app-workspace {
   }
 
   /* tara chat box */
-@media only screen and (max-width: 767px) {
-  .lib-chat-head {
-    position: absolute !important;
-    right: 4rem !important;
-    top: 0px !important;
-    bottom: inherit !important;
-    z-index: 999 !important;
-   }
-  }
-  @media only screen and (max-width: 1023px) {
+// @media only screen and (max-width: 767px) {
+//   .lib-chat-head {
+//     position: absolute !important;
+//     right: 4rem !important;
+//     top: 0px !important;
+//     bottom: inherit !important;
+//     z-index: 999 !important;
+//    }
+//   }
+  @media only screen and (max-width: 767px) {
     .lib-chat-head {
       position: absolute !important;
-      right: 5rem !important;
-    top: -8px !important;
+      right: 4rem !important;
+      top: 13px !important;
       bottom: inherit !important;
-      z-index: 999 !important;
+      z-index: inherit !important;
     }
+    .chatbox-cover .chatboxImg {
+      width: 64px !important;
+      margin-left: 0px !important;
+     }
+     .chatbox-cover .chatbox {
+      margin-top: 12px !important;
+      display: none;
+     }
+     .chatbox-cover .chatboxText {
+       font-size:14px !important;
+     }
+     html[layout="joy"] .lib-chat-head {
+      top: 26px !important;
+     }
   }
