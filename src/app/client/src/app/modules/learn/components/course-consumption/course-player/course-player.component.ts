@@ -436,11 +436,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     }  else {
+      /* istanbul ignore else */
       this.showJoinTrainingModal = true;
       const currentDate = new Date();
+      /* istanbul ignore else */
       if(this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1){
       const batchStartDate = new Date(this.courseHierarchy.batches[0].startDate);
       const batchenrollEndDate = this.courseHierarchy.batches[0].enrollmentEndDate ? new Date(this.courseHierarchy.batches[0].enrollmentEndDate) : null;
+      /* istanbul ignore else */
       if(batchStartDate > currentDate){
         this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', this.courseHierarchy.batches[0].startDate) 
       }else if(batchenrollEndDate !== null && batchenrollEndDate < currentDate){
@@ -452,8 +455,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
+        /* istanbul ignore else */
         if(allBatchList && allBatchList.length === 1){
           const batchStartDate = new Date(allBatchList[0].startDate);
+          /* istanbul ignore else */
           if(batchStartDate > currentDate){
             this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', allBatchList[0].startDate) 
           }else{

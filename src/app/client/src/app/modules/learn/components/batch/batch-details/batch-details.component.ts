@@ -175,6 +175,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
             return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
           });
           // If batch length is 1, then directly join the batch
+          /* istanbul ignore else */
           if (this.allBatchList && this.allBatchList.length === 1) {
               const batchStartDate = new Date(this.allBatchList[0]['startDate']);
               const currentdate = new Date();
@@ -248,6 +249,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate(['create/batch'], { relativeTo: this.activatedRoute });
   }
   enrollBatch(batch) {
+    /* istanbul ignore else */
     this.showJoinModal = false;
     const batchStartDate = new Date(batch['startDate']);
     const currentdate = new Date();
