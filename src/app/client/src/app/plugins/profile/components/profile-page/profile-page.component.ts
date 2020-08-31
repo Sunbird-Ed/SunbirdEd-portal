@@ -235,7 +235,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
         if (_.get(value, 'identifier')) {
-          console.log(value);
           this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
             this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
           }, error => {
