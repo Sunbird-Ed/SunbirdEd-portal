@@ -56,6 +56,50 @@ describe('CoursePlayerComponent', () => {
       status: 1
     }
   ]
+  const featureBatch = [
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-10-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-10",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }
+  ]
+  const ongoingBatch = [
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-08-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-10",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }
+  ]
   const resourceServiceMockData = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
@@ -683,7 +727,7 @@ describe('CoursePlayerComponent', () => {
     });
   });
 
-  it('shold call navigateToPlayerPage', () => {
+  it('shold call navigateToPlayerPage case 1', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.enrolledCourse = false;
@@ -694,7 +738,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.batchMessage).toBe(message);
   })
 
-  it('shold call navigateToPlayerPage', () => {
+  it('shold call navigateToPlayerPage case 2', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.enrolledCourse = false;
@@ -705,7 +749,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.batchMessage).toBe(message);
   })
 
-  it('shold call navigateToPlayerPage', () => {
+  it('shold call navigateToPlayerPage case 3', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.enrolledCourse = false;
@@ -713,6 +757,27 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy.batches = batchs.splice(0,2)
     component.navigateToPlayerPage({});
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    expect(component.batchMessage).toBe(message);
+  })
+
+  it('shold call navigateToPlayerPage case 4', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = featureBatch;
+    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.courseHierarchy.batches[0]['startDate']);
+    component.navigateToPlayerPage({});
+    expect(component.batchMessage).toBe(message);
+  })
+  it('shold call navigateToPlayerPage case 5', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = ongoingBatch;
+    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    component.navigateToPlayerPage({});
     expect(component.batchMessage).toBe(message);
   })
 });
