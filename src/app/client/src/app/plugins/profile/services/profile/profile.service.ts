@@ -182,4 +182,28 @@ export class ProfileService {
     }));
   }
 
+  getPersonaTenantForm(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: 'get',
+      contentType: 'tenantPersonaInfo',
+      component: 'app'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  getSelfDeclarationForm(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: 'submit',
+      contentType: 'selfDeclaration',
+      component: 'app'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
 }

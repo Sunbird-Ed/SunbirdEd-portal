@@ -3,7 +3,7 @@
     <span *ngIf="formAction === 'submit'">{{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </span>
     <span *ngIf="formAction === 'update'">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</span>
   </div>
-  
+
   <div class="py-16 px-32">
     <div *ngIf="showLoader">
       <app-loader></app-loader>
@@ -14,47 +14,50 @@
           <div class="twelve wide column p-0">
             <div class="d-flex fields-selection">
               <div class="d-flex flex-ai-center sb-field">
-               <span class="pr-4 sb-field-label">{{resourceService?.frmelmnts?.lbl?.iam}} </span> 
-                  <sui-select [isSearchable]="false" class="selection" [options]="personaList" labelField="label" valueField="value" name="label"
-                    placeholder="Select persona" [ngClass]="{'is-invalid': userDetailsForm.controls.persona.touched && userDetailsForm.controls.persona.errors}"
-                    formControlName="persona"  #personaDiv>
-                    <sui-select-option *ngFor="let persona of personaDiv.filteredOptions" [value]="persona">
-                    </sui-select-option>
-                  </sui-select>
+                <span class="pr-4 sb-field-label">{{resourceService?.frmelmnts?.lbl?.iam}} </span>
+                <sui-select [isSearchable]="false" class="selection" [options]="personaList" labelField="label"
+                  valueField="value" name="label" placeholder="Select persona"
+                  [ngClass]="{'is-invalid': userDetailsForm.controls.persona.touched && userDetailsForm.controls.persona.errors}"
+                  formControlName="persona" #personaDiv>
+                  <sui-select-option *ngFor="let persona of personaDiv.filteredOptions" [value]="persona">
+                  </sui-select-option>
+                </sui-select>
               </div>
               <div class="d-flex flex-ai-center sb-field">
-                  <span class="px-8">{{resourceService?.frmelmnts?.lbl?.with}} </span> 
-                  <sui-select [isSearchable]="false" class="selection"
-                    [ngClass]="{'is-invalid': userDetailsForm.controls.tenants.touched && userDetailsForm.controls.tenants.errors}"
-                    formControlName="tenants" [options]="allTenants" labelField="label" name="label" valueField="value"
-                    placeholder="Select tenants" #stateDiv>
-                    <sui-select-option *ngFor="let tenant of stateDiv.filteredOptions | slice:0:100" [value]="tenant">
-                    </sui-select-option>
-                  </sui-select>
+                <span class="px-8">{{resourceService?.frmelmnts?.lbl?.with}} </span>
+                <sui-select [isSearchable]="false" class="selection"
+                  [ngClass]="{'is-invalid': userDetailsForm.controls.tenants.touched && userDetailsForm.controls.tenants.errors}"
+                  formControlName="tenants" [options]="allTenants" labelField="label" name="label" valueField="value"
+                  placeholder="Select tenants" #stateDiv>
+                  <sui-select-option *ngFor="let tenant of stateDiv.filteredOptions | slice:0:100" [value]="tenant">
+                  </sui-select-option>
+                </sui-select>
               </div>
             </div>
           </div>
         </div>
-        <div class="ui stackable grid"  *ngFor="let field of formData">
+        <div class="ui stackable grid" *ngFor="let field of formData">
           <div class="twelve wide column mb-10 mx-16" *ngIf="field.inputType==='label' && field.visible===true">
-            <p>{{field.label}} : 
-              <span *ngIf="field.code === 'user-name'">{{ userProfile.firstName }} {{ userProfile.lastName ? userProfile.lastName : '' }}</span>
-              <span *ngIf="field.code === 'state'">{{ selectedState ? selectedState : 'Enter location from Profile page' }}</span>
-              <span *ngIf="field.code === 'district'">{{ selectedDistrict ? selectedDistrict : 'Enter location from Profile page' }}</span>
-            </p> 
+            <p>{{field.label}} :
+              <span *ngIf="field.code === 'user-name'">{{ userProfile.firstName }}
+                {{ userProfile.lastName ? userProfile.lastName : '' }}</span>
+              <span
+                *ngIf="field.code === 'state'">{{ selectedState ? selectedState : 'Enter location from Profile page' }}</span>
+              <span
+                *ngIf="field.code === 'district'">{{ selectedDistrict ? selectedDistrict : 'Enter location from Profile page' }}</span>
+            </p>
           </div>
 
           <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='select' && field.visible===true">
             <div class="fields-selection p-0">
-              <label class="font-weight-normal fnormal">{{field.label}}<span
-                  *ngIf="field.required">*</span></label>
+              <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
               <div class="sb-field field-focus mb-8">
                 <sui-select [isSearchable]="false" class="selection"
-                    [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                    formControlName="{{field.code}}" [options]="field.range" labelField="label" name="label" valueField="value"
-                    placeholder="{{field.description}}">
-                    <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
-                  </sui-select>
+                  [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
+                  formControlName="{{field.code}}" [options]="field.range" labelField="label" name="label"
+                  valueField="value" placeholder="{{field.description}}">
+                  <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
+                </sui-select>
                 <div *ngFor="let validation of field.validation">
                   <label class="font-weight-normal invalid-msg"
                     *ngIf="validation.message && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
@@ -66,31 +69,32 @@
           </div>
 
 
-          <div class="twelve wide column p-0 mx-16" *ngIf="(field.code === 'declared-phone' ||  field.code === 'declared-email') && field.visible===true">
+          <div class="twelve wide column p-0 mx-16"
+            *ngIf="(field.code === 'declared-phone' ||  field.code === 'declared-email') && field.visible===true">
             <div class="fields-selection p-0">
               <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
               <div class="sb-field field-focus icon input">
                 <span class="icon phone-code" *ngIf="field.code === 'declared-phone'">+91-</span>
                 <input class="sb-form-control selection ui dropdown " type="{{field.inputType}}"
                   placeholder="{{field.description}}"
-                      [ngClass]="{'is-invalid': (validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'declared-phone'}"
+                  [ngClass]="{'is-invalid': (validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors,'phone-code-space': field.code === 'declared-phone'}"
                   formControlName="{{field.code}}" name="code">
-                
-                  <!-- success icon -->
+
+                <!-- success icon -->
                 <div class="success-icon" *ngIf="validationType[field.code].isVerified">
                   <img src="./assets/images/checkbox-icon.svg" width="20px"> </div>
-                
-                  <!-- error icon -->
+
+                <!-- error icon -->
                 <div class="warning-icon"
-                    *ngIf="(validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
+                  *ngIf="(validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified) || userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
                   <img src="./assets/images/warning-icon.svg" width="20px">
                 </div>
-                
+
                 <div><label class="font-weight-normal invalid-msg"
-                            *ngIf="validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified">
-                  {{resourceService.frmelmnts?.lbl?.pleaseValidateYour}} {{field.label | lowercase}}
-                </label></div>
-                
+                    *ngIf="validationType[field.code].isVerificationRequired && !validationType[field.code].isVerified">
+                    {{resourceService.frmelmnts?.lbl?.pleaseValidateYour}} {{field.label | lowercase}}
+                  </label></div>
+
                 <div *ngFor="let validation of field.validation">
                   <label class="font-weight-normal invalid-msg"
                     *ngIf="validation.message && userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
@@ -106,11 +110,10 @@
                 {{resourceService.frmelmnts?.lbl?.validate}}</button>
             </div>
           </div>
-          
+
           <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='input' && field.visible===true">
             <div class="fields-selection p-0">
-              <label class="font-weight-normal fnormal">{{field.label}}<span
-                  *ngIf="field.required">*</span></label>
+              <label class="font-weight-normal fnormal">{{field.label}}<span *ngIf="field.required">*</span></label>
               <div class="sb-field field-focus mb-8">
                 <input class="sb-form-control selection ui dropdown"
                   [ngClass]="{'is-invalid': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
@@ -124,7 +127,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="sb-checkbox sb-checkbox-primary sb-field mt-16"
             *ngIf="field.inputType==='checkbox' && field.visible===true">
             <input formControlName="{{field.code}}" type="checkbox" id="{{field.code}}" name="{{field.code}}" required>
@@ -135,7 +138,7 @@
               </a>
             </label>
           </div>
-        
+
         </div>
       </form>
     </div>
@@ -169,9 +172,8 @@
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
-            [telemetryInteractEdata]="submitDetailsInteractEdata"
-            (click)="closeSuccessModal()">
-    {{resourceService?.frmelmnts?.btn?.ok}}
+      [telemetryInteractEdata]="submitDetailsInteractEdata" (click)="closeSuccessModal()">
+      {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
 </sui-modal>
@@ -182,9 +184,21 @@
 
 <sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'small'" class="sb-modal sb-modal-white sb-success" appBodyScroll (dismissed)="onOtpPopupClose()" #modal>
-  
-  <app-otp-popup *ngIf="isOtpVerificationRequired" [otpData]="otpData" [redirectToLogin]="false"
+
+  <app-otp-popup [otpData]="otpData" [redirectToLogin]="false"
     (verificationSuccess)="onVerificationSuccess($event)" (closeContactForm)="onOtpPopupClose()"
     (redirectToParent)="onOtpVerificationError($event)">
   </app-otp-popup>
 </sui-modal>
+
+
+<sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm"
+  (initialize)="tenantPersonaFormValueChanges($event && $event.value); tenantPersonaFormStatusChanges($event);"
+  (valueChanges)="tenantPersonaFormValueChanges($event)" (statusChanges)="tenantPersonaFormStatusChanges($event)">
+</sb-form>
+
+
+<sb-form *ngIf="teacherDetailsForm && teacherDetailsForm.length" [config]="teacherDetailsForm"
+  (valueChanges)="declarationFormValueChanges($event)" (statusChanges)="declarationFormStatusChanges($event)"
+  (linkClicked)="linkClicked($event)">
+</sb-form>
