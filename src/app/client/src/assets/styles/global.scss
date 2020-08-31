@@ -593,7 +593,7 @@ app-workspace {
       right: 4rem !important;
       top: 13px !important;
       bottom: inherit !important;
-      z-index: inherit !important;
+      z-index: 999 !important;
     }
     .chatbox-cover .chatboxImg {
       width: 64px !important;
@@ -608,5 +608,6 @@ app-workspace {
      }
      html[layout="joy"] .lib-chat-head {
       top: 26px !important;
+      z-index: inherit !important;
      }
   }
