@@ -10,7 +10,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" >
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div class="content-grid mt-24 relative9">
+        <div class="content-grid relative9">
           <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
             <div class="sb-pageSection-header">
               <div class="">
@@ -28,7 +28,7 @@
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="true" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
                 [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                  (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
                 </sb-library-card>
@@ -44,7 +44,7 @@
             <div class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let i of numberOfSections">
-                <sb-library-card [layoutConfig]="true" [isLoading]="true"></sb-library-card>
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
               </div>
             </div>
           </div>

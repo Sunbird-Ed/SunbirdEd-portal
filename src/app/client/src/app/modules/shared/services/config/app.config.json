@@ -844,7 +844,8 @@
       "LearningOutcomeDefinition",
       "ExplanationResource",
       "ExperientialResource",
-      "eTextBook"
+      "eTextBook",
+      "TVLesson"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
@@ -1367,5 +1368,10 @@
   },
   "DIAL_CODE": {
     "PAGE_LIMIT": 10
+  },
+  "userTypeMapping" : {
+    "student": ["learner"],
+    "teacher": ["instructor"],
+    "other": ["learner", "instructor"] 
   }
 }

@@ -124,7 +124,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab']);
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
     const option = {
       filters: filters,

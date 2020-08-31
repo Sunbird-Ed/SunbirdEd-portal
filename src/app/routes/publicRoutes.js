@@ -1,7 +1,6 @@
 const proxyHeaders = require('../proxy/proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const permissionsHelper = require('../helpers/permissionsHelper.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const contentServiceBaseUrl = envHelper.CONTENT_URL

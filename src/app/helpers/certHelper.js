@@ -98,6 +98,23 @@ const addTemplateToBatch = () => {
       logger.info({msg: `addTemplateToBatch() is called with requestbody ${JSON.stringify(req.body)}`});
         const criteria = _.get(req, 'body.request.criteria') || {};
         let templateData = {};
+        if (!_.isEmpty(_.get(req, 'body.request.oldTemplateId'))) {
+          const appConfig = getHeaders();
+          appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+          const requestParams = {
+                batch: {
+                  courseId: _.get(req, 'body.request.courseId'),
+                  batchId: _.get(req, 'body.request.batchId'),
+                  template: {
+                    identifier: _.get(req, 'body.request.oldTemplateId'),
+                  }
+                }
+          }
+          const response = await HTTPService.patch(`${certRegURL + 'course/batch/cert/v1/template/remove'}`, {request: requestParams}, appConfig).toPromise().catch(err => {
+            logger.error({msg: `Error occurred while removing certificate ${_.get(req, 'body.request.oldTemplateId')}, ERROR: ${err}`})
+          });
+          logger.info({msg: `response of removeTemplate from batch() ${_.get(response, 'data')}`});
+        }
         if (!_.isEmpty(criteria)) {
           const response = await getTemplateData(req, _.pick(_.get(req, 'body.request'), ['orgId', 'key']));
           templateData =  _.get(response, 'data.result.response.data')

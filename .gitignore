@@ -19,3 +19,4 @@ mochawesome-report
 /src/app/helpers/devConfig.js
 /.vscode/launch.json
 logs
+keys

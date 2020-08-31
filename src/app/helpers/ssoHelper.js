@@ -422,6 +422,32 @@ const getIdentifier = (identifier) => {
   }
 };
 
+const orgSearch = (id, req) => {
+  const options = {
+    method: 'POST',
+    url: envHelper.LEARNER_URL + 'org/v1/search',
+    headers: getHeaders(req),
+    body: {
+      request: {
+        filters: {externalId: id}
+      }
+    },
+    json: true
+  };
+  logger.info({msg: 'SsoHelpers.orgSearchorg search org', additionalInfo: {id: id}});
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      logger.error({
+        msg: 'fetching org details errored',
+        error: JSON.stringify(data)
+      });
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+};
+
 module.exports = {
   verifySignature,
   verifyToken,
@@ -435,5 +461,6 @@ module.exports = {
   freeUpUser,
   verifyIdentifier,
   fetchUserDetails,
-  getIdentifier
+  getIdentifier,
+  orgSearch
 };

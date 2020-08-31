@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, HostListener } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 @Component({
   selector: 'app-confirmation-popup',
   templateUrl: './confirmation-popup.component.html',
@@ -11,7 +11,11 @@ export class ConfirmationPopupComponent implements OnInit {
   @Input() batchId: string;
   @Output() close = new EventEmitter<any>();
 
-  constructor() { }
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeModal();
+  }
+  constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {
   }

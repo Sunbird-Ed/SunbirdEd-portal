@@ -27,7 +27,6 @@ module.exports = (app) => {
             }
         })
     )
-
     app.all('/content/*',
         // Generate telemetry for content service
         telemetryHelper.generateTelemetryForContentService,

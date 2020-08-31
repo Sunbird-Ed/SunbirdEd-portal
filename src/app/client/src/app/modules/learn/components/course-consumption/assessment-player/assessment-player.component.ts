@@ -39,7 +39,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   playerOption;
   courseName: string;
   courseProgress: number;
-  private objectRollUp = [];
+  private objectRollUp = {};
   public treeModel: any;
   isParentCourse = false;
   telemetryContentImpression: IImpressionEventInput;
@@ -151,7 +151,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
         const selectedContent = queryParams.selectedContent;
-        const isSingleContent = this.collectionId === selectedContent;
+        let isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
@@ -169,6 +169,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
                 this.courseHierarchy = data.courseHierarchy;
+              }
+              if (!isSingleContent && _.get(this.courseHierarchy, 'mimeType') !==
+              this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+                isSingleContent = true;
               }
               this.enrolledBatchInfo = data.enrolledBatchDetails;
               this.certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
@@ -281,10 +285,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getConfigByContent(id, options)
       .pipe(first(), takeUntil(this.unsubscribe))
       .subscribe(config => {
-        this.objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
-        const objectRollUp = this.objectRollUp ? this.courseConsumptionService.getRollUp(this.objectRollUp) : {};
+        const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
+        this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
         if (config && config.context) {
-          config.context.objectRollup = objectRollUp;
+          config.context.objectRollup = this.objectRollUp;
         }
         this.playerConfig = config;
         this.showLoader = false;
@@ -330,7 +334,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
     const request: any = {
       userId: this.userService.userid,
-      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
       status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,

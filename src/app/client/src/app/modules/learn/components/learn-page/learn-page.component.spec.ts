@@ -1,8 +1,8 @@
 import { LearnPageComponent } from './learn-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
-} from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService,
+  LayoutService } from '@sunbird/shared';
 import { FrameworkService, PageApiService, UserService, CoursesService, CoreModule, FormService, LearnerService, OrgDetailsService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -57,7 +57,7 @@ describe('LearnPageComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [LearnPageComponent],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [LayoutService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -120,12 +120,14 @@ describe('LearnPageComponent', () => {
     coursesService.initialize();
     spyOn<any>(component, 'getLanguageChange');
     component.ngOnInit();
+    component.layoutConfiguration = null;
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
     expect(component['getLanguageChange']).toHaveBeenCalled();
   });
   it('should change the title for My-training on language change', () => {
     component.enrolledSection = { name: 'My Courses' };
+    component.layoutConfiguration = null;
     component['getLanguageChange']();
     expect(component.enrolledSection.name).toBeDefined();
   });
@@ -220,7 +222,7 @@ it('should redo layout on render', () => {
       { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-     formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['getFormData']();
   });
@@ -231,9 +233,31 @@ it('should redo layout on render', () => {
       { 'index': 0, 'contentType': 'course', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
     ];
-     formService = TestBed.get(FormService);
+    formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(of(response));
     component['getFormData']();
+  });
+
+  it('should fetch enrolledSection from API and name must be My Trainings', () => {
+    coursesService.initialize();
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(null);
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout();
+    expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
+  });
+
+  it('should add audience type in fetch page data request body', () => {
+    const searchQueryParams = {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'filters': {}};
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.queryParams = {sort_by: 'name', sortType: 'desc'};
+    coursesService.initialize();
+    component.ngOnInit();
+    component['fetchPageData'](searchQueryParams);
+    expect(pageApiService.getPageData).toHaveBeenCalledWith(
+      {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['instructor']}}
+      );
   });
 
 });

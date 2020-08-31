@@ -75,6 +75,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   showConfirmationPopup = false;
   popupMode: string;
   createdBatchId: string;
+  courseMentor = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -103,6 +104,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
   ngOnInit() {
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
     this.initLayout();
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
@@ -218,13 +224,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @since - release-3.2.10
+   * @param  {object} event
+   * @description - it will navigate to add-certificate page or will trigger
+   *                telemetry event based on the event mode.
+   */
   onPopupClose(event) {
     if (_.get(event, 'mode') === 'add-certificates') {
       this.navigateToConfigureCertificate('add', _.get(event, 'batchId'));
+      this.logTelemetry('choose-to-add-certificate');
+    } else {
+      this.logTelemetry('deny-add-certificate');
     }
     this.showConfirmationPopup = false;
   }
 
+  /**
+   * @since - release-3.2.10
+   * @param  {string} mode
+   * @param  {string} batchId
+   * @description - It will navigate to certificate-configuration page.
+   */
   navigateToConfigureCertificate(mode: string, batchId: string) {
     this.router.navigate([`/certs/configure/certificate`], {
       queryParams: {
