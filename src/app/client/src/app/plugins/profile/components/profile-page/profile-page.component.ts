@@ -234,31 +234,39 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
-        if (_.get(value, 'url')) {
-
-          const request = {
-            request: {
-              pdfUrl: _.get(value, 'url')
-            }
-          };
-          this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
-            const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
-            if (signedPdfUrl) {
-              window.open(signedPdfUrl, '_blank');
-            } else {
-              this.toasterService.error(this.resourceService.messages.emsg.m0076);
-            }
-          }, (err) => {
-            this.toasterService.error(this.resourceService.messages.emsg.m0076);
+        if (_.get(value, 'identifier')) {
+          console.log(value);
+          this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
+            this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
+          }, error => {
+            this.downloadPdfCertificate(value);
           });
-        } else if (_.get(value, 'identifier')) {
-
-         this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
-           this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
-         });
+         } else {
+          this.downloadPdfCertificate(value);
         }
       }
     });
+  }
+
+  downloadPdfCertificate(value) {
+    if (_.get(value, 'url')) {
+
+      const request = {
+        request: {
+          pdfUrl: _.get(value, 'url')
+        }
+      };
+      this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
+        const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
+        if (signedPdfUrl) {
+          window.open(signedPdfUrl, '_blank');
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
+        }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      });
+    }
   }
 
   toggle(showMore) {
