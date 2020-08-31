@@ -60,7 +60,7 @@
 
   .nested-group-content {
     border-radius: calculateRem(8px);
-    box-shadow: 0 calculateRem(3px) calculateRem(5px) calculateRem(4px) rgba(0, 0, 0, 0.05);
+    // box-shadow: 0 calculateRem(3px) calculateRem(5px) calculateRem(4px) rgba(0, 0, 0, 0.05);
     position: relative;
     .nested-course-area {
       border-bottom: calculateRem(1px) solid var(--gray-100);
@@ -105,4 +105,8 @@
  img {
    transform: rotate(180deg);
  }
+}
+
+.btn-border{
+  border-radius:calculateRem(24px);
 }

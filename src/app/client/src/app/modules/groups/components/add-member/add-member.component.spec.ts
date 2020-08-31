@@ -246,5 +246,64 @@ describe('AddMemberComponent', () => {
     expect(component.verifyMember).toHaveBeenCalled();
   });
 
+  it('isVerifiedUser value should become TRUE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(false);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: true, identifier: '2', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
+  indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeTruthy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeTruthy();
+  expect(component.showInvalidUser).not.toHaveBeenCalled();
+  expect(component.isExistingMember).toHaveBeenCalled();
+  });
+});
+
+it('isVerifiedUser value should become FALSE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(true);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: true, identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+  indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeTruthy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeFalsy();
+  expect(component.showInvalidUser).not.toHaveBeenCalled();
+  expect(component.isExistingMember).toHaveBeenCalled();
+  });
+});
+
+it('isVerifiedUser value should become FALSE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(true);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: false, identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+  indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeFalsy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeFalsy();
+  expect(component.showInvalidUser).toHaveBeenCalled();
+  expect(component.isExistingMember).not.toHaveBeenCalled();
+  });
+});
 
 });
