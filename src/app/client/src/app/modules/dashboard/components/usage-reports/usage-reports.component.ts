@@ -124,7 +124,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
             this.renderFiles({}, data);
           }
         } else {
-          console.log(response);
         }
 
       }, err => { console.log(err); });
@@ -232,7 +231,6 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
     }, (err) => {
-      console.log(err);
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
     });
   }

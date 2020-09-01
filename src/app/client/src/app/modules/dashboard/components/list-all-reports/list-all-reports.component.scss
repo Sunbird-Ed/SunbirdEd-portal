@@ -12,3 +12,11 @@
       display: none;
     }
   } 
+
+  :host{
+    .ui.tabular.menu.report-menu .item{
+      width: 50%;
+      display: flex;
+      justify-content: center;
+    }
+  }
