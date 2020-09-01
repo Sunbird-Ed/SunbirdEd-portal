@@ -33,7 +33,6 @@ export class ActivityFormComponent implements OnInit {
       this.activityTypes = [...fields];
       this.chooseActivity(this.activityTypes[0]);
     }, error => {
-      console.error('Error while getting activity form data', error);
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
 

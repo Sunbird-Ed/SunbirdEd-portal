@@ -2,7 +2,7 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const { REPORT_SERVICE_URL, sunbird_api_request_timeout } = require('../helpers/environmentVariablesHelper.js');
+const { REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const { getUserDetailsV2 } = require('../helpers/userHelper');
@@ -34,7 +34,7 @@ module.exports = function (app) {
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {
             limit: reqDataLimitOfContentUpload,
-            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(REPORT_SERVICE_URL),
             proxyReqPathResolver: function (req) {
                 return `${REPORT_SERVICE_URL}${req.originalUrl}`
             },
@@ -96,13 +96,35 @@ module.exports = function (app) {
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
-        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER']),
+        reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
-            'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail','declared_user_detail']),
+            'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
         reportHelper.azureBlobStream());
+
+    app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
+        proxyUtils.verifyToken(),
+        reportHelper.validateRoles(['REPORT_ADMIN']),
+        proxy(DATASERVICE_URL, {
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(DATASERVICE_URL),
+            proxyReqPathResolver: function (req) {
+                const updatedUrl = req.originalUrl.replace("/report", "");
+                return `/api/data/v3${updatedUrl}`;
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                try {
+                    const data = JSON.parse(proxyResData.toString('utf8'));
+                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+                } catch (err) {
+                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+                }
+            }
+        })
+    )
 }

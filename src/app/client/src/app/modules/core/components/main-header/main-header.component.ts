@@ -1,4 +1,4 @@
-import {filter, first, takeUntil} from 'rxjs/operators';
+import { filter, first, takeUntil } from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
@@ -19,18 +19,19 @@ import {
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
-import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import {environment} from '@sunbird/environment';
-import {Subject, zip} from 'rxjs';
+import { environment } from '@sunbird/environment';
+import { Subject, zip } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 declare var jQuery: any;
+type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html',
-styleUrls: ['./main-header.component.scss']
+  styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
@@ -138,6 +139,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    * Workspace access roles
    */
   workSpaceRole: Array<string>;
+  reportsListVersion: reportsListVersionType;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -147,24 +149,26 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService) {
-      try {
-        this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
-      } catch (error) {
-        this.exploreButtonVisibility = 'false';
-      }
-      this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
-      this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
-      this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
-      this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
-      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+    try {
+      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+      this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
+    } catch (error) {
+      this.exploreButtonVisibility = 'false';
+      this.reportsListVersion = 'v1';
+    }
+    this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
+    this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
+    this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
+    this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
-      this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
-      this.updateHrefPath(this.router.url);
-      router.events.pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe((event: NavigationEnd) => {
-        this.updateHrefPath(event.url);
-      });
+    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+    this.updateHrefPath(this.router.url);
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateHrefPath(event.url);
+    });
   }
 
   updateHrefPath(url) {
@@ -377,16 +381,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       requests.push(this.managedUserService.getParentProfile());
     }
     zip(...requests).subscribe((data) => {
-        let userListToProcess = _.get(data[0], 'result.response.content');
-        if (data && data[1]) {
-          userListToProcess = [data[1]].concat(userListToProcess);
-        }
-        const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
-        this.userListToShow = processedUserList.slice(0, 2);
-        this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data && data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
       }
+      const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+      this.userListToShow = processedUserList.slice(0, 2);
+      this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    }
     );
   }
 
@@ -462,30 +466,30 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       isManagedUser: selectedUser.managedBy ? true : false
     };
     this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data: any) => {
-        this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
-            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-              this.telemetryService.setInitialization(false);
-              this.telemetryService.initialize(this.getTelemetryContext());
-              this.toasterService.custom({
-                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                  selectedUser.firstName),
-                class: 'sb-toaster sb-toast-success sb-toast-normal'
-              });
-              this.toggleSideMenu(false);
-              if (userSubscription) {
-                userSubscription.unsubscribe();
-              }
-              setTimeout(() => {
-                this.utilService.redirect('/resources');
-              }, 5100);
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+      userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+        if (user && !user.err && user.userProfile.userId === userId) {
+          this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+            this.telemetryService.setInitialization(false);
+            this.telemetryService.initialize(this.getTelemetryContext());
+            this.toasterService.custom({
+              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+                selectedUser.firstName),
+              class: 'sb-toaster sb-toast-success sb-toast-normal'
             });
-          }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
+            this.toggleSideMenu(false);
+            if (userSubscription) {
+              userSubscription.unsubscribe();
+            }
+            setTimeout(() => {
+              this.utilService.redirect('/resources');
+            }, 5100);
+          });
+        }
+      });
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    }
     );
   }
 
