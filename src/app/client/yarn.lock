@@ -10211,10 +10211,10 @@ stylus@0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-sunbird-chatbot-client@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.5.tgz#3bf66235e2aa2d11cf6b4d764e314fb186b68da5"
-  integrity sha512-uNSDRX0jEfGCJ1xKvgqZ71/7Ivv5JMwbfmx+xo0ykVwCRSz5NGin35BuxY1zCExodssJpDrGNdWRpUj2DISWLQ==
+sunbird-chatbot-client@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.6.tgz#0b8a38e73ce3e1cb7f2f1cf89ec2ba4b2f73aecf"
+  integrity sha512-Wonibbu+QapWD0YqEweu0+3BhgbWb4+S7bsFZTcJRnqcPeFFm6gIH0CKc07BPJlS6i9BPR70NIgM8NidWbV7QQ==
   dependencies:
     tslib "^1.9.0"
 
