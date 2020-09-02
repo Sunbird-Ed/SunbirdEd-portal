@@ -132,7 +132,7 @@ describe('PublicCourseComponent', () => {
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
     spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
-      return of({content: '123'});
+      return of(Response.orgSearch);
     });
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -145,7 +145,7 @@ describe('PublicCourseComponent', () => {
   it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
     sendFormApi = false;
     spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
-      return of({content: '123'});
+      return of(Response.orgSearch);
     });
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
