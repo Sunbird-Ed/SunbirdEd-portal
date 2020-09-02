@@ -43,6 +43,9 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   pageTitleSrc;
   svgToDisplay;
   formData: any;
+  public facets;
+  public facetsList: any;
+  public selectedFilters;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
@@ -142,6 +145,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
   public getFilters(filters) {
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -213,6 +217,16 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
 
+  processOrgData(channels) {
+    const rootOrgIds = [];
+    _.forEach(channels, (channelData) => {
+      if (channelData.name) {
+        rootOrgIds.push(channelData.name);
+      }
+    });
+    return rootOrgIds;
+  }
+
   private fetchPageData() {
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
@@ -221,6 +235,15 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return value.length;
     });
+    if (filters.channel) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(filters.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'name': value});
+        channelIds.push(data.identifier);
+      });
+      filters.channel = channelIds;
+    }
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
@@ -228,15 +251,24 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       organisationId: this.hashTagId || '*',
       filters: filters,
       fields: _.get(currentPageData, 'search.fields') || this.configService.urlConFig.params.CourseSearchField,
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
       // exists: [],
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
+    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      const facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
+      const rootOrgIds = this.processOrgData(facetsList.channel);
+      this.orgDetailsService.searchOrgDetails({
+        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
+        fields: ['slug', 'identifier', 'orgName', 'name']
+      }).subscribe((orgDetails) => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        facetsList.channel = this.utilService.removeDuplicates(orgDetails.content, 'identifier');
+        this.facets = this.updateFacetsData(facetsList);
+        this.initFilters = true;
         if (!this.carouselMasterData.length) {
           return; // no page section
         }
@@ -251,6 +283,12 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
+    }, err => {
+      this.showLoader = false;
+      this.carouselMasterData = [];
+      this.pageSections = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
   }
 
   public viewAll(event) {
@@ -306,5 +344,91 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  updateFacetsData(facets) {
+    const facetsData = [];
+    _.forEach(facets, (facet, key) => {
+      switch (key) {
+        case 'board':
+          const boardData = {
+            index: '1',
+            label: this.resourceService.frmelmnts.lbl.boards,
+            placeholder: this.resourceService.frmelmnts.lbl.selectBoard,
+            values: facet,
+            name: key
+          };
+          facetsData.push(boardData);
+          break;
+        case 'medium':
+          const mediumData = {
+            index: '2',
+            label: this.resourceService.frmelmnts.lbl.medium,
+            placeholder: this.resourceService.frmelmnts.lbl.selectMedium,
+            values: facet,
+            name: key
+          };
+          facetsData.push(mediumData);
+          break;
+        case 'gradeLevel':
+          const gradeLevelData = {
+            index: '3',
+            label: this.resourceService.frmelmnts.lbl.class,
+            placeholder: this.resourceService.frmelmnts.lbl.selectClass,
+            values: facet,
+            name: key
+          };
+          facetsData.push(gradeLevelData);
+          break;
+        case 'subject':
+          const subjectData = {
+            index: '4',
+            label: this.resourceService.frmelmnts.lbl.subject,
+            placeholder: this.resourceService.frmelmnts.lbl.selectSubject,
+            values: facet,
+            name: key
+          };
+          facetsData.push(subjectData);
+          break;
+        case 'publisher':
+          const publisherData = {
+            index: '5',
+            label: this.resourceService.frmelmnts.lbl.publisher,
+            placeholder: this.resourceService.frmelmnts.lbl.selectPublisher,
+            values: facet,
+            name: key
+          };
+          facetsData.push(publisherData);
+          break;
+        case 'contentType':
+          const contentTypeData = {
+            index: '6',
+            label: this.resourceService.frmelmnts.lbl.contentType,
+            placeholder: this.resourceService.frmelmnts.lbl.selectContentType,
+            values: facet,
+            name: key
+          };
+          facetsData.push(contentTypeData);
+          break;
+        case 'channel':
+          const channelLists = [];
+          _.forEach(facet, (channelList) => {
+            if (channelList.orgName) {
+              channelList.name = channelList.orgName;
+            }
+            channelLists.push(channelList);
+          });
+          const channelData = {
+            index: '1',
+            label: this.resourceService.frmelmnts.lbl.orgname,
+            placeholder: this.resourceService.frmelmnts.lbl.orgname,
+            values: channelLists,
+            name: key
+          };
+          facetsData.push(channelData);
+          break;
+      }
+    });
+    return facetsData;
   }
 }

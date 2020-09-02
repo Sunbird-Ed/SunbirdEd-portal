@@ -309,4 +309,28 @@ export class UtilService {
   redirect(redirectUrl) {
     window.location.href = redirectUrl;
   }
+
+  processData(sections, keys) {
+    const facetObj = {};
+    _.forEach(sections, (section) => {
+      if (section && section.facets) {
+        _.forEach(section.facets, (facet) => {
+          if (_.indexOf(keys, facet.name) > -1) {
+            if (facetObj[facet.name]) {
+              facetObj[facet.name].push(...facet.values);
+            } else {
+              facetObj[facet.name] = [];
+              facetObj[facet.name].push(...facet.values);
+            }
+          }
+        });
+      }
+    });
+    return facetObj;
+  }
+
+  removeDuplicates(data, key) {
+    return _.uniqBy(data, key);
+  }
+
 }
