@@ -11,13 +11,13 @@ const telemetryHelper   = require('../helpers/telemetryHelper.js')
 const proxy             = require('express-http-proxy')
 const bodyParser        = require('body-parser')
 const healthService     = require('../helpers/healthCheckService.js')
-const logger            = require('sb_logger_util_v2')
 const { decrypt }       = require('../helpers/crypto');
 const isAPIWhitelisted  = require('../helpers/apiWhiteList');
 const googleService     = require('../helpers/googleService')
-const _                 = require('lodash');
 const reqDataLimitOfContentUpload = '50mb'
-const { parseJson, isDateExpired, decodeNChkTime } = require('../helpers/utilityService');
+const { logger } = require('@project-sunbird/logger');
+const {parseJson, isDateExpired, decodeNChkTime} = require('../helpers/utilityService');
+const _ = require('lodash');
 
 module.exports = function (app) {
   require('./accountRecoveryRoute.js')(app) // account recovery route

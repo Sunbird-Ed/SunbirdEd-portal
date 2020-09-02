@@ -257,7 +257,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.goBack();
         this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
       }, error => {
-        console.error('Error while adding activity to the group', error);
         this.goBack();
         this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
       });

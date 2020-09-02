@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 import * as $ from 'jquery';
 import 'datatables.net';
 import {
-  mockListApiResponse, mockParameterizedReports
+  mockListApiResponse, mockParameterizedReports, data
 } from './list-all-reports.component.spec.data';
 
 class MockElementRef {
@@ -76,7 +76,7 @@ describe('ListAllReportsComponent', () => {
   it('should fetch reports list if user is authenticated & report admin', done => {
     spyOn(reportService, 'isAuthenticated').and.returnValue(of(true));
     spyOn<any>(component, 'getReportsList').and.callThrough();
-    spyOn(reportService, 'listAllReports').and.returnValue(of(mockListApiResponse));
+    spyOn(reportService, 'listAllReports').and.returnValue(of(data));
     spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
     spyOn(reportService, 'isUserSuperAdmin').and.returnValue(false);
     component.ngOnInit();
@@ -86,7 +86,6 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(true);
-      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
@@ -104,7 +103,6 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(true);
-      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
@@ -122,13 +120,13 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(component['getReportsList']).toHaveBeenCalled();
       expect(component['getReportsList']).toHaveBeenCalledWith(false);
-      expect(res).toEqual(mockListApiResponse);
       done();
     });
   });
 
   it('should config datatable whenever table is rendered into dom', () => {
     spyOn(component, 'prepareTable');
+    component.reports = [[], []];
     component.inputTag = TestBed.get(ElementRef);
     expect(component.prepareTable).toHaveBeenCalled();
   });
@@ -148,7 +146,7 @@ describe('ListAllReportsComponent', () => {
     const tableElement = document.createElement('table');
     const dataTableMethodSpy = spyOn($(tableElement), 'DataTable');
     tableElement.innerHTML = '<tbody> <tr> <td> 123 </td></tr> </tbody>';
-    component.prepareTable(tableElement);
+    component.prepareTable(tableElement, mockParameterizedReports.reports);
     tableElement.querySelector('td').click();
   }));
 
@@ -231,20 +229,20 @@ describe('ListAllReportsComponent', () => {
     });
 
     it('should handle click event from dataTable when row is parameterized and have child rows', fakeAsync(() => {
-      component.reports = [{
+      const reports = [{
         isParameterized: true,
         children: [{
           status: 'draft'
         }]
       }];
-      component.prepareTable(tableElement);
+      component.prepareTable(tableElement, reports);
       tableElement.querySelector('td').click();
       tick();
       expect(spy).not.toHaveBeenCalled();
     }));
 
     it('should handle click event from dataTable when row is non parameterized or do not have child rows', fakeAsync(() => {
-      component.reports = [{
+      const reports = [{
         reportid: '123',
         hashed_val: 'hash',
         isParameterized: false,
@@ -252,7 +250,7 @@ describe('ListAllReportsComponent', () => {
           status: 'draft'
         }]
       }];
-      component.prepareTable(tableElement);
+      component.prepareTable(tableElement, reports);
       tableElement.querySelector('td').click();
       tick();
       expect(spy).toHaveBeenCalledWith('123', 'hash', false);
@@ -265,6 +263,23 @@ describe('ListAllReportsComponent', () => {
     expect(result).toBe(2);
     result = component['getReportsCount']({ reports, status: 'draft' });
     expect(result).toBe(1);
+  });
+
+  it('should config datasets tables', () => {
+    spyOn(component, 'prepareTable');
+    const reports = component.reports = [[{ type: 'report' }], [{ type: 'dataset', status: 'live' }, { type: 'dataset', status: 'draft' }]];
+    const element = TestBed.get(ElementRef);
+    component.datasetTable = element;
+    expect(component.prepareTable).toHaveBeenCalledWith(element.nativeElement, reports[1]);
+  });
+
+  it('should config datasets tables if user is not super admin but a report admin', () => {
+    spyOn(component, 'prepareTable');
+    spyOn(reportService, 'isUserReportAdmin').and.returnValue(true);
+    const reports = component.reports = [[{ type: 'report' }], [{ type: 'dataset', status: 'live' }, { type: 'dataset', status: 'draft' }]];
+    const element = TestBed.get(ElementRef);
+    component.datasetTable = element;
+    expect(component.prepareTable).toHaveBeenCalledWith(element.nativeElement, [{ type: 'dataset', status: 'live' }]);
   });
 
 });

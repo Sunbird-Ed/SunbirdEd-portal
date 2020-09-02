@@ -1,7 +1,7 @@
 const desktopAppHelper = require('../helpers/desktopAppHelper.js');
 const crashReporter = require('../helpers/desktopCrashReporter.js');
 const bodyParser = require('body-parser');
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 module.exports = function (app) {
     app.post('/v1/desktop/update', bodyParser.urlencoded({ extended: true }),
         bodyParser.json(),

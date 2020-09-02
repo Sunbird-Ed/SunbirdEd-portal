@@ -12,7 +12,7 @@ const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const healthService = require('../helpers/healthCheckService.js')
 const _ = require('lodash')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const bodyParser = require('body-parser')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 

@@ -9,11 +9,6 @@ import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry'
 
-export enum ProcessingModes {
-  PROCESS_DROPDOWNS = 'processDropdowns',
-  PROCESS_CRITERIA = 'processCriteria'
-}
-
 export interface IConfigLabels {
   label: string;
   name: string;
@@ -31,14 +26,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('templateChangeModal') templateChangeModal;
 
   public unsubscribe$ = new Subject<void>();
-  showanotherscreen: boolean;
-  showErrorModal;
   showPreviewModal;
   showTemplateDetectModal;
-
   certTypes: any;
   issueTo: any;
-
   telemetryImpression: IImpressionEventInput;
   userPreference: FormGroup;
   disableAddCertificate = true;
@@ -71,7 +62,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private toasterService: ToasterService,
     private router: Router,
     private telemetryService: TelemetryService ) { }
-
+  /**
+   * @description - It will handle back button click.
+   */
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
     if (this.isTemplateChanged) {
@@ -79,6 +72,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @since - release-3.2.10
+   * @description - It will prepare all the necessary data along with the apis.
+   */
   ngOnInit() {
     this.initializeLabels();
     this.currentState = this.screenStates.default;
@@ -94,17 +91,22 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.getTemplateList(),
     ).subscribe((data) => {
       this.showLoader = false;
-      const [courseDetails, batchDetails, config] = data;
     }, (error) => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
+  /**
+   * @description - It will trigger impression telemetry event once the view is ready.
+   */
   ngAfterViewInit() {
     this.setTelemetryImpressionData();
   }
 
+  /**
+   * @description - It will prepare the config data for the hover activity of the cert-list cards.
+   */
   initializeLabels() {
     this.config = {
       select: {
@@ -125,10 +127,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   };
   }
 
+  /**
+   * @description - It will fetch the drop-down values by calling the preference api with proper request payload.
+   */
   getCertConfigFields() {
     const request = {
       request: {
-        orgId: this.userService.slug,
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         key: 'certRules'
       }
     };
@@ -141,10 +146,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * @description - It will fetch list of certificate templates from preference api.
+   */
   getTemplateList() {
     const request = {
       request: {
-        orgId: this.userService.slug,
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         key: 'certList'
       }
     };
@@ -158,6 +166,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * @param  {string} batchId
+   * @description - It will fetch the batch details.
+   */
   getBatchDetails(batchId) {
     return this.certificateService.getBatchDetails(batchId).pipe(
       tap(batchDetails => {
@@ -171,6 +183,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+
   initializeFormFields() {
     this.userPreference = new FormGroup({
       certificateType: new FormControl('', [Validators.required]),
@@ -182,6 +195,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     });
   }
 
+
   validateForm() {
     if (this.userPreference.status === 'VALID'
     && _.get(this.userPreference, 'value.allowPermission') && !_.isEmpty(this.selectedTemplate)) {
@@ -191,6 +205,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @param  {string} courseId
+   * @description - It will fetch the course details.
+   */
   getCourseDetails(courseId: string) {
     return this.playerService.getCollectionHierarchy(courseId).pipe(
       tap(courseData => {
@@ -201,6 +219,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * @description - It will check for the template change or update the certificate.
+   */
   updateCertificate() {
     if (this.templateIdentifier !== _.get(this.selectedTemplate, 'name')) {
       this.isTemplateChanged = true;
@@ -216,7 +237,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         courseId: _.get(this.queryParams, 'courseId'),
         batchId: _.get(this.queryParams, 'batchId'),
         key: _.get(this.selectedTemplate, 'name'),
-        orgId: _.get(this.userService, 'slug'),
+        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
         criteria: this.getCriteria(_.get(this.userPreference, 'value'))
       }
     };
@@ -236,6 +257,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
         this.goBack();
       }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }, error => {
 
@@ -248,7 +270,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCertificateDetails(certTemplateDetails) {
-    console.log('certTemplateDetails', certTemplateDetails);
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
     this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.templateIdentifier =  _.get(templateData, 'identifier');
@@ -273,9 +294,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCriteria(criteria) {
-    const abc = this.certConfigModalInstance.processCriteria(criteria);
-    this.issueTo = _.get(abc, 'issueTo');
-    this.certTypes = _.get(abc, 'certTypes');
+    const data = this.certConfigModalInstance.processCriteria(criteria);
+    this.issueTo = _.get(data, 'issueTo');
+    this.certTypes = _.get(data, 'certTypes');
     const certTypeFormEle = this.userPreference.controls['certificateType'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
@@ -358,7 +379,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTelemetryImpressionData(navigatedPageId?) {
+  setTelemetryImpressionData() {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -374,7 +395,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-        pageid: navigatedPageId ? navigatedPageId : this.activatedRoute.snapshot.data.telemetry.pageid,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.router.url,
         duration: this.navigationHelperService.getPageLoadTime()
       }
@@ -382,7 +403,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.telemetryService.impression(this.telemetryImpression);
   }
 
-  sendInteractData(interactData, interactObject?) {
+  sendInteractData(interactData) {
     const data = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
