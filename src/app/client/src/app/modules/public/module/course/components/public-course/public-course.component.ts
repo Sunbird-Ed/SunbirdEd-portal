@@ -262,11 +262,11 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       const rootOrgIds = this.processOrgData(facetsList.channel);
       this.orgDetailsService.searchOrgDetails({
         filters: {isRootOrg: true, rootOrgId: rootOrgIds},
-        fields: ['slug', 'identifier', 'orgName', 'name']
+        fields: ['slug', 'identifier', 'orgName']
       }).subscribe((orgDetails) => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        facetsList.channel = this.utilService.removeDuplicates(orgDetails.content, 'identifier');
+        facetsList.channel = this.utilService.removeDuplicates(_.get(orgDetails, 'content'), 'identifier');
         this.facets = this.updateFacetsData(facetsList);
         this.initFilters = true;
         if (!this.carouselMasterData.length) {
@@ -353,8 +353,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'board':
           const boardData = {
             index: '1',
-            label: this.resourceService.frmelmnts.lbl.boards,
-            placeholder: this.resourceService.frmelmnts.lbl.selectBoard,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
             values: facet,
             name: key
           };
@@ -363,8 +363,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'medium':
           const mediumData = {
             index: '2',
-            label: this.resourceService.frmelmnts.lbl.medium,
-            placeholder: this.resourceService.frmelmnts.lbl.selectMedium,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
             values: facet,
             name: key
           };
@@ -373,8 +373,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'gradeLevel':
           const gradeLevelData = {
             index: '3',
-            label: this.resourceService.frmelmnts.lbl.class,
-            placeholder: this.resourceService.frmelmnts.lbl.selectClass,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
             values: facet,
             name: key
           };
@@ -383,8 +383,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'subject':
           const subjectData = {
             index: '4',
-            label: this.resourceService.frmelmnts.lbl.subject,
-            placeholder: this.resourceService.frmelmnts.lbl.selectSubject,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
             values: facet,
             name: key
           };
@@ -393,8 +393,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'publisher':
           const publisherData = {
             index: '5',
-            label: this.resourceService.frmelmnts.lbl.publisher,
-            placeholder: this.resourceService.frmelmnts.lbl.selectPublisher,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
             values: facet,
             name: key
           };
@@ -403,8 +403,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         case 'contentType':
           const contentTypeData = {
             index: '6',
-            label: this.resourceService.frmelmnts.lbl.contentType,
-            placeholder: this.resourceService.frmelmnts.lbl.selectContentType,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
             values: facet,
             name: key
           };
@@ -420,8 +420,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
           });
           const channelData = {
             index: '1',
-            label: this.resourceService.frmelmnts.lbl.orgname,
-            placeholder: this.resourceService.frmelmnts.lbl.orgname,
+            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
             values: channelLists,
             name: key
           };

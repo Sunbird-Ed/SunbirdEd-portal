@@ -119,14 +119,14 @@ export class OrgDetailsService {
 
   searchOrgDetails(request) {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH, // commonly used search request, cached at proxy
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
       data: {
         request: request
       }
     };
     return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
-      if (data.result.response.count > 0) {
-        return of(data.result.response);
+      if (_.get(data, 'result.response.count') > 0) {
+        return of(_.get(data, 'result.response'));
       }
     }));
   }
