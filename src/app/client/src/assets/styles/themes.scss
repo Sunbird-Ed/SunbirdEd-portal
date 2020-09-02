@@ -939,6 +939,15 @@ html[layout='joy'] {
   app-view-all .sbt-filter {
     margin-top: calculateRem(-32px);
   }
+  .reports-back-btn{
+    width: 100%;
+    margin: 1rem 0 0 0;
+  }
+  .reports-content-header{
+    padding: 1rem;
+    width: 100%;
+    margin: 0;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {

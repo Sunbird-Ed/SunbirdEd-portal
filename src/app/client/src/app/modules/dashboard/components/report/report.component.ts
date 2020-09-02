@@ -1,5 +1,5 @@
 import { TelemetryService } from '@sunbird/telemetry';
-import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ReportService } from '../../services';
@@ -10,6 +10,11 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
+
+enum ReportType {
+  report,
+  dataset
+}
 
 @Component({
   selector: 'app-report',
@@ -36,6 +41,7 @@ export class ReportComponent implements OnInit {
   private addSummaryBtnClickStream$ = new Subject<ISummaryObject>();
   private publishBtnStream$ = new Subject();
   private retireBtnStream$ = new Subject();
+  public markdownUpdated$ = new Subject();
   public currentReportSummary: any;
   public showComponent = true;
   public showConfirmationModal = false;
@@ -43,6 +49,10 @@ export class ReportComponent implements OnInit {
   private materializedReport = false;
   private hash: string;
   public getParametersValueForDropDown$: Observable<any>;
+  public type: ReportType = ReportType.report;
+  private reportConfig: object;
+  layoutConfiguration: any;
+
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
@@ -58,9 +68,10 @@ export class ReportComponent implements OnInit {
   constructor(public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router, private telemetryService: TelemetryService) { }
+    private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.initLayout();
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
       switchMap(params => {
         const { reportId, hash } = this.activatedRoute.snapshot.params;
@@ -112,6 +123,7 @@ export class ReportComponent implements OnInit {
             return throwError({ messageText: 'messages.stmsg.m0144' });
           } else {
             this.report = report;
+            this.type = _.get(report, 'report_type') === 'report' ? ReportType.report : ReportType.dataset;
             if (this.reportService.isReportParameterized(report) && _.get(report, 'children.length') &&
               !this.reportService.isUserSuperAdmin()) {
               return throwError({ messageText: 'messages.emsg.mutliParametersFound' });
@@ -121,7 +133,7 @@ export class ReportComponent implements OnInit {
             if (this.materializedReport) {
               this.report.status = 'draft';
             }
-            const reportConfig = _.get(report, 'reportconfig');
+            const reportConfig = this.reportConfig = _.get(report, 'reportconfig');
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
             const dataSource = _.get(reportConfig, 'dataSource') || [];
             let updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
@@ -135,10 +147,10 @@ export class ReportComponent implements OnInit {
                 result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
-                  _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                  this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
-                result['files'] = files || [];
+                result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
                 return result;
               })
@@ -166,7 +178,8 @@ export class ReportComponent implements OnInit {
    * @param url
    */
   public setDownloadUrl(url) {
-    this.downloadUrl = url;
+    this.downloadUrl = this.reportService.resolveParameterizedPath(url, this.hash ?
+      this.reportService.getParameterFromHash(this.hash) : null);
   }
 
   public getTelemetryInteractEdata = ({ id = 'report-chart', type = 'click', pageid = this.activatedRoute.snapshot.data.telemetry.pageid,
@@ -334,7 +347,8 @@ export class ReportComponent implements OnInit {
   }
 
   private mergeClickEventStreams() {
-    merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream(), this.handleRetireBtnStream())
+    merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream(), this.handleRetireBtnStream(),
+      this.handleUpdatedMarkdown())
       .subscribe(res => {
         this.refreshComponent();
       }, err => {
@@ -488,6 +502,35 @@ export class ReportComponent implements OnInit {
       duration: this.navigationhelperService.getPageLoadTime()
     }
   })
+
+  private handleUpdatedMarkdown() {
+    return this.markdownUpdated$.pipe(
+      switchMap((event: { data: string, type: string }) => {
+        const updatedReportConfig = {
+          ...this.reportConfig,
+          dataset: {
+            ...this.reportConfig['dataset'],
+            [event.type]: btoa(event.data)
+          }
+        };
+
+        const { reportId } = this.activatedRoute.snapshot.params;
+        return this.reportService.updateReport(reportId, {
+          reportconfig: updatedReportConfig
+        });
+      })
+    );
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout()
+      .subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
+  }
 
 }
 
