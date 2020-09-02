@@ -738,7 +738,7 @@ describe('CoursePlayerComponent', () => {
     component.navigateToPlayerPage({});
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.courseHierarchy.batches[0]['startDate']);
     expect(component.batchMessage).toBe(message);
-  })
+  });
 
   it('shold call navigateToPlayerPage case 2', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -749,18 +749,18 @@ describe('CoursePlayerComponent', () => {
     component.navigateToPlayerPage({});
     const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', component.courseHierarchy.batches[0]['enrollmentEndDate']);
     expect(component.batchMessage).toBe(message);
-  })
+  });
 
   it('shold call navigateToPlayerPage case 3', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     component.enrolledCourse = false;
     component.hasPreviewPermission = false;
-    component.courseHierarchy.batches = batchs.splice(0,2)
+    component.courseHierarchy.batches = batchs.splice(0, 2);
     component.navigateToPlayerPage({});
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
     expect(component.batchMessage).toBe(message);
-  })
+  });
 
   it('shold call navigateToPlayerPage case 4', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -771,7 +771,7 @@ describe('CoursePlayerComponent', () => {
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.courseHierarchy.batches[0]['startDate']);
     component.navigateToPlayerPage({});
     expect(component.batchMessage).toBe(message);
-  })
+  });
   it('shold call navigateToPlayerPage case 5', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -781,7 +781,8 @@ describe('CoursePlayerComponent', () => {
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
     component.navigateToPlayerPage({});
     expect(component.batchMessage).toBe(message);
-  })
+  });
+  
   it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';

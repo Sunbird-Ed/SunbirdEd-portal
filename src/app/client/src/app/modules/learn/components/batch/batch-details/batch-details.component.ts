@@ -175,14 +175,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           });
           // If batch length is 1, then directly join the batch
           if (this.allBatchList && this.allBatchList.length === 1) {
-            const batchStartDate = new Date(this.allBatchList[0]['startDate']);
-            const currentdate = new Date();
-            if (currentdate < batchStartDate) {
-              const batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', this.allBatchList[0].startDate) 
-              this.toasterService.error(batchMessage)
-            } else {
               this.enrollBatch(this.allBatchList[0]);
-            }
           } else if (_.isEmpty(this.allBatchList)) {
             this.showAllBatchError = true;
           } else {

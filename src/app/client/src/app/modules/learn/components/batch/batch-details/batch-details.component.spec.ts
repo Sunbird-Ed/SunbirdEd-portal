@@ -256,16 +256,15 @@ describe('BatchDetailsComponent', () => {
 
   it('should call getJoinCourseBatchDetails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error');
+    const batchList = allBatchDetailsWithFeactureBatch.result.response.content[0];
+    spyOn(component, 'enrollBatch').and.stub();
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(of(allBatchDetailsWithFeactureBatch));
     component.getJoinCourseBatchDetails();
-    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.allBatchList[0]['startDate']);
-    expect(toasterService.error).toHaveBeenCalledWith(message)
+    expect(component.enrollBatch).toHaveBeenCalledWith(batchList);
   });
   it('should call enrollBatch ', () => {
     const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(()=>{})
+    spyOn(toasterService, 'error').and.callFake(()=>{});
     const batch = {
       batchId: "0130936282663157765",
       createdFor: ["0124784842112040965"],
@@ -275,10 +274,10 @@ describe('BatchDetailsComponent', () => {
       name: "SHS cert course 1 - 0825",
       startDate: "2020-10-25",
       status: 1
-    }
-    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate)
+    };
+    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
     component.enrollBatch(batch);
     expect(toasterService.error).toHaveBeenCalledWith(message);
-  })
+  });
 
 });
