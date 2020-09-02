@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const CassandraStore = require('cassandra-session-store')
 const envHelper = require('./environmentVariablesHelper.js')
 const expressCassandra = require('express-cassandra')

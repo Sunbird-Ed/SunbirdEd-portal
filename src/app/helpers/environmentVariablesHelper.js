@@ -42,6 +42,7 @@ let envVariables = {
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
   sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird', 
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
+  reportsListVersion: env.reportsListVersion || 'v1',
 
 
   // TTL and Intervals

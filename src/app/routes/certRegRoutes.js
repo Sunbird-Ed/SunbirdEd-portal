@@ -3,7 +3,7 @@ const envHelper = require('../helpers/environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
@@ -84,7 +84,7 @@ module.exports = function (app) {
         logger.debug({ msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
         // Only if loggedIn user & content creator is same, then only he can re-issue the certificate
         if (_.get(req.body, 'request.createdBy') === req.session['userId']) {
-          return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reissue=true').path;
+          return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reIssue=true').path;
         } else {
           logError(req, 'UNAUTHORIZED_USER', `createdBy,${_.get(req.body, 'request.createdBy')},  userID: ${req.session['userId']} should be equal`);
           throw new Error('UNAUTHORIZED_USER');
@@ -92,7 +92,7 @@ module.exports = function (app) {
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {
-          logger.info({ msg: `/course/batch/cert/v1/issue?reissue=true called  by userId: ${req.session['userId']}` });
+          logger.info({ msg: `/course/batch/cert/v1/issue?reIssue=true called  by userId: ${req.session['userId']}` });
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);

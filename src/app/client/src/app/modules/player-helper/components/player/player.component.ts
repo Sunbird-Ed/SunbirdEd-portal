@@ -160,7 +160,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             this.playerLoaded = true;
           }
         } catch (err) {
-          console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
         }
       };
@@ -181,7 +180,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             this.playerLoaded = true;
           }
         } catch (err) {
-          console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
             history.back();

@@ -7,7 +7,6 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
-logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {},
@@ -16,6 +15,7 @@ proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
 const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
+const { logger } = require('@project-sunbird/logger');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -197,6 +197,7 @@ function getLocals(req) {
   locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   locals.enableSSO = envHelper.sunbird_enable_sso;
+  locals.reportsListVersion = envHelper.reportsListVersion;
   return locals
 }
 

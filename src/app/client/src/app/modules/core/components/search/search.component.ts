@@ -163,11 +163,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.selectedOption) {
       redirectUrl = this.search[this.selectedOption];
     } else {
-      if (url.indexOf('/explore-course') !== -1) {
-        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
-      } else {
-        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
-      }
+      redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
     }
     if (!_.includes(['Users', 'profile'], this.selectedOption)) {
       this.queryParam['selectedTab'] = 'all';

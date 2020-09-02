@@ -181,19 +181,31 @@ export class ReportService {
     });
   }
 
-  public prepareTableData(tablesArray: any, data: any, downloadUrl: string, reportLevelDataSourceId: string): Array<{}> {
+  public prepareTableData(tablesArray: any, data: any, downloadUrl: string, hash?: string): Array<{}> {
     tablesArray = _.isArray(tablesArray) ? tablesArray : [tablesArray];
     return _.map(tablesArray, table => {
+      const tableId = _.get(table, 'id') || `table-${_.random(1000)}`;
+      const dataset = this.getTableData(data, _.get(table, 'id'));
       const tableData: any = {};
-      tableData.id = _.get(table, 'id') || `table-${_.random(1000)}`;
+      tableData.id = tableId;
       tableData.name = _.get(table, 'name') || 'Table';
-      tableData.header = _.get(table, 'columns') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'),
-        _.get(table, 'columnsExpr'));
-      tableData.data = _.get(table, 'values') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'),
-        _.get(table, 'valuesExpr'));
-      tableData.downloadUrl = _.get(table, 'downloadUrl') || downloadUrl;
+      tableData.header = _.get(table, 'columns') || _.get(dataset, _.get(table, 'columnsExpr'));
+      tableData.data = _.get(table, 'values') || _.get(dataset, _.get(table, 'valuesExpr'));
+      tableData.downloadUrl = this.resolveParameterizedPath(_.get(table, 'downloadUrl') || downloadUrl,
+        hash ? this.getParameterFromHash(hash) : null);
       return tableData;
     });
+  }
+
+  public getParameterizedFiles(files: { downloadUrl: string }[], hash?: string) {
+    return files.map(file => ({
+      ...file,
+      downloadUrl: this.resolveParameterizedPath(file.downloadUrl, hash ? this.getParameterFromHash(hash) : null)
+    }));
+  }
+
+  private getTableData(data: { result: any, id: string }[], tableId) {
+    return this.getDataSourceById(data, tableId) || {};
   }
 
   private getChartData = (data: { result: any, id: string }[], chart: any) => {
@@ -372,7 +384,7 @@ export class ReportService {
         }
       },
       $board: {
-        value: _.get(this.userService, 'userProfile.framework.board')[0],
+        value: _.get(this.userService, 'userProfile.framework.board[0]'),
         masterData: () => {
           return this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
             .pipe(
