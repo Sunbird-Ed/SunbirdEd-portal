@@ -12,6 +12,7 @@ export class JoyThemePopupComponent implements OnInit {
   @Output() closeJoyThemePopup = new EventEmitter<any>();
   instance: string;
   joyThemeIntractEdata: IInteractEventEdata;
+  closeButtonIntractEdata: IInteractEventEdata;
   oldThemeIntractEdata: IInteractEventEdata;
   showPopup = false;
 
@@ -44,6 +45,11 @@ export class JoyThemePopupComponent implements OnInit {
     };
     this.oldThemeIntractEdata = {
       id: 'classic-theme',
+      type: 'click',
+      pageid: 'joy-themePopup'
+    };
+    this.closeButtonIntractEdata = {
+      id: 'close-joy-theme-popup',
       type: 'click',
       pageid: 'joy-themePopup'
     };

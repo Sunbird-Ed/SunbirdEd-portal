@@ -576,3 +576,29 @@ app-workspace {
       }
     }
   }
+
+  /* tara chat box */
+  @media only screen and (max-width: 767px) {
+    .lib-chat-head {
+      position: absolute !important;
+      right: 4rem !important;
+      top: calculateRem(13px) !important;
+      bottom: inherit !important;
+      z-index: 999 !important;
+    }
+    .chatbox-cover .chatboxImg {
+      width: calculateRem(64px) !important;
+      margin-left: 0px !important;
+     }
+     .chatbox-cover .chatbox {
+      margin-top: calculateRem(12px) !important;
+      display: none;
+     }
+     .chatbox-cover .chatboxText {
+       font-size:calculateRem(14px) !important;
+     }
+     html[layout="joy"] .lib-chat-head {
+      top: calculateRem(26px) !important;
+      z-index: inherit !important;
+     }
+  }
