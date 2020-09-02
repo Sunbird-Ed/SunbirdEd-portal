@@ -60,7 +60,7 @@ const addLogContext = (req, res, next) => {
   }
   next()
 }
-logger.debug({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
+logger.info({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
 const app = express()
 
 app.use(cookieParser())
