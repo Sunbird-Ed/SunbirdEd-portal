@@ -1,5 +1,12 @@
-import { servicemockRes, contentList, contentListWithHoverData, contentHierarchyDateSet1 } from './util.service.spec.data';
-import { TestBed, inject } from '@angular/core/testing';
+import {
+  servicemockRes,
+  contentList,
+  contentListWithHoverData,
+  contentHierarchyDateSet1,
+  processData,
+  processedOutputData
+} from './util.service.spec.data';
+import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
@@ -260,4 +267,15 @@ describe('UtilService', () => {
       const data = service.sortChildrenWithIndex(contentHierarchyDateSet1.before);
       expect(data).toEqual(contentHierarchyDateSet1.after);
   }));
+
+  it('should return  process data', inject([UtilService], (service: UtilService) => {
+    const data = service.processData(processData, ['channel', 'gradeLevel', 'subject', 'medium']);
+    expect(data).toEqual(processedOutputData);
+  }));
+
+  it('should return process unique data', inject([UtilService], (service: UtilService) => {
+    const data = service.removeDuplicates([{'x': 1}, {'x': 2}, {'x': 1}], 'x');
+    expect(data).toEqual([{'x': 1}, {'x': 2}]);
+  }));
+
 });
