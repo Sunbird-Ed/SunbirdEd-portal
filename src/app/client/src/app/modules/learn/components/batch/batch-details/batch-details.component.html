@@ -27,7 +27,7 @@
 </sui-modal>
 
 <!-- create batch -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor">
+<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor && isTrackable">
   <sui-accordion-panel [isOpen]="true">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
@@ -99,7 +99,7 @@
         <div *ngIf="showError">
           <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
-        <div class="batch-deatils__button text-right">
+        <div class="batch-deatils__button text-right" *ngIf="isTrackable">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
             *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>

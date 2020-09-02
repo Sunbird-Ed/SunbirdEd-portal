@@ -49,6 +49,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
   @ViewChild('batchListModal') batchListModal;
+  isTrackable = false;
+  courseCreator = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -78,18 +80,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.courseHierarchy['trackable.enabled'] = 'Yes';
     console.log('batchId', this.batchId);
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.getJoinCourseBatchDetails();
       });
-
-    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
-    } else {
-      this.courseMentor = false;
-    }
+    this.showCreateBatch();
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
     } else {
@@ -274,10 +272,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
    * @returns - boolean
    */
   showCreateBatch() {
-    const isCourseCreator = (_.get(this.courseHierarchy, 'createdBy') === this.userService.userid) ? true : false;
-    const isPermissionAvailable = (this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) &&
-    this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])) ? true : false;
-    this.allowBatchCreation =  (isCourseCreator && isPermissionAvailable);
+    const response: {isTrackable: boolean, courseMentor: boolean, courseCreator: boolean} =
+    this.courseConsumptionService.isCourseMentor(this.courseHierarchy);
+    this.isTrackable = response.isTrackable;
+    this.courseCreator = response.courseCreator;
+    this.courseMentor = response.courseMentor;
+    this.allowBatchCreation =  (response.courseCreator && response.courseMentor && response.isTrackable);
   }
 
   logTelemetry(id, content?: {}, batchId?) {

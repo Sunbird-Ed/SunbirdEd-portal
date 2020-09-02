@@ -114,6 +114,7 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.userService.setUserId('123');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
@@ -178,6 +179,8 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(component.courseConsumptionService, 'isCourseMentor').and.returnValue({
+      isTrackable: true, courseMentor: true, courseCreator: true});
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
     expect(component.allowBatchCreation).toBe(true);

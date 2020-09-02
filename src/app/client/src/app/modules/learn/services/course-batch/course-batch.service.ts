@@ -51,7 +51,7 @@ export class CourseBatchService {
       if (requestParam.limit) {
         option.data.request['limit'] = requestParam.limit;
       }
-      const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+      const mentorOrg = this.userService.userProfile.roleOrgMap['CONTENT_CREATOR'];
       if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
         option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
       } else if (mentorOrg) {

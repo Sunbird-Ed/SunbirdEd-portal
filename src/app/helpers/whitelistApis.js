@@ -17,7 +17,6 @@ const ROLE = {
   COURSE_MENTOR: 'COURSE_MENTOR',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  COURSE_MENTOR: 'COURSE_MENTOR',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -547,7 +546,7 @@ const API_LIST = {
     },
     '/certreg/v1/cert/reissue': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
     },
     '/certreg/v1/add/template': {
       checksNeeded: ['ROLE_CHECK'],
