@@ -8,11 +8,11 @@ const _                     = require('lodash');
 const request               = require('request');
 const uuidv1                = require('uuid/v1');
 const dateFormat            = require('dateformat');
-const logger                = require('sb_logger_util_v2');
 const envHelper             = require('./environmentVariablesHelper.js');
 const telemetryHelper       = require('./telemetryHelper');
 const learnerURL            = envHelper.LEARNER_URL;
 const apiAuthToken          = envHelper.PORTAL_API_AUTH_TOKEN;
+const { logger }            = require('@project-sunbird/logger');
 
 let PERMISSIONS_HELPER = {
 

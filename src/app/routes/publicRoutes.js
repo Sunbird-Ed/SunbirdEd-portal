@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const contentServiceBaseUrl = envHelper.CONTENT_URL
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 
 module.exports = function (app) {
     const proxyReqPathResolverMethod = function (req) {
