@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "3.2.10",
+  "version": "3.2.11",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -115,7 +115,6 @@
     "request-promise": "^4.2.5",
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
     "sb_cache_manager": "file:libs/sb_cache_manager",
-    "sb_logger_util_v2": "file:libs/sb_logger_util_v2",
     "sb_telemetry_util": "file:libs/sb_telemetry_util",
     "sunbird-localization": "0.0.2",
     "svg2img": "0.6.1",

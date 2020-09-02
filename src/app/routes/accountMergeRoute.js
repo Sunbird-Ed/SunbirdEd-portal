@@ -54,7 +54,7 @@ module.exports = (app) => {
           }
         });
       } else {
-        logger.debug({
+        logger.debug(req.context, {
           msg: 'user/session/save user session saved successfully',
           error: JSON.stringify(result),
           additionalInfo: {
