@@ -239,7 +239,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.identifier;
     } else {
       this.publicPlayerService.playContent(event);
     }
