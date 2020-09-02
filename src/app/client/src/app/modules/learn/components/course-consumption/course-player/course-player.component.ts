@@ -16,6 +16,7 @@ import { PopupControlService } from '../../../../../service/popup-control.servic
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-course-player',
@@ -76,7 +77,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   popupMode: string;
   createdBatchId: string;
   courseMentor = false;
-
+  todayDate = dayjs(new Date()).format('YYYY-MM-DD');
+  public batchMessage: any;
+  
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   constructor(
@@ -434,8 +437,44 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
       this.showJoinTrainingModal = true;
+      const currentDate = new Date();
+      if(this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1){
+      const batchStartDate = new Date(this.courseHierarchy.batches[0].startDate);
+      const batchenrollEndDate = this.courseHierarchy.batches[0].enrollmentEndDate ?
+       new Date(this.courseHierarchy.batches[0].enrollmentEndDate) : null;
+      if(batchStartDate > currentDate){
+        this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', 
+        this.courseHierarchy.batches[0].startDate); 
+      }else if(batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
+        this.batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}',
+         this.courseHierarchy.batches[0].enrollmentEndDate);
+      }else{
+        this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+      }
+    }else if(this.courseHierarchy.batches && this.courseHierarchy.batches.length === 2) {
+        const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
+          return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
+        });
+        if(allBatchList && allBatchList.length === 1) {
+          const batchStartDate = new Date(allBatchList[0].startDate);
+          if(batchStartDate > currentDate) {
+            this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', allBatchList[0].startDate);
+          }else{
+            this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+          }
+        }else{
+          this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+        }
+    } else {
+      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+    }
     }
   }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return dayjs(enrollmentEndDate).isBefore(this.todayDate);
+  }
+
 
   calculateProgress() {
     /* istanbul ignore else */

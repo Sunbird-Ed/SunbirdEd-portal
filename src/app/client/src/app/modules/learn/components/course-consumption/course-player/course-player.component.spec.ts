@@ -24,11 +24,93 @@ describe('CoursePlayerComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
+  const batchs = [
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-10-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-08-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-10",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }
+  ]
+  const featureBatch = [
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-10-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-10",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }
+  ]
+  const ongoingBatch = [
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-08-25",
+      status: 1
+    },
+    {
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-10",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }
+  ]
+
   const resourceServiceMockData = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
       stmsg: { m0009: 'error' },
-      emsg: { m0005: 'error', m0003: `The Course doesn't have any open batches` }
+      emsg: {
+         m0005: 'error',
+         m0003: `The Course doesn't have any open batches`,
+         m009: `The course's batch is available from {startDate}`,
+         m008 : `The batch's enrollment date {endDate} is crossed`
+         }
     },
     frmelmnts: {
       btn: {
@@ -36,10 +118,12 @@ describe('CoursePlayerComponent', () => {
         close: 'close'
       },
       lbl: {
-        description: 'description'
+        description: 'description',
+        joinTrainingToAcessContent : 'You must join the course to get complete access to content'
       }
     }
   };
+
   class ActivatedRouteStub {
     paramsMock = new BehaviorSubject<any>({ courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160' });
     snapshot = {
@@ -643,5 +727,90 @@ describe('CoursePlayerComponent', () => {
         batchId: '123456'
       }
     });
+  });
+
+  it('shold call navigateToPlayerPage case 1', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = [batchs[0]];
+    component.navigateToPlayerPage({});
+    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.courseHierarchy.batches[0]['startDate']);
+    expect(component.batchMessage).toBe(message);
+  })
+
+  it('shold call navigateToPlayerPage case 2', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = [batchs[2]];
+    component.navigateToPlayerPage({});
+    const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', component.courseHierarchy.batches[0]['enrollmentEndDate']);
+    expect(component.batchMessage).toBe(message);
+  })
+
+  it('shold call navigateToPlayerPage case 3', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = batchs.splice(0,2)
+    component.navigateToPlayerPage({});
+    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    expect(component.batchMessage).toBe(message);
+  })
+
+  it('shold call navigateToPlayerPage case 4', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = featureBatch;
+    const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', component.courseHierarchy.batches[0]['startDate']);
+    component.navigateToPlayerPage({});
+    expect(component.batchMessage).toBe(message);
+  })
+  it('shold call navigateToPlayerPage case 5', () => {
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
+    component.enrolledCourse = false;
+    component.hasPreviewPermission = false;
+    component.courseHierarchy.batches = ongoingBatch;
+    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    component.navigateToPlayerPage({});
+    expect(component.batchMessage).toBe(message);
+  })
+  it('should navigate to the player page with, first non-consumed content', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_112832506508320768123']);
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+  });
+
+  it('should navigate to the player page with, first non-consumed content', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+  });
+  it('should call navigateToContent with nogroupData', () => {
+    spyOn(component, 'logTelemetry');
+    spyOn<any>(component, 'navigateToPlayerPage');
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.addToGroup = true;
+    component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
+  });
+  it('should call navigateToContent with groupData', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.addToGroup = false;
+    component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
 });
