@@ -306,10 +306,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
-    /* istanbul ignore else */
     if (!this.addToGroup) {
       this.logTelemetry(id, event.data);
-      /* istanbul ignore else */
       if (!_.isEmpty(event.event)) {
         this.navigateToPlayerPage(collectionUnit, event);
       }
@@ -423,12 +421,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
             collectionChildren.push(item);
           }
         });
-
-        /* istanbul ignore else */
         if (collectionChildren.length) {
           const selectedContent: any = collectionChildren.find(item => item.status !== 2);
-
-          /* istanbul ignore else */
           if (selectedContent) {
             navigationExtras.queryParams.selectedContent = selectedContent.contentId;
           }
@@ -438,33 +432,36 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.showJoinTrainingModal = true;
       const currentDate = new Date();
-      if(this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1){
-      const batchStartDate = new Date(this.courseHierarchy.batches[0].startDate);
-      const batchenrollEndDate = this.courseHierarchy.batches[0].enrollmentEndDate ? new Date(this.courseHierarchy.batches[0].enrollmentEndDate) : null;
-      if(batchStartDate > currentDate){
-        this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', this.courseHierarchy.batches[0].startDate) 
-      }else if(batchenrollEndDate !== null && batchenrollEndDate < currentDate){
-        this.batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', this.courseHierarchy.batches[0].enrollmentEndDate)
-      }else{
-        this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
-      }
-    }else if(this.courseHierarchy.batches && this.courseHierarchy.batches.length === 2){
+      if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
+        const batchStartDate = new Date(this.courseHierarchy.batches[0].startDate);
+        const batchenrollEndDate = this.courseHierarchy.batches[0].enrollmentEndDate ?
+        new Date(this.courseHierarchy.batches[0].enrollmentEndDate) : null;
+        if (batchStartDate > currentDate) {
+          this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}',
+           this.courseHierarchy.batches[0].startDate);
+        } else if (batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
+          this.batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}',
+            this.courseHierarchy.batches[0].enrollmentEndDate);
+        } else {
+          this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+        }
+      } else if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 2) {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
-        if(allBatchList && allBatchList.length === 1){
+        if (allBatchList && allBatchList.length === 1) {
           const batchStartDate = new Date(allBatchList[0].startDate);
-          if(batchStartDate > currentDate){
-            this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', allBatchList[0].startDate) 
-          }else{
+          if (batchStartDate > currentDate) {
+            this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', allBatchList[0].startDate)
+          } else {
             this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
           }
-        }else{
+        } else {
           this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
         }
-    }else{
-      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
-    }
+      } else {
+        this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+      }
     }
   }
 
