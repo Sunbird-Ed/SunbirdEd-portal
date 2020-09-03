@@ -1,0 +1,141 @@
+<div>
+  <div class="sb-table-container">
+    <div class="d-flex flex-ai-center">
+      <div class="d-flex flex-ai-center" [formGroup]="timeRangePicker">
+        <div class="sb-field-group">
+          <label>
+            {{ resourceService?.frmelmnts?.lbl?.tcfrom}}
+          </label>
+          <div class="sb-field">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input formControlName="from" [pickerMode]="'date'" suiDatepicker placeholder="Select From"
+                [pickerUseNativeOnMobile]="false" [pickerMinDate]="pickerMinDate" [pickerMaxDate]="getPickerMaxDate()">
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-field-group ml-16">
+          <label>
+            {{ resourceService?.frmelmnts?.lbl?.tcto}}
+          </label>
+          <div class="sb-field">
+            <div class="ui left icon input">
+              <i class="calendar icon"></i>
+              <input formControlName="to" suiDatepicker [pickerMode]="'date'" [pickerMinDate]="getPickerMinDate()"
+                [pickerMaxDate]="pickerMaxDate" placeholder="Select To" [pickerUseNativeOnMobile]="false">
+            </div>
+          </div>
+        </div>
+        <div class="sb-field-group ml-16">
+          <label></label>
+          <div class="sb-field">
+            <button (click)="onSubmit()" type="submit"
+              class="sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-table-responsive-div">
+      <div class="ui grid sb-form m-0 sb-workspace-modal">
+        <div class="twelve wide column pb-16" *ngIf="!showLoader">
+          <table #datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+          </table>
+        </div>
+        <div class="twelve wide column pb-16" *ngIf="showLoader">
+          <app-loader></app-loader>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <sui-accordion class="styled fluid sb-accordion">
+      <sui-accordion-panel [isOpen]="true">
+        <div title class="sb-accordion-title">
+          {{ resourceService?.frmelmnts?.lbl?.dataDictionary}}
+          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
+        </div>
+        <div content class="sb-accordion-content">
+          <div class="sb-accordion-text">
+            <div appMarkdown [input]="dataDictionary"
+              *ngIf="!reportService?.isUserSuperAdmin() && dataDictionary?.length"></div>
+            <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !dataDictionary?.length">
+              {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+            </div>
+            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
+              <div class="ui top attached tabular menu">
+                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
+                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
+                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
+                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="1">
+                <div *ngIf="dataDictionary?.length" appMarkdown [input]="dataDictionary"></div>
+                <div class="ui warning message" *ngIf="!dataDictionary?.length">
+                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                </div>
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="2">
+                <div ace-editor [text]="dataDictionary" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
+                  [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+                  (textChanged)="onMarkdownChange($event, 'dataDictionary')"
+                  style="min-height: 200px; width:100%; overflow: auto;">
+                </div>
+                <div class="sb-table-container m-0">
+                  <div class="sb-table-search-header px-0">
+                    <button (click)="handleMarkdownSubmission('dataDictionary')" type="button"
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
+                  </div>
+                </div>
+              </div>
+            </sui-tabset>
+          </div>
+        </div>
+      </sui-accordion-panel>
+
+      <sui-accordion-panel [isOpen]="false">
+        <div title class="sb-accordion-title">
+          {{ resourceService?.frmelmnts?.lbl?.datasetExamples}}
+          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
+        </div>
+        <div content class="sb-accordion-content">
+          <div class="sb-accordion-text">
+            <div appMarkdown [input]="examples" *ngIf="!reportService?.isUserSuperAdmin() && examples?.length"></div>
+            <div class="ui warning message" *ngIf="!reportService?.isUserSuperAdmin() && !examples?.length">
+              {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+            </div>
+            <sui-tabset *ngIf="reportService?.isUserSuperAdmin()">
+              <div class="ui top attached tabular menu">
+                <a class="item" suiTabHeader="1"> <i class="icon eye alternate"></i>
+                  {{ resourceService?.frmelmnts?.cert?.lbl?.preview}}</a>
+                <a class="item" suiTabHeader="2"> <i class="icon edit alternate"></i>
+                  {{ resourceService?.frmelmnts?.lbl?.edit}}</a>
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="1">
+                <div *ngIf="examples?.length" appMarkdown [input]="examples"></div>
+                <div class="ui warning message" *ngIf="!examples?.length">
+                  {{ resourceService?.frmelmnts?.lbl?.noDataAvailable}}
+                </div>
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="2">
+                <div ace-editor [text]="examples" [mode]="'markdown'" [theme]="'eclipse'" [options]="options"
+                  [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+                  (textChanged)="onMarkdownChange($event, 'examples')"
+                  style="min-height: 200px; width:100%; overflow: auto;"></div>
+
+                <div class="sb-table-container m-0">
+                  <div class="sb-table-search-header px-0">
+                    <button (click)="handleMarkdownSubmission('examples')" type="button"
+                      class="ml-auto sb-btn sb-btn-primary sb-btn-normal ripple">{{ resourceService?.frmelmnts?.lbl?.submit}}</button>
+                  </div>
+                </div>
+              </div>
+            </sui-tabset>
+          </div>
+        </div>
+      </sui-accordion-panel>
+    </sui-accordion>
+  </div>
+</div>

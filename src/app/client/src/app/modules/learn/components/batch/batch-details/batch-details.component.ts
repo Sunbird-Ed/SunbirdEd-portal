@@ -78,7 +78,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('batchId', this.batchId);
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {

@@ -314,6 +314,10 @@ export class TelemetryService {
       id: this.deviceType,
       type: 'Device'
     });
+    eventContextData.cdata.push({
+      id: localStorage.getItem('layoutType') || 'default',
+      type: 'Theme',
+    });
     return eventContextData;
   }
 

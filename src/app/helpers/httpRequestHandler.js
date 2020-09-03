@@ -1,5 +1,5 @@
 const requestPromise = require('request-promise');
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 const sendRequest = async (options) => {
   logger.info({msg: 'httpRequestHandler:sendRequest fetching data for ' + options.url});
