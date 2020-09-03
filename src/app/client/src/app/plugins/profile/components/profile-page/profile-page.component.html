@@ -306,14 +306,14 @@
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="list-items__item" *ngIf="data.certificates && data.certificates.length > 0">
+              <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.certificates)">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
@@ -344,12 +344,12 @@
               <label class="list-items__item mr-auto mb-0 text-left">{{data.certName}}</label>
               <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
-              <div class="list-items__item" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
+              <div class="list-items__item" *ngIf="data?.certificates?.length">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length">
                   <span class="bar"></span>
                   <span class="bar"></span>
                 </div>
