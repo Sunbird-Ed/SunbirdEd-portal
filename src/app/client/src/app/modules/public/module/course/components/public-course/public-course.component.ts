@@ -144,10 +144,24 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
           this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
         }
     }
+
   public getFilters(filters) {
-    this.selectedFilters = filters.filters;
+    this.selectedFilters = _.cloneDeep(filters && filters.filters || {});
+    if (this.selectedFilters.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(this.selectedFilters.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'identifier': value});
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        this.selectedFilters.channel = channelIds;
+      }
+    }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
+        if (element && element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
         }
         return collector;
@@ -228,22 +242,13 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private fetchPageData() {
-    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
       }
       return value.length;
     });
-    if (filters.channel) {
-      const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
-      _.forEach(filters.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'name': value});
-        channelIds.push(data.identifier);
-      });
-      filters.channel = channelIds;
-    }
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
@@ -268,6 +273,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
         facetsList.channel = this.utilService.removeDuplicates(_.get(orgDetails, 'content'), 'identifier');
         this.facets = this.updateFacetsData(facetsList);
+        this.getFilters({filters: this.selectedFilters});
         this.initFilters = true;
         if (!this.carouselMasterData.length) {
           return; // no page section

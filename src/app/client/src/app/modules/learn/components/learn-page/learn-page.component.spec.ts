@@ -17,7 +17,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
-  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, frameworkService, orgDetailsService;
+  let toasterService, formService, pageApiService, learnerService, cacheService, utilService, coursesService,
+    frameworkService, orgDetailsService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendEnrolledCourses = true;
   let sendPageApi = true;
@@ -73,6 +74,7 @@ describe('LearnPageComponent', () => {
     pageApiService = TestBed.get(PageApiService);
     learnerService = TestBed.get(LearnerService);
     cacheService = TestBed.get(CacheService);
+    utilService = TestBed.get(UtilService);
     coursesService = TestBed.get(CoursesService);
     frameworkService = TestBed.get(FrameworkService);
     activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -105,6 +107,7 @@ describe('LearnPageComponent', () => {
     spyOn(toasterService, 'error').and.callFake(() => {});
   });
   it('should emit filter data when getFilters is called with data', () => {
+    component.facets = Response.facets;
     coursesService.initialize();
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -146,6 +149,9 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -156,6 +162,9 @@ describe('LearnPageComponent', () => {
     expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -164,6 +173,20 @@ describe('LearnPageComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselMasterData.length).toEqual(1);
   }));
+
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return throwError(Response.orgSearch);
+    });
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.pageSections).toEqual([]);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.carouselMasterData.length).toEqual(0);
+  }));
+
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
     sendPageApi = false;
     coursesService.initialize();

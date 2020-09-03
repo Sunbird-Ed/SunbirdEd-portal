@@ -18,7 +18,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('PublicCourseComponent', () => {
   let component: PublicCourseComponent;
   let fixture: ComponentFixture<PublicCourseComponent>;
-  let toasterService, formService, pageApiService, orgDetailsService, cacheService;
+  let toasterService, formService, pageApiService, orgDetailsService, cacheService, utilService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -67,6 +67,7 @@ describe('PublicCourseComponent', () => {
     formService = TestBed.get(FormService);
     pageApiService = TestBed.get(PageApiService);
     orgDetailsService = TestBed.get(OrgDetailsService);
+    utilService = TestBed.get(UtilService);
     cacheService = TestBed.get(CacheService);
     activatedRouteStub = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
@@ -103,13 +104,31 @@ describe('PublicCourseComponent', () => {
     });
   });
   it('should emit filter data when getFilters is called with data', () => {
+    component.facets = Response.facets;
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
+  it('should set selected tab filters', () => {
+    component.facets = Response.facets;
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters({
+      'status': 'FETCHED', 'filters': {
+        'selectedTab': 'course', 'channel': [
+          'Chhattisgarh']
+      }
+    });
+    expect(component.selectedFilters).toEqual({
+      'selectedTab': 'course',
+      'channel': [
+        'Chhattisgarh'
+      ]
+    });
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+  });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([]);
+    component.getFilters({filters: []});
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {

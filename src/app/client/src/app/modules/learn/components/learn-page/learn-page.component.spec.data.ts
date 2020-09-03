@@ -294,6 +294,60 @@ resourceBundle : {
     'firstName': 'Sourav',
     'organisationIds' : ['ORG_001'],
   },
+  facets: [
+    {
+      'index': '3',
+      'label': 'Class',
+      'placeholder': 'Select class',
+      'values': [{
+        'name': 'class 9',
+        'count': 180
+      }],
+      'name': 'gradeLevel'
+    },
+    {
+      'index': '4',
+      'label': 'Subject',
+      'placeholder': 'Select subject',
+      'values': [{
+        'name': 'chemistry',
+        'count': 165
+      }],
+      'name': 'subject'
+    },
+    {
+      'index': '1',
+      'label': 'Organization Name',
+      'placeholder': 'Organization Name',
+      'values': [{
+        'identifier': '012530141516660736208',
+        'orgName': 'SAP',
+        'slug': 's123',
+        'name': 'SAP'
+      }],
+      'name': 'channel'
+    },
+    {
+      'index': '2',
+      'label': 'Medium',
+      'placeholder': 'Select medium',
+      'values': [{
+        'name': 'english',
+        'count': 187
+      }],
+      'name': 'medium'
+    }
+  ],
+  orgSearch: {
+    'count': 1,
+    'content': [
+      {
+        'identifier': '0128325322816552960',
+        'orgName': 'CBSE',
+        'slug': 'cbse'
+      }
+    ]
+  }
 };
 
 export const custOrgDetails = {

@@ -12,8 +12,8 @@ import { debounceTime, map, takeUntil } from 'rxjs/operators';
   styleUrls: ['./global-search-filter.component.scss']
 })
 export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
-  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count: number }[] }[];
-  public selectedFilters = {};
+  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
+  public selectedFilters: any = {};
   public refresh = true;
   public filterChangeEvent = new Subject();
   private unsubscribe$ = new Subject<void>();
@@ -23,6 +23,23 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
+  }
+
+  onChange(facet) {
+    let channelData;
+    if (this.selectedFilters.channel) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(this.selectedFilters.channel, (value, index) => {
+        channelData = _.find(facetsData.values, {'identifier': value});
+        if (!channelData) {
+          channelData = _.find(facetsData.values, {'name': value});
+        }
+        channelIds.push(channelData.name);
+      });
+      this.selectedFilters.channel = channelIds;
+    }
+    this.filterChangeEvent.next({event: this.selectedFilters[facet.name], type: facet.name});
   }
 
   ngOnInit() {
@@ -76,7 +93,16 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateRoute() {
+  public updateRoute() {
+    if (this.selectedFilters.channel) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(this.selectedFilters.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'name': value});
+        channelIds.push(data.identifier);
+      });
+      this.selectedFilters.channel = channelIds;
+    }
     this.router.navigate([], {
       queryParams: this.selectedFilters,
       relativeTo: this.activatedRoute.parent
