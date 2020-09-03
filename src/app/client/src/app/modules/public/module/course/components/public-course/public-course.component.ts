@@ -146,7 +146,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
   public getFilters(filters) {
-    this.selectedFilters = _.cloneDeep(filters.filters);
+    this.selectedFilters = _.cloneDeep(filters && filters.filters || {});
     if (this.selectedFilters.channel && this.facets) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
@@ -161,7 +161,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
+        if (element && element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
         }
         return collector;

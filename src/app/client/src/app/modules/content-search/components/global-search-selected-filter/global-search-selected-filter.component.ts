@@ -8,7 +8,7 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./global-search-selected-filter.component.scss']
 })
 export class GlobalSearchSelectedFilterComponent {
-  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count: number }[] }[];
+  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
   @Input() selectedFilters;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
 
@@ -27,7 +27,7 @@ export class GlobalSearchSelectedFilterComponent {
     this.updateRoute();
   }
 
-  private updateRoute() {
+  public updateRoute() {
     if (this.selectedFilters.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});

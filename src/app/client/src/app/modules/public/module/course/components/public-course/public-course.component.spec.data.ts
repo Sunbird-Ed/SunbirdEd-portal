@@ -1,5 +1,85 @@
 export const Response = {
-    successData: {
+  processedData: {
+    'gradeLevel': [
+      {
+        'name': 'class 9',
+        'count': 180
+      }
+
+    ],
+    'purpose': [
+      {
+        'name': 'concepts understanding',
+        'count': 6
+      }
+    ],
+    'subject': [
+      {
+        'name': 'chemistry',
+        'count': 165
+      }
+
+    ],
+    'channel': [
+      {
+        'name': '012936585426509824100',
+        'count': 10
+      }
+
+    ],
+    'topic': [
+      {
+        'name': 'health education',
+        'count': 2
+      }
+
+    ]
+  },
+  facets: [
+    {
+      'index': '3',
+      'label': 'Class',
+      'placeholder': 'Select class',
+      'values': [{
+        'name': 'class 9',
+        'count': 180
+      }],
+      'name': 'gradeLevel'
+    },
+    {
+      'index': '4',
+      'label': 'Subject',
+      'placeholder': 'Select subject',
+      'values': [{
+        'name': 'chemistry',
+        'count': 165
+      }],
+      'name': 'subject'
+    },
+    {
+      'index': '1',
+      'label': 'Organization Name',
+      'placeholder': 'Organization Name',
+      'values': [{
+        'identifier': '012530141516660736208',
+        'orgName': 'SAP',
+        'slug': 's123',
+        'name': 'SAP'
+      }],
+      'name': 'channel'
+    },
+    {
+      'index': '2',
+      'label': 'Medium',
+      'placeholder': 'Select medium',
+      'values': [{
+        'name': 'english',
+        'count': 187
+      }],
+      'name': 'medium'
+    }
+  ],
+  successData: {
        ' id': 'api.page.assemble',
        ' params': {
             'err': null,

@@ -12,7 +12,7 @@ import { debounceTime, map, takeUntil } from 'rxjs/operators';
   styleUrls: ['./global-search-filter.component.scss']
 })
 export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
-  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count: number }[] }[];
+  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
   public selectedFilters: any = {};
   public refresh = true;
   public filterChangeEvent = new Subject();
@@ -93,7 +93,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateRoute() {
+  public updateRoute() {
     if (this.selectedFilters.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
