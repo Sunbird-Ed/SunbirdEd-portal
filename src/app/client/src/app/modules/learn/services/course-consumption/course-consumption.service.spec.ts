@@ -155,4 +155,21 @@ describe('CourseConsumptionService', () => {
     const previousPageUrl = service.getCoursePagePreviousUrl;
     expect(service.coursePagePreviousUrl).toEqual(previousPageUrl);
   });
+
+  it('should return user is a courseMentor', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
+    const response = service.isCourseMentor(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual({isTrackable: true, courseCreator: true, courseMentor: true});
+  });
+
+  it('should return  user is not a courseCreator', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
+    const response = service.isCourseMentor(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual({isTrackable: true, courseCreator: false, courseMentor: true});
+  });
+
 });

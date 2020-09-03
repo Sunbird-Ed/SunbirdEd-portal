@@ -253,4 +253,26 @@ describe('BatchDetailsComponent', () => {
     component.ngOnDestroy();
     expect(component.batchListModal.deny).toHaveBeenCalled();
   });
+
+  it ('should return user is coursementor', () => {
+    component.courseHierarchy = {trackable: { enabled: 'Yes'} };
+    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
+      isTrackable: true, courseMentor: true, courseCreator: true
+    });
+    component.showCreateBatch();
+    expect(component.isTrackable).toBeTruthy();
+    expect(component.courseCreator).toBeTruthy();
+    expect(component.courseMentor).toBeTruthy();
+  });
+
+  it ('should return user is not coursementor', () => {
+    component.courseHierarchy = {trackable: { enabled: 'No'} };
+    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
+      isTrackable: true, courseMentor: false, courseCreator: true
+    });
+    component.showCreateBatch();
+    expect(component.isTrackable).toBeTruthy();
+    expect(component.courseCreator).toBeTruthy();
+    expect(component.courseMentor).toBeFalsy();
+  });
 });

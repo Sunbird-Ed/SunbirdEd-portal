@@ -80,7 +80,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.courseHierarchy['trackable.enabled'] = 'Yes';
     console.log('batchId', this.batchId);
     this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
@@ -98,7 +97,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.getAllBatchDetails();
       });
-    this.showCreateBatch();
   }
   getAllBatchDetails() {
     this.showBatchList = false;
