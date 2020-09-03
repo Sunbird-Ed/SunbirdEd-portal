@@ -316,24 +316,18 @@ describe('CourseConsumptionHeaderComponent', () => {
   it ('should return user is coursementor', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'Yes';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
-    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
-      isTrackable: true, courseMentor: true, courseCreator: true
-    });
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
     component.ngOnInit();
     expect(component.isTrackable).toBeTruthy();
-    expect(component.courseCreator).toBeTruthy();
-    expect(component.courseMentor).toBeTruthy();
+    expect(component.viewDashboard).toBeTruthy();
   });
 
   it ('should return user is not coursementor', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'No';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
-    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
-      isTrackable: true, courseMentor: false, courseCreator: false
-    });
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
     component.ngOnInit();
-    expect(component.isTrackable).toBeTruthy();
-    expect(component.courseCreator).toBeFalsy();
-    expect(component.courseMentor).toBeFalsy();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.viewDashboard).toBeFalsy();
   });
 });

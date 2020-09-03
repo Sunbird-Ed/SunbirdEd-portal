@@ -155,11 +155,16 @@ getAllOpenBatches(contents) {
     return this.coursePagePreviousUrl;
   }
 
-  isCourseMentor (courseHierarchy) {
-    const isTrackable = _.lowerCase(_.get(courseHierarchy, 'trackable.enabled')) === 'yes';
-    const courseCreator = this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])
-    && this.userService.userid === _.get(courseHierarchy, 'createdBy');
-    const courseMentor =  courseCreator ? true : this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) ? true : false;
-    return {isTrackable, courseCreator, courseMentor};
+  canCreateBatch(courseHierarchy) {
+    return (this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])
+      && this.userService.userid === _.get(courseHierarchy, 'createdBy'));
+  }
+
+  canViewDashboard(courseHierarchy) {
+    return (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
+  }
+
+  canAddCertificates(courseHierarchy) {
+    return this.canCreateBatch(courseHierarchy);
   }
 }

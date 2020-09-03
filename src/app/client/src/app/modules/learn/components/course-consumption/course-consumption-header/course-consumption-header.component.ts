@@ -55,9 +55,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
-  courseMentor = false;
-  courseCreator = false;
+  // courseMentor = false;
+  // courseCreator = false;
   isTrackable = false;
+  viewDashboard = false;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -71,16 +72,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
-    this.courseHierarchy['trackable.enabled'] = 'Yes';
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
-
-    const response: {isTrackable: boolean, courseMentor: boolean, courseCreator: boolean} =
-    this.courseConsumptionService.isCourseMentor(this.courseHierarchy);
-    this.isTrackable = response.isTrackable;
-    this.courseCreator = response.courseCreator;
-    this.courseMentor = response.courseMentor;
+    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes';
+    this.viewDashboard = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {

@@ -51,6 +51,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('batchListModal') batchListModal;
   isTrackable = false;
   courseCreator = false;
+  viewBatch = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -80,13 +81,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('batchId', this.batchId);
-    this.courseConsumptionService.showJoinCourseModal
+    this.showCreateBatch();
+      this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.getJoinCourseBatchDetails();
       });
-    this.showCreateBatch();
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
     } else {
@@ -113,7 +113,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParamsCreator =  _.cloneDeep(searchParams);
     const searchParamsMentor =  _.cloneDeep(searchParams);
 
-    if (this.courseMentor) {
+    if (this.courseConsumptionService.canViewDashboard(this.courseHierarchy)) {
       searchParamsCreator.filters.createdBy = this.userService.userid;
       searchParamsMentor.filters.mentors = [this.userService.userid];
       combineLatest(
@@ -177,7 +177,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
             this.showAllBatchError = true;
           } else {
             this.showAllBatchList = true;
-            this.showJoinModal = true;
+            this.showJoinModal = !(this.allowBatchCreation || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
           }
         }, (err) => {
           this.showAllBatchError = true;
@@ -270,12 +270,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
    * @returns - boolean
    */
   showCreateBatch() {
-    const response: {isTrackable: boolean, courseMentor: boolean, courseCreator: boolean} =
-    this.courseConsumptionService.isCourseMentor(this.courseHierarchy);
-    this.isTrackable = response.isTrackable;
-    this.courseCreator = response.courseCreator;
-    this.courseMentor = response.courseMentor;
-    this.allowBatchCreation =  (response.courseCreator && response.courseMentor && response.isTrackable);
+    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes';
+    this.allowBatchCreation = this.isTrackable && this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
+    this.viewBatch = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
   }
 
   logTelemetry(id, content?: {}, batchId?) {

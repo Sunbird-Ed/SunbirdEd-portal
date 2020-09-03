@@ -585,7 +585,7 @@ const API_LIST = {
     },
     '/certreg/v1/cert/reissue': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
     '/certreg/v1/add/template': {
       checksNeeded: ['ROLE_CHECK'],

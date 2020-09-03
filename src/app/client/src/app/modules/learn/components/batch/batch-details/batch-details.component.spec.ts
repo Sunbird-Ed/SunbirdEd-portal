@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable, combineLatest } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
@@ -12,6 +12,7 @@ import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -128,7 +129,6 @@ describe('BatchDetailsComponent', () => {
       sort_by: { createdDate: 'desc' }
     };
     component.ngOnInit();
-    expect(component.courseMentor).toBeTruthy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
     expect(component.showBatchList).toBeTruthy();
@@ -179,21 +179,23 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    spyOn(component.courseConsumptionService, 'isCourseMentor').and.returnValue({
-      isTrackable: true, courseMentor: true, courseCreator: true});
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}};
     component.showCreateBatch();
+    expect(component.isTrackable).toBe(true);
     expect(component.allowBatchCreation).toBe(true);
+    expect(component['courseConsumptionService'].canViewDashboard).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}});
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
-    spyOnProperty(userService, 'userid', 'get').and.returnValue('123456789');
-    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}};
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(true);
     component.showCreateBatch();
-    expect(component.showCreateBatch()).toBeFalsy();
+    expect(component.allowBatchCreation).toBe(false);
+    expect(component.isTrackable).toBe(false);
+    expect(component['courseConsumptionService'].canCreateBatch).not.
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}});
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
@@ -254,25 +256,14 @@ describe('BatchDetailsComponent', () => {
     expect(component.batchListModal.deny).toHaveBeenCalled();
   });
 
-  it ('should return user is coursementor', () => {
+  it ('should call showcreatebatch()', () => {
     component.courseHierarchy = {trackable: { enabled: 'Yes'} };
-    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
-      isTrackable: true, courseMentor: true, courseCreator: true
-    });
-    component.showCreateBatch();
-    expect(component.isTrackable).toBeTruthy();
-    expect(component.courseCreator).toBeTruthy();
-    expect(component.courseMentor).toBeTruthy();
-  });
-
-  it ('should return user is not coursementor', () => {
-    component.courseHierarchy = {trackable: { enabled: 'No'} };
-    spyOn(component['courseConsumptionService'], 'isCourseMentor').and.returnValue({
-      isTrackable: true, courseMentor: false, courseCreator: true
-    });
-    component.showCreateBatch();
-    expect(component.isTrackable).toBeTruthy();
-    expect(component.courseCreator).toBeTruthy();
-    expect(component.courseMentor).toBeFalsy();
+    spyOn(component, 'showCreateBatch');
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    component.ngOnInit();
+    expect(component.showCreateBatch).toHaveBeenCalled();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.allowBatchCreation).toBeFalsy();
+    expect(component.viewBatch).toBeFalsy();
   });
 });
