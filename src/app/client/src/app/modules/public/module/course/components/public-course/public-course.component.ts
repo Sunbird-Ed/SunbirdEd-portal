@@ -228,7 +228,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private fetchPageData() {
-    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
     const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
