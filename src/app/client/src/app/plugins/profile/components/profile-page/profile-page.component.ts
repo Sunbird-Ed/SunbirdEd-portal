@@ -237,7 +237,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       const certificateInfo = course.issuedCertificates[0];
       if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
-          this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          }
         }, error => {
           this.downloadPdfCertificate(certificateInfo);
         });
