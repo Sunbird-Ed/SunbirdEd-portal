@@ -230,15 +230,6 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
       hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
-    if (filters.channel) {
-      const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
-      _.forEach(filters.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'name': value});
-        channelIds.push(data.identifier);
-      });
-      filters.channel = channelIds;
-    }
     const option: any = {
       source: 'web',
       name: 'Course',
@@ -284,6 +275,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
         facetsList.channel = this.utilService.removeDuplicates(_.get(orgDetails, 'content'), 'identifier');
         this.facets = this.updateFacetsData(facetsList);
+        this.getFilters({filters: this.selectedFilters});
         this.initFilters = true;
         if (!this.carouselMasterData.length) {
           return; // no page section
@@ -333,6 +325,19 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public getFilters(filters) {
     this.selectedFilters = filters.filters;
+    if (this.selectedFilters.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(this.selectedFilters.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'identifier': value});
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        this.selectedFilters.channel = channelIds;
+      }
+    }
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

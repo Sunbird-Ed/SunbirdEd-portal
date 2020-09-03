@@ -28,6 +28,15 @@ export class GlobalSearchSelectedFilterComponent {
   }
 
   private updateRoute() {
+    if (this.selectedFilters.channel) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(this.selectedFilters.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'name': value});
+        channelIds.push(data.identifier);
+      });
+      this.selectedFilters.channel = channelIds;
+    }
     this.router.navigate([], {
       queryParams: this.selectedFilters,
       relativeTo: this.activatedRoute.parent
