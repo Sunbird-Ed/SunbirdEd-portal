@@ -1,5 +1,5 @@
 
-import { throwError as observableThrowError, of as observableOf, Observable, combineLatest } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BatchDetailsComponent } from './batch-details.component';
