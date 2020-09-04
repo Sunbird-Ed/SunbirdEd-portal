@@ -667,6 +667,46 @@ export const contentListWithHoverData = [
   }
 ];
 
+export const duplicateData = {
+  'purpose': [
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    },
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    }
+  ],
+  'channel': [
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'diksha_ntptest_org',
+      'slug': 'disha_ntptest'
+    },
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'First Org',
+      'slug': 'firstorg'
+    }
+  ]
+};
+
+export const nonDuplicateData = {
+  'purpose': [
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    }
+  ],
+  'channel': [
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'diksha_ntptest_org',
+      'slug': 'disha_ntptest'
+    }
+  ]
+};
 export const contentHierarchyDateSet1 = {
   before: {
     mimeType: 'application/vnd.ekstep.content-collection',
