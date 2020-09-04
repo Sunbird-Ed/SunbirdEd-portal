@@ -100,7 +100,7 @@ describe('SbDatatableComponent', () => {
     expect(component.search).toHaveBeenCalled();
   });
 
-  it('should call clearSearch', () => {
+  it('should call downloadCSVFile', () => {
     component.columns = TableData.columns;
     component.tableData = TableData.responseData;
     component.downloadCSVFile();
