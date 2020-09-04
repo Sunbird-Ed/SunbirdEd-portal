@@ -347,7 +347,173 @@ resourceBundle : {
         'slug': 'cbse'
       }
     ]
+  },
+  facetsList: {
+    'gradeLevel': [
+      {
+        'name': 'class 9',
+        'count': 4
+      }
+    ],
+    'publisher': [
+      {
+        'name': 'concepts understanding',
+        'count': 1
+      }
+    ],
+    'subject': [
+      {
+        'name': 'skills',
+        'count': 1
+      }
+    ],
+    'channel': [
+      {
+        'identifier': '01272777697873100812',
+        'orgName': 'diksha_ntptest_org',
+        'slug': 'disha_ntptest'
+      }
+    ],
+    'contentType': [
+      {
+        'name': 'practicals',
+        'count': 1
+      }
+    ],
+    'medium': [
+      {
+        'name': 'tamil',
+        'count': 1
+      }
+    ],
+    'board': [
+      {
+        'name': 'mock board',
+        'count': 4
+      }
+    ],
+  },
+  updatedFacetsList: [
+    {
+      index: '3',
+      label: 'class',
+      placeholder: 'selectClass',
+      name: 'gradeLevel',
+      values: [
+        {
+          'name': 'class 9',
+          'count': 4
+        }
+      ]
+    },
+    {
+      index: '5',
+      label: 'publisher',
+      placeholder: 'selectPublisher',
+      name: 'publisher',
+      values: [
+        {
+          'name': 'concepts understanding',
+          'count': 1
+        }
+      ]
+    },
+    {
+      index: '4',
+      label: 'subject',
+      placeholder: 'selectSubject',
+      name: 'subject',
+      values: [
+        {
+          'name': 'skills',
+          'count': 1
+        }
+      ]
+    },
+    {
+      index: '1',
+      label: 'orgname',
+      placeholder: 'orgname',
+      name: 'channel',
+      values: [
+        {
+          'identifier': '01272777697873100812',
+          'orgName': 'diksha_ntptest_org',
+          'name': 'diksha_ntptest_org',
+          'slug': 'disha_ntptest'
+        }
+      ]
+    },
+    {
+      index: '6',
+      label: 'contentType',
+      placeholder: 'selectContentType',
+      name: 'contentType',
+      values: [
+        {
+          'name': 'practicals',
+          'count': 1
+        }
+      ]
+    },
+    {
+      index: '2',
+      label: 'medium',
+      placeholder: 'selectMedium',
+      name: 'medium',
+      values: [
+        {
+          'name': 'tamil',
+          'count': 1
+        }
+      ]
+    },
+    {
+      index: '1',
+      label: 'boards',
+      placeholder: 'selectBoard',
+      name: 'board',
+      values: [
+        {
+          'name': 'mock board',
+          'count': 4
+        }
+      ]
+    }
+  ],
+  getFiltersInput: {
+    'status': 'FETCHED',
+    'filters': {
+      'selectedTab': 'course',
+      'channel': [
+        'CBSE'
+      ]
+    }
+  },
+  getFiltersFacets: [
+    {
+      'index': '1',
+      'label': 'Organization Name',
+      'placeholder': 'Organization Name',
+      'values': [
+        {
+          'identifier': '0128325322816552960',
+          'orgName': 'CBSE',
+          'slug': 'cbse',
+          'name': 'CBSE'
+        },
+
+      ],
+      'name': 'channel'
+    }
+  ],
+  getFiltersOutput: {
+    "selectedTab": "course",
+    "channel": [
+      "CBSE"
+    ]
   }
+
 };
 
 export const custOrgDetails = {

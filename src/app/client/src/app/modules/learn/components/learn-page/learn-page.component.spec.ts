@@ -28,15 +28,29 @@ describe('LearnPageComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = '/learn';
   }
+
   const resourceBundle = {
-    'messages': {
-      'fmsg': {},
-      'emsg': {},
-      'stmsg': {}
+    messages: {
+      fmsg: {},
+      emsg: {},
+      stmsg: {}
     },
-    'frmelmnts': {
-      'lbl': {
-        'mytrainings': 'My Trainings'
+    frmelmnts: {
+      lbl: {
+        mytrainings: 'My Trainings',
+        boards: 'boards',
+        selectBoard: 'selectBoard',
+        medium: 'medium',
+        selectMedium: 'selectMedium',
+        class: 'class',
+        selectClass: 'selectClass',
+        subject: 'subject',
+        selectSubject: 'selectSubject',
+        publisher: 'publisher',
+        selectPublisher: 'selectPublisher',
+        contentType: 'contentType',
+        selectContentType: 'selectContentType',
+        orgname: 'orgname'
       }
     },
     languageSelected$: of({})
@@ -269,6 +283,28 @@ it('should redo layout on render', () => {
     component.ngOnInit();
     component.redoLayout();
     expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
+  });
+
+  it('should get processed facets data', () => {
+    const facetsData = component.updateFacetsData(Response.facetsList);
+    expect(facetsData).toEqual(Response.updatedFacetsList);
+  });
+
+  it('should redo layout if config not present', () => {
+    component.layoutConfiguration = null;
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'redoLayoutCSS').and.returnValue('redoLayoutCSS');
+    component.redoLayout();
+    expect(component.FIRST_PANEL_LAYOUT).toEqual('redoLayoutCSS');
+    expect(component.SECOND_PANEL_LAYOUT).toEqual('redoLayoutCSS');
+  });
+
+  it('should update channels on getting the filters', () => {
+    component.facets = Response.facets;
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters(Response.getFiltersInput);
+    expect(component.selectedFilters).toEqual(Response.getFiltersOutput);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
   });
 
 });
