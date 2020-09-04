@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, ValidationErrors } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormService, OtpService, SearchService, TncService, UserService } from '@sunbird/core';
 import {
   IUserData,
   NavigationHelperService,
@@ -7,16 +10,12 @@ import {
   ToasterService,
   UtilService
 } from '@sunbird/shared';
-import { ProfileService } from './../../services';
-import { FormBuilder, Validators, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
-import * as _ from 'lodash-es';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
-import { UserService, FormService, SearchService, TncService, OtpService } from '@sunbird/core';
-import { takeUntil, distinctUntilChanged, debounceTime } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
+import { IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import { FieldConfig } from 'common-form-elements';
-import { defer } from 'lodash';
+import * as _ from 'lodash-es';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ProfileService } from './../../services';
 
 @Component({
   selector: 'app-submit-teacher-details',
@@ -29,40 +28,26 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   showSuccessModal = false;
   userProfile: any;
   formAction: string;
-  public unsubscribe = new Subject<void>();
-  allTenants: any;
-  allDistricts: any;
-  userDetailsForm: FormGroup;
-  sbFormBuilder: FormBuilder;
-  enableSubmitBtn = false;
-  showDistrictDivLoader = false;
+  unsubscribe = new Subject<void>();
   selectedState;
   selectedDistrict;
-  tenantControl: any;
-  districtControl: any;
   forChanges = {
     prevPersonaValue: '',
     prevTenantValue: '',
     prevPhoneValue: '',
     prevEmailValue: ''
   };
-  formData;
   showLoader = true;
   submitInteractEdata: IInteractEventEdata;
   submitDetailsInteractEdata: IInteractEventEdata;
   cancelInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  pageId = 'profile-read';
-  udiseObj;
-  teacherObj;
-  schoolObj;
   instance: string;
   showTncPopup = false;
   tncLatestVersion: any;
   termsAndConditionLink: any;
   otpData;
   isOtpVerificationRequired = false;
-  prepopulatedValue = { 'declared-email': '', 'declared-phone': '' };
   validationType = {
     'declared-phone': {
       isVerified: false,
@@ -73,7 +58,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       isVerificationRequired: false
     }
   };
-  personaList: any;
   formGroupObj = {};
   declaredDetails: any;
   tenantPersonaForm;
@@ -86,14 +70,19 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   isTenantPersonaFormValid = false;
   otpConfirm;
 
-  constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-    public profileService: ProfileService, formBuilder: FormBuilder, private telemetryService: TelemetryService,
-    public userService: UserService, public formService: FormService, public router: Router,
-    public searchService: SearchService, private activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService, public otpService: OtpService,
-    public tncService: TncService, public utilService: UtilService) {
-    this.sbFormBuilder = formBuilder;
-  }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private telemetryService: TelemetryService,
+    public resourceService: ResourceService,
+    public toasterService: ToasterService,
+    public profileService: ProfileService,
+    public userService: UserService,
+    public formService: FormService,
+    public router: Router,
+    public navigationHelperService: NavigationHelperService,
+    public otpService: OtpService,
+    public tncService: TncService,
+    public utilService: UtilService) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
@@ -109,11 +98,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           this.forChanges.prevPersonaValue = _.get(this.declaredDetails, 'persona');
           this.forChanges.prevTenantValue = _.get(this.declaredDetails, 'orgId');
         }
-        this.formGroupObj['persona'] = new FormControl(null, Validators.required);
-        this.formGroupObj['tenants'] = new FormControl(null, Validators.required);
-        this.userDetailsForm = this.sbFormBuilder.group(this.formGroupObj);
-        this.getPersona();
-        this.getTenants();
         this.getPersonaTenant();
         this.getLocations();
         this.showLoader = false;
@@ -154,7 +138,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         subtype: this.formAction,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         uri: this.activatedRoute.snapshot.data.telemetry.uri,
-        duration: this.navigationhelperService.getPageLoadTime()
+        duration: this.navigationHelperService.getPageLoadTime()
       }
     });
   }
@@ -163,114 +147,18 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.submitInteractEdata = {
       id: 'submit-teacher-details',
       type: 'click',
-      pageid: this.pageId
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.cancelInteractEdata = {
       id: `cancel-${this.formAction}-teacher-details`,
       type: 'click',
-      pageid: this.pageId
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.submitDetailsInteractEdata = {
       id: `teacher-details-submit-success`,
       type: 'click',
-      pageid: this.pageId
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-  }
-
-  initializeFormFields() {
-    for (const key of this.formData) {
-      const validation = this.setValidations(key);
-      if (key.visible && !_.includes(['state', 'district', 'name'], key.name)) {
-        this.formGroupObj[key.code] = new FormControl(null, validation);
-        if (this.formAction === 'update' && this.forChanges.prevTenantValue === this.userDetailsForm.controls.tenants.value) {
-          this.formGroupObj[key.code].setValue(this.declaredDetails.info[key.code]);
-        }
-      }
-    }
-    this.userDetailsForm = this.sbFormBuilder.group(this.formGroupObj);
-    this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
-    this.setFormData();
-    this.showLoader = false;
-    this.enableSubmitButton();
-  }
-
-  getPersona() {
-    this.profileService.getPersonas().subscribe((personas) => {
-      this.personaList = personas[0].range;
-      const declaredPersona = _.get(this.declaredDetails, 'persona');
-      if (declaredPersona && this.formAction === 'update') {
-        this.forChanges.prevPersonaValue = declaredPersona;
-        this.userDetailsForm.controls['persona'].setValue(declaredPersona);
-      }
-    });
-  }
-
-  getTenants() {
-    this.profileService.getTenants().subscribe((tenants) => {
-      this.allTenants = tenants[0].range;
-      this.onTenantChange();
-      const declaredTentant = _.get(this.declaredDetails, 'orgId');
-      if (declaredTentant && this.formAction === 'update') {
-        this.forChanges.prevTenantValue = declaredTentant;
-        this.userDetailsForm.controls['tenants'].setValue(declaredTentant);
-      }
-    });
-  }
-  setValidators(key) {
-    this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
-    this.userDetailsForm.controls[key + 'Verified'].setValue(true);
-  }
-
-  setFormData() {
-    const fieldType = ['declared-email', 'declared-phone'];
-    for (let index = 0; index < fieldType.length; index++) {
-      const key = fieldType[index];
-      if (this.formAction === 'update') {
-        this.prepopulatedValue[key] = this.declaredDetails.info[key];
-      } else {
-        const profileKey = key === 'declared-email' ? 'email' : 'phone';
-        const prevValue = key === 'declared-email' ? this.forChanges.prevEmailValue : this.forChanges.prevPhoneValue;
-        this.prepopulatedValue[key] = this.userProfile[profileKey] || prevValue;
-      }
-      if (this.prepopulatedValue[key]) {
-        this.userDetailsForm.controls[key].setValue(this.prepopulatedValue[key]);
-        if (key === 'declared-phone' && this.prepopulatedValue[key].includes('**')) {
-          this.userDetailsForm.get([key]).setValidators(Validators.pattern(''));
-          this.userDetailsForm.get([key]).updateValueAndValidity();
-        }
-        this.setValidators(key);
-        this.validationType[key].isVerified = true;
-      }
-      const keyControl = this.userDetailsForm.controls[key];
-      let userFieldValue;
-      if (this.prepopulatedValue[key]) {
-        userFieldValue = this.prepopulatedValue[key];
-      }
-      keyControl.valueChanges.pipe(debounceTime(400), distinctUntilChanged()).subscribe((newValue) => {
-        newValue = newValue.trim();
-        if (key === 'declared-phone') {
-          const field = this.formData.find((e) => e.code === 'declared-phone');
-          this.userDetailsForm.get([key]).setValidators(this.setValidations(field));
-          this.userDetailsForm.get([key]).updateValueAndValidity();
-        }
-        if (userFieldValue === newValue && keyControl.status === 'VALID') {
-          this.validationType[key].isVerified = true;
-          this.validationType[key].isVerificationRequired = false;
-          this.setValidators(key);
-          return;
-        }
-        if (newValue && keyControl.status === 'VALID') {
-          this.userDetailsForm.addControl(key + 'Verified', new FormControl('', Validators.required));
-          this.userDetailsForm.controls[key + 'Verified'].setValue('');
-          this.validationType[key].isVerified = false;
-          this.validationType[key].isVerificationRequired = true;
-        } else {
-          this.validationType[key].isVerified = false;
-          this.validationType[key].isVerificationRequired = false;
-          this.userDetailsForm.removeControl(key + 'Verified');
-        }
-      });
-    }
   }
 
   generateTelemetry(fieldType) {
@@ -282,7 +170,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       edata: {
         id: `validate-${fieldType}-${this.formAction}-teacher-details`,
         type: 'click',
-        pageid: this.pageId
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
     this.telemetryService.interact(interactData);
@@ -306,17 +194,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  onVerificationSuccess(data) {
+  onVerificationSuccess(event) {
     this.setOtpValidation(false);
-    // const fieldType = this.getFieldType(data);
-    // this.validationType[fieldType].isVerified = true;
-    // this.userDetailsForm.controls[fieldType + 'Verified'].setValue(true);
-    // this.validationType[fieldType].isVerificationRequired = false;
-    // if (fieldType === 'declared-phone') {
-    //   this.forChanges.prevPhoneValue = this.userDetailsForm.controls[fieldType].value;
-    // } else {
-    //   this.forChanges.prevEmailValue = this.userDetailsForm.controls[fieldType].value;
-    // }
     this.otpConfirm.next(true);
     this.otpConfirm.complete();
   }
@@ -356,30 +235,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     return otpData;
   }
 
-  setValidations(data) {
-    const returnValue = [];
-    if (_.get(data, 'required')) {
-      returnValue.push(Validators.required);
-    }
-    _.forEach(_.get(data, 'validation'), (validationData) => {
-      switch (validationData.type) {
-        case 'minlength':
-          returnValue.push(Validators.minLength(validationData.value));
-          break;
-        case 'maxlength':
-          returnValue.push(Validators.maxLength(validationData.value));
-          break;
-        case 'pattern':
-          returnValue.push(Validators.pattern(validationData.value));
-          break;
-        case 'email':
-          returnValue.push(Validators.email);
-          break;
-      }
-    });
-    return returnValue;
-  }
-
   getLocations() {
     _.map(this.userProfile.userLocations, (locations) => {
       if (locations.type === 'state') {
@@ -391,46 +246,16 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  enableSubmitButton() {
-    this.userDetailsForm.valueChanges.subscribe(val => {
-      this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
-    });
-  }
-
-  onTenantChange() {
-    this.tenantControl = this.userDetailsForm.get('tenants');
-    this.tenantControl.valueChanges.subscribe(
-      (data: string) => {
-        if (_.get(this.tenantControl, 'value')) {
-          this.profileService.getTeacherDetailForm(this.formAction, _.get(this.tenantControl, 'value')).subscribe((teacherForm) => {
-            this.formData = teacherForm;
-            this.initializeFormFields();
-          });
-        }
-      });
-  }
-
   getUpdateTelemetry() {
     const fieldsChanged = [];
-    /*     if (this.forChanges.prevPersonaValue !== _.get(this.userDetailsForm, 'value.persona')) { fieldsChanged.push('Persona'); }
-        if (this.forChanges.prevTenantValue !== _.get(this.tenantControl, 'value.tenant')) { fieldsChanged.push('Tenant'); }
-        if (this.declaredDetails && this.formData) {
-          for (const key of this.formData) {
-            if (!_.includes(['state', 'district', 'name'], key.name) &&
-              this.declaredDetails.info[key.code] !== this.userDetailsForm.controls[key.code].value) {
-              fieldsChanged.push(key.label);
-            }
-          }
-        } */
-
     if (this.forChanges.prevPersonaValue !== _.get(this.tenantPersonaLatestFormValue, 'persona')) { fieldsChanged.push('Persona'); }
-    if (this.forChanges.prevTenantValue !== _.get(this.declaredLatestFormValue, 'value.tenant')) { fieldsChanged.push('Tenant'); }
+    if (this.forChanges.prevTenantValue !== _.get(this.tenantPersonaLatestFormValue, 'tenant')) { fieldsChanged.push('Tenant'); }
     if (this.declaredDetails && _.get(this.declaredLatestFormValue, 'children.externalIds')) {
       const userDeclaredValues = _.get(this.declaredLatestFormValue, 'children.externalIds');
-      for (const key of userDeclaredValues) {
-        if (!_.includes(['state', 'district', 'name'], key.name) &&
-          this.declaredDetails.info[key.code] !== this.userDetailsForm.controls[key.code].value) {
-          fieldsChanged.push(key.label);
+      for (const [key, value] of Object.entries(userDeclaredValues)) {
+        if (!_.includes(['state', 'district', 'name'], key) &&
+          this.declaredDetails.info[key] !== this.declaredLatestFormValue.children.externalIds[key]) {
+          fieldsChanged.push(key);
         }
       }
     }
@@ -438,7 +263,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const updateInteractEdata: IInteractEventEdata = {
       id: 'update-teacher-details',
       type: 'click',
-      pageid: this.pageId
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     if (!_.isEmpty(fieldsChanged)) {
       updateInteractEdata['extra'] = { fieldsChanged };
@@ -449,68 +274,17 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   closeSuccessModal() {
     this.modal.deny();
     this.showSuccessModal = false;
-    this.router.navigate(['/profile']);
+    this.navigateToProfile();
   }
 
-  isPersonaChanged() {
-    return this.forChanges.prevPersonaValue !== this.userDetailsForm.controls.persona.value;
-  }
-
-  isTenantChanged() {
-    return this.forChanges.prevTenantValue !== this.userDetailsForm.controls.tenants.value;
-  }
-
-  getOperation() {
-    let operation;
-    if (this.formAction === 'update' && (this.isTenantChanged() || this.isPersonaChanged())) {
-      operation = 'remove';
-    } else {
-      operation = this.formAction === 'submit' ? 'add' : 'edit';
-    }
-    return operation;
-  }
-
-  onSubmitForm() {
-    this.enableSubmitBtn = false;
-    const declaredInfo = {};
-    this.formData.map((field) => {
-      const fieldValue = this.userDetailsForm.value[field.code] || false;
-      if (field.code && fieldValue && !_.includes(['state', 'district', 'name', 'tnc'], field.name)) {
-        Object.assign(declaredInfo, { [field.code]: fieldValue });
-      }
-    });
-    const operation = this.getOperation();
-    const data = {
-      'declarations': [
-        {
-          'operation': operation === 'remove' ? 'add' : operation,
-          'userId': this.userService.userid,
-          'orgId': _.get(this.userDetailsForm, 'value.tenants'),
-          'persona': _.get(this.userDetailsForm, 'value.persona'),
-          'info': declaredInfo
-        }
-      ]
-    };
-    if (operation === 'remove') {
-      data.declarations.push({
-        'operation': operation,
-        'userId': this.userService.userid,
-        'orgId': _.get(this.declaredDetails, 'orgId'),
-        'persona': _.get(this.declaredDetails, 'persona'),
-        'info': this.declaredDetails.info
-      });
-    }
-    this.updateProfile(data);
-  }
 
   updateProfile(data) {
     this.profileService.declarations(data).pipe(takeUntil(this.unsubscribe)).subscribe(res => {
-      this.enableSubmitBtn = true;
       if (this.formAction === 'update') {
         this.toasterService.success(this.resourceService.messages.smsg.m0037);
         this.navigateToProfile();
       } else {
-        if (_.get(this.userDetailsForm, 'value.tnc')) {
+        if (_.get(this.declaredLatestFormValue, 'tnc')) {
           this.logAuditEvent();
         }
         this.showSuccessModal = true;
@@ -537,57 +311,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/profile']);
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   getPersonaTenant() {
     this.profileService.getPersonaTenantForm().pipe(takeUntil(this.unsubscribe)).subscribe(response => {
       this.selectedTenant = (_.get(this.userProfile, 'declarations[0].orgId')) || '';
@@ -601,7 +324,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       });
 
       this.tenantPersonaForm = response;
-      console.log('Response', response);
       if (this.selectedTenant) {
         this.getTeacherDetailsFormApi();
       }
@@ -623,7 +345,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   linkClicked(event) {
-    console.log('Event link', event);
     this.showTncPopup = true;
   }
 
@@ -635,8 +356,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       }
       if (event.children.externalIds['declared-state'] && this.selectedStateCode !== _.get(event, 'children.externalIds.declared-state')) {
         this.selectedStateCode = event.children.externalIds['declared-state'];
-        // const selectedState = this.getStateIdFromCode(this.selectedStateCode);
-        // this.getTeacherDetailsFormApi(selectedState && selectedState.id, true);
       }
     }
   }
@@ -651,8 +370,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   getTeacherDetailsFormApi() {
     this.profileService.getSelfDeclarationForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
-      console.log('Response', formConfig);
-      // this.translateLabels(formConfig as any);
       this.initializeFormData(formConfig);
     }, error => {
       console.error('Unable to fetch form', error);
@@ -740,7 +457,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
 
 
-  mobileVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialMobileVal, telemetryData?): any {
+  mobileVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialMobileVal): any {
     return (marker: string, trigger: HTMLElement) => {
       if (marker === 'MOBILE_OTP_VALIDATION') {
         return async (control: FormControl) => {
@@ -752,9 +469,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
               const that = this;
               this.otpConfirm = new Subject();
               trigger.onclick = (async () => {
-                if (telemetryData) {
-                  // this.generateTelemetryInteract(telemetryData);
-                }
                 try {
                   that.generateOTP('declared-phone', control.value);
                   const isOtpVerified: boolean = await that.otpConfirm.toPromise();
@@ -764,7 +478,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
                     resolve({ asyncValidation: 'error' });
                   }
                 } catch (e) {
-                  console.log(e);
+                  console.error(e);
                 }
               }).bind(this);
               return;
@@ -777,12 +491,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  emailVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialEmailVal, telemetryData?): any {
+  emailVerificationAsyncFactory(formElement: FieldConfig<any>, profile: any, initialEmailVal): any {
     return (marker: string, trigger: HTMLElement) => {
       if (marker === 'EMAIL_OTP_VALIDATION') {
         return async (control: FormControl) => {
-          console.log('initialEmailVal', initialEmailVal);
-          console.log('control', control);
           if ((control && !control.value) || (initialEmailVal && initialEmailVal === control.value)) {
             return null;
           }
@@ -791,9 +503,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
               const that = this;
               this.otpConfirm = new Subject();
               trigger.onclick = (async () => {
-                if (telemetryData) {
-                  // this.generateTelemetryInteract(telemetryData);
-                }
                 try {
                   that.generateOTP('declared-email', control.value);
                   const isOtpVerified: boolean = await that.otpConfirm.toPromise();
@@ -815,8 +524,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       return async () => null;
     };
   }
-
-
 
   async submit() {
     if (!this.declaredLatestFormValue || !this.tenantPersonaLatestFormValue) {
@@ -840,7 +547,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     declarations.push(this.getDeclarationReqObject(operation, declaredDetails, this.tenantPersonaLatestFormValue));
 
     const data = { declarations };
-    console.log('declaration', declarations);
     this.updateProfile(data);
   }
 
@@ -890,5 +596,13 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
         this.translateLabels(config.children as FieldConfig<any>[]);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+    if (_.get(this.modal, 'deny')) {
+      this.modal.deny();
+    }
   }
 }

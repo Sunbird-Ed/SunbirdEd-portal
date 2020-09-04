@@ -8,38 +8,39 @@
     <div *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
+
     <div *ngIf="!showLoader">
       <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm"
-        (initialize)="tenantPersonaFormValueChanges($event && $event.value); tenantPersonaFormStatusChanges($event);"
+        (initialize)="tenantPersonaFormValueChanges($event?.value); tenantPersonaFormStatusChanges($event);"
         (valueChanges)="tenantPersonaFormValueChanges($event)" (statusChanges)="tenantPersonaFormStatusChanges($event)">
       </sb-form>
 
-      <sb-form *ngIf="teacherDetailsForm && teacherDetailsForm.length" [config]="teacherDetailsForm"
+      <sb-form *ngIf=" teacherDetailsForm?.length" [config]="teacherDetailsForm"
         (valueChanges)="declarationFormValueChanges($event)" (statusChanges)="declarationFormStatusChanges($event)"
         (linkClicked)="linkClicked($event)">
       </sb-form>
-    </div>
 
-    <div class="teacher-buttons text-right">
-      <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
-        [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
-        class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
-        (click)="submit(); showEditModal = !showEditModal">
-        {{resourceService?.frmelmnts?.btn?.submit}}
-      </button>
-      <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
-        [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
-        class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
-        (click)="submit(); showEditModal = !showEditModal">
-        {{resourceService?.frmelmnts?.btn?.update}}
-      </button>
+      <div class="teacher-buttons text-right">
+        <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.submit}}
+        </button>
+        <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.update}}
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- information submitted modal in TEACHER Profile-->
 <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
-  class="sb-modal sb-success" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal" #modal>
+  class="sb-modal sb-success" appBodyScroll (dismissed)="closeSuccessModal()" #modal>
   <div class="sb-modal-header font-weight-normal">
     {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
   </div>
@@ -54,8 +55,7 @@
   </div>
 </sui-modal>
 
-<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp
-  *ngIf="showTncPopup">
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" *ngIf="showTncPopup">
 </app-tnc-popup>
 
 <sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
