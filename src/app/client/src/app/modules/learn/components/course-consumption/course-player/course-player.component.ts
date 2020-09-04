@@ -436,37 +436,32 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
+      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
-        this.validateBatchDate(this.courseHierarchy.batches);
+        this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
       } else if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 2) {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
-        if (allBatchList && allBatchList.length === 1) {
-          this.validateBatchDate(allBatchList);
-        } else {
-          this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
-        }
-      } else {
-        this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+         this.batchMessage = this.validateBatchDate(allBatchList);
       }
     }
   }
 
   validateBatchDate(batch) {
+    let batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);
       const batchenrollEndDate = batch[0].enrollmentEndDate ? new Date(batch[0].enrollmentEndDate) : null;
       if (batchStartDate > currentDate) {
-        this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate)
+        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate)
       } else if (batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
-        this.batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate)
-      } else {
-        this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate)
       }
     }
+    return batchMessage
   }
 
   isEnrollmentAllowed(enrollmentEndDate) {

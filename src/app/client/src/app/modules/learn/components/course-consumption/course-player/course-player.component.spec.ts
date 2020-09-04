@@ -749,28 +749,6 @@ describe('CoursePlayerComponent', () => {
     expect(component.validateBatchDate).toHaveBeenCalledWith([featureBatch[0]]);
   });
 
-  it('shold call navigateToPlayerPage case 3', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
-    spyOn(component, 'validateBatchDate').and.stub();
-    component.enrolledCourse = false;
-    component.hasPreviewPermission = false;
-    component.courseHierarchy.batches = featureBatch;
-    component.navigateToPlayerPage({});
-    expect(component.validateBatchDate).toHaveBeenCalledWith([featureBatch[0]]);
-  });
-
-  it('shold call navigateToPlayerPage case 4', () => {
-    const courseConsumptionService = TestBed.get(CourseConsumptionService);
-    component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
-    component.enrolledCourse = false;
-    component.hasPreviewPermission = false;
-    component.courseHierarchy.batches = batchs.splice(0, 2);
-    component.navigateToPlayerPage({});
-    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
-    expect(component.batchMessage).toBe(message);
-  });
-
   it('shold call validateBatchDate with future batch', () => {
     const batch = [{
       batchId: "0130936282663157765",
@@ -783,8 +761,7 @@ describe('CoursePlayerComponent', () => {
       status: 1
     }];
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch[0]['startDate']);
-    component.validateBatchDate(batch);
-    expect(component.batchMessage).toBe(message);
+    expect(component.validateBatchDate(batch)).toBe(message);
   });
 
   it('shold call validateBatchDate with expired batch', () => {
@@ -799,8 +776,7 @@ describe('CoursePlayerComponent', () => {
       status: 1
     }];
     const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
-    component.validateBatchDate(batch);
-    expect(component.batchMessage).toBe(message);
+    expect( component.validateBatchDate(batch)).toBe(message);
   });
 
   it('shold call validateBatchDate with ongoing batch', () => {
@@ -815,8 +791,7 @@ describe('CoursePlayerComponent', () => {
       status: 1
     }];
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
-    component.validateBatchDate(batch);
-    expect(component.batchMessage).toBe(message);
+    expect(component.validateBatchDate(batch)).toBe(message);
   });
 
   it('should navigate to the player page with, first non-consumed content', () => {
