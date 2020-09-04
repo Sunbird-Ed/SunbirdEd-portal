@@ -198,7 +198,7 @@ describe('ResourceComponent', () => {
     spyOn(localStorage, 'getItem').and.returnValue('teacher');
     component.formData = Response.formData;
     component.getFilters(data);
-    expect(component.selectedFilters).toEqual({audience: [ 'instructor' ]});
+    expect(component.selectedFilters).toEqual({audience: [ 'Teacher' ]});
   });
 
   it('should call getChannelId for non custodian org', () => {
