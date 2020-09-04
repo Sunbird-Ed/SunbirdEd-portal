@@ -11,14 +11,14 @@ const routes: Routes = [
   {
     path: '', component: DashboardSidebarComponent, canActivate: [AuthGuard],
     data: {
-      roles: 'courseBatchRoles',
+      roles: 'createBatchRole',
       telemetry: { env: 'Course', pageid: 'course-dashboard', type: 'view', object: { ver: '1.0', type: 'course' } }
     },
     children: [
       {
         path: 'course-stats', component: CourseDashboardComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'courseBatchRoles',
+          roles: 'createBatchRole',
           telemetry: {
             env: telemetryEnv, pageid: 'course-stats', uri: '/dashboard/course-stats',
             type: 'view', object: { ver: '1.0', type: 'course' }
@@ -28,7 +28,7 @@ const routes: Routes = [
       {
         path: 'batches', component: CourseProgressComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'courseBatchRoles',
+          roles: 'createBatchRole',
           telemetry: {
             env: telemetryEnv, pageid: 'batches', uri: '/dashboard/batches',
             type: 'view', object: { ver: '1.0', type: 'course' }
@@ -38,7 +38,7 @@ const routes: Routes = [
       {
         path: 'certificates', component: ReIssueCertificateComponent, canActivate: [AuthGuard],
         data: {
-          roles: 'courseBatchRoles',
+          roles: 'createBatchRole',
           telemetry: {
             env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
             type: 'view', object: { ver: '1.0', type: 'course' }
