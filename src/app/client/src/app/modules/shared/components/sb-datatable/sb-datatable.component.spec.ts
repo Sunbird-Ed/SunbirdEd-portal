@@ -35,7 +35,8 @@ describe('SbDatatableComponent', () => {
     expect(JSON.stringify(component.tableData)).toBe(JSON.stringify(component.data))
   });
 
-  it('should call search', () => {
+  it('should call search with search fields', () => {
+    component.searchFields = TableData.searchFields;
     spyOn(component, 'filterData').and.stub();
     component.data = TableData.responseData;
     component.searchData = 'Nellore';
@@ -43,11 +44,25 @@ describe('SbDatatableComponent', () => {
     expect(component.filterData).toHaveBeenCalled();
   });
 
-  it('should call search else case', () => {
+  it('should call search with search fields else case', () => {
+    component.searchFields = TableData.searchFields;
     component.data = TableData.responseData;
     component.searchData = '';
     component.search()
     expect(component.tableData).toBe(component.data);
+  })
+
+  it('should call search without search fields', () => {
+    component.searchFields =[];
+    component.data = TableData.responseData;
+    component.searchData = 70;
+    component.search()
+    expect(component.tableData).toEqual([{
+      state: 'Andhra Pradesh',
+      district: 'Guntur',
+      noofEnrollments: 70,
+      noofCompletions: 30
+    }]);
   })
 
   it('should call filterData', () => {
