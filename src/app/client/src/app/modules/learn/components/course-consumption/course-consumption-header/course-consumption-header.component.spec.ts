@@ -313,4 +313,21 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
+  it ('should return user is coursementor', () => {
+    CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'Yes';
+    component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    component.ngOnInit();
+    expect(component.isTrackable).toBeTruthy();
+    expect(component.viewDashboard).toBeTruthy();
+  });
+
+  it ('should return user is not coursementor', () => {
+    CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'No';
+    component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    component.ngOnInit();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.viewDashboard).toBeFalsy();
+  });
 });
