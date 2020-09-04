@@ -4,7 +4,9 @@ import {
   contentListWithHoverData,
   contentHierarchyDateSet1,
   processData,
-  processedOutputData
+  processedOutputData,
+  duplicateData,
+  nonDuplicateData
 } from './util.service.spec.data';
 import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -274,8 +276,13 @@ describe('UtilService', () => {
   }));
 
   it('should return process unique data', inject([UtilService], (service: UtilService) => {
-    const data = service.removeDuplicates([{'x': 1}, {'x': 2}, {'x': 1}], 'x');
+    const data = service.removeDuplicateData([{'x': 1}, {'x': 2}, {'x': 1}], 'x');
     expect(data).toEqual([{'x': 1}, {'x': 2}]);
+  }));
+
+  it('should return process unique data and return non unique data', inject([UtilService], (service: UtilService) => {
+    const data = service.removeDuplicate(duplicateData);
+    expect(data).toEqual(nonDuplicateData);
   }));
 
 });

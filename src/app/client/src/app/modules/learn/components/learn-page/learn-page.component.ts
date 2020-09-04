@@ -265,7 +265,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType };
     }
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      const facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
+      let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
       const rootOrgIds = this.processOrgData(facetsList.channel);
       this.orgDetailsService.searchOrgDetails({
         filters: {isRootOrg: true, rootOrgId: rootOrgIds},
@@ -273,7 +273,8 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }).subscribe((orgDetails) => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        facetsList.channel = this.utilService.removeDuplicates(_.get(orgDetails, 'content'), 'identifier');
+        facetsList.channel = _.get(orgDetails, 'content');
+        facetsList = this.utilService.removeDuplicate(facetsList);
         this.facets = this.updateFacetsData(facetsList);
         this.getFilters({filters: this.selectedFilters});
         this.initFilters = true;
