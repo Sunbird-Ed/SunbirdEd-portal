@@ -1,0 +1,95 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SbDatatableComponent } from './sb-datatable.component';
+import { TableData } from './sb-datatable.component.spec.data';
+import { ExportToCsv } from 'export-to-csv';
+import * as _ from 'lodash-es';
+
+describe('SbDatatableComponent', () => {
+  let component: SbDatatableComponent;
+  let fixture: ComponentFixture<SbDatatableComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SbDatatableComponent],
+      imports: [FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SbDatatableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should call onchanges', () => {
+    component.data = TableData.responseData;
+    component.ngOnChanges();
+    expect(JSON.stringify(component.tableData)).toBe(JSON.stringify(component.data))
+  });
+
+  it('should call search', () => {
+    spyOn(component, 'filterData').and.stub();
+    component.data = TableData.responseData;
+    component.searchData = 'Nellore';
+    component.search()
+    expect(component.filterData).toHaveBeenCalled();
+  });
+
+  it('should call search else case', () => {
+    component.data = TableData.responseData;
+    component.searchData = '';
+    component.search()
+    expect(component.tableData).toBe(component.data);
+  })
+
+  it('should call filterData', () => {
+    const data = TableData.responseData;
+    component.searchFields = TableData.searchFields;
+    component.searchData = 'Nellore';
+    expect(component.filterData(data)).toEqual([{
+      state: 'Andhra Pradesh',
+      district: 'Nellore',
+      noofEnrollments: 100,
+      noofCompletions: 25
+    }]);
+  });
+
+  it('should call sort ASC', () => {
+    component.tableData = TableData.responseData;
+    component.sortOrder = 'desc';
+    component.sort('district');
+    expect(component.sortField).toBe('district');
+    expect(component.tableData).toEqual(TableData.sortData_ASC)
+  });
+
+  it('should call sort DESC', () => {
+    component.tableData = TableData.responseData;
+    component.sortOrder = 'asc';
+    component.sort('district');
+    expect(component.sortField).toBe('district');
+    expect(component.tableData).toEqual(TableData.sortData_DESC)
+  });
+
+  it('should call clearSearch', () => {
+    spyOn(component, 'search').and.stub();
+    component.clearSearch()
+    expect(component.searchData).toBe('');
+    expect(component.search).toHaveBeenCalled();
+  });
+
+  it('should call clearSearch', () => {
+    component.columns = TableData.columns;
+    component.tableData = TableData.responseData;
+    component.downloadCSVFile();
+    expect(component.csvExporter instanceof ExportToCsv).toBeTruthy();
+  });
+
+});

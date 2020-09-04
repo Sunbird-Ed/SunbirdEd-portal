@@ -167,6 +167,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
+  isDownloadReport = false;
+  stateWiseReportDate = [];
+  columns =[];
+  searchFields = [];
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -460,6 +464,53 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   * course id and timeperiod
   */
   ngOnInit() {
+    // ---- Mock data Start-----
+    this.stateWiseReportDate = [
+      {
+        state: 'Andhra Pradesh',
+        district: 'Chittoor',
+        noofEnrollments: 20,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Vishakapatanam',
+        noofEnrollments: 50,
+        noofCompletions: 25
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Guntur',
+        noofEnrollments: 70,
+        noofCompletions: 30
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Kadapa',
+        noofEnrollments: 65,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Nellore',
+        noofEnrollments: 100,
+        noofCompletions: 25
+      },
+      {
+        state: 'Telengana',
+        district: 'Hydrabad',
+        noofEnrollments: 45,
+        noofCompletions: 15
+      }
+    ];
+    this.isDownloadReport = true;
+    this.columns = [
+      { name: 'State', isSortable: true, prop: 'state' },
+      { name: 'District', isSortable: true,  prop: 'district' },
+      { name: 'No. of Enrollment', isSortable: true,  prop: 'noofEnrollments'},
+      { name: 'No. of Completions', isSortable: true,  prop: 'noofCompletions' }]
+    this.searchFields = ['state', 'district'];
+    // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;

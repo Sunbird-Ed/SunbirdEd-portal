@@ -1,0 +1,31 @@
+<div class="datatable-content" >
+<div class="d-flex flex-ai-center flex-jc-space-between pb-24">
+  <div class="sb-search-box small no-btn">
+    <div class="input-div relative">
+      <i class="search icon"></i>
+      <input class="sb-search-input" type="text" [(ngModel)]="searchData" (ngModelChange)="search()" placeholder="Search..." />
+      <i class="close icon" (click)="clearSearch()"></i>
+      <div *ngIf="showLoader" class="sb-loader"></div>
+    </div>
+    <button class="sb-btn sb-btn-normal">Search</button>
+  </div>
+  <div (click)="downloadCSVFile()" *ngIf="downloadCSV" class="d-flex flex-ai-center">
+    <img src="../../assets/images/download-icon.svg" class="mr-8"> Download as CSV
+  </div>
+</div>
+<div class="sb-table-responsive-div">
+  <table class="sb-table sb-table-sortable sb-table-striped sb-table-fixed sb-table-course-dashboard">
+    <thead>
+      <tr>
+        <th (click)="sort(column.prop)" class="sb-sort-icon ascending descending" *ngFor="let column of columns">
+          {{column.name}}
+        </th>
+      </tr>
+    </thead>
+    <tr *ngFor="let data of tableData">
+      <td *ngFor="let column of columns">{{data[column['prop']]}}</td>
+    </tr>
+  </table>
+  <div *ngIf="tableData.length === 0" class="request-download-text p-16">Request response to download here</div>
+</div>
+</div>
