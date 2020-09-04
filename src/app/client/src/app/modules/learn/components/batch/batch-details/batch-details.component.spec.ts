@@ -12,7 +12,6 @@ import { CourseBatchService, CourseProgressService } from './../../../services';
 import {userSearch, allBatchDetails, enrolledBatch } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
-import * as _ from 'lodash-es';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
