@@ -155,4 +155,57 @@ describe('CourseConsumptionService', () => {
     const previousPageUrl = service.getCoursePagePreviousUrl;
     expect(service.coursePagePreviousUrl).toEqual(previousPageUrl);
   });
+
+  it('should return user is a creator', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
+    const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(true);
+  });
+
+  it('should return  user is not a creator', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
+    const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(false);
+  });
+
+  it('should return user can viewdashboard', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    const response = service.canViewDashboard(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(true);
+  });
+
+  it('should return  user can not viewdashboard', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
+    spyOn(service, 'canCreateBatch').and.returnValue(false);
+    const response = service.canViewDashboard(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(false);
+  });
+
+  it('should return user can  addcert', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(true);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(true);
+  });
+
+  it('should return  user can not addcert', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOnProperty(service['userService'], 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99');
+    spyOn(service['permissionService'], 'checkRolesPermissions').and.returnValue(false);
+    spyOn(service, 'canCreateBatch').and.returnValue(false);
+    const response = service.canCreateBatch(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(false);
+  });
+
 });

@@ -11,7 +11,7 @@
 
 
   <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
-    <a class="close" (click)="closePopup()"><i class="d-flex icon-svg icon-svg--xxs icon-close">
+    <a class="close" appTelemetryInteract [telemetryInteractEdata]="closeButtonIntractEdata" (click)="closePopup()"><i class="d-flex icon-svg icon-svg--xxs icon-close">
       <svg class="icon icon-svg--warning">
         <use xlink:href="./assets/images/sprite.svg#close"></use>
       </svg>

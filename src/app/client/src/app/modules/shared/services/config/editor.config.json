@@ -113,7 +113,8 @@
                     "ExplanationReadingMaterial",
                     "LearningActivity",
                     "PreviousBoardExamPapers",
-                    "LessonPlanResource"
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
@@ -318,6 +319,15 @@
             {
                 "type": "LessonPlanResource",
                 "label": "LessonPlanResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
@@ -721,7 +731,8 @@
                     "ExplanationReadingMaterial",
                     "LearningActivity",
                     "PreviousBoardExamPapers",
-                    "LessonPlanResource"
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
@@ -936,6 +947,15 @@
             {
                 "type": "LessonPlanResource",
                 "label": "LessonPlanResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],

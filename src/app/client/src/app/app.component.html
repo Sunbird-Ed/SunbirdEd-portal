@@ -19,7 +19,7 @@
                        (closeJoyThemePopup)="onCloseJoyThemePopup()"></app-joy-theme-popup>
 </div>
 <div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
-  <lib-chat-window class="computer only" [inputValues]="botObject"></lib-chat-window>
+  <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"

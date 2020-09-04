@@ -9,7 +9,8 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const {decodeToken} = require('./jwtHelper');
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
+const { ProxyLogger } = require("@project-sunbird/logger/decorator");
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,

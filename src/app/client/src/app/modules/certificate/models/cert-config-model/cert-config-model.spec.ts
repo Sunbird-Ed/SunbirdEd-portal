@@ -60,14 +60,6 @@ describe('CertConfigModel', () => {
 
   describe('when drop-down is selected for "issue to" field', () => {
     const classInstance = new CertConfigModel();
-    it('should return "userObject" with empty rootOrgId if recipient is selected as "All"', () => {
-      expect(classInstance.processDropDownValues({ issueTo: 'All' }, 'SOME_ROOT_ORG_ID'))
-      .toEqual(jasmine.objectContaining({
-        user: {
-          rootOrgId: ''
-        }
-      }));
-    });
 
     it('should return "user" object with  rootOrgId if recipient is selected as "My state teacher"', () => {
       expect(classInstance.processDropDownValues({ issueTo: 'My state teacher' }, 'SOME_ROOT_ORG_ID'))

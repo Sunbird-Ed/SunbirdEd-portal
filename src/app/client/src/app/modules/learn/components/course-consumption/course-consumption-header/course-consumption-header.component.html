@@ -75,27 +75,25 @@
             (click)="addActivityToGroup(); this.logTelemetry('add-to-group', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->
-        <div *ngIf="!showAddGroup">
-          <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
-            <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+        <div *ngIf="!showAddGroup && isTrackable">
+          <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
+            <button  [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
               (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
           </div>
 
-          <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !courseMentor">
+          <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" [disabled]="showResumeCourse"
               (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
           </div>
 
-        <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !courseMentor">
+        <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0">
           <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
             [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
             <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#play-continue"></use>
             </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
         </div>
-
-          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && !router.url.includes('/dashboard')"
-            appPermission [permission]="dashboardPermission">
+          <div class="ml-auto text-right mt-8" *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
               [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
               class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">

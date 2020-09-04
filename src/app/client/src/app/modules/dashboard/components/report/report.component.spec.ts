@@ -375,4 +375,26 @@ describe('ReportComponent', () => {
     component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
   });
 
+  it('should handle markdown update stream', done => {
+    const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));
+    component['reportConfig'] = {};
+    const input = {
+      data: '# Hello',
+      type: 'examples'
+    };
+    component.markdownUpdated$.subscribe(res => {
+      expect(res).toBeDefined();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('daily_metrics', {
+        reportconfig: {
+          dataset: {
+            'examples': 'IyBIZWxsbw=='
+          }
+        }
+      });
+      done();
+    });
+    component.markdownUpdated$.next(input);
+  });
+
 });

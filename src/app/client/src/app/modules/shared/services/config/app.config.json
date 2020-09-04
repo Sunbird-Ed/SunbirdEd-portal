@@ -1370,8 +1370,8 @@
     "PAGE_LIMIT": 10
   },
   "userTypeMapping" : {
-    "student": ["learner"],
-    "teacher": ["instructor"],
-    "other": ["learner", "instructor"] 
+    "student": ["Student"],
+    "teacher": ["Teacher"],
+    "other": ["Student", "Teacher"] 
   }
 }

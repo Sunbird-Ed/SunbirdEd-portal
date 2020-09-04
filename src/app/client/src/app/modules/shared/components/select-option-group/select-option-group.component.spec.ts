@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectOptionGroupComponent } from './select-option-group.component';
 import * as _ from 'lodash-es';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('SelectOptionGroupComponent', () => {
   let component: SelectOptionGroupComponent;
@@ -28,7 +29,13 @@ describe('SelectOptionGroupComponent', () => {
   const event = {label: 'Publisher', selectedOption: '012519677821', value: 'channel'};
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, SuiTabsModule, FormsModule, ReactiveFormsModule],
+      imports: [SuiModule, SuiTabsModule, FormsModule, ReactiveFormsModule,
+        TranslateModule.forRoot({
+           loader: {
+              provide: TranslateLoader,
+              useClass: TranslateFakeLoader
+           }
+        })],
       declarations: [SelectOptionGroupComponent]
     })
       .compileComponents();

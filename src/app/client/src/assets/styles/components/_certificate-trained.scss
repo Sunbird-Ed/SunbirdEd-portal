@@ -31,29 +31,33 @@
   }
   @include respond-below(md){
     flex-direction: column;
-    align-items: flex-start !important;
+    // align-items: flex-start !important;
     &__item {
       margin: calculateRem(8px) 0px;
     }
   }
   &__item {
     text-align: center;
+    @include respond-below(md) {
+      text-align: center !important;
+    }
     &:first-child{
-      flex:0 0 50%;
+      flex: 1 1 50%;
       text-align: left;
       @include respond-below(sm) {
         flex:0 0 100%;
       }
     }
     &:nth-child(2){
-      flex:0 0 20%;
+      flex:1 1 20%;
     }
     &:nth-child(3){
-      flex:0 0 20%;
+      flex:1 1 20%;
     }
     &:last-child {
-      text-align: right;
-      flex:0 0 10%;
+      // text-align: right;
+      flex: 1 1 10%;
+      min-width: calculateRem(172px);
     }
   }
 

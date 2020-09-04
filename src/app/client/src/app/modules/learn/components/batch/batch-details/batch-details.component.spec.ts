@@ -114,6 +114,7 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.userService.setUserId('123');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
@@ -127,7 +128,6 @@ describe('BatchDetailsComponent', () => {
       sort_by: { createdDate: 'desc' }
     };
     component.ngOnInit();
-    expect(component.courseMentor).toBeTruthy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
     expect(component.showBatchList).toBeTruthy();
@@ -178,19 +178,23 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}};
     component.showCreateBatch();
+    expect(component.isTrackable).toBe(true);
     expect(component.allowBatchCreation).toBe(true);
+    expect(component['courseConsumptionService'].canViewDashboard).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}});
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
-    spyOnProperty(userService, 'userid', 'get').and.returnValue('123456789');
-    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}};
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(true);
     component.showCreateBatch();
-    expect(component.showCreateBatch()).toBeFalsy();
+    expect(component.allowBatchCreation).toBe(false);
+    expect(component.isTrackable).toBe(false);
+    expect(component['courseConsumptionService'].canCreateBatch).not.
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}});
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
@@ -249,5 +253,16 @@ describe('BatchDetailsComponent', () => {
     };
     component.ngOnDestroy();
     expect(component.batchListModal.deny).toHaveBeenCalled();
+  });
+
+  it ('should call showcreatebatch()', () => {
+    component.courseHierarchy = {trackable: { enabled: 'Yes'} };
+    spyOn(component, 'showCreateBatch');
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    component.ngOnInit();
+    expect(component.showCreateBatch).toHaveBeenCalled();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.allowBatchCreation).toBeFalsy();
+    expect(component.viewBatch).toBeFalsy();
   });
 });
