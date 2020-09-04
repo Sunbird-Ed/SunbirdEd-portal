@@ -1,5 +1,5 @@
 <!-- Join Course Table -->
-<sui-modal *ngIf="showJoinModal && !courseMentor" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+<sui-modal *ngIf="showJoinModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #batchListModal>
   <div class="sb-modal-header font-weight-normal">
     {{resourceService?.frmelmnts?.lbl?.selectBatch}}
@@ -17,7 +17,7 @@
           {{userNames[batch.createdBy].lastName}}</div>
         <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
           (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
-          *ngIf="!courseMentor">{{resourceService?.frmelmnts?.lbl?.join}}</button>
+         >{{resourceService?.frmelmnts?.lbl?.join}}</button>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
 </sui-modal>
 
 <!-- create batch -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor">
+<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="isTrackable && viewBatch">
   <sui-accordion-panel [isOpen]="true">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
@@ -100,7 +100,7 @@
         <div *ngIf="showError">
           <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
-        <div class="batch-deatils__button text-right">
+        <div class="batch-deatils__button text-right" *ngIf="isTrackable">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
             *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
@@ -111,7 +111,7 @@
 </sui-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo && !courseMentor">
+<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>

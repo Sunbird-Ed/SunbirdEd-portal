@@ -284,6 +284,6 @@ describe('ExploreComponent', () => {
     spyOn(component, 'getPageData').and.returnValues(RESPONSE.mockCurrentPageData);
     spyOn(localStorage, 'getItem').and.returnValue('teacher');
     component.getFilters(data);
-    expect(component.selectedFilters).toEqual({audience: [ 'instructor' ]});
+    expect(component.selectedFilters).toEqual({audience: [ 'Teacher' ]});
   });
 });

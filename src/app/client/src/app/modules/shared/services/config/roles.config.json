@@ -46,6 +46,7 @@
        "alluploadsRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "upForReviewRole":["CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_REVIEWER"],
        "courseBatchRoles":["COURSE_MENTOR"],
+       "createBatchRole":["CONTENT_CREATOR", "COURSE_MENTOR"],
        "flaggedRole":["FLAG_REVIEWER"],
        "limitedPublishingRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
