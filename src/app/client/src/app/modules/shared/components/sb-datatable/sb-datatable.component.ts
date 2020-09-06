@@ -2,6 +2,7 @@ import { filter } from 'rxjs/operators';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'sb-datatable',
@@ -15,6 +16,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() columns;
   @Input() downloadCSV;
   @Input() sortable;
+  @Input() name;
   public tableData = [];
   public searchData;
   public sortOrder = 'asc';
@@ -25,6 +27,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
   ngOnChanges() {
@@ -68,8 +71,9 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
 
   downloadCSVFile() {
+    this.name = `${this.name}_${dayjs().format('YYYY-MM-DD_HH_mm')}`; 
     const options = {
-      filename: 'State wise report',
+      filename: this.name,
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalSeparator: '.',

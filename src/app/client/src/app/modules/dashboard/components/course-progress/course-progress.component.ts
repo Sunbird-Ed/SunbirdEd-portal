@@ -171,6 +171,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   stateWiseReportDate = [];
   columns =[];
   searchFields = [];
+  fileName: string;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -465,6 +466,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   */
   ngOnInit() {
     // ---- Mock data Start-----
+    this.fileName = 'State wise report';
     this.stateWiseReportDate = [
       {
         state: 'Andhra Pradesh',

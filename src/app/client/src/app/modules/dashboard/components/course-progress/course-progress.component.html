@@ -221,7 +221,7 @@
             <a class="item" suiTabHeader="2">Detailed Wise Report</a>
         </div>
         <div class="ui segment state-report" suiTabContent="1">
-         <sb-datatable [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+         <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
         </div>
         <div class="ui segment detailed-report" suiTabContent="2">
           <div class='ui stackable grid mt-0'>
