@@ -4,7 +4,7 @@ import { RecoverAccountService } from './../../services';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -39,10 +39,6 @@ describe('SelectAccountIdentifierComponent', () => {
     snapshot = {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
-      },
-      queryParams: {
-        client_id: 'portal', redirectUri: '/learn',
-        state: 'state-id', response_type: 'code', version: '3'
       }
     };
     queryParamsMock = { contentId: 'do_112270494168555520130' };
@@ -85,34 +81,5 @@ describe('SelectAccountIdentifierComponent', () => {
     spyOn(component, 'navigateToNextStep').and.callThrough();
     component.handleGenerateOtp();
     expect(component.navigateToNextStep).toHaveBeenCalled();
-  });
-
-  it('should call setSelectIdentifier', () => {
-    component.setSelectIdentifier('123456')
-    expect(component.disableFormSubmit).toBeFalsy();
-    expect(component.selectedAccountIdentifier).toBe('123456')
-  });
-  it('should call submitSelection', () => {
-    component.isP2CaptchaEnabled = 'false';
-    spyOn(component, 'handleGenerateOtp').and.callThrough();
-    component.submitSelection();
-    expect(component.handleGenerateOtp).toHaveBeenCalled();
-  });
-  it('should call resolved', () => {
-    spyOn(component, 'handleGenerateOtp').and.callThrough();
-    component.resolved('test');
-    expect(component.handleGenerateOtp).toHaveBeenCalled();
-  });
-  it('should call handleError', () => {
-    component.errorCount= 2;
-    component.handleError('error');
-    expect(component.errorCount).toBe(3);
-  });
-  it('should call handleError error case', () => {
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error')
-    component.errorCount= 0;
-    component.handleError('test');
-    expect(toasterService.error).toHaveBeenCalled();
   });
 });
