@@ -19,24 +19,7 @@ export const mockManageData = {
         'MULTIMATCH': 0,
         'ORGEXTIDMISMATCH': 0,
         'accounts_failed': 0
-    },
-        geoSummary: [
-        {
-            districtName: 'qwe',
-            schools: 10,
-            index: 1,
-            blocks: 1
-        }
-    ],
-    validatedUserSummary: [
-        {
-            index : 1,
-            districtName:'',
-            blocks: 10, 
-            schools: 10,
-            registered: true
-        }
-    ]
+    }
 };
 
 export const mockRes = {
