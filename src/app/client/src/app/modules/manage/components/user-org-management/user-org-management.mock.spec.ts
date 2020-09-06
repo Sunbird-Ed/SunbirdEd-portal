@@ -20,7 +20,7 @@ export const mockManageData = {
         'ORGEXTIDMISMATCH': 0,
         'accounts_failed': 0
     },
-    geoSummary: [
+        geoSummary: [
         {
             districtName: 'qwe',
             schools: 10,

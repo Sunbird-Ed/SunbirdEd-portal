@@ -309,7 +309,7 @@ describe('UserOrgManagementComponent', () => {
     expect(component.showUploadUserModal).toBeFalsy();
   });
 
-  it('should call openModel', () => {
+   it('should call openModel', () => {
     component.showUploadUserModal = true;
     component.openModel();
     expect(component.showUploadUserModal).toBeFalsy();
@@ -318,17 +318,14 @@ describe('UserOrgManagementComponent', () => {
   it('should call openModel', () => {
     component.openModal();
     expect(component.showModal ).toBeFalsy();
-    setTimeout(()=>{
-      expect(component.showModal ).toBeTruthy();
-    }, 600)
   })
-  it('should call geoTableView', () => {
+  it('should call openModel', () => {
     component.geoSummary = mockManageData.geoSummary;
     component.geoButtonText  = 'View Details';
     component.geoTableView();
     expect(component.geoButtonText ).toBe('View less'); 
   })
-  it('should call teachersTableView', () => {
+  it('should call openModel', () => {
     component.validatedUserSummary = mockManageData.validatedUserSummary;
     component.teachersButtonText   = 'View Details';
     component.teachersTableView();
