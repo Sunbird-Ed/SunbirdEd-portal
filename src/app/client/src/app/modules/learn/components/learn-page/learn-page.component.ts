@@ -325,20 +325,21 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getFilters(filters) {
-    this.selectedFilters = _.cloneDeep(filters && filters.filters || {});
-    if (this.selectedFilters.channel && this.facets) {
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
-      _.forEach(this.selectedFilters.channel, (value, index) => {
+      _.forEach(filterData.channel, (value, index) => {
         const data = _.find(facetsData.values, {'identifier': value});
         if (data) {
           channelIds.push(data.name);
         }
       });
       if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
-        this.selectedFilters.channel = channelIds;
+        filterData.channel = channelIds;
       }
     }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element && element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
