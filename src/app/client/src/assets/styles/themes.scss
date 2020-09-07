@@ -752,9 +752,9 @@ html[layout='joy'] {
   }
   .toc-box-shadow {
     box-shadow:none !important;
-    .sb-slider-pills-container .sb-pills-container {
-      padding: calculateRem(16px) 0 !important;
-    }
+    // .sb-slider-pills-container .sb-pills-container {
+    //   padding: calculateRem(16px) 0 !important;
+    // }
   }
   .training-relevant, .sbt-certified-course, .sb-no-course-found {
     background: var(--sbt-compt-bg) !important;
@@ -806,9 +806,13 @@ html[layout='joy'] {
       border-bottom-right-radius: var(--sbt-bradius-24);
     }
   }
-
+  .sb-toc-child-item {
+    background: var(--white);
+  }
+  .side-toc-content.chapter-box {
+    background-color: var(--sbt-compt-bg);
+  }
   .sb-toc-child-item, .side-toc-content.chapter-box {
-    background-color: var(--white);
     box-shadow: var(--sbt-box-shadow-6px);
     padding: calculateRem(16px);
     display: block;
@@ -816,10 +820,17 @@ html[layout='joy'] {
     height: 100%;
     margin-bottom: calculateRem(16px);
     border-radius: var(--sbt-bradius-24);
+    .toc-child-item, .child-content-padding {
+        padding: calculateRem(16px) calculateRem(8px);
+        background: var(--white);
+        border-radius: calculateRem(24px);
+        box-shadow: var(--sbt-box-shadow-6px);
+        margin-bottom: calculateRem(16px);
+      }
   }
   // Assesment Player
 
-  .back-btn-container, .textbook-container, .cc-player__list {
+  .back-btn-container, .textbook-container {
     background: var(--sbt-compt-bg) !important;
   }
 
@@ -837,27 +848,55 @@ html[layout='joy'] {
     margin: 0 2% calculateRem(24px) 2%;
   }
 
-  .cc-player__list .main-side-toc-content, .sb-toc-credits {
-    .sbaccordion {
-      box-shadow: var(--sbt-box-shadow-6px) !important;
-    }
-  }
+//   .cc-player__list .main-side-toc-content, .sb-toc-credits {
+//     .sbaccordion {
+//       box-shadow: var(--sbt-box-shadow-6px) !important;
+//     }
+//   }
 
   .cc-player__list {
     border-radius: var(--sbt-bradius-24);
-    padding: calculateRem(16px) !important;
+    padding: 0 !important;
+    background: transparent !important;
+    box-shadow: none;
+    // padding: calculateRem(16px) !important;
+
+    .sb-grade-pills-container {
+        padding: calculateRem(24px) calculateRem(16px) !important;
+        border-radius: calculateRem(24px);
+    }
+
     .main-side-toc-content {
       box-shadow: none !important;
       max-height: 100%;
       overflow-y: inherit;
+
+      .sbaccordion {
+        .sbaccordion__panel-header, .sbaccordion__panel-content {
+          background: var(--sbt-compt-bg) !important;
+        }
+        .sbchapter {
+          background: var(--white);
+          padding: calculateRem(16px) calculateRem(8px);
+          border-radius: calculateRem(24px);
+          box-shadow: var(--sbt-box-shadow-6px) !important;
+          margin-bottom: calculateRem(16px);
+        }
+
+      }
+
     }
   
     .main-side-toc-content, .sb-toc-credits {
       margin-top: calculateRem(16px);
-      .sbaccordion__panel-header, .sbaccordion__panel-content {
-        background: var(--white) !important;
-      }
     }
+
+    .sb-toc-credits {
+        .sbaccordion__panel-header, .sbaccordion__panel-content {
+          background: var(--sbt-compt-bg) !important;
+        }
+      }
+
     .sb-toc-credits .credits-section {
       padding: 0;
       word-break: break-word;

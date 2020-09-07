@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'update/batch/:batchId', component: UpdateCourseBatchComponent, canActivate: [AuthGuard],
     data: {
       telemetry: { env: telemetryEnv, pageid: 'batch-edit', type: 'view', object: { ver: '1.0', type: 'batch' } },
-      roles: 'courseBatchRoles'
+      roles: 'createBatchRole'
     }
   },
   {
@@ -28,7 +28,7 @@ const routes: Routes = [
         env: telemetryEnv, pageid: 'batch-create', type: 'view', mode: 'create',
         object: { ver: '1.0', type: 'batch' }
       },
-      roles: 'courseBatchRoles'
+      roles: 'createBatchRole'
     }
   }
 ];

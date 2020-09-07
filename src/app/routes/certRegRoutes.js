@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { getUserCertificates, addTemplateToBatch } = require('./../helpers/certHelper');
 const { logError } = require('./../helpers/utilityService');
+const validate = require('uuid-validate');
 
 
 var certRegServiceApi = {
@@ -50,9 +51,14 @@ module.exports = function (app) {
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        logger.debug({ msg: `${req.url} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
+        logger.debug(req.context, { msg: `${req.url} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
         currentUser = _.get(req, 'body.request.filters.createdBy');
+        const userId = _.get(req, 'body.request.filters.userName');
+        if (validate(userId)) {
+          req.body.request.filters['userId'] = userId;
+          delete req.body.request.filters['userName'];
+        }
         delete req.body.request.filters['courseId'];
         delete req.body.request.filters['createdBy'];
         return require('url').parse(certRegURL + 'user/v1/search').path;
@@ -81,7 +87,7 @@ module.exports = function (app) {
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
-        logger.debug({ msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
+        logger.debug(req.context, { msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
         // Only if loggedIn user & content creator is same, then only he can re-issue the certificate
         if (_.get(req.body, 'request.createdBy') === req.session['userId']) {
           return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reIssue=true').path;
@@ -113,7 +119,7 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         const batch = _.pick(_.get(req, 'body.request'), ['batchId', 'courseId', 'template']);
         req.body.request = {batch: batch};
-        logger.debug({msg: `${req.url} is called with requestBody: ${JSON.stringify(req.body)}`});
+        logger.debug(req.context, {msg: `${req.url} is called with requestBody: ${JSON.stringify(req.body)}`});
         return require('url').parse(certRegURL + certRegServiceApi.addTemplate).path;
       },
       userResDecorator:  (proxyRes, proxyResData, req, res) => {

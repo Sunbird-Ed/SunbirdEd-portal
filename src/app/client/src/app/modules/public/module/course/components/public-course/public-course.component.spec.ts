@@ -235,7 +235,12 @@ describe('PublicCourseComponent', () => {
     spyOn(localStorage, 'getItem').and.returnValue('teacher');
     component.queryParams = {sort_by: 'name', sortType: 'desc'};
     component['fetchPageData']();
-    const option = { source: 'web', name: 'Course', organisationId: '*', filters: { sort_by: 'name', sortType: 'desc', audience: [ 'instructor' ] }, fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType' ], params: { orgdetails: 'orgName,email' } };
+    const option = {
+      source: 'web', name: 'Course', organisationId: '*',
+      filters: { sort_by: 'name', sortType: 'desc', audience: [ 'Teacher' ] },
+      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType' ],
+      params: { orgdetails: 'orgName,email' }
+    };
     expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
   });
 
