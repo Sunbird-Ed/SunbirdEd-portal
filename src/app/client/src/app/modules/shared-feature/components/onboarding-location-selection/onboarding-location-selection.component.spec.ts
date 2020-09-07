@@ -380,4 +380,24 @@ describe('OnboardingLocationSelectionComponent', () => {
     expect(component.processedDeviceLocation).toEqual({ district: mappedDistrictDetails, state: mappedStateDetails });
     expect(component.setStateDistrict).toHaveBeenCalledWith({ district: mappedDistrictDetails, state: mappedStateDetails });
   });
+
+  it('should call onStateChange', () => {
+    component.allStates = onboardingLocationMockData.stateList
+    component.onStateChange()
+    console.log(component.userDetailsForm.get('state').value)
+    component.userDetailsForm.patchValue({state : '1'})
+    expect(component.allDistricts).toBe(null)
+    expect(component.showDistrictDivLoader).toBeTruthy();
+  })
+  it('should call updateUserLocation', () => {
+    component.allStates = onboardingLocationMockData.stateList
+    component.allDistricts = onboardingLocationMockData.districtList
+    component.setStateDistrict({
+      state: onboardingLocationMockData.stateList[1],
+      district: onboardingLocationMockData.districtList[1]
+    });
+    spyOn(component, 'updateLocation')
+    component.updateUserLocation()
+    expect(component.updateLocation).toHaveBeenCalled()
+  })
 });
