@@ -167,7 +167,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   /**
   * To store all the collection details to be shown in collection modal
   */
-  private collectionData: Array<any>;
+  public collectionData: Array<any>;
 
   /**
   * Flag to show/hide loader on first modal
