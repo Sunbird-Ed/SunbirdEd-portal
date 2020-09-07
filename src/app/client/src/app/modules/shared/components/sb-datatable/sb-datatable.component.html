@@ -3,7 +3,7 @@
   <div class="sb-search-box small no-btn">
     <div class="input-div relative">
       <i class="search icon"></i>
-      <input class="sb-search-input" type="text" [(ngModel)]="searchData" (ngModelChange)="search()" placeholder="Search..." />
+      <input class="sb-search-input" type="text" [(ngModel)]="searchData" placeholder="Search..." />
       <i class="close icon" (click)="clearSearch()"></i>
       <div *ngIf="showLoader" class="sb-loader"></div>
     </div>
@@ -22,7 +22,7 @@
         </th>
       </tr>
     </thead>
-    <tr *ngFor="let data of tableData">
+    <tr *ngFor="let data of tableData | filter : searchData: searchFields">
       <td *ngFor="let column of columns">{{data[column['prop']]}}</td>
     </tr>
   </table>

@@ -33,31 +33,31 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.tableData = _.cloneDeep(this.data);
   }
-  search() {
-    if (this.searchFields && this.searchFields.length !== 0) {
-      if (this.searchData) {
-        this.tableData = this.filterData(this.data);
-      } else {
-        this.tableData = this.data
-      }
-    } else {
-      this.tableData = _.filter(this.data, (row) => {
-        return (_.lowerCase(JSON.stringify(row))).includes(_.lowerCase(this.searchData))
-      })
-    }
+  // search() {
+  //   if (this.searchFields && this.searchFields.length !== 0) {
+  //     if (this.searchData) {
+  //       this.tableData = this.filterData(this.data);
+  //     } else {
+  //       this.tableData = this.data
+  //     }
+  //   } else {
+  //     this.tableData = _.filter(this.data, (row) => {
+  //       return (_.lowerCase(JSON.stringify(row))).includes(_.lowerCase(this.searchData))
+  //     })
+  //   }
 
-  }
-  filterData(data) {
-    let resultData = [];
-    _.forEach(data, (row, index) => {
-      _.forEach(this.searchFields, (field) => {
-        if ((_.lowerCase(row[field])).includes(_.lowerCase(this.searchData))) {
-          resultData.push(row)
-        }
-      })
-    })
-    return _.uniqWith(resultData, _.isEqual);;
-  }
+  // }
+  // filterData(data) {
+  //   let resultData = [];
+  //   _.forEach(data, (row, index) => {
+  //     _.forEach(this.searchFields, (field) => {
+  //       if ((_.lowerCase(row[field])).includes(_.lowerCase(this.searchData))) {
+  //         resultData.push(row)
+  //       }
+  //     })
+  //   })
+  //   return _.uniqWith(resultData, _.isEqual);;
+  // }
 
   sort(field) {
     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
@@ -67,7 +67,6 @@ export class SbDatatableComponent implements OnInit, OnChanges {
 
   clearSearch() {
     this.searchData = '';
-    this.search();
   }
 
   downloadCSVFile() {
