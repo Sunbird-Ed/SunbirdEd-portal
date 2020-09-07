@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
-const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
+
+import * as dayjs from 'dayjs';
+import * as relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime)
 
 /**
  * Pipe for date format
- *
  */
 @Pipe({
   name: 'fromNow'
@@ -12,14 +13,15 @@ const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default 
 export class DateFilterXtimeAgoPipe implements PipeTransform {
   /**
    * To create date format pipe
-   *
    * @param {Date} value current Date, string or number
    * @param {string} format format of Date
-   *
    */
-  transform(value: Date | moment.Moment | string | number, format: string): string {
-      const local = moment(value).local().format('YYYY-MM-DD HH:mm:ss');
-      return moment(local).fromNow();
+  transform(value: Date | string | number, format: string): string {
+      const local = dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+      if (dayjs(local).isValid()) {
+        return dayjs(local).fromNow();
+      } else {
+        return 'Invalid date';
+      }
   }
-
 }
