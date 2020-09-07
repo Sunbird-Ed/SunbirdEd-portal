@@ -387,7 +387,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
           });
         },
         (error) => {
-         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
+         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
           console.log(error);
         });
   }

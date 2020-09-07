@@ -382,7 +382,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           });
         },
         (error) => {
-          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
           console.log(error);
         });
   }
