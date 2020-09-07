@@ -323,7 +323,9 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list modal.
   */
   public checkLinkedCollections(modal) {
-    this.deleteModal = modal;
+    if (!_.isUndefined(modal)) {
+      this.deleteModal = modal;
+    }
     this.showCollectionLoader = false;
     if (['Course', 'TextBook', 'Collection', 'LessonPlan'].includes(this.deletingContentType)) {
       this.deleteContent(this.currentContentId);
@@ -369,16 +371,18 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
             board: 'Board',
             channel: 'Tenant Name'
             };
-          this.deleteModal.deny();
+            if (!_.isUndefined(modal)) {
+              this.deleteModal.deny();
+            }
           this.collectionListModal = true;
           },
           (error) => {
-            this.toasterService.error(this.resourceService.messages.emsg.m0014);
+            this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
             console.log(error);
           });
         },
         (error) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0014);
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
           console.log(error);
         });
   }
@@ -405,7 +409,9 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         this.toasterService.error(this.resourceService.messages.fmsg.m0022);
       }
     );
-    this.deleteModal.deny();
+    if (!_.isUndefined(this.deleteModal)) {
+      this.deleteModal.deny();
+    }
   }
 
   /**

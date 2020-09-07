@@ -133,7 +133,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
    /**
   * To store all the collection details to be shown in collection modal
   */
-  private collectionData: Array<any>;
+  public collectionData: Array<any>;
 
   /**
   * Flag to show/hide loader on first modal
@@ -329,7 +329,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list modal.
   */
   public checkLinkedCollections(modal) {
-    this.deleteModal = modal;
+    if (!_.isUndefined(modal)) {
+      this.deleteModal = modal;
+    }
     this.showCollectionLoader = false;
     if (['Course', 'TextBook', 'Collection', 'LessonPlan'].includes(this.deletingContentType)) {
       this.deleteContent(this.currentContentId);
@@ -374,16 +376,18 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
              board: 'Board',
              channel: 'Tenant Name'
              };
-          this.deleteModal.deny();
+             if (!_.isUndefined(this.deleteModal)) {
+              this.deleteModal.deny();
+            }
           this.collectionListModal = true;
           },
           (error) => {
-           this.toasterService.error(this.resourceService.messages.emsg.m0014);
+           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
             console.log(error);
           });
         },
         (error) => {
-         this.toasterService.error(this.resourceService.messages.emsg.m0014);
+         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
           console.log(error);
         });
   }
@@ -410,7 +414,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
             this.toasterService.success(this.resourceService.messages.fmsg.m0022);
           }
         );
-        this.deleteModal.deny();
+        if (!_.isUndefined(this.deleteModal)) {
+          this.deleteModal.deny();
+        }
   }
 
   /**
