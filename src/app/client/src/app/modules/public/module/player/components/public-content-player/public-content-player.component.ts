@@ -200,6 +200,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
             }
           };
           this.router.navigate(['/get/dial/', this.dialCode], navigateOptions);
+        } else if (this.navigationHelperService.getPreviousUrl()) {
+          const prevUrl = this.navigationHelperService.getPreviousUrl().url;
+          this.navigationHelperService.navigateToPreviousUrl(prevUrl);
         } else {
           this.navigationHelperService.navigateToPreviousUrl('/explore');
         }
