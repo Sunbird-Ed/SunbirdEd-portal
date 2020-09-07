@@ -1,3 +1,5 @@
+import { FieldConfigInputType } from 'common-form-elements';
+
 export const mockRes = {
   orgSearch: {
     'id': 'api.org.search',
@@ -268,11 +270,11 @@ export const mockRes = {
           'provider': 'ROOT_ORG',
           'id': 'asd@yopmail.com'
         },
-          {
-            'idType': 'declared-state',
-            'provider': 'ROOT_ORG',
-            'id': '29'
-          }],
+        {
+          'idType': 'declared-state',
+          'provider': 'ROOT_ORG',
+          'id': '29'
+        }],
         'registryId': null,
         'roleList': [{
           'name': 'Content Curation',
@@ -534,92 +536,184 @@ export const mockRes = {
       'label': 'Persona',
       'description': 'Select persona',
       'range': [
-          {
-              'label': 'Teacher',
-              'value': 'teacher',
-              'index': 1
-          },
-          {
-              'label': 'Admin',
-              'value': 'admin',
-              'index': 2
-          },
-          {
-              'label': 'Volunteer',
-              'value': 'volunteer',
-              'index': 3
-          }
+        {
+          'label': 'Teacher',
+          'value': 'teacher',
+          'index': 1
+        },
+        {
+          'label': 'Admin',
+          'value': 'admin',
+          'index': 2
+        },
+        {
+          'label': 'Volunteer',
+          'value': 'volunteer',
+          'index': 3
+        }
       ],
       'index': 1
     }
   ],
   tenantsList: [
     {
-        'code': 'tenants',
-        'name': 'tenants',
-        'label': 'Tenants',
-        'range': [
-            {
-                'label': 'Andhra Pradesh',
-                'value': '01232241426855526450',
-                'index': 1
-            },
-            {
-                'label': 'CBSE',
-                'value': '013016492159606784174',
-                'index': 3
-            }
-        ]
+      'code': 'tenants',
+      'name': 'tenants',
+      'label': 'Tenants',
+      'range': [
+        {
+          'label': 'Andhra Pradesh',
+          'value': '01232241426855526450',
+          'index': 1
+        },
+        {
+          'label': 'CBSE',
+          'value': '013016492159606784174',
+          'index': 3
+        }
+      ]
     }
   ],
   teacherDetailForm: [
-      {
-          'code': 'declared-phone',
-          'dataType': 'number',
-          'name': 'phone',
-          'label': 'Mobile Number',
-          'visible': true,
-          'index': 2
-      },
-      {
-          'code': 'declared-email',
-          'dataType': 'text',
-          'name': 'email',
-          'label': 'Email Address',
-          'visible': true,
-          'index': 3
-      },
-      {
-          'code': 'declared-school-name',
-          'dataType': 'text',
-          'name': 'school',
-          'label': 'Andhra pradesh School name',
-          'visible': true,
-          'index': 4
-      },
-      {
-          'code': 'declared-school-udise-code',
-          'dataType': 'text',
-          'name': 'udiseId',
-          'label': 'Andhra pradesh UDISE ID',
-          'visible': true,
-          'index': 5
-      },
-      {
-          'code': 'declared-ext-id',
-          'dataType': 'text',
-          'name': 'teacherId',
-          'label': 'Andhra pradesh teacher ID',
-          'visible': true,
-          'index': 6
-      },
-      {
-          'code': 'tnc',
-          'dataType': 'text',
-          'name': 'tnc',
-          'description': '',
-          'visible': true,
-          'index': 7
-      }
+    {
+      'code': 'declared-phone',
+      'dataType': 'number',
+      'name': 'phone',
+      'label': 'Mobile Number',
+      'visible': true,
+      'index': 2
+    },
+    {
+      'code': 'declared-email',
+      'dataType': 'text',
+      'name': 'email',
+      'label': 'Email Address',
+      'visible': true,
+      'index': 3
+    },
+    {
+      'code': 'declared-school-name',
+      'dataType': 'text',
+      'name': 'school',
+      'label': 'Andhra pradesh School name',
+      'visible': true,
+      'index': 4
+    },
+    {
+      'code': 'declared-school-udise-code',
+      'dataType': 'text',
+      'name': 'udiseId',
+      'label': 'Andhra pradesh UDISE ID',
+      'visible': true,
+      'index': 5
+    },
+    {
+      'code': 'declared-ext-id',
+      'dataType': 'text',
+      'name': 'teacherId',
+      'label': 'Andhra pradesh teacher ID',
+      'visible': true,
+      'index': 6
+    },
+    {
+      'code': 'tnc',
+      'dataType': 'text',
+      'name': 'tnc',
+      'description': '',
+      'visible': true,
+      'index': 7
+    }
   ],
+  personaTenantForm: [
+    {
+      'code': 'persona',
+      'type': 'select',
+      'templateOptions': {
+        'label': 'I am a',
+        'placeHolder': 'Select persona',
+        'options': [
+          {
+            'value': 'teacher',
+            'label': 'Teacher'
+          },
+          {
+            'value': 'other',
+            'label': 'Other'
+          }
+        ]
+      },
+      'validations': [
+        {
+          'type': 'required',
+          'value': true,
+          'message': 'Persona is required'
+        }
+      ]
+    },
+    {
+      'code': 'tenant',
+      'type': 'select',
+      'templateOptions': {
+        'label': 'with',
+        'placeHolder': 'Select tenants',
+        'options': [
+          {
+            'label': 'Andhra Pradesh',
+            'value': '012320771042492416102'
+          },
+          {
+            'label': 'Assam',
+            'value': '01254289984278528046'
+          },
+          {
+            'label': 'Bihar',
+            'value': '01259339426316288054'
+          }
+        ],
+        'validations': [
+          {
+            'type': 'required',
+            'value': true,
+            'message': 'Persona is required'
+          }
+        ]
+      }
+    }
+  ],
+  phoneConfig: {
+    'code': 'declared-phone',
+    'fieldName': 'Mobile Number',
+    'type': FieldConfigInputType.INPUT,
+    'templateOptions': {
+      'labelHtml': {
+        'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
+        'values': {
+          '$0': 'PHONE_PLACEHOLDER'
+        }
+      },
+      'placeHolder': 'ENTER_PHONE_POPUP_TITLE',
+      'prefix': '+91 -'
+    },
+    'asyncValidation': {
+      'marker': 'MOBILE_OTP_VALIDATION',
+      'message': 'PLEASE_VALIDATE_YOUR_MOBILE_NUMBER',
+      'trigger': 'validate'
+    }
+  },
+  declaredLatestFormValue: {
+    'externalIds': '',
+    'children': {
+      'externalIds': {
+        'declared-phone': '8698645680',
+        'declared-email': 'pdf_test@yopmail.com',
+        'declared-school-name': 'abcd',
+        'declared-school-udise-code': 'cdd',
+        'declared-ext-id': 'cdd'
+      }
+    }
+  },
+  tenantPersonaLatestFormValue: {
+    'persona': 'teacher',
+    'tenant': '01259339426316288054'
+  }
 };

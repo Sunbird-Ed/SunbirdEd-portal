@@ -93,13 +93,13 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.userService.userData$.pipe(takeUntil(this.unsubscribe)).subscribe((user: IUserData) => {
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        this.getLocations();
         if (_.get(this.userProfile, 'declarations.length')) {
           this.declaredDetails = _.get(this.userProfile, 'declarations')[0] || '';
           this.forChanges.prevPersonaValue = _.get(this.declaredDetails, 'persona');
           this.forChanges.prevTenantValue = _.get(this.declaredDetails, 'orgId');
         }
         this.getPersonaTenant();
-        this.getLocations();
         this.showLoader = false;
       }
     });
@@ -325,7 +325,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
       this.tenantPersonaForm = response;
       if (this.selectedTenant) {
-        this.getTeacherDetailsFormApi();
+        this.getTeacherDetailsForm();
       }
     }, error => {
       console.error('Unable to fetch form', error);
@@ -339,7 +339,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     if (_.get(event, 'tenant') && _.get(event, 'persona')) {
       if (!this.selectedTenant || event.tenant !== this.selectedTenant) {
         this.selectedTenant = event.tenant;
-        this.getTeacherDetailsFormApi();
+        this.getTeacherDetailsForm();
       }
     }
   }
@@ -354,7 +354,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       if (!this.selectedStateCode && _.get(event, 'children.externalIds.declared-state')) {
         this.selectedStateCode = event.children.externalIds['declared-state'];
       }
-      if (event.children.externalIds['declared-state'] && this.selectedStateCode !== _.get(event, 'children.externalIds.declared-state')) {
+      if (_.get(event, 'children.externalIds["declared-state"]') && this.selectedStateCode !== _.get(event, 'children.externalIds.declared-state')) {
         this.selectedStateCode = event.children.externalIds['declared-state'];
       }
     }
@@ -368,7 +368,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     this.isDeclarationFormValid = event.isValid;
   }
 
-  getTeacherDetailsFormApi() {
+  getTeacherDetailsForm() {
     this.profileService.getSelfDeclarationForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
       this.initializeFormData(formConfig);
     }, error => {
@@ -387,7 +387,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
           config.templateOptions.labelHtml.values['$1'] = this.selectedState || 'Enter location from Profile page';
           break;
         case 'district':
-          config.templateOptions.labelHtml.values['$1'] = this.selectedState || 'Enter location from Profile page';
+          config.templateOptions.labelHtml.values['$1'] = this.selectedDistrict || 'Enter location from Profile page';
           break;
         case 'externalIds':
           config.children = (config.children as FieldConfig<any>[]).map((childConfig: FieldConfig<any>) => {
@@ -558,44 +558,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
       persona: tenantPersonaDetails.persona,
       info: declaredDetails
     };
-  }
-
-  private translateLabels(fieldConfig: FieldConfig<any>[]) {
-    fieldConfig.forEach((config) => {
-      if (config.templateOptions) {
-        config.templateOptions.label = _.get(config, 'templateOptions.label') ? this.resourceService.frmelmnts.selfDeclaration[config.templateOptions.label] : '';
-        config.templateOptions.placeHolder = config.templateOptions.placeHolder ? this.resourceService.frmelmnts.selfDeclaration[config.templateOptions.placeHolder] : '';
-      }
-
-      if (_.get(config, 'validations.length')) {
-        config.validations.forEach(validation => {
-          validation.message = validation.message ? this.resourceService.frmelmnts.selfDeclaration[validation.message] : '';
-        });
-      }
-
-      if (_.get(config, 'asyncValidation.message')) {
-        config.asyncValidation.message = this.resourceService.frmelmnts.selfDeclaration[config.asyncValidation.message];
-      }
-
-      if (_.get(config, 'templateOptions.labelHtml.values')) {
-        const values = config.templateOptions.labelHtml.values;
-        for (const key in values) {
-          if (values[key]) {
-            if (config.code === 'tnc' && key === '$tnc') {
-              values[key] = _.replace(this.resourceService.frmelmnts.selfDeclaration[values[key]], '{instance}', this.instance);
-            } else if (config.code === 'tnc' && key === '$url') {
-              values[key] = this.userProfile.tncLatestVersionUrl;
-            } else {
-              values[key] = this.resourceService.frmelmnts.selfDeclaration[values[key]];
-            }
-          }
-        }
-      }
-
-      if (config.children && config.children.length) {
-        this.translateLabels(config.children as FieldConfig<any>[]);
-      }
-    });
   }
 
   ngOnDestroy() {
