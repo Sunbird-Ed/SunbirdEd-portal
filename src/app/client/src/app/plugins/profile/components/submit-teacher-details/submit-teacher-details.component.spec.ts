@@ -453,6 +453,13 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     const resp = component['getDeclarationReqObject']('edit', declarationDetails, tenantPersonaDetails);
     expect(resp).toEqual(response);
   });
+  it('should initialize formData', () => {
+    component.formAction = 'update';
+    spyOn<any>(component, 'assignDefaultValue');
+    component.initializeFormData(mockRes.declarationFormConfig);
+    expect(component.teacherDetailsForm).toBeDefined();
+    expect(component['assignDefaultValue']).toHaveBeenCalled();
+  });
   it('should get persona and tenant form details, on success', () => {
     const profileService = TestBed.get(ProfileService);
     component.userProfile.declarations = [
@@ -461,7 +468,7 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
         'orgId': '01259339426316288054',
       }
     ];
-    component.selectedTenant = '01259339426316288054'
+    component.selectedTenant = '01259339426316288054';
     spyOn(profileService, 'getPersonaTenantForm').and.returnValue(of(mockRes.personaTenantForm));
     spyOn(component, 'getTeacherDetailsForm');
     component.getPersonaTenant();
@@ -490,6 +497,30 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     expect(resChildConfig).toEqual(resp);
   });
 
+  it('should define mobile field validation', () => {
+    const resp = component.mobileVerificationAsyncFactory(mockRes.mobileFormElement as any, {}, '');
+    resp('MOBILE_OTP_VALIDATION', { type: 'submit' })({} as any);
+    expect(resp).toBeDefined();
+  });
+
+  it('should define mobile field validation', () => {
+    const resp = component.mobileVerificationAsyncFactory(mockRes.mobileFormElement as any, {}, '');
+    resp('MOBILE_OTP_VALIDATION', { type: 'submit' })({ value: 'test@yopmail.com' } as any);
+    expect(resp).toBeDefined();
+  });
+
+  it('should define email field validation', () => {
+    const resp = component.emailVerificationAsyncFactory(mockRes.mobileFormElement as any, {}, '');
+    resp('EMAIL_OTP_VALIDATION', { type: 'submit' })({} as any);
+    expect(resp).toBeDefined();
+  });
+
+  it('should define mobile field validation', () => {
+    const resp = component.emailVerificationAsyncFactory({} as any, {}, '');
+    resp('EMAIL_OTP_VALIDATION', { type: 'submit' })({ value: 'test@yopmail.com' } as any);
+    expect(resp).toBeDefined();
+  });
+
   it('should update the profile successfully', () => {
     component.declaredLatestFormValue = mockRes.declaredLatestFormValue;
     component.tenantPersonaLatestFormValue = mockRes.tenantPersonaLatestFormValue;
@@ -516,5 +547,17 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     spyOn(toasterService, 'error');
     component.submit();
     expect(toasterService.error).toHaveBeenCalledWith('m0051');
+  });
+
+  it('should call ngOnDestroy', () => {
+    spyOn(component.unsubscribe, 'complete');
+    spyOn(component.unsubscribe, 'next');
+    component.modal = {
+      deny: jasmine.createSpy('deny')
+    };
+    component.ngOnDestroy();
+    expect(component.unsubscribe.complete).toHaveBeenCalled();
+    expect(component.unsubscribe.next).toHaveBeenCalled();
+    expect(component.modal.deny).toHaveBeenCalled();
   });
 });
