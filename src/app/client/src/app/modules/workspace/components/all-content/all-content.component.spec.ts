@@ -149,14 +149,14 @@ describe('AllContentComponent', () => {
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(Response.deleteSuccess));
-      spyOn(component, 'deleteConfirmModal').and.callThrough();
+      spyOn(component, 'deleteContent').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'delete').and.callThrough();
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
       };
-      component.deleteConfirmModal('do_2124645735080755201259');
-      expect(component.deleteConfirmModal).toHaveBeenCalledWith('do_2124645735080755201259');
+      component.deleteContent('do_2124645735080755201259');
+      expect(component.deleteContent).toHaveBeenCalledWith('do_2124645735080755201259');
       workSpaceService.deleteContent(DeleteParam).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');

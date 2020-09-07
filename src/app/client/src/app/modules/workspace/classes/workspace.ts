@@ -4,6 +4,7 @@ import { ResourceService, ServerResponse } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { mergeMap, catchError, map } from 'rxjs/operators';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import {ContentIDParam } from '../../workspace/interfaces/delteparam';
 /**
  * Base class for workspace module
 */
@@ -126,4 +127,17 @@ export class WorkSpace {
         return errorMessage;
     }
 
+    /**
+    * search collection Api call
+    */
+    getLinkedCollections(contentId: ContentIDParam): any {
+       return this.workSpaceService.searchContent(contentId);
+    }
+
+    /**
+    * get channel Api call
+    */
+    getChannelDetails(channelId) {
+        return this.workSpaceService.getChannel(channelId);
+    }
 }
