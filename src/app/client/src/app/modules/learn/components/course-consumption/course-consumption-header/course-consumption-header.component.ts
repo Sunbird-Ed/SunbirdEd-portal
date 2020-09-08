@@ -43,7 +43,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() showAddGroup = false;
   enrolledCourse = false;
   batchId: any;
-  dashboardPermission = ['COURSE_MENTOR'];
+  dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
@@ -55,8 +55,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
-  courseMentor = false;
-
+  // courseMentor = false;
+  // courseCreator = false;
+  isTrackable = false;
+  viewDashboard = false;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -73,11 +75,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
-    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
-    } else {
-      this.courseMentor = false;
-    }
+    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes';
+    this.viewDashboard = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
@@ -253,7 +253,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.goBack();
         this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
       }, error => {
-        console.error('Error while adding activity to the group', error);
         this.goBack();
         this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
       });

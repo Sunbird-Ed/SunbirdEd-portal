@@ -4,8 +4,8 @@ const sunbirdApiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
-const ApiInterceptor = require('sb_api_interceptor')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
+const { ApiInterceptor } = require('sb_api_interceptor')
 const http = require('http');
 const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
@@ -24,7 +24,7 @@ const cacheConfig = {
   ttl: envHelper.sunbird_cache_ttl
 }
 
-const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig)
+const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig, [`${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.KEY_CLOAK_REALM}`])
 
 const decorateRequestHeaders = function (upstreamUrl = "") {
   return function (proxyReqOpts, srcReq) {

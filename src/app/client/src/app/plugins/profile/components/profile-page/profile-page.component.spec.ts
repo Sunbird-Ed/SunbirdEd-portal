@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { Response } from './profile-page.spec.data';
-import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
@@ -36,7 +36,7 @@ describe('ProfilePageComponent', () => {
     };
   }
   class MockDomToImage {
-    toPng() {}
+    toPng() { }
   }
   class MockJsPDF {
     addImage() {
@@ -47,7 +47,7 @@ describe('ProfilePageComponent', () => {
   }
 
   class MockCSModule {
-    getSignedCourseCertificate() { return of({ printUri: '' }) }
+    getSignedCourseCertificate() { return of({ printUri: '' }); }
   }
 
   const resourceBundle = {
@@ -70,7 +70,8 @@ describe('ProfilePageComponent', () => {
         'm0004': 'api failed, please try again'
       },
       'emsg': {
-        'm0012': 'Profile update failed. Try again later'
+        'm0012': 'Profile update failed. Try again later',
+        'm0076': 'No data available to download'
       }
     },
     languageSelected$: observableOf({})
@@ -266,9 +267,9 @@ describe('ProfilePageComponent', () => {
       'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
       'type': 'district',
       'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
-    }]
+    }];
     const locationName = component.getLocationDetails(locationData, 'district');
-    expect(locationName).toBe('MUNGER')
+    expect(locationName).toBe('MUNGER');
   });
   it('should call getLocationDetails error case', () => {
     const locationData = [{
@@ -277,20 +278,20 @@ describe('ProfilePageComponent', () => {
       'id': '53c6e193-1805-4487-9b8d-453d2f08f03e',
       'type': 'district',
       'parentId': '81f85372-618e-46b9-b700-bcf3b8df6e6f'
-    }]
+    }];
     const locationName = component.getLocationDetails(locationData, 'state');
-    expect(locationName).toBeFalsy()
+    expect(locationName).toBeFalsy();
   });
   it('should call toggle', () => {
-    component.roles = ['Book Creator', 'Membership Management', 'Content Creation']
+    component.roles = ['Book Creator', 'Membership Management', 'Content Creation'];
     component.toggle(true);
     expect(component.showMoreRoles).toBeFalsy();
-    expect(component.showMoreRolesLimit).toBe(3)
+    expect(component.showMoreRolesLimit).toBe(3);
   });
   it('should call toggle error case', () => {
     component.toggle(false);
     expect(component.showMoreRoles).toBeTruthy();
-    expect(component.showMoreRolesLimit).toBe(4)
+    expect(component.showMoreRolesLimit).toBe(4);
   });
 
 
@@ -343,5 +344,41 @@ describe('ProfilePageComponent', () => {
     expect(component.selfDeclaredInfo).toEqual(Response.finalDeclarationObjStructure);
   });
 
+  it('should call downloadCert', () => {
+    const certificates = Response.pdfCertificate;
+    spyOn(component, 'downloadPdfCertificate');
+    component.downloadCert(certificates);
+    expect(component.downloadPdfCertificate).toHaveBeenCalled();
+  });
 
+  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
+    spyOn(window, 'open');
+    component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    expect(profileService.downloadCertificates).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(Response.v1DownloadCertResponse.result.signedUrl, '_blank');
+  });
+
+  it('should call downloadPdfCertificate and does not return signedPdfUrl', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    const resp = Response.v1DownloadCertResponse;
+    resp.result.signedUrl = '';
+    spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
+    spyOn(toasterService, 'error');
+    component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    expect(profileService.downloadCertificates).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith('No data available to download');
+  });
+
+  it('should handle error while downloading certificate', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(profileService, 'downloadCertificates').and.returnValue(throwError({}));
+    spyOn(toasterService, 'error');
+    component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    expect(profileService.downloadCertificates).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith('No data available to download');
+  });
 });

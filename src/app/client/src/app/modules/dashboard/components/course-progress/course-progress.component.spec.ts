@@ -216,10 +216,9 @@ describe('CourseProgressComponent', () => {
   }));
 
   it('should get last updatedOn date for score report and progress report', fakeAsync(() => {
-    component.queryParams = { batchIdentifier: '0124963192947507200' };
     const courseProgressService = TestBed.get(CourseProgressService);
     spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
-    component.getReportUpdatedOnDate();
+    component.getReportUpdatedOnDate('0124963192947507200');
     // tslint:disable-next-line: max-line-length
     expect(component.scoreReportUpdatedOn).toEqual(null);
     // tslint:disable-next-line: max-line-length

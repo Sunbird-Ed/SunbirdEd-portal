@@ -7,7 +7,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
+
 @Component({
   selector: 'app-review-comments',
   templateUrl: './review-comments.component.html',
@@ -63,7 +64,6 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
         (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
   }
   ngOnChanges() {
-    console.log('stageId changed', this.stageId);
     if (!this.stageId) {
       this.disableTextArea = true;
     } else {
@@ -138,7 +138,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
               logo: this.userService.userProfile.avatar,
             },
             body: this.comments.value,
-            createdOn: moment().format()
+            createdOn: dayjs().format()
           };
           if (this.sortedComments[this.stageId]) {
             this.sortedComments[this.stageId].push(newComment);

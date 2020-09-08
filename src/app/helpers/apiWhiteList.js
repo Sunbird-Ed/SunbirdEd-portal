@@ -9,6 +9,7 @@ const _                 = require('lodash');
 const uuidv1            = require('uuid/v1');
 const dateFormat        = require('dateformat');
 const { pathToRegexp }  = require("path-to-regexp");
+const logger            = require('@project-sunbird/logger');
 
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
@@ -23,8 +24,6 @@ const utils             = require('./utilityService');
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    // Retain until 3.1.0 release
-    // let REQ_URL = req.originalUrl;
     let REQ_URL = req.path;
     // Pattern match for URL
     _.forEach(API_LIST.URL_PATTERN, (url) => {
@@ -42,7 +41,7 @@ const isAllowed = () => {
       URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
         checksToExecute.push(new Promise((res, rej) => {
           if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
-            urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK]);
+            urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
           }
         }));
       });
@@ -69,7 +68,13 @@ const urlChecks = {
    * @description - Function to check session roles and defined roles are having one in common
    * @since - release-3.1.0
    */
-  ROLE_CHECK: (resolve, reject, req, rolesForURL) => {
+  ROLE_CHECK: (resolve, reject, req, rolesForURL, REQ_URL) => {
+    // logger.info({
+    //   msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
+    //   originalUrl: req.path,
+    //   reqRoles: req.session['roles'] ? req.session['roles'] : 'no roles in session',
+    //   rulesForURL: rolesForURL
+    // });
     if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
       resolve();
     } else if (_.intersection(rolesForURL, req.session['roles']).length > 0) {
@@ -87,7 +92,7 @@ const urlChecks = {
    * @description - Function to execute different rules defined in checksParams object for key `checks`
    * @since - release-3.1.0
    */
-  OWNER_CHECK: async (resolve, reject, req, checksParams) => {
+  OWNER_CHECK: async (resolve, reject, req, checksParams, REQ_URL) => {
     if (_.get(checksParams, 'checks')) {
       let ownerChecks = [];
       checksParams.checks.forEach((ownerCheckObj) => {

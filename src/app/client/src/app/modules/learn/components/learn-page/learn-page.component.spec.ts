@@ -248,4 +248,16 @@ it('should redo layout on render', () => {
     expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
   });
 
+  it('should add audience type in fetch page data request body', () => {
+    const searchQueryParams = {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'filters': {}};
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.queryParams = {sort_by: 'name', sortType: 'desc'};
+    coursesService.initialize();
+    component.ngOnInit();
+    component['fetchPageData'](searchQueryParams);
+    expect(pageApiService.getPageData).toHaveBeenCalledWith(
+      {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['Teacher']}}
+      );
+  });
+
 });

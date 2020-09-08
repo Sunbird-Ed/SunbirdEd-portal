@@ -1,3 +1,4 @@
+import { PermissionService } from '@sunbird/core';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
@@ -16,11 +17,15 @@ export class DashboardSidebarComponent implements OnInit {
   telemetryInteractObject: IInteractEventObject;
 
   constructor(public resourceService: ResourceService, public router: Router,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute, public permissionService: PermissionService) {
     }
 
     ngOnInit() {
       this.setTelemetryData();
+    }
+
+    canReissueCert() {
+      return this.permissionService.checkRolesPermissions(['CONTENT_CREATOR']);
     }
 
     setTelemetryData() {

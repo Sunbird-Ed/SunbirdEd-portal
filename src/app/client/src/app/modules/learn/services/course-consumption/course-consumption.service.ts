@@ -2,7 +2,7 @@
 import { of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { PlayerService } from '@sunbird/core';
+import { PlayerService, PermissionService, UserService } from '@sunbird/core';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
@@ -24,7 +24,8 @@ export class CourseConsumptionService {
   coursePagePreviousUrl: any;
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,
-    private navigationHelperService: NavigationHelperService) {
+    private navigationHelperService: NavigationHelperService, private permissionService: PermissionService,
+    private userService: UserService) {
     }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
@@ -152,5 +153,18 @@ getAllOpenBatches(contents) {
 
   get getCoursePagePreviousUrl()  {
     return this.coursePagePreviousUrl;
+  }
+
+  canCreateBatch(courseHierarchy) {
+    return (this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])
+      && this.userService.userid === _.get(courseHierarchy, 'createdBy'));
+  }
+
+  canViewDashboard(courseHierarchy) {
+    return (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
+  }
+
+  canAddCertificates(courseHierarchy) {
+    return this.canCreateBatch(courseHierarchy);
   }
 }

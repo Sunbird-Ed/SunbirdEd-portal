@@ -72,7 +72,6 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
       this.getDashboardData(_.get(data, 'result.response'));
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      console.log('');
     });
   }
 
@@ -88,7 +87,6 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
       _.forEach(batches, batch => {
         this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalCompletions, _.get(batch, 'completedCount'), 'large');
         this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalEnrollments, _.get(batch, 'participantCount'), 'small');
-        console.log('');
         });
     }
   }
