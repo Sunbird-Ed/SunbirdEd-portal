@@ -13,6 +13,7 @@ import { debounceTime, map, takeUntil } from 'rxjs/operators';
 })
 export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
+  @Input() queryParamsToOmit;
   public selectedFilters: any = {};
   public refresh = true;
   public filterChangeEvent = new Subject();
@@ -54,14 +55,21 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
 
   public resetFilters() {
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
+    let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (_.get(this.activatedRoute, 'snapshot.params.pageNumber')) { // when using dataDriven filter should this should be verified
       redirectUrl = this.router.url.split('?')[0].replace(/[^\/]+$/, '1');
     } else {
       redirectUrl = this.router.url.split('?')[0];
     }
+    if (this.queryParamsToOmit) {
+      queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
+      queryFilters = {...queryFilters, ...this.selectedFilters};
+    }
     redirectUrl = decodeURI(redirectUrl);
-    this.router.navigate([redirectUrl], { relativeTo: this.activatedRoute.parent, queryParams: this.selectedFilters });
+    this.router.navigate([redirectUrl], {
+      relativeTo: this.activatedRoute.parent, queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters
+    });
     this.hardRefreshFilter();
   }
 
@@ -94,6 +102,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
   public updateRoute() {
+    let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     if (this.selectedFilters.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
@@ -103,8 +112,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       });
       this.selectedFilters.channel = channelIds;
     }
+    if (this.queryParamsToOmit) {
+      queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
+      queryFilters = {...queryFilters, ...this.selectedFilters};
+    }
     this.router.navigate([], {
-      queryParams: this.selectedFilters,
+      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
       relativeTo: this.activatedRoute.parent
     });
   }

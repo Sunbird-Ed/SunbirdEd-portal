@@ -10,6 +10,7 @@ import { ResourceService } from '@sunbird/shared';
 export class GlobalSearchSelectedFilterComponent {
   @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
   @Input() selectedFilters;
+  @Input() queryParamsToOmit;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, public resourceService: ResourceService) { }
@@ -28,6 +29,7 @@ export class GlobalSearchSelectedFilterComponent {
   }
 
   public updateRoute() {
+    let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     if (this.selectedFilters.channel) {
       const channelIds = [];
       const facetsData = _.find(this.facets, {'name': 'channel'});
@@ -37,8 +39,12 @@ export class GlobalSearchSelectedFilterComponent {
       });
       this.selectedFilters.channel = channelIds;
     }
+    if (this.queryParamsToOmit) {
+      queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
+      queryFilters = {...queryFilters, ...this.selectedFilters};
+    }
     this.router.navigate([], {
-      queryParams: this.selectedFilters,
+      queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,
       relativeTo: this.activatedRoute.parent
     });
   }
