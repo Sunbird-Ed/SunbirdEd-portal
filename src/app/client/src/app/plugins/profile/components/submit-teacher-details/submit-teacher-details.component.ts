@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormService, OtpService, SearchService, TncService, UserService } from '@sunbird/core';
+import { FormService, OtpService, TncService, UserService } from '@sunbird/core';
 import {
   IUserData,
   NavigationHelperService,
@@ -345,7 +345,10 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   linkClicked(event) {
-    this.showTncPopup = true;
+    if (_.get(event, 'event.preventDefault')) {
+      event.event.preventDefault();
+      this.showTncPopup = true;
+    }
   }
 
   declarationFormValueChanges(event) {
@@ -370,6 +373,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   getTeacherDetailsForm() {
     this.profileService.getSelfDeclarationForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
+      console.log('formConfig', formConfig);
       this.initializeFormData(formConfig);
     }, error => {
       console.error('Unable to fetch form', error);

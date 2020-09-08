@@ -187,7 +187,7 @@ export class ProfileService {
       formType: 'user',
       formAction: 'get',
       contentType: 'tenantPersonaInfo',
-      component: 'app'
+      component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
       return response;
@@ -199,7 +199,7 @@ export class ProfileService {
       formType: 'user',
       formAction: 'submit',
       contentType: 'selfDeclaration',
-      component: 'app'
+      component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
       return response;
