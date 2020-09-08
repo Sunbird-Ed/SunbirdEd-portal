@@ -459,4 +459,28 @@ describe('ReIssueCertificateComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it ('should return TRUE when the status is 2', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], ssuedCertificates: [], createdBy: '123', status: 2 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should return TRUE when the certificates are issued', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+  it ('should return TRUE when the issuedCertificates are present', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should return FALSE when the certificates are not issued and even status is not 2', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeFalsy();
+  });
+
 });

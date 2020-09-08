@@ -173,6 +173,11 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
     this.userName = this.userName ? this.userName.trim() : this.userName;
     const value = !_.isEmpty(this.userData) ? this.userData['courses'].batches = [] : [];
   }
+
+  enableReIssueCert(batch) {
+    return ((!_.isEmpty(_.get(batch, 'certificates')) || !_.isEmpty(_.get(batch, 'issuedCertificates')))  || _.get(batch, 'status') === 2);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
