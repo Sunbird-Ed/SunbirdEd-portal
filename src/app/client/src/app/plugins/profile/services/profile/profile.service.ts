@@ -158,30 +158,6 @@ export class ProfileService {
     }));
   }
 
-  getTenants(orgId?: string) {
-    const formServiceInputParams = {
-      formType: 'user',
-      formAction: 'list',
-      contentType: 'tenantList',
-      component: 'portal'
-    };
-    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
-      return response;
-    }));
-  }
-
-  getTeacherDetailForm(action: string, orgId?: string) {
-    const formServiceInputParams = {
-      formType: 'user',
-      formAction: action,
-      contentType: 'teacherDetails',
-      component: 'portal'
-    };
-    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
-      return response;
-    }));
-  }
-
   getPersonaTenantForm(orgId?: string) {
     const formServiceInputParams = {
       formType: 'user',
