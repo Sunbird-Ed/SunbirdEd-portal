@@ -590,7 +590,7 @@ const API_LIST = {
     '/certreg/v1/add/template': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
-    }
+    },
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
