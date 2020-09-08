@@ -460,24 +460,32 @@ describe('ReIssueCertificateComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
-  it ('should return TRUE when the status is 2', () => {
+  it ('should enable "Re-Issue" button when status = 2 "', () => {
     const batch = {batchId: '1', name: 'batch 1', certificates: [], ssuedCertificates: [], createdBy: '123', status: 2 };
     const enableData = component.enableReIssueCert(batch);
     expect(enableData).toBeTruthy();
   });
 
-  it ('should return TRUE when the certificates are issued', () => {
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length >0 (PDF)', () => {
     const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}], issuedCertificates: [], createdBy: '123', status: 1 };
     const enableData = component.enableReIssueCert(batch);
     expect(enableData).toBeTruthy();
   });
-  it ('should return TRUE when the issuedCertificates are present', () => {
+
+  it ('should enable "Re-Issue" button when status != 2 " AND issuedCertificates.length >0 (SVG)', () => {
     const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
     const enableData = component.enableReIssueCert(batch);
     expect(enableData).toBeTruthy();
   });
 
-  it ('should return FALSE when the certificates are not issued and even status is not 2', () => {
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length>0 AND issuedCertificates.length>0(PDF and SVG)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}],
+    issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should disable "Re-Issue" button when status != 2" AND certificates.length=0 AND issuedCertificates.length=0', () => {
     const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [], createdBy: '123', status: 1 };
     const enableData = component.enableReIssueCert(batch);
     expect(enableData).toBeFalsy();
