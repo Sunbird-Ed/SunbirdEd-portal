@@ -253,7 +253,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate)
+      enrollmentEndDate: new FormControl(enrollmentEndDate),
+      issueCertificate: new FormControl(this.isCertificateIssued, [Validators.required])
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
@@ -528,13 +529,11 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   /**
-   * // TODO: to be removed on hot fix
    * @since - release-3.2.10
    * @param  {string} batchId
    * @description - It will emit an event;
    */
   checkIssueCertificate(batchId) {
-    return;
     this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
     mode: 'edit', batchId: batchId });
   }
