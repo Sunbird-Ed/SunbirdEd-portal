@@ -271,7 +271,7 @@ export class WorkSpaceService {
   */
   searchContent(requestparam: ContentIDParam): Observable<ServerResponse> {
   const option = {
-    url: `${this.config.urlConFig.URLS.SEARCH_CONTENT.SEARCH}`,
+    url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
     'data': {
       'request': {
         'filters': {
@@ -280,7 +280,7 @@ export class WorkSpaceService {
         }
         }
     };
-    return this.actionService.post(option);
+    return this.content.post(option);
   }
 
 /**
@@ -289,7 +289,7 @@ export class WorkSpaceService {
  */
 getChannel(channelId): Observable<ServerResponse> {
   const option = {
-    url: `${this.config.urlConFig.URLS.SEARCH_CONTENT.READ_CHANNEL}` + '/' + channelId
+    url: `${this.config.urlConFig.URLS.CHANNEL.READ}` + '/' + channelId
   };
   return this.actionService.get(option);
 }

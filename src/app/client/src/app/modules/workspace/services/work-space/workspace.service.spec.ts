@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpaceService } from './workspace.service';
 import { SharedModule } from '@sunbird/shared';
-import { CoreModule, ActionService } from '@sunbird/core';
+import { CoreModule, ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import * as mockData from './workspace.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -99,18 +99,18 @@ describe('WorkSpaceService', () => {
       expect(workSpaceService.getFormData).toHaveBeenCalledWith(param);
       expect(workSpaceService).toBeTruthy();
     }));
-    it('should call action service post', inject([ActionService, WorkSpaceService],
-      ( actionService, workSpaceService) => {
-        spyOn(actionService, 'post').and.callFake(() => observableOf(testData.searchedCollection));
+    it('should call action service post', inject([ContentService, WorkSpaceService],
+      ( contentService, workSpaceService) => {
+        spyOn(contentService, 'post').and.callFake(() => observableOf(testData.searchedCollection));
         spyOn(workSpaceService, 'searchContent').and.callThrough();
         workSpaceService.searchContent('do_2131027620732764161258');
-        expect(actionService.post).toHaveBeenCalled();
+        expect(contentService.post).toHaveBeenCalled();
       }));
-      it('should call action service get', inject([ActionService, WorkSpaceService],
-        ( actionService, workSpaceService) => {
-          spyOn(actionService, 'get').and.callFake(() => observableOf(testData.channelDetail));
+      it('should call action service get', inject([ContentService, WorkSpaceService],
+        ( contentService, workSpaceService) => {
+          spyOn(contentService, 'get').and.callFake(() => observableOf(testData.channelDetail));
           spyOn(workSpaceService, 'getChannel').and.callThrough();
           workSpaceService.getChannel('0124784842112040965');
-          expect(actionService.get).toHaveBeenCalled();
+          expect(contentService.get).toHaveBeenCalled();
         }));
 });

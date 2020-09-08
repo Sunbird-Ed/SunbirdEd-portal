@@ -197,7 +197,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   /**
    * To show/hide collection modal
    */
-  private collectionListModal = false;
+  public collectionListModal = false;
 
   /**
     * Constructor to create injected service(s) object

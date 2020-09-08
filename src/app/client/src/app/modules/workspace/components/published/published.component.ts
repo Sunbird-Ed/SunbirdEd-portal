@@ -163,7 +163,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
    * To show/hide collection modal
    */
-  private collectionListModal = false;
+  public collectionListModal = false;
 
   /**
     * Constructor to create injected service(s) object
