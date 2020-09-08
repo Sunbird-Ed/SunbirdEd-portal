@@ -3,6 +3,27 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
+import { ResourceService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
+
+export const multiFilter = (arr: Object[], filters: Object) => {
+  const filterKeys = Object.keys(filters);
+  return arr.filter(eachObj => {
+    return filterKeys.every(eachKey => {
+      if (!filters[eachKey]) {
+        return true;
+      } else if (!filters[eachKey].length) {
+        return true;
+      }
+        if (typeof (eachObj[eachKey]) === 'string' && eachObj[eachKey] !== null && eachObj[eachKey] !== undefined) {
+          const each = eachObj[eachKey].toLowerCase();
+          return each.includes(filters[eachKey].toLowerCase().trim());
+        } else {
+          return filters[eachKey].includes(eachObj[eachKey]);
+        }
+    });
+  });
+};
 
 @Component({
   selector: 'sb-datatable',
@@ -23,46 +44,46 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   public sortField = 'state';
   public showLoader = false;
   public csvExporter: any;
-
+  keyUp = new Subject<object>();
+  listFilter = {};
+  filterModel = {};
+  messages = {
+      emptyMessage: 'No Data to display'
+    }
   constructor() { }
 
   ngOnInit() {
-    
+      this.keyUp
+      .subscribe(obj => {
+        this.onColumnFilter(obj['key'], obj['value']);
+      });
   }
 
+  onColumnFilter(key, value) {
+    if (value) {
+      this.listFilter[key] = value;
+    } else {
+      delete this.listFilter[key];
+    }
+    this.filterDataTable();
+  }
+
+  filterDataTable() {
+    this.tableData = multiFilter(this.data, this.listFilter);
+  }
   ngOnChanges() {
     this.tableData = _.cloneDeep(this.data);
+    _.forEach(this.columns, (x) => {
+      this.filterModel[x.prop] = ''
+    })
   }
-  // search() {
-  //   if (this.searchFields && this.searchFields.length !== 0) {
-  //     if (this.searchData) {
-  //       this.tableData = this.filterData(this.data);
-  //     } else {
-  //       this.tableData = this.data
-  //     }
-  //   } else {
-  //     this.tableData = _.filter(this.data, (row) => {
-  //       return (_.lowerCase(JSON.stringify(row))).includes(_.lowerCase(this.searchData))
-  //     })
-  //   }
 
-  // }
-  // filterData(data) {
-  //   let resultData = [];
-  //   _.forEach(data, (row, index) => {
-  //     _.forEach(this.searchFields, (field) => {
-  //       if ((_.lowerCase(row[field])).includes(_.lowerCase(this.searchData))) {
-  //         resultData.push(row)
-  //       }
-  //     })
-  //   })
-  //   return _.uniqWith(resultData, _.isEqual);;
-  // }
-
-  sort(field) {
-    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-    this.sortField = field;
-    this.tableData = _.orderBy(this.tableData, [this.sortField], [this.sortOrder]);
+  sort(column) {
+    if(column.isSortable){
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+      this.sortField = column.prop;
+      this.tableData = _.orderBy(this.tableData, [this.sortField], [this.sortOrder]);
+    }
   }
 
   clearSearch() {

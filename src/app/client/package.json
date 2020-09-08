@@ -53,6 +53,7 @@
     "@project-sunbird/sb-styles": "0.0.6",
     "@project-sunbird/telemetry-sdk": "^0.0.26",
     "@project-sunbird/web-extensions": "^0.0.2",
+    "@swimlane/ngx-datatable": "^17.1.0",
     "@types/jquery": "3.3.31",
     "@types/jquery.fancytree": "2.7.34",
     "@types/lodash": "^4.14.104",

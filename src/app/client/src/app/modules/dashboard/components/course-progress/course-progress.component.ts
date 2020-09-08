@@ -4,7 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService } from '@sunbird/core';
+import { UserService, FormService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService, IPagination
@@ -169,9 +169,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   subscription: Subscription;
   isDownloadReport = false;
   stateWiseReportDate = [];
-  columns =[];
+  columns = [];
   searchFields = [];
   fileName: string;
+  userConsent;
+  reportTypes = [];
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -188,6 +190,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
+    public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
     this.user = user;
     this.route = route;
@@ -459,6 +462,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
   }
+
+  reportChanged(report){
+    console.log('report type changes------', report)
+  }
+
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
@@ -466,6 +474,29 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   */
   ngOnInit() {
     // ---- Mock data Start-----
+    const apiData = {
+      userConsent: 'No',
+      audience: 'Teacher'
+    }
+    const formReadInputParams = {
+      formType: 'batch',
+      formAction: 'list',
+      contentType: 'report_types'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (formResponsedata) => {
+        if (formResponsedata) {
+          const options = formResponsedata;
+          const userConsent = _.get(apiData, 'userConsent');
+          const audience = _.get(apiData, 'audience');
+          if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
+            this.reportTypes = options.splice(0, 2);
+          } else {
+            this.reportTypes = options;
+          }
+        }
+      });
+
     this.fileName = 'State wise report';
     this.stateWiseReportDate = [
       {
@@ -508,9 +539,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.isDownloadReport = true;
     this.columns = [
       { name: 'State', isSortable: true, prop: 'state' },
-      { name: 'District', isSortable: true,  prop: 'district' },
-      { name: 'No. of Enrollment', isSortable: true,  prop: 'noofEnrollments'},
-      { name: 'No. of Completions', isSortable: true,  prop: 'noofCompletions' }]
+      { name: 'District', isSortable: true, prop: 'district' },
+      { name: 'No. of Enrollment', isSortable: false, prop: 'noofEnrollments' },
+      { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions' }]
     this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {

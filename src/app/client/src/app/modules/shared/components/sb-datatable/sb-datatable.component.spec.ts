@@ -81,7 +81,7 @@ describe('SbDatatableComponent', () => {
   it('should call sort ASC', () => {
     component.tableData = TableData.responseData;
     component.sortOrder = 'desc';
-    component.sort('district');
+    component.sort({ name: 'District', isSortable: true, prop: 'district' });
     expect(component.sortField).toBe('district');
     expect(component.tableData).toEqual(TableData.sortData_ASC)
   });
@@ -89,7 +89,7 @@ describe('SbDatatableComponent', () => {
   it('should call sort DESC', () => {
     component.tableData = TableData.responseData;
     component.sortOrder = 'asc';
-    component.sort('district');
+    component.sort({ name: 'District', isSortable: true, prop: 'district' });
     expect(component.sortField).toBe('district');
     expect(component.tableData).toEqual(TableData.sortData_DESC)
   });

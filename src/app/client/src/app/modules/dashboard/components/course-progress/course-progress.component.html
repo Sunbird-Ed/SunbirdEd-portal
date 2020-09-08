@@ -217,8 +217,8 @@
 
       <sui-tabset class="batch-report-tabs">
         <div class="ui pointing secondary menu">
-            <a class="item" suiTabHeader="1">State Wise Report</a>
-            <a class="item" suiTabHeader="2">Detailed Wise Report</a>
+            <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
+            <a class="item" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
         </div>
         <div class="ui segment state-report" suiTabContent="1">
          <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
@@ -227,14 +227,16 @@
           <div class='ui stackable grid mt-0'>
             <div class="twelve wide column pt-0">
               <div class="d-flex flex-dc">
-                <label class="request-report-label font-weight-normal">Request Report</label>
+                <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
                 <div class="d-flex"> 
-                  <sui-select class="selection w-25" placeholder="Select" labelField="name" valueField="id"
-                    #select>
-                    <sui-select-option value="option1">Score Report</sui-select-option>
-                    <sui-select-option value="option2">Progress Report</sui-select-option>
-                  </sui-select>
-                  <button type="button" class="sb-btn sb-btn-normal sb-btn-primary ml-16">Request</button>
+                  <sui-select class="selection course-dashboard-select" placeholder="Choose your report"
+                   [options]="reportTypes" labelField="title" valueField="title"
+                  [isSearchable]="true" #select>
+                  <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
+                  </sui-select-option>
+                </sui-select>
+
+                  <button type="button" class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.lbl?.request}}</button>
                 </div>
                 <p class="fnormal note-text mt-8 mb-24">Note: Each download request would take about 24 hours to generate</p>
               </div>  

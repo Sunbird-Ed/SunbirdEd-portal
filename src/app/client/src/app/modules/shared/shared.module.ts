@@ -27,6 +27,7 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
 import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { SbDatatableComponent } from './components/sb-datatable/sb-datatable.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
   imports: [
@@ -34,7 +35,7 @@ import { SbDatatableComponent } from './components/sb-datatable/sb-datatable.com
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    TelemetryModule,
+    TelemetryModule,NgxDatatableModule,
     TranslateModule.forChild()
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
@@ -49,7 +50,7 @@ import { SbDatatableComponent } from './components/sb-datatable/sb-datatable.com
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    MarkdownDirective, SbDatatableComponent]
+    MarkdownDirective, SbDatatableComponent, NgxDatatableModule]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

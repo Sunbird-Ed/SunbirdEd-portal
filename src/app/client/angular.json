@@ -35,7 +35,10 @@
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
-              "src/assets/styles/styles.scss"
+              "src/assets/styles/styles.scss",
+             "./node_modules/@swimlane/ngx-datatable/index.css",
+              "./node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "./node_modules/@swimlane/ngx-datatable/assets/icons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
