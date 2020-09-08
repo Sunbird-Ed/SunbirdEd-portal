@@ -20,7 +20,7 @@ import { of as observableOf, of, Subject, throwError } from 'rxjs';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';
 import { mockRes } from './submit-teacher-details.component.spec.data';
 
-fdescribe('SubmitTeacherDetailsComponent', () => {
+describe('SubmitTeacherDetailsComponent', () => {
   let component: SubmitTeacherDetailsComponent;
   let fixture: ComponentFixture<SubmitTeacherDetailsComponent>;
   const fakeActivatedRoute = {
@@ -193,12 +193,6 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     expect(fieldType).toBe('declared-email');
   });
 
-  // it('should set if verification success', () => {
-  //   component.onVerificationSuccess({ email: '22' });
-  //   // expect(component.isOtpVerificationRequired).toBe(false);
-  //   // expect(component.validationType['declared-email'].isVerified).toBe(true);
-  // });
-
   it('should generate otp for email', () => {
     const otpService = TestBed.get(OtpService);
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockRes.successResponse));
@@ -226,16 +220,6 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
   });
 
-
-  // it('should set validators for email', () => {
-  //   const tncService = TestBed.get(TncService);
-  //   const telemetryService = TestBed.get(TelemetryService);
-  //   spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
-  //   spyOn(telemetryService, 'impression');
-  //   component.userProfile = mockRes.userData.result.response;
-  //   component.ngOnInit();
-  // });
-
   it('should set validators for phone', () => {
     const tncService = TestBed.get(TncService);
     const telemetryService = TestBed.get(TelemetryService);
@@ -256,20 +240,6 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
     fixture.detectChanges();
     expect(component.validationType['declared-email'].isVerified).toBe(false);
   });
-
-  // it('should ask for verification as user changed email', fakeAsync(() => {
-  //   const tncService = TestBed.get(TncService);
-  //   const userService = TestBed.get(UserService);
-  //   const telemetryService = TestBed.get(TelemetryService);
-  //   spyOn(tncService, 'getTncConfig').and.returnValue(observableOf(mockRes.tncConfig));
-  //   spyOn(telemetryService, 'impression');
-  //   userService._userData$.next({ err: null, userProfile: mockRes.userData.result.response });
-  //   component.ngOnInit();
-  //   tick(500);
-  //   fixture.detectChanges();
-  //   expect(component.validationType['declared-email'].isVerificationRequired).toBe(true);
-  //   expect(component.validationType['declared-email'].isVerified).toBe(false);
-  // }));
 
   it('should call updateProfile with success', () => {
     component.formAction = 'update';
@@ -361,7 +331,11 @@ fdescribe('SubmitTeacherDetailsComponent', () => {
   });
 
   it('Should show Terms and condition popup', () => {
-    component.linkClicked({});
+    component.linkClicked(
+      {
+        event: { preventDefault: jasmine.createSpy('preventDefault') },
+        data: { url: 'https://dev.sunbirded.org/profile' }
+      });
     expect(component.showTncPopup).toBe(true);
   });
 
