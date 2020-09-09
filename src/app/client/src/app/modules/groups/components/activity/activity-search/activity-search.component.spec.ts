@@ -132,7 +132,7 @@ describe('ActivitySearchComponent', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.returnValue(of({ result: { content: [] } }));
+    spyOn(searchService, 'contentSearch').and.returnValue(of({ result: { content: [] } }));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
@@ -141,7 +141,7 @@ describe('ActivitySearchComponent', () => {
   it('should fetch Contents on error', () => {
     component.showLoader = true;
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.returnValue(throwError({}));
+    spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
@@ -203,7 +203,7 @@ describe('ActivitySearchComponent', () => {
   it('should call addActivity', () => {
     spyOn(component, 'addTelemetry');
     const router = TestBed.get(Router);
-    const event = { data: { identifier: 'do_234324446565' } };
+    const event = { data: { identifier: 'do_234324446565', contentType: 'Course' } };
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();

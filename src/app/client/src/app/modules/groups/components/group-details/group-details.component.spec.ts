@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
+import { GroupDetailsData } from './group-details.component.spec.data';
+import * as _ from 'lodash-es';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -90,15 +92,17 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should call handleNextClick', () => {
+    component.groupData = GroupDetailsData.groupData;
     const router = TestBed.get(Router);
-    spyOn(component, 'toggleActivityModal');
-    component.addActivityModal = {
-      deny: jasmine.createSpy('deny')
-    };
-    component.handleNextClick({});
-    expect(component.toggleActivityModal).toHaveBeenCalled();
-    expect(component.addActivityModal.deny).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalled();
+    component.navigateToAddActivity();
+    expect(router.navigate).toHaveBeenCalledWith(['add-activity-content-types'], {
+      relativeTo: fakeActivatedRoute,
+      queryParams: {
+        groupName: _.get(component.groupData, 'name'),
+        createdBy: _.capitalize(_.get(_.find(component.groupData['members'], { userId: component.groupData['createdBy'] }), 'name')),
+        groupId: _.get(component.groupData, 'id'),
+      }
+    });
   });
 
   it('should ngOnDestroy', () => {

@@ -16,6 +16,7 @@ import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
 @Component({
   selector: 'app-activity-search',
@@ -45,6 +46,10 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   groupId: string;
   telemetryImpression: IImpressionEventInput;
   layoutConfiguration: any;
+  groupAddableBlocData: any;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
+  public selectedFilters;
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -67,6 +72,15 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.groupAddableBlocData = data;
+    });
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+  }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+  });
     this.initLayout();
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
@@ -139,7 +153,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
 
       /* istanbul ignore else */
@@ -179,11 +193,13 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters.contentType = [_.get(this.groupAddableBlocData, 'params.contentType')];
     const option: any = {
       filters: filters,
+      fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
-      facets: this.facets,
+      facets: this.globalSearchFacets,
       params: this.configService.appConfig.Course.contentApiQueryParams
     };
 
@@ -200,14 +216,15 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     if (this.frameWorkName) {
       option.params.framework = this.frameWorkName;
     }
-    this.searchService.courseSearch(option)
+    this.searchService.contentSearch(option)
       .subscribe(data => {
         this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-        this.contentList = _.map(data.result.course, (content: any) =>
+        this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
       }, err => {
         this.showLoader = false;
@@ -239,9 +256,29 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addActivity(event) {
-    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+    const cdata = [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.contentType')}];
     this.addTelemetry('activity-course-card', cdata);
-    this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+
+    switch (_.get(event, 'data.contentType').toLowerCase()) {
+      case 'course' :
+      this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+      break;
+      case 'textbook' :
+      this.router.navigate(['/resources/play/collection', _.get(event, 'data.identifier')]);
+      break;
+      case 'collection' :
+      this.router.navigate(['/resources/play/collection', _.get(event, 'data.identifier')]);
+      break;
+      case 'resource' :
+      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
+      break;
+      case 'practiceresource' :
+      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
+      break;
+      case 'practicequestionset' :
+      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
+      break;
+    }
   }
 
   addTelemetry(id, cdata, extra?) {
