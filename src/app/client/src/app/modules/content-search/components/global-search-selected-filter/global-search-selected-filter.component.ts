@@ -19,7 +19,7 @@ export class GlobalSearchSelectedFilterComponent {
     _.map(this.selectedFilters, (value, key) => {
       if (this.selectedFilters[data.type] && !_.isEmpty(this.selectedFilters[data.type])) {
         _.remove(value, (n) => {
-          return n === data.value;
+          return n === data.value && data.type === key;
         });
       }
       if (_.isEmpty(value)) { delete this.selectedFilters[key]; }
