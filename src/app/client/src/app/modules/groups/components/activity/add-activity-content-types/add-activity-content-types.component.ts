@@ -17,7 +17,7 @@ import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
 
   public supportedActivityList;
-  public groupData = {};
+  public groupData: any;
   private csGroupAddableBloc: CsGroupAddableBloc;
   telemetryImpression: IImpressionEventInput;
 
