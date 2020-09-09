@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpaceService } from './workspace.service';
 import { SharedModule } from '@sunbird/shared';
-import { CoreModule, ActionService, ContentService } from '@sunbird/core';
+import { CoreModule, ActionService, ContentService, PublicDataService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import * as mockData from './workspace.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -106,11 +106,11 @@ describe('WorkSpaceService', () => {
         workSpaceService.searchContent('do_2131027620732764161258');
         expect(contentService.post).toHaveBeenCalled();
       }));
-      it('should call action service get', inject([ActionService, WorkSpaceService],
-        ( actionService, workSpaceService) => {
-          spyOn(actionService, 'get').and.callFake(() => observableOf(testData.channelDetail));
+      it('should call publicData service get', inject([PublicDataService, WorkSpaceService],
+        ( publicDataService, workSpaceService) => {
+          spyOn(publicDataService, 'get').and.callFake(() => observableOf(testData.channelDetail));
           spyOn(workSpaceService, 'getChannel').and.callThrough();
           workSpaceService.getChannel('0124784842112040965');
-          expect(actionService.get).toHaveBeenCalled();
+          expect(publicDataService.get).toHaveBeenCalled();
         }));
 });

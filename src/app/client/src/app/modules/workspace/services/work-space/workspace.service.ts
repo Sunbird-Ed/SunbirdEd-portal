@@ -46,6 +46,7 @@ export class WorkSpaceService {
     this.config = config;
     this.route = route;
     this.actionService = actionService;
+    this.publicDataService = publicDataService;
   }
   /**
   * deleteContent
@@ -291,7 +292,7 @@ getChannel(channelId): Observable<ServerResponse> {
   const option = {
     url: `${this.config.urlConFig.URLS.CHANNEL.READ}` + '/' + channelId
   };
-  return this.actionService.get(option);
+  return this.publicDataService.get(option);
 }
 
 }
