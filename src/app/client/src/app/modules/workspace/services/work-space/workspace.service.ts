@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import {
   ConfigService, ServerResponse, ICard, NavigationHelperService, ResourceService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { ContentService, PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { ContentService, PublicDataService, UserService } from '@sunbird/core';
 import { IDeleteParam, ContentIDParam } from '../../interfaces/delteparam';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -20,10 +20,6 @@ export class WorkSpaceService {
   */
   public content: ContentService;
   /**
-    * Reference of actionService
-  */
-  public actionService: ActionService;
-  /**
     * To navigate to other pages
   */
   route: Router;
@@ -37,7 +33,7 @@ export class WorkSpaceService {
     * @param {UserService} userService userService reference
     * @param {HttpClient} http HttpClient reference
   */
-  constructor(config: ConfigService, content: ContentService, actionService: ActionService,
+  constructor(config: ConfigService, content: ContentService,
     route: Router, public navigationHelperService: NavigationHelperService,
     private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     private resourceService: ResourceService, public publicDataService: PublicDataService,
@@ -45,7 +41,6 @@ export class WorkSpaceService {
     this.content = content;
     this.config = config;
     this.route = route;
-    this.actionService = actionService;
     this.publicDataService = publicDataService;
   }
   /**
@@ -272,7 +267,7 @@ export class WorkSpaceService {
   */
   searchContent(requestparam: ContentIDParam): Observable<ServerResponse> {
   const option = {
-    url: `${this.config.urlConFig.URLS.SEARCH_CONTENT.SEARCH}`,
+    url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
     'data': {
       'request': {
         'filters': {
@@ -281,7 +276,7 @@ export class WorkSpaceService {
         }
         }
     };
-    return this.actionService.post(option);
+    return this.content.post(option);
   }
 
 /**
