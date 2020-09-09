@@ -183,6 +183,7 @@ describe('BatchDetailsComponent', () => {
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}};
     component.showCreateBatch();
     expect(component.isTrackable).toBe(true);
@@ -193,11 +194,12 @@ describe('BatchDetailsComponent', () => {
 
   it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}};
-    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.showCreateBatch();
     expect(component.allowBatchCreation).toBe(false);
     expect(component.isTrackable).toBe(false);
-    expect(component['courseConsumptionService'].canCreateBatch).not.
+    expect(component['courseConsumptionService'].canCreateBatch).
     toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}});
   });
 

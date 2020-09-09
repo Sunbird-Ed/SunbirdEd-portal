@@ -327,6 +327,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['contentType'] = 'Textbook';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     expect(component.isTrackable).toBeFalsy();
     expect(component.viewDashboard).toBeFalsy();

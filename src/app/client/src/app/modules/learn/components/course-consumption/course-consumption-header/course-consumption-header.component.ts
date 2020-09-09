@@ -75,9 +75,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
-    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes' ||
-    _.lowerCase(_.get(this.courseHierarchy, 'contentType')) === 'course';
-    this.viewDashboard = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
