@@ -212,7 +212,7 @@ describe('CourseConsumptionService', () => {
     const service = TestBed.get(CourseConsumptionService);
     courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
     const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
-    expect(response).toEqual(false);
+    expect(response).toEqual(true);
   });
 
   it('should disable trackable', () => {

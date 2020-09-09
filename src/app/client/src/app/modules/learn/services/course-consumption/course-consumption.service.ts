@@ -170,6 +170,6 @@ getAllOpenBatches(contents) {
   }
 
   isTrackableCollection(collection: {trackable?: {enabled?: string}, contentType: string}) {
-  return (_.lowerCase(collection.trackable.enabled === 'yes') || _.lowerCase(collection.contentType === 'course'));
+  return (_.lowerCase(collection.trackable.enabled) === 'yes' || _.lowerCase(collection.contentType) === 'course');
   }
 }

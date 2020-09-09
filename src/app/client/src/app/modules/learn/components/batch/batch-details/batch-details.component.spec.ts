@@ -75,6 +75,7 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     const searchParams: any = {
       filters: {
@@ -99,6 +100,7 @@ describe('BatchDetailsComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
@@ -120,6 +122,7 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     component.userService.setUserId('123');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     const searchParams: any = {
@@ -164,6 +167,7 @@ describe('BatchDetailsComponent', () => {
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
@@ -208,6 +212,7 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
     expect(component.showCreateBatch()).toBeFalsy();
@@ -265,6 +270,7 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {trackable: { enabled: 'Yes'} };
     spyOn(component, 'showCreateBatch');
     spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     expect(component.showCreateBatch).toHaveBeenCalled();
     expect(component.isTrackable).toBeFalsy();
