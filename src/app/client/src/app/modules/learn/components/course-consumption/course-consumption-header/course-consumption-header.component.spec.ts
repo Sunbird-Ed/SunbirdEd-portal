@@ -313,7 +313,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
-  it ('should return user is coursementor', () => {
+  it ('should enable isTrackable', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'Yes';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
@@ -322,8 +322,9 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.viewDashboard).toBeTruthy();
   });
 
-  it ('should return user is not coursementor', () => {
+  it ('should disable isTrackable', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'No';
+    CourseHierarchyGetMockResponseFlagged.result.content['contentType'] = 'Textbook';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
     component.ngOnInit();
