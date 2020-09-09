@@ -81,3 +81,9 @@ export interface IGroupMember {
   id?: string;
 }
 
+export interface IGroupData {
+  name: string;
+  creator: string;
+  groupId: string;
+}
+
