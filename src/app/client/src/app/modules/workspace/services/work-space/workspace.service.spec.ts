@@ -99,14 +99,14 @@ describe('WorkSpaceService', () => {
       expect(workSpaceService.getFormData).toHaveBeenCalledWith(param);
       expect(workSpaceService).toBeTruthy();
     }));
-    it('should call contentService service post', inject([ContentService, WorkSpaceService],
-      ( contentService, workSpaceService) => {
-        spyOn(contentService, 'post').and.callFake(() => observableOf(testData.searchedCollection));
+    it('should call actionService post', inject([ActionService, WorkSpaceService],
+      ( actionService, workSpaceService) => {
+        spyOn(actionService, 'post').and.callFake(() => observableOf(testData.searchedCollection));
         spyOn(workSpaceService, 'searchContent').and.callThrough();
         workSpaceService.searchContent('do_2131027620732764161258');
-        expect(contentService.post).toHaveBeenCalled();
+        expect(actionService.post).toHaveBeenCalled();
       }));
-      it('should call publicData service get', inject([PublicDataService, WorkSpaceService],
+      it('should call publicDataservice get', inject([PublicDataService, WorkSpaceService],
         ( publicDataService, workSpaceService) => {
           spyOn(publicDataService, 'get').and.callFake(() => observableOf(testData.channelDetail));
           spyOn(workSpaceService, 'getChannel').and.callThrough();

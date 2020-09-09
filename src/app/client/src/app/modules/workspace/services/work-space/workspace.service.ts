@@ -272,7 +272,7 @@ export class WorkSpaceService {
   */
   searchContent(requestparam: ContentIDParam): Observable<ServerResponse> {
   const option = {
-    url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
+    url: `${this.config.urlConFig.URLS.SEARCH_CONTENT.SEARCH}`,
     'data': {
       'request': {
         'filters': {
@@ -281,7 +281,7 @@ export class WorkSpaceService {
         }
         }
     };
-    return this.content.post(option);
+    return this.actionService.post(option);
   }
 
 /**

@@ -309,6 +309,9 @@
     },
     "TENANT_PREFERENCE" : {
       "READ": "org/v2/preferences/read"
+    },
+    "SEARCH_CONTENT" : {
+      "SEARCH": "composite/v3/search"
     }
   }
 }

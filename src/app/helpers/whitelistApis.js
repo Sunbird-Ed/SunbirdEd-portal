@@ -591,6 +591,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+    '/action/composite/v3/search':{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    }
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
