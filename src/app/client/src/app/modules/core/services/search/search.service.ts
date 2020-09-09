@@ -905,7 +905,6 @@ export class SearchService {
           facet['index'] = '7';
           facet['name'] = 'mediaType';
           facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
-          facet['placeholder'] = 'Select Media type';
           facet['mimeTypeList'] = this.mimeTypeList;
           break;
       }
