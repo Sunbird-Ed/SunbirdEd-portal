@@ -4,15 +4,18 @@ import { ResourceService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
-
+import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 @Component({
   selector: 'app-global-search-filter',
   templateUrl: './global-search-filter.component.html',
   styleUrls: ['./global-search-filter.component.scss']
 })
 export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
-  @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count: number }[] }[];
+  @Input() facets;
+  public filterLayout = LibraryFiltersLayout;
+  public selectedMediaTypeIndex = 0;
+  public selectedMediaType: string;
   public selectedFilters = {};
   public refresh = true;
   public filterChangeEvent = new Subject();
@@ -53,12 +56,18 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'contentType', 'key'].includes(key)) {
+          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'contentType', 'key', 'mediaType'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
         if (queryParams.selectedTab){
           queryFilters['selectedTab'] = queryParams.selectedTab;
+        }
+        if (queryParams.mediaType) {
+          this.selectedMediaType = _.isArray(queryParams.mediaType) ? queryParams.mediaType[0] : queryParams.mediaType;
+        } else {
+          this.selectedMediaType = '';
+          this.selectedMediaTypeIndex = 0;
         }
         return queryFilters;
       })).subscribe(filters => {
@@ -71,7 +80,15 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
   private handleFilterChange() {
-    this.filterChangeEvent.pipe(debounceTime(1000)).subscribe(({ type, event }) => {
+    this.filterChangeEvent.pipe(
+      filter(({type, event}) => {
+        if (type === 'mediaType' && this.selectedMediaTypeIndex !== event.data.index) {
+          this.selectedMediaTypeIndex = event.data.index;
+          return true;
+        }
+        return false;
+      }),
+      debounceTime(1000)).subscribe(({ type, event }) => {
       this.emitFilterChangeEvent();
     });
   }
