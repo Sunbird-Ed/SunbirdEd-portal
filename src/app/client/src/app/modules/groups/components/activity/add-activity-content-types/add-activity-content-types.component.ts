@@ -3,7 +3,7 @@ import { GroupsService } from '../../../services';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ADD_ACTIVITY_TO_GROUP, IGroupData } from '../../../interfaces';
+import { ADD_ACTIVITY_TO_GROUP } from '../../../interfaces';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
@@ -17,7 +17,8 @@ import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
 
   public supportedActivityList;
-  public groupData: IGroupData;
+  public groupName: string;
+  public groupCreator: string;
   private csGroupAddableBloc: CsGroupAddableBloc;
   telemetryImpression: IImpressionEventInput;
 
@@ -38,12 +39,11 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
     if (!this.csGroupAddableBloc.initialised) {
       this.csGroupAddableBloc.init();
     }
-    this.fetchActivityList();
     this.activatedRoute.queryParams.subscribe((params) => {
-     this.groupData['name'] = _.get(params, 'groupName');
-     this.groupData['creator'] = _.get(params, 'createdBy');
-     this.groupData['groupId'] = _.get(params, 'groupId');
+     this.groupName = _.get(params, 'groupName');
+     this.groupCreator = _.get(params, 'createdBy');
     });
+    this.fetchActivityList();
   }
 
   ngAfterViewInit() {
@@ -56,6 +56,8 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
       this.supportedActivityList.forEach(activity => {
         activity['title'] = this.resourceService.frmelmnts.lbl[activity['title']];
       });
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
@@ -77,7 +79,10 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
     const data = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        cdata: [{
+          type: 'Group',
+          id: _.get(this.groupService, 'groupData.id')
+        }]
       },
       edata: {
         id: _.get(interactData, 'id'),
@@ -93,7 +98,10 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: []
+        cdata: [{
+          type: 'Group',
+          id: _.get(this.groupService, 'groupData.id')
+        }]
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

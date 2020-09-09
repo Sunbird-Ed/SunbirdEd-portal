@@ -97,8 +97,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
      relativeTo: this.activatedRoute,
      queryParams: {
        groupName: _.get(this.groupData, 'name'),
-       createdBy: _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name')),
-       groupId: _.get(this.groupData, 'id'),
+       createdBy: _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'))
      }
     });
   }

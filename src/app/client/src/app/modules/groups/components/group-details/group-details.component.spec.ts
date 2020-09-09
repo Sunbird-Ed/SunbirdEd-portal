@@ -99,8 +99,7 @@ describe('GroupDetailsComponent', () => {
       relativeTo: fakeActivatedRoute,
       queryParams: {
         groupName: _.get(component.groupData, 'name'),
-        createdBy: _.capitalize(_.get(_.find(component.groupData['members'], { userId: component.groupData['createdBy'] }), 'name')),
-        groupId: _.get(component.groupData, 'id'),
+        createdBy: _.capitalize(_.get(_.find(component.groupData['members'], { userId: component.groupData['createdBy'] }), 'name'))
       }
     });
   });
