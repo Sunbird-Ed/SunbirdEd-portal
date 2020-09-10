@@ -278,9 +278,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
    * @returns - boolean
    */
   showCreateBatch() {
-    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes';
-    this.allowBatchCreation = this.isTrackable && this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
-    this.viewBatch = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.allowBatchCreation = this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
+    this.viewBatch = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
   }
 
   logTelemetry(id, content?: {}, batchId?) {
