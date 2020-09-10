@@ -320,7 +320,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   /**
-  * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list modal.
+  * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
   */
   public checkLinkedCollections(modal) {
     if (!_.isUndefined(modal)) {
