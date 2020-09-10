@@ -162,7 +162,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
-        filters.mimeType = mimeType.values;
+        filters.mimeType = _.get(mimeType, 'values');
 
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {
