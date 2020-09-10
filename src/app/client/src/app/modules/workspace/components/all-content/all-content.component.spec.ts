@@ -173,11 +173,4 @@ describe('AllContentComponent', () => {
         component.checkLinkedCollections(undefined);
         expect(component.checkLinkedCollections).toHaveBeenCalledWith(undefined);
       }));
-    it('should throw error for searchContent', inject([WorkSpaceService, ToasterService],
-      (workSpaceService, toasterService) => {
-        spyOn(workSpaceService, 'searchContent').and.callFake(() => observableThrowError({}));
-        spyOn(toasterService, 'error').and.callThrough();
-        component.checkLinkedCollections(undefined);
-        expect(toasterService.error).toHaveBeenCalled();
-      }));
 });

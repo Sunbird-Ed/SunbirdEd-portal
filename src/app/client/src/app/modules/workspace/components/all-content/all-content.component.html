@@ -129,15 +129,15 @@
 		<div class="sb-modal-content">
       <h5 class="font-weight-bold sb-color-red">{{resourceService?.frmelmnts?.lbl?.linkedContentErrorMessage}}</h5>
 			<div class="sb-table-responsive">
-				<table class="sb-table sb-table-striped sb-table-sortable sb-table-blue-strip">
+				<table aria-hidden="true" class="sb-table sb-table-striped sb-table-sortable sb-table-blue-strip">
 					<thead>
-            <th class="w-10">{{headers.type}}</th>
-            <th class="w-30">{{headers.name}}</th>
-            <th class="w-10">{{headers.subject}}</th>
-            <th class="w-10">{{headers.grade}}</th>
-            <th class="w-10">{{headers.medium}}</th>
-            <th class="w-10">{{headers.board}}</th>
-            <th class="w-20">{{headers.channel}}</th>
+            <th class="w-10" id="contentType">{{headers.type}}</th>
+            <th class="w-30" id="contentName">{{headers.name}}</th>
+            <th class="w-10" id="contentSubject">{{headers.subject}}</th>
+            <th class="w-10" id="contentGrade">{{headers.grade}}</th>
+            <th class="w-10" id="contentMedium">{{headers.medium}}</th>
+            <th class="w-10" id="contentBoard">{{headers.board}}</th>
+            <th class="w-20" id="contentchannel">{{headers.channel}}</th>
           </thead>
           <tbody>
             <tr *ngFor = "let row of collectionData">
