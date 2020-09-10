@@ -10,12 +10,12 @@
     </div>
 
     <div *ngIf="!showLoader">
-      <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm"
+      <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm" [platform]="'web'"
         (initialize)="tenantPersonaFormValueChanges($event?.value); tenantPersonaFormStatusChanges($event);"
         (valueChanges)="tenantPersonaFormValueChanges($event)" (statusChanges)="tenantPersonaFormStatusChanges($event)">
       </sb-form>
 
-      <sb-form *ngIf=" teacherDetailsForm?.length" [config]="teacherDetailsForm"
+      <sb-form *ngIf=" teacherDetailsForm?.length" [config]="teacherDetailsForm" [platform]="'web'"
         (valueChanges)="declarationFormValueChanges($event)" (statusChanges)="declarationFormStatusChanges($event)"
         (linkClicked)="linkClicked($event)">
       </sb-form>
