@@ -99,7 +99,8 @@
     "svg2img": "0.6.1",
     "ua-parser-js": "0.7.13",
     "uuid": "3.1.0",
-    "uuid-validate": "0.0.3"
+    "uuid-validate": "0.0.3",
+    "log4js": "^4.0.2"
   },
   "standard": {
     "env": {
