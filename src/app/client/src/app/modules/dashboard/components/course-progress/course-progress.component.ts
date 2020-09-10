@@ -478,24 +478,37 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       userConsent: 'No',
       audience: 'Teacher'
     }
-    const formReadInputParams = {
-      formType: 'batch',
-      formAction: 'list',
-      contentType: 'report_types'
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe(
-      (formResponsedata) => {
-        if (formResponsedata) {
-          const options = formResponsedata;
-          const userConsent = _.get(apiData, 'userConsent');
-          const audience = _.get(apiData, 'audience');
-          if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
-            this.reportTypes = options.splice(0, 2);
-          } else {
-            this.reportTypes = options;
+
+    this.user.userData$.subscribe((user) => {
+      const userProfile = user.userProfile;
+      let userRoles = _.get(userProfile, 'userRoles');
+      // userRoles = ['COURSE_MENTOR']
+      const isCourseCreator = _.includes(userRoles, 'COURSE_CREATOR');
+      const formReadInputParams = {
+        formType: 'batch',
+        formAction: 'list',
+        contentType: 'report_types'
+      };
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          if (formResponsedata) {
+            const options = formResponsedata;
+            if(isCourseCreator){
+              this.reportTypes = options;
+            }else{
+              this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
+            }
+            // const userConsent = _.get(apiData, 'userConsent');
+            // const audience = _.get(apiData, 'audience');
+            // if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
+            //   this.reportTypes = options.splice(0, 2);
+            // } else {
+            //   this.reportTypes = options;
+            // }
           }
-        }
-      });
+        });
+    })
+
 
     this.fileName = 'State wise report';
     this.stateWiseReportDate = [

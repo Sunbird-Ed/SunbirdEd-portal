@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
+import { ContentService, UserService, LearnerService, CoreModule, FormService } from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
@@ -264,4 +264,33 @@ describe('CourseProgressComponent', () => {
     component.setFilterDescription();
     expect(component.filterText).toEqual('Stats for last 7 days');
   });
+
+  it('should set report type options', () => {
+    const userService = TestBed.get(UserService);
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptions))
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData});
+    component.ngOnInit();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptions);
+  });
+
+   it('should set report type options for Course Mentor', () => {
+    const userService = TestBed.get(UserService);
+    const formService = TestBed.get(FormService);
+    testData.mockUserData.userMockData.userRoles = ['COURSE_MENTOR']
+    spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptionsForMentor))
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData});
+    component.ngOnInit();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptionsForMentor);
+  });
+
+  it('should call setOrder', () => {
+    spyOn(component , 'setInteractEventData').and.stub();
+    spyOn(component , 'populateCourseDashboardData').and.stub();
+    component.reverse= false;
+    component.currentBatch = '01307941196215910429';
+    component.setOrder('test')
+    expect(component.setInteractEventData).toHaveBeenCalled();
+    expect(component.populateCourseDashboardData).toHaveBeenCalledWith('01307941196215910429');
+  });  
 });
