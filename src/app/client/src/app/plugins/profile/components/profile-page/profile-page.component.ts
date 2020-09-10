@@ -452,6 +452,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate([`learn/course/${courseId}`]);
   }
 
+  toggleOtherCertific(showMore) {
+    if (showMore) {
+      if (this.otherCertificates.length !== this.otherCertificatesCounts) {
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
+      }
+      this.otherCertificateLimit = this.otherCertificatesCounts;
+      this.showMoreCertificates = false;
+    } else {
+      this.otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+      this.showMoreCertificates = true;
+    }
+  }
+
   /**
    * @since - #SH-815
    * @description - This method will map self declared values with teacher details dynamic fields to display on profile page
@@ -468,18 +481,5 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selfDeclaredInfo = _.orderBy(this.selfDeclaredInfo, ['index'], ['asc']);
       });
     });
-  }
-
-  toggleOtherCertific(showMore) {
-    if (showMore) {
-      if (this.otherCertificates.length !== this.otherCertificatesCounts) {
-        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
-      }
-      this.otherCertificateLimit = this.otherCertificatesCounts;
-      this.showMoreCertificates = false;
-    } else {
-      this.otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
-      this.showMoreCertificates = true;
-    }
   }
 }
