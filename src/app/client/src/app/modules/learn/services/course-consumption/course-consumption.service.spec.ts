@@ -208,4 +208,19 @@ describe('CourseConsumptionService', () => {
     expect(response).toEqual(false);
   });
 
+  it('should enable trackable', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
+    const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(true);
+  });
+
+  it('should disable trackable', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'no';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeFalsy();
+  });
+
 });

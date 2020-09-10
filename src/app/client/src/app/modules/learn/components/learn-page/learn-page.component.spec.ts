@@ -256,7 +256,7 @@ it('should redo layout on render', () => {
     component.ngOnInit();
     component['fetchPageData'](searchQueryParams);
     expect(pageApiService.getPageData).toHaveBeenCalledWith(
-      {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['instructor']}}
+      {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['Teacher']}}
       );
   });
 

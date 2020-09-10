@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { getUserCertificates, addTemplateToBatch } = require('./../helpers/certHelper');
 const { logError } = require('./../helpers/utilityService');
+const validate = require('uuid-validate');
 
 
 var certRegServiceApi = {
@@ -53,6 +54,11 @@ module.exports = function (app) {
         logger.debug(req.context, { msg: `${req.url} is called with request: ${JSON.stringify(_.get(req, 'body'))}` });
         courseId = _.get(req, 'body.request.filters.courseId');
         currentUser = _.get(req, 'body.request.filters.createdBy');
+        const userId = _.get(req, 'body.request.filters.userName');
+        if (validate(userId)) {
+          req.body.request.filters['userId'] = userId;
+          delete req.body.request.filters['userName'];
+        }
         delete req.body.request.filters['courseId'];
         delete req.body.request.filters['createdBy'];
         return require('url').parse(certRegURL + 'user/v1/search').path;

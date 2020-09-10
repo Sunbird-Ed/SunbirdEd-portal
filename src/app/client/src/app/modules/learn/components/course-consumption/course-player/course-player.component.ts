@@ -16,6 +16,7 @@ import { PopupControlService } from '../../../../../service/popup-control.servic
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-course-player',
@@ -76,6 +77,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   popupMode: string;
   createdBatchId: string;
   courseMentor = false;
+  public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
+  public batchMessage: any;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -433,8 +436,36 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
+      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
+      if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
+        this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
+      } else if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 2) {
+        const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
+          return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
+        });
+         this.batchMessage = this.validateBatchDate(allBatchList);
+      }
     }
+  }
+
+  validateBatchDate(batch) {
+    let batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+    if (batch && batch.length === 1) {
+      const currentDate = new Date();
+      const batchStartDate = new Date(batch[0].startDate);
+      const batchenrollEndDate = batch[0].enrollmentEndDate ? new Date(batch[0].enrollmentEndDate) : null;
+      if (batchStartDate > currentDate) {
+        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate)
+      } else if (batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
+        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate)
+      }
+    }
+    return batchMessage
+  }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return dayjs(enrollmentEndDate).isBefore(this.todayDate);
   }
 
   calculateProgress() {
