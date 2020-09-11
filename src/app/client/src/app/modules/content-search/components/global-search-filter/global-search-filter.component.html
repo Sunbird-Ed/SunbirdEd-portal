@@ -93,7 +93,7 @@
                 </div>
               </ng-container>
             </div>
-            <div class="sb-prominent-filter-container" *ngIf="refresh">
+            <div class="sb-prominent-filter-container sb-global-search" *ngIf="refresh">
               <div class="sb-prominent-filter-field" *ngFor="let facet of facets | sortBy:'index':'asc'">
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
                 <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
