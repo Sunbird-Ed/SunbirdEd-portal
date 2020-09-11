@@ -46,7 +46,7 @@ describe('ProfilePageComponent', () => {
     }
   }
 
-  class MockCSModule {
+  class MockCSService {
     getSignedCourseCertificate() { return of({ printUri: '' }); }
   }
 
