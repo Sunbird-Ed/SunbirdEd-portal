@@ -204,7 +204,7 @@ describe('PublicCourseComponent', () => {
 
   it('should call play content method', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playExploreCourse').and.callThrough();
+    spyOn(publicPlayerService, 'playContent').and.callThrough();
     const event = {
       data: {
         metaData: {
@@ -213,7 +213,7 @@ describe('PublicCourseComponent', () => {
       }
     };
     component.playContent(event);
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
 
   it('should generate visit telemetry impression event', () => {
@@ -238,7 +238,7 @@ describe('PublicCourseComponent', () => {
     const option = {
       source: 'web', name: 'Course', organisationId: '*',
       filters: { sort_by: 'name', sortType: 'desc', audience: [ 'Teacher' ] },
-      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType' ],
+      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable' ],
       params: { orgdetails: 'orgName,email' }
     };
     expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
