@@ -1,3 +1,4 @@
+import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
 import {
@@ -68,7 +69,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private cacheService: CacheService,
     private router: Router,
     private groupsService: GroupsService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public courseConsumptionService: CourseConsumptionService
   ) { }
 
   ngOnInit() {
@@ -256,28 +258,21 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addActivity(event) {
-    const cdata = [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.contentType')}];
+    const cdata = [{ id: _.get(event, 'data.identifier'), type: _.get(event, 'data.contentType') }];
     this.addTelemetry('activity-course-card', cdata);
+    const isTrackable = this.courseConsumptionService.isTrackableCollection(event.data);
+    const contentMimeType = _.get(event, 'data.mimeType');
 
-    switch (_.get(event, 'data.contentType').toLowerCase()) {
-      case 'course' :
+    if (contentMimeType === 'application/vnd.ekstep.content-collection' && isTrackable) {
+
       this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
-      break;
-      case 'textbook' :
+
+    } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
+
       this.router.navigate(['/resources/play/collection', _.get(event, 'data.identifier')]);
-      break;
-      case 'collection' :
-      this.router.navigate(['/resources/play/collection', _.get(event, 'data.identifier')]);
-      break;
-      case 'resource' :
+
+    } else {
       this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
-      break;
-      case 'practiceresource' :
-      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
-      break;
-      case 'practicequestionset' :
-      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
-      break;
     }
   }
 

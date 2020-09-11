@@ -12,6 +12,7 @@ import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../services/groups/groups.service';
+import { CourseConsumptionService } from '@sunbird/learn';
 
 describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
@@ -200,14 +201,35 @@ describe('ActivitySearchComponent', () => {
     expect(router.navigate).toHaveBeenCalled();
   });
 
-  it('should call addActivity', () => {
+  it('should navigate to resource page if contentType is non-trackable and mime type is not collection', () => {
     spyOn(component, 'addTelemetry');
     const router = TestBed.get(Router);
-    const event = { data: { identifier: 'do_234324446565', contentType: 'Course' } };
+    const event = activitySearchMockData.eventDataForResource;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_234324446565'],
-      { queryParams: { groupId: 'adfddf-sdsds-wewew-sds' } });
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.data.identifier]);
+  });
+
+  it('should navigate to resource page if contentType is trackable and mime type is collection', () => {
+    spyOn(component, 'addTelemetry');
+    const router = TestBed.get(Router);
+    const event = activitySearchMockData.eventDataForCourse;
+    component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
+    component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', event.data.identifier], {queryParams: {
+      groupId: component.groupData.id
+    }});
+  });
+
+  it('should navigate to resource page if contentType is non-trackable and mime type is collection', () => {
+    spyOn(component, 'addTelemetry');
+    const router = TestBed.get(Router);
+    const event = activitySearchMockData.eventDataForTextbook;
+    component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
+    component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.data.identifier]);
   });
 });
