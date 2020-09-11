@@ -53,16 +53,4 @@ describe('AddToGroupDirective', () => {
     expect(directive).toBeTruthy();
   });
 
-  it('should add activity to the group', () => {
-    /** Arrange */
-    spyOn(directive, 'sendInteractData').and.stub();
-    directive.groupAddableBlocData = {};
-
-    /** Act */
-    directive.addActivityToGroup();
-
-    /** Assert */
-    expect(directive.sendInteractData).toHaveBeenCalled();
-
-  });
 });
