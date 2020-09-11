@@ -295,6 +295,7 @@ it('should redo layout on render', () => {
     expect(pageApiService.getPageData).toHaveBeenCalledWith(
       {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['Teacher']}}
       );
+  });
   it('should get processed facets data', () => {
     const facetsData = component.updateFacetsData(Response.facetsList);
     expect(facetsData).toEqual(Response.updatedFacetsList);
