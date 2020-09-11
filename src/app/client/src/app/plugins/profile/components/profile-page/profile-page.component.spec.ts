@@ -164,17 +164,34 @@ describe('ProfilePageComponent', () => {
     expect(component.getOrgDetails).toHaveBeenCalled();
   });
 
-  it('should fetch other certificates', () => {
+  it('should fetch all other certificates', () => {
     const certRegService = TestBed.get(CertRegService);
     const mockData = Response.othersCertificateData;
     spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
-    component.getOtherCertificates('123456', 'quiz');
+    component.getOtherCertificates('123456', 'all');
     expect(component.otherCertificates).toEqual([{
       pdfUrls: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
       issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
       issuedOn: mockData.result.response.content[0]._source.data.issuedOn,
       certName: mockData.result.response.content[0]._source.data.badge.name
     }]);
+  });
+
+  it('should fetch more certificates while clicking on show more', () => {
+    const certRegService = TestBed.get(CertRegService);
+    const mockData = Response.othersCertificateData;
+    spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
+    spyOn(component, 'getOtherCertificates').and.callThrough();
+    component.getOtherCertificates('123456', 'all');
+    component.toggleOtherCertific(true);
+    expect(component.otherCertificateLimit).toEqual(component.otherCertificatesCounts);
+    expect(component.showMoreCertificates).toBeFalsy();
+  });
+
+  it('should show less while clicking on show less', () => {
+    component.toggleOtherCertific(false);
+    expect(component.otherCertificateLimit).toEqual(component.configService.appConfig.PROFILE.defaultViewMoreLimit);
+    expect(component.showMoreCertificates).toBeTruthy();
   });
 
   it(`should show 'show more'`, () => {
