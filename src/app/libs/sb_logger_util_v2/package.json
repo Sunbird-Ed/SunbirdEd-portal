@@ -1,0 +1,16 @@
+{
+  "name": "sb_logger_util_v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "log4js": "^4.0.2",
+    "mkdirp": "^0.5.1",
+    "lodash": "^4.17.4"
+  }
+}
