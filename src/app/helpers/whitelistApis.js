@@ -551,6 +551,10 @@ const API_LIST = {
     '/learner/anonymous/otp/v1/generate': {
       checksNeeded: []
     },
+    '/learner/data/v1/form/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     // Groups related APIs
     '/learner/group/v1/create': {
