@@ -30,10 +30,8 @@
     </div>
   </div>
   <div *ngIf="showFilters">
-    <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'activity-search'" *ngIf="initFilters"
-      [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]="true" [isShowFilterLabel]="false"
-      [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)">
-    </app-data-driven-filter>
+    <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
+    </app-global-search-filter>
   </div>
   <div class="ui container">
     <div class="mt-24">
@@ -56,9 +54,13 @@
 
       <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
         <div class="sb-card-grid--item" *ngFor="let content of contentList;">
-          <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
+          <!-- <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
             [cardImg]="content?.image || './assets/images/book.png'">
-          </sb-course-card>
+          </sb-course-card> -->
+
+          <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"  (cardClick)="addActivity($event)" [content]="content"
+              [cardImg]="content?.image || 'assets/images/book.png'">
+          </sb-library-card>
         </div>
       </div>
 
