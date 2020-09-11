@@ -324,15 +324,15 @@ const API_LIST = {
     //Batch related APIs
     '/learner/course/v1/batch/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/user/add': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/read/:batchId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -347,7 +347,7 @@ const API_LIST = {
     },
     '/learner/course/v1/batch/user/remove': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
 
     //User related APIs
