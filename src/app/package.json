@@ -61,6 +61,8 @@
   "dependencies": {
     "@project-sunbird/ext-framework-server": "0.1.27",
     "@project-sunbird/logger": "^0.0.9",
+    "@project-sunbird/form-service": "0.0.13",
+    "@project-sunbird/review-comment": "0.0.8",
     "async": "2.5.0",
     "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
@@ -99,8 +101,7 @@
     "svg2img": "0.6.1",
     "ua-parser-js": "0.7.13",
     "uuid": "3.1.0",
-    "uuid-validate": "0.0.3",
-    "log4js": "^4.0.2"
+    "uuid-validate": "0.0.3"
   },
   "standard": {
     "env": {
