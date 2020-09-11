@@ -67,7 +67,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   getGroupData() {
     this.isLoader = true;
-    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
         if (!user || _.get(groupData, 'status') === 'inactive') {
           this.groupService.goBack();
@@ -77,6 +77,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;
         this.isLoader = false;
+        this.showActivityList = this.groupService.getActivityList(false, groupData, true).showList;
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();

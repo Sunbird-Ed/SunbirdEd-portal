@@ -1,39 +1,58 @@
-<!--Show loader-->
-<div class="sb-card-grid my-24" *ngIf="showLoader">
-  <div class="sb-card-grid--item" *ngFor="let i of numberOfSections">
-    <sb-course-card [isLoading]="true"></sb-course-card>
-  </div>
-</div>
-
-<!--Show Activity List-->
-<div *ngIf="!showLoader && activityList?.length" class="sb-card-grid my-24">
-  <div class="sb-card-grid--item relative" *ngFor="let activity of activityList;">
-    <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin"
-      [cardImg]="activity?.appIcon || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
-    </sb-course-card>
-    <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
-      <div class="list sb-color-error" (click)="toggleModal(true)">
-        <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+<div *ngFor="let list of activityList">
+  <div class="header" *ngIf="list?.items?.length">
+      <div class="title">
+        <!-- <i class="icon-svg icon-svg--sm mr-8">
+        <svg class="icon">
+        <use xlink:href="assets/common-consumption/images/sprite.svg#book"></use>
+        </svg>
+      </i> -->
+    {{list?.title}}
+    <!-- <span class="mx-8 badge">{{ list?.items?.length}}</span> -->
       </div>
-    </div>
+  </div>
+
+  <!--Show loader-->
+  <div class="sb-card-grid" *ngIf="showLoader && list?.items?.length">
+      <div class="sb-grid--item" *ngFor="let i of (list?.items || numberOfSections) ">
+          <sb-course-card [isLoading]="true"></sb-course-card>
+      </div>
+  </div>
+
+  <!--Show Activity List-->
+  <div class="" *ngIf="list?.items?.length && !showLoader" class="sb-card-grid">    
+       <div class="sb-card-grid--item relative" *ngFor="let activity of list?.items">
+          <sb-course-card *ngIf="list?.title === 'Courses'" (cardClick)="openActivity($event, activity?.activityInfo)" [course]="activity?.activityInfo" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.activityInfo?.appIcon
+      || './assets/images/book.png'" (menuClick)="getMenuData($event, activity?.activityInfo)">
+          </sb-course-card>
+
+          <sb-library-card  *ngIf="list?.title !== 'Courses'" (cardClick)="openActivity($event, activity?.activityInfo)" [content]="activity?.activityInfo" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.activityInfo?.appIcon
+          || './assets/images/book.png'" (menuClick)="getMenuData($event, activity?.activityInfo)">
+          </sb-library-card>
+          <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
+      selectedActivity?.identifier === activity?.activityInfo?.identifier">
+              <div class="list sb-color-error" (click)="toggleModal(true)">
+                  <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+              </div>
+          </div>
+      </div> 
   </div>
 </div>
 
 <!-- No Activity -->
-<app-add-activity *ngIf="!showLoader && !activityList?.length"></app-add-activity>
+<app-add-activity *ngIf="!showLoader && !showActivityList"></app-add-activity>
 
 <!-- Remove Activity from the group -->
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
-  </div>
-  <div class="sb-modal-content">
-    <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-error"
-      (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-  </div>
+appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
+</div>
+<div class="sb-modal-content">
+  <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-error"
+    (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+</div>
 
 </sui-modal>

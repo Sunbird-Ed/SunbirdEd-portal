@@ -16,6 +16,7 @@ export interface IActivity {
   organisation: string[];
   subject: string;
   type: string;
+  contentType?: string;
 }
 @Component({
   selector: 'app-activity-list',
@@ -28,7 +29,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
-  activityList = [];
+  showActivityList = false;
+  activityList: any;
   showMenu = false;
   selectedActivity: IActivity;
   showModal = false;
@@ -62,24 +64,38 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   getActivities() {
+    const response = this.groupService.getActivityList(false, this.groupData, false);
+    this.activityList = response.activities;
+    this.showActivityList = response.showList;
     this.showLoader = false;
-    this.activityList =  this.groupData.activities.map(item => item.activityInfo);
   }
 
-  openActivity(event: any, activity) {
-    this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
-    const options = { relativeTo: this.activateRoute, queryParams: { contentType: activity.contentType } };
+  navigateToViewMorePage(event) {
+    console.log('navigateToViewMorePagenavigateToViewMorePage', event);
+  }
+
+  onActivityCardClick(event) {
+    console.log('onActivityCardClickonActivityCardClick', event);
+  }
+
+
+
+
+  openActivity(event: any) {
+    this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
+    const options = { relativeTo: this.activateRoute, queryParams: { contentType: _.get(event, 'data.contentType')} };
     if (_.get(this.groupData, 'isAdmin')) {
-      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], options);
+      this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
     } else {
-      this.router.navigate(['/learn/course', activity.identifier]);
+      this.router.navigate(['/learn/course', _.get(event, 'data.identifier')]);
     }
   }
 
-  getMenuData(event, member) {
+  getMenuData(event) {
     this.showMenu = !this.showMenu;
+    console.log('evvveve', event);
     this.groupService.emitMenuVisibility('activity');
-    this.selectedActivity = member;
+    this.selectedActivity = _.get(event, 'data');
     this.addTelemetry('activity-kebab-menu-open');
   }
 
@@ -95,7 +111,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
+        this.activityList = _.map(this.activityList, list => {
+            if ((list.title).toLowerCase() === `${_.get(this.selectedActivity, 'contentType')}s`.toLowerCase()) {
+              list.items =  _.reject(list.items, {id: this.selectedActivity.identifier});
+                return list;
+            } else {
+              return list;
+            }
+        });
+        this.showActivityList = this.groupService.getActivityList(false, this.groupData, false).showList;
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {

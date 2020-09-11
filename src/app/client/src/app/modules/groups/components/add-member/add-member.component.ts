@@ -166,6 +166,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   showErrorMsg(response?) {
+    _.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT' ?
+    this.toasterService.error(this.resourceService.messages.groups.emsg.m002) :
     this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
     || _.get(this.verifiedMember, 'title')));
   }
