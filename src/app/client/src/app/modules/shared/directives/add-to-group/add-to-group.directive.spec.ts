@@ -8,12 +8,30 @@ import { BrowserCacheTtlService, UtilService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AddToGroupDirectiveMockData } from './add-to-group.directive.spec.data';
+import { of as observableOf, throwError } from 'rxjs';
+import * as _ from 'lodash-es';
+import { configureTestSuite } from '@sunbird/test-util';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
 describe('AddToGroupDirective', () => {
   let directive: AddToGroupDirective;
+  configureTestSuite();
 
-  class ResourceServiceStub {
-  }
+  const resourceBundleStub = {
+    messages: {
+      imsg: {
+        activityAddedSuccess: 'Activity added successfully'
+      },
+      emsg: {
+        activityAddedToGroup: 'You have added this activity previously for the group',
+        noAdminRole: 'You are not authorised to add activities'
+      },
+      stmsg: {
+        activityAddFail: 'Could not add the activity. Try again later'
+      }
+    }
+  };
 
   class RouterStub {
 
@@ -23,7 +41,15 @@ describe('AddToGroupDirective', () => {
 
   };
 
-  const elementRefStub = { nativeElement: { 'lang': 'en', 'dir': 'ltr' } };
+  const elementRefStub = {
+    nativeElement: {
+      'lang': 'en',
+      'dir': 'ltr',
+      style: {
+        display: 'none'
+      }
+    }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,11 +65,11 @@ describe('AddToGroupDirective', () => {
         UtilService,
         ToasterService,
         TelemetryService,
-        { provide: ResourceService, useClass: ResourceServiceStub },
+        { provide: ResourceService, useValue: resourceBundleStub },
         { provide: ElementRef, useValue: elementRefStub },
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        { provide: 'CS_GROUP_SERVICE', useFactory: csGroupServiceFactory}
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: 'CS_GROUP_SERVICE', useFactory: csGroupServiceFactory }
       ]
     });
     directive = TestBed.get(AddToGroupDirective);
@@ -53,4 +79,155 @@ describe('AddToGroupDirective', () => {
     expect(directive).toBeTruthy();
   });
 
+  it('should not add activity to the group if it is already been added', () => {
+    /** Arrange */
+    const toasterService = TestBed.get(ToasterService);
+    directive.identifier = 'do_1130958935577886721105';
+    spyOn(directive, 'sendInteractData').and.stub();
+    directive.groupAddableBlocData = {
+      pageIds: ['course'],
+      groupId: ['SOME_GROUP_ID'],
+      params: {
+        searchQuery: '{"request":{"filters":{"contentType":["Course"],"status":["Live"],"objectType":["Content"]}}}',
+        groupData: AddToGroupDirectiveMockData.groupData,
+        contentType: 'Course'
+      }
+    };
+    spyOn(directive, 'goBack').and.stub();
+    spyOn(toasterService, 'error').and.stub();
+
+    /** Act */
+    directive.addActivityToGroup();
+
+    /** Assert */
+    expect(directive.sendInteractData).toHaveBeenCalled();
+    expect(directive.goBack).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith('You have added this activity previously for the group');
+  });
+
+  it('should add activity to the group if it is not added', () => {
+    /** Arrange */
+    const toasterService = TestBed.get(ToasterService);
+    directive.identifier = 'do_12345';
+    spyOn(directive, 'sendInteractData').and.stub();
+    directive.groupAddableBlocData = {
+      pageIds: ['course'],
+      groupId: ['SOME_GROUP_ID'],
+      params: {
+        searchQuery: '{"request":{"filters":{"contentType":["Course"],"status":["Live"],"objectType":["Content"]}}}',
+        groupData: AddToGroupDirectiveMockData.groupData,
+        contentType: 'Course'
+      }
+    };
+    spyOn(directive, 'goBack').and.stub();
+    spyOn(directive['csGroupService'], 'addActivities').and.returnValue(observableOf({}));
+    spyOn(toasterService, 'success').and.stub();
+
+    /** Act */
+    directive.addActivityToGroup();
+
+    /** Assert */
+    expect(directive.sendInteractData).toHaveBeenCalled();
+    expect(directive.goBack).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalledWith('Activity added successfully');
+  });
+
+  it('should show a toaster message if add activity api fail', () => {
+    /** Arrange */
+    const toasterService = TestBed.get(ToasterService);
+    directive.identifier = 'do_12345';
+    spyOn(directive, 'sendInteractData').and.stub();
+    directive.groupAddableBlocData = {
+      pageIds: ['course'],
+      groupId: ['SOME_GROUP_ID'],
+      params: {
+        searchQuery: '{"request":{"filters":{"contentType":["Course"],"status":["Live"],"objectType":["Content"]}}}',
+        groupData: AddToGroupDirectiveMockData.groupData,
+        contentType: 'Course'
+      }
+    };
+    spyOn(directive, 'goBack').and.stub();
+    spyOn(directive['csGroupService'], 'addActivities').and.callFake(() => throwError({}));
+    spyOn(toasterService, 'error').and.stub();
+
+    /** Act */
+    directive.addActivityToGroup();
+
+    /** Assert */
+    expect(directive.sendInteractData).toHaveBeenCalled();
+    expect(directive.goBack).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith('Could not add the activity. Try again later');
+  });
+
+  it('should navigate to last url', () => {
+    /** Arrange*/
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
+
+    /** Act */
+    directive.goBack();
+
+    /** Assert */
+    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
+  });
+
+  it('should send interact data', () => {
+    /** Arrange */
+    const telemetryService = TestBed.get(TelemetryService);
+    directive.groupAddableBlocData = {
+      pageIds: ['course'],
+      groupId: ['SOME_GROUP_ID'],
+      params: {
+        searchQuery: '{"request":{"filters":{"contentType":["Course"],"status":["Live"],"objectType":["Content"]}}}',
+        groupData: AddToGroupDirectiveMockData.groupData,
+        contentType: 'Course'
+      }
+    };
+    directive.identifier = 'do_12345';
+    directive.pageId = 'course';
+    const telemetryData = {
+      context: {
+        env: 'groups',
+        cdata: [{
+          type: _.get(directive.groupAddableBlocData, 'params.contentType'),
+          id: directive.identifier
+        }]
+      },
+      edata: {
+        id: 'add-to-group-button',
+        type: 'CLICK',
+        pageid: directive.pageId
+      }
+    };
+    spyOn(telemetryService, 'interact');
+
+    /** Act */
+    directive.sendInteractData();
+
+    /** Assert */
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
+  });
+
+  it('should show the "Add to group button" if state has been set previously for a particular content type', () => {
+    /** Arrange */
+    const stateData = {
+      pageIds: ['course'],
+      groupId: ['SOME_GROUP_ID'],
+      params: {
+        searchQuery: '{"request":{"filters":{"contentType":["Course"],"status":["Live"],"objectType":["Content"]}}}',
+        groupData: AddToGroupDirectiveMockData.groupData,
+        contentType: 'Course'
+      }
+    };
+    directive['ref'] = TestBed.get(ElementRef);
+    directive.pageId = 'course';
+    spyOnProperty<any>(CsGroupAddableBloc.instance, 'initialised').and.returnValue(true);
+    spyOnProperty<any>(CsGroupAddableBloc.instance, 'state$').and.returnValue(observableOf(stateData));
+
+    /** Act */
+    directive.ngOnInit();
+
+    /** Assert */
+    expect(directive['ref'].nativeElement.style.display).toEqual('block');
+  });
 });
