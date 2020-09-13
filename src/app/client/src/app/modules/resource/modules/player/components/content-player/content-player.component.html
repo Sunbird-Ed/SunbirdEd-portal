@@ -27,6 +27,11 @@
                         {{resourceService?.frmelmnts?.lbl?.copy}}
                     </a>
                 </span> 
+                <div class="certified-course__btn">
+                    <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" 
+                    appAddToGroup [identifier]="contentData?.identifier" [pageId]="contentData?.contentType.toLowerCase()">
+                    {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+                </div>
             </div>
         </div>
     
