@@ -11,6 +11,23 @@ export const mockManageData = {
             }
         }
     },
+    geoSummary: [
+        {
+            "districtName": 'qwe',
+            "schools": 10,
+            "index": 1,
+            "blocks": 1
+        }
+    ],
+    validatedUserSummary: [
+        {
+            "index" : 1,
+            "districtName":'',
+            "blocks": 10, 
+            "schools": 10,
+            "registered": true
+        }
+    ],
     userSummary: {
         'accounts_unclaimed': 0,
         'accounts_validated': 0,
