@@ -1,9 +1,9 @@
 
-import {of as observableOf, of } from 'rxjs';
-import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
+import {of as observableOf } from 'rxjs';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, ContentService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
+import { CoreModule, PlayerService, UserService, PublicDataService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MockResponse } from './player.service.spec.data';
@@ -17,7 +17,7 @@ const fakeActivatedRoute = {
     data: {
     }
   },
-  queryParams: of({ })
+  queryParams: observableOf({ })
 };
 describe('PlayerService', () => {
   configureTestSuite();
@@ -109,7 +109,7 @@ describe('PlayerService', () => {
   it('should get collection hierarchy', () => {
     const playerService = TestBed.get(PlayerService);
     const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValues(of(MockResponse.collectionHierarchy));
+    spyOn(publicDataService, 'get').and.returnValues(observableOf(MockResponse.collectionHierarchy));
     playerService.getCollectionHierarchy('123').subscribe((res) => {
       expect(playerService.collectionData).toBeDefined();
     });
