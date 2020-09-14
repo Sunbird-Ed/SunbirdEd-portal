@@ -108,21 +108,21 @@ describe('ProfileService', () => {
     });
   });
 
-  it('should call getTenants method', () => {
+  it('should call getPersonaTenantForm method', () => {
     const formService = TestBed.get(FormService);
     const profileService = TestBed.get(ProfileService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.successData));
-    profileService.getTenants().subscribe(apiResponse => {
+    profileService.getPersonaTenantForm().subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
 
-  it('should call getTeacherDetailForm method', () => {
+  it('should call getSelfDeclarationForm method', () => {
     const formService = TestBed.get(FormService);
     const profileService = TestBed.get(ProfileService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.successData));
-    profileService.getTeacherDetailForm('submit').subscribe(apiResponse => {
+    profileService.getSelfDeclarationForm('submit').subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
       expect(apiResponse.result.response).toBe('SUCCESS');
     });

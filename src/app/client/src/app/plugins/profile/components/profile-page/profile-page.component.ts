@@ -25,6 +25,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { FieldConfig } from 'common-form-elements';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -117,7 +118,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.declarationDetails.errorType) {
             this.selfDeclaredErrorTypes = this.declarationDetails.errorType.split(',');
           }
-          this.getSelfDeclaraedDetails();
+          this.getSelfDeclaredDetails();
         }
       }
     });
@@ -474,19 +475,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * @since - #SH-815
+   * @since - #SH-920
    * @description - This method will map self declared values with teacher details dynamic fields to display on profile page
    */
-  getSelfDeclaraedDetails() {
+  getSelfDeclaredDetails() {
     this.selfDeclaredInfo = [];
-    this.profileService.getTenants().subscribe(res => {
-      this.tenantInfo = _.find(res[0].range, (o) => o.value === this.declarationDetails.orgId);
-      this.profileService.getTeacherDetailForm('submit', this.declarationDetails.orgId).subscribe(data => {
-        for (const [key, value] of Object.entries(this.declarationDetails.info)) {
-          const field = _.find(data, (o) => o.code === key);
-          this.selfDeclaredInfo.push({ label: field.label, value, code: field.code, index: field.index });
-        }
-        this.selfDeclaredInfo = _.orderBy(this.selfDeclaredInfo, ['index'], ['asc']);
+    this.profileService.getPersonaTenantForm().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      const tenantConfig: any = res.find(config => config.code === 'tenant');
+      this.tenantInfo = _.get(tenantConfig, 'templateOptions.options').find(tenant => tenant.value === this.declarationDetails.orgId);
+
+      this.profileService.getSelfDeclarationForm(this.declarationDetails.orgId).pipe(takeUntil(this.unsubscribe$)).subscribe(formConfig => {
+        const externalIdConfig = formConfig.find(config => config.code === 'externalIds');
+        (externalIdConfig.children as FieldConfig<any>[]).forEach(config => {
+          if (this.declarationDetails.info[config.code]) {
+            this.selfDeclaredInfo.push({ label: config.fieldName, value: this.declarationDetails.info[config.code], code: config.code });
+          }
+        });
       });
     });
   }
