@@ -318,4 +318,15 @@ it('should redo layout on render', () => {
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
   });
 
+  it('should set trackable data in metadata of enrolledCourse', () => {
+    Response.enrolledCourses[0].content['trackable'] =  {
+      'enable': 'Yes',
+      'autoBatch': 'Yes'
+    };
+    coursesService.initialize();
+    component.ngOnInit();
+    component.redoLayout();
+    expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
+  });
+
 });
