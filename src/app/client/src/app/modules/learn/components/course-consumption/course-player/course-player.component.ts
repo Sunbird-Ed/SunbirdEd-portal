@@ -113,6 +113,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
     this.initLayout();
+    this.courseProgressService.courseProgressData.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
+          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
+          this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
+        }
+      });
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
@@ -204,16 +214,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-      });
-    this.courseProgressService.courseProgressData.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(courseProgressData => {
-        this.courseProgressData = courseProgressData;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
-          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
-          this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
-        }
       });
 
     this.courseBatchService.updateEvent.subscribe((event) => {
