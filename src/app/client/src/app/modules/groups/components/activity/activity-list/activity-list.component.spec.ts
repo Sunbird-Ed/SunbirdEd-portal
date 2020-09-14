@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -61,7 +61,7 @@ describe('ActivityListComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
-        GroupsService
+        GroupsService, ConfigService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -82,20 +82,9 @@ describe('ActivityListComponent', () => {
   });
 
   it('should call ngOnInit', () => {
-    spyOn(component, 'getActivities');
     component.ngOnInit();
-    expect(component.showLoader).toBe(true);
-    expect(component.getActivities).toHaveBeenCalled();
-
-  });
-
-  it('should call getActivities', () => {
-    spyOn(component['groupService'], 'getActivityList').and.returnValue(
-      {showList: false, activities: mockActivityList.groupData.activitiesGrouped});
-    component.getActivities();
     expect(component.showLoader).toBe(false);
-    expect(component.activityList).toEqual(mockActivityList.groupData.activitiesGrouped);
-    expect(component.showActivityList).toBe(true);
+
   });
 
 
@@ -182,6 +171,7 @@ describe('ActivityListComponent', () => {
 
   it('should call removeActivity', () => {
     component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0];
+    component.activityList = mockActivityList.activityList;
     spyOn(component['groupService'], 'removeActivities').and.returnValue(of ({}));
     const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'toggleModal');
@@ -197,10 +187,50 @@ describe('ActivityListComponent', () => {
     expect(toasterService.success).toHaveBeenCalled();
   });
 
-  it('should return type in Lowercase', () => {
-    const type = component.getType('COURSE');
-    expect(type).toEqual('course');
-   });
+  it ('should disable "disableViewAllMode"', () => {
+    component.toggleViewAll(false, {});
+    expect(component.disableViewAllMode).toBe(false);
+  });
+
+  it ('should enable "disableViewAllMode"', () => {
+    component.toggleViewAll(true, {key: 'Courses', value: [{}]});
+    expect(component.disableViewAllMode).toBe(true);
+  });
+
+  it('should return TRUE (when type is COURSE)', () => {
+    const value = component.isCourse('Course');
+    expect(value).toBe(true);
+  });
+
+  it('should return FALSE (when type is not COURSE)', () => {
+    const value = component.isCourse('Resource');
+    expect(value).toBe(false);
+  });
+
+  it('should return TRUE (when activityType.length < 3)', () => {
+    component.selectedTypeContents = {};
+    const value = component.viewSelectedTypeContents('Course', [{id: '12'}], 0);
+    expect(value).toBe(true);
+  });
+
+  it('should return FALSE (when activityType.length > 3)', () => {
+    component.selectedTypeContents = {};
+    const value = component.viewSelectedTypeContents('Course',
+    [{id: '12'}, {id: '2'}, {id: '123'}, {id: '132'}], 4);
+    expect(value).toBe(false);
+  });
+
+  it('should return TRUE (when there is no SELECTED ACTIVITY TYPE)', () => {
+    component.selectedTypeContents = {};
+    const value = component.isSelectedType('Course');
+    expect(value).toBe(true);
+  });
+
+  it('should return TRUE (when there is  SELECTED ACTIVITY TYPE)', () => {
+    component.selectedTypeContents = {key: 'resource', value: [{id: 123}]};
+    const value = component.isSelectedType('Resource');
+    expect(value).toBe(true);
+  });
 
   it('should call ngOnDestroy', () => {
     component.showModal = true;

@@ -179,4 +179,68 @@ export const mockActivityList = {
       ]
     }
   ],
+
+  activityList: {
+    Courses: [
+      {
+          'name': '05-03-19-course',
+          'identifier': 'do_21271200473210880012152',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21271200473210880012152/artifact/20180817101627-30120_1544767085980.thumb.png',
+          'organisation': [
+            'Sachin 2808'
+          ],
+          'subject': 'Political Science',
+          'type': 'Course',
+          'contentType': 'Course'
+      },
+      {
+          'identifier': 'do_212691674291134464114382',
+          'subject': 'Political Science',
+          'organisation': [
+            'Odisha',
+            'Test 99'
+          ],
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212691674291134464114382/artifact/b8296d1c7764e84d1386b6592181327a_1475841406674.thumb.jpeg',
+          'name': ' 4-02-2019-Course100',
+           'type': 'Course',
+          'contentType': 'Course'
+      },
+      {
+          'subject':
+            'Physics',
+          'organisation': [
+            'Sunbird QA Tenant',
+            'SunbirdQA 3'
+          ],
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2130695070229790721908/artifact/16th_1579582768862.thumb.jpeg',
+          'contentType': 'Course',
+          'identifier': 'do_2130695070229790721908',
+          'name': 'Non academic nested course',
+          'type': 'Course'
+      },
+      {
+          'subject': 'Social Studies',
+          'organisation': [
+            'Sunbird QA Tenant',
+            'SunbirdQA 3'
+          ],
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212945782456868864179/artifact/audio-icon_1580295727394.png',
+          'contentType': 'Course',
+          'identifier': 'do_21306964100198400011343',
+          'name': 'Nested course N1',
+          'type': 'Course'
+      }
+    ],
+  TextBooks: [{
+          'subject': 'Mathematics',
+          'organisation': [
+            'test'
+          ],
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2130092882511380481912/artifact/44870761_1067305270146427_8127580563721682944_n_1576750191164.thumb.jpg',
+          'contentType': 'TextBook',
+          'identifier': 'do_2130093660325806081984',
+          'name': '28ShallowCopy-6',
+          'type': 'TextBook'
+      }]
+    }
 };

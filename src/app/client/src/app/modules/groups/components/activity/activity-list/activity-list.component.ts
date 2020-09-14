@@ -120,7 +120,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   isCourse(type) {
-    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Courses));
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course) ||
+    (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Courses)));
   }
 
   viewSelectedTypeContents(type, list, index) {
