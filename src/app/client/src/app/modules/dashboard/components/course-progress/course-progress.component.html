@@ -224,7 +224,8 @@
          <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
         </div>
         <div class="ui segment detailed-report" suiTabContent="2">
-          <app-on-demand-reports></app-on-demand-reports>
+          <app-on-demand-reports [reportTypes]="reportTypes" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
         </div>
       </sui-tabset>
+</div>
 <!-- This is the updated code for semantic datatable -->

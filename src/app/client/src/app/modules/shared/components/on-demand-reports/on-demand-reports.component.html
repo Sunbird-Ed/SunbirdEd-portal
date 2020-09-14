@@ -3,14 +3,12 @@
     <div class="d-flex flex-dc">
       <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
       <div class="d-flex">
-<!--
         <sui-select class="selection course-dashboard-select" placeholder="Choose your report"
                     [options]="reportTypes" labelField="title" valueField="title"
                     [isSearchable]="true" #select>
           <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
           </sui-select-option>
         </sui-select>
--->
         <button type="button"
                 class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.lbl?.request}}</button>
       </div>
