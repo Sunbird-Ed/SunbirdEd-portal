@@ -29,7 +29,10 @@ const routes: Routes = [
   },
   {
    path: 'download/desktopapp', component: OfflineApplicationDownloadComponent
-   }];
+   },
+   {
+    path: 'help', loadChildren: './module/help/help.module#HelpModule'
+  }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
