@@ -463,9 +463,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
-  reportChanged(report){
-    console.log('report type changes------', report)
-  }
 
   /**
   * To method subscribes the user data to get the user id.
@@ -477,7 +474,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     const apiData = {
       userConsent: 'No',
       audience: 'Teacher'
-    }
+    };
 
     this.user.userData$.subscribe((user) => {
       const userProfile = user.userProfile;
@@ -495,7 +492,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             const options = formResponsedata;
             if(isCourseCreator){
               this.reportTypes = options;
-            }else{
+            } else {
               this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
             }
             // const userConsent = _.get(apiData, 'userConsent');
@@ -507,7 +504,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             // }
           }
         });
-    })
+    });
 
 
     this.fileName = 'State wise report';
