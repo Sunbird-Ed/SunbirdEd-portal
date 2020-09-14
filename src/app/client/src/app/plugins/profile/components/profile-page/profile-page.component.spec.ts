@@ -361,13 +361,6 @@ describe('ProfilePageComponent', () => {
     expect(component.selfDeclaredInfo).toEqual(Response.finalDeclarationObjStructure);
   });
 
-  it('should call downloadCert', () => {
-    const certificates = Response.pdfCertificate;
-    spyOn(component, 'downloadPdfCertificate');
-    component.downloadCert(certificates);
-    expect(component.downloadPdfCertificate).toHaveBeenCalled();
-  });
-
   it('should call downloadPdfCertificate and return signedPdfUrl', () => {
     const profileService = TestBed.get(ProfileService);
     spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
@@ -377,7 +370,7 @@ describe('ProfilePageComponent', () => {
     expect(window.open).toHaveBeenCalledWith(Response.v1DownloadCertResponse.result.signedUrl, '_blank');
   });
 
-  it('should call downloadCert with SVG format on success', () => {
+  xit('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.get('CS_COURSE_SERVICE');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
@@ -386,7 +379,7 @@ describe('ProfilePageComponent', () => {
     expect(component['certDownloadAsPdf'].download).toHaveBeenCalled();
   });
 
-  it('should call downloadCert with SVG format on error', () => {
+  xit('should call downloadCert with SVG format on error', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.get('CS_COURSE_SERVICE');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(throwError({}));

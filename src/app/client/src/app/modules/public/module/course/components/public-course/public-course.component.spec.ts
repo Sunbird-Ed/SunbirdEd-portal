@@ -264,7 +264,8 @@ describe('PublicCourseComponent', () => {
       source: 'web', name: 'Course', organisationId: '*',
       filters: { sort_by: 'name', sortType: 'desc', audience: [ 'Teacher' ] },
       fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType' ],
-      params: { orgdetails: 'orgName,email' }
+      params: { orgdetails: 'orgName,email' },
+      facets: [ 'channel', 'gradeLevel', 'subject', 'medium' ]
     };
     expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
   });
