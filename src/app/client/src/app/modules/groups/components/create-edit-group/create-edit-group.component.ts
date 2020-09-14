@@ -70,8 +70,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.closeModal();
       }, err => {
         this.disableBtn = false;
-        console.log('bvdvbfdjkvfkb', );
-        (_.get(err, 'response.body.params.err') === 'EXCEEDED_GROUP_MAX_LIMIT') ?
+        const errMsg: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
+        (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') ?
         this.toasterService.error(this.resourceService.messages.groups.emsg.m001)
         : this.toasterService.error(this.resourceService.messages.emsg.m001);
         Object.keys(this.groupForm.controls).forEach(field => {

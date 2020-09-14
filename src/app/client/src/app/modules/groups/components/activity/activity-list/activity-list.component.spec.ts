@@ -95,7 +95,7 @@ describe('ActivityListComponent', () => {
     component.getActivities();
     expect(component.showLoader).toBe(false);
     expect(component.activityList).toEqual(mockActivityList.groupData.activitiesGrouped);
-    expect(component.showActivityList).toBe(false);
+    expect(component.showActivityList).toBe(true);
   });
 
 
@@ -108,7 +108,7 @@ describe('ActivityListComponent', () => {
       organisation: ['Pre-prod Custodian Organization'],
       subject: 'Social Science'
     };
-    component.openActivity({}, activity);
+    component.openActivity(activity);
     expect(router.navigate).toHaveBeenCalled();
     expect(component.addTelemetry).toHaveBeenCalled();
   });
@@ -123,7 +123,7 @@ describe('ActivityListComponent', () => {
       subject: 'Social Science'
     };
     component.groupData.isAdmin = true;
-    component.openActivity({}, activity);
+    component.openActivity(activity);
     expect(router.navigate).toHaveBeenCalled();
     expect(component.addTelemetry).toHaveBeenCalled();
   });
@@ -133,20 +133,21 @@ describe('ActivityListComponent', () => {
     const eventData = {
       event: {
         stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
+      },
+      data: {
+        name: 'Footprints without Feet - English Supplementary Reader',
+        identifier: 'do_1235232121343',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science',
+        type: 'Course'
       }
     };
-    const member = {
-      name: 'Footprints without Feet - English Supplementary Reader',
-      identifier: 'do_1235232121343',
-      appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
-      organisation: ['Prod Custodian Organization'],
-      subject: 'Social Science',
-      type: 'Course'
-    };
+
     spyOn(component['groupService'], 'emitMenuVisibility');
     spyOn(component, 'addTelemetry');
-    component.getMenuData(eventData, member);
-    expect(component.selectedActivity).toEqual(member);
+    component.getMenuData(eventData);
+    expect(component.selectedActivity).toEqual(eventData.data);
     expect(component.showMenu).toBe(true);
     expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
     expect(component['groupService'].emitMenuVisibility).toHaveBeenCalledWith('activity');
@@ -166,8 +167,21 @@ describe('ActivityListComponent', () => {
     expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
   });
 
+  it('should throw error on removeActivity', () => {
+    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0];
+    spyOn(component['groupService'], 'removeActivities').and.returnValue(throwError ({}));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    component.removeActivity();
+    component['groupService'].removeActivities('4130b072-fb0a-453b-a07b-4c93812c741b',
+    {activityIds: ['do_21271200473210880012152']}).subscribe(data => {
+    }, err => {
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.activityRemove);
+    });
+  });
+
   it('should call removeActivity', () => {
-    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0].activityInfo;
+    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0];
     spyOn(component['groupService'], 'removeActivities').and.returnValue(of ({}));
     const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'toggleModal');
@@ -183,19 +197,10 @@ describe('ActivityListComponent', () => {
     expect(toasterService.success).toHaveBeenCalled();
   });
 
-  it('should throw error on removeActivity', () => {
-    component.selectedActivity = mockActivityList.groupData.activitiesGrouped[0].items[0].activityInfo;
-    spyOn(component['groupService'], 'removeActivities').and.returnValue(throwError ({}));
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error');
-    component.removeActivity();
-    component['groupService'].removeActivities('4130b072-fb0a-453b-a07b-4c93812c741b',
-    {activityIds: ['do_21271200473210880012152']}).subscribe(data => {
-    }, err => {
-      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.activityRemove);
-    });
-    expect(component.activityList[0].items.length).toEqual(4);
-  });
+  it('should return type in Lowercase', () => {
+    const type = component.getType('COURSE');
+    expect(type).toEqual('course');
+   });
 
   it('should call ngOnDestroy', () => {
     component.showModal = true;
@@ -209,6 +214,5 @@ describe('ActivityListComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
     expect(component.modal.deny).toHaveBeenCalled();
   });
-
 
 });

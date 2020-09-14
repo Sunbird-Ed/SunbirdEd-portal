@@ -67,7 +67,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   getActivities() {
     this.activityList = _.get(this.groupData, 'activitiesGrouped');
-    this.showActivityList = _.filter(this.activityList, list => ( !_.isEmpty(_.get(list, 'items'))));
+    this.showActivityList = !_.isEmpty(_.filter(this.activityList, list => ( !_.isEmpty(_.get(list, 'items')))));
     this.showLoader = false;
   }
 
@@ -89,7 +89,6 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   getMenuData(event) {
     this.showMenu = !this.showMenu;
-    console.log('evvveve', event);
     this.groupService.emitMenuVisibility('activity');
     this.selectedActivity = _.get(event, 'data');
     this.addTelemetry('activity-kebab-menu-open');
@@ -104,18 +103,18 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.addTelemetry('confirm-remove-activity-button');
     const activityIds = [this.selectedActivity.identifier];
     this.showLoader = true;
+    this.showActivityList = false;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.activityList = _.map(this.activityList, list => {
-            if ((list.title).toLowerCase() === `${_.get(this.selectedActivity, 'contentType')}s`.toLowerCase()) {
-              list.items =  _.reject(list.items, {id: this.selectedActivity.identifier});
-                return list;
-            } else {
-              return list;
-            }
+          const actList: [] = _.get(list, 'items').filter(item => _.get(item, 'identifier') !== _.get(this.selectedActivity, 'identifier'));
+          list.items = actList;
+          list.count = actList.length;
+          this.showActivityList = !this.showActivityList ? !_.isEmpty(list.items) : this.showActivityList;
+          return list;
         });
-        this.showActivityList = this.groupService.getActivityList(false, this.groupData).showList;
+        console.log('mnvbdfvfdv activityList', this.activityList);
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {
@@ -129,6 +128,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   addTelemetry (id, cdata = []) {
     this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
+  }
+
+  getType(type) {
+    return (type.toLowerCase());
   }
 
   ngOnDestroy() {

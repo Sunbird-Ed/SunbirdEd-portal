@@ -151,7 +151,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupsService.addMemberById(groupId, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         this.disableBtn = false;
-        const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
+        console.log('bvfjhvf', _.isEmpty(response.errors));
+        const value = _.isEmpty(response.error) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
           this.memberId = '';
           this.reset();

@@ -7,11 +7,9 @@ export const mockActivityList = {
       {
         'title': 'Course',
         'count': 4,
+        'type': 'Course',
         'items': [
           {
-            'id': 'do_21271200473210880012152',
-            'type': 'Course',
-            'activityInfo': {
               'name': '05-03-19-course',
               'identifier': 'do_21271200473210880012152',
               'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21271200473210880012152/artifact/20180817101627-30120_1544767085980.thumb.png',
@@ -21,12 +19,8 @@ export const mockActivityList = {
               'subject': 'Political Science',
               'type': 'Course',
               'contentType': 'Course'
-            }
           },
           {
-            'id': 'do_212691674291134464114382',
-            'type': 'Course',
-            'activityInfo': {
               'identifier': 'do_212691674291134464114382',
               'subject': 'Political Science',
               'organisation': [
@@ -37,12 +31,8 @@ export const mockActivityList = {
               'name': ' 4-02-2019-Course100',
                'type': 'Course',
               'contentType': 'Course'
-            }
           },
           {
-            'id': 'do_2130695070229790721908',
-            'type': 'Course',
-            'activityInfo': {
               'subject':
                 'Physics',
               'organisation': [
@@ -54,12 +44,8 @@ export const mockActivityList = {
               'identifier': 'do_2130695070229790721908',
               'name': 'Non academic nested course',
               'type': 'Course'
-            }
           },
           {
-            'id': 'do_21306964100198400011343',
-            'type': 'Course',
-            'activityInfo': {
               'subject': 'Social Studies',
               'organisation': [
                 'Sunbird QA Tenant',
@@ -70,18 +56,15 @@ export const mockActivityList = {
               'identifier': 'do_21306964100198400011343',
               'name': 'Nested course N1',
               'type': 'Course'
-            }
           }
         ]
       },
       {
         'title': 'Textbooks',
         'count': 1,
+        'type': 'Textbook',
         'items': [
           {
-            'id': 'do_2130093660325806081984',
-            'type': 'TextBook',
-            'activityInfo': {
               'subject': 'Mathematics',
               'organisation': [
                 'test'
@@ -91,7 +74,6 @@ export const mockActivityList = {
               'identifier': 'do_2130093660325806081984',
               'name': '28ShallowCopy-6',
               'type': 'TextBook'
-            }
           }
         ]
       }

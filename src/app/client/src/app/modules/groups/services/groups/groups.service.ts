@@ -264,7 +264,8 @@ getActivity(groupId, activity, mergeGroup) {
           return info;
         });
         showList = !showList ? activity.length > 0 : showList;
-        activityList.items = _.compact(activity);
+        activityList.items = _.compact(activity) || [];
+        activityList.count = activityList.items.length;
       });
       return { showList, activities: activitiesGrouped };
     }
