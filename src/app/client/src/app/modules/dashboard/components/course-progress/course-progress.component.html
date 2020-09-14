@@ -224,62 +224,7 @@
          <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
         </div>
         <div class="ui segment detailed-report" suiTabContent="2">
-          <div class='ui stackable grid mt-0'>
-            <div class="twelve wide column pt-0">
-              <div class="d-flex flex-dc">
-                <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
-                <div class="d-flex"> 
-                  <sui-select class="selection course-dashboard-select" placeholder="Choose your report"
-                   [options]="reportTypes" labelField="title" valueField="title"
-                  [isSearchable]="true" #select>
-                  <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
-                  </sui-select-option>
-                </sui-select>
-
-                  <button type="button" class="sb-btn sb-btn-normal sb-btn-primary ml-16">{{resourceService?.frmelmnts?.lbl?.request}}</button>
-                </div>
-                <p class="fnormal note-text mt-8 mb-24">Note: Each download request would take about 24 hours to generate</p>
-              </div>  
-            </div>
-          </div>
-          <div class="pb-8 download-section-text">Downloads Section(shows only the latest 10 requests)</div>
-          <!-- <div class="sb-table-responsive-div">
-            <table class="sb-table sb-table-striped sb-table-fixed sb-table-course-dashboard">
-              <thead>
-                <tr>
-                  <th>Report Type</th>
-                  <th>Request Date</th>
-                  <th>Status</th>
-                  <th>Download link</th>
-                  <th>Generated date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Score Report</td>
-                  <td>08-Aug-2020</td>
-                  <td><div class="success-label">Processed</div></td>
-                  <td class="fsmall">www.minifiedurl.diksha.gov.in</td>
-                  <td>09-Aug-2020</td>
-                </tr>
-                  <tr>
-                    <td>Progress Report</td>
-                    <td>08-Aug-2020</td>
-                    <td><div class="inprocess-label">In process</div></td>
-                    <td></td>
-                    <td>09-Aug-2020</td>
-                </tr>
-                  <tr>
-                    <td>Progress Report</td>
-                    <td>08-Aug-2020</td>
-                    <td><div class="failed-label">failed</div></td>
-                    <td></td>
-                    <td>09-Aug-2020</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
-          <div class="request-download-text p-16">Request response to download here</div>
+          <app-on-demand-reports></app-on-demand-reports>
         </div>
       </sui-tabset>
 <!-- This is the updated code for semantic datatable -->

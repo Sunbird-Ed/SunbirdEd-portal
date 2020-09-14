@@ -16,3 +16,5 @@ export * from './full-page-modal/full-page-modal.component';
 export * from './account-merge-modal/account-merge-modal.component';
 export * from './confirm-popup/confirm-popup.component';
 export * from './select-option-group/select-option-group.component';
+export * from './on-demand-reports/on-demand-reports.component';
+export * from './sb-datatable/sb-datatable.component';
