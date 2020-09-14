@@ -259,7 +259,8 @@ getActivity(groupId, activity, mergeGroup) {
         activityList.type = _.get(_.first(items), 'type');
         const activity  = _.map(items, i => {
           const info = _.get(i, 'activityInfo');
-          info.cardImg = info ? _.get(i, 'activityInfo.appIcon') : '';
+          // tslint:disable-next-line: no-unused-expression
+          info ? info.cardImg = _.get(i, 'activityInfo.appIcon') : '';
           return info;
         });
         showList = !showList ? activity.length > 0 : showList;
