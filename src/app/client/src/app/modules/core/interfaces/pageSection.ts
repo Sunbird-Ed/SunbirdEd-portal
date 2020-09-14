@@ -34,4 +34,5 @@ export interface IPageSection {
     * page fields
     */
    fields?: object;
+   facets?: object;
 }

@@ -1,6 +1,6 @@
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { combineLatest, Subject } from 'rxjs';
+import {combineLatest, of, Subject} from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService, IPagination,
@@ -140,6 +140,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
+  public facets;
+  public facetsList = ['channel', 'gradeLevel', 'subject', 'medium'];
+  public selectedFilters;
+  public initFilters = false;
 
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
@@ -205,6 +209,25 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
+
+  public getFilters(filters) {
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'identifier': value});
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
@@ -216,8 +239,46 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.redoLayout();
    });
   }
+
+  fetchOrgData(orgList) {
+    const url = this.router.url;
+    if (_.get(this.activatedRoute, 'snapshot.data.facets')) {
+      const channelList = this.getChannelList(_.get(orgList, 'contentData.result.facets'));
+      const rootOrgIds = this.processOrgData(channelList);
+      return this.orgDetailsService.searchOrgDetails({
+        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
+        fields: ['slug', 'identifier', 'orgName']
+      });
+    } else {
+      return of({});
+    }
+  }
+
+  processFacetList(facets, keys) {
+    const facetObj = {};
+    _.forEach(facets, (facet) => {
+      if (_.indexOf(keys, facet.name) > -1) {
+        if (facetObj[facet.name]) {
+          facetObj[facet.name].push(...facet.values);
+        } else {
+          facetObj[facet.name] = [];
+          facetObj[facet.name].push(...facet.values);
+        }
+      }
+    });
+    return facetObj;
+  }
+
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
+      this.fetchOrgData(response).subscribe((orgDetails) => {
+        if (_.get(this.activatedRoute, 'snapshot.data.facets')) {
+          let facetsList: any = this.processFacetList(_.get(response, 'contentData.result.facets'), this.facetsList);
+          facetsList.channel = _.get(orgDetails, 'content');
+          facetsList = this.utilService.removeDuplicate(facetsList);
+          this.facets = this.updateFacetsData(facetsList);
+          this.initFilters = true;
+        }
       this.showLoader = false;
       if (this.sectionName === this.resourceService.frmelmnts.lbl.mytrainings) {
        this.processEnrolledCourses(_.get(response, 'enrolledCourseData'));
@@ -235,6 +296,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           };
         }
       }
+      }, err => {
+        this.showLoader = false;
+        this.noResult = true;
+        this.noResultMessage = {
+          'messageText': 'messages.fmsg.m0077'
+        };
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      });
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
@@ -295,7 +364,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       fields: this.configService.urlConFig.params.CourseSearchField,
       pageNumber: Number(request.params.pageNumber),
       mode: _.get(manipulatedData, 'mode'),
-      params: this.configService.appConfig.ViewAll.contentApiQueryParams
+      params: this.configService.appConfig.ViewAll.contentApiQueryParams,
     };
     requestParams['exists'] = request.queryParams.exists,
     requestParams['sort_by'] = request.queryParams.sortType ?
@@ -303,6 +372,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
+    if (_.get(this.activatedRoute, 'snapshot.data.facets')) {
+      requestParams['facets'] = this.facetsList;
+    }
+
     if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
       return combineLatest(
         this.searchService.contentSearch(requestParams),
@@ -432,6 +505,20 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  processOrgData(channels) {
+    const channelList = [];
+    _.forEach(channels.values, (channel) => {
+      if (channel.name) {
+        channelList.push(channel.name);
+      }
+    });
+    return channelList;
+  }
+
+  getChannelList(channels) {
+    return _.find(channels, {'name': 'channel'});
+  }
+
   /**
    * @since - release-3.2.0-SH-652
    * @param  {} courseData
@@ -455,4 +542,91 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       };
     }
   }
+
+  updateFacetsData(facets) {
+    const facetsData = [];
+    _.forEach(facets, (facet, key) => {
+      switch (key) {
+        case 'board':
+          const boardData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(boardData);
+          break;
+        case 'medium':
+          const mediumData = {
+            index: '2',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(mediumData);
+          break;
+        case 'gradeLevel':
+          const gradeLevelData = {
+            index: '3',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(gradeLevelData);
+          break;
+        case 'subject':
+          const subjectData = {
+            index: '4',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(subjectData);
+          break;
+        case 'publisher':
+          const publisherData = {
+            index: '5',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(publisherData);
+          break;
+        case 'contentType':
+          const contentTypeData = {
+            index: '6',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(contentTypeData);
+          break;
+        case 'channel':
+          const channelLists = [];
+          _.forEach(facet, (channelList) => {
+            if (channelList.orgName) {
+              channelList.name = channelList.orgName;
+            }
+            channelLists.push(channelList);
+          });
+          const channelData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            values: channelLists,
+            name: key
+          };
+          facetsData.push(channelData);
+          break;
+      }
+    });
+    return facetsData;
+  }
+
 }
