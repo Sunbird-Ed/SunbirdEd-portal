@@ -7,7 +7,8 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { FormsModule } from '@angular/forms';
 import {
   CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent,
-  CurriculumCardComponent,  } from './components';
+  CurriculumCardComponent,
+  ConsentPiiComponent,  } from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -39,6 +40,6 @@ import { CourseDetailsComponent } from './components/course-consumption/course-d
   // providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
-    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent]
+    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, ConsentPiiComponent]
 })
 export class CourseConsumptionModule { }

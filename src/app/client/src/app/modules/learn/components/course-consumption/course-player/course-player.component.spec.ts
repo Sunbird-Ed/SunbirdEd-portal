@@ -825,4 +825,33 @@ describe('CoursePlayerComponent', () => {
     component.addToGroup = false;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
+
+  it('should show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'Yes';
+    component.enrolledCourse = true;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.showConsent();
+    expect(response).toBeTruthy();
+  });
+
+  it('should now show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'No';
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.showConsent();
+    expect(response).toBeFalsy();
+  });
+
+  it('should open consent pii popup after enroll course', () => {
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    activatedRouteStub.queryParamsMock['consent'] = 1;
+    component.ngOnInit();
+    expect(component.showConsentPII).toBeTruthy();
+  });
+
 });
