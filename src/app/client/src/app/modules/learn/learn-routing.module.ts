@@ -34,6 +34,7 @@ const routes: Routes = [
       },
       baseUrl: 'learn',
       filterType: 'courses',
+      facets: true,
       frameworkName: true,
       formAction: 'filter'
     }
