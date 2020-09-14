@@ -222,7 +222,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         };
     }
     public playContent(event) {
-        this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
+        this.publicPlayerService.playContent(event);
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {

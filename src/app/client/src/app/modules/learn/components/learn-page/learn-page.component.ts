@@ -386,6 +386,10 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
         formatedContent.metaData.contentType = 'Course'; // to route to course page
+        const trackableObj = _.get(content, 'content.trackable');
+        if (trackableObj) {
+          formatedContent.metaData.trackable = trackableObj;
+        }
         return formatedContent;
       });
       enrolledSection.count = enrolledSection.contents.length;

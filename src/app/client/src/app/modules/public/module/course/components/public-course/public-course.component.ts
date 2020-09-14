@@ -229,7 +229,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
+    this.publicPlayerService.playContent(event);
   }
 
   processOrgData(channels) {
