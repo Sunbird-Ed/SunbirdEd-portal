@@ -114,7 +114,6 @@ export class ActivityListComponent implements OnInit, OnDestroy {
           this.showActivityList = !this.showActivityList ? !_.isEmpty(list.items) : this.showActivityList;
           return list;
         });
-        console.log('mnvbdfvfdv activityList', this.activityList);
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {
