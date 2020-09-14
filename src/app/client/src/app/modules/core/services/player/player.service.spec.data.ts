@@ -1,4 +1,4 @@
-export const serverRes = {
+export const MockResponse = {
     successResult: {
         id: 'api.content.read',
         ver: '1.0',
@@ -10,21 +10,7 @@ export const serverRes = {
                 mimeType: 'application/vnd.ekstep.ecml-archive',
                 body: 'body',
                 identifier: 'domain_66675',
-                versionKey: '1497028761823',
-                downloadStatus: 'DOWNLOAD',
-            }
-        }
-    },
-    download_list : {
-      domain_66675: 'DOWNLOAD'
-    },
-      resourceServiceMockData: {
-        messages: {
-            stmsg: {
-                m0140: 'DOWNLOADING',
-                m0138: 'FAILED',
-                m0139: 'DOWNLOADED',
-                m0143: 'DOWNLOAD',
+                versionKey: '1497028761823'
             }
         }
     },
@@ -299,13 +285,11 @@ export const serverRes = {
             }
         }
     },
-};
-
-export const contentMockData = {
-    data: {
+    contentMetadata: {
         'contentType': 'Course',
         'framework': 'tpd',
         'identifier': 'do_1130206856421867521137',
         'mimeType': 'application/vnd.ekstep.content-collection'
     }
 };
+

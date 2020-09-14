@@ -343,28 +343,28 @@ describe('DialCodeComponent', () => {
   });
   it('should play content', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(publicPlayerService, 'playContent');
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.playCourse({ section: {}, data: {} });
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
     const coursesService = TestBed.get(CoursesService);
-    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(publicPlayerService, 'playContent');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.playCourse({ section: {}, data: {} });
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
     const coursesService = TestBed.get(CoursesService);
-    spyOn(publicPlayerService, 'playExploreCourse');
+    spyOn(publicPlayerService, 'playContent');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.playCourse({ section: {}, data: {} });
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
   it('should play content from explore page, while logged in, for onGoingBatch', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
@@ -378,7 +378,6 @@ describe('DialCodeComponent', () => {
       },
       inviteOnlyBatch: false
     };
-    spyOn(publicPlayerService, 'playExploreCourse');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
     spyOn(playerService, 'playContent');
     spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
@@ -396,7 +395,6 @@ describe('DialCodeComponent', () => {
       openBatch: true,
       inviteOnlyBatch: false
     };
-    spyOn(publicPlayerService, 'playExploreCourse');
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
     spyOn(playerService, 'playContent');
     spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
