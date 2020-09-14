@@ -56,7 +56,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
       this.supportedActivityList.forEach(activity => {
         activity['title'] = this.resourceService.frmelmnts.lbl[activity['title']];
       });
-    }, error => {
+    }, (error) => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
