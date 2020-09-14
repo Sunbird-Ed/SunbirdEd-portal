@@ -29,14 +29,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
-  showActivityList = false;
-  activityList: any;
+  @Input() activityList: any;
   showMenu = false;
   selectedActivity: IActivity;
   showModal = false;
   unsubscribe$ = new Subject<void>();
-  viewAll = false;
-  allContents = {};
+  disableViewAllMode = false;
+  selectedTypeContents = {};
+  config: any;
+
 
   constructor(
     private configService: ConfigService,
@@ -44,13 +45,13 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     public resourceService: ResourceService,
     private groupService: GroupsService,
-    private toasterService: ToasterService
-  ) { }
+    private toasterService: ToasterService,
+  ) {
+    this.config = this.configService.appConfig;
+  }
 
   ngOnInit() {
-    this.showLoader = true;
-    this.getActivities();
-
+    this.showLoader = false;
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
@@ -63,17 +64,6 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.showMenu.subscribe(data => {
       this.showMenu = data === 'activity';
     });
-  }
-
-  getActivities() {
-    this.activityList = _.get(this.groupData, 'activitiesGrouped');
-    this.showActivityList = !_.isEmpty(_.filter(this.activityList, list => ( !_.isEmpty(_.get(list, 'items')))));
-    this.showLoader = false;
-  }
-
-  viewAllContents(list) {
-    this.allContents = list;
-    this.viewAll = !this.viewAll;
   }
 
 
@@ -103,16 +93,11 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.addTelemetry('confirm-remove-activity-button');
     const activityIds = [this.selectedActivity.identifier];
     this.showLoader = true;
-    this.showActivityList = false;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.activityList = _.map(this.activityList, list => {
-          const actList: [] = _.get(list, 'items').filter(item => _.get(item, 'identifier') !== _.get(this.selectedActivity, 'identifier'));
-          list.items = actList;
-          list.count = actList.length;
-          this.showActivityList = !this.showActivityList ? !_.isEmpty(list.items) : this.showActivityList;
-          return list;
+        Object.keys(this.activityList).forEach(key => {
+          this.activityList[key] = this.activityList[key].filter(activity => _.get(activity, 'identifier') !== _.get(this.selectedActivity, 'identifier'));
         });
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
@@ -129,8 +114,22 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
   }
 
-  getType(type) {
-    return (type.toLowerCase());
+  toggleViewAll(visibility: boolean, list?) {
+    this.disableViewAllMode = visibility;
+    this.selectedTypeContents = list || {};
+  }
+
+  isCourse(type) {
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Courses));
+  }
+
+  viewSelectedTypeContents(type, list, index) {
+    const value = _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
+    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) : value);
+  }
+
+  isSelectedType (type) {
+   return _.isEmpty(this.selectedTypeContents) ? true : _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
   }
 
   ngOnDestroy() {

@@ -1,37 +1,28 @@
-<div *ngIf="!viewAll">
-<div *ngFor="let list of activityList">
-  <div class="header" *ngIf="list?.items?.length">
-      <div class="title">
-    {{list?.title}}
+<div *ngFor="let list of activityList | keyvalue">
+  <div class="header" *ngIf="list?.value?.length">
+      <div class="title" *ngIf="isSelectedType(list?.key)">
+        {{list?.key}}
       </div>
+  <button *ngIf="list?.value?.length > 3 && disableViewAllMode" class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" (click)="toggleViewAll(false)">Close</button>
+  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode" class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" (click)="toggleViewAll(true, list)">View all</button>
   </div>
 
   <!--Show loader-->
-  <div class="sb-card-grid" *ngIf="showLoader && list?.items?.length">
-      <div class="sb-grid--item" *ngFor="let i of (list?.items || numberOfSections) ">
+  <div class="sb-card-grid" *ngIf="showLoader && list?.value?.length">
+      <div class="sb-grid--item" *ngFor="let i of (list?.value || numberOfSections)">
           <sb-course-card [isLoading]="true"></sb-course-card>
       </div>
   </div>
 
   <!--Show Activity List-->
-  <!-- <div  *ngIf="list?.items?.length && !showLoader">
-     <sb-cards-grid *ngIf="list?.items?.length" [title]="list?.title" [contentList]="list?.items" [maxCardCount]="3" [isLoading]="!list?.items.length" [viewMoreButtonText]="'View more'"
-      (cardClick)="openActivity($event)"  [isMenu]="groupData?.isAdmin"  (menuClick)="getMenuData($event)" [cardType]="getType(list?.type)" (viewMoreClick)="viewAllContents(list)"></sb-cards-grid>
-      <div class="kabab-menu-dropdown-content" *ngIf="showMenu">
-              <div class="list sb-color-error" (click)="toggleModal(true)">
-                  <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
-              </div>
-          </div>
-  </div> -->
-
-  <div  *ngIf="list?.items?.length && !showLoader" class="sb-card-grid">    
-       <div class="sb-card-grid--item relative" *ngFor="let activity of list?.items">
-          <sb-course-card *ngIf="list?.title === 'Courses'" (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
-      || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
+  <div  *ngIf="list?.value?.length && !showLoader" class="sb-card-grid"> 
+       <div class="sb-card-grid--item relative" *ngFor="let activity of list?.value; let i=index;">
+          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)" (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+      || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-course-card>
 
-          <sb-library-card  *ngIf="list?.title !== 'Courses'" (cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
-          || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
+          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)" (cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-library-card>
           <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
       selectedActivity?.identifier === activity?.identifier">
@@ -42,22 +33,9 @@
       </div> 
   </div>
 </div>
-</div>
 
-
-<!-- <div *ngIf="viewAll">
-  <div class="header" *ngIf="allContents?.items?.length">
-      <div class="title">
-        {{allContents?.title}}
-      </div>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" (click)="viewAll=!viewAll">View less</button>
-  </div>
-<sb-cards-grid *ngIf="allContents?.items?.length" [title]="null" [contentList]="allContents?.items" [isLoading]="!allContents?.items?.length" [type]="'infinite_grid'"
-(cardClick)="openActivity($event)"  [isMenu]="groupData?.isAdmin"  (menuClick)="getMenuData($event)" [cardType]="getType(allContents?.type)"></sb-cards-grid>
-</div> -->
-
-<!-- No Activity -->
-<app-add-activity *ngIf="!showLoader && !showActivityList && !viewAll"></app-add-activity>
+<!-- No Activity[cardType]="getType(selectedContentType?.type)" -->
+<app-add-activity *ngIf="!showLoader && ((activityList | json) === '{}')"></app-add-activity>
 
 <!-- Remove Activity from the group -->
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, LayoutService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { combineLatest, Subject } from 'rxjs';
@@ -46,7 +46,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private layoutService: LayoutService,
-    private playerService: PublicPlayerService
+    private playerService: PublicPlayerService,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -143,7 +144,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
           indexOfMember: index
         };
 
-        if (_.get(this.activity, 'contentType') === 'Course') {
+        if (this.isCourse(_.get(this.activity, 'contentType'))) {
           const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
           userProgress['progress'] = progress >= 100 ? '100' : progress;
         }
@@ -235,6 +236,10 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
   toggleDropdown() {
     this.dropdownContent = !this.dropdownContent;
+  }
+
+  isCourse (type) {
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course));
   }
 
   ngOnDestroy() {

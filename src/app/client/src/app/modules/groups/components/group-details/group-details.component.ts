@@ -26,6 +26,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   isLoader = true;
   isAdmin = false;
   layoutConfiguration: any;
+  activityList;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -77,7 +78,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;
         this.isLoader = false;
-        this.showActivityList = this.groupService.getActivityList(false, groupData).showList;
+        const response = this.groupService.groupContentsByActivityType(false, groupData);
+        this.showActivityList = response.showList;
+        this.activityList = response.activities;
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();

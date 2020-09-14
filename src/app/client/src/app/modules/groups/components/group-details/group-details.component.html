@@ -24,7 +24,7 @@
           </div>
         </div>
         <app-add-activity *ngIf="!showActivityList"></app-add-activity>
-        <app-activity-list *ngIf="showActivityList" [groupData]="groupData"></app-activity-list>
+        <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>
       </div>
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 ">
         <app-group-members [config]="config" [members]="members" [groupData]="groupData"></app-group-members>

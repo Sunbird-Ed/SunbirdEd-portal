@@ -1373,5 +1373,16 @@
     "student": ["Student"],
     "teacher": ["Teacher"],
     "other": ["Student", "Teacher"] 
+  },
+  "contentType" : {
+    "Course" : "Course",
+    "Collection": "Collection",
+    "Textbook": "Textbook",
+    "Resource": "Resource",
+    "Courses" : "Courses",
+    "Textbooks": "Textbooks"
+  },
+  "assetsPath": {
+    "book": "./assets/images/book.png"
   }
 }

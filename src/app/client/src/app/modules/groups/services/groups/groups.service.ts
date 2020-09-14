@@ -98,6 +98,7 @@ export class GroupsService {
     return this.groupCservice.search(request);
   }
 
+  // To get groupData from csService
   getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
     return this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
   }
@@ -250,25 +251,24 @@ getActivity(groupId, activity, mergeGroup) {
     return this.groupCservice.getSupportedActivities();
   }
 
-  getActivityList (showList, groupData) {
+  groupContentsByActivityType (showList, groupData) {
     const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
     if (activitiesGrouped) {
-      _.forEach(activitiesGrouped, activityList => {
-        const items = _.get(activityList, 'items');
-        activityList.title = this.resourceService.frmelmnts.lbl[activityList.title];
-        activityList.type = _.get(_.first(items), 'type');
-        const activity  = _.map(items, i => {
-          const info = _.get(i, 'activityInfo');
-          if (info) {
-            info.cardImg = _.get(i, 'activityInfo.appIcon');
-          }
-          return info;
+      const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
+        activityGroup.title = this.resourceService.frmelmnts.lbl[activityGroup.title];
+        acc[activityGroup.title] = activityGroup.items.map((i) => {
+          const activity = {
+            ...i.activityInfo,
+            type: i.type,
+            cardImg: this.configService.appConfig.assetsPath.book,
+          };
+          return activity;
         });
-        showList = !showList ? activity.length > 0 : showList;
-        activityList.items = _.compact(activity) || [];
-        activityList.count = activityList.items.length;
-      });
-      return { showList, activities: activitiesGrouped };
+        showList = !showList ? Object.values(acc).length > 0 : showList;
+        return acc;
+      }, {});
+      Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
+      return { showList, activities: activityList };
     }
     return { showList, activities: activitiesGrouped || [] };
   }
