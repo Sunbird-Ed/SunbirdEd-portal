@@ -1,32 +1,32 @@
-<sui-accordion class="styled fluid sb-accordion">
+<sui-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>Data Setting</span>
       <i class="chevron down icon"></i>
     </div>
-    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
-      <p>DATA SHARING IS <span>{{ consentPii ? 'ON' : 'OFF' }}</span></p>
-      <p>You have agreed to share your profile information with the administrator of this course.</p>
-      <p>Last updated on DD/MM/YY</p>
-      <div class="right">
-          <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary" (click)="toggleEditSetting()">
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
+      <label class="fnormal font-weight-normal">DATA SHARING IS <span >{{ consentPii ? 'ON' : 'OFF' }}</span></label>
+      <p class="fsmall mb-0">You have agreed to share your profile information with the administrator of this course.</p>
+      <label class="fsmall font-weight-normal data-labels">last updated on DD/MM/YY</label>
+      <div class="d-flex flex-ai-end flex-jc-flex-end">
+          <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold" (click)="toggleEditSetting()">
             {{ editSetting ? 'Close' : 'Edit Settings' }}
           </button>
       </div>
-      <div *ngIf="editSetting">
+      <div *ngIf="editSetting" class="sb-update-data-settings">
         <hr>
-        <p><b>Update settings</b></p>
+        <label class="fsmall mb-0 font-weight-bold data-labels">Update settings</label>
         <div class="d-flex py-8 flex-w-wrap">
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
             <input [value]="Yes" name="consentPii" type="radio" [(ngModel)]="consentPii">
-            <label for="yes">Share my Profile Information</label>
+            <label for="yes" class="fsmall">Share my Profile Information</label>
           </div>
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
             <input [value]="No"  name="consentPii" type="radio" [(ngModel)]="consentPii">
-            <label for="no">Do not share my Profile Information</label>
+            <label for="no" class="fsmall">Do not share my Profile Information</label>
           </div>
         </div>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary">SAVE CHANGES</button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100">SAVE CHANGES</button>
       </div>
       
     </div>

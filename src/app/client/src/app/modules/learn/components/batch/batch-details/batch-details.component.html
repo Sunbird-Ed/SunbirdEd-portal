@@ -27,7 +27,7 @@
 </sui-modal>
 
 <!-- create batch -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="isTrackable && viewBatch">
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
   <sui-accordion-panel [isOpen]="true">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
@@ -77,8 +77,6 @@
               </div>
 
 
-
-
               <div class="batch-details__created mt-8 fsmall" *ngIf="userNames[batch.createdBy]">
                 {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}
                 {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}
@@ -110,7 +108,7 @@
 </sui-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
