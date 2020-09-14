@@ -29,13 +29,13 @@
                 {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
               </a>
             </li>
-            <li *ngIf="tenantFooter?.helpDeskEmail">
+<!--            <li *ngIf="tenantFooter?.helpDeskEmail">
               <label class="d-block mb-0">
                 {{resourceService.frmelmnts?.lnk?.footerContact}}
               </label>
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
                 href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-            </li>
+            </li>-->
           </ul>
           
        
@@ -109,14 +109,14 @@
                     {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
                   </a>
                 </li>
-                <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
+<!--                <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
                   <label class="d-block contact-info-title mb-0">
                     {{resourceService.frmelmnts?.lnk?.footerContact}}
                   </label>
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
                     class="d-block mb-0"
                     href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-                </li>
+                </li>-->
               </ul>
             </div>
             <div>

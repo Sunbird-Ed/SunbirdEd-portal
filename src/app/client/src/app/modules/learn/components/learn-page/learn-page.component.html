@@ -4,13 +4,18 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-prominent-filter [layoutConfiguration]="layoutConfiguration" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'course-page'" *ngIf="initFilters" [filterEnv]="filterType"  [ignoreQuery]="['key']" 
-        [accordionDefaultOpen]=true [isShowFilterLabel]=true [notToUseFramework]="toUseFrameWorkData" [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
+      <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+                                *ngIf="initFilters" (filterChange)="getFilters($event)">
+      </app-global-search-filter>
+
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div class="ui container mt-8">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui grid stackable my-0'">
-   
+    <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+                                       *ngIf="initFilters && facets && layoutConfiguration"
+                                       (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+
     <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length">
       <app-page-section *ngIf="enrolledSection?.contents?.length" [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)" (viewAll)="viewAll($event)"></app-page-section>
     </div>

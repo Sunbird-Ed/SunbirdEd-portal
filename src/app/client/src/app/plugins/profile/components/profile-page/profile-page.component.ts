@@ -228,7 +228,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.otherCertificatesCounts = _.get(data, 'result.response.count');
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
-          pdfUrls: [{
+          certificates: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
@@ -239,20 +239,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  downloadCert(certificates) {
-    _.forEach(certificates, (value, key) => {
-      if (key === 0) {
-        if (_.get(value, 'identifier')) {
-          this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
-            this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
-          }, error => {
-            this.downloadPdfCertificate(value);
-          });
-         } else {
-          this.downloadPdfCertificate(value);
-        }
+  downloadCert(course) {
+    // Check for V2
+    if (_.get(course, 'issuedCertificates.length')) {
+      const certificateInfo = course.issuedCertificates[0];
+      if (_.get(certificateInfo, 'identifier')) {
+        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
+          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          }
+        }, error => {
+          this.downloadPdfCertificate(certificateInfo);
+        });
+      } else {
+        this.downloadPdfCertificate(certificateInfo);
       }
-    });
+    } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
+      this.downloadPdfCertificate(course.certificates[0]);
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
+    }
   }
 
   downloadPdfCertificate(value) {
@@ -273,6 +279,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
     }
   }
 
