@@ -250,16 +250,24 @@ getActivity(groupId, activity, mergeGroup) {
     return this.groupCservice.getSupportedActivities();
   }
 
-  getActivityList (showList, groupData, changeTitle) {
-
-    if (_.get(groupData, 'activitiesGrouped')) {
-      const activities = _.map(groupData.activitiesGrouped, (item) => {
-      item.title = changeTitle ? this.resourceService.frmelmnts.lbl[item.title] : item.title;
-      showList = !showList ? item.items.length > 0 : showList;
-      return item;
-     });
-     return { showList, activities };
-  }
-  return { showList, activities: [] };
+  getActivityList (showList, groupData) {
+    const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
+    if (activitiesGrouped) {
+      _.forEach(activitiesGrouped, activityList => {
+        const items = _.get(activityList, 'items');
+        activityList.title = this.resourceService.frmelmnts.lbl[activityList.title];
+        activityList.type = _.get(_.first(items), 'type');
+        const activity  = _.map(items, i => {
+          const info = _.get(i, 'activityInfo');
+          // tslint:disable-next-line: no-unused-expression
+          info ? info.cardImg = _.get(i, 'activityInfo.appIcon') : '';
+          return info;
+        });
+        showList = !showList ? activity.length > 0 : showList;
+        activityList.items = _.compact(activity);
+      });
+      return { showList, activities: activitiesGrouped };
+    }
+    return { showList, activities: activitiesGrouped || [] };
   }
 }

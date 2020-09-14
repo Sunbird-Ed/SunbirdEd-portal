@@ -35,6 +35,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   selectedActivity: IActivity;
   showModal = false;
   unsubscribe$ = new Subject<void>();
+  viewAll = false;
+  allContents = {};
 
   constructor(
     private configService: ConfigService,
@@ -64,21 +66,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   getActivities() {
-    const response = this.groupService.getActivityList(false, this.groupData, false);
-    this.activityList = response.activities;
-    this.showActivityList = response.showList;
+    this.activityList = _.get(this.groupData, 'activitiesGrouped');
+    this.showActivityList = _.filter(this.activityList, list => ( !_.isEmpty(_.get(list, 'items'))));
     this.showLoader = false;
   }
 
-  navigateToViewMorePage(event) {
-    console.log('navigateToViewMorePagenavigateToViewMorePage', event);
+  viewAllContents(list) {
+    this.allContents = list;
+    this.viewAll = !this.viewAll;
   }
-
-  onActivityCardClick(event) {
-    console.log('onActivityCardClickonActivityCardClick', event);
-  }
-
-
 
 
   openActivity(event: any) {
@@ -119,7 +115,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
               return list;
             }
         });
-        this.showActivityList = this.groupService.getActivityList(false, this.groupData, false).showList;
+        this.showActivityList = this.groupService.getActivityList(false, this.groupData).showList;
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {

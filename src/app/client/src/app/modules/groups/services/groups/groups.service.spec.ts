@@ -195,14 +195,14 @@ describe('GroupsService', () => {
 
   it ('should return activityList and showList value', () => {
     const service = TestBed.get(GroupsService);
-    const response = service.getActivityList(false, groupData, true);
+    const response = service.getActivityList(false, groupData);
     expect(response.showList).toBe(true);
     expect(response.activities).toEqual(modifiedActivities);
   });
 
   it ('should return activityList and showList value = FALSE', () => {
     const service = TestBed.get(GroupsService);
-    const response = service.getActivityList(false, {}, true);
+    const response = service.getActivityList(false, {});
     expect(response.showList).toBe(false);
     expect(response.activities).toEqual([]);
   });

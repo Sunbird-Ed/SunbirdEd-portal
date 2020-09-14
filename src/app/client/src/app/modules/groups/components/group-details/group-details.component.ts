@@ -77,7 +77,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;
         this.isLoader = false;
-        this.showActivityList = this.groupService.getActivityList(false, groupData, true).showList;
+        this.showActivityList = this.groupService.getActivityList(false, groupData).showList;
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();
