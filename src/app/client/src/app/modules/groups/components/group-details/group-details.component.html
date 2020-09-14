@@ -17,7 +17,7 @@
             <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity" (click)="toggleActivityModal(true)">
               {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
             <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" *ngIf="isAdmin"
-              (click)="toggleActivityModal(true);addTelemetry('add-activity')">
+              (click)="navigateToAddActivity(); addTelemetry('add-activity')">
               <i class="plus icon" aria-hidden="true"></i>
               {{resourceService?.frmelmnts?.btn?.addActivity}}
             </button>
@@ -34,8 +34,4 @@
 </div>
 
 </div>
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="toggleActivityModal(false)" #addActivityModal *ngIf="showModal">
-  <app-activity-form (nextClick)="handleNextClick($event)"></app-activity-form>
-</sui-modal>
 <router-outlet></router-outlet>

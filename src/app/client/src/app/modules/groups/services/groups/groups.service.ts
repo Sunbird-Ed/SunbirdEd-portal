@@ -246,4 +246,8 @@ getActivity(groupId, activity, mergeGroup) {
   emitMenuVisibility(visibility) {
     this.showMenu.emit(visibility);
   }
+
+  getSupportedActivityList() {
+    return this.groupCservice.getSupportedActivities();
+  }
 }
