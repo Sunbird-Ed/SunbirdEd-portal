@@ -49,5 +49,14 @@ describe('GlobalSearchSelectedFilterComponent', () => {
     component.removeFilterSelection({type: 'medium', value: 'assamese'});
     expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
+
+
+  it('should update routes', () => {
+    component.selectedFilters = Response.selectedFiltersData;
+    component.facets = Response.facetsData;
+    component.updateRoute();
+    expect(component.selectedFilters).toEqual(Response.selectedFilterData);
+  });
+
 });
 

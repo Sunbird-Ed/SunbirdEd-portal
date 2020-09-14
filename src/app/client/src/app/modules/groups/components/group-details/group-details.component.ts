@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember } from '../../interfaces';
+import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
@@ -92,10 +92,14 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.showFilters = true;
   }
 
-  handleNextClick(event) {
-    this.toggleActivityModal(false);
-    this.addActivityModal.deny();
-    this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
+  navigateToAddActivity() {
+   this.router.navigate([`${ADD_ACTIVITY_CONTENT_TYPES}`], {
+     relativeTo: this.activatedRoute,
+     queryParams: {
+       groupName: _.get(this.groupData, 'name'),
+       createdBy: _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'))
+     }
+    });
   }
 
 
