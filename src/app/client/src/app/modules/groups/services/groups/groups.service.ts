@@ -22,6 +22,7 @@ export class GroupsService {
   public closeForm = new EventEmitter();
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
+  public _groupListCount: number;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -249,6 +250,14 @@ getActivity(groupId, activity, mergeGroup) {
 
   getSupportedActivityList() {
     return this.groupCservice.getSupportedActivities();
+  }
+
+  set groupListCount (count) {
+    this._groupListCount = count;
+  }
+
+  get groupListCount () {
+    return this._groupListCount;
   }
 
   groupContentsByActivityType (showList, groupData) {

@@ -56,7 +56,8 @@ export class AddToGroupDirective implements OnInit {
   }
 
   addActivityToGroup() {
-    this.sendInteractData();
+    this.sendInteractData('add-to-group-button', {activities_count:
+      (_.get(this.groupAddableBlocData, 'params.groupData.activities')).length});
     const isActivityAdded = _.find(_.get(this.groupAddableBlocData, 'params.groupData.activities'), {id: this.identifier});
     if ( _.isEmpty(isActivityAdded)) {
       const request = {
@@ -79,7 +80,7 @@ export class AddToGroupDirective implements OnInit {
     }
   }
 
-  sendInteractData() {
+  sendInteractData(id, extra?) {
     const data = {
       context: {
         env: 'groups',
@@ -89,11 +90,14 @@ export class AddToGroupDirective implements OnInit {
         }]
       },
       edata: {
-        id: 'add-to-group-button',
+        id: id,
         type: 'CLICK',
         pageid: this.pageId
       }
     };
+    if (extra) {
+      data.edata['extra'] = extra;
+    }
 
     this.telemetryService.interact(data);
   }

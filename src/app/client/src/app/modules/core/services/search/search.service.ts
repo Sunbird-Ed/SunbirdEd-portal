@@ -505,4 +505,9 @@ export class SearchService {
       return facet;
     });
   }
+
+  isContentTrackable(content, type) {
+    return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
+    || (_.lowerCase(type) === _.lowerCase(this.config.appConfig.contentType.Course)));
+  }
 }

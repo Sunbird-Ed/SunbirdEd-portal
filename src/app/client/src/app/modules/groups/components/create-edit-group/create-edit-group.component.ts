@@ -72,7 +72,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.disableBtn = false;
         const errMsg: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
         (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') ?
-        this.toasterService.error(this.resourceService.messages.groups.emsg.m001)
+       this.toasterService.error(this.resourceService.messages.groups.emsg.m001)
         : this.toasterService.error(this.resourceService.messages.emsg.m001);
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
@@ -131,8 +131,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     }
   }
 
-  addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId);
+  addTelemetry (id, extra) {
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
   }
 
   ngOnDestroy() {

@@ -209,7 +209,7 @@ describe('AddToGroupDirective', () => {
     spyOn(telemetryService, 'interact');
 
     /** Act */
-    directive.sendInteractData();
+    directive.sendInteractData('add-to-group-button');
 
     /** Assert */
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
