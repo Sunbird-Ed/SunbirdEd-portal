@@ -1,16 +1,17 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+<app-landing-section [appTelemetryImpression]="telemetryImpression" [textToDisplay]=""
+  [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 
 <div class="help-page">
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
-      <button (click)="goBack()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" type="button"><i
-          class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+      <button (click)="goBack()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+        type="button"><i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i> {{resourceService?.frmelmnts?.btn?.back}} </button>
       <div class="d-flex flex-dc ml-8">
-        <h4 class="mb-4">Help</h4>
-        <div class="fsmall">Frequently asked questions</div>
+        <h4 class="mb-4">{{resourceService?.frmelmnts?.tab?.help}}</h4>
+        <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
       </div>
     </div>
   </div>
@@ -20,16 +21,19 @@
       <app-loader></app-loader>
     </div>
     <div class="help-page__content relative9" *ngIf="faqList && !showLoader">
-      <sb-faq [data]="faqList"></sb-faq>
+      <sb-faq [data]="faqList" (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+        (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+        (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
+        (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq>
     </div>
     <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
       *ngIf="faqList && !showLoader">
-      <div class="fnormal mr-auto">Stil couldn't find what you are looking for? Please visit
+      <div class="fnormal mr-auto">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
         <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
       <a class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
         [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
         href="{{defaultFooterConfig?.helpCenterLink}}">
-        GO TO HELP CENTER
+        {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
       </a>
     </div>
   </div>

@@ -9,7 +9,7 @@ const routes: Routes = [
         path: 'help'
       },
       telemetry: {
-        env: 'help', pageid: 'help', type: 'view', subtype: 'paginate'
+        env: 'help', pageid: 'faq', type: 'view', subtype: 'paginate'
       }
     }
   }

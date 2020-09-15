@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService } from '@sunbird/shared';
 import { TenantService } from '@sunbird/core';
-import { IInteractEventEdata } from '@sunbird/telemetry';
-import { ActivatedRoute } from '@angular/router';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-faq',
@@ -25,14 +25,17 @@ export class FaqComponent implements OnInit {
   defaultFooterConfig: any;
   layoutConfiguration: any;
   unsubscribe$ = new Subject<void>();
+  public telemetryImpression: IImpressionEventInput;
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
-    private layoutService: LayoutService, public navigationHelperService: NavigationHelperService) {
+    private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
+    private router: Router, private telemetryService: TelemetryService) {
     this.faqBaseUrl = 'https://ntpstagingall.blob.core.windows.net/public/faq/resources/res';
   }
 
   ngOnInit() {
+    this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
@@ -49,6 +52,21 @@ export class FaqComponent implements OnInit {
       this.selectedLanguage = _.get(langData, 'value') || 'en';
       this.getFaqJson();
     });
+  }
+
+  setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
   }
 
   initLayout() {
@@ -72,7 +90,7 @@ export class FaqComponent implements OnInit {
   }
 
   goBack() {
-    this.navigationHelperService.navigateToLastUrl();
+    this.location.back();
   }
 
   setTelemetryInteractEdata(type): IInteractEventEdata {
@@ -82,4 +100,22 @@ export class FaqComponent implements OnInit {
       pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
     };
   }
+
+  logInteractEvent(event, subtype: string) {
+    const cardClickInteractData = {
+      context: {
+        cdata: [],
+        env: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.env'),
+      },
+      edata: {
+        id: 'faq',
+        subtype,
+        type: 'TOUCH',
+        pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid'),
+        extra: { values: event.data }
+      }
+    };
+    this.telemetryService.interact(cardClickInteractData);
+  }
+
 }
