@@ -587,10 +587,14 @@ html[layout='joy'] {
       background: var(--sbt-compt-bg) !important;
     }
   
-    &__content {
+
+    &__visit-helpcenter, &__content {
       max-width: calculateRem(1280px);
       width: 100%;
       margin: 0 auto;
+    }
+
+    &__content {
   
       .panel {
         overflow: hidden;
