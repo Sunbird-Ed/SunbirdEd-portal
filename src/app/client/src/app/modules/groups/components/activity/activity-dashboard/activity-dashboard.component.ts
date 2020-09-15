@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, LayoutService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { combineLatest, Subject } from 'rxjs';
 import { concatMap, debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
-import { GroupsService } from '../../../services';
-import { IActivity } from '../activity-list/activity-list.component';
+import { GroupsService } from './../../../services';
+import { IActivity } from './../activity-list/activity-list.component';
 import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
@@ -46,7 +46,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private layoutService: LayoutService,
-    private playerService: PublicPlayerService
+    private playerService: PublicPlayerService,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -99,6 +100,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         this.groupData = res;
         return this.groupService.getActivity(this.groupId, activityData, res);
     })).subscribe(data => {
+        this.getActivityInfo();
         this.checkForNestedCourses(data);
     }, err => {
       console.error('Error', err);
@@ -134,20 +136,24 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
       /* istanbul ignore else */
       if (_.get(item, 'status') === 'active') {
         const completedCount = _.get(_.find(item.agg, { metric: 'completedCount' }), 'value');
-        const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0'; 
-        return {
+        const userProgress = {
           title: _.get(item, 'userId') === this.userService.userid ?
           `${_.get(item, 'name')}(${this.resourceService.frmelmnts.lbl.you})` : _.get(item, 'name'),
           identifier: _.get(item, 'userId'),
-          progress: progress >= 100 ? '100' : progress,
           initial: _.get(item, 'name[0]'),
           indexOfMember: index
         };
+
+        if (this.isCourse(_.get(this.activity, 'contentType'))) {
+          const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
+          userProgress['progress'] = progress >= 100 ? '100' : progress;
+        }
+
+        return userProgress;
       }
     });
 
     this.memberListToShow = this.getSortedMembers();
-    this.getActivityInfo();
   }
 
   getSortedMembers() {
@@ -230,6 +236,10 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
   toggleDropdown() {
     this.dropdownContent = !this.dropdownContent;
+  }
+
+  isCourse (type) {
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course));
   }
 
   ngOnDestroy() {
