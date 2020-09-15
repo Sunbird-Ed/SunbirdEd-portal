@@ -1,15 +1,20 @@
-<!-- <app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section> -->
 <div class="help-page mt-24">
-    <div class="help-page__header d-flex flex-ai-center p-16">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" type="button"><i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-long-left"></use></svg></i> Back </button>
-        <div class="d-flex flex-dc ml-8">
-            <h4 class="mb-4">Help</h4>
-            <div class="fsmall">Frequently asked questions</div>
-        </div>
+  <div class="help-page__header d-flex flex-ai-center p-16">
+    <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0" type="button"><i
+        class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i> Back </button>
+    <div class="d-flex flex-dc ml-8">
+      <h4 class="mb-4">Help</h4>
+      <div class="fsmall">Frequently asked questions</div>
     </div>
-    
-    <div class="help-page__content relative9">
-        <sb-faq></sb-faq>
-    </div>
+  </div>
+
+  <div class="help-page__content relative9" *ngIf="showLoader">
+    <app-loader></app-loader>
+  </div>
+
+  <div class="help-page__content relative9" *ngIf="faqList && !showLoader">
+    <sb-faq [data]="faqList"></sb-faq>
+  </div>
 </div>
