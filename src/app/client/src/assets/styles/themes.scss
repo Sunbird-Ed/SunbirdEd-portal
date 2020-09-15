@@ -580,10 +580,11 @@ html[layout='joy'] {
 
   .help-page {
     width: calc(100% - 4%);
-    margin: 0 auto;
+    margin: 24px auto 0 auto;
     .help-page__header {
       border-radius: calculateRem(24px) !important;
       width: 100%;
+      background: var(--sbt-compt-bg) !important;
     }
   
     &__content {
@@ -602,6 +603,10 @@ html[layout='joy'] {
         .panel-heading {
           background: var(--sbt-compt-bg);
   
+          .panel-title {
+            font-size: var(--font-size-normal);
+          }
+
           .panel-title-blue {
             color: inherit;
             font-weight: bold;
@@ -628,6 +633,11 @@ html[layout='joy'] {
           }
         }
       }
+    }
+
+    &__visit-helpcenter {
+      background: var(--sbt-compt-bg);
+      border-radius: calculateRem(24px);
     }
   }
 
