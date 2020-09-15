@@ -548,10 +548,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     ];
     this.isDownloadReport = true;
     this.columns = [
-      { name: 'State', isSortable: true, prop: 'state' },
-      { name: 'District', isSortable: true, prop: 'district' },
-      { name: 'No. of Enrollment', isSortable: false, prop: 'noofEnrollments' },
-      { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions' }]
+      { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
+      { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
+      { name: 'No. of Enrollment', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+      { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }]
     this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {

@@ -73,18 +73,20 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     this.tableData = _.cloneDeep(this.data);
+    console.log('data-------------', this.data)
+    console.log('tdata-------------', this.tableData)
     _.forEach(this.columns, (x) => {
       this.filterModel[x.prop] = ''
     })
   }
 
-  sort(column) {
-    if(column.isSortable){
-      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-      this.sortField = column.prop;
-      this.tableData = _.orderBy(this.tableData, [this.sortField], [this.sortOrder]);
-    }
-  }
+  // sort(column) {
+  //   if(column.isSortable){
+  //     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+  //     this.sortField = column.prop;
+  //     this.tableData = _.orderBy(this.tableData, [this.sortField], [this.sortOrder]);
+  //   }
+  // }
 
   clearSearch() {
     this.searchData = '';

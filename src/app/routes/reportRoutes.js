@@ -121,7 +121,7 @@ module.exports = function (app) {
             }
         })
     )
-  app.get('/reportTypes', async (req, res) => {
+  app.get('/read/:tag/:requestId', async (req, res) => {
       console.log('11111111111111111111111111111111111111')
     const tag = req.params.tag;
     const requestId = req.params.requestId;
@@ -158,7 +158,8 @@ module.exports = function (app) {
     }
   })
 
-  app.get('/newRoute', async (req, res) => {
+  app.get('/reportlist', async (req, res) => {
+    console.log('e------------------')
     var options = {
       method: CONSTANTS.HTTP.METHOD.GET,
       'url': sunbird_device_api + '/data/' + CONSTANTS.API_VERSION.V3 + '/job/request/list/test-tag', // tag should be dynamic

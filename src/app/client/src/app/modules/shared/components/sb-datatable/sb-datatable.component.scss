@@ -96,10 +96,19 @@
     }
 }
 
+.filterTable{
+  z-index: 9999;
+}
 
-.row-filter {
-  // background: #f5f5f5;
-  padding: 15px;
-  padding-bottom: 80px !important;
-
+::ng-deep {
+.ngx-datatable .datatable-header .datatable-header-cell .sort-btn{
+    cursor: pointer !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 24px !important;
+    right: 10px !important;
+    left: 0 !important;
+    padding-top: 19px !important;
+    text-align: right !important;
+}
 }

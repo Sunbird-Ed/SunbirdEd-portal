@@ -14,7 +14,14 @@ export class OnDemandReportService {
 
 
   getReportList(tag: string) {
+    console.log('service-------')
     const options = {headers: {'Content-Type': 'application/json'}};
     return this.http.get(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.LIST + '/' + tag, options);
+  }
+
+  getReport(tag: string, requestId: string) {
+    console.log('service----2---')
+    const options = {headers: {'Content-Type': 'application/json'}};
+    return this.http.get( `report/list/${tag}/${requestId}` , options);
   }
 }

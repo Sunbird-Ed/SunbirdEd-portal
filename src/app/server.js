@@ -86,6 +86,50 @@ app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
+
+app.get('/report/list/:tag/:requestId', (req,res) => {
+  console.log('1111111111111111111111111111111111111111111111111111111111111111111')
+  // const tag = req.params.tag;
+  // const requestId = req.params.requestId;
+  // console.log('1---------------------', tag, requestId)
+  var options = {
+    'method': 'GET',
+    'url': 'https://dev.sunbirded.org/api/data/v3/job/request/read/test-tag/A09115FCBEC94CE6ACEB4D9BBFDBCBCF',
+    'headers': {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4OTU4MzIyNzkyMTE0MWJiYWE0MjA4ZTBkMjE3YmU0ZiJ9.t2OPiAMuongqwSQfdJAsokgt2Eur5t7RchNZmWOwNTg',
+      'X-Channel-ID': 'in.ekstep',
+      'Cookie': 'connect.sid=s%3As7L0PzmQuiXOjr3IfcMQxxgTAB988IUn.1hEfwbk0TwZAGBB5qJQbPyq6HBPXGm2EEj%2Fga2XEubw'
+    }
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
+    res.send(response.body)
+  });
+})
+
+
+app.get('/report/list/:tag', (req,res) => {
+  console.log('1111111111111111111111111111111111111111111111111111111111111111111')
+  var options = {
+    'method': 'GET',
+    'url': 'https://dev.sunbirded.org/api/data/v3/job/request/list/test-tag',
+    'headers': {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4OTU4MzIyNzkyMTE0MWJiYWE0MjA4ZTBkMjE3YmU0ZiJ9.t2OPiAMuongqwSQfdJAsokgt2Eur5t7RchNZmWOwNTg',
+      'X-Channel-ID': 'in.ekstep',
+      'Cookie': 'connect.sid=s%3As7L0PzmQuiXOjr3IfcMQxxgTAB988IUn.1hEfwbk0TwZAGBB5qJQbPyq6HBPXGm2EEj%2Fga2XEubw'
+    }
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    const body = response.body;
+   res.send(response.body);
+  });
+})
+
+
 const morganConfig = (tokens, req, res) => {
   const tokensList = [
     tokens.url(req, res),
@@ -220,8 +264,10 @@ const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
 app.use('/plugin', subApp)
 
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp()).catch(error => runApp())
 
+
+// frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp()).catch(error => runApp())
+runApp();
 function endSession(request, response, next) {
   delete request.session['roles']
   delete request.session['rootOrgId']
