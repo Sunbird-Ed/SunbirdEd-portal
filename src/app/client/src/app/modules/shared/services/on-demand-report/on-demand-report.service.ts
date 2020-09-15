@@ -14,14 +14,21 @@ export class OnDemandReportService {
 
 
   getReportList(tag: string) {
-    console.log('service-------')
+    console.log('getReportList service-------');
     const options = {headers: {'Content-Type': 'application/json'}};
-    return this.http.get(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.LIST + '/' + tag, options);
+    return this.http.get(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.JOB_LIST + '/' + tag, options);
   }
 
   getReport(tag: string, requestId: string) {
-    console.log('service----2---')
+    console.log('service----2---');
     const options = {headers: {'Content-Type': 'application/json'}};
-    return this.http.get( `report/list/${tag}/${requestId}` , options);
+    return this.http.get(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.JOB_REQUEST_READ`${tag}/${requestId}`, options);
   }
+
+  submitRequest(request: any) {
+    console.log('service-------');
+    const options = {headers: {'Content-Type': 'application/json'}};
+    return this.http.post(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.JOB_SUBMIT_REQUEST, request, options);
+  }
+
 }
