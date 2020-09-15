@@ -144,7 +144,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
           indexOfMember: index
         };
 
-        if (this.isCourse(_.get(this.activity, 'contentType'))) {
+        if (this.isCourse(this.activity, _.get(this.activity, 'contentType'))) {
           const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
           userProgress['progress'] = progress >= 100 ? '100' : progress;
         }
@@ -201,7 +201,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
 
   updateArray(course) {
     this.nestedCourses.push({identifier: _.get(course, 'identifier'),
-    name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount')});
+    name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount') || 0});
     this.selectedCourse = this.nestedCourses[0];
   }
 
@@ -216,6 +216,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         }
       }, []);
     }
+    return [];
   }
 
   handleSelectedCourse(course) {
@@ -238,8 +239,9 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
 
-  isCourse (type) {
-    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course));
+  isCourse (content, type) {
+    return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
+    || (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course)));
   }
 
   ngOnDestroy() {
