@@ -260,7 +260,7 @@ getActivity(groupId, activity, mergeGroup) {
           const activity = {
             ...i.activityInfo,
             type: i.type,
-            cardImg: this.configService.appConfig.assetsPath.book,
+            cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
           };
           return activity;
         });
@@ -270,6 +270,6 @@ getActivity(groupId, activity, mergeGroup) {
       Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
       return { showList, activities: activityList };
     }
-    return { showList, activities: activitiesGrouped || [] };
+    return { showList, activities: activitiesGrouped || {} };
   }
 }

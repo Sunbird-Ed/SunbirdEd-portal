@@ -76,10 +76,10 @@ describe('GroupDetailsComponent', () => {
     const groupService = TestBed.get(GroupsService);
     component['groupId'] = '123';
     spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
-    spyOn(groupService, 'getActivityList').and.returnValue({showList:  true});
+    spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
     expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
-    expect(groupService.getActivityList).toHaveBeenCalledWith(false,
+    expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
     {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g'});
     expect(component.showActivityList).toBeTruthy();
     expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
