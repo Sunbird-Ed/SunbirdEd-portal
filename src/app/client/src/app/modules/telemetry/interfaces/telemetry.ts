@@ -78,10 +78,10 @@ export interface ITelemetryContextData {
   'channel': string;
   'uid': string;
   'env': string;
-  'pdata'?: {};
-  'sid'?: string;
-  'did'?: string;
-  'cdata'?: Array<{}>;
+  'pdata': IProducerData;
+  'sid': string;
+  'did': string;
+  'cdata'?: Array<ICData>;
   'rollup'?: {};
 }
 export interface TelemetryObject {
@@ -106,7 +106,7 @@ export interface ITelemetryEvent {
 export interface IEndEventInput {
   'context': {
     'env': string;
-    'cdata'?: Array<object>;
+    'cdata'?: Array<ICData>;
   };
   'object'?: {
     'id': string;
@@ -133,8 +133,8 @@ export interface IErrorEventInput {
 export interface IImpressionEventInput {
   'context': {
     'env': string;
-    'cdata'?: Array<object>;
-    'pdata'?: IProducerData
+    'cdata'?: Array<ICData>;
+    'pdata': IProducerData
   };
   'object'?: {
     'id': string;
@@ -148,8 +148,8 @@ export interface IImpressionEventInput {
 export interface IInteractEventInput {
   'context': {
     'env': string;
-    'cdata': Array<object>,
-    'pdata'?: IProducerData
+    'cdata'?: Array<ICData>;
+    'pdata': IProducerData
   };
   'object'?: IInteractEventObject;
   'edata': IInteractEventEdata;
@@ -164,7 +164,7 @@ export interface IInteractEventObject {
 export interface IAuditEventInput {
   'context': {
     'env': string;
-    'cdata': Array<object>;
+    'cdata'?: Array<ICData>;
   };
   'object'?: {
     'id': string;
@@ -227,7 +227,7 @@ export interface IShareEventInput {
 export interface IStartEventInput {
   'context': {
     'env': string;
-    'cdata'?: Array<{}>;
+    'cdata'?: Array<ICData>;
   };
   'object'?: {
     'id': string;
@@ -244,6 +244,11 @@ export interface IProducerData {
   'pid': string;
 }
 
+export interface ICData {
+  'id': string;
+  'type': string;
+}
+
 export interface ITelemetry {
   'pdata': IProducerData;
   'env': string;
@@ -251,15 +256,15 @@ export interface ITelemetry {
   'channel': string;
   'uid'?: string;
   'endpoint': string;
-  'did'?: string;
+  'did': string;
   'authtoken'?: string;
-  'sid'?: string;
+  'sid': string;
   'batchsize'?: Number;
   'runningEnv'?: string;
   'mode'?: string;
   'host'?: string;
   'tags'?: Array<string>;
-  'cdata'?: Array<{}>;
+  'cdata'?: Array<ICData>;
   'dispatcher'?: undefined;
   'enableValidation': boolean;
   'timeDiff'?: Number;
