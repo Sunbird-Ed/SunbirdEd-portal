@@ -46,13 +46,13 @@
         </div>
       </div>
 
-      <div class="sb-card-grid" *ngIf="showLoader">
+      <div class="sb-card-grid my-24" *ngIf="showLoader">
         <div class="sb-grid--item" *ngFor="let i of numberOfSections">
           <sb-course-card [isLoading]="true"></sb-course-card>
         </div>
       </div>
 
-      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
+      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid my-24">
         <div class="sb-card-grid--item" *ngFor="let content of contentList;">
           <!-- <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
             [cardImg]="content?.image || './assets/images/book.png'">
