@@ -62,8 +62,10 @@ export class AddToGroupDirective implements OnInit {
       const request = {
         activities: [{ id: this.identifier, type: _.get(this.groupAddableBlocData, 'params.contentType') }]
       };
-      this.csGroupService.addActivities(_.get(this.groupAddableBlocData, 'groupId'), request).subscribe(response => {
+        this.csGroupService.addActivities(_.get(this.groupAddableBlocData, 'groupId'), request).subscribe(response => {
         this.goBack();
+        _.get(response, 'error.activities[0].errorCode') === 'EXCEEDED_ACTIVITY_MAX_LIMIT' ?
+        this.showErrorMsg(this.resourceService.messages.groups.emsg.m003) :
         this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
       }, error => {
         console.error('Error while adding activity to the group', error);
@@ -72,8 +74,8 @@ export class AddToGroupDirective implements OnInit {
       });
     } else {
       this.goBack();
-      isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
-      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
+      isActivityAdded ? this.showErrorMsg(this.resourceService.messages.emsg.activityAddedToGroup) :
+      this.showErrorMsg(this.resourceService.messages.emsg.noAdminRole);
     }
   }
 
@@ -94,6 +96,10 @@ export class AddToGroupDirective implements OnInit {
     };
 
     this.telemetryService.interact(data);
+  }
+
+  showErrorMsg(msg) {
+    this.toasterService.error(msg);
   }
 
   goBack() {

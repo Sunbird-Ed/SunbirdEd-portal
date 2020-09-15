@@ -151,7 +151,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupsService.addMemberById(groupId, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         this.disableBtn = false;
-        const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
+        const value = _.isEmpty(response.error) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
           this.memberId = '';
           this.reset();
@@ -166,6 +166,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   showErrorMsg(response?) {
+    _.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT' ?
+    this.toasterService.error(this.resourceService.messages.groups.emsg.m002) :
     this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
     || _.get(this.verifiedMember, 'title')));
   }
