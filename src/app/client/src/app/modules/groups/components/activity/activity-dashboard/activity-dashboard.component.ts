@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, LayoutService, ConfigService } from '@sunbird/shared';
+import { UserService, SearchService } from '@sunbird/core';
+import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { combineLatest, Subject } from 'rxjs';
@@ -47,7 +47,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private layoutService: LayoutService,
     private playerService: PublicPlayerService,
-    private configService: ConfigService
+    private searchService: SearchService,
   ) { }
 
   ngOnInit() {
@@ -144,7 +144,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
           indexOfMember: index
         };
 
-        if (this.isCourse(_.get(this.activity, 'contentType'))) {
+        if (this.isContentTrackable(this.activity, _.get(this.activity, 'contentType'))) {
           const progress = completedCount ? _.toString(Math.round((completedCount / this.leafNodesCount) * 100)) || '0' : '0';
           userProgress['progress'] = progress >= 100 ? '100' : progress;
         }
@@ -201,7 +201,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
 
   updateArray(course) {
     this.nestedCourses.push({identifier: _.get(course, 'identifier'),
-    name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount')});
+    name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount') || 0});
     this.selectedCourse = this.nestedCourses[0];
   }
 
@@ -216,6 +216,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         }
       }, []);
     }
+    return [];
   }
 
   handleSelectedCourse(course) {
@@ -238,8 +239,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
 
-  isCourse (type) {
-    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course));
+  isContentTrackable (content, type) {
+    return this.searchService.isContentTrackable(content, type);
   }
 
   ngOnDestroy() {

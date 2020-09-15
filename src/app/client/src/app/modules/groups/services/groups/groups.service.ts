@@ -22,6 +22,7 @@ export class GroupsService {
   public closeForm = new EventEmitter();
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
+  public _groupListCount: number;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -251,25 +252,35 @@ getActivity(groupId, activity, mergeGroup) {
     return this.groupCservice.getSupportedActivities();
   }
 
+  set groupListCount (count) {
+    this._groupListCount = count;
+  }
+
+  get groupListCount () {
+    return this._groupListCount;
+  }
+
   groupContentsByActivityType (showList, groupData) {
     const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
     if (activitiesGrouped) {
-      const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
-        activityGroup.title = this.resourceService.frmelmnts.lbl[activityGroup.title];
-        acc[activityGroup.title] = activityGroup.items.map((i) => {
-          const activity = {
-            ...i.activityInfo,
-            type: i.type,
-            cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
-          };
-          return activity;
-        });
-        showList = !showList ? Object.values(acc).length > 0 : showList;
-        return acc;
-      }, {});
-      Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
-      return { showList, activities: activityList };
+
+        const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
+            if (activityGroup.title !== this.resourceService.frmelmnts.lbl[activityGroup.title]) {
+              acc[activityGroup.title] = activityGroup.items.map((i) => {
+                const activity = {
+                  ...i.activityInfo,
+                  type: i.type,
+                  cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
+                };
+                return activity;
+              });
+              showList = !showList ? Object.values(acc).length > 0 : showList;
+              return acc;
+            }
+        }, {});
+        Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
+        return { showList, activities: activityList };
     }
     return { showList, activities: activitiesGrouped || {} };
-  }
+}
 }
