@@ -26,14 +26,14 @@
             <label for="no" class="fsmall">Do not share my Profile Information</label>
           </div>
         </div>
-        <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100">SAVE CHANGES</button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100" (click)="showConsentPopup = true">SAVE CHANGES</button>
       </div>
       
     </div>
   </sui-accordion-panel>
 </sui-accordion>
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal sb-modal-profile-details"
   appBodyScroll *ngIf="showConsentPopup" (dismissed)="showConsentPopup = false;">
   <!--Header-->
   <div class="sb-modal-header">
@@ -41,29 +41,33 @@
   </div>
   <!--/Header-->
   <!--Content-->
-  <div class="sb-modal-content o-y-visible">
-    <p>Name : {{userInformations.name || '-'}}</p>
-    <p>State : {{userInformations.state || '-'}}</p>
-    <p>User ID : {{userInformations.userid || '-'}}</p>
-    <p>District : {{userInformations.district || '-'}}</p>
-    <p>Block : {{userInformations.block || '-'}}</p>
-    <p>School ID : {{userInformations.schoolId || '-'}}</p>
-    <p>School Name : {{userInformations.schoolName || '-'}}</p>
-    <p>Mobile Number : {{userInformations.phone || '-'}}</p>
-    <p>Email ID : {{userInformations.emailId || '-'}}</p>
-    <p>Your profile information can always be changed from your profile page.</p>
-    <label>
-      <input type="checkbox" [(ngModel)]="consentPii"  name="" id=""> I agree to share my data
-    </label>
+  <div class="sb-modal-content d-flex flex-dc o-y-visible">
+    <label class="mb-16 fnormal font-weight-normal">Name : {{userInformations.name || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">State : {{userInformations.state || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">User ID : {{userInformations.userid || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">District : {{userInformations.district || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">Block : {{userInformations.block || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">School ID : {{userInformations.schoolId || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">School Name : {{userInformations.schoolName || '-'}}</label>
+    <label class="mb-16 fnormal font-weight-normal">Mobile Number : {{userInformations.phone || '-'}}</label>
+    <label class="mb-24 fnormal font-weight-normal">Email ID : {{userInformations.emailId || '-'}}</label>
+    <div class="mb-16 fnormal font-weight-normal">
+      <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8">
+      You can edit these details from your profile page</div>
+    <p class="mb-0fnormal font-weight-normal">
+      <input type="checkbox" [(ngModel)]="consentPii"  name="" id="" class="mr-8"> 
+      I agree to share my profile details with the course administrator in accordance with the 
+       <span class="sb-color-primary">Terms of Use</span>
+    </p>
   </div>
   <!--/Content-->
   <!--Actions-->
   <div class="sb-modal-actions">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="saveConsent()">
-      Submit
+      I Dont Agree
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary " (click)="showConsentPopup = false">
-      Cancel
+      Yes I Agree
     </button>
   </div>
   <!--/Actions-->
