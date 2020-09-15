@@ -3,8 +3,8 @@
       <div class="title">
         {{resourceService?.frmelmnts?.lbl[list?.key]}}
       </div>
-  <button *ngIf="list?.value?.length > 3 && disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" (click)="toggleViewAll(false)">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
-  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" (click)="toggleViewAll(true, list)">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
+  <button *ngIf="list?.value?.length > 3 && disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" (click)="toggleViewAll(true, list);addTelemetry('open-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
   </div>
 
   <!--Show loader-->
