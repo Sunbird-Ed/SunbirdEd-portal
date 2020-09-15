@@ -1,0 +1,16 @@
+@import "mixins/mixins";
+
+:host::ng-deep {
+
+    .help-page__content {
+        .panel {
+            .panel-heading, .panel-interact, .panel-info {
+                background: var(--white);
+            }
+            .panel-info {
+                max-width: 100%;
+                padding: calculateRem(16px);
+            }
+        }
+    }
+}
