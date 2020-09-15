@@ -1,10 +1,10 @@
 <div *ngFor="let list of activityList | keyvalue">
-  <div class="header" *ngIf="list?.value?.length">
-      <div class="title" *ngIf="isSelectedType(list?.key)">
-        {{list?.key}}
+  <div class="header" *ngIf="list?.value?.length && isSelectedType(list?.key)">
+      <div class="title">
+        {{resourceService?.frmelmnts?.lbl[list?.key]}}
       </div>
-  <button *ngIf="list?.value?.length > 3 && disableViewAllMode" class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" (click)="toggleViewAll(false)">Close</button>
-  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode" class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" (click)="toggleViewAll(true, list)">View all</button>
+  <button *ngIf="list?.value?.length > 3 && disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" (click)="toggleViewAll(true, list);addTelemetry('open-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
   </div>
 
   <!--Show loader-->
@@ -15,13 +15,13 @@
   </div>
 
   <!--Show Activity List-->
-  <div  *ngIf="list?.value?.length && !showLoader" class="sb-card-grid"> 
+  <div  *ngIf="list?.value?.length && !showLoader" class="sb-card-grid" [ngClass]="{'hideActivityType': !isSelectedType(list?.key)}"> 
        <div class="sb-card-grid--item relative" *ngFor="let activity of list?.value; let i=index;">
-          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)" (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
       || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-course-card>
 
-          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)" (cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
           || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-library-card>
           <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&

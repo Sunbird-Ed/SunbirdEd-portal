@@ -269,4 +269,18 @@ describe('ActivityDashboardComponent', () => {
     expect(component['unsubscribe$'].complete).toHaveBeenCalled();
   });
 
+  it ('should return TRUE (when content is trackable or contentType = COURSE)', () => {
+    spyOn(component['searchService'], 'isContentTrackable').and.returnValue(true);
+    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+    expect(value).toBe(true);
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+  });
+
+  it ('should return FALSE (when content is not trackable or contentType != COURSE)', ()  => {
+    spyOn(component['searchService'], 'isContentTrackable').and.returnValue(false);
+    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+    expect(value).toBe(false);
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+  });
+
 });

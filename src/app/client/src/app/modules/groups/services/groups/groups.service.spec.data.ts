@@ -130,7 +130,7 @@ export const groupData = {
 };
 
 export const modifiedActivities = {
-  'Courses': [
+  'ACTIVITY_COURSE_TITLE': [
     {
       'name': '05-03-19-course',
       'identifier': 'do_21271200473210880012152',
@@ -144,7 +144,7 @@ export const modifiedActivities = {
       'cardImg': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21271200473210880012152/artifact/20180817101627-30120_1544767085980.thumb.png'
     }
   ],
-  'Textbooks': [
+  'ACTIVITY_TEXTBOOK_TITLE': [
     {
       'name': '28ShallowCopy-6',
       'identifier': 'do_2130093660325806081984',

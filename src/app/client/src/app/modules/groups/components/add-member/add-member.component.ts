@@ -190,7 +190,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  addTelemetry (id, memberId?) {
+  addTelemetry (id, memberId?, extra?) {
     const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
     this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata);
   }
