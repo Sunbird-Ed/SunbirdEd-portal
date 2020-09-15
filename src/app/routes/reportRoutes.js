@@ -9,6 +9,10 @@ const {getUserDetailsV2} = require('../helpers/userHelper');
 const CONSTANTS = require('../helpers/constants');
 const {sendRequest} = require('../helpers/httpRequestHandler');
 const httpSatusCode = require('http-status-codes');
+const {logger} = require('@project-sunbird/logger');
+const uuidv1 = require('uuid/v1');
+const {parseJson} = require('../helpers/utilityService');
+
 module.exports = function (app) {
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
         proxyUtils.verifyToken(),
@@ -120,9 +124,9 @@ module.exports = function (app) {
                 }
             }
         })
-    )
-  app.get('/read/:tag/:requestId', async (req, res) => {
-      console.log('11111111111111111111111111111111111111')
+    );
+
+  app.get('/report/read/:tag/:requestId', async (req, res) => {
     const tag = req.params.tag;
     const requestId = req.params.requestId;
     var options = {
@@ -156,24 +160,36 @@ module.exports = function (app) {
         }
       });
     }
-  })
+  });
 
-  app.get('/reportlist', async (req, res) => {
-    console.log('e------------------')
-    var options = {
-      method: CONSTANTS.HTTP.METHOD.GET,
-      'url': sunbird_device_api + '/data/' + CONSTANTS.API_VERSION.V3 + '/job/request/list/test-tag', // tag should be dynamic
-      'headers': {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + PORTAL_API_AUTH_TOKEN,
-        'X-Channel-ID': 'in.ekstep', // should be dynamic
-      }
-    };
+  app.get('/report/job/list/:tag', async (req, res) => {
+    let errType;
     try {
+      if (!req.params.tag ) {
+        errType = 'MANDATORY_PARAMS_MISSING';
+        throw 'tag is mandatory parameter missing';
+      }
+      var options = {
+        method: CONSTANTS.HTTP.METHOD.GET,
+        // TODO: get params
+        'url': sunbird_device_api + '/data/' + CONSTANTS.API_VERSION.V3 + '/job/request/list/' + /*req.params.tag ||*/ 'test-tag',
+        'headers': {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4OTU4MzIyNzkyMTE0MWJiYWE0MjA4ZTBkMjE3YmU0ZiJ9.t2OPiAMuongqwSQfdJAsokgt2Eur5t7RchNZmWOwNTg', //+ PORTAL_API_AUTH_TOKEN,
+          'X-Channel-ID': 'in.ekstep', // should be dynamic
+        }
+      };
+      errType = 'FETCH_JOB_REQUEST';
       const responseData = await sendRequest(options);
+      errType = 'PARSE_JSON';
       res.status(httpSatusCode.OK).send(parseJson(responseData))
     } catch (e) {
-      logger.error({msg: 'reportRoutes:fetching list of report errored', errorMessage: e.message, error: e});
+      logger.error({
+        msg: 'reportRoutes:fetching list of report errored',
+        errorMessage: e.message,
+        error: e,
+        errType: errType
+      });
       res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
         "id": "api.report.details",
         "ver": CONSTANTS.API_VERSION.V3,
