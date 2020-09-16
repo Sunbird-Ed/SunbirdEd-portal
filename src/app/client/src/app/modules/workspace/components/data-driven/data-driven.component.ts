@@ -189,12 +189,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
-        if ((this.contentType) !== ('textbook') || (this.contentType) !== ('course')) {
-          const categoryList = {
-            'terms' : this.getCategoryList(this.contentType)
-          };
-          this.categoryMasterList.push(categoryList);
-        }
+        const categoryList = {
+          'code' : 'primaryCategory',
+          'identifier': 'sb_primaryCategory',
+          'description': 'Primary Category',
+          'terms' : this.getCategoryList(this.contentType)
+        };
+        this.categoryMasterList.push(categoryList);
         /**
         * isCachedDataExists will check data is exists in cache or not. If exists should not call
         * form api otherwise call form api and get form data
