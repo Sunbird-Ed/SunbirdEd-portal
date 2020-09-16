@@ -113,6 +113,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
   public enableCreateButton = false;
 
+  public isSubmit = false;
+
   public unsubscribe = new Subject<void>();
   constructor(
     public searchService: SearchService,
@@ -186,6 +188,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
+        }
+        if ((this.contentType) !== ('textbook') || (this.contentType) !== ('course')) {
+          const categoryList = {
+            'terms' : this.getCategoryList(this.contentType)
+          };
+          this.categoryMasterList.push(categoryList);
         }
         /**
         * isCachedDataExists will check data is exists in cache or not. If exists should not call
@@ -282,10 +290,21 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     return requestData;
   }
 
-  createContent() {
+  createContent(modal) {
+    let requiredFields = [];
+    requiredFields = _.map(_.filter(this.formFieldProperties, { 'required': true }), field => field.code );
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
+    for (let i = 0; i < requiredFields.length; i++) {
+      if (_.isUndefined(requestData.content[requiredFields[i]])) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0101);
+        return;
+      }
+    }
+    if (!_.isUndefined(modal)) {
+      modal.deny();
+    }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.editorService.create(requestData).subscribe(res => {
         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
@@ -418,5 +437,33 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
     };
     this.telemetryService.interact(telemetryData);
+  }
+
+  getCategoryList(type: string): object {
+    const primaryCategoryList = [];
+      if (type === 'collection' || type === 'lessonplan') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].collectionPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].collectionPrimaryCategories, (field) => {
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+        }
+      } else if (type === 'studymaterial' || type === 'assessment') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].contentPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].contentPrimaryCategories, (field) => {
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+      }
+    }
+    return primaryCategoryList;
   }
 }
