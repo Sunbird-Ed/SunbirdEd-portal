@@ -987,6 +987,9 @@ html[layout='joy'] {
     width: 100%;
     margin: 0;
   }
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container {
+    padding: 0 0 0 0 !important;
+  }
 }
 
 html[layout='joy'][dir='rtl'] {

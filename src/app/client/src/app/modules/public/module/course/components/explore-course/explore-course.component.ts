@@ -47,6 +47,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     public selectedFilters;
     public totalCount;
     public searchAll;
+    public allMimeType;
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -155,11 +156,17 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         });
     }
     private fetchContents() {
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
+        const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+            _.get(this.queryParams, 'mediaType');
+        const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+            return o.name === (selectedMediaType || 'all');
+        });
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        filters.mimeType = _.get(mimeType, 'values');
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {
             delete softConstraints['board'];
