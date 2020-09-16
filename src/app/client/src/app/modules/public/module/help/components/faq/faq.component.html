@@ -2,7 +2,7 @@
   [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 
-<div class="help-page">
+<div class="help-page relative9">
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
       <button (click)="goBack()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
@@ -17,10 +17,10 @@
   </div>
 
   <div class="ui container">
-    <div class="help-page__content relative9" *ngIf="showLoader">
+    <div class="help-page__content" *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <div class="help-page__content relative9" *ngIf="faqList && !showLoader">
+    <div class="help-page__content" *ngIf="faqList && !showLoader">
       <sb-faq [data]="faqList" (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
         (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
         (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
@@ -28,7 +28,7 @@
     </div>
     <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
       *ngIf="faqList && !showLoader">
-      <div class="fnormal mr-auto">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
+      <div class="fnormal mr-auto visit-helpcenter__text">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
         <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
       <a class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
         [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
