@@ -8,7 +8,16 @@
           <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
           </sui-select-option>
         </sui-select>
-        <button type="button" (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary ml-16">
+
+        <div class="sb-field filterTable">
+          <input class="sb-form-control" 
+             type="text" [(ngModel)]="password"
+            placeholder="Enter password">
+        </div>
+
+        <button type="button" [disabled]="(!reportType || (reportType?.encrypt === 'true' && !password))" 
+        [ngClass]="{'sb-btn-disabled': (!reportType || (reportType?.encrypt === 'true' && !password))}"
+        (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary ml-16">
           {{resourceService?.frmelmnts?.lbl?.request}}
         </button>
       </div>
@@ -18,5 +27,5 @@
 </div>
 <div class="pb-8 download-section-text">Downloads Section(shows only the latest 10 requests)</div>
 <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="onDemandReportData" [columns]="columns"
-              [downloadCSV]="isDownloadReport"></sb-datatable>
+              [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail(ev)" ></sb-datatable>
 <div class="request-download-text p-16">Request response to download here</div>

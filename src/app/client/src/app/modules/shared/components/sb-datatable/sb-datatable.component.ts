@@ -1,5 +1,5 @@
 import { filter } from 'rxjs/operators';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges,EventEmitter,Output } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
@@ -7,6 +7,7 @@ import { ResourceService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 
 export const multiFilter = (arr: Object[], filters: Object) => {
+  console.log(arr, filters)
   const filterKeys = Object.keys(filters);
   return arr.filter(eachObj => {
     return filterKeys.every(eachKey => {
@@ -19,7 +20,12 @@ export const multiFilter = (arr: Object[], filters: Object) => {
           const each = eachObj[eachKey].toLowerCase();
           return each.includes(filters[eachKey].toLowerCase().trim());
         } else {
-          return filters[eachKey].includes(eachObj[eachKey]);
+          const keys = eachKey.split('.');
+          if(keys.length > 1){
+            return filters[eachKey].includes(eachObj[keys[0]][keys[1]]);
+          }else{
+            return filters[eachKey].includes(eachObj[keys[0]]);
+          }
         }
     });
   });
@@ -38,18 +44,21 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() downloadCSV;
   @Input() sortable;
   @Input() name;
+  @Output() downloadLink = new EventEmitter();
+
   public tableData = [];
   public searchData;
   public sortOrder = 'asc';
   public sortField = 'state';
   public showLoader = false;
   public csvExporter: any;
-  keyUp = new Subject<object>();
-  listFilter = {};
-  filterModel = {};
-  messages = {
+  public keyUp = new Subject<object>();
+  public listFilter = {};
+  public filterModel = {};
+  public messages = {
       emptyMessage: 'No Data to display'
     }
+
   constructor() { }
 
   ngOnInit() {
@@ -73,11 +82,13 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
   ngOnChanges() {
     this.tableData = _.cloneDeep(this.data);
-    console.log('data-------------', this.data)
-    console.log('tdata-------------', this.tableData)
     _.forEach(this.columns, (x) => {
-      this.filterModel[x.prop] = ''
-    })
+      this.filterModel[x.prop] = null
+    });
+  }
+
+  downloadUrl(ev){
+    this.downloadLink.emit(ev)
   }
 
   // sort(column) {

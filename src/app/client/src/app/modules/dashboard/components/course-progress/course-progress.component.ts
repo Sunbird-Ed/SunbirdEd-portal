@@ -550,7 +550,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.columns = [
       { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
       { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-      { name: 'No. of Enrollment', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+      { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
       { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }]
     this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------

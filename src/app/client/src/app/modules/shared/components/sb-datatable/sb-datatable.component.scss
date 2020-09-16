@@ -111,4 +111,19 @@
     padding-top: 19px !important;
     text-align: right !important;
 }
+.labelchange .ngx-datatable .datatable-body .datatable-body-cell .datatable-body-cell-label{
+  margin-left: 0px  !important;
+    background: green  !important;
+    color: #FFF  !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+}
+}
+
+::ng-deep {
+  .ui.dropdown>.text {
+    display: inline-block;
+    transition: none;
+    position: relative;
+  }
 }

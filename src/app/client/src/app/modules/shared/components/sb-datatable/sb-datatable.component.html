@@ -43,7 +43,7 @@
           </div>
         </ng-template>
         <ng-template let-value="value" ngx-datatable-cell-template>
-          {{value}}
+         <span class="{{col.porp === 'district' ? 'labelchange' : ''}}" (click)="col.porp === 'download_url' ? downloadUrl(value): ''" >{{value}}</span> 
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>

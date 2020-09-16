@@ -49,6 +49,21 @@ describe('SbDatatableComponent', () => {
     component.onColumnFilter('state', 'andhra');
     expect(component.filterDataTable).toHaveBeenCalled();
   });
+
+  
+  it('should call onColumnFilter', () => {
+    component.listFilter = {'state': 'andhra'}
+    spyOn(component, 'filterDataTable').and.stub();
+    component.onColumnFilter('state', '');
+    expect(component.filterDataTable).toHaveBeenCalled();
+  });
+
+  it('should call filterDataTable', () => {
+    component.data = TableData.responseData;
+    component.listFilter = {'state': 'andhra', 'district': '', 'noofEnrollments': null}
+    component.filterDataTable();
+    // expect(component.filterDataTable).toHaveBeenCalled();
+  });
   
   // it('should call search with search fields', () => {
   //   component.searchFields = TableData.searchFields;

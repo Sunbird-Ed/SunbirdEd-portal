@@ -126,41 +126,41 @@ module.exports = function (app) {
         })
     );
 
-  app.get('/report/read/:tag/:requestId', async (req, res) => {
-    const tag = req.params.tag;
-    const requestId = req.params.requestId;
-    var options = {
-      method: CONSTANTS.HTTP.METHOD.GET,
-      'url': sunbird_device_api + '/data/' + CONSTANTS.API_VERSION.V3 + '/job/request/read/test-tag/A09115FCBEC94CE6ACEB4D9BBFDBCBCF',
-      'headers': {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + PORTAL_API_AUTH_TOKEN,
-        'X-Channel-ID': 'in.ekstep', // should be dynamic
-      }
-    };
-    try {
-      const responseData = await sendRequest(options);
-      res.status(httpSatusCode.OK).send(parseJson(responseData))
-    } catch (e) {
-      logger.error({msg: 'reportRoutes:fetching report details errored', errorMessage: e.message, error: e});
-      res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
-        "id": "api.report.details",
-        "ver": CONSTANTS.API_VERSION.V3,
-        "ts": new Date(),
-        "params": {
-          "resmsgid": uuidv1(),
-          "msgid": uuidv1(),
-          "err": "INTERNAL_SERVER_ERROR",
-          "status": "INTERNAL_SERVER_ERROR",
-          "errmsg": e.message
-        },
-        "responseCode": "INTERNAL_SERVER_ERROR",
-        result: {
-          error: e
+    app.get('/report/job/request/read/:tag/:requestId', async (req, res) => {
+      const tag = req.params.tag;
+      const requestId = req.params.requestId;
+      var options = {
+        method: CONSTANTS.HTTP.METHOD.GET,
+        'url': sunbird_device_api + '/data/' + CONSTANTS.API_VERSION.V3 + '/job/request/read/test-tag/A09115FCBEC94CE6ACEB4D9BBFDBCBCF',
+        'headers': {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI4OTU4MzIyNzkyMTE0MWJiYWE0MjA4ZTBkMjE3YmU0ZiJ9.t2OPiAMuongqwSQfdJAsokgt2Eur5t7RchNZmWOwNTg',//PORTAL_API_AUTH_TOKEN,
+          'X-Channel-ID': 'in.ekstep', // should be dynamic
         }
-      });
-    }
-  });
+      };
+      try {
+        const responseData = await sendRequest(options);
+        res.status(httpSatusCode.OK).send(parseJson(responseData))
+      } catch (e) {
+        logger.error({msg: 'reportRoutes:fetching report details errored', errorMessage: e.message, error: e});
+        res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
+          "id": "api.report.details",
+          "ver": CONSTANTS.API_VERSION.V3,
+          "ts": new Date(),
+          "params": {
+            "resmsgid": uuidv1(),
+            "msgid": uuidv1(),
+            "err": "INTERNAL_SERVER_ERROR",
+            "status": "INTERNAL_SERVER_ERROR",
+            "errmsg": e.message
+          },
+          "responseCode": "INTERNAL_SERVER_ERROR",
+          result: {
+            error: e
+          }
+        });
+      }
+    });
 
   app.get('/report/job/list/:tag', async (req, res) => {
     let errType;
