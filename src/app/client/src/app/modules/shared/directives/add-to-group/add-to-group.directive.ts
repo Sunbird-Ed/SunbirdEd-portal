@@ -14,7 +14,10 @@ import { TelemetryService } from '@sunbird/telemetry';
 
 // tslint:disable-next-line:only-arrow-functions
 export function csGroupServiceFactory() {
-  return CsModule.instance.groupService;
+  if(CsModule.instance.isInitialised){
+    return CsModule.instance.groupService;
+  }
+  return undefined;
 }
 
 @Directive({
@@ -56,14 +59,17 @@ export class AddToGroupDirective implements OnInit {
   }
 
   addActivityToGroup() {
-    this.sendInteractData();
+    this.sendInteractData('add-to-group-button', {activities_count:
+      (_.get(this.groupAddableBlocData, 'params.groupData.activities')).length});
     const isActivityAdded = _.find(_.get(this.groupAddableBlocData, 'params.groupData.activities'), {id: this.identifier});
     if ( _.isEmpty(isActivityAdded)) {
       const request = {
         activities: [{ id: this.identifier, type: _.get(this.groupAddableBlocData, 'params.contentType') }]
       };
-      this.csGroupService.addActivities(_.get(this.groupAddableBlocData, 'groupId'), request).subscribe(response => {
+        this.csGroupService.addActivities(_.get(this.groupAddableBlocData, 'groupId'), request).subscribe(response => {
         this.goBack();
+        _.get(response, 'error.activities[0].errorCode') === 'EXCEEDED_ACTIVITY_MAX_LIMIT' ?
+        this.showErrorMsg(this.resourceService.messages.groups.emsg.m003) :
         this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
       }, error => {
         console.error('Error while adding activity to the group', error);
@@ -72,12 +78,12 @@ export class AddToGroupDirective implements OnInit {
       });
     } else {
       this.goBack();
-      isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
-      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
+      isActivityAdded ? this.showErrorMsg(this.resourceService.messages.emsg.activityAddedToGroup) :
+      this.showErrorMsg(this.resourceService.messages.emsg.noAdminRole);
     }
   }
 
-  sendInteractData() {
+  sendInteractData(id, extra?) {
     const data = {
       context: {
         env: 'groups',
@@ -87,13 +93,20 @@ export class AddToGroupDirective implements OnInit {
         }]
       },
       edata: {
-        id: 'add-to-group-button',
+        id: id,
         type: 'CLICK',
         pageid: this.pageId
       }
     };
+    if (extra) {
+      data.edata['extra'] = extra;
+    }
 
     this.telemetryService.interact(data);
+  }
+
+  showErrorMsg(msg) {
+    this.toasterService.error(msg);
   }
 
   goBack() {

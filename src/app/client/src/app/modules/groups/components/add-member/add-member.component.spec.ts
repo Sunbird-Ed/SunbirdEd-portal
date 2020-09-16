@@ -23,6 +23,11 @@ describe('AddMemberComponent', () => {
   const resourceBundle = {
     instance: 'DEV',
     messages: {
+      groups: {
+        emsg: {
+          m002: 'You have exceeded the maximum number of members that can be added to the group',
+        },
+      },
       emsg: {
         m007: 'Member is already existing',
         m006: 'Unable to add {name} to group',
@@ -172,11 +177,21 @@ describe('AddMemberComponent', () => {
 
   it('should throw error while adding member to group id there is error {}', () => {
     component.membersList = [];
-    spyOn(component['groupsService'], 'addMemberById').and.returnValue(of ({errors: ['2']}));
+    const response = {
+      error: {
+      members: [
+        {
+          errorMessage: 'Exceeded the activity max size limit',
+          errorCode: 'EXCEEDED_MEMBER_MAX_LIMIT'
+        }
+      ]
+    }
+    };
+    spyOn(component['groupsService'], 'addMemberById').and.returnValue(of (response));
     spyOn(component, 'showErrorMsg');
     component.addMemberToGroup();
     component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {
-      expect(data).toEqual({errors: ['2']});
+      expect(data).toEqual(response);
       expect(component.showErrorMsg).toHaveBeenCalledWith(data);
     });
   });
@@ -190,8 +205,6 @@ describe('AddMemberComponent', () => {
       expect(component.showErrorMsg).toHaveBeenCalled();
     });
   });
-
-
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
