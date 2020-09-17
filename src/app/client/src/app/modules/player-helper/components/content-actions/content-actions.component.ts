@@ -54,28 +54,22 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
+    this.contentUtilsServiceService.contentShareEvent.subscribe(() => {
+      this.shareContent(this.contentData);
+    });
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes.contentData);
     this.contentPrintable();
   }
-    onActionButtonClick(event, content) {
+  onActionButtonClick(event, content) {
       switch (event.data.name.toUpperCase()) {
         case 'RATE':
           this.contentRatingModal = true;
           this.logTelemetry('rate-content', content);
           break;
         case 'SHARE':
-          this.sharelinkModal = true;
-          const param = {
-            identifier: _.get(content, 'identifier'),
-            type: _.get(content, 'contentType'),
-          };
-          this.setTelemetryShareData(param);
-          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
-          this.logTelemetry('share-content', content);
+          this.shareContent(content);
           break;
         case 'PRINT':
           this.printPdf(content);
@@ -86,7 +80,21 @@ export class ContentActionsComponent implements OnInit, OnChanges {
           this.logTelemetry('fullscreen-content', content);
           break;
       }
-    }
+  }
+
+  shareContent(content) {
+    this.sharelinkModal = true;
+          const param = {
+            identifier: _.get(content, 'identifier'),
+            type: _.get(content, 'contentType'),
+          };
+          this.setTelemetryShareData(param);
+          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+          this.logTelemetry('share-content', content);
+  }
+
   printPdf(content: any) {
     const pdfUrl = _.get(content, 'itemSetPreviewUrl');
     window.open(pdfUrl, '_blank');

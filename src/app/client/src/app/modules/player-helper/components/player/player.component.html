@@ -30,7 +30,7 @@
     </div>
   </div>
     <!-- <div > -->
-      <div id="pdfPlayer" [ngClass]="{'content-full-video': isFullScreenView}">
+      <div id="pdfPlayer" class="aspectratio" data-ratio="16:9" [ngClass]="{'content-full-video': isFullScreenView}">
         <sunbird-pdf-player 
         [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"
         (telemetryEvent)="generateContentReadEvent($event, true)"

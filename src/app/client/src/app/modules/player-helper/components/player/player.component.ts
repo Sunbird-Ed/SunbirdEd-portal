@@ -4,7 +4,7 @@ OnChanges, HostListener, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -64,7 +64,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
+    , public contentUtilsServiceService: ContentUtilsServiceService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -230,7 +231,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   loadNewPlayer() {
     this.showNewPlayer = true;
-    $('#pdfPlayer').css('height', $('.content-player').height() + 'px');
   }
   /**
    * Adjust player height after load
@@ -252,7 +252,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
   pdfEventHandler(event) {
-    console.log(event);
+    if (event.edata.type === 'SHARE') {
+      this.contentUtilsServiceService.contentShareEvent.emit();
+    }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
