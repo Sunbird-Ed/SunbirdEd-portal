@@ -11,7 +11,7 @@ export class FaqService {
 
   public getFaqJSON() {
     const systemSetting = {
-      url: this.config.urlConFig.URLS.SYSTEM_SETTING.SSO_COURSE_SECTION,
+      url: this.config.urlConFig.URLS.SYSTEM_SETTING.FAQ_URL,
     };
     return this.learnerService.get(systemSetting);
   }

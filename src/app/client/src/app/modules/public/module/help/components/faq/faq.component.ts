@@ -32,20 +32,9 @@ export class FaqComponent implements OnInit {
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
     private router: Router, private telemetryService: TelemetryService, private faqService: FaqService) {
-    this.faqBaseUrl = 'https://ntpstagingall.blob.core.windows.net/public/faq/resources/res';
   }
 
   ngOnInit() {
-
-    this.faqService.getFaqJSON().
-    pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      console.log('=========', data)
-    });
-
-
-
-
-
     this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
@@ -53,11 +42,17 @@ export class FaqComponent implements OnInit {
       this.tenantFooter = data;
     });
     this.defaultFooterConfig = {
-      helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
-      helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
+      helpCenterLink: `/help/getting-started/explore-${_.lowerCase(this.instance)}/index.html`,
+      helpDeskEmail: `support@${_.lowerCase(this.instance)}-ncte.freshdesk.com`
     };
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
-    this.getFaqJson();
+
+    this.faqService.getFaqJSON()
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.faqBaseUrl = _.get(data, 'result.response.value');
+        this.getFaqJson();
+      });
+
     this.utilService.languageChange.subscribe((langData) => {
       this.showLoader = true;
       this.selectedLanguage = _.get(langData, 'value') || 'en';
