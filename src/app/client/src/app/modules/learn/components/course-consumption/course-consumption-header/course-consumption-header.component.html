@@ -70,9 +70,10 @@
 
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
 
-        <div class="certified-course__btn" *ngIf="showAddGroup">
+        <div class="certified-course__btn">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-            (click)="addActivityToGroup(); this.logTelemetry('add-to-group', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
+          {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div *ngIf="!showAddGroup && isTrackable">

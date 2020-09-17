@@ -86,7 +86,11 @@
     </dl>
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl.contentType}}</dt>
-        <dd *ngIf="metadata.resourceType">{{metadata.contentType}}</dd>
+        <dd *ngIf="metadata.resourceType">{{metadata.primaryCategory}}</dd>
+    </dl>
+    <dl class="sb-meta-data">
+        <dt>{{resourceService.frmelmnts.lbl.additionalCategory}}</dt>
+        <dd *ngIf="metadata.additionalCategories">{{metadata.additionalCategories}}</dd>
     </dl>
     <dl class="sb-meta-data" *ngIf="metadata.status === 'Flagged' && metadata.flagReasons">
         <dt>{{resourceService.frmelmnts.lbl.flaggedreason}}</dt>

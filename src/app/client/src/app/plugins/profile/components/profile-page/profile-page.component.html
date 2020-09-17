@@ -306,14 +306,14 @@
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="list-items__item" *ngIf="data.certificates && data.certificates.length > 0">
+              <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.certificates)">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
@@ -339,17 +339,17 @@
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
-          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
             <div class="list-items" *ngIf="data.issuingAuthority">
               <label class="list-items__item mr-auto mb-0 text-left">{{data.certName}}</label>
               <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
-              <div class="list-items__item" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
+              <div class="list-items__item" *ngIf="data?.certificates?.length">
                 <button appTelemetryInteract [telemetryInteractEdata]="downloadOthersCertificateEData"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
-              <div class="list-items__item list-items__bar computer only" *ngIf="!data.pdfUrls || (data.pdfUrls && data.pdfUrls.length === 0)">
+              <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length">
                   <span class="bar"></span>
                   <span class="bar"></span>
                 </div>
@@ -357,12 +357,12 @@
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true, otherCertificates.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
+              (click)="toggleOtherCertific(true)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleCourse(false, otherCertificates.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+              (click)="toggleOtherCertific(false)" *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
         </div>

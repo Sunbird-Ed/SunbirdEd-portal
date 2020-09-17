@@ -61,6 +61,7 @@ export class UtilService {
       hoverData: data.hoverData,
       board: data.board || '',
       identifier: data.identifier,
+      mimeType: data.mimeType
 
     };
     if (data.desktopAppMetadata) {
@@ -309,4 +310,38 @@ export class UtilService {
   redirect(redirectUrl) {
     window.location.href = redirectUrl;
   }
+
+  processData(sections, keys) {
+    const facetObj = {};
+    _.forEach(sections, (section) => {
+      if (section && section.facets) {
+        _.forEach(section.facets, (facet) => {
+          if (_.indexOf(keys, facet.name) > -1) {
+            if (facetObj[facet.name]) {
+              facetObj[facet.name].push(...facet.values);
+            } else {
+              facetObj[facet.name] = [];
+              facetObj[facet.name].push(...facet.values);
+            }
+          }
+        });
+      }
+    });
+    return facetObj;
+  }
+
+  removeDuplicateData(data, key) {
+    return _.uniqBy(data, key);
+  }
+
+  removeDuplicate(dataToProcess) {
+    const processedData = {};
+    let uniqueKey: string;
+    _.forEach(dataToProcess, (data, key) => {
+      uniqueKey = key === 'channel' ? 'identifier' : 'name';
+      processedData[key] = _.uniqBy(data, uniqueKey);
+    });
+    return processedData;
+  }
+
 }

@@ -18,7 +18,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('PublicCourseComponent', () => {
   let component: PublicCourseComponent;
   let fixture: ComponentFixture<PublicCourseComponent>;
-  let toasterService, formService, pageApiService, orgDetailsService, cacheService;
+  let toasterService, formService, pageApiService, orgDetailsService, cacheService, utilService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -67,6 +67,7 @@ describe('PublicCourseComponent', () => {
     formService = TestBed.get(FormService);
     pageApiService = TestBed.get(PageApiService);
     orgDetailsService = TestBed.get(OrgDetailsService);
+    utilService = TestBed.get(UtilService);
     cacheService = TestBed.get(CacheService);
     activatedRouteStub = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
@@ -103,13 +104,31 @@ describe('PublicCourseComponent', () => {
     });
   });
   it('should emit filter data when getFilters is called with data', () => {
+    component.facets = Response.facets;
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
+  it('should set selected tab filters', () => {
+    component.facets = Response.facets;
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters({
+      'status': 'FETCHED', 'filters': {
+        'selectedTab': 'course', 'channel': [
+          'Chhattisgarh']
+      }
+    });
+    expect(component.selectedFilters).toEqual({
+      'selectedTab': 'course',
+      'channel': [
+        'Chhattisgarh'
+      ]
+    });
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+  });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([]);
+    component.getFilters({filters: []});
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
@@ -131,6 +150,9 @@ describe('PublicCourseComponent', () => {
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
@@ -141,6 +163,9 @@ describe('PublicCourseComponent', () => {
   });
   it('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
     sendFormApi = false;
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     component.ngOnInit();
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
@@ -204,7 +229,7 @@ describe('PublicCourseComponent', () => {
 
   it('should call play content method', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playExploreCourse').and.callThrough();
+    spyOn(publicPlayerService, 'playContent').and.callThrough();
     const event = {
       data: {
         metaData: {
@@ -213,7 +238,7 @@ describe('PublicCourseComponent', () => {
       }
     };
     component.playContent(event);
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
 
   it('should generate visit telemetry impression event', () => {
@@ -238,8 +263,9 @@ describe('PublicCourseComponent', () => {
     const option = {
       source: 'web', name: 'Course', organisationId: '*',
       filters: { sort_by: 'name', sortType: 'desc', audience: [ 'Teacher' ] },
-      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType' ],
-      params: { orgdetails: 'orgName,email' }
+      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable' ],
+      params: { orgdetails: 'orgName,email' },
+      facets: [ 'channel', 'gradeLevel', 'subject', 'medium' ]
     };
     expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
   });

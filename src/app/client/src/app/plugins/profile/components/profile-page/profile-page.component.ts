@@ -42,9 +42,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  showMoreCertificates = true;
   isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
   userSubscription: Subscription;
   orgDetails: any = [];
@@ -65,6 +67,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
+  otherCertificatesCounts: number;
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
   phoneObj: { idType: string, provider: string, id: string };
@@ -106,7 +109,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
         this.getContribution();
-        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
         /* istanbul ignore else */
@@ -218,10 +221,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
  *It will fetch certificates of user, other than courses
  */
   getOtherCertificates(userId, certType) {
-    this.certRegService.fetchCertificates(userId, certType).subscribe((data) => {
+    const requestParam = { userId,  certType };
+    if (this.otherCertificatesCounts) {
+      requestParam['limit'] = this.otherCertificatesCounts;
+    }
+    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
+      this.otherCertificatesCounts = _.get(data, 'result.response.count');
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
-          pdfUrls: [{
+          certificates: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
@@ -232,20 +240,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  downloadCert(certificates) {
-    _.forEach(certificates, (value, key) => {
-      if (key === 0) {
-        if (_.get(value, 'identifier')) {
-          this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
-            this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
-          }, error => {
-            this.downloadPdfCertificate(value);
-          });
-         } else {
-          this.downloadPdfCertificate(value);
-        }
+  downloadCert(course) {
+    // Check for V2
+    if (_.get(course, 'issuedCertificates.length')) {
+      const certificateInfo = course.issuedCertificates[0];
+      if (_.get(certificateInfo, 'identifier')) {
+        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
+          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          }
+        }, error => {
+          this.downloadPdfCertificate(certificateInfo);
+        });
+      } else {
+        this.downloadPdfCertificate(certificateInfo);
       }
-    });
+    } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
+      this.downloadPdfCertificate(course.certificates[0]);
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
+    }
   }
 
   downloadPdfCertificate(value) {
@@ -266,6 +280,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
     }
   }
 
@@ -443,6 +459,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.telemetryService.interact(interactData);
     this.router.navigate([`learn/course/${courseId}`]);
+  }
+
+  toggleOtherCertific(showMore) {
+    if (showMore) {
+      if (this.otherCertificates.length !== this.otherCertificatesCounts) {
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
+      }
+      this.otherCertificateLimit = this.otherCertificatesCounts;
+      this.showMoreCertificates = false;
+    } else {
+      this.otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+      this.showMoreCertificates = true;
+    }
   }
 
   /**

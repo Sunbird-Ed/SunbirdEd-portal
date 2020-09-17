@@ -17,7 +17,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('LearnPageComponent', () => {
   let component: LearnPageComponent;
   let fixture: ComponentFixture<LearnPageComponent>;
-  let toasterService, formService, pageApiService, learnerService, cacheService, coursesService, frameworkService, orgDetailsService;
+  let toasterService, formService, pageApiService, learnerService, cacheService, utilService, coursesService,
+    frameworkService, orgDetailsService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendEnrolledCourses = true;
   let sendPageApi = true;
@@ -27,15 +28,29 @@ describe('LearnPageComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url = '/learn';
   }
+
   const resourceBundle = {
-    'messages': {
-      'fmsg': {},
-      'emsg': {},
-      'stmsg': {}
+    messages: {
+      fmsg: {},
+      emsg: {},
+      stmsg: {}
     },
-    'frmelmnts': {
-      'lbl': {
-        'mytrainings': 'My Trainings'
+    frmelmnts: {
+      lbl: {
+        mytrainings: 'My Trainings',
+        boards: 'boards',
+        selectBoard: 'selectBoard',
+        medium: 'medium',
+        selectMedium: 'selectMedium',
+        class: 'class',
+        selectClass: 'selectClass',
+        subject: 'subject',
+        selectSubject: 'selectSubject',
+        publisher: 'publisher',
+        selectPublisher: 'selectPublisher',
+        contentType: 'contentType',
+        selectContentType: 'selectContentType',
+        orgname: 'orgname'
       }
     },
     languageSelected$: of({})
@@ -73,6 +88,7 @@ describe('LearnPageComponent', () => {
     pageApiService = TestBed.get(PageApiService);
     learnerService = TestBed.get(LearnerService);
     cacheService = TestBed.get(CacheService);
+    utilService = TestBed.get(UtilService);
     coursesService = TestBed.get(CoursesService);
     frameworkService = TestBed.get(FrameworkService);
     activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -105,6 +121,7 @@ describe('LearnPageComponent', () => {
     spyOn(toasterService, 'error').and.callFake(() => {});
   });
   it('should emit filter data when getFilters is called with data', () => {
+    component.facets = Response.facets;
     coursesService.initialize();
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -146,6 +163,9 @@ describe('LearnPageComponent', () => {
     expect(component.enrolledSection.contents.length).toEqual(0);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -156,6 +176,9 @@ describe('LearnPageComponent', () => {
     expect(component.carouselMasterData.length).toEqual(1);
   }));
   it('should not throw error if fetching frameWork from form service fails', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return of(Response.orgSearch);
+    });
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
@@ -164,6 +187,20 @@ describe('LearnPageComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.carouselMasterData.length).toEqual(1);
   }));
+
+  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
+    spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+      return throwError(Response.orgSearch);
+    });
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.pageSections).toEqual([]);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.carouselMasterData.length).toEqual(0);
+  }));
+
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', fakeAsync(() => {
     sendPageApi = false;
     coursesService.initialize();
@@ -258,6 +295,38 @@ it('should redo layout on render', () => {
     expect(pageApiService.getPageData).toHaveBeenCalledWith(
       {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {'audience': ['Teacher']}}
       );
+  });
+  it('should get processed facets data', () => {
+    const facetsData = component.updateFacetsData(Response.facetsList);
+    expect(facetsData).toEqual(Response.updatedFacetsList);
+  });
+
+  it('should redo layout if config not present', () => {
+    component.layoutConfiguration = null;
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'redoLayoutCSS').and.returnValue('redoLayoutCSS');
+    component.redoLayout();
+    expect(component.FIRST_PANEL_LAYOUT).toEqual('redoLayoutCSS');
+    expect(component.SECOND_PANEL_LAYOUT).toEqual('redoLayoutCSS');
+  });
+
+  it('should update channels on getting the filters', () => {
+    component.facets = Response.facets;
+    spyOn(component.dataDrivenFilterEvent, 'emit');
+    component.getFilters(Response.getFiltersInput);
+    expect(component.selectedFilters).toEqual(Response.getFiltersOutput);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+  });
+
+  it('should set trackable data in metadata of enrolledCourse', () => {
+    Response.enrolledCourses[0].content['trackable'] =  {
+      'enable': 'Yes',
+      'autoBatch': 'Yes'
+    };
+    coursesService.initialize();
+    component.ngOnInit();
+    component.redoLayout();
+    expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
   });
 
 });
