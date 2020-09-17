@@ -119,7 +119,8 @@
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
       "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
       "TENANT_CONFIG": "data/v1/system/settings/get",
-      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
+      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha",
+      "FAQ_URL": "data/v1/system/settings/get/portalFaqUrl"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"

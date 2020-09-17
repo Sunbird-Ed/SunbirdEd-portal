@@ -9,6 +9,7 @@ import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { FaqService } from '../../services/faq/faq.service';
 
 @Component({
   selector: 'app-faq',
@@ -30,11 +31,21 @@ export class FaqComponent implements OnInit {
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
-    private router: Router, private telemetryService: TelemetryService) {
+    private router: Router, private telemetryService: TelemetryService, private faqService: FaqService) {
     this.faqBaseUrl = 'https://ntpstagingall.blob.core.windows.net/public/faq/resources/res';
   }
 
   ngOnInit() {
+
+    this.faqService.getFaqJSON().
+    pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      console.log('=========', data)
+    });
+
+
+
+
+
     this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
