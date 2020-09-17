@@ -80,7 +80,8 @@ describe('BatchDetailsComponent', () => {
     const searchParams: any = {
       filters: {
         courseId: component.courseId,
-        enrollmentType: 'open'
+        enrollmentType: 'open',
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -127,7 +128,8 @@ describe('BatchDetailsComponent', () => {
     const searchParams: any = {
       filters: {
         courseId: component.courseId,
-        createdBy: component.userService.userid
+        createdBy: component.userService.userid,
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -310,9 +312,32 @@ describe('BatchDetailsComponent', () => {
     component.getJoinCourseBatchDetails();
     expect(component.enrollBatch).toHaveBeenCalledWith(batchList);
   });
+
+  it('should disable "createbatch" for ongoing batchList', () => {
+    component.ongoingAndUpcomingBatchList = allBatchDetails.result.response.content;
+    component.batchStatus = 1;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(2);
+    expect(component.hideCreateBatch).toEqual(true);
+  });
+
+  it('should disable "createbatch" for upcoming batchList', () => {
+    component.ongoingAndUpcomingBatchList = allBatchDetails.result.response.content;
+    component.batchStatus = 0;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(1);
+  });
+
+  it('should enable "createbatch"  batchList.length =0', () => {
+    component.ongoingAndUpcomingBatchList = [];
+    component.batchStatus = 0;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(0);
+  });
+
   it('should call enrollBatch ', () => {
     const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(()=>{});
+    spyOn(toasterService, 'error').and.callFake(() => {});
     const batch = {
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],

@@ -54,7 +54,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   viewBatch = false;
   hideCreateBatch = false;
   allowCertCreation = false;
-  ongoingAndUpcomingBatchList: [];
+  ongoingAndUpcomingBatchList = [];
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -107,7 +107,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = [];
     const searchParams: any = {
       filters: {
-        courseId: this.courseId
+        courseId: this.courseId,
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -125,7 +126,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
        .subscribe((data) => {
           this.ongoingAndUpcomingBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
           this.getSelectedBatches();
-          console.log('this.batchList = ', this.batchList);
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
            } else {
@@ -254,7 +254,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const currentdate = new Date();
     if (currentdate < batchStartDate) {
       const batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
-      this.toasterService.error(batchMessage)
+      this.toasterService.error(batchMessage);
     } else {
       this.courseBatchService.setEnrollToBatchDetails(batch);
       this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
