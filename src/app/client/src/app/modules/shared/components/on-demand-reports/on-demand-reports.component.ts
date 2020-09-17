@@ -36,13 +36,15 @@ export class OnDemandReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-      if(data){
-        this.onDemandReportData = _.get(data, 'result.jobs');
-      }
-    },error => {
-      // error message
-    });
+    if(this.batchId) {
+      this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
+        if(data){
+          this.onDemandReportData = _.get(data, 'result.jobs');
+        }
+      },error => {
+        // error message
+      });
+    }
   }
 
   reportChanged(ev) {

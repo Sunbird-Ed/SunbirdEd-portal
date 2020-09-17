@@ -215,7 +215,7 @@
         </div>
       </div>
 
-      <sui-tabset class="batch-report-tabs">
+      <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
         <div class="ui pointing secondary menu">
             <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
             <a class="item" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
