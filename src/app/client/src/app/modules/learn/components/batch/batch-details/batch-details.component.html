@@ -132,7 +132,7 @@
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
-            [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+            [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">

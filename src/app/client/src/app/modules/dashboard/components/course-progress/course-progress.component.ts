@@ -4,7 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService, IPagination
@@ -183,7 +183,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
+    public navigationhelperService: NavigationHelperService, private usageService: UsageService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;

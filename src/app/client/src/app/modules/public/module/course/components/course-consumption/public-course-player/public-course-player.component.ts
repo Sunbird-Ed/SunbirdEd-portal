@@ -10,7 +10,7 @@ import {
 import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
 
@@ -53,7 +53,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
     public navigationhelperService: NavigationHelperService,
     private userService: UserService,
     public telemetryService: TelemetryService,
-    private contentUtilsServiceService: ContentUtilsServiceService
+    private contentUtilsServiceService: ContentUtilsServiceService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
@@ -70,7 +71,14 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
         this.isExpandedAll = this.courseHierarchy.children && this.courseHierarchy.children.length === 1 ? true : false;
         this.parseChildContent();
         this.collectionTreeNodes = { data: this.courseHierarchy };
+        this.getGeneraliseResourceBundle();
       });
+  }
+
+  getGeneraliseResourceBundle() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.generaliseLabelService.initialize(this.courseHierarchy, item.value);
+    });
   }
 
   private parseChildContent() {
