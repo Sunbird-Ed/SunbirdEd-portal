@@ -14,7 +14,10 @@ import { TelemetryService } from '@sunbird/telemetry';
 
 // tslint:disable-next-line:only-arrow-functions
 export function csGroupServiceFactory() {
-  return CsModule.instance.groupService;
+  if(CsModule.instance.isInitialised){
+    return CsModule.instance.groupService;
+  }
+  return undefined;
 }
 
 @Directive({
