@@ -9,7 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
-import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch } from './batch-details.component.data';
+import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch, courseHierarchy } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 
@@ -79,7 +79,6 @@ describe('BatchDetailsComponent', () => {
     component.ngOnInit();
     const searchParams: any = {
       filters: {
-        status: component.batchStatus.toString(),
         courseId: component.courseId,
         enrollmentType: 'open'
       },
@@ -127,7 +126,6 @@ describe('BatchDetailsComponent', () => {
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     const searchParams: any = {
       filters: {
-        status: component.batchStatus.toString(),
         courseId: component.courseId,
         createdBy: component.userService.userid
       },
@@ -188,10 +186,12 @@ describe('BatchDetailsComponent', () => {
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(true);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}};
     component.showCreateBatch();
     expect(component.isTrackable).toBe(true);
     expect(component.allowBatchCreation).toBe(true);
+    expect(component.allowCertCreation).toBe(true);
     expect(component['courseConsumptionService'].canViewDashboard).
     toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}});
   });
@@ -200,11 +200,32 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}};
     spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
     component.showCreateBatch();
     expect(component.allowBatchCreation).toBe(false);
     expect(component.isTrackable).toBe(false);
+    expect(component.allowCertCreation).toBe(false);
     expect(component['courseConsumptionService'].canCreateBatch).
     toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}});
+  });
+
+  it(`should disable "allowCertCreation"`, () => {
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'} } ;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
+    component.showCreateBatch();
+    expect(component.isTrackable).toBe(true);
+    expect(component.allowCertCreation).toBe(false);
+    expect(component.viewBatch).toBe(true);
+    expect(component['courseConsumptionService'].canViewDashboard).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+    expect(component['courseConsumptionService'].isTrackableCollection).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+
+    expect(component['courseConsumptionService'].canAddCertificates).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
@@ -213,9 +234,11 @@ describe('BatchDetailsComponent', () => {
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
     spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
     expect(component.showCreateBatch()).toBeFalsy();
+    expect(component.allowCertCreation).toBe(false);
   });
 
   it('should call getJoinCourseBatchDetails and get success', () => {
@@ -278,6 +301,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.viewBatch).toBeFalsy();
   });
 
+
   it('should call getJoinCourseBatchDetails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const batchList = allBatchDetailsWithFeactureBatch.result.response.content[0];
@@ -290,13 +314,13 @@ describe('BatchDetailsComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(()=>{});
     const batch = {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-10-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-10-25',
       status: 1
     };
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
