@@ -97,16 +97,25 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   }
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
-    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
+      return combineLatest(
+      this.tenantService.tenantData$, 
+      this.getCollectionDetails(),
+      this.editorService.getOwnershipType(),  // failing
+      this.lockContent(),  // lock failed
+      this.frameworkService.frameworkData$,
+      this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$, this.userService.userOrgDetails$).
+      return combineLatest(
+        this.tenantService.tenantData$,
+        this.getCollectionDetails(),
+        this.editorService.getOwnershipType(),
+        this.frameworkService.frameworkData$,
+        this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
@@ -123,7 +132,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       resourceType : 'Content',
       resourceInfo : JSON.stringify(contentInfo),
       creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier
+      createdBy : this.userService.userProfile.identifier,
+      // isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;

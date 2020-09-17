@@ -846,6 +846,9 @@
       "ExperientialResource",
       "eTextBook"
     ],
+    "adminHandledContentType" :[
+      "TextBook"
+    ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
       "application/vnd.ekstep.content-collection"
@@ -1225,6 +1228,11 @@
     "filterType": "allmycontent",
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
+  },
+  "alltextbooks": {
+    "filterType": "alltextbooks",
+    "inPageredirectUrl": "workspace/content/alltextbooks/1",
+    "searchPageredirectUrl": "workspace/content/alltextbooks/1"
   },
   "draft": {
     "filterType": "draft",

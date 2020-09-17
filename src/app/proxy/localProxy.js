@@ -4,6 +4,7 @@ const learnerBaseUrl = envHelper.LEARNER_SERVICE_UPSTREAM_URL
 const contentBaseUrl = envHelper.CONTENT_SERVICE_UPSTREAM_URL
 const csLocalProxyURI = '/localproxy/content/'
 const lsLocalProxyURI = '/localproxy/learner/'
+
 const reqDataLimitOfContentUpload = '30mb'
 
 /**
@@ -125,6 +126,7 @@ module.exports = function (app) {
       }
     }
   }))
+
 
   app.all(lsLocalProxyURI + '*', function (req, res, next) {
     var urlAfterBU = req.url.split(lsLocalProxyURI)[1]

@@ -17,6 +17,7 @@ const ROLE = {
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
   COURSE_MENTOR: 'COURSE_MENTOR',
+  ORG_ADMIN: 'ORG_ADMIN',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -537,6 +538,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR]
     },
+    '/system/v3/content/update/:do_id' : {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    }
 
   },
   URL_PATTERN: [
@@ -556,7 +561,8 @@ const API_LIST = {
     '/learner/user/v1/exists/email/:emailId',
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
-    '/learner/user/v2/exists/:key/:value'
+    '/learner/user/v2/exists/:key/:value',
+    '/system/v3/content/update/:do_id'
   ]
 };
 module.exports = API_LIST;

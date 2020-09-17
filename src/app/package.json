@@ -50,7 +50,7 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "scripts": {
-    "server": "gulp update:index:file && node server",
+    "server": "node server",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
@@ -82,6 +82,7 @@
     "@project-sunbird/program": "0.0.5",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "2.5.0",
+    "axios": "^0.20.0",
     "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",
@@ -106,6 +107,7 @@
     "mathjax-full": "3.0.0",
     "mobile-detect": "1.4.2",
     "multiparty": "^4.2.1",
+    "nodemon": "^2.0.4",
     "path-to-regexp": "^6.1.0",
     "properties": "1.2.1",
     "redis": "3.0.2",
