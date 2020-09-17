@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
-import { UtilService, ResourceService, LayoutService, NavigationHelperService } from '@sunbird/shared';
+import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { TenantService } from '@sunbird/core';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,7 +31,8 @@ export class FaqComponent implements OnInit {
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
-    private router: Router, private telemetryService: TelemetryService, private faqService: FaqService) {
+    private router: Router, private telemetryService: TelemetryService,
+    private faqService: FaqService, private toasterService: ToasterService) {
   }
 
   ngOnInit() {
@@ -51,6 +52,9 @@ export class FaqComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.faqBaseUrl = _.get(data, 'result.response.value');
         this.getFaqJson();
+      }, (err) => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
 
     this.utilService.languageChange.subscribe((langData) => {
@@ -87,11 +91,14 @@ export class FaqComponent implements OnInit {
 
   private getFaqJson() {
     this.faqList = undefined;
-    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`).subscribe(data => {
+    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
       this.faqList = data;
       this.showLoader = false;
-    }, err => {
+    }, (err) => {
       this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
