@@ -1,5 +1,5 @@
 <!-- Mobile browser player-->
-<div *ngIf="isMobileOrTab" >
+<div *ngIf="isMobileOrTab && !showNewPlayer" >
     <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
     [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" (click)="enablePlayer(false)">
     <img class="play-icon" src="assets/images/play_circle.svg">
@@ -10,7 +10,7 @@
   </div>
 </div>
 <!-- Portal player-->
-<div *ngIf="!isMobileOrTab">
+<div *ngIf="!isMobileOrTab && !showNewPlayer">
   <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
     <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
         <svg class="icon icon-svg--white">
@@ -20,6 +20,39 @@
   </div>
     <!-- <div > -->
     <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
+</div>
+<div *ngIf="!isMobileOrTab && showNewPlayer">
+  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
+    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
+        <svg class="icon icon-svg--white">
+          <use xlink:href="assets/images/sprite.svg#close-button"></use>
+        </svg>
+    </div>
+  </div>
+    <!-- <div > -->
+      <div id="pdfPlayer" [ngClass]="{'content-full-video': isFullScreenView}">
+        <sunbird-pdf-player 
+        [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"
+        (telemetryEvent)="generateContentReadEvent($event, true)"
+        ></sunbird-pdf-player>
+      </div>
+</div>
+
+<div *ngIf="isMobileOrTab && showNewPlayer">
+  <div class="d-flex flex-w-wrap sb-bg-color-white content-full-video">
+    <div class="video-close-btn" (click)="closeContentFullScreen()" >
+        <svg class="icon icon-svg--white">
+          <use xlink:href="assets/images/sprite.svg#close-button"></use>
+        </svg>
+    </div>
+  </div>
+    <!-- <div > -->
+      <div id="pdfPlayer" class="content-full-video">
+        <sunbird-pdf-player 
+        [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"
+        (telemetryEvent)="generateContentReadEvent($event, true)"
+        ></sunbird-pdf-player>
+      </div>
 </div>
 
     <!--Rating popup -->

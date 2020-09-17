@@ -9,7 +9,7 @@ const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { UserService } from '../../../core/services';
+import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
@@ -50,6 +50,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   playerOverlayImage: string;
   isFullScreenView = false;
   public unsubscribe = new Subject<void>();
+  public showNewPlayer = false;
 
   /**
  * Dom element reference of contentRatingModal
@@ -63,7 +64,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -193,6 +194,31 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
+    if (this.playerConfig.metadata.mimeType === 'application/pdf') {
+      const formReadInputParams = {
+        formType: 'content',
+        formAction: 'play',
+        contentType: 'pdf'
+      };
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (data: any) => {
+         if (_.get(data, 'version') === 2) {
+            this.loadNewPlayer();
+         } else {
+           this.loadOldPlayer();
+         }
+        },
+        (error) => {
+          this.loadNewPlayer();
+        }
+      );
+    } else {
+      this.loadOldPlayer();
+    }
+  }
+
+  loadOldPlayer() {
+    this.showNewPlayer = false;
     if (this.isMobileOrTab) {
       this.rotatePlayer();
     }
@@ -201,6 +227,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return;
     }
     this.loadDefaultPlayer();
+  }
+  loadNewPlayer() {
+    this.showNewPlayer = true;
+    $('#pdfPlayer').css('height', $('.content-player').height() + 'px');
   }
   /**
    * Adjust player height after load
@@ -221,8 +251,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreSubmitEvents.emit(event);
     }
   }
+  pdfEventHandler(event) {
+    console.log(event);
+  }
 
-  generateContentReadEvent(event: any) {
+  generateContentReadEvent(event: any, newPlayerEvent?) {
+    if (newPlayerEvent) {
+      event = { detail: {telemetryData: event}};
+    }
     const eid = event.detail.telemetryData.eid;
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
