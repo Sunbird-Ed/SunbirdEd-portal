@@ -161,12 +161,11 @@ getAllOpenBatches(contents) {
   }
 
   canViewDashboard(courseHierarchy) {
-    return (this.isTrackableCollection(courseHierarchy) &&
-    (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])));
+    return (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
   }
 
   canAddCertificates(courseHierarchy) {
-    return this.canCreateBatch(courseHierarchy);
+    return  this.canCreateBatch(courseHierarchy) && this.isTrackableCollection(courseHierarchy) && _.lowerCase(_.get(courseHierarchy, 'credentials.enabled')) === 'yes';
   }
 
   isTrackableCollection(collection: {trackable?: {enabled?: string}, contentType: string}) {
