@@ -1,0 +1,29 @@
+@import "mixins/mixins";
+
+:host::ng-deep {
+
+    .help-page {
+
+        &__content {
+            margin-top: calculateRem(24px);
+            .panel {
+                .panel-heading, .panel-interact, .panel-info {
+                    background: var(--white);
+                }
+                .panel-info {
+                    max-width: 100%;
+                    padding: calculateRem(16px);
+                }
+            }
+        }
+
+        &__visit-helpcenter {
+            background-color: var(--white);
+            .visit-helpcenter__text {
+                @include respond-below(sm) {
+                    flex-basis: 50%;
+                }
+            }
+        }
+    }
+}

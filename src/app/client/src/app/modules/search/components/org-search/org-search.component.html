@@ -20,7 +20,7 @@
 
       <div *ngIf="!showLoader && !noResult && config.appConfig.SEARCH.ORGANISATION.DOWNLOAD_BUTTON_VISIBILITY === 'TRUE'">
         <!-- <angular2csv class="ui right floated primary button" [data]="downloadOrganisation()" filename="Users" [options]="csvOptions" appTelemetryInteract [telemetryInteractEdata]="orgDownLoadIntractEdata">
-          {{resourceService.frmelmnts?.btn?.download}} TODO: use Blob object to generate csv file
+          {{resourceService.frmelmnts?.btn?.download | translate}} TODO: use Blob object to generate csv file
         </angular2csv> -->
       </div>
 
@@ -38,10 +38,10 @@
               <div class="ui label " *ngIf="org.orgType">Org Type:{{org.orgType}}</div>
               <div class="ui label " *ngIf="org.orgCode">org code:{{org.orgCode}}</div>
               <div class="ui label " *ngIf="org.isRootOrg">Root organisation</div>
-              <div class="ui label " *ngIf="org.status===0">{{resourceService.frmelmnts?.lbl?.inactive}}</div>
-              <div class="ui label " *ngIf="org.status===1">{{resourceService.frmelmnts?.lbl?.active}}</div>
-              <div class="ui label " *ngIf="org.status===2">{{resourceService.frmelmnts?.lbl?.blocked}}</div>
-              <div class="ui label " *ngIf="org.status===3">{{resourceService.frmelmnts?.lbl?.retired}}</div>
+              <div class="ui label " *ngIf="org.status===0">{{resourceService.frmelmnts?.lbl?.inactive | translate}}</div>
+              <div class="ui label " *ngIf="org.status===1">{{resourceService.frmelmnts?.lbl?.active | translate}}</div>
+              <div class="ui label " *ngIf="org.status===2">{{resourceService.frmelmnts?.lbl?.blocked | translate}}</div>
+              <div class="ui label " *ngIf="org.status===3">{{resourceService.frmelmnts?.lbl?.retired | translate}}</div>
             </div>
           </div>
         </div>

@@ -153,7 +153,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
   * To store deleteing content type
   */
-  private deletingContentType: string;
+  private contentMimeType: string;
 
   /**
    * To store modal object of first yes/No modal
@@ -309,7 +309,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     * This method launch the content editior
   */
   contentClick(param, content) {
-    this.deletingContentType = content.metaData.contentType;
+    this.contentMimeType = content.metaData.mimeType;
     if (param.action.eventName === 'delete') {
       this.currentContentId = param.data.metaData.identifier;
       const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
@@ -333,7 +333,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (['Course', 'TextBook', 'Collection', 'LessonPlan'].includes(this.deletingContentType)) {
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
       this.deleteContent(this.currentContentId);
       return;
     }

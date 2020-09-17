@@ -578,7 +578,75 @@ html[layout='joy'] {
     background: var(--sbt-compt-bg) !important;
   }
 
-  .cc-player__content-header {
+  .help-page {
+    width: calc(100% - 4%);
+    margin: 24px auto 0 auto;
+    .help-page__header {
+      border-radius: calculateRem(24px) !important;
+      width: 100%;
+      background: var(--sbt-compt-bg) !important;
+    }
+  
+
+    &__visit-helpcenter, &__content {
+      max-width: calculateRem(1280px);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    &__content {
+  
+      .panel {
+        overflow: hidden;
+        &:first-of-type {
+          border-radius: 24px 24px 0 0 !important;
+        }
+        &:last-of-type {
+          border-radius: 0 0 24px 24px !important;
+        }
+        .panel-heading {
+          background: var(--sbt-compt-bg);
+  
+          .panel-title {
+            font-size: var(--font-size-normal);
+          }
+
+          .panel-title-blue {
+            color: inherit;
+            font-weight: bold;
+          }
+  
+          .icon-svg {
+            .icon-svg--primary {
+              fill: var(--gray-800);
+            }
+          }
+        }
+        .panel-collapse {
+          background: var(--white);
+          .panel-interact {
+            .yes-clicked {
+             min-width: calculateRem(220px);
+            }
+          }
+          .panel-info {
+            .submit-button {
+              border-radius: calculateRem(24px);
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    &__visit-helpcenter {
+      background: var(--sbt-compt-bg);
+      border-radius: calculateRem(24px);
+    }
+  }
+
+
+  .cc-player__content-header, .help-page__header {
     width: calc(100% - 4%);
     margin: 0 auto;
     border-radius: 0px 0px var(--sbt-bradius-24) var(--sbt-bradius-24);
@@ -727,13 +795,13 @@ html[layout='joy'] {
     border-radius: 0px 0px var(--sbt-bradius-24) var(--sbt-bradius-24);
   }
 
-  .sbaccordion__panel-header .icon-svg, .sb-new-theme-accordion .chevron.icon{
+  .sbaccordion__panel-header .icon-svg, .help-page__content .panel-heading .icon-svg {
     background: var(--white);
     box-shadow: var(--sbt-box-shadow-3px);
     border-radius: 50%;
   }
 
-  .sbaccordion__panel-header .icon-svg--xs, .sb-new-theme-accordion .chevron.icon {
+  .sbaccordion__panel-header .icon-svg--xs, .help-page__content .panel-heading .icon-svg {
     width: calculateRem(24px);
     height: calculateRem(24px);
     padding: calculateRem(1px) calculateRem(4px) calculateRem(4px) calculateRem(4px);

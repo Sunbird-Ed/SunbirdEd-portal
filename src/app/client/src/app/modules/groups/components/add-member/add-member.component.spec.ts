@@ -208,7 +208,8 @@ describe('AddMemberComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup',
+    fakeActivatedRouteWithGroupId.snapshot, [], '123', undefined);
   });
 
   it('should load re-captcha when recaptcha is enable from system setting', () => {
