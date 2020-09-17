@@ -244,12 +244,13 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private fetchPageData() {
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
       }
       return value.length;
     });
+    filters = _.omit(filters, ['utm_source']);
     if (localStorage.getItem('userType')) {
       const userType = localStorage.getItem('userType');
       const userTypeMapping = this.configService.appConfig.userTypeMapping;
