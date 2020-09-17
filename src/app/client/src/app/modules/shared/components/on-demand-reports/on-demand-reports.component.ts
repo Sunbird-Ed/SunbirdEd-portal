@@ -36,6 +36,10 @@ export class OnDemandReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadReports();
+  }
+
+  loadReports() {
     if(this.batchId) {
       this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
         if(data){

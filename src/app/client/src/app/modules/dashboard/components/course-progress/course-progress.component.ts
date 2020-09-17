@@ -1,17 +1,18 @@
 import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
 
 import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay, tap } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { UserService, FormService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService, IPagination
+  NavigationHelperService, IPagination, OnDemandReportsComponent
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This component shows the course progress dashboard
  */
@@ -22,6 +23,10 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
+
+  @ViewChild(OnDemandReportsComponent)
+  private onDemandReports: OnDemandReportsComponent;
+
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -41,6 +46,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 */
   courseId: string;
   userDataSubscription: Subscription;
+
+  //TODO: We have to remove this & use currentBatch.id
   batchId: string;
   /**
 	 * This variable sets the user id
@@ -262,6 +269,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.currentBatch = batch;
+    this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
     this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
@@ -506,7 +514,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         });
     });
 
-
     this.fileName = 'State wise report';
     this.stateWiseReportDate = [
       {
@@ -576,6 +583,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.searchBatch();
     this.setInteractEventData();
+  }
+
+  /**
+   * Load on demand reports
+   */
+  loadOndemandReports() {
+    this.onDemandReports.loadReports();
   }
 
   ngAfterViewInit() {

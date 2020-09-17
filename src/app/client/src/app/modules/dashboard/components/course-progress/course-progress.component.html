@@ -218,7 +218,7 @@
       <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
         <div class="ui pointing secondary menu">
             <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
-            <a class="item" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+            <a class="item" (click)="loadOndemandReports()" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
         </div>
         <div class="ui segment state-report" suiTabContent="1">
          <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
