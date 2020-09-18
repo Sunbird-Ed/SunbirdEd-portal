@@ -335,9 +335,7 @@ describe('BatchDetailsComponent', () => {
     expect(component.batchList.length).toEqual(0);
   });
 
-  it('should call enrollBatch ', () => {
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(() => {});
+  it('should show message in popup while trying to join upcoming batch ', () => {
     const batch = {
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -350,7 +348,7 @@ describe('BatchDetailsComponent', () => {
     };
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
     component.enrollBatch(batch);
-    expect(toasterService.error).toHaveBeenCalledWith(message);
+    expect(component.showMessageModal).toBeTruthy();
   });
 
 });
