@@ -52,28 +52,7 @@
                   </sui-select>
                 </div>
               <!-- below needs to be done score card -->
-             
-              <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
-              <div class="d-flex ml-auto report-buttons" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
-                  <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16 download-report d-flex flex-ai-center"
-                  href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
-                  [telemetryInteractObject]="interactObject"
-                  [ngClass]="{'sb-btn-disabled': !scoreReportUpdatedOn}"
-                  [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                    class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
-                    <span class="info-outline-img ml-8" suiPopup popupText="{{scoreReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"></span>
-                </button>
-                <div class="report-buttons__divider"></div>
-                <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-report d-flex flex-ai-center"
-                  href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
-                  [telemetryInteractObject]="interactObject"
-                  [ngClass]="{'sb-btn-disabled': !progressReportUpdatedOn}"
-                  [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                    class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}
-                    <span class="info-outline-img ml-8" suiPopup popupText="{{progressReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{progressReportUpdatedOn | date:'dd/MM/yyyy'}}" [popupPlacement]="'top right'" [popupInverted]="true"></span>
-                </button>
-              </div>
-            
+
           </div>
           <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
           <div class="d-flex current-batch-list">

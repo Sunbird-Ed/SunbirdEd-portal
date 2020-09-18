@@ -65,7 +65,7 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   onDownloadLinkFail(data) {
-    this.onDemandReportService.getReport(data.tag, data.requestId).subscribe((data) => {
+    this.onDemandReportService.getReport(data.tag, data.requestId).subscribe((data: any) => {
       if (data) {
         const downloadUrls = _.get(data, 'result.download_urls') || [];
         const downloadPath = _.head(downloadUrls);
@@ -109,7 +109,7 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   checkStatus() {
-    const processPendingList = this.onDemandReportData.find(x => x.job_id === this.selectedReport.jobId);
+    const processPendingList = this.onDemandReportData.find(x => x.job_id === this.selectedReport.jobId) || null;
     if (processPendingList) {
       return processPendingList['status'] === this.reportStatus.processing_request;
     } else {

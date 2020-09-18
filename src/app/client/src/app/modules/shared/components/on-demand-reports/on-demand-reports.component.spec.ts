@@ -10,6 +10,7 @@ import {throwError, of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MockData} from './on-demand-report.component.spec.data';
+
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
     'messages': {
@@ -40,10 +41,13 @@ describe('OnDemandReportsComponent', () => {
   });
   it('should set data on report change', () => {
     component.reportChanged(MockData.data);
-    expect(component.reportType).toEqual(MockData.data);
+    expect(component.selectedReport).toEqual(MockData.data);
   });
   it('should load report on ngoninit', () => {
     component.tag = 'mockTag';
+    component.batch = {
+      batchId: 'batchId'
+    };
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(of(MockData.reportListResponse));
     component.ngOnInit();
@@ -51,6 +55,9 @@ describe('OnDemandReportsComponent', () => {
   });
   it('should throw error if not load report on ngoninit', () => {
     component.tag = 'mockTag';
+    component.batch = {
+      batchId: 'batchId'
+    };
     const onDemandReportService = TestBed.get(OnDemandReportService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(throwError({}));
@@ -81,8 +88,9 @@ describe('OnDemandReportsComponent', () => {
     component.batch = {
       batchId: 'batchId'
     };
+    component.onDemandReportData = MockData.reportListResponse.result.jobs;
     component.userId = 'userId';
-    component.reportType = {jobId: 'jobId'};
+    component.selectedReport = {jobId: 'jobId'};
     const onDemandReportService = TestBed.get(OnDemandReportService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(throwError({}));
@@ -96,7 +104,7 @@ describe('OnDemandReportsComponent', () => {
       batchId: 'batchId'
     };
     component.userId = 'userId';
-    component.reportType = {jobId: 'jobId'};
+    component.selectedReport = {jobId: 'jobId'};
     component.onDemandReportData = [{1: 'a'}];
     const onDemandReportService = TestBed.get(OnDemandReportService);
     const toasterService = TestBed.get(ToasterService);
@@ -105,4 +113,5 @@ describe('OnDemandReportsComponent', () => {
     component.submitRequest();
     expect(component.onDemandReportData).toEqual([{2: 'b'}, {1: 'a'}]);
   });
+
 });
