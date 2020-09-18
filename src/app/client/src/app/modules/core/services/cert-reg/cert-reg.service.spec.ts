@@ -110,4 +110,15 @@ describe('CertRegService', () => {
     const options = { url: 'v1/add/template', data: params };
     expect(certRegService.patch).toHaveBeenCalledWith(options);
   });
+
+  it('should return the status of re-issue criteria as true if the status of the batch is 2', () => {
+    /** Arrange */
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+
+    /** Act */
+    certRegService.checkCriteria(mockResponseData.batches);
+
+    /** Assert */
+    expect(certRegService.checkCriteria).toBeTruthy();
+  });
 });
