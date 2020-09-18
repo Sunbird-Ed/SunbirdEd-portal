@@ -86,13 +86,15 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
     if (!isPendingProcess) {
       this.isProcessed = false;
       const request = {
-        'tag': this.tag,
-        'requestedBy': this.userId,
-        'jobId': this.selectedReport.jobId,
-        'jobConfig': {
-          batchId: this.batch.batchId
-        },
-        output_format: 'csv'
+        request: {
+          'tag': this.tag,
+          'requestedBy': this.userId,
+          'jobId': this.selectedReport.jobId,
+          'jobConfig': {
+            batchId: this.batch.batchId
+          },
+          output_format: 'csv'
+        }
       };
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
