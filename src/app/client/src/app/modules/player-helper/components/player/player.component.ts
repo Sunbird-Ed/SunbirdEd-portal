@@ -230,6 +230,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.loadDefaultPlayer();
   }
   loadNewPlayer() {
+    if (this.isMobileOrTab) {
+      this.isFullScreenView = true;
+      this.rotatePlayer();
+    }
     this.showNewPlayer = true;
   }
   /**

@@ -173,6 +173,7 @@ html[data-theme='Default'] {
   // --sbt-section-header-color: var(--primary-color);
   // --sbt-primary-border:var(--primary-color); // % with percentage value
   // --sbt-gray-border: var(--gray-800); // % with percentage value
+  --primary-theme:var(--primary-color);
   --sbt-body-bg: #E5EDF5;
   --sbt-header-bg:var(--primary-300); //var(--primary-300);
   --sbt-menu-bg: var(--sbt-header-bg);
@@ -332,6 +333,11 @@ html[data-theme='Default'][layout='joy'] {
   --primary-300:#ececde;
 }
 
+html[data-theme='Default'] {
+  .navBlock .pdf-nav-unit {
+    color: var(--white) !important;
+  }
+}
 html[layout='joy'] {
   --primary-theme: #FFD954;
   --sbt-header-bg:var(--primary-theme);
@@ -339,6 +345,9 @@ html[layout='joy'] {
   --sbt-body-bg2: #E9E8D9;
   --sbt-primary-bg: var(--primary-theme);
   
+  .navBlock .pdf-nav-unit {
+    color: var(--gray-800) !important;
+  }
   .sbt-fluid-header-bg {
     display: block;
   }
