@@ -459,4 +459,36 @@ describe('ReIssueCertificateComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it ('should enable "Re-Issue" button when status = 2 "', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], ssuedCertificates: [], createdBy: '123', status: 2 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length >0 (PDF)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND issuedCertificates.length >0 (SVG)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length>0 AND issuedCertificates.length>0(PDF and SVG)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}],
+    issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should disable "Re-Issue" button when status != 2" AND certificates.length=0 AND issuedCertificates.length=0', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeFalsy();
+  });
+
 });

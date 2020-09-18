@@ -156,7 +156,7 @@ getAllOpenBatches(contents) {
   }
 
   canCreateBatch(courseHierarchy) {
-    return (this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])
+    return (this.isTrackableCollection(courseHierarchy) && this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])
       && this.userService.userid === _.get(courseHierarchy, 'createdBy'));
   }
 
@@ -165,6 +165,10 @@ getAllOpenBatches(contents) {
   }
 
   canAddCertificates(courseHierarchy) {
-    return this.canCreateBatch(courseHierarchy);
+    return  this.canCreateBatch(courseHierarchy) && this.isTrackableCollection(courseHierarchy) && _.lowerCase(_.get(courseHierarchy, 'credentials.enabled')) === 'yes';
+  }
+
+  isTrackableCollection(collection: {trackable?: {enabled?: string}, contentType: string}) {
+  return (_.lowerCase(_.get(collection, 'trackable.enabled')) === 'yes' || _.lowerCase(_.get(collection, 'contentType')) === 'course');
   }
 }

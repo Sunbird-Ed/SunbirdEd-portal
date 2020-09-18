@@ -55,6 +55,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupsList = [];
     const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
+      this.groupService.groupListCount = groups.length;
       this.isLoader = false;
       groups = this.groupService.addGroupPaletteList(groups || []);
       _.forEach(groups, (group) => {

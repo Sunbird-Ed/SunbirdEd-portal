@@ -8,11 +8,11 @@ const args = process.argv.slice(2);
 var exec = require('child_process').exec;
 
 // PhraseApp Configuration
-const authToken = envHelper.PHRASE_APP.phrase_authToken;
-const project = envHelper.PHRASE_APP.phrase_project;
-const locale = envHelper.PHRASE_APP.phrase_locale;
-const fileformat = envHelper.PHRASE_APP.phrase_fileformat;
-const merge = true;
+// const authToken = envHelper.PHRASE_APP.phrase_authToken;
+// const project = envHelper.PHRASE_APP.phrase_project;
+// const locale = envHelper.PHRASE_APP.phrase_locale;
+// const fileformat = envHelper.PHRASE_APP.phrase_fileformat;
+// const merge = true;
 
 const rbPatah = path.join(__dirname, '/./../../node_modules/sunbird-localization/index.js');
 const resBundlesArr = [

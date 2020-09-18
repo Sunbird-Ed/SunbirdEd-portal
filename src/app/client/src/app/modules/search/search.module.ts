@@ -16,11 +16,13 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
 // import { Angular2CsvModule } from 'angular2-csv'; Angular2CsvModule removed TODO: use Blob object to generate csv file
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     SearchRoutingModule,
+    TranslateModule,
     SharedModule,
     SuiModule,
     FormsModule,

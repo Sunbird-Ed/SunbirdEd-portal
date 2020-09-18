@@ -119,9 +119,7 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call processData', () => {
     const agg = { 'activity': { 'agg': [{ 'metric': 'enrolmentCount', 'lastUpdatedOn': 1594898939615, 'value': 2 }, { 'metric': 'leafNodesCount', 'lastUpdatedOn': 1557890515518, 'value': 10 }], 'id': 'do_2125636421522554881918', 'type': 'Course' }, 'groupId': 'ddebb90c-59b5-4e82-9805-0fbeabed9389', 'members': [{ 'role': 'admin', 'createdBy': '1147aef6-ada5-4d27-8d62-937db8afb40b', 'name': 'Tarento Mobility  ', 'userId': '1147aef6-ada5-4d27-8d62-937db8afb40b', 'status': 'active', 'agg': [{ 'metric': 'completedCount', 'lastUpdatedOn': 1594898939617, 'value': 4 }] }, { 'role': 'member', 'createdBy': '0a4300a0-6a7a-4edb-9111-a7c9c6a53693', 'name': 'Qualitrix Book Reviewer', 'userId': '9e74d241-004f-40d9-863e-63947ef10bbd', 'status': 'active', 'agg': [{ 'metric': 'completedCount', 'lastUpdatedOn': 1594898939617, 'value': 5 }] }] };
-    spyOn(component, 'getActivityInfo');
     component.processData(agg);
-    expect(component.getActivityInfo).toHaveBeenCalled();
     expect(component.members).toBeDefined();
   });
   it('should call search', () => {
@@ -269,6 +267,20 @@ describe('ActivityDashboardComponent', () => {
     component.ngOnDestroy();
     expect(component['unsubscribe$'].next).toHaveBeenCalled();
     expect(component['unsubscribe$'].complete).toHaveBeenCalled();
+  });
+
+  it ('should return TRUE (when content is trackable or contentType = COURSE)', () => {
+    spyOn(component['searchService'], 'isContentTrackable').and.returnValue(true);
+    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+    expect(value).toBe(true);
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+  });
+
+  it ('should return FALSE (when content is not trackable or contentType != COURSE)', ()  => {
+    spyOn(component['searchService'], 'isContentTrackable').and.returnValue(false);
+    const value = component.isContentTrackable({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+    expect(value).toBe(false);
+    expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
 
 });

@@ -52,6 +52,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
+  hideCreateBatch = false;
+  allowCertCreation = false;
+  ongoingAndUpcomingBatchList = [];
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -104,8 +107,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = [];
     const searchParams: any = {
       filters: {
-        status: this.batchStatus.toString(),
-        courseId: this.courseId
+        courseId: this.courseId,
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -121,7 +124,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),
       ).pipe(takeUntil(this.unsubscribe))
        .subscribe((data) => {
-           this.batchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.ongoingAndUpcomingBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.getSelectedBatches();
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
            } else {
@@ -151,6 +155,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
      }
   }
 
+  getSelectedBatches () {
+    this.batchList = _.filter(this.ongoingAndUpcomingBatchList, batch => {
+      return (_.isEqual(batch.status, this.batchStatus));
+    });
+    const currentDate = new Date();
+    const batchEndDate = new Date(_.get(_.first(this.ongoingAndUpcomingBatchList), 'endDate'));
+    this.hideCreateBatch = this.ongoingAndUpcomingBatchList.length > 0 ? (_.isEmpty(batchEndDate) || (currentDate <= batchEndDate)) : false;
+  }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
     this.showAllBatchError = false;
@@ -238,9 +250,17 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   enrollBatch(batch) {
     this.showJoinModal = false;
-    this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    const batchStartDate = new Date(batch['startDate']);
+    const currentdate = new Date();
+    if (currentdate < batchStartDate) {
+      const batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
+      this.toasterService.error(batchMessage);
+    } else {
+      this.courseBatchService.setEnrollToBatchDetails(batch);
+      this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    }
   }
+
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
@@ -270,9 +290,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
    * @returns - boolean
    */
   showCreateBatch() {
-    this.isTrackable = _.lowerCase(_.get(this.courseHierarchy, 'trackable.enabled')) === 'yes';
-    this.allowBatchCreation = this.isTrackable && this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
-    this.viewBatch = this.isTrackable && this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.allowBatchCreation = this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
+    this.viewBatch = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    this.allowCertCreation = this.courseConsumptionService.canAddCertificates(this.courseHierarchy);
   }
 
   logTelemetry(id, content?: {}, batchId?) {

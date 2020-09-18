@@ -208,4 +208,45 @@ describe('CourseConsumptionService', () => {
     expect(response).toEqual(false);
   });
 
+  it('should enable trackable', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
+    const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toEqual(true);
+  });
+
+  it('should disable trackable', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'no';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeFalsy();
+  });
+
+  it('should enable "certificate creation"', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    spyOn(service, 'isTrackableCollection').and.returnValue(true);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    courseConsumptionServiceMockData.courseHierarchy['credentials'] = {enabled: 'Yes'};
+    const response = service.canAddCertificates(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeTruthy();
+    expect(service.canCreateBatch).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+    expect(service.isTrackableCollection).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+  });
+
+  it('should disable "certificate creation"', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    spyOn(service, 'isTrackableCollection').and.returnValue(true);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'Yes';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    courseConsumptionServiceMockData.courseHierarchy['credentials'] = {enabled: 'no'};
+    const response = service.canAddCertificates(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeFalsy();
+    expect(service.canCreateBatch).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+    expect(service.isTrackableCollection).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+  });
+
 });

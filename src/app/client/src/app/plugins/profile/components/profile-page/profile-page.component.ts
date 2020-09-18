@@ -25,6 +25,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { FieldConfig } from 'common-form-elements';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -41,9 +42,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  showMoreCertificates = true;
   isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
   userSubscription: Subscription;
   orgDetails: any = [];
@@ -64,6 +67,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
+  otherCertificatesCounts: number;
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
   phoneObj: { idType: string, provider: string, id: string };
@@ -105,7 +109,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
         this.getContribution();
-        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
         /* istanbul ignore else */
@@ -114,7 +118,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.declarationDetails.errorType) {
             this.selfDeclaredErrorTypes = this.declarationDetails.errorType.split(',');
           }
-          this.getSelfDeclaraedDetails();
+          this.getSelfDeclaredDetails();
         }
       }
     });
@@ -217,10 +221,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
  *It will fetch certificates of user, other than courses
  */
   getOtherCertificates(userId, certType) {
-    this.certRegService.fetchCertificates(userId, certType).subscribe((data) => {
+    const requestParam = { userId,  certType };
+    if (this.otherCertificatesCounts) {
+      requestParam['limit'] = this.otherCertificatesCounts;
+    }
+    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
+      this.otherCertificatesCounts = _.get(data, 'result.response.count');
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
-          pdfUrls: [{
+          certificates: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
@@ -231,20 +240,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  downloadCert(certificates) {
-    _.forEach(certificates, (value, key) => {
-      if (key === 0) {
-        if (_.get(value, 'identifier')) {
-          this.courseCService.getSignedCourseCertificate(_.get(value, 'identifier')).subscribe((resp) => {
-            this.certDownloadAsPdf.download(resp.printUri, null, _.get(value, 'name') );
-          }, error => {
-            this.downloadPdfCertificate(value);
-          });
-         } else {
-          this.downloadPdfCertificate(value);
-        }
+  downloadCert(course) {
+    // Check for V2
+    if (_.get(course, 'issuedCertificates.length')) {
+      const certificateInfo = course.issuedCertificates[0];
+      if (_.get(certificateInfo, 'identifier')) {
+        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
+          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          }
+        }, error => {
+          this.downloadPdfCertificate(certificateInfo);
+        });
+      } else {
+        this.downloadPdfCertificate(certificateInfo);
       }
-    });
+    } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
+      this.downloadPdfCertificate(course.certificates[0]);
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
+    }
   }
 
   downloadPdfCertificate(value) {
@@ -265,6 +280,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
     }
   }
 
@@ -444,20 +461,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate([`learn/course/${courseId}`]);
   }
 
+  toggleOtherCertific(showMore) {
+    if (showMore) {
+      if (this.otherCertificates.length !== this.otherCertificatesCounts) {
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
+      }
+      this.otherCertificateLimit = this.otherCertificatesCounts;
+      this.showMoreCertificates = false;
+    } else {
+      this.otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+      this.showMoreCertificates = true;
+    }
+  }
+
   /**
-   * @since - #SH-815
+   * @since - #SH-920
    * @description - This method will map self declared values with teacher details dynamic fields to display on profile page
    */
-  getSelfDeclaraedDetails() {
+  getSelfDeclaredDetails() {
     this.selfDeclaredInfo = [];
-    this.profileService.getTenants().subscribe(res => {
-      this.tenantInfo = _.find(res[0].range, (o) => o.value === this.declarationDetails.orgId);
-      this.profileService.getTeacherDetailForm('submit', this.declarationDetails.orgId).subscribe(data => {
-        for (const [key, value] of Object.entries(this.declarationDetails.info)) {
-          const field = _.find(data, (o) => o.code === key);
-          this.selfDeclaredInfo.push({ label: field.label, value, code: field.code, index: field.index });
-        }
-        this.selfDeclaredInfo = _.orderBy(this.selfDeclaredInfo, ['index'], ['asc']);
+    this.profileService.getPersonaTenantForm().pipe(takeUntil(this.unsubscribe$)).subscribe(res => {
+      const tenantConfig: any = res.find(config => config.code === 'tenant');
+      this.tenantInfo = _.get(tenantConfig, 'templateOptions.options').find(tenant => tenant.value === this.declarationDetails.orgId);
+
+      this.profileService.getSelfDeclarationForm(this.declarationDetails.orgId).pipe(takeUntil(this.unsubscribe$)).subscribe(formConfig => {
+        const externalIdConfig = formConfig.find(config => config.code === 'externalIds');
+        (externalIdConfig.children as FieldConfig<any>[]).forEach(config => {
+          if (this.declarationDetails.info[config.code]) {
+            this.selfDeclaredInfo.push({ label: config.fieldName, value: this.declarationDetails.info[config.code], code: config.code });
+          }
+        });
       });
     });
   }
