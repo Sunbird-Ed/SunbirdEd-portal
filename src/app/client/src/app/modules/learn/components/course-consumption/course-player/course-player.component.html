@@ -173,7 +173,7 @@
 
         <!-- Consent to share PII  -->
         <div class="mb-16" *ngIf="showConsent()">
-          <app-consent-pii [showConsentPopup]="showConsentPII" [consent]="true"></app-consent-pii>
+          <app-consent-pii [showConsentPopup]="showConsentPII" [consent]="true" [collection]="courseHierarchy" ></app-consent-pii>
         </div>
 
         <!-- Credits & License information -->

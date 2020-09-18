@@ -52,9 +52,9 @@ describe('ConsentPiiComponent', () => {
     component.consent = 'Yes';
     const userService = TestBed.get(UserService);
     userService._userProfile = MockData.userProfile;
-    spyOn(component, 'getUserInformations').and.callThrough();
+    spyOn(component, 'getUserInformation').and.callThrough();
     component.ngOnInit();
-    expect(component.userInformations['name']).toEqual(`${MockData.userProfile.firstName} ${MockData.userProfile.lastName}`);
+    expect(component.userInformation['name']).toEqual(`${MockData.userProfile.firstName} ${MockData.userProfile.lastName}`);
   });
 
 

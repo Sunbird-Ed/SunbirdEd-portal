@@ -1,6 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
+import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
 import { UserService } from '@sunbird/core';
-import { ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-consent-pii',
@@ -11,48 +16,60 @@ export class ConsentPiiComponent implements OnInit {
 
   @Input() showConsentPopup: boolean;
   @Input() consent: string;
-  private usersProfile: any;
+  @Input() collection;
+  @ViewChild('profileDetailsModal') profileDetailsModal;
   consentPii: boolean;
-  userInformations = [];
+  userInformation = [];
   editSetting = false;
-  constructor(public userService: UserService, private toasterService: ToasterService) { }
+  showTncPopup = false;
+  unsubscribe = new Subject<void>();
+  private usersProfile: any;
+  constructor(
+    @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
+    private toasterService: ToasterService,
+    public userService: UserService,
+    public resourceService: ResourceService
+  ) { }
 
   ngOnInit() {
-    this.consentPii = this.consent === 'Yes' ? true : false;
+    this.consentPii = !(this.consent === 'Yes');
     this.usersProfile = this.userService.userProfile;
-    this.getUserInformations();
+    this.getUserInformation();
+    this.getUserConsent();
+    this.updateUserConsent(true);
   }
 
-  getUserInformations() {
-    this.userInformations['name'] = `${this.usersProfile.firstName} ${this.usersProfile.lastName}`;
-    this.userInformations['userid'] = this.usersProfile.userId;
-    this.userInformations['emailId'] = this.usersProfile.email;
-    this.userInformations['phone'] = this.usersProfile.phone;
-    if (this.usersProfile.userLocations && this.usersProfile.userLocations.length) {
+  getUserInformation() {
+    this.userInformation['name'] = `${this.usersProfile.firstName} ${this.usersProfile.lastName}`;
+    this.userInformation['userid'] = this.usersProfile.userId;
+    this.userInformation['emailId'] = this.usersProfile.email;
+    this.userInformation['phone'] = this.usersProfile.phone;
+
+    if (_.get(this.usersProfile, 'userLocations.length')) {
       this.usersProfile.userLocations.forEach(locDetail => {
         if (locDetail.type === 'state') {
-          this.userInformations['state'] = locDetail.name;
+          this.userInformation['state'] = locDetail.name;
         }
         if (locDetail.type === 'district') {
-          this.userInformations['district'] = locDetail.name;
+          this.userInformation['district'] = locDetail.name;
         }
       });
     }
 
-    if (this.usersProfile.declarations && this.usersProfile.declarations.length) {
+    if (_.get(this.usersProfile, 'declarations.length')) {
       for (const [key, value] of Object.entries(this.usersProfile.declarations[0].info)) {
         switch (key) {
           case 'declared-email':
-            this.userInformations['emailId'] = value;
+            this.userInformation['emailId'] = value;
             break;
           case 'declared-phone':
-            this.userInformations['phone'] = value;
+            this.userInformation['phone'] = value;
             break;
           case 'declared-ext-id':
-            this.userInformations['schoolId'] = value;
+            this.userInformation['schoolId'] = value;
             break;
           case 'declared-school-udise-code':
-            this.userInformations['schoolName'] = value;
+            this.userInformation['schoolName'] = value;
             break;
         }
       }
@@ -60,10 +77,10 @@ export class ConsentPiiComponent implements OnInit {
   }
 
   saveConsent() {
+    console.log();
     const newConsent = this.consentPii ? 'Yes' : 'No';
     if (this.consent !== newConsent) {
-      this.toasterService.success(`You have successfully changed your consent to share your data from 
-                                    "${this.consent}" to "${newConsent}"`);
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
       this.showConsentPopup = false;
     }
   }
@@ -72,4 +89,43 @@ export class ConsentPiiComponent implements OnInit {
     this.editSetting = !this.editSetting;
   }
 
+  getUserConsent() {
+    const request = {
+      userId: this.userService.userid,
+      consumerId: this.collection.channel,
+      objectId: this.collection.identifier
+    };
+    this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        console.log('res', res);
+      }, error => {
+        console.error('error', error);
+      });
+  }
+
+  updateUserConsent(isActive: boolean) {
+    const request: Consent = {
+      status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
+      userId: this.userService.userid,
+      consumerId: this.collection.channel, //course channel id
+      objectId: this.collection.identifier,
+      objectType: 'Collection'
+    };
+    this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(res => {
+        console.log('Update consent status', res);
+      }, error => {
+        console.error('Error while updating user consent', error);
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+    if (_.get(this.profileDetailsModal, 'deny')) {
+      this.profileDetailsModal.deny();
+    }
+  }
 }

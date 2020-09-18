@@ -22,7 +22,15 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 import { CourseCompletionComponent } from './components/course-consumption/course-completion/course-completion.component';
 import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 
+export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.userService;
+};
 @NgModule({
   imports: [
     CommonModule,
@@ -37,7 +45,7 @@ import { CourseDetailsComponent } from './components/course-consumption/course-d
     PlayerHelperModule,
     CommonConsumptionModule
   ],
-  // providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
+  providers: [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
     AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, ConsentPiiComponent]
