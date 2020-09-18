@@ -2,13 +2,13 @@
 <sui-modal *ngIf="showJoinModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #batchListModal>
   <div class="sb-modal-header font-weight-normal">
-    {{resourceService?.frmelmnts?.lbl?.selectBatch}}
+    {{resourceService?.frmelmnts?.lbl?.selectBatch | translate}}
   </div>
   <div class="sb-modal-content" *ngIf="showAllBatchList">
     <div class="join-batch">
       <div class="join-batch__heading">
-        <div>{{resourceService?.frmelmnts?.lbl?.availableBatches}}</div>
-        <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
+        <div>{{resourceService?.frmelmnts?.lbl?.availableBatches | translate}}</div>
+        <div>{{resourceService?.frmelmnts?.lbl?.courseCreatedBy | translate}}</div>
       </div>
       <div class="join-batch__body" *ngFor="let batch of allBatchList">
         <div>{{batch.startDate | dateFormat}}<span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}}
@@ -17,12 +17,12 @@
           {{userNames[batch.createdBy].lastName}}</div>
         <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
           (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
-         >{{resourceService?.frmelmnts?.lbl?.join}}</button>
+         >{{resourceService?.frmelmnts?.lbl?.join | translate}}</button>
       </div>
     </div>
   </div>
   <div *ngIf="showAllBatchError">
-    <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+    <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081 | translate}}</div>
   </div>
 </sui-modal>
 
@@ -30,7 +30,7 @@
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="isTrackable && viewBatch">
   <sui-accordion-panel [isOpen]="true">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
+      <span>{{resourceService?.frmelmnts?.lbl?.batches | translate}}</span>
       <i class="chevron down icon"></i>
     </div>
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
@@ -57,22 +57,22 @@
                                     <i class="icon-svg icon-svg--xxs icon-edit mr-4"><svg class="icon icon-svg--primary">
                                         <use xlink:href="assets/images/sprite.svg#edit"></use>
                                       </svg></i> 
-                                    {{resourceService?.frmelmnts?.lbl?.edit}}
+                                    {{resourceService?.frmelmnts?.lbl?.edit | translate}}
                                 </button>
                             </div> -->
 
               <div class="batch-details__edit d-flex flex-ai-center py-8">
                 <div *ngIf="allowBatchCreation">
                   <div *ngIf="!(batch.hasOwnProperty('cert_templates'))" class="sb-color-primary fnormal font-weight-bold">
-                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
+                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert | translate}}</a>
                   </div>
                   <div *ngIf="batch?.cert_templates" class="sb-color-primary fnormal font-weight-bold"> 
-                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
+                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert | translate}}</a>
                   </div>
                 </div>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
                   (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
-                  {{resourceService?.frmelmnts?.lbl?.edit}}
+                  {{resourceService?.frmelmnts?.lbl?.edit | translate}}
                 </button>
               </div>
 
@@ -80,29 +80,29 @@
 
 
               <div class="batch-details__created mt-8 fsmall" *ngIf="userNames[batch.createdBy]">
-                {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}
+                {{resourceService?.frmelmnts?.lbl?.courseCreatedBy | translate}}
                 {{userNames[batch.createdBy].firstName}} {{userNames[batch.createdBy].lastName}}
               </div>
               <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
                 <span class="sb-label-12size"
-                  *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
+                  *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136 | translate}}
                   {{batch.enrollmentEndDate | dateFormat}}</span>
                 <span class="sb-label-status-error"
-                  *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
+                  *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134 | translate}}</span>
               </div>
             </div>
           </div>
           <div class="content my-15" *ngIf="batchList.length <= 0">
-            <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+            <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081 | translate}}</div>
           </div>
         </div>
         <div *ngIf="showError">
-          <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
+          <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081 | translate}}</div>
         </div>
         <div class="batch-deatils__button text-right" *ngIf="isTrackable">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
-            *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
+            *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch | translate}}</button>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
 <sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
+      <span>{{resourceService.frmelmnts.lbl.batchdetails | translate}}</span>
       <i class="chevron down icon"></i>
     </div>
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
@@ -132,14 +132,14 @@
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
-            [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+            [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll | translate}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
-            {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners}}
+            {{enrolledBatchInfo?.participantCount}} {{resourceService.frmelmnts.lbl.learners | translate}}
           </span>
           <span>
-            {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors}}
+            {{enrolledBatchInfo?.mentors?.length}} {{resourceService.frmelmnts.lbl.mentors | translate}}
           </span>
         </div>
       </div>

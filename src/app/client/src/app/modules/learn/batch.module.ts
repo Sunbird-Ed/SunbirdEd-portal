@@ -10,10 +10,12 @@ import { UpdateCourseBatchComponent } from './components/batch/update-course-bat
 import { BatchRoutingModule } from './batch-routing.module';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
+    TranslateModule,
     SharedModule,
     SuiModule,
     FormsModule,
