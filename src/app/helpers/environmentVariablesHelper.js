@@ -43,7 +43,8 @@ let envVariables = {
   sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird', 
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
-
+  sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
+  
 
   // TTL and Intervals
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
