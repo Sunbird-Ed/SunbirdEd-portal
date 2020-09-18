@@ -12,6 +12,7 @@ import {
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
 /**
  * This component shows the course progress dashboard
@@ -181,7 +182,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
     { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
     { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
-    { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }];
+    { name: 'No. of Completions', isSortable: false, prop: 'noOfCompletions', placeholder: 'Filter completions' }];
   fileName: string;
   userConsent;
   reportTypes = [];
@@ -201,6 +202,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
+    public onDemandReportService: OnDemandReportService,
     public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService,
     public generaliseLabelService: GeneraliseLabelService) {
@@ -278,6 +280,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
     this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
+    this.getSummaryReports();
   }
 
   /**
@@ -476,6 +479,80 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
+  getSummaryReports() {
+    const request = {
+      "request": {
+          "filters": {
+             "collectionId": this.currentBatch.collectionId,
+             "batchId": this.currentBatch.batchId
+          },
+          "groupBy": [
+          ],
+          "granularity": "LAST_7DAYS" // data conformation
+      }
+  }
+    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
+      if(reports && reports.result){
+       const result = _.get(reports, 'result');
+       const groupData = _.get(result, 'groupBy')
+       this.stateWiseReportDate = _.map(groupData , (x)=> {
+         return {
+           state: x.state,
+           district: x.district,
+           noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
+           noOfCompletions: this.getFieldValue(x.values, 'completed'),
+         }
+       })
+        const metrics = _.get(result, 'metrics');
+        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed')
+        this.currentBatch.completedCount =  this.getFieldValue(metrics, 'enrolled') 
+      }
+    },error=> {
+      this.stateWiseReportDate = [
+        {
+          state: 'Andhra Pradesh',
+          district: 'Chittoor',
+          noofEnrollments: 20,
+          noofCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Vishakapatanam',
+          noofEnrollments: 50,
+          noofCompletions: 25
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Guntur',
+          noofEnrollments: 70,
+          noofCompletions: 30
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Kadapa',
+          noofEnrollments: 65,
+          noofCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Nellore',
+          noofEnrollments: 100,
+          noofCompletions: 25
+        },
+        {
+          state: 'Telengana',
+          district: 'Hydrabad',
+          noofEnrollments: 45,
+          noofCompletions: 15
+        }
+      ];
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    })
+  }
+
+  getFieldValue(array, field){
+    return _.find(array, {"type": field}).count;
+  }
 
   /**
   * To method subscribes the user data to get the user id.
@@ -522,44 +599,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
 
     this.fileName = 'State wise report';
-    this.stateWiseReportDate = [
-      {
-        state: 'Andhra Pradesh',
-        district: 'Chittoor',
-        noofEnrollments: 20,
-        noofCompletions: 10
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Vishakapatanam',
-        noofEnrollments: 50,
-        noofCompletions: 25
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Guntur',
-        noofEnrollments: 70,
-        noofCompletions: 30
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Kadapa',
-        noofEnrollments: 65,
-        noofCompletions: 10
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Nellore',
-        noofEnrollments: 100,
-        noofCompletions: 25
-      },
-      {
-        state: 'Telengana',
-        district: 'Hydrabad',
-        noofEnrollments: 45,
-        noofCompletions: 15
-      }
-    ];
     this.isDownloadReport = true;
     // this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------

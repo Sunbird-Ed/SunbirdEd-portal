@@ -31,11 +31,11 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   public message = 'There is no data available';
   public isProcessed = false;
   reportStatus = {
-    'processing_request': 'Processing request',
-    'processing_success': 'Processing success',
-    'processing_failed': 'Processing failed',
-    'expired': 'expired',
+    'submitted': 'SUBMITTED',
+    'failed': 'FAILED',
+    'completed': 'COMPLETED',
   };
+
 
   constructor(public resourceService: ResourceService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
@@ -111,7 +111,7 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   checkStatus() {
     const processPendingList = this.onDemandReportData.find(x => x.job_id === this.selectedReport.jobId) || null;
     if (processPendingList) {
-      return processPendingList['status'] === this.reportStatus.processing_request;
+      return processPendingList['status'] === this.reportStatus.submitted;
     } else {
       return false;
     }

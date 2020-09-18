@@ -61,6 +61,7 @@
       "JOB_REQUEST_READ": "/job/request/read",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
+      "COLLECTION": "/collection",
       "RETIRE": "/retire",
       "SUMMARY": {
         "PREFIX": "/summary",

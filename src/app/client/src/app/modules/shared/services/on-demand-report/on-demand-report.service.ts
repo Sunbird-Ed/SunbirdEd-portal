@@ -20,4 +20,9 @@ export class OnDemandReportService {
     const options = {headers: {'Content-Type': 'application/json'}};
     return this.http.post(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.JOB_SUBMIT_REQUEST, request, options);
   }
+  getSummeryReports(request: any) {
+    const options = {headers: {'Content-Type': 'application/json'}};
+    return this.http.post(this.config.urlConFig.URLS.REPORT_PREFIX + this.config.urlConFig.URLS.REPORT.COLLECTION + this.config.urlConFig.URLS.REPORT.SUMMARY.PREFIX, request, options);
+  }
+
 }
