@@ -863,9 +863,7 @@
       "Learning Resource",
       "Practice Question Set",
       "eTextbook",
-      "Teacher Resource",
-      "Course Assessment",
-      "Asset"
+      "Teacher Resource"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
