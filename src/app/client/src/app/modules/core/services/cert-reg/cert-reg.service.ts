@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {ConfigService} from '@sunbird/shared';
 import {DataService} from './../data/data.service';
 import {HttpClient} from '@angular/common/http';
-import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -99,7 +98,7 @@ export class CertRegService extends DataService {
   }
 
   public checkCriteria(batchData) {
-    if (batchData.length && _.get(batchData[0], 'status') === 2) {
+    if (batchData.length && batchData[0].status === 2) {
       return true;
     }
     return false;
