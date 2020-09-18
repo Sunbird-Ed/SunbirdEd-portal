@@ -52,9 +52,13 @@
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
+    "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
+      "JOB_LIST": "/job/request/list",
+      "JOB_SUBMIT_REQUEST": "/job/request/submit",
+      "JOB_REQUEST_READ": "/job/request/read",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
       "RETIRE": "/retire",
@@ -119,7 +123,8 @@
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
       "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
       "TENANT_CONFIG": "data/v1/system/settings/get",
-      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
+      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha",
+      "FAQ_URL": "data/v1/system/settings/get/portalFaqURL"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"

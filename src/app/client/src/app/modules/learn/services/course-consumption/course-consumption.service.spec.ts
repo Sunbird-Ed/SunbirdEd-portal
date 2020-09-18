@@ -7,7 +7,7 @@ import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
-import { PlayerService } from '@sunbird/core';
+import { PlayerService, GeneraliseLabelService } from '@sunbird/core';
 import { courseConsumptionServiceMockData } from './course-consumption.service.data.spec';
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -58,7 +58,8 @@ describe('CourseConsumptionService', () => {
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService
+        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService,
+        {provide: GeneraliseLabelService, useValue: resourceBundle}
       ]
     });
   });
@@ -221,6 +222,32 @@ describe('CourseConsumptionService', () => {
     courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
     const response = service.isTrackableCollection(courseConsumptionServiceMockData.courseHierarchy);
     expect(response).toBeFalsy();
+  });
+
+  it('should enable "certificate creation"', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    spyOn(service, 'isTrackableCollection').and.returnValue(true);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'yes';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    courseConsumptionServiceMockData.courseHierarchy['credentials'] = {enabled: 'Yes'};
+    const response = service.canAddCertificates(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeTruthy();
+    expect(service.canCreateBatch).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+    expect(service.isTrackableCollection).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+  });
+
+  it('should disable "certificate creation"', () => {
+    const service = TestBed.get(CourseConsumptionService);
+    spyOn(service, 'canCreateBatch').and.returnValue(true);
+    spyOn(service, 'isTrackableCollection').and.returnValue(true);
+    courseConsumptionServiceMockData.courseHierarchy.trackable.enabled = 'Yes';
+    courseConsumptionServiceMockData.courseHierarchy.contentType = 'textbook';
+    courseConsumptionServiceMockData.courseHierarchy['credentials'] = {enabled: 'no'};
+    const response = service.canAddCertificates(courseConsumptionServiceMockData.courseHierarchy);
+    expect(response).toBeFalsy();
+    expect(service.canCreateBatch).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
+    expect(service.isTrackableCollection).toHaveBeenCalledWith(courseConsumptionServiceMockData.courseHierarchy);
   });
 
 });

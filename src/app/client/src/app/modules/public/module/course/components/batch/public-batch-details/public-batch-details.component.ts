@@ -7,7 +7,7 @@ import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import * as dayjs from 'dayjs';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 
@@ -40,7 +40,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
-    public activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService) {
+    public activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.batchStatus = this.statusOptions[0].value;
   }
 

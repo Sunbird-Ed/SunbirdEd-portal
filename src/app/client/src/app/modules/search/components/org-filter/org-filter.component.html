@@ -5,7 +5,7 @@
       <sui-accordion [closeOthers]="false">
         <sui-accordion-panel [isOpen]="isAccordianOpen">
           <div title class="cursor-pointer filter-title">
-            <i alt="Filter" class="icon filter"></i> {{resourceService.frmelmnts?.lbl?.filters}}
+            <i alt="Filter" class="icon filter"></i> {{resourceService.frmelmnts?.lbl?.filters | translate}}
             <i class="dropdown icon vertical-align-bottom"></i>
           </div>
           <div content>
@@ -20,9 +20,9 @@
                 </span>
               </span>
             </div>
-            <div *ngIf="refresh" class="filtercolmntext ui grid transition  ">
+            <div *ngIf="refresh" class="filtercolmntext ui grid transition">
               <div class="one wide column filter-text">
-                <span class="ShowFilterSubTitle">{{resourceService.frmelmnts?.lbl?.filterby}}</span>
+                <span class="ShowFilterSubTitle">{{resourceService.frmelmnts?.lbl?.filterby | translate}}</span>
               </div>
               <div class="two wide column">
                 <sui-multi-select class="selection ui filtersearch" [(ngModel)]="queryParams.OrgType" labelField="orgType.name"
@@ -33,8 +33,8 @@
 
               <!-- buttons -->
               <div class="three wide column filter-button">
-                <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply}}</a>
-                <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
+                <a class="searchfilterbutton ui blue tiny  button" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.apply | translate}}</a>
+                <a class="searchfilterbutton ui primary tiny basic button" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset | translate}}</a>
               </div>
             </div>
           </div>
