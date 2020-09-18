@@ -132,7 +132,7 @@
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
-            [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll | translate}}</button>
+            [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll | translate}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
@@ -146,3 +146,20 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showMessageModal = false;"
+  *ngIf="showMessageModal" #joinTrainingModal>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll | translate}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{batchMessage}}</p>
+    </div>
+  </div>
+  <!--/Content-->
+</sui-modal>

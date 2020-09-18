@@ -1,17 +1,18 @@
 import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
 
 import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay, tap } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService } from '@sunbird/core';
+import {UserService, GeneraliseLabelService, FormService} from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService, IPagination
+  NavigationHelperService, IPagination, OnDemandReportsComponent
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+
 /**
  * This component shows the course progress dashboard
  */
@@ -22,6 +23,10 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
+
+  @ViewChild(OnDemandReportsComponent)
+  private onDemandReports: OnDemandReportsComponent;
+
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -41,6 +46,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 */
   courseId: string;
   userDataSubscription: Subscription;
+
+  //TODO: We have to remove this & use currentBatch.id
   batchId: string;
   /**
 	 * This variable sets the user id
@@ -167,6 +174,17 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
+  isDownloadReport = false;
+  stateWiseReportDate = [];
+  public message = 'There is no data available';
+  columns = [
+    { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
+    { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
+    { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+    { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }];
+  fileName: string;
+  userConsent;
+  reportTypes = [];
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -183,7 +201,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
+    public formService: FormService,
+    public navigationhelperService: NavigationHelperService, private usageService: UsageService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -254,6 +274,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.currentBatch = batch;
+    this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
     this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
@@ -454,12 +475,94 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
   }
+
+
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
   * course id and timeperiod
   */
   ngOnInit() {
+    // ---- Mock data Start-----
+    const apiData = {
+      userConsent: 'No',
+      audience: 'Teacher'
+    };
+
+    this.user.userData$.subscribe((user) => {
+      const userProfile = user.userProfile;
+      let userRoles = _.get(userProfile, 'userRoles');
+      // userRoles = ['COURSE_MENTOR']
+      const isCourseCreator = _.includes(userRoles, 'COURSE_CREATOR');
+      const formReadInputParams = {
+        formType: 'batch',
+        formAction: 'list',
+        contentType: 'report_types'
+      };
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          if (formResponsedata) {
+            const options = formResponsedata;
+            if(isCourseCreator){
+              this.reportTypes = options;
+            } else {
+              this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
+            }
+            // const userConsent = _.get(apiData, 'userConsent');
+            // const audience = _.get(apiData, 'audience');
+            // if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
+            //   this.reportTypes = options.splice(0, 2);
+            // } else {
+            //   this.reportTypes = options;
+            // }
+          }
+        },error=> {
+          // error message
+        });
+    });
+
+    this.fileName = 'State wise report';
+    this.stateWiseReportDate = [
+      {
+        state: 'Andhra Pradesh',
+        district: 'Chittoor',
+        noofEnrollments: 20,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Vishakapatanam',
+        noofEnrollments: 50,
+        noofCompletions: 25
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Guntur',
+        noofEnrollments: 70,
+        noofCompletions: 30
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Kadapa',
+        noofEnrollments: 65,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Nellore',
+        noofEnrollments: 100,
+        noofCompletions: 25
+      },
+      {
+        state: 'Telengana',
+        district: 'Hydrabad',
+        noofEnrollments: 45,
+        noofCompletions: 15
+      }
+    ];
+    this.isDownloadReport = true;
+    // this.searchFields = ['state', 'district'];
+    // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
@@ -482,6 +585,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.searchBatch();
     this.setInteractEventData();
+  }
+
+  /**
+   * Load on demand reports
+   */
+  loadOndemandReports() {
+    this.onDemandReports.loadReports();
   }
 
   ngAfterViewInit() {

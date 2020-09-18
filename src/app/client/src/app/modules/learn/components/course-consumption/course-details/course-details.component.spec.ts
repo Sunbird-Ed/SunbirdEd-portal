@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseDetailsComponent } from './course-details.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ResourceService } from '@sunbird/shared';
+import { GeneraliseLabelService } from '@sunbird/core';
 
 describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
@@ -12,7 +13,8 @@ describe('CourseDetailsComponent', () => {
       declarations: [ CourseDetailsComponent ],
       imports:[TranslateModule],
       providers: [
-        { provide: ResourceService, useValue: {} }
+        { provide: ResourceService, useValue: {} },
+        { provide: GeneraliseLabelService, useValue: {} }
       ]
     })
     .compileComponents();
