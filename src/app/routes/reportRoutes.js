@@ -2,10 +2,12 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const { REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
+const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL, sunbird_device_api} = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
-const { getUserDetailsV2 } = require('../helpers/userHelper');
+const {getUserDetailsV2} = require('../helpers/userHelper');
+const {logger} = require('@project-sunbird/logger');
+
 module.exports = function (app) {
 
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
@@ -57,6 +59,31 @@ module.exports = function (app) {
         })
     )
 
+  app.all(['/report/job/request/read/:tag/:requestId', '/report/job/request/list/:tag', '/report/job/request/submit'],
+    proxyUtils.verifyToken(),
+    proxy(sunbird_device_api, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(sunbird_device_api),
+      proxyReqPathResolver: function (req) {
+        let urlParam = req.originalUrl.replace('/report/', '/api/data/v3/');
+        let query = require('url').parse(req.url).query;
+        if (query) {
+          return require('url').parse(sunbird_device_api + urlParam + '?' + query).path
+        } else {
+          return require('url').parse(sunbird_device_api + urlParam).path
+        }
+      },
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        try {
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
+      }
+    })
+  )
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),

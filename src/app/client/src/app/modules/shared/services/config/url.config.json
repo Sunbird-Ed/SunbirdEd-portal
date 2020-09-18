@@ -55,6 +55,9 @@
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
+      "JOB_LIST": "/job/request/list",
+      "JOB_SUBMIT_REQUEST": "/job/request/submit",
+      "JOB_REQUEST_READ": "/job/request/read",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
       "RETIRE": "/retire",

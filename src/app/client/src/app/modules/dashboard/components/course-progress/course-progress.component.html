@@ -214,4 +214,18 @@
           </div>
         </div>
       </div>
+
+      <sui-tabset class="batch-report-tabs">
+        <div class="ui pointing secondary menu">
+            <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
+            <a class="item" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+        </div>
+        <div class="ui segment state-report" suiTabContent="1">
+         <sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+        </div>
+        <div class="ui segment detailed-report" suiTabContent="2">
+          <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batchId]="batchId" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
+        </div>
+      </sui-tabset>
+</div>
 <!-- This is the updated code for semantic datatable -->

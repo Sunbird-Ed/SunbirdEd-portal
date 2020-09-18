@@ -1,0 +1,31 @@
+<div class='ui stackable grid mt-0'>
+  <div class="twelve wide column pt-0">
+    <div class="d-flex flex-dc">
+      <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
+      <div class="d-flex">
+        <sui-select [isSearchable]="false" class="selection course-dashboard-select" placeholder="Choose your report"
+                    [options]="reportTypes" labelField="title" valueField="title" #select>
+          <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
+          </sui-select-option>
+        </sui-select>
+
+        <div class="sb-field filterTable">
+          <input class="sb-form-control" 
+             type="text" [(ngModel)]="password"
+            placeholder="Enter password">
+        </div>
+
+        <button type="button" [disabled]="(!reportType || (reportType?.encrypt === 'true' && !password))" 
+        [ngClass]="{'sb-btn-disabled': (!reportType || (reportType?.encrypt === 'true' && !password))}"
+        (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary ml-16">
+          {{resourceService?.frmelmnts?.lbl?.request}}
+        </button>
+      </div>
+      <p class="fnormal note-text mt-8 mb-24">Note: Each download request would take about 24 hours to generate</p>
+    </div>
+  </div>
+</div>
+<div class="pb-8 download-section-text">Downloads Section(shows only the latest 10 requests)</div>
+<sb-datatable [name]="fileName" [searchFields]="searchFields" [data]="onDemandReportData" [columns]="columns"
+              [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
+<div class="request-download-text p-16">Request response to download here</div>

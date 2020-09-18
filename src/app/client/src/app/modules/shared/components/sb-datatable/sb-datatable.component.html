@@ -1,0 +1,51 @@
+<div class="datatable-content">
+  <div class="d-flex flex-ai-center flex-jc-space-between pb-24">
+    <div class="sb-search-box small no-btn">
+      <div class="input-div relative">
+        <i class="search icon"></i>
+        <input class="sb-search-input" type="text" [(ngModel)]="searchData" placeholder="Search..." />
+        <i class="close icon" (click)="clearSearch()"></i>
+        <div *ngIf="showLoader" class="sb-loader"></div>
+      </div>
+      <button class="sb-btn sb-btn-normal">Search</button>
+    </div>
+    <div (click)="downloadCSVFile()" *ngIf="downloadCSV" class="d-flex flex-ai-center">
+      <img src="../../assets/images/download-icon.svg" class="mr-8"> Download as CSV
+    </div>
+  </div>
+  <div class="sb-table-responsive-div">
+    <!-- <table class="sb-table sb-table-sortable sb-table-striped sb-table-fixed sb-table-course-dashboard">
+    <thead>
+      <tr>
+        <th (click)="sort(column)" class="sb-sort-icon" [ngClass]="{'ascending descending' : column.isSortable}" *ngFor="let column of columns">
+          {{column.name}}
+        </th> 
+      </tr>
+    </thead>
+    <tr *ngFor="let data of tableData | filter : searchData: searchFields">
+      <td *ngFor="let column of columns">{{data[column['prop']]}}</td>
+    </tr>
+  </table>
+  <div *ngIf="tableData.length === 0" class="request-download-text p-16">{{resourceService?.frmelmnts?.lbl?.noDataInTable}}</div> -->
+
+    <ngx-datatable #table class="material" [columnMode]="'force'" [rows]="tableData" [headerHeight]="80"
+      [footerHeight]="50" [messages]="messages" [rowHeight]="'auto'" [reorderable]="false" [limit]="5">
+      <ngx-datatable-column *ngFor="let col of columns" [name]="col.name" [sortable]="col.isSortable"
+        [draggable]="false" [resizeable]="false" [prop]="col.prop" [width]="100">
+        <ng-template ngx-datatable-header-template>
+          <div class="sb-field-group">
+            <label class="pl-8 mb-8">{{col.name}}</label>
+            <div class="sb-field filterTable">
+              <input class="sb-form-control" [(ngModel)]="filterModel[col.prop]"
+                (input)="keyUp.next({value:$event.target.value,key:col.prop})" type="text"
+                [placeholder]="col.placeholder">
+            </div>
+          </div>
+        </ng-template>
+        <ng-template let-value="value" ngx-datatable-cell-template>
+         <span class="{{col.porp === 'district' ? 'labelchange' : ''}}" (click)="col.porp === 'download_url' ? downloadUrl(value): ''" >{{value}}</span> 
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService } from '@sunbird/core';
+import { UserService, FormService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService, IPagination
@@ -167,6 +167,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
+  isDownloadReport = false;
+  stateWiseReportDate = [];
+  columns = [];
+  searchFields = [];
+  fileName: string;
+  userConsent;
+  reportTypes = [];
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -183,6 +190,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
+    public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
     this.user = user;
     this.route = route;
@@ -454,12 +462,98 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     });
   }
+
+
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
   * course id and timeperiod
   */
   ngOnInit() {
+    // ---- Mock data Start-----
+    const apiData = {
+      userConsent: 'No',
+      audience: 'Teacher'
+    };
+
+    this.user.userData$.subscribe((user) => {
+      const userProfile = user.userProfile;
+      let userRoles = _.get(userProfile, 'userRoles');
+      // userRoles = ['COURSE_MENTOR']
+      const isCourseCreator = _.includes(userRoles, 'COURSE_CREATOR');
+      const formReadInputParams = {
+        formType: 'batch',
+        formAction: 'list',
+        contentType: 'report_types'
+      };
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          if (formResponsedata) {
+            const options = formResponsedata;
+            if(isCourseCreator){
+              this.reportTypes = options;
+            } else {
+              this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
+            }
+            // const userConsent = _.get(apiData, 'userConsent');
+            // const audience = _.get(apiData, 'audience');
+            // if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
+            //   this.reportTypes = options.splice(0, 2);
+            // } else {
+            //   this.reportTypes = options;
+            // }
+          }
+        });
+    });
+
+
+    this.fileName = 'State wise report';
+    this.stateWiseReportDate = [
+      {
+        state: 'Andhra Pradesh',
+        district: 'Chittoor',
+        noofEnrollments: 20,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Vishakapatanam',
+        noofEnrollments: 50,
+        noofCompletions: 25
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Guntur',
+        noofEnrollments: 70,
+        noofCompletions: 30
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Kadapa',
+        noofEnrollments: 65,
+        noofCompletions: 10
+      },
+      {
+        state: 'Andhra Pradesh',
+        district: 'Nellore',
+        noofEnrollments: 100,
+        noofCompletions: 25
+      },
+      {
+        state: 'Telengana',
+        district: 'Hydrabad',
+        noofEnrollments: 45,
+        noofCompletions: 15
+      }
+    ];
+    this.isDownloadReport = true;
+    this.columns = [
+      { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
+      { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
+      { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+      { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }]
+    this.searchFields = ['state', 'district'];
+    // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
