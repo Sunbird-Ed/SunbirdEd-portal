@@ -8,7 +8,6 @@ import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@s
 import * as _ from 'lodash-es';
 import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +22,7 @@ export class GroupsService {
   public closeForm = new EventEmitter();
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
+  public _groupListCount: number;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -99,8 +99,9 @@ export class GroupsService {
     return this.groupCservice.search(request);
   }
 
-  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean) {
-    return this.groupCservice.getById(groupId, { includeMembers, includeActivities });
+  // To get groupData from csService
+  getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
+    return this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
   }
 
   deleteGroupById(groupId: string) {
@@ -246,4 +247,40 @@ getActivity(groupId, activity, mergeGroup) {
   emitMenuVisibility(visibility) {
     this.showMenu.emit(visibility);
   }
+
+  getSupportedActivityList() {
+    return this.groupCservice.getSupportedActivities();
+  }
+
+  set groupListCount (count) {
+    this._groupListCount = count;
+  }
+
+  get groupListCount () {
+    return this._groupListCount;
+  }
+
+  groupContentsByActivityType (showList, groupData) {
+    const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
+    if (activitiesGrouped) {
+
+        const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
+            if (activityGroup.title !== this.resourceService.frmelmnts.lbl[activityGroup.title]) {
+              acc[activityGroup.title] = activityGroup.items.map((i) => {
+                const activity = {
+                  ...i.activityInfo,
+                  type: i.type,
+                  cardImg: _.get(i, 'activityInfo.appIcon') || this.configService.appConfig.assetsPath.book,
+                };
+                return activity;
+              });
+              showList = !showList ? Object.values(acc).length > 0 : showList;
+              return acc;
+            }
+        }, {});
+        Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
+        return { showList, activities: activityList };
+    }
+    return { showList, activities: activitiesGrouped || {} };
+}
 }

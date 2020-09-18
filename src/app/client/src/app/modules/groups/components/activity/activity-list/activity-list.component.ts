@@ -16,6 +16,7 @@ export interface IActivity {
   organisation: string[];
   subject: string;
   type: string;
+  contentType?: string;
 }
 @Component({
   selector: 'app-activity-list',
@@ -28,11 +29,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
-  activityList = [];
+  @Input() activityList: any;
   showMenu = false;
   selectedActivity: IActivity;
   showModal = false;
   unsubscribe$ = new Subject<void>();
+  disableViewAllMode = false;
+  selectedTypeContents = {};
+  config: any;
+
 
   constructor(
     private configService: ConfigService,
@@ -40,13 +45,13 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     public resourceService: ResourceService,
     private groupService: GroupsService,
-    private toasterService: ToasterService
-  ) { }
+    private toasterService: ToasterService,
+  ) {
+    this.config = this.configService.appConfig;
+  }
 
   ngOnInit() {
-    this.showLoader = true;
-    this.getActivities();
-
+    this.showLoader = false;
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
@@ -61,25 +66,21 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getActivities() {
-    this.showLoader = false;
-    this.activityList =  this.groupData.activities.map(item => item.activityInfo);
-  }
 
-  openActivity(event: any, activity) {
-    this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
-    const options = { relativeTo: this.activateRoute, queryParams: { contentType: activity.contentType } };
+  openActivity(event: any) {
+    this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
+    const options = { relativeTo: this.activateRoute, queryParams: { contentType: _.get(event, 'data.contentType')} };
     if (_.get(this.groupData, 'isAdmin')) {
-      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], options);
+      this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
     } else {
-      this.router.navigate(['/learn/course', activity.identifier]);
+      this.router.navigate(['/learn/course', _.get(event, 'data.identifier')]);
     }
   }
 
-  getMenuData(event, member) {
+  getMenuData(event) {
     this.showMenu = !this.showMenu;
     this.groupService.emitMenuVisibility('activity');
-    this.selectedActivity = member;
+    this.selectedActivity = _.get(event, 'data');
     this.addTelemetry('activity-kebab-menu-open');
   }
 
@@ -95,7 +96,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
+        Object.keys(this.activityList).forEach(key => {
+          this.activityList[key] = this.activityList[key].filter(activity => _.get(activity, 'identifier') !== _.get(this.selectedActivity, 'identifier'));
+        });
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {
@@ -107,8 +110,27 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     // TODO: add telemetry here
   }
 
-  addTelemetry (id, cdata = []) {
-    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
+  addTelemetry (id, cdata?, extra?) {
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata, _.get(this.groupData.id), extra);
+  }
+
+  toggleViewAll(visibility: boolean, list?) {
+    this.disableViewAllMode = visibility;
+    this.selectedTypeContents = list || {};
+  }
+
+  isCourse(type) {
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course) ||
+    (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Courses)));
+  }
+
+  viewSelectedTypeContents(type, list, index) {
+    const value = _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
+    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) : value);
+  }
+
+  isSelectedType (type) {
+   return _.isEmpty(this.selectedTypeContents) ? true : _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
   }
 
   ngOnDestroy() {

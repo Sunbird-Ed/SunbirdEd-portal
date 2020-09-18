@@ -1,4 +1,5 @@
-@import 'mixins/mixins';
+@import "variables";
+@import "mixins/mixins";
 
 .sb-single-resource {
 	width: 100%;
@@ -14,22 +15,47 @@
 	&__btn-back {
 		z-index: 100;
 	}
-
-	&__content-header {
-		min-height: calculateRem(80px);
-		background-color: var(--rc-FAFAFA);
-		box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
-		z-index: 99;
-	}
 }
 
-.dot-divider {
-	background-color: var(--gray);
-	width: calculateRem(4px);
-	height: calculateRem(4px);
-	border-radius: 50%;
-	display: inline-block;
-	margin: 0 calculateRem(8px);
+.content-header {
+  background: var(--rc-FAFAFA);
+  min-height: calculateRem(80px);
+  background-color: var(--rc-FAFAFA);
+  box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
+  z-index: 99;
+
+    &__content{
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+        @include respond-below(sm) {
+          display: block;
+        }
+    }
+    &__title {
+        color: var(--primary-400);
+        font-size: calculateRem(18px);
+    }
+    
+    &__info {
+        color: var(--gray-800);
+        font-size: calculateRem(14px);
+    }
+    
+    .dot-divider {
+        width: ($base-block-space / 2);
+        height: ($base-block-space / 2);
+        border-radius: 100%;
+        background-color: var(--gray-800);
+        display: inline-block;
+        margin: 0px $base-block-space;
+    }
+  
+  @include respond-below(sm) {
+    &__buttons {
+      margin-top: calculateRem(8px);
+    }
+  }
 }
 
 @include respond-below(sm) {

@@ -27,6 +27,7 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
 import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
 
 @NgModule({
   imports: [
@@ -42,14 +43,15 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent,SbDatatableComponent, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective, OnDemandReportsComponent],
+    ConfirmPopupComponent, SbDatatableComponent, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
+    OnDemandReportsComponent, AddToGroupDirective],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    MarkdownDirective,SbDatatableComponent,OnDemandReportsComponent, NgxDatatableModule]
+    MarkdownDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, AddToGroupDirective]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

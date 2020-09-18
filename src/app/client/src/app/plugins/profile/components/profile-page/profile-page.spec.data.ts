@@ -475,7 +475,7 @@ export const Response = {
                         '_score': 8.958797
                     }
                 ],
-                'count': 1
+                'count': 10
             }
         }
     },
@@ -545,76 +545,6 @@ export const Response = {
             ]
         }
     },
-    tenantsList: [
-        {
-            'code': 'tenants',
-            'name': 'tenants',
-            'label': 'Tenants',
-            'range': [
-                {
-                    'label': 'Andhra Pradesh',
-                    'value': '01232241426855526450',
-                    'index': 1
-                },
-                {
-                    'label': 'CBSE',
-                    'value': '013016492159606784174',
-                    'index': 3
-                }
-            ]
-        }
-    ],
-    teacherDetailForm: [
-        {
-            'code': 'type',
-            'dataType': 'text',
-            'name': 'type',
-            'label': 'NCERT type',
-            'index': 1
-        },
-        {
-            'code': 'declared-phone',
-            'dataType': 'number',
-            'name': 'phone',
-            'label': 'Mobile Number',
-            'index': 2
-        },
-        {
-            'code': 'declared-email',
-            'dataType': 'text',
-            'name': 'email',
-            'label': 'Email Address',
-            'index': 3
-        },
-        {
-            'code': 'declared-school-name',
-            'dataType': 'text',
-            'name': 'school',
-            'label': 'Andhra pradesh School name',
-            'index': 4
-        },
-        {
-            'code': 'declared-school-udise-code',
-            'dataType': 'text',
-            'name': 'udiseId',
-            'label': 'Andhra pradesh UDISE ID',
-            'index': 5
-        },
-        {
-            'code': 'declared-ext-id',
-            'dataType': 'text',
-            'name': 'teacherId',
-            'label': 'Andhra pradesh teacher ID',
-            'index': 6
-        },
-        {
-            'code': 'tnc',
-            'dataType': 'text',
-            'name': 'tnc',
-            'description': '',
-            'index': 7
-        }
-    ],
     finalDeclarationObjStructure: [
         {
             'label': 'NCERT type',
@@ -679,6 +609,225 @@ export const Response = {
         'result': {
             'signedUrl': 'https://dikshastagingprivate.blob.core.windows.net/ntp-staging-e-credentials/0124784842112040965_0130645322226647040/3feb12d0-c65d-11ea-a42f-51f91f72670a.pdf?sv=2017-04-17&se=2020-08-31T13%3A26%3A03Z&sr=b&sp=r&sig=FA0x70%2B4HpfsT35jwdE5mgF/KXM0tfRbnCITt8797CQ%3D'
         }
-    }
-
+    },
+    personaTenantValues: [
+        {
+            'code': 'persona',
+            'type': 'select',
+            'templateOptions': {
+                'label': 'I am a',
+                'placeHolder': 'Select persona',
+                'options': [
+                    {
+                        'label': 'Teacher',
+                        'value': 'teacher'
+                    },
+                    {
+                        'label': 'Other',
+                        'value': 'other'
+                    }
+                ]
+            },
+            'validations': [
+                {
+                    'type': 'required',
+                    'value': true,
+                    'message': 'Persona is required'
+                }
+            ]
+        },
+        {
+            'code': 'tenant',
+            'type': 'select',
+            'templateOptions': {
+                'label': 'with',
+                'placeHolder': 'Select tenants',
+                'options': [
+                    {
+                        'label': 'Andhra Pradesh',
+                        'value': '01232241426855526450',
+                        'index': 1
+                    },
+                    {
+                        'label': 'Bihar',
+                        'value': '01298047944855552059',
+                        'index': 2
+                    },
+                    {
+                        'label': 'CBSE',
+                        'value': '013016492159606784174',
+                        'index': 3
+                    }
+                ],
+                'validations': [
+                    {
+                        'type': 'required',
+                        'value': true,
+                        'message': 'Persona is required'
+                    }
+                ]
+            }
+        }
+    ],
+    declarationFormValues: [
+        {
+            'code': 'name',
+            'type': 'label',
+            'templateOptions': {
+                'labelHtml': {
+                    'contents': '<p>$0:&nbsp;$1</p>',
+                    'values': {
+                        '$0': 'Name',
+                        '$1': ''
+                    }
+                }
+            }
+        },
+        {
+            'code': 'state',
+            'type': 'label',
+            'templateOptions': {
+                'labelHtml': {
+                    'contents': '<p>$0:&nbsp;$1</p>',
+                    'values': {
+                        '$0': 'State',
+                        '$1': ''
+                    }
+                }
+            }
+        },
+        {
+            'code': 'district',
+            'type': 'label',
+            'templateOptions': {
+                'labelHtml': {
+                    'contents': '<p>$0:&nbsp;$1</p>',
+                    'values': {
+                        '$0': 'District',
+                        '$1': ''
+                    }
+                }
+            }
+        },
+        {
+            'code': 'externalIds',
+            'type': 'nested_group',
+            'children': [
+                {
+                    'code': 'declared-phone',
+                    'fieldName': 'Mobile Number',
+                    'type': 'input',
+                    'templateOptions': {
+                        'labelHtml': {
+                            'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
+                            'values': {
+                                '$0': 'Phone Number'
+                            }
+                        },
+                        'placeHolder': 'Enter phone number',
+                        'prefix': '+91 -'
+                    },
+                    'validations': [
+                        {
+                            'type': 'required',
+                            'value': true,
+                            'message': 'Phone number is required'
+                        },
+                        {
+                            'type': 'pattern',
+                            'value': '^[6-9*][0-9*]{9}$',
+                            'message': 'Enter a valid phone number'
+                        }
+                    ],
+                    'asyncValidation': {
+                        'marker': 'MOBILE_OTP_VALIDATION',
+                        'message': 'You must validate your mobile number',
+                        'trigger': 'validate'
+                    }
+                },
+                {
+                    'code': 'declared-email',
+                    'fieldName': 'Email Address',
+                    'type': 'input',
+                    'templateOptions': {
+                        'placeHolder': 'Enter email address',
+                        'label': 'Email address'
+                    },
+                    'validations': [
+                        {
+                            'type': 'pattern',
+                            'value': '^[A-Za-z0-9._*%+-]+@[A-Za-z0-9.-]+\\.[a-z]{2,}$',
+                            'message': 'Enter a valid email address'
+                        }
+                    ],
+                    'asyncValidation': {
+                        'marker': 'EMAIL_OTP_VALIDATION',
+                        'message': 'You must validate your email address',
+                        'trigger': 'validate'
+                    }
+                },
+                {
+                    'code': 'declared-school-name',
+                    'fieldName': 'School/Organization name',
+                    'type': 'input',
+                    'templateOptions': {
+                        'label': 'School/Organization name',
+                        'placeHolder': 'Enter school name'
+                    }
+                },
+                {
+                    'code': 'declared-school-udise-code',
+                    'fieldName': 'School UDISE ID/Org ID',
+                    'type': 'input',
+                    'templateOptions': {
+                        'label': 'School UDISE ID/ Org ID',
+                        'placeHolder': 'Enter UDISE ID'
+                    }
+                },
+                {
+                    'code': 'declared-ext-id',
+                    'fieldName': 'Your ID from State/Board/Org',
+                    'type': 'input',
+                    'templateOptions': {
+                        'labelHtml': {
+                            'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
+                            'values': {
+                                '$0': ' Enter ID as requested by your state/board/org'
+                            }
+                        },
+                        'placeHolder': 'Enter ID'
+                    },
+                    'validations': [
+                        {
+                            'type': 'required',
+                            'value': true,
+                            'message': ' ID is required'
+                        }
+                    ]
+                }
+            ],
+            'templateOptions': {}
+        },
+        {
+            'code': 'tnc',
+            'type': 'checkbox',
+            'templateOptions': {
+                'labelHtml': {
+                    'contents': '<span>$tnc <u><a href="$url">$0</a></u></span>',
+                    'values': {
+                        '$tnc': 'I agree to share these details with the Administrators of sunbird as per the,',
+                        '$url': 'url',
+                        '$0': 'privacy policy'
+                    }
+                }
+            },
+            'validations': [
+                {
+                    'type': 'required',
+                    'value': true,
+                    'message': ''
+                }
+            ]
+        }
+    ]
 };

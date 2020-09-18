@@ -1,4 +1,3 @@
-
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
@@ -15,7 +14,7 @@
           <div class="content-header__img mr-8">
             <img [src]="activity?.appIcon || './assets/images/book.png'" alt="" /></div>
           <div class="d-flex flex-dc">
-            <div class="content-header__title font-weight-bold ellipsis text-left">{{activity?.name | uppercase}}</div>
+            <div class="content-header__title font-weight-bold ellipsis text-left">{{activity?.name}}</div>
             <div class="d-flex flex-ai-center content-header__info mt-4">
               <span>{{activity?.subject?.join(', ')}}</span>
               <span class="dot-divider" *ngIf="activity?.subject?.length"></span>
@@ -55,7 +54,8 @@
         </div>
       </div>
       </div>
-      <div class="px-24 pt-24">
+      <div class="px-16 pt-16">
+        <div *ngIf="!isContentTrackable(activity, activity?.contentType)" class="pb-16"><span class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span> {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (activity?.contentType).toLowerCase()}}</div>
         <div class="sb-search-box no-btn">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
@@ -65,9 +65,9 @@
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
       </div>
-        <div class="mr-8 py-16 pr-16 fxsmall text-right">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      
-  
-      <div class="d-flex flex-dc px-16 pb-24">
+        <div class="mr-8 pt-16 pr-16 fxsmall text-right" *ngIf="isContentTrackable(activity, activity?.contentType)">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      <div class="px-24">
+      </div>
+      <div class="d-flex flex-dc p-16">
         <div *ngFor="let member of memberListToShow" class="relative">
           <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
             [progressDisplay]="member?.progress" [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">

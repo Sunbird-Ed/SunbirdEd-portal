@@ -1,39 +1,54 @@
-<!--Show loader-->
-<div class="sb-card-grid my-24" *ngIf="showLoader">
-  <div class="sb-card-grid--item" *ngFor="let i of numberOfSections">
-    <sb-course-card [isLoading]="true"></sb-course-card>
-  </div>
-</div>
-
-<!--Show Activity List-->
-<div *ngIf="!showLoader && activityList?.length" class="sb-card-grid my-24">
-  <div class="sb-card-grid--item relative" *ngFor="let activity of activityList;">
-    <sb-course-card (cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin"
-      [cardImg]="activity?.appIcon || './assets/images/book.png'" (menuClick)="getMenuData($event, activity)">
-    </sb-course-card>
-    <div class="kabab-menu-dropdown-content" *ngIf="showMenu && selectedActivity?.identifier === activity?.identifier">
-      <div class="list sb-color-error" (click)="toggleModal(true)">
-        <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+<div *ngFor="let list of activityList | keyvalue">
+  <div class="header" *ngIf="list?.value?.length && isSelectedType(list?.key)">
+      <div class="title">
+        {{resourceService?.frmelmnts?.lbl[list?.key]}}
       </div>
-    </div>
+  <button *ngIf="list?.value?.length > 3 && disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" (click)="toggleViewAll(false); addTelemetry('close-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+  <button *ngIf="list?.value?.length > 3 && !disableViewAllMode && isSelectedType(list?.key)" class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" (click)="toggleViewAll(true, list);addTelemetry('open-view-all', [], {type: list?.key})">{{resourceService?.frmelmnts?.lnk?.viewall}}</button>
+  </div>
+
+  <!--Show loader-->
+  <div class="sb-card-grid" *ngIf="showLoader && list?.value?.length">
+      <div class="sb-grid--item" *ngFor="let i of (list?.value || numberOfSections)">
+          <sb-course-card [isLoading]="true"></sb-course-card>
+      </div>
+  </div>
+
+  <!--Show Activity List-->
+  <div  *ngIf="list?.value?.length && !showLoader" class="sb-card-grid" [ngClass]="{'hideActivityType': !isSelectedType(list?.key)}"> 
+       <div class="sb-card-grid--item relative" *ngFor="let activity of list?.value; let i=index;">
+          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+      || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
+          </sb-course-card>
+
+          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
+          </sb-library-card>
+          <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
+      selectedActivity?.identifier === activity?.identifier">
+              <div class="list sb-color-error" (click)="toggleModal(true)">
+                  <span>{{resourceService?.frmelmnts?.lbl?.removeActivity}}</span>
+              </div>
+          </div>
+      </div> 
   </div>
 </div>
 
-<!-- No Activity -->
-<app-add-activity *ngIf="!showLoader && !activityList?.length"></app-add-activity>
+<!-- No Activity[cardType]="getType(selectedContentType?.type)" -->
+<app-add-activity *ngIf="!showLoader && ((activityList | json) === '{}')"></app-add-activity>
 
 <!-- Remove Activity from the group -->
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
-  </div>
-  <div class="sb-modal-content">
-    <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-error"
-      (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-  </div>
+appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.removeActivity}} ?
+</div>
+<div class="sb-modal-content">
+  <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-error"
+    (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+</div>
 
 </sui-modal>
