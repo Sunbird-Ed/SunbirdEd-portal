@@ -10,13 +10,13 @@
 
     <!--Header-->
     <div class="sb-modal-header">
-        {{resourceService.frmelmnts.lbl.unenrollTitle}}
+        {{resourceService.frmelmnts.lbl.unenrollTitle | translate}}
     </div>
     <!--/Header-->
 
     <!--Content-->
     <div class="sb-modal-content">
-        {{resourceService.frmelmnts.lbl.unenrollMsg}}
+        {{resourceService.frmelmnts.lbl.unenrollMsg | translate}}
     </div>
     <!--/Content-->
 
@@ -28,13 +28,13 @@
             id="unenrollFromCourse" 
             (click)="unenrollFromCourse()"
         >
-            {{resourceService.frmelmnts.btn.unenroll}}
+            {{resourceService.frmelmnts.btn.unenroll | translate}}
         </button>
         <button 
             class="sb-btn sb-btn-normal sb-btn-outline-error" 
             (click)="unenrollBatch.deny();"
         >
-            {{resourceService.frmelmnts.btn.cancel}}
+            {{resourceService.frmelmnts.btn.cancel | translate}}
         </button>
         
     </div>

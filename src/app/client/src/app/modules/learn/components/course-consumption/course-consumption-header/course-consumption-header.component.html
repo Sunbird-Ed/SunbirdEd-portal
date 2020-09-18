@@ -8,7 +8,7 @@
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
-        {{resourceService?.frmelmnts?.btn?.back}}
+        {{resourceService?.frmelmnts?.btn?.back | translate}}
       </button>
     </div>
   </div>
@@ -40,7 +40,7 @@
                 <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="assets/images/sprite.svg#share"></use>
                 </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.share}}
+                {{resourceService?.frmelmnts?.lbl?.share | translate}}
               </button>
 
               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
@@ -48,11 +48,11 @@
                 appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
                 [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
                 [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
-                title="{{resourceService?.frmelmnts?.lbl?.copy}}">
+                title="{{resourceService?.frmelmnts?.lbl?.copy | translate}}">
                 <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
                 </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.copy}}
+                {{resourceService?.frmelmnts?.lbl?.copy | translate}}
               </button>
             </div>
           </div>
@@ -60,7 +60,7 @@
 
         <!-- Info displaying if course is flagged -->
         <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
-          {{resourceService?.messages?.imsg?.m0001}}</h6>
+          {{resourceService?.messages?.imsg?.m0001 | translate}}</h6>
 
         <!-- Info displaying if batch has expired -->
         <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
@@ -73,18 +73,18 @@
         <div class="certified-course__btn">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
           appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
-          {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+          {{resourceService?.frmelmnts?.lbl?.AddtoGroup | translate}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div *ngIf="!showAddGroup && isTrackable">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
             <button  [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
+              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.enrollcourse | translate}}</button>
           </div>
 
           <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
             <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" [disabled]="showResumeCourse"
-              (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
+              (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning | translate}}</button>
           </div>
 
         <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
@@ -92,13 +92,13 @@
             [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
             <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#play-continue"></use>
-            </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
+            </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning | translate}}</button>
         </div>
           <div class="ml-auto text-right mt-8" *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
               [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
               class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">
-              {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+              {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard | translate}}
             </button>
           </div>
 
@@ -118,7 +118,7 @@
 </div>
 
 <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-  <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+  <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent | translate}}</div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">

@@ -4,8 +4,8 @@
   <!--Header-->
   <i class="close icon" (click)="redirect()"></i>
   <div class="sb-modal-header">
-    <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007}}</span>
-    <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015}}</span>
+    <span *ngIf="!showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0007 | translate}}</span>
+    <span *ngIf="showFormInViewMode">{{resourceService?.frmelmnts?.intxt?.t0015 | translate}}</span>
   </div>
   <!--/Header-->
 
@@ -17,27 +17,27 @@
         <div class="eight wide column">
           <div class="sb-field-group"
             [ngClass]="batchUpdateForm.controls['name'].invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine ? 'error': ''">
-            <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
+            <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname | translate}}</label>
             <div class="sb-field">
               <input class="sb-form-control" type="text" name="name" formControlName="name">
             </div>
             <div class="mt-0 mb-8 ui pointing red basic label below"
               *ngIf="batchUpdateForm.controls.name.invalid && batchUpdateForm.controls['name'].errors.required && !batchUpdateForm.controls['name'].pristine">
-              {{resourceService?.messages?.stmsg?.m0114}}
+              {{resourceService?.messages?.stmsg?.m0114 | translate}}
             </div>
           </div>
         </div>
           <div class="four wide column">
           <div>
-            <label>{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+            <label>{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate | translate}}</label>
             <div class="d-flex py-8 flex-w-wrap">
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                 <input (change)="handleInputChange('yes')" formControlName="issueCertificate" type="radio" id="yes" value="yes">
-                <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
+                <label for="yes">{{resourceService?.frmelmnts?.btn?.yes | translate}}</label>
               </div>
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                 <input (change)="handleInputChange('no')" formControlName="issueCertificate" type="radio" id="no" value="no">
-                <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
+                <label for="no">{{resourceService?.frmelmnts?.btn?.no | translate}}</label>
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@
       <div class="ui stackable grid">
         <div class="eight wide column">
           <div class="sb-field-group">
-            <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
+            <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch | translate}}</label>
             <div class="sb-field">
               <textarea class="sb-form-control" rows="4" name="description" formControlName="description"></textarea>
             </div>
@@ -56,12 +56,12 @@
         <div class="four wide column">
           <div class="d-flex flex-dc flex-w-wrap" *ngIf="courseCreator">
             <div class="mr-8">
-              <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
+              <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch | translate}}</label>
             </div>
             <div class="sb-radio-btn-checkbox sb-radio-btn-primary py-8" *ngIf="courseCreator">
               <input id="update-course-open" [attr.disabled]="batchDetails.status !== 0 ? true : null" type="radio"
                 value='open' name="enrollmentType" formControlName="enrollmentType">
-              <label for="update-course-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
+              <label for="update-course-open">{{resourceService?.frmelmnts?.lbl?.open | translate}}</label>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
       <div class="d-flex flex-w-wrap my-16">
         <div class="sb-field-group pr-8"
           [ngClass]="batchUpdateForm.controls['startDate'].invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine ? 'error': ''">
-          <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
+          <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate | translate}}</label>
           <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
@@ -82,11 +82,11 @@
           </div>
           <div class="mt-0 mb-8 ui pointing red basic label below"
             *ngIf="batchUpdateForm.controls.startDate.invalid && batchUpdateForm.controls['startDate'].errors.required && !batchUpdateForm.controls['startDate'].pristine">
-            {{resourceService?.messages?.stmsg?.m0113}}
+            {{resourceService?.messages?.stmsg?.m0113 | translate}}
           </div>
         </div>
         <div class="sb-field-group">
-          <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.enddate | translate}}</label>
           <div class="ui calendar rangeendAdd" id="rangeendAdd">
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
@@ -98,7 +98,7 @@
         </div>
         <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'"
           [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
-          <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase | translate}}</label>
           <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui left icon input" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
@@ -110,7 +110,7 @@
           </div>
           <div class="mt-0 mb-8 ui pointing red basic label below"
             *ngIf="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine">
-            {{resourceService?.messages?.stmsg?.m0135}}
+            {{resourceService?.messages?.stmsg?.m0135 | translate}}
           </div>
         </div>
       </div>
@@ -119,12 +119,12 @@
         <app-loader></app-loader>
       </div>
       <div class="sb-field-group mb-8">
-        <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.batchmentors | translate}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
           [ngClass]="{ 'disabled' : showFormInViewMode }">
           <input id="mentorSelList">
           <i class="dropdown icon"></i>
-          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005 | translate}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
               <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
@@ -134,7 +134,7 @@
         </div>
       </div>
       <div class="sb-field-group mb-8" *ngIf="selectedMentors.length > 0">
-        <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors | translate}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image"
             src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
@@ -143,16 +143,16 @@
         </a>
       </div>
       <div class="sb-field-group mb-8" *ngIf="batchUpdateForm.value.enrollmentType !== 'open'">
-        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}
+        <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers | translate}}
           <i *ngIf="batchDetails.participants && batchDetails.participants.length >= 100" suiPopup
-            popupText="{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}" [popupPlacement]="'right'"
+            popupText="{{resourceService?.frmelmnts?.lbl?.contactStateAdmin | translate}}" [popupPlacement]="'right'"
             [popupInverted]="true" class="sb-icon-info info-icon"></i>
         </label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participant"
           [ngClass]="{'disabled' : showFormInViewMode || (batchDetails.participants && batchDetails.participants.length >= 100)}">
           <input id="userSelList">
           <i class="dropdown icon"></i>
-          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
+          <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006 | translate}}</div>
           <div class="menu">
             <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
               <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
@@ -161,11 +161,11 @@
           </div>
         </div>
         <small *ngIf="batchDetails.participants && batchDetails.participants.length > 100"
-          class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin}}</small>
+          class="sb-color-primary d-flex pt-4">{{resourceService?.frmelmnts?.lbl?.contactStateAdmin | translate}}</small>
       </div>
       <div class="sb-field-group mb-8"
         *ngIf="batchUpdateForm.value.enrollmentType !== 'open' && selectedParticipants.length > 0 && (batchDetails.participants && batchDetails.participants.length <= 100)">
-        <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
+        <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants | translate}}</label>
         <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
           <img class="ui right spaced avatar image"
             src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
@@ -183,13 +183,13 @@
       [ngClass]="{'sb-btn-disabled': disableSubmitBtn || showFormInViewMode}" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateBatchInteractEdata"
       [telemetryInteractCdata]="telemetryCdata" (click)="updateBatch()">
-      {{resourceService?.frmelmnts?.btn?.update}}
+      {{resourceService?.frmelmnts?.btn?.update | translate}}
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetForm()"
       [ngClass]="{'sb-btn-disabled': showFormInViewMode}" appTelemetryInteract
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="clearButtonInteractEdata"
       [telemetryInteractCdata]="telemetryCdata">
-      {{resourceService?.frmelmnts?.btn?.clear}}
+      {{resourceService?.frmelmnts?.btn?.clear | translate}}
     </button>
 
   </div>

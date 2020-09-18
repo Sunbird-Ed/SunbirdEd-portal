@@ -24,14 +24,14 @@
                     <div class="ten wide column pl-25">
                         <div class="ui grid">
                             <div class="twelve wide column batch-des pb-0" *ngIf="batchDetails.description">
-                                <label>{{resourceService.frmelmnts.lbl.batchdescription}}</label>
+                                <label>{{resourceService.frmelmnts.lbl.batchdescription | translate}}</label>
                                 <div *ngIf="batchDetails.description" class="des-content">
                                     <p *ngIf="!readMore"> {{ batchDetails.description | slice:0:120}}&nbsp;
                                         <span class="ui cardsKnowMore mouse-pointer" *ngIf="batchDetails.description && batchDetails.description.length > 120 && readMore === false"
-                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
+                                            (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore | translate}}</span>
                                     </p>
                                     <p *ngIf="readMore" class="courseStructureDesc"> {{ batchDetails.description}}&nbsp;
-                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
+                                        <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless | translate}}</span>
                                     </p>
                                 </div>
                             </div>
@@ -39,11 +39,11 @@
                         </div>
                         <div class="ui grid batch-date">
                             <div class="twelve wide column start-date pb-0">
-                                <label>{{resourceService.frmelmnts.lbl.startdate}}</label>
+                                <label>{{resourceService.frmelmnts.lbl.startdate | translate}}</label>
                                 <span class="pl-10">{{batchDetails.startDate | dateFormat}}</span>
                             </div>
                             <div class="twelve wide column end-date" *ngIf="batchDetails.endDate">
-                                <label>{{resourceService.frmelmnts.lbl.enddate}}</label>
+                                <label>{{resourceService.frmelmnts.lbl.enddate | translate}}</label>
                                 <span *ngIf="batchDetails.endDate" class="pl-10">{{batchDetails.endDate | dateFormat}}</span>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
         id="enrollToCourse" 
         (click)="enrollToCourse()"
     >
-        {{resourceService.frmelmnts.lbl.enrollcourse}}
+        {{resourceService.frmelmnts.lbl.enrollcourse | translate}}
     </button>
   </div>
   <!--Actions-->

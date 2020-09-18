@@ -1,5 +1,5 @@
 <div class="rightSideSectionCards ui card sb-course-batch-card">
-        <div class="header p-16 fnormal">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
+        <div class="header p-16 fnormal">{{resourceService?.frmelmnts?.lbl?.curriculum | translate}}</div>
     <div class="content">
         <div class="description">
             <div class="ui list">
@@ -7,43 +7,43 @@
                     <div *ngIf="data.mimeType=='application/pdf'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-doc mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.pdfcontents}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.pdfcontents | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType.indexOf('video')!=-1">
                         <div class="content curriculum-content">
                             <i class="sb-icon-video mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.videos}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.videos | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType.indexOf('image')!=-1">
                         <div class="content curriculum-content">
                             <i class="sb-icon-doc mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.imagecontents}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.imagecontents | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType=='application/vnd.ekstep.html-archive'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-content mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.htmlarchives}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.htmlarchives | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType=='application/vnd.ekstep.ecml-archive'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-content mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.ecmlarchives}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.ecmlarchives | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType=='application/epub'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-content mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.epubarchives}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.epubarchives | translate}}</span>
                         </div>
                     </div>
                     <div *ngIf="data.mimeType=='application/vnd.ekstep.h5p-archive'">
                         <div class="content curriculum-content">
                             <i class="sb-icon-content mr-10"></i>
-                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.h5parchives}}</span>
+                            <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.h5parchives | translate}}</span>
                         </div>
                     </div>
                 </div>

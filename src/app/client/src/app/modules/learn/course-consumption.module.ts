@@ -21,10 +21,12 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { AssessmentPlayerComponent } from './components/course-consumption/assessment-player/assessment-player.component';
 import { CourseCompletionComponent } from './components/course-consumption/course-completion/course-completion.component';
 import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
+    TranslateModule,
     SharedModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,

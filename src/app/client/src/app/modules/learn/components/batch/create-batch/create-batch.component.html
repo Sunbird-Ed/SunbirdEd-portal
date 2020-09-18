@@ -95,7 +95,7 @@
         </div>
         <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'"
           [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
-          <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase | translate}}</label>
           <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui left icon input" [ngClass]="{'disabled': !createBatchForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
