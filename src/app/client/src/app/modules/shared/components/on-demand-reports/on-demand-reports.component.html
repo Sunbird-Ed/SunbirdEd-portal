@@ -1,0 +1,34 @@
+<div class='ui stackable grid mt-0'>
+  <div class="twelve wide column pt-0">
+    <div class="d-flex flex-dc">
+      <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
+      <div class="d-flex flex-ai-center">
+        <sui-select [isSearchable]="false" class="selection course-dashboard-select" placeholder="Choose your report"
+                    [options]="reportTypes" labelField="title" valueField="title" #select>
+          <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
+          </sui-select-option>
+        </sui-select>
+
+        <div class="sb-field filterTable mx-16 mb-0">
+          <input class="sb-form-control" 
+             type="text" [(ngModel)]="password"
+            placeholder="Enter password">
+        </div>
+        <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !password))"
+        [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !password))}"
+        (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{resourceService?.frmelmnts?.lbl?.request}}
+        </button>
+      </div>
+      <p *ngIf="!isProcessed" class="fnormal note-text mt-8 mb-24">Note: Each download request would take about 24 hours to generate</p>
+      <div *ngIf="isProcessed" class="d-flex">
+        <div class="information-icon">
+          <img src="assets/images/error-icon.svg" width="18px"></div>
+        <p class=" fnormal note-text mt-8 mb-24 ml-8">This report is already requested and is in process. Please check the downloads sections below for more details</p></div>
+    </div>
+  </div>
+</div>
+<div class="pb-8 download-section-text">Downloads Section(shows only the latest 10 requests)</div>
+<sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
+              [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
+
