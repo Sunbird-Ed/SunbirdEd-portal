@@ -26,10 +26,16 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   public onDemandReportData: any[];
   public isDownloadReport = false;
   public fileName = '';
-  public reportType;
+  public selectedReport;
   public password;
   public message = 'There is no data available';
-  public isProcessed= false;
+  public isProcessed = false;
+  reportStatus = {
+    'processing_request': 'Processing request',
+    'processing_success': 'Processing success',
+    'processing_failed': 'Processing failed',
+    'expired': 'expired',
+  };
 
   constructor(public resourceService: ResourceService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
@@ -40,24 +46,22 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   loadReports() {
-    if(this.batch) {
+    if (this.batch) {
       this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-        if(data){
+        if (data) {
           this.onDemandReportData = _.get(data, 'result.jobs');
         }
-      },error => {
-        // error message
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
     }
   }
 
   reportChanged(ev) {
-    this.reportType = ev;
-    console.log(this.reportType)
+    this.selectedReport = ev;
   }
 
-  ngOnChanges(){
-    console.log('current batch-------', this.batch)
+  ngOnChanges() {
   }
 
   onDownloadLinkFail(data) {
@@ -73,41 +77,41 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
   }
 
   submitRequest() {
     this.password = '';
     const isPendingProcess = this.checkStatus();
-    if(!isPendingProcess){
+    if (!isPendingProcess) {
       this.isProcessed = false;
-    const request = {
-      "tag": this.tag,
-      "requestedBy": this.userId,
-      "jobId": this.reportType.jobId,
-      "jobConfig": {
-        batchId: this.batch.batchId
-      }
-    };
-    this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
-      if (data && data.result) {
-        this.onDemandReportData.unshift({ ...data['result'] });
-        this.onDemandReportData = _.slice(this.onDemandReportData, 0, 10);
-        this.onDemandReportData = [...this.onDemandReportData];
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
-  }else{
-    this.isProcessed = true;
-    this.toasterService.error('The request is already in Processed State');
-  }
+      const request = {
+        'tag': this.tag,
+        'requestedBy': this.userId,
+        'jobId': this.selectedReport.jobId,
+        'jobConfig': {
+          batchId: this.batch.batchId
+        }
+      };
+      this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
+        if (data && data.result) {
+          this.onDemandReportData.unshift({...data['result']});
+          this.onDemandReportData = _.slice(this.onDemandReportData, 0, 10);
+          this.onDemandReportData = [...this.onDemandReportData];
+        }
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      });
+    } else {
+      this.isProcessed = true;
+      this.toasterService.error('The request is already in Processed State');
+    }
   }
 
   checkStatus() {
-    const processPendingList = this.onDemandReportData.find(x => x.job_id === this.reportType.jobId);
+    const processPendingList = this.onDemandReportData.find(x => x.job_id === this.selectedReport.jobId);
     if (processPendingList) {
-      return processPendingList['status'] === 'Processing request'
+      return processPendingList['status'] === this.reportStatus.processing_request;
     } else {
       return false;
     }

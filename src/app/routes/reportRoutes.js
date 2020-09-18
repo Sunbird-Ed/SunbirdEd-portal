@@ -2,16 +2,10 @@ const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
 const BASE_REPORT_URL = "/report";
 const proxy = require('express-http-proxy');
-const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL, PORTAL_API_AUTH_TOKEN, sunbird_data_product_service} = require('../helpers/environmentVariablesHelper.js');
+const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL, sunbird_data_product_service} = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
 const {getUserDetailsV2} = require('../helpers/userHelper');
-const CONSTANTS = require('../helpers/constants');
-const {sendRequest} = require('../helpers/httpRequestHandler');
-const httpSatusCode = require('http-status-codes');
-const {logger} = require('@project-sunbird/logger');
-const uuidv1 = require('uuid/v1');
-const {parseJson} = require('../helpers/utilityService');
 
 module.exports = function (app) {
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],

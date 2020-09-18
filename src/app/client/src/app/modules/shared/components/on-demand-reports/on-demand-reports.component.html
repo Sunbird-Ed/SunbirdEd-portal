@@ -14,8 +14,8 @@
              type="text" [(ngModel)]="password"
             placeholder="Enter password">
         </div>
-        <button type="button" [disabled]="(!reportType || (reportType?.encrypt === 'true' && !password))" 
-        [ngClass]="{'sb-btn-disabled': (!reportType || (reportType?.encrypt === 'true' && !password))}"
+        <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !password))"
+        [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !password))}"
         (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
           {{resourceService?.frmelmnts?.lbl?.request}}
         </button>
