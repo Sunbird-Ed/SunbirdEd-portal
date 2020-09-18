@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
+    "start": "ng build --deployUrl dist/ --watch=true && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
@@ -101,7 +101,7 @@
     "sb-svg2pdf": "0.0.7",
     "slick-carousel": "^1.8.1",
     "sunbird-chatbot-client": "0.0.6",
-    "sunbird-pdf-player": "^0.0.7",
+    "sunbird-pdf-player": "^0.0.8",
     "tree-model": "^1.0.7",
     "zone.js": "^0.10.3"
   },
