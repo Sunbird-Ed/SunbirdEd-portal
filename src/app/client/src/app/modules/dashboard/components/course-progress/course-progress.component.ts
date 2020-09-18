@@ -420,22 +420,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }));
   }
 
-  /**
-   * method to download assessment/course progress report
-   * @param downloadAssessmentReport
-   */
-  downloadReport(downloadAssessmentReport: boolean) {
-    of(downloadAssessmentReport)
-      .pipe(
-        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') :
-          this.downloadCourseReport('course-progress-reports')),
-        takeUntil(this.unsubscribe)
-      )
-      .subscribe(res => { }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0076);
-      });
-  }
-
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
       return;
@@ -459,6 +443,24 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.populateCourseDashboardData();
       });
   }
+
+  /**
+   * method to download assessment/course progress report
+   * @param downloadAssessmentReport
+   */
+  downloadReport(downloadAssessmentReport: boolean) {
+    of(downloadAssessmentReport)
+      .pipe(
+        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') :
+          this.downloadCourseReport('course-progress-reports')),
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(res => {
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
+      });
+  }
+
   getReportUpdatedOnDate(batchIdentifier: string) {
     const batchId = batchIdentifier;
     const reportParams = {
@@ -481,6 +483,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
   getFieldValue(array, field) {
     return _.find(array, {'type': field}).count;
+  }
+
+  /**
+   * @since - #SH-601
+   * @param  {} currentBatch
+   * @description - This will set completedCount and participantCount to the currentBatch object;
+   */
+  setCounts(currentBatch) {
+    this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+    this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
   }
 
   /**
@@ -584,6 +596,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+
   setInteractEventData() {
     if (_.get(this.queryParams, 'batchIdentifier')) {
       this.telemetryCdata = [{'type': 'batch', 'id': this.queryParams.batchIdentifier}];
@@ -592,23 +613,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-  /**
-   * @since - #SH-601
-   * @param  {} currentBatch
-   * @description - This will set completedCount and participantCount to the currentBatch object;
-   */
-    setCounts(currentBatch) {
-      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
-      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
-    }
-
-  ngOnDestroy() {
-    if (this.userDataSubscription) {
-      this.userDataSubscription.unsubscribe();
-    }
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
 
   getSummaryReports() {
     const request = {
