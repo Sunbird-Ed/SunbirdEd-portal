@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseDetailsComponent } from './course-details.component';
 import { ResourceService } from '@sunbird/shared';
+import { GeneraliseLabelService } from '@sunbird/core';
 
 describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
@@ -10,7 +11,8 @@ describe('CourseDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CourseDetailsComponent ],
       providers: [
-        { provide: ResourceService, useValue: {} }
+        { provide: ResourceService, useValue: {} },
+        { provide: GeneraliseLabelService, useValue: {} }
       ]
     })
     .compileComponents();

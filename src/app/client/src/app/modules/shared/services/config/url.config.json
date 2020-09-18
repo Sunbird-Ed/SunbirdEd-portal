@@ -52,6 +52,7 @@
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
+    "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
