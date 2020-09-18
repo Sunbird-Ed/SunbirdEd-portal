@@ -1,3 +1,4 @@
+import { ADD_ACTIVITY_TO_GROUP } from './../../../interfaces/routerLinks';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
@@ -52,7 +53,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public globalSearchFacets: Array<string>;
   public allTabData;
   public selectedFilters;
-  
+  public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
+
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -237,15 +239,15 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
               'actions': [
                 {
                   'type': 'view',
-                  'label': 'View'
+                  'label': this.resourceService.frmelmnts.lbl.group.viewActivity
                 },
                 {
                   'type': 'addToGroup',
-                  'label': 'Add to group'
+                  'label': this.resourceService.frmelmnts.lbl.AddtoGroup
                 }
               ]
-            }
-          })
+            };
+          });
 
       }, err => {
         this.showLoader = false;
@@ -276,22 +278,22 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     // TOTO add interact telemetry here
   }
 
-  addActivity(event) {
-    const cdata = [{ id: _.get(event, 'data.identifier'), type: _.get(event, 'data.contentType') }];
+  addActivity(activityCard) {
+    const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
     this.addTelemetry('activity-course-card', cdata);
-    const isTrackable = this.courseConsumptionService.isTrackableCollection(event.data);
-    const contentMimeType = _.get(event, 'data.mimeType');
+    const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
+    const contentMimeType = _.get(activityCard, 'mimeType');
 
     if (contentMimeType === 'application/vnd.ekstep.content-collection' && isTrackable) {
 
-      this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+      this.router.navigate(['/learn/course', _.get(activityCard, 'identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
 
     } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
 
-      this.router.navigate(['/resources/play/collection', _.get(event, 'data.identifier')]);
+      this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')]);
 
     } else {
-      this.router.navigate(['/resources/play/content', _.get(event, 'data.identifier')]);
+      this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')]);
     }
   }
 
@@ -311,7 +313,15 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  hoverActionClicked(event){
-   console.log(event);
+  hoverActionClicked(event, appAddToGroupElement: HTMLDivElement) {
+   const mode =  _.get(event, 'hover.type').toLowerCase();
+   switch (mode) {
+    case 'view':
+      this.addActivity(_.get(event, 'content'));
+      break;
+    case 'addtogroup':
+      appAddToGroupElement.click();
+      break;
+   }
   }
 }
