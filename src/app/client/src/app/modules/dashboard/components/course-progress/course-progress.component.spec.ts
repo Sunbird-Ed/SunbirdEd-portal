@@ -1,3 +1,4 @@
+import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
@@ -293,4 +294,24 @@ describe('CourseProgressComponent', () => {
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.populateCourseDashboardData).toHaveBeenCalledWith('01307941196215910429');
   });  
+
+  it('should call getSummaryReports', () => {
+   const onDemandService = TestBed.get(OnDemandReportService);
+   component.currentBatch = testData.mockUserData.batches[0];
+   spyOn(onDemandService , 'getSummeryReports').and.returnValue(observableOf(testData.mockUserData.summaryReports))
+   component.getSummaryReports();
+  expect(component.currentBatch.completedCount).toEqual('100')
+  expect(component.currentBatch.participantCount).toEqual('100')
+}); 
+
+it('should call getSummaryReports', () => {
+  const onDemandService = TestBed.get(OnDemandReportService);
+  const toasterService = TestBed.get(ToasterService);
+  spyOn(toasterService, 'error').and.stub();
+  component.currentBatch = testData.mockUserData.batches[0];
+  spyOn(onDemandService , 'getSummeryReports').and.returnValue(observableThrowError('error'))
+  component.getSummaryReports();
+ expect(toasterService.error).toHaveBeenCalled();
+}); 
+  
 });
