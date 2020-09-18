@@ -40,6 +40,7 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
+const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -202,6 +203,8 @@ require('./routes/contentRoutes.js')(app) // content api routes
 require('./proxy/localProxy.js')(app) // Local proxy for content and learner service
 
 app.all('/v1/user/session/create', (req, res) => trampolineServiceHelper.handleRequest(req, res, keycloak))
+
+app.get('/getGeneralisedResourcesBundles/:lang/:fileName', proxyUtils.addCorsHeaders, getGeneralisedResourcesBundles);
 
 app.get('/v1/user/session/start/:deviceId', (req, res) => {
   if (req.session.logSession === false) {

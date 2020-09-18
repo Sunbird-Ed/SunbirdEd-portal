@@ -7,7 +7,7 @@ import { CourseConsumptionService } from './course-consumption.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
-import { PlayerService } from '@sunbird/core';
+import { PlayerService, GeneraliseLabelService } from '@sunbird/core';
 import { courseConsumptionServiceMockData } from './course-consumption.service.data.spec';
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -58,7 +58,8 @@ describe('CourseConsumptionService', () => {
       providers: [CourseConsumptionService, CourseProgressService, PlayerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService
+        {provide: ResourceService, useValue: resourceBundle}, NavigationHelperService,
+        {provide: GeneraliseLabelService, useValue: resourceBundle}
       ]
     });
   });
