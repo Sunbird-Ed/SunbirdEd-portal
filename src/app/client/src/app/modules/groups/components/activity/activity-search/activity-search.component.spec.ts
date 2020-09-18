@@ -208,7 +208,7 @@ describe('ActivitySearchComponent', () => {
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.data.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.identifier]);
   });
 
   it('should navigate to resource page if contentType is trackable and mime type is collection', () => {
@@ -218,7 +218,7 @@ describe('ActivitySearchComponent', () => {
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', event.data.identifier], {queryParams: {
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', event.identifier], {queryParams: {
       groupId: component.groupData.id
     }});
   });
@@ -230,6 +230,42 @@ describe('ActivitySearchComponent', () => {
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.data.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.identifier]);
+  });
+
+  it('should navigate to content details page on click of "View activity" from hover card', () => {
+    /** Arrange */
+    const appAddToGroupElement = document.createElement('div');
+    const event = {
+      hover: {
+        type: 'view'
+      },
+      content: activitySearchMockData.eventDataForCourse
+    };
+    spyOn(component, 'addActivity').and.stub();
+
+    /** Act */
+    component.hoverActionClicked(event, appAddToGroupElement);
+
+    /** Assert */
+    expect(component.addActivity).toHaveBeenCalledWith(activitySearchMockData.eventDataForCourse);
+  });
+
+  it('should add activity to group on click of "Add for group" button from hover card', () => {
+    /** Arrange */
+    const appAddToGroupElement = document.createElement('div');
+    const event = {
+      hover: {
+        type: 'addToGroup'
+      },
+      content: activitySearchMockData.eventDataForCourse
+    };
+    spyOn(appAddToGroupElement, 'click').and.stub();
+
+    /** Act */
+    component.hoverActionClicked(event, appAddToGroupElement);
+
+    /** Assert */
+    expect(appAddToGroupElement.click).toHaveBeenCalled();
   });
 });
