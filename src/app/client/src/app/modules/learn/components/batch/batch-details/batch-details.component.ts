@@ -55,6 +55,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   hideCreateBatch = false;
   allowCertCreation = false;
   ongoingAndUpcomingBatchList = [];
+  batchMessage = '';
+  showMessageModal = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -254,8 +256,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const batchStartDate = new Date(batch['startDate']);
     const currentdate = new Date();
     if (currentdate < batchStartDate) {
-      const batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
-      this.toasterService.error(batchMessage);
+      this.showMessageModal = true;
+      this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
     } else {
       this.courseBatchService.setEnrollToBatchDetails(batch);
       this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
