@@ -11,13 +11,13 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService.frmelmnts?.scttl?.blkuser}}
+    {{resourceService.frmelmnts?.scttl?.blkuser | translate}}
   </div>
   <!--/Header-->
 
   <!--Content-->
   <div class="sb-modal-content">
-    <p>{{resourceService.frmelmnts?.lbl?.confirmblock}} {{userDetails.firstName}} {{userDetails.lastName}}</p>
+    <p>{{resourceService.frmelmnts?.lbl?.confirmblock | translate}} {{userDetails.firstName}} {{userDetails.lastName}}</p>
   </div>
   <!--/Content-->
 
@@ -27,13 +27,13 @@
       class="sb-btn sb-btn-normal sb-btn-error" 
       (click)="modal.approve('done'); deleteUser()"
     >
-      {{resourceService.frmelmnts?.btn?.yes}}
+      {{resourceService.frmelmnts?.btn?.yes | translate}}
     </button>
     <button 
       class="sb-btn sb-btn-normal sb-btn-outline-error" 
       (click)="modal.deny(); redirect();"
     >
-      {{resourceService.frmelmnts?.btn?.no}}
+      {{resourceService.frmelmnts?.btn?.no | translate}}
     </button>
     
   </div>
