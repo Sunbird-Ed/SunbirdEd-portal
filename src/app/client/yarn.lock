@@ -614,10 +614,10 @@
     semver "5.6.0"
     semver-intersect "1.4.0"
 
-"@swimlane/ngx-datatable@15.0.0":
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-15.0.0.tgz#215f5da223d774d07f1caea54eed4e88f8c0ee24"
-  integrity sha512-yHwTjhZEWsmEO5iZaAHvW3Pr97TlOV2yLtYY1VJ1bRRPBxuvUTWeF49aavtMeu60H0xVt6v7T8oIq7oA2rOduw==
+"@swimlane/ngx-datatable@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-14.0.0.tgz#6227625e2ce2e9143735d4deeb3ab34b88745c26"
+  integrity sha512-zgRY58MzTpg9Jb575cg0O87mLtXYi6fx7NLRPRHdQ/FqH9mKjZ3i7+OjqtR8/w3KRmFP2Hnkmx52VzldZIKspg==
 
 "@types/chart.js@^2.7.48":
   version "2.9.21"
