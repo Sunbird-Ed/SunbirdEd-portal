@@ -17,7 +17,7 @@
                 interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "> </h4>
                 <span class="badge">{{totalCount}}</span>
                 <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">
-                    {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+                    {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
             </div>      
         </div>
 
