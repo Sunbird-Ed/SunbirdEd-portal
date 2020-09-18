@@ -674,6 +674,7 @@ html[layout='joy'] {
       margin-bottom: calculateRem(16px);
       border-radius: var(--sbt-bradius-24);
       background: var(--sbt-compt-bg);
+      overflow: hidden;
     }
   }
 
