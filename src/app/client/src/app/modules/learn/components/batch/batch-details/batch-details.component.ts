@@ -5,7 +5,7 @@ import { CourseBatchService, CourseProgressService, CourseConsumptionService } f
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
-import { PermissionService, UserService } from '@sunbird/core';
+import { PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
@@ -55,11 +55,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   hideCreateBatch = false;
   allowCertCreation = false;
   ongoingAndUpcomingBatchList = [];
+  batchMessage = '';
+  showMessageModal = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService,
-    public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService) {
+    public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -253,8 +256,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const batchStartDate = new Date(batch['startDate']);
     const currentdate = new Date();
     if (currentdate < batchStartDate) {
-      const batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
-      this.toasterService.error(batchMessage);
+      this.showMessageModal = true;
+      this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
     } else {
       this.courseBatchService.setEnrollToBatchDetails(batch);
       this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });

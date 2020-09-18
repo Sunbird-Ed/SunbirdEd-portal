@@ -7,7 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EnrollBatchComponent } from './enroll-batch.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, CoursesService } from '@sunbird/core';
+import { CoreModule, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -66,9 +66,8 @@ describe('EnrollBatchComponent', () => {
         DashboardModule, HttpClientTestingModule],
       providers: [CourseConsumptionService, TelemetryService, CourseBatchService, CourseProgressService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        {
-          provide: ResourceService, useValue: fakeResourceService
-        },
+        { provide: ResourceService, useValue: fakeResourceService },
+        { provide: GeneraliseLabelService, useValue: fakeResourceService },
         { provide: Router, useValue: { navigate: (route) => { } } }]
     })
       .compileComponents();

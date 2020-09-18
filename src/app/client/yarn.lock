@@ -625,6 +625,11 @@
     semver "5.6.0"
     semver-intersect "1.4.0"
 
+"@swimlane/ngx-datatable@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-14.0.0.tgz#6227625e2ce2e9143735d4deeb3ab34b88745c26"
+  integrity sha512-zgRY58MzTpg9Jb575cg0O87mLtXYi6fx7NLRPRHdQ/FqH9mKjZ3i7+OjqtR8/w3KRmFP2Hnkmx52VzldZIKspg==
+
 "@types/chart.js@^2.7.48":
   version "2.9.21"
   resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.21.tgz#ecb85f1aac2d7b28310df8cc9c88b6b5db1b91bd"
@@ -3850,6 +3855,11 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   integrity sha1-l+gBqgUt8CRU3kawK/YhZCzchQI=
   dependencies:
     homedir-polyfill "^1.0.1"
+
+export-to-csv@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
+  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
 
 express@^4.16.2:
   version "4.17.1"

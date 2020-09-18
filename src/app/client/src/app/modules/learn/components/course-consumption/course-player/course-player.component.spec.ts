@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreModule, PermissionService, UserService } from '@sunbird/core';
+import { CoreModule, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { ContentUtilsServiceService, ResourceService, SharedModule, ToasterService, WindowScrollService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
@@ -149,7 +149,7 @@ describe('CoursePlayerComponent', () => {
       providers: [CourseConsumptionService, CourseProgressService, CourseBatchService, CoursesService, AssessmentScoreService,
         ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
@@ -161,6 +161,8 @@ describe('CoursePlayerComponent', () => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
     contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
+    const generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    generaliseLabelService.frmelmnts = resourceServiceMockData.frmelmnts;
   });
 
   afterEach(() => {
@@ -573,14 +575,6 @@ describe('CoursePlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_11287204084174028818']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
-  });
-
-  it('should show join course popup if the course is not enrolled or the user has preview permission', () => {
-    component.hasPreviewPermission = true;
-    component.contentStatus = [];
-    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
-    expect(component.showJoinTrainingModal).toBe(false);
   });
 
   it('should show join course popup if the course is not enrolled or the user has preview permission', () => {

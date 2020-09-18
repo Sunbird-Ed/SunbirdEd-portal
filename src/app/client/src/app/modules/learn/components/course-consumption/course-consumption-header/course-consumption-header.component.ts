@@ -5,7 +5,7 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -65,7 +65,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);

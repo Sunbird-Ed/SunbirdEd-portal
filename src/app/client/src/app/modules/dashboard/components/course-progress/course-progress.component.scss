@@ -48,7 +48,7 @@ a {
 
 ::ng-deep {
   .ui.selection.dropdown {
-    line-height: 1em;
+    line-height: normal;
   }
 
   .ui.search.dropdown.course-dashboard-select>.text {
@@ -108,3 +108,34 @@ a {
   }
 
 }
+
+.batch-report-tabs{
+  .ui.secondary.pointing.menu {
+    background: none;
+    margin: 0rem;
+    justify-content: flex-start;
+    font-size: calculateRem(14px);
+  }
+  .ui.secondary.pointing.menu .active.item {
+    border-color: var(--primary-400);
+    color: var(--primary-400);
+    font-weight: 400;
+    border-bottom: calculateRem(4px) solid var(--primary-400);
+    font-weight: bold;
+  }
+  .ui.segment {
+    position: relative;
+    box-shadow: none;
+    margin: calculateRem(2px) 0;
+    padding: calculateRem(24px) calculateRem(16px);
+    border-radius: calculateRem(4px);
+    border: 0px solid var(--gray-0);
+    font-size:calculateRem(14px);
+    background: var(--white);
+  
+    &.active {
+      background: var(--white);
+    }
+  }
+  }
+  
