@@ -110,6 +110,7 @@ let envVariables = {
   desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
+  sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
 
   // Default Language Configuration

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
-import { CoursesService, PermissionService, UserService } from '@sunbird/core';
+import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
   ResourceService, ToasterService, WindowScrollService, ITelemetryShare, LayoutService
@@ -10,7 +10,7 @@ import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEv
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { combineLatest, merge, Subject } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
@@ -102,7 +102,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private deviceDetectorService: DeviceDetectorService,
     public telemetryService: TelemetryService,
     private contentUtilsServiceService: ContentUtilsServiceService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -440,7 +441,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
-      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
         this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
@@ -454,7 +455,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   validateBatchDate(batch) {
-    let batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);

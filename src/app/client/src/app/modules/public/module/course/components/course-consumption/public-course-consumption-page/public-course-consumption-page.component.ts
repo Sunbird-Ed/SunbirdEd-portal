@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
+import { GeneraliseLabelService } from '@sunbird/core';
 
 @Component({
   templateUrl: './public-course-consumption-page.component.html',
@@ -30,7 +31,8 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
     public resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
-    private configService: ConfigService, private telemetryService: TelemetryService) {
+    private configService: ConfigService, private telemetryService: TelemetryService,
+    public generaliseLabelService: GeneraliseLabelService) {
   }
 
   showJoinModal(event) {
@@ -51,7 +53,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
       this.showLoader = false;
     }, (error) => {
       if (_.isEqual(_.get(error, 'error.responseCode'), 'RESOURCE_NOT_FOUND')) {
-        this.toasterService.error(this.resourceService.messages.emsg.m0002);
+        this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
