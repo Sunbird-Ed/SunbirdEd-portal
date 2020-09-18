@@ -1,4 +1,3 @@
-import { filter } from 'rxjs/operators';
 import { Component, OnInit, Input, OnChanges,EventEmitter,Output } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
@@ -38,27 +37,20 @@ export const multiFilter = (arr: Object[], filters: Object) => {
 })
 export class SbDatatableComponent implements OnInit, OnChanges {
 
-  @Input() searchFields;
   @Input() data;
   @Input() columns;
   @Input() downloadCSV;
-  @Input() sortable;
   @Input() name;
+  @Input() message;
   @Output() downloadLink = new EventEmitter();
-
   public tableData = [];
   public searchData;
-  public sortOrder = 'asc';
-  public sortField = 'state';
   public showLoader = false;
   public csvExporter: any;
   public keyUp = new Subject<object>();
   public listFilter = {};
   public filterModel = {};
-  public messages = {
-      emptyMessage: 'No Data to display'
-    }
-
+  public tableMessage;
   constructor() { }
 
   ngOnInit() {
@@ -81,23 +73,25 @@ export class SbDatatableComponent implements OnInit, OnChanges {
     this.tableData = multiFilter(this.data, this.listFilter);
   }
   ngOnChanges() {
+    this.tableMessage = {
+      'emptyMessage': this.message
+    }
     this.tableData = _.cloneDeep(this.data);
     _.forEach(this.columns, (x) => {
       this.filterModel[x.prop] = null
     });
   }
 
-  downloadUrl(ev){
-    this.downloadLink.emit(ev)
+  downloadUrl(prop, row){
+    if(prop === 'download_urls') {
+      const isLinkExpired = new Date().getTime() > new Date(row.expires_at).getTime();
+      if(isLinkExpired){
+        this.downloadLink.emit(row)
+      }else{
+        window.open(row['download_urls'][0], '_blank');
+      }
+    }
   }
-
-  // sort(column) {
-  //   if(column.isSortable){
-  //     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-  //     this.sortField = column.prop;
-  //     this.tableData = _.orderBy(this.tableData, [this.sortField], [this.sortOrder]);
-  //   }
-  // }
 
   clearSearch() {
     this.searchData = '';

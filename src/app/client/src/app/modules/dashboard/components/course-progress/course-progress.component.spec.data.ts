@@ -445,5 +445,119 @@ export const mockUserData = {
         "jobId": "qs-report-v3",
         "lang_key":"frmelmnts.lbl.qsResponseReport"
       }
+    ],
+    formApiResponse : {
+      "request": {
+        "type": "batch",
+        "subType": "report_types",
+        "action": "list",
+        "replaceKeys": ["?framework", "?courseId", "?status" ],
+        "data": {
+          "templateName": "defaultTemplate",
+          "action": "list",
+          "fields": [
+            {
+              "title": "Course progress exhaust",
+              "jobId": "progress-exhaust",
+              "encrypt": "false",
+              "lang_key": "frmelmnts.lbl.progressExhaustReport",
+              "jobConfig": {
+                "batchFilters": ["?_framework"],
+                "contentFilters": {
+                  "request": {
+                    "filters": {
+                      "identifier": [
+                        "?batchId", "?_courseId"
+                      ],
+                      "prevState": "?_status"
+                    }
+                  }
+                },
+                "output_format": "csv"
+              }
+            },
+            {
+              "title": "User profile exhaust",
+              "jobId": "userinfo-exhaust",
+              "encrypt": "true",
+              "lang_key":"frmelmnts.lbl.userExhaustReport",
+              "jobConfig" : {
+                "batchFilters": ["?_framework"],
+                "contentFilters": {
+                  "request": {
+                    "filters": {
+                      "identifier": [
+                        "?batchId", "?_courseId"
+                      ],
+                      "prevState": "?_status"
+                    }
+                  }
+                },
+                "output_format": "csv"
+              }
+            },
+            {
+              "title": "Question set report",
+              "jobId": "response-exhaust",
+              "encrypt": "false",
+              "lang_key": "frmelmnts.lbl.qsResponseReport",
+              "jobConfig": {
+                "batchFilters": ["?_framework"],
+                "contentFilters": {
+                  "request": {
+                    "filters": {
+                      "identifier": [
+                        "?batchId", "?_courseId"
+                      ],
+                      "prevState": "?_status"
+                    }
+                  }
+                },
+                "output_format": "csv"
+              }
+            }  
+          ]
+        }
+      }
+    },
+
+    batches : [
+       {
+         batchId: "01308304154718208038",
+         collectionId: "do_21308303538717491213097",
+         completedCount: 0,
+         courseId: "do_21308303538717491213097",
+         createdBy: "ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e",
+         createdDate: "2020-08-10 09:07:36:143+0000",
+         createdFor: ["0124784842112040965"],
+         endDate: null,
+         enrollmentEndDate: null,
+         enrollmentType: "open",
+         id: "01308304154718208038",
+         identifier: "01308304154718208038",
+         name: "SH 628 aca",
+         participantCount: 0,
+         startDate: "2020-08-10",
+         status: 1
+       },
+       {
+         batchId: "01308304154718208038",
+         collectionId: "do_21308303538717491213097",
+         completedCount: 0,
+         courseId: "do_21308303538717491213097",
+         createdBy: "ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e",
+         createdDate: "2020-08-10 09:07:36:143+0000",
+         createdFor: ["0124784842112040965"],
+         endDate: "2020-08-12",
+         enrollmentEndDate: "2020-08-12",
+         enrollmentType: "open",
+         id: "01308304154718208038",
+         identifier: "01308304154718208038",
+         name: "SH 628 aca",
+         participantCount: 0,
+         startDate: "2020-08-10",
+         status: 1
+       }
     ]
+
 };

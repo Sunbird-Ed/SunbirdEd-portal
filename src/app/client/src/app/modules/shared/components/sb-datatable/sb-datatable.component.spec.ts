@@ -60,9 +60,14 @@ describe('SbDatatableComponent', () => {
 
   it('should call filterDataTable', () => {
     component.data = TableData.responseData;
-    component.listFilter = {'state': 'andhra', 'district': '', 'noofEnrollments': null}
+    component.listFilter = {'state': 'Telengana', 'district': '', 'noofEnrollments': null}
     component.filterDataTable();
-    // expect(component.filterDataTable).toHaveBeenCalled();
+    expect(component.tableData).toEqual([{
+      state: 'Telengana',
+      district: 'Hydrabad',
+      noofEnrollments: 45,
+      noofCompletions: 15
+    }]);
   });
   
   // it('should call search with search fields', () => {

@@ -1,0 +1,6 @@
+@import "mixins/mixins";
+
+.information-icon{
+    position: relative;
+    top: calculateRem(8px);
+  }

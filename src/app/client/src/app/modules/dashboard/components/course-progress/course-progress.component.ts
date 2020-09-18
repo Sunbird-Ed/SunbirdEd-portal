@@ -169,8 +169,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   subscription: Subscription;
   isDownloadReport = false;
   stateWiseReportDate = [];
-  columns = [];
-  searchFields = [];
+  public message = 'There is no data available';
+  columns = [
+    { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
+    { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
+    { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+    { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }];
   fileName: string;
   userConsent;
   reportTypes = [];
@@ -503,6 +507,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             //   this.reportTypes = options;
             // }
           }
+        },error=> {
+          // error message
         });
     });
 
@@ -547,12 +553,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     ];
     this.isDownloadReport = true;
-    this.columns = [
-      { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
-      { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-      { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
-      { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }]
-    this.searchFields = ['state', 'district'];
+    // this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
