@@ -36,13 +36,19 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
-      if (data) {
-        this.onDemandReportData = _.get(data, 'result.jobs');
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
+    this.loadReports();
+  }
+
+  loadReports() {
+    if(this.batch) {
+      this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
+        if(data){
+          this.onDemandReportData = _.get(data, 'result.jobs');
+        }
+      },error => {
+        // error message
+      });
+    }
   }
 
   reportChanged(ev) {
