@@ -109,9 +109,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       filter(({type, event}) => {
         if (type === 'mediaType' && this.selectedMediaTypeIndex !== event.data.index) {
           this.selectedMediaTypeIndex = event.data.index;
-          return true;
         }
-        return false;
+        return true;
       }),
       debounceTime(1000)).subscribe(({ type, event }) => {
       this.emitFilterChangeEvent();
