@@ -19,6 +19,7 @@ import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
+
 @Component({
   selector: 'app-activity-search',
   templateUrl: './activity-search.component.html',
@@ -51,10 +52,13 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public globalSearchFacets: Array<string>;
   public allTabData;
   public selectedFilters;
+  
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+
+
   constructor(
     public resourceService: ResourceService,
     public configService: ConfigService,
@@ -228,6 +232,21 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
         this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
+          _.each(this.contentList, item => {
+            item.hoverData = {
+              'actions': [
+                {
+                  'type': 'view',
+                  'label': 'View'
+                },
+                {
+                  'type': 'addToGroup',
+                  'label': 'Add to group'
+                }
+              ]
+            }
+          })
+
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -292,4 +311,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  hoverActionClicked(event){
+   console.log(event);
+  }
 }
