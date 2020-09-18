@@ -157,7 +157,7 @@ describe('AddActivityContentTypesComponent', () => {
 
     /** Assert */
     expect(csGroupAddableBloc.updateState).toHaveBeenCalledWith({
-      pageIds: ['course'],
+      pageIds: ['course', 'add-activity-to-group'],
       groupId: AddActivityContentTypesData.groupData.id,
       params: {
         searchQuery: cardData.searchQuery,
