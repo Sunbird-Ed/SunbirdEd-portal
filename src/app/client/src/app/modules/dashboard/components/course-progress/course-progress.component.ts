@@ -181,7 +181,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   columns = [
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
     { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-    { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
+    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' },
     { name: 'No. of Completions', isSortable: false, prop: 'noOfCompletions', placeholder: 'Filter completions' }];
   fileName: string;
   userConsent;
@@ -479,76 +479,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
-  getSummaryReports() {
-    const request = {
-      "request": {
-          "filters": {
-             "collectionId": this.currentBatch.collectionId,
-             "batchId": this.currentBatch.batchId
-          },
-          "groupBy": [
-          ],
-          "granularity": "LAST_30DAYS" // data conformation
-      }
-  }
-    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
-      if(reports && reports.result){
-       const result = _.get(reports, 'result');
-       const groupData = _.get(result, 'groupBy')
-       this.stateWiseReportDate = _.map(groupData , (x)=> {
-         return {
-           state: x.state,
-           district: x.district,
-           noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
-           noOfCompletions: this.getFieldValue(x.values, 'completed'),
-         }
-       })
-        const metrics = _.get(result, 'metrics');
-        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed')
-        this.currentBatch.completedCount =  this.getFieldValue(metrics, 'enrolled') 
-      }
-    },error=> {
-      this.stateWiseReportDate = [
-        {
-          state: 'Andhra Pradesh',
-          district: 'Chittoor',
-          noofEnrollments: 20,
-          noofCompletions: 10
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Vishakapatanam',
-          noofEnrollments: 50,
-          noofCompletions: 25
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Guntur',
-          noofEnrollments: 70,
-          noofCompletions: 30
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Kadapa',
-          noofEnrollments: 65,
-          noofCompletions: 10
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Nellore',
-          noofEnrollments: 100,
-          noofCompletions: 25
-        },
-        {
-          state: 'Telengana',
-          district: 'Hydrabad',
-          noofEnrollments: 45,
-          noofCompletions: 15
-        }
-      ];
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
-  }
+ 
 
   getFieldValue(array, field){
     return _.find(array, {"type": field}).count;
@@ -671,6 +602,77 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  getSummaryReports() {
+    const request = {
+      "request": {
+          "filters": {
+             "collectionId": this.currentBatch.collectionId,
+             "batchId": this.currentBatch.batchId
+          },
+          "groupBy": [
+          ],
+          "granularity": "LAST_30DAYS" // data conformation
+      }
+  }
+    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
+      if(reports && reports.result){
+       const result = _.get(reports, 'result');
+       const groupData = _.get(result, 'groupBy')
+       this.stateWiseReportDate = _.map(groupData , (x)=> {
+         return {
+           state: x.state,
+           district: x.district,
+           noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
+           noOfCompletions: this.getFieldValue(x.values, 'completed'),
+         }
+       })
+        const metrics = _.get(result, 'metrics');
+        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed')
+        this.currentBatch.completedCount =  this.getFieldValue(metrics, 'enrolled') 
+      }
+    },error=> {
+      this.stateWiseReportDate = [
+        {
+          state: 'Andhra Pradesh',
+          district: 'Chittoor',
+          noOfEnrollments: 20,
+          noOfCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Vishakapatanam',
+          noOfEnrollments: 50,
+          noOfCompletions: 25
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Guntur',
+          noOfEnrollments: 70,
+          noOfCompletions: 30
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Kadapa',
+          noOfEnrollments: 65,
+          noOfCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Nellore',
+          noOfEnrollments: 100,
+          noOfCompletions: 25
+        },
+        {
+          state: 'Telengana',
+          district: 'Hydrabad',
+          noOfEnrollments: 45,
+          noOfCompletions: 15
+        }
+      ];
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    })
   }
   setInteractEventData() {
     if (_.get(this.queryParams, 'batchIdentifier')) {
