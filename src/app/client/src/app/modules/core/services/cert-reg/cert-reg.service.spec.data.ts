@@ -14,5 +14,13 @@ export const mockResponseData = {
         'result': {
             'response': 'SUCCESS'
         }
-    }
+    },
+    batches: [{
+        batchId: '1',
+        status: 2
+    }],
+    batchesInProgress: [{
+        batchId: '1',
+        status: 1
+    }]
 };
