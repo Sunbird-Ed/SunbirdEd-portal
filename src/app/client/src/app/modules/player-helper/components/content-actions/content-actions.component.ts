@@ -2,7 +2,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -12,7 +12,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './content-actions.component.html',
   styleUrls: ['./content-actions.component.scss']
 })
-export class ContentActionsComponent implements OnInit, OnChanges {
+export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
   actionButtons = actionButtons;
   contentRatingModal = false;
@@ -31,6 +31,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   sharelinkModal = false;
   shareLink: string;
   mimeType: string;
+  subscription;
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -54,7 +55,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
-    this.contentUtilsServiceService.contentShareEvent.subscribe(() => {
+    this.subscription = this.contentUtilsServiceService.contentShareEvent.subscribe(() => {
       this.shareContent(this.contentData);
     });
   }
@@ -141,4 +142,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     });
   }
 
+    ngOnDestroy() {
+      if (this.subscription.unsubscribe) {
+        this.subscription.unsubscribe();
+      }
+    }
   }

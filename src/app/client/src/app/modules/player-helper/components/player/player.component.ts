@@ -210,7 +210,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
          }
         },
         (error) => {
-          this.loadNewPlayer();
+          this.loadOldPlayer();
         }
       );
     } else {
