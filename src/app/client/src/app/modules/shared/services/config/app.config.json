@@ -8,18 +8,16 @@
     "options": ""
   },
   "CommonSearch": {
-    "contentType": [
-      "Collection",
-      "TextBook",
-      "LessonPlan",
-      "Resource",
-      "SelfAssess",
-      "PracticeResource",
-      "LearningOutcomeDefinition",
-      "ExplanationResource",
-      "CurriculumCourse"
-    ]
-  },
+    "primaryCategory": [
+      "Course",
+      "Digital Textbook",
+      "Content Playlist",
+      "Explanation Content",
+      "Learning Resource",
+      "Practice Question Set",
+      "eTextbook",
+      "Teacher Resource"
+    ],
   "DialAssembleSearch": {
     "contentType": [
       "Collection",
