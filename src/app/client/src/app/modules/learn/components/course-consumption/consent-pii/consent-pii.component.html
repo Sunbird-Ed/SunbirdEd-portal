@@ -1,40 +1,43 @@
 <sui-accordion class="styled fluid sb-accordion ui accordion sb-new-theme-accordion">
   <sui-accordion-panel [isOpen]="false">
+
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.dataSetting}}</span>
       <i class="chevron down icon" aria-hidden="true"></i>
     </div>
+
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
       <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
-        <span>{{ consentPii ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
+        <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
       </label>
-      <p class="fsmall mb-0">{{resourceService?.frmelmnts?.lbl?.profileDetailsNote}}</p>
-      <label class="fsmall font-weight-normal data-labels">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}
-        DD/MM/YY</label>
+
+      <p class="fsmall mb-0" *ngIf="isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
+      <p class="fsmall mb-0" *ngIf="!isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
+      <label class="fsmall font-weight-normal data-labels">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn}}</label>
+
       <div class="d-flex flex-ai-end flex-jc-flex-end">
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold"
           (click)="toggleEditSetting()">
           {{ editSetting ? resourceService?.frmelmnts?.btn?.close : resourceService?.frmelmnts?.lbl?.editSetting }}
         </button>
       </div>
+
       <div *ngIf="editSetting" class="sb-update-data-settings">
         <hr>
-        <label
-          class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
+        <label class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
         <div class="d-flex py-8 flex-w-wrap">
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-            <input [value]="Yes" name="consentPii" type="radio" [(ngModel)]="consentPii">
-            <label for="yes" class="fsmall">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</label>
+            <input [value]="'Yes'" id="shareConsent" type="radio" [(ngModel)]="consentPii">
+            <label for="shareConsent" class="fsmall">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</label>
           </div>
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-            <input [value]="No" name="consentPii" type="radio" [(ngModel)]="consentPii">
-            <label for="no" class="fsmall">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</label>
+            <input [value]="'No'" id="noShareContent" type="radio" [(ngModel)]="consentPii">
+            <label for="noShareContent" class="fsmall">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</label>
           </div>
         </div>
         <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100 text-uppercase"
-          (click)="showConsentPopup = true">{{resourceService?.frmelmnts?.btn?.save}}</button>
+          (click)="saveConsent()">{{resourceService?.frmelmnts?.btn?.save}}</button>
       </div>
-
     </div>
   </sui-accordion-panel>
 </sui-accordion>
@@ -49,43 +52,47 @@
   <!--/Header-->
   <!--Content-->
   <div class="sb-modal-content d-flex flex-dc o-y-visible">
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}} :
-      {{userInformation.name || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}} :
-      {{userInformation.state || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.userId}} :
-      {{userInformation.userid || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}} :
-      {{userInformation.district || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.block}} :
-      {{userInformation.block || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolId}} :
-      {{userInformation.schoolId || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolName}} :
-      {{userInformation.schoolName || '-'}}</label>
-    <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobilNo}} :
-      {{userInformation.phone || '-'}}</label>
-    <label class="mb-24 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.emailId}} :
-      {{userInformation.emailId || '-'}}</label>
+    <div class="ui stackable grid m-0">
+      <div class="two wide column px-0">
+        <div class="d-flex flex-dc">
+        <label class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.userId}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.block}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolId}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolName}} :</label>
+        <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobilNo}} :</label>
+        <label class="mb-24 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.emailId}} :</label>
+      </div>
+      </div>
+      <div class="nine wide column">
+        <div class="d-flex flex-dc">
+        <label class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{userInformation.name || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.state || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.userid || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.district || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.block || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.schoolId || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.schoolName || '-'}}</label>
+        <label class="mb-16 fnormal font-weight-normal">{{userInformation.phone || '-'}}</label>
+        <label class="mb-24 fnormal font-weight-normal">{{userInformation.emailId || '-'}}</label>
+        </div>
+      </div>
+    </div>
     <div class="mb-16 fnormal font-weight-normal">
-      <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">
-      {{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}</div>
+      <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
+    </div>
     <p class="mb-0fnormal font-weight-normal">
-      <input type="checkbox" [(ngModel)]="consentPii" name="" id="" class="mr-8">
-      {{resourceService?.frmelmnts?.lbl?.agreeToShareDetails}}
-      <span
-        class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': resourceService?.instance}}</span>
+      <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{resourceService?.frmelmnts?.lbl?.agreeToShareDetails}}
+      <span class="sb-color-primary" (click)="showTncPopup=true">{{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': resourceService?.instance}}</span>
     </p>
   </div>
   <!--/Content-->
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="saveConsent()">
-      {{resourceService?.frmelmnts?.lbl?.share}}
-    </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="showConsentPopup = false">
-      {{resourceService?.frmelmnts?.lbl?.dontShare}}
-    </button>
+    <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)">{{resourceService?.frmelmnts?.lbl?.share}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="updateUserConsent(false)">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
   </div>
   <!--/Actions-->
 </sui-modal>

@@ -171,8 +171,8 @@
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
         <!-- Consent to share PII  -->
-        <div class="mb-16" *ngIf="showConsent()">
-          <app-consent-pii [showConsentPopup]="showConsentPII" [consent]="true" [collection]="courseHierarchy" ></app-consent-pii>
+        <div class="mb-16" *ngIf="showDataSettingSection">
+          <app-consent-pii [showConsentPopup]="showConsentPopup" [collection]="courseHierarchy" ></app-consent-pii>
         </div>
 
         <!-- Credits & License information -->

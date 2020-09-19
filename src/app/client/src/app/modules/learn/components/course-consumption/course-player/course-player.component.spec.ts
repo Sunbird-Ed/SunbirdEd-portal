@@ -827,7 +827,7 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy['userConsent'] = 'Yes';
     component.enrolledCourse = true;
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
-    const response = component.showConsent();
+    const response = component.getDataSetting();
     expect(response).toBeTruthy();
   });
 
@@ -837,7 +837,7 @@ describe('CoursePlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.courseHierarchy['userConsent'] = 'No';
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
-    const response = component.showConsent();
+    const response = component.getDataSetting();
     expect(response).toBeFalsy();
   });
 
@@ -845,7 +845,7 @@ describe('CoursePlayerComponent', () => {
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     activatedRouteStub.queryParamsMock['consent'] = 1;
     component.ngOnInit();
-    expect(component.showConsentPII).toBeTruthy();
+    expect(component.showConsentPopup).toBeTruthy();
   });
 
 });

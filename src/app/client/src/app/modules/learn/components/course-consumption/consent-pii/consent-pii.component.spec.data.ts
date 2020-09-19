@@ -84,5 +84,54 @@ export const MockData = {
     ],
     'promptTnC': false,
     'emailVerified': true
+  },
+  collection: {
+    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'identifier': 'do_1130934445218283521816'
+  },
+  tncConfig: {
+    'id': 'api',
+    'params': {
+      'status': 'success',
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'tncConfig',
+        'field': 'tncConfig',
+        'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+      }
+    }
+  },
+  tncConfigIncorrectData: {
+    'id': 'api',
+    'params': {
+      'status': 'success',
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'tncConfig',
+        'field': 'tncConfig',
+        'value': '{"latestVersion":"v4","v4":{"url":}}'
+      }
+    }
+  },
+  getConsentResponse: {
+    'consents': [
+      {
+        'status': 'REVOKED',
+        'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad',
+        'consumerId': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'objectId': 'do_1130934445218283521816',
+        'objectType': 'Collection'
+      }
+    ]
+  },
+  updateConsentResponse: {
+    'consent': {
+      'userId': 'c4cc494f-04c3-49f3-b3d5-7b1a1984abad'
+    },
+    'message': 'User Consent updated successfully.'
   }
-}
+};

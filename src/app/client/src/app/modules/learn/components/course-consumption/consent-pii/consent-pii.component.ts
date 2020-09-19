@@ -1,11 +1,11 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { TncService, UserService } from '@sunbird/core';
+import { ResourceService, ServerResponse, ToasterService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-consent-pii',
@@ -15,28 +15,31 @@ import { Subject } from 'rxjs';
 export class ConsentPiiComponent implements OnInit {
 
   @Input() showConsentPopup: boolean;
-  @Input() consent: string;
   @Input() collection;
   @ViewChild('profileDetailsModal') profileDetailsModal;
-  consentPii: boolean;
+  consentPii = 'Yes';
+  isDataShareOn = false;
+  lastUpdatedOn = '';
   userInformation = [];
   editSetting = false;
+  isTncAgreed = false;
   showTncPopup = false;
+  termsAndConditionLink: string;
   unsubscribe = new Subject<void>();
   private usersProfile: any;
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private toasterService: ToasterService,
     public userService: UserService,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public tncService: TncService,
+    public utilService: UtilService
   ) { }
 
   ngOnInit() {
-    this.consentPii = !(this.consent === 'Yes');
     this.usersProfile = this.userService.userProfile;
     this.getUserInformation();
     this.getUserConsent();
-    this.updateUserConsent(true);
   }
 
   getUserInformation() {
@@ -76,17 +79,36 @@ export class ConsentPiiComponent implements OnInit {
     }
   }
 
-  saveConsent() {
-    console.log();
-    const newConsent = this.consentPii ? 'Yes' : 'No';
-    if (this.consent !== newConsent) {
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
-      this.showConsentPopup = false;
+  fetchTncData() {
+    this.tncService.getTncConfig().pipe(takeUntil(this.unsubscribe)).subscribe((data: ServerResponse) => {
+      const response = _.get(data, 'result.response.value');
+      if (response) {
+        try {
+          const tncConfig = this.utilService.parseJson(response);
+          const version = _.get(tncConfig, 'latestVersion') || {};
+          this.termsAndConditionLink = tncConfig[version].url;
+        } catch (e) {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        }
+      }
+    }, () => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     }
+    );
+  }
+
+  saveConsent() {
+    const isActive = this.consentPii === 'Yes';
+    this.updateUserConsent(isActive);
+    this.toggleEditSetting();
   }
 
   toggleEditSetting() {
     this.editSetting = !this.editSetting;
+  }
+
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
   }
 
   getUserConsent() {
@@ -98,9 +120,12 @@ export class ConsentPiiComponent implements OnInit {
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
-        console.log('res', res);
+        this.isDataShareOn = _.get(res, 'consents[0].status') === ConsentStatus.ACTIVE;
+        this.consentPii = this.isDataShareOn ? 'No' : 'Yes';
       }, error => {
+        // If 404 then open popup
         console.error('error', error);
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
   }
 
@@ -108,17 +133,20 @@ export class ConsentPiiComponent implements OnInit {
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
-      consumerId: this.collection.channel, //course channel id
+      consumerId: this.collection.channel,
       objectId: this.collection.identifier,
       objectType: 'Collection'
     };
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(res => {
-        console.log('Update consent status', res);
+      .subscribe(() => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        this.getUserConsent();
       }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.dataSettingNotSubmitted'));
         console.error('Error while updating user consent', error);
       });
+    this.showConsentPopup = false;
   }
 
   ngOnDestroy() {
