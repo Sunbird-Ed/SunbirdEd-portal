@@ -841,6 +841,20 @@
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "Course",
+      "LessonPlan",
+      "Resource",
+      "SelfAssess",
+      "PracticeResource",
+      "LearningOutcomeDefinition",
+      "ExplanationResource",
+      "ExperientialResource",
+      "eTextBook",
+      "TVLesson"
+    ],
     "primaryCategory": [
       "Course",
       "Digital Textbook",
