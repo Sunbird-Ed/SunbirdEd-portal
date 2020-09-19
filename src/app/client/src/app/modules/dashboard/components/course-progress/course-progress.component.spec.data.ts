@@ -592,7 +592,8 @@ export const mockUserData = {
            }
         ]
      }
-    }
+    },
+    stateWiseReportData : [{state: 'Karnataka', district: 'Tumkur', noOfEnrollments: '100', noOfCompletions: '100'}]
 
 
 };

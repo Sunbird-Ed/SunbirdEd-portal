@@ -302,7 +302,9 @@ describe('CourseProgressComponent', () => {
     component.getSummaryReports();
     expect(component.currentBatch.completedCount).toEqual('100');
     expect(component.currentBatch.participantCount).toEqual('100');
+    expect(component.stateWiseReportData).toEqual(testData.mockUserData.stateWiseReportData);
   });
+
 
   it('should call getSummaryReports error case', () => {
     const onDemandService = TestBed.get(OnDemandReportService);

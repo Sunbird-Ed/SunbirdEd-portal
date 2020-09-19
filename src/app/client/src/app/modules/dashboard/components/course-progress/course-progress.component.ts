@@ -176,7 +176,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryCdata: Array<{}>;
   subscription: Subscription;
   isDownloadReport = false;
-  stateWiseReportDate = [];
+  stateWiseReportData = [];
   public message = 'There is no data available';
   columns = [
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
@@ -620,7 +620,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       if(reports && reports.result){
        const result = _.get(reports, 'result');
        const groupData = _.get(result, 'groupBy')
-       this.stateWiseReportDate = _.map(groupData , (x)=> {
+       this.stateWiseReportData = _.map(groupData , (x)=> {
          return {
            state: x.state,
            district: x.district,
@@ -633,7 +633,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.currentBatch.completedCount =  this.getFieldValue(metrics, 'enrolled') 
       }
     },error=> {
-      this.stateWiseReportDate = [
+      this.stateWiseReportData = [
         {
           state: 'Andhra Pradesh',
           district: 'Chittoor',

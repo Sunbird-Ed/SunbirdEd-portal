@@ -200,7 +200,7 @@
             <a class="item" (click)="loadOndemandReports()" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
         </div>
         <div class="ui segment state-report" suiTabContent="1">
-         <sb-datatable [name]="fileName" [message]="message"  [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+         <sb-datatable [name]="fileName" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
         </div>
         <div class="ui segment detailed-report" suiTabContent="2">
           <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
