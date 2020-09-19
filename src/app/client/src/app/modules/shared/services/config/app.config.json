@@ -8,16 +8,18 @@
     "options": ""
   },
   "CommonSearch": {
-    "primaryCategory": [
-      "Course",
-      "Digital Textbook",
-      "Content Playlist",
-      "Explanation Content",
-      "Learning Resource",
-      "Practice Question Set",
-      "eTextbook",
-      "Teacher Resource"
-    ],
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "LessonPlan",
+      "Resource",
+      "SelfAssess",
+      "PracticeResource",
+      "LearningOutcomeDefinition",
+      "ExplanationResource",
+      "CurriculumCourse"
+    ]
+  },
   "DialAssembleSearch": {
     "contentType": [
       "Collection",
@@ -839,20 +841,6 @@
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
-    "contentType": [
-      "Collection",
-      "TextBook",
-      "Course",
-      "LessonPlan",
-      "Resource",
-      "SelfAssess",
-      "PracticeResource",
-      "LearningOutcomeDefinition",
-      "ExplanationResource",
-      "ExperientialResource",
-      "eTextBook",
-      "TVLesson"
-    ],
     "primaryCategory": [
       "Course",
       "Digital Textbook",
