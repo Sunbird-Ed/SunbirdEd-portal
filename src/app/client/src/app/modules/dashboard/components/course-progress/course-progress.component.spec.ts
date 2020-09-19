@@ -316,4 +316,10 @@ describe('CourseProgressComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
+  it('should call getFieldValue', () => {
+    const array = [{type: 'completed' , count: "100"},{type: 'enrolled' , count: "100"}];
+    const resultCount = component.getFieldValue(array,'completed');
+    expect(resultCount).toBe("100")
+  });
+
 });
