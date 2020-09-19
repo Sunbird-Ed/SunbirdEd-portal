@@ -37,7 +37,7 @@ export class ConsentPiiComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.usersProfile = this.userService.userProfile;
+    this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
   }
@@ -122,14 +122,19 @@ export class ConsentPiiComponent implements OnInit {
       .subscribe(res => {
         this.isDataShareOn = _.get(res, 'consents[0].status') === ConsentStatus.ACTIVE;
         this.consentPii = this.isDataShareOn ? 'No' : 'Yes';
+        this.lastUpdatedOn = _.get(res, 'consents[0].lastUpdatedOn') || '';
       }, error => {
-        // If 404 then open popup
         console.error('error', error);
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        if (error.code === 'HTTP_CLIENT_ERROR' && _.get(error, 'response.responseCode') === 404) {
+          this.showConsentPopup = true;
+        } else {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        }
       });
   }
 
   updateUserConsent(isActive: boolean) {
+    this.showConsentPopup = false;
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
@@ -146,7 +151,6 @@ export class ConsentPiiComponent implements OnInit {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.dataSettingNotSubmitted'));
         console.error('Error while updating user consent', error);
       });
-    this.showConsentPopup = false;
   }
 
   ngOnDestroy() {

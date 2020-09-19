@@ -549,22 +549,22 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.3.20":
-  version "3.3.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.20.tgz#ecc084cc40d02276d1cea990a1246258ed13426b"
-  integrity sha512-S4quj4MBd+1q/EFLIzNfS7NOucimz/Y7tmGXo/JFkI7fJQ0jsKWHlV8FlwgV5LsBSpkILW5udIWFP5tp1N050w==
-  dependencies:
-    inversify "^5.0.1"
-    qs "^6.9.4"
-    reflect-metadata "^0.1.13"
-    whatwg-fetch "^3.1.0"
-
 "@project-sunbird/client-services@3.3.15":
   version "3.3.15"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.15.tgz#6016a40f92646a578a7961b4ebe961de5cf56006"
   integrity sha512-mMJufiqqZ/U+O7LdYx6ra69JhiWVzR0Fmi2v1SHbnFV6F6Rpif3F8L6hdi7WwanGMjgjncj325GK9EkOW8a7/A==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/client-services@3.3.22":
+  version "3.3.22"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.22.tgz#ceca4c90055f96f4c3b029af26d6171f1286de55"
+  integrity sha512-1eZ5CSuMYhnBQ6FSUDJ+erkFg83FQMTn4/uZ3Z9aS3mTnc+fVEmtVBHsTpBbNEqgJMOyoq4eAGQbjChCaBkc1w==
+  dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
