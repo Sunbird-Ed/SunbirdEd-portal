@@ -144,3 +144,20 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showMessageModal = false;"
+  *ngIf="showMessageModal" #joinTrainingModal>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{batchMessage}}</p>
+    </div>
+  </div>
+  <!--/Content-->
+</sui-modal>

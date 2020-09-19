@@ -19,7 +19,6 @@ export const activitySearchMockData = {
   },
 
   eventDataForResource: {
-    data: {
       'name': '.TestContent!23.',
       'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
       'rating': '0',
@@ -50,11 +49,9 @@ export const activitySearchMockData = {
           'name': 'Resource'
         }
       }
-    }
   },
 
   eventDataForCourse: {
-    data: {
       'name': '.TestContent!23.',
       'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
       'rating': '0',
@@ -88,10 +85,8 @@ export const activitySearchMockData = {
           'name': 'Resource'
         }
       }
-    }
   },
   eventDataForTextbook: {
-    data: {
       'name': '.TestContent!23.',
       'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
       'rating': '0',
@@ -122,6 +117,5 @@ export const activitySearchMockData = {
           'name': 'Resource'
         }
       }
-    }
   }
 };

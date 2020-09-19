@@ -52,28 +52,7 @@
                   </sui-select>
                 </div>
               <!-- below needs to be done score card -->
-             
-              <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
-              <div class="d-flex ml-auto report-buttons" *ngIf="batchlist && batchlist.length > 0 && queryParams.batchIdentifier && !showLoader && !showWarningDiv">
-                  <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16 download-report d-flex flex-ai-center"
-                  href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
-                  [telemetryInteractObject]="interactObject"
-                  [ngClass]="{'sb-btn-disabled': !scoreReportUpdatedOn}"
-                  [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                    class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
-                    <span class="info-outline-img ml-8" suiPopup popupText="{{scoreReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"></span>
-                </button>
-                <div class="report-buttons__divider"></div>
-                <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn download-report d-flex flex-ai-center"
-                  href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
-                  [telemetryInteractObject]="interactObject"
-                  [ngClass]="{'sb-btn-disabled': !progressReportUpdatedOn}"
-                  [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                    class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}
-                    <span class="info-outline-img ml-8" suiPopup popupText="{{progressReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{progressReportUpdatedOn | date:'dd/MM/yyyy'}}" [popupPlacement]="'top right'" [popupInverted]="true"></span>
-                </button>
-              </div>
-            
+
           </div>
           <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
           <div class="d-flex current-batch-list">
@@ -214,4 +193,17 @@
           </div>
         </div>
       </div>
-<!-- This is the updated code for semantic datatable -->
+
+      <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
+        <div class="ui pointing secondary menu">
+            <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
+            <a class="item" (click)="loadOndemandReports()" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+        </div>
+        <div class="ui segment state-report" suiTabContent="1">
+         <sb-datatable [name]="fileName" [message]="message"  [data]="stateWiseReportDate" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+        </div>
+        <div class="ui segment detailed-report" suiTabContent="2">
+          <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
+        </div>
+      </sui-tabset>
+</div>

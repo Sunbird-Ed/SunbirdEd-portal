@@ -55,12 +55,15 @@
     &__labels{
       background: var(--primary-100);
     }
+    &__data{
+      padding:calculateRem(16px) 0;
+    }
   }
   .records-count-label{
     color:var(--gray-300);
     font-size: calculateRem(14px);
   }
-
+  
   .issue-status {
     font-size: calculateRem(14px);
     word-break: break-all;

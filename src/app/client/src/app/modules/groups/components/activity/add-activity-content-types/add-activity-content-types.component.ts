@@ -72,7 +72,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
 
   onCardClick(cardData: CsGroupSupportedActivitiesFormField) {
     this.csGroupAddableBloc.updateState({
-      pageIds: [cardData.activityType.toLowerCase()],
+      pageIds: [cardData.activityType.toLowerCase(), ADD_ACTIVITY_TO_GROUP],
       groupId: _.get(this.groupService, 'groupData.id'),
       params: {
         searchQuery: cardData.searchQuery,

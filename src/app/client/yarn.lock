@@ -559,10 +559,21 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@3.2.14":
-  version "3.2.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.2.14.tgz#8bca0e445d4bdac0ae4201f79f6aac8545daebde"
-  integrity sha512-OFF+P6n2BRJ3m66o4NEoTcj1r0Ztpf/xVZ0/k0EhWeTMtWXJ/yeAEgYRR07suLDiFQHPqYKABS7UWW/M/HQfOg==
+"@project-sunbird/client-services@3.3.15":
+  version "3.3.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.15.tgz#6016a40f92646a578a7961b4ebe961de5cf56006"
+  integrity sha512-mMJufiqqZ/U+O7LdYx6ra69JhiWVzR0Fmi2v1SHbnFV6F6Rpif3F8L6hdi7WwanGMjgjncj325GK9EkOW8a7/A==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/common-consumption@3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.3.1.tgz#fb40d6a3e3204e0804b6679682fef40e77e59903"
+  integrity sha512-rs2l0e1mC7gLLJAIcWO6f1kU7iN2RwxFqhr+M27p9a3IxS/lF23Y2Qjs9X6POyGphu1S8GnaZtmMBHMMqbadfg==
   dependencies:
     tslib "^1.9.0"
 
@@ -571,7 +582,7 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/telemetry-sdk@^0.0.26":
+"@project-sunbird/telemetry-sdk@0.0.26", "@project-sunbird/telemetry-sdk@^0.0.26":
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
   integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
@@ -613,6 +624,11 @@
     rxjs "6.3.3"
     semver "5.6.0"
     semver-intersect "1.4.0"
+
+"@swimlane/ngx-datatable@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-14.0.0.tgz#6227625e2ce2e9143735d4deeb3ab34b88745c26"
+  integrity sha512-zgRY58MzTpg9Jb575cg0O87mLtXYi6fx7NLRPRHdQ/FqH9mKjZ3i7+OjqtR8/w3KRmFP2Hnkmx52VzldZIKspg==
 
 "@types/chart.js@^2.7.48":
   version "2.9.21"
@@ -3840,6 +3856,11 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
+export-to-csv@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
+  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
+
 express@^4.16.2:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
@@ -6481,6 +6502,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.deburr@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/lodash.deburr/-/lodash.deburr-4.1.0.tgz#ddb1bbb3ef07458c0177ba07de14422cb033ff9b"
+  integrity sha1-3bG7s+8HRYwBd7oH3hRCLLAz/5s=
+
 lodash.escape@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/lodash.escape/-/lodash.escape-3.2.0.tgz#995ee0dc18c1b48cc92effae71a10aab5b487698"
@@ -7191,6 +7217,14 @@ ngx-device-detector@1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.3.5.tgz#febd134cc58c2a61e83bec5491d1e2f429bfde67"
   integrity sha512-u/h/HGVTqOxweLSKQmXoOLHsYldSDAQePrMC6sa3WGAECoAR6S7W1QuwdNN1cj7NBdfY0wxar9MQ3MV7DiFfkg==
+
+ngx-extended-pdf-viewer@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/ngx-extended-pdf-viewer/-/ngx-extended-pdf-viewer-4.1.2.tgz#9331190b07e3ab3e81c828e8acb59f406292e884"
+  integrity sha512-Tpixb4KB8Ygk4HjygBeYmUSGDBm6Tq/69Dl4tMAhB6WO8J+m2XJd3+WmgKQ1N88IY/jhltQ8WcTvOsAIi8dqWw==
+  dependencies:
+    lodash.deburr "^4.1.0"
+    tslib "^1.9.0"
 
 ngx-infinite-scroll@^8.0.2:
   version "8.0.2"
@@ -10077,6 +10111,15 @@ sunbird-chatbot-client@0.0.6:
   resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.6.tgz#0b8a38e73ce3e1cb7f2f1cf89ec2ba4b2f73aecf"
   integrity sha512-Wonibbu+QapWD0YqEweu0+3BhgbWb4+S7bsFZTcJRnqcPeFFm6gIH0CKc07BPJlS6i9BPR70NIgM8NidWbV7QQ==
   dependencies:
+    tslib "^1.9.0"
+
+sunbird-pdf-player@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.9.tgz#83ac1e9619d92a00c989b0b0c2eee3c9340d9847"
+  integrity sha512-fChVlcMpGTiVXMCAR+rH0FUG0nHICMRrUbYzwHsQpDGqyxTcaHpQhdW5AJ4ZAOHwwGFG8zbTJi2Zpt4u3m28+Q==
+  dependencies:
+    "@project-sunbird/client-services" "3.3.15"
+    ngx-extended-pdf-viewer "^4.1.2"
     tslib "^1.9.0"
 
 supports-color@^2.0.0:

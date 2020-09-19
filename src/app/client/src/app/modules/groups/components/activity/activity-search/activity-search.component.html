@@ -58,14 +58,17 @@
             [cardImg]="content?.image || './assets/images/book.png'">
           </sb-course-card> -->
 
-          <sb-library-card (cardClick)="addActivity($event)" [content]="content"
+          <sb-library-card [content]="content"
               [cardImg]="content?.image || 'assets/images/add-icon.svg'"  [hover-template]="hoverTemplate" [type]="'recently_viewed'">
-              <ng-template #hoverTemplate let-hoverData="hoverData" 
+            <ng-template #hoverTemplate let-hoverData="hoverData" 
               let-content="content">
-                            <sb-card-hover class="card-hover" [hoverData]="hoverData"
-                [content]="content" (hoverActionClick)="hoverActionClicked($event)">
-                            </sb-card-hover>
-                        </ng-template>
+              <sb-card-hover class="card-hover" 
+                [hoverData]="hoverData"
+                [content]="content"
+                (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
+              </sb-card-hover>
+            </ng-template>
+            <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier" [pageId]="ADD_ACTIVITY_TO_GROUP"></div>
           </sb-library-card>
 
         </div>
