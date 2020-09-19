@@ -45,7 +45,7 @@ export interface ContentData {
     visibility?: string;
     copyright?: string;
     originData?: any;
-    primaryCategory: string;
+    primaryCategory?: string;
     additionalCategories?: Array<string>;
 }
 
