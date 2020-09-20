@@ -322,4 +322,10 @@ describe('CourseProgressComponent', () => {
     expect(resultCount).toBe("100")
   });
 
+  it('should call redirect', inject([Router], (route) => {
+      component.courseId = "do_21308303538717491213097"
+      component.redirect();
+      expect(route.navigate).toHaveBeenCalled();
+    }));
+
 });
