@@ -70,6 +70,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.getDetails().pipe(
       first(),
       tap(data => {
+        console.log(data);
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
@@ -133,7 +134,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       resourceInfo : JSON.stringify(contentInfo),
       creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
       createdBy : this.userService.userProfile.identifier,
-      // isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
+      isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
@@ -202,7 +203,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap,
         name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-        this.userProfile.firstName
+        this.userProfile.firstName,
+        isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
       },
       did: this.deviceId,
       sid: this.userService.sessionId,

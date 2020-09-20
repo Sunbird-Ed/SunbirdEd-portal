@@ -46,7 +46,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   /**
    * Contains list of published course(s) of logged-in user
   */
-  allContent: Array<IContents> = [];
+  alltextbooks: Array<IContents> = [];
 
   // pageLoadTime = new PageLoadTime()
   /**
@@ -226,7 +226,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
-    const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
+    const preStatus = ['Draft', 'FlagDraft', 'Review', 'Live', 'FlagReview'];
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
@@ -245,7 +245,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
-          this.allContent = data.result.content;
+          this.alltextbooks = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
           this.showLoader = false;
@@ -284,8 +284,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         this.delete(contentIds).subscribe(
           (data: ServerResponse) => {
             this.showLoader = false;
-            this.allContent = this.removeAllMyContent(this.allContent, contentIds);
-            if (this.allContent.length === 0) {
+            this.alltextbooks = this.removeAllMyContent(this.alltextbooks, contentIds);
+            if (this.alltextbooks.length === 0) {
               this.ngOnInit();
             }
             this.toasterService.success(this.resourceService.messages.smsg.m0006);
@@ -318,6 +318,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   }
 
   contentClick(content) {
+    console.log(content);
     if (_.size(content.lockInfo)) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;

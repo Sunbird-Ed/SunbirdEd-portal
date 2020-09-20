@@ -950,7 +950,8 @@
             "flagged",
             "limitedPublish",
             "flagreviewer",
-            "collaborating-on"
+            "collaborating-on",
+            "alltextbooks"
         ],
         "collectionStatus": [
             "Review",

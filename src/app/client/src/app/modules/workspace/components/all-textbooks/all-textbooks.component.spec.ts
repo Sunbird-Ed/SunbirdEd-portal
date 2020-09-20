@@ -22,11 +22,11 @@ describe('AllTextbooksComponent', () => {
   const resourceBundle = {
     'messages': {
       'fmsg': {
-        'm0081': 'Fetching all contnet failed, please try again later...',
+        'm0081': 'Fetching all content failed, please try again later...',
         'm0004': ''
       },
       'stmsg': {
-        'm0110': 'We are fetching all contnet',
+        'm0110': 'We are fetching all content',
         'm0008': 'no-results',
         'm0125': 'No content to display. Start Creating Now'
       },
@@ -50,7 +50,7 @@ describe('AllTextbooksComponent', () => {
       ],
       data: {
         telemetry: {
-          env: 'workspace', pageid: 'workspace-content-allcontent', type: 'list',
+          env: 'workspace', pageid: 'workspace-content-alltextbooks', type: 'list',
           object: { type: 'workspace', ver: '1.0' }
         }
       }
@@ -80,33 +80,33 @@ describe('AllTextbooksComponent', () => {
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
-    component.fecthAllContent(9, 1, bothParams);
+    component.fecthAlltextBooks(9, 1, bothParams);
     fixture.detectChanges();
-    expect(component.allContent).toBeDefined();
+    expect(component.alltextbooks).toBeDefined();
   }));
 
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
-    component.fecthAllContent(9, 1, bothParams);
-    expect(component.allContent.length).toBeLessThanOrEqual(0);
-    expect(component.allContent.length).toEqual(0);
+    component.fecthAlltextBooks(9, 1, bothParams);
+    expect(component.alltextbooks.length).toBeLessThanOrEqual(0);
+    expect(component.alltextbooks.length).toEqual(0);
   }));
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
-    component.fecthAllContent(9, 1, bothParams);
+    component.fecthAlltextBooks(9, 1, bothParams);
     fixture.detectChanges();
-    expect(component.allContent).toBeDefined();
+    expect(component.alltextbooks).toBeDefined();
   }));
 
   it('should call fetchall content method and change the route  ', inject([ConfigService, Router],
     (configService, route) => {
       component.queryParams = { subject: ['english'] };
       const queryParams = { subject: [] };
-      spyOn(component, 'fecthAllContent').and.callThrough();
-      component.fecthAllContent(9, 1, bothParams);
+      spyOn(component, 'fecthAlltextBooks').and.callThrough();
+      component.fecthAlltextBooks(9, 1, bothParams);
       fixture.detectChanges();
-      expect(component.fecthAllContent).toHaveBeenCalledWith(9, 1, bothParams);
+      expect(component.fecthAlltextBooks).toHaveBeenCalledWith(9, 1, bothParams);
     }));
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {
@@ -124,7 +124,7 @@ describe('AllTextbooksComponent', () => {
       const sortByOption = 'Created On';
       component.queryParams = { subject: ['english'] };
       fixture.detectChanges();
-      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/allcontent', 1], { queryParams: undefined });
+      expect(route.navigate).toHaveBeenCalledWith(['workspace/content/alltextbooks', 1], { queryParams: undefined });
     }));
   it('should call inview method for visits data', () => {
     spyOn(component, 'inview').and.callThrough();
@@ -144,7 +144,7 @@ describe('AllTextbooksComponent', () => {
       spyOn(component, 'contentClick').and.callThrough();
       component.contentClick(Response.searchSuccessWithCountTwo.result.content[1]);
       expect(route.navigate).toHaveBeenCalledWith(['/workspace/content/edit/collection',
-        'do_2124341006465925121871', 'TextBook', 'allcontent', 'NCF', 'Review']);
+        'do_2124341006465925121871', 'TextBook', 'alltextbooks', 'NCF', 'Review']);
   }));
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {

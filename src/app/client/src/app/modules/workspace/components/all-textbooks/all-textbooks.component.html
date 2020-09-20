@@ -6,7 +6,7 @@
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
   
-  <table class="ui upForReviewTable table" *ngIf="allContent.length > 0 && !showLoader && !noResult ">
+  <table class="ui upForReviewTable table" *ngIf="alltextbooks.length > 0 && !showLoader && !noResult ">
     <thead>
       <tr>
         <th class="six wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contentLabel}}
@@ -21,10 +21,10 @@
         </th>
       </tr>
     </thead>
-    <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="allContent">
-      <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of allContent let i = index;" [id]="i" [data]="content"
+    <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="alltextbooks">
+      <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of alltextbooks let i = index;" [id]="i" [data]="content"
         appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
-        [telemetryInteractEdata]="{id:'allcontent',type:'click',pageid:'AllContent'}">
+        [telemetryInteractEdata]="{id:'alltextbooks',type:'click',pageid:'alltextbooks'}">
         <td (click)="contentClick(content)">
           <h5 class="ui image header">
             <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
@@ -48,7 +48,7 @@
         <td class="UpForReviewStatusOrange">{{content.status}}</td>
         <td>
           <i *ngIf="!(content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft'))" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
-          [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
+          [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'alltextbooks'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
           </i>
         </td>
         <td>
@@ -62,7 +62,7 @@
   <div class="ui grid">
     <div class="two wide column"></div>
     <div class="ten wide column">
-      <div class="pb-10" *ngIf="allContent && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+      <div class="pb-10" *ngIf="alltextbooks && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
         <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
           <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
