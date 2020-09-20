@@ -855,6 +855,16 @@
       "eTextBook",
       "TVLesson"
     ],
+    "primaryCategory": [
+      "Course",
+      "Digital Textbook",
+      "Content Playlist",
+      "Explanation Content",
+      "Learning Resource",
+      "Practice Question Set",
+      "eTextbook",
+      "Teacher Resource"
+    ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
       "application/vnd.ekstep.content-collection"

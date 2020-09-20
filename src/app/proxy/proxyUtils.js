@@ -64,6 +64,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
   }
 }
 
+// TODO: it should be generic function where any props should be replaceable
 const overRideRequestHeaders = function (upstreamUrl = "", data) {
   return function (proxyReqOpts, srcReq) {
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
