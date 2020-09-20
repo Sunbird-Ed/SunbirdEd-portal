@@ -29,7 +29,7 @@
        "assessmentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
-       "alltextbookRole": ["ORG_ADMIN","BOOK_CREATOR"]
+       "alltextbookRole": ["ORG_ADMIN"]
     },
     "organizationRole":{
 

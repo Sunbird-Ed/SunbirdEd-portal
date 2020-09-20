@@ -3,7 +3,7 @@ const envHelper = require('./environmentVariablesHelper.js');
 const axios = require('axios');
 const uuidv1 = require('uuid/v1')
 const dateFormat = require('dateformat')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 
 const checkUserForCollaborator = async function getUser(resourceId, userId) {
     try {

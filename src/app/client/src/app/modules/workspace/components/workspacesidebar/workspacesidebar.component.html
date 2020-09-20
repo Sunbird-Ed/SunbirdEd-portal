@@ -10,8 +10,8 @@
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
 
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allcontents-button')"  *ngIf='permissionService.permissionAvailable || 1' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
-    appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]" suiPopup popupText="View all content in the tenent"
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
+    appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]" suiPopup popupText="View all Textbooks"
     [popupPlacement]="'right'">
          {{resourceService?.frmelmnts?.snav?.alltextbook}}
   </a>  
