@@ -184,8 +184,7 @@
       "GET_DETAILS": "course/v1/batch/read",
       "GET_PARTICIPANT_LIST": "course/v1/batch/participants/list",
       "GET_BATCHS": "course/v1/batch/list",
-      "REMOVE_USERS": "course/v1/batch/user/remove",
-      "TERMS_AND_CONDITIONS": "https://docs.google.com/document/d/1QLtCVlHR_AELMmLDONxSekE__M-4sZaSe8pzpBj3g0U/edit"
+      "REMOVE_USERS": "course/v1/batch/user/remove"
     },
     "ADMIN": {
       "USER_SEARCH": "user/v1/search",

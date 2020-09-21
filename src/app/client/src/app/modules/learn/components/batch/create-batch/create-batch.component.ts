@@ -93,7 +93,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
-  url = '';
+  url = document.location.origin;
   instance: string;
 
   /**
@@ -120,7 +120,6 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
-    this.url = this.configService.urlConFig.URLS.BATCH.TERMS_AND_CONDITIONS
   }
 
   /**
