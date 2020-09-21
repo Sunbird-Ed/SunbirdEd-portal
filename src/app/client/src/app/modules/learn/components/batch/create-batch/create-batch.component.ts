@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+import { ConfigService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-create-batch',
@@ -92,6 +93,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
+  url = '';
+  instance: string;
 
   /**
 	 * Constructor to create injected service(s) object
@@ -106,6 +109,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, userService: UserService,
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
+    public configService: ConfigService,
     courseConsumptionService: CourseConsumptionService,
     public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
     private telemetryService: TelemetryService) {
@@ -116,12 +120,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
+    this.url = this.configService.urlConFig.URLS.BATCH.TERMS_AND_CONDITIONS
   }
 
   /**
    * Initialize form fields and getuserlist
   */
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     this.activatedRoute.parent.params.pipe(mergeMap((params) => {
       this.courseId = params.courseId;
       this.initializeFormFields();
@@ -171,7 +177,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: new FormControl(),
       users: new FormControl(),
       enrollmentEndDate: new FormControl(),
-      issueCertificate: new FormControl(null, [Validators.required])
+      issueCertificate: new FormControl(null, [Validators.required]),
+      tncCheck: new FormControl(false, [Validators.requiredTrue])
     });
     this.createBatchForm.valueChanges.subscribe(val => {
       if (this.createBatchForm.status === 'VALID') {
@@ -231,7 +238,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       endDate: endDate || null,
       createdBy: this.userService.userid,
       createdFor: this.userService.userProfile.organisationIds,
-      mentors: _.compact(mentors)
+      mentors: _.compact(mentors),
+      tandc : this.createBatchForm.value.tncCheck
     };
     if (this.createBatchForm.value.enrollmentType === 'open' && this.createBatchForm.value.enrollmentEndDate) {
       requestBody['enrollmentEndDate'] = dayjs(this.createBatchForm.value.enrollmentEndDate).format('YYYY-MM-DD');
