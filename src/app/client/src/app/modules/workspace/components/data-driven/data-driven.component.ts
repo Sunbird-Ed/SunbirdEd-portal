@@ -456,6 +456,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       } else if (type === 'studymaterial' || type === 'assessment') {
         if (!_.isEmpty(this.frameworkService['_channelData'].contentPrimaryCategories)) {
           _.forEach(this.frameworkService['_channelData'].contentPrimaryCategories, (field) => {
+            if (_.lowerCase(field) === _.lowerCase('Course Assessment')) {
+              return;
+            }
             const categoryTemplateObject = {
                'identifier' : field,
                'name' : field,

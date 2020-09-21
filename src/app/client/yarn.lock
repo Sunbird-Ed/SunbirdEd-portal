@@ -570,10 +570,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@3.2.14":
-  version "3.2.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.2.14.tgz#8bca0e445d4bdac0ae4201f79f6aac8545daebde"
-  integrity sha512-OFF+P6n2BRJ3m66o4NEoTcj1r0Ztpf/xVZ0/k0EhWeTMtWXJ/yeAEgYRR07suLDiFQHPqYKABS7UWW/M/HQfOg==
+"@project-sunbird/common-consumption@3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.3.1.tgz#fb40d6a3e3204e0804b6679682fef40e77e59903"
+  integrity sha512-rs2l0e1mC7gLLJAIcWO6f1kU7iN2RwxFqhr+M27p9a3IxS/lF23Y2Qjs9X6POyGphu1S8GnaZtmMBHMMqbadfg==
   dependencies:
     tslib "^1.9.0"
 
@@ -10113,10 +10113,10 @@ sunbird-chatbot-client@0.0.6:
   dependencies:
     tslib "^1.9.0"
 
-sunbird-pdf-player@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.8.tgz#2e3b85cd9900116ebfda47d7aff5589e46250083"
-  integrity sha512-3EB3ctYkXU+GLrHME4Hoj/P9PaIcfSQtEeLdPPGkt6S4sHan0b6QIpp/1QCSFaWkoDNG7gXpp7ZaC4P52H3kyA==
+sunbird-pdf-player@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.11.tgz#3a9d89e5bc1e7697a2c0f51404e0fc7d369361bc"
+  integrity sha512-eysWLY4eRwLLS4ot5UCVLogW8lKMGZw2Q8UZM2ebwMt/cPsFynoztb7kXskzNv68pOCIKR1BxWx2TnPlGQI2XQ==
   dependencies:
     "@project-sunbird/client-services" "3.3.15"
     ngx-extended-pdf-viewer "^4.1.2"

@@ -59,6 +59,8 @@ describe('PlayerComponent', () => {
     component.contentProgressEvents$ = new Subject();
     userService = TestBed.get(UserService);
     userService._authenticated = false;
+    userService.loggedIn =  true;
+    userService.userData$ = of({userProfile: {firstName: 'harish', lastName: 'gangula'}});
     component.contentIframe = {
       nativeElement: {
         contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
@@ -231,6 +233,14 @@ describe('PlayerComponent', () => {
       expect(response).toBeTruthy();
       expect(component.isFullScreenView).toBeTruthy();
     });
+  });
+
+  it('should call addUserDataToContext', () => {
+    component.playerConfig = playerConfig;
+    component.ngOnInit();
+    expect(component.playerConfig.context['userData']).toBeDefined();
+    expect(component.playerConfig.context['userData']['firstName']).toBe('harish');
+    expect(component.playerConfig.context['userData']['lastName']).toBe('gangula');
   });
 
   it('should make isFullScreenView to FALSE', () => {
