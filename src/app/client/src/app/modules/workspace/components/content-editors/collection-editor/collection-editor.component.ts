@@ -102,10 +102,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(
-      this.tenantService.tenantData$, 
+      this.tenantService.tenantData$,
       this.getCollectionDetails(),
-      this.editorService.getOwnershipType(),  // failing
-      this.lockContent(),  // lock failed
+      this.editorService.getOwnershipType(),
+      this.lockContent(),
       this.frameworkService.frameworkData$,
       this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
