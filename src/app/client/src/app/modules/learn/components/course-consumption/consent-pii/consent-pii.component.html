@@ -13,7 +13,7 @@
 
       <p class="fsmall mb-0" *ngIf="isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
       <p class="fsmall mb-0" *ngIf="!isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
-      <label class="fsmall font-weight-normal data-labels" *ngIf="lastUpdatedOn">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn}}</label>
+      <label class="fsmall font-weight-normal data-labels" *ngIf="lastUpdatedOn">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn  | date :'dd/MM/yyyy'}}</label>
 
       <div class="d-flex flex-ai-end flex-jc-flex-end">
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold"
