@@ -243,6 +243,11 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     return this.searchService.isContentTrackable(content, type);
   }
 
+  showActivityType() {
+    const type = this.resourceService.frmelmnts.lbl[_.get(this.queryParams, 'title')];
+    return _.lowerCase(type);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
