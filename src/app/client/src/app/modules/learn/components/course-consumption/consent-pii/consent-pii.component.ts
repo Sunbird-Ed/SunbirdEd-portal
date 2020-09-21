@@ -98,7 +98,7 @@ export class ConsentPiiComponent implements OnInit {
   }
 
   saveConsent() {
-    const isActive = this.consentPii === 'Yes';
+    const isActive = _.upperCase(this.consentPii) === 'YES';
     this.updateUserConsent(isActive);
     this.toggleEditSetting();
   }

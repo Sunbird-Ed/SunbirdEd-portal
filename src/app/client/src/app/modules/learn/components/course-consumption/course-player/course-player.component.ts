@@ -608,7 +608,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   getDataSetting() {
-    if (_.get(this.userService, 'userid') && (_.get(this.courseHierarchy, 'userConsent') === 'Yes')
+    if (_.get(this.userService, 'userid') && (_.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES')
       && !this.courseConsumptionService.canViewDashboard(this.courseHierarchy) && this.enrolledCourse) {
         return true;
     }
