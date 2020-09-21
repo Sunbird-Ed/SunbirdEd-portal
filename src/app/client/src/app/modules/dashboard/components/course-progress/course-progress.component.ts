@@ -4,7 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import {UserService, GeneraliseLabelService, FormService} from '@sunbird/core';
+import { UserService, GeneraliseLabelService, FormService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService, IPagination, OnDemandReportsComponent
@@ -12,6 +12,7 @@ import {
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
 /**
  * This component shows the course progress dashboard
@@ -34,69 +35,69 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
   interactObject: any;
   /**
-	 * This variable helps to show and hide page loader.
-	 */
+   * This variable helps to show and hide page loader.
+   */
   showLoader = true;
   /**
-	 * This variable sets the batch list data related to the given course
-	 */
+   * This variable sets the batch list data related to the given course
+   */
   batchlist: Array<IBatchListData>;
   /**
-	 * This variable sets the course id
-	 */
+   * This variable sets the course id
+   */
   courseId: string;
   userDataSubscription: Subscription;
 
   //TODO: We have to remove this & use currentBatch.id
   batchId: string;
   /**
-	 * This variable sets the user id
-	 */
+   * This variable sets the user id
+   */
   userId: string;
   /**
  * value typed
  */
   searchText: string;
   /**
-	 * This variable sets the dashboard result related to the given batch
-	 */
+   * This variable sets the dashboard result related to the given batch
+   */
   dashboarData: ICourseProgressData;
   /**
-	 * This variable is set to true when the length of batch is 0.
+   * This variable is set to true when the length of batch is 0.
    * It helps to show a message div on html
-	 */
+   */
   showNoBatch = false;
   /**
-	 * This variable helps to show the download modal after successful download API call
-	 */
+   * This variable helps to show the download modal after successful download API call
+   */
   showDownloadModal = false;
   /**
-	 * This variable sets the filter description which is displayed inside the dashboard
-	 */
+   * This variable sets the filter description which is displayed inside the dashboard
+   */
   filterText: string;
   /**
-	 * This variable sets the name of the field which is to be sorted
-	 */
+   * This variable sets the name of the field which is to be sorted
+   */
   order: string;
   /**
-	 * This variable sets the order to true or false
-	 */
+   * This variable sets the order to true or false
+   */
   reverse = true;
   /**
-	 * This variable sets the queryparams on url
-	 */
+   * This variable sets the queryparams on url
+   */
   queryParams: any;
   /**
-	 * This variable sets selected batch id, if exist
-	 */
+   * This variable sets selected batch id, if exist
+   */
   selectedOption: string;
   /**
-	 * This variable helps to unsubscribe the params and queryparams
-	 */
+   * This variable helps to unsubscribe the params and queryparams
+   */
   paramSubcription: any;
   /**
-	 * This variable helps to show the warning div
-	 */
+   * This variable helps to show the warning div
+   */
   showWarningDiv = false;
   /**
   * This variable helps to show the csv downloadURl
@@ -169,31 +170,31 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   public progressReportUpdatedOn;
 
   /**
-	 * telemetryImpression object for course progress page
-	*/
+   * telemetryImpression object for course progress page
+  */
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
   isDownloadReport = false;
-  stateWiseReportDate = [];
+  stateWiseReportData = [];
   public message = 'There is no data available';
   columns = [
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
     { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-    { name: 'No. of Enrollments', isSortable: false, prop: 'noofEnrollments', placeholder: 'Filter enrollment' },
-    { name: 'No. of Completions', isSortable: false, prop: 'noofCompletions', placeholder: 'Filter completions' }];
+    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' },
+    { name: 'No. of Completions', isSortable: false, prop: 'noOfCompletions', placeholder: 'Filter completions' }];
   fileName: string;
   userConsent;
   reportTypes = [];
   /**
-	 * Constructor to create injected service(s) object
+   * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {CourseProgressService} courseProgressService Reference of CourseProgressService
-	 */
+   */
   constructor(user: UserService,
     route: Router,
     activatedRoute: ActivatedRoute,
@@ -201,6 +202,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
+    public onDemandReportService: OnDemandReportService,
     public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService,
     public generaliseLabelService: GeneraliseLabelService) {
@@ -266,7 +268,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method helps to set batch id and calls the populateCourseDashboardData
   *
-	* @param {string} batchId batch identifier
+  * @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
     this.showWarningDiv = false;
@@ -278,30 +280,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
     this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
+    this.getSummaryReports();
   }
 
-  /**
-  * To method helps to set time period and calls the populateCourseDashboardData
-  *
-	* @param {string} timePeriod time period
-  */
-  setTimePeriod(timePeriod: string): void {
-    this.queryParams.timePeriod = timePeriod;
-    this.populateCourseDashboardData();
-  }
 
-  /**
-  * To method helps to set filter description
-  */
-  setFilterDescription(): void {
-    const filterDesc = {
-      '7d': this.resourceService.messages.imsg.m0022,
-      '14d': this.resourceService.messages.imsg.m0023,
-      '5w': this.resourceService.messages.imsg.m0024,
-      'fromBegining': this.resourceService.messages.imsg.m0025
-    };
-    this.filterText = filterDesc[this.queryParams.timePeriod];
-  }
 
   /**
   * Method to update the url with selected query params
@@ -312,12 +294,94 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   redirect() {
     this.route.navigate(['/learn/course', this.courseId]);
   }
+
+  /**
+* To method helps to set time period and calls the populateCourseDashboardData
+*
+* @param {string} timePeriod time period
+*/
+  setTimePeriod(timePeriod: string): void {
+    this.queryParams.timePeriod = timePeriod;
+    this.populateCourseDashboardData();
+  }
+
+  getSummaryReports() {
+    const request = {
+      "request": {
+        "filters": {
+          "collectionId": this.currentBatch.collectionId,
+          "batchId": this.currentBatch.batchId
+        },
+        "groupBy": [
+        ],
+        "granularity": "LAST_30DAYS" // data conformation
+      }
+    }
+    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
+      if (reports && reports.result) {
+        const result = _.get(reports, 'result');
+        const groupData = _.get(result, 'groupBy')
+        this.stateWiseReportData = _.map(groupData, (x) => {
+          return {
+            state: x.state,
+            district: x.district,
+            noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
+            noOfCompletions: this.getFieldValue(x.values, 'completed'),
+          }
+        })
+        const metrics = _.get(result, 'metrics');
+        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed')
+        this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrolled')
+      }
+    }, error => {
+      this.stateWiseReportData = [
+        {
+          state: 'Andhra Pradesh',
+          district: 'Chittoor',
+          noOfEnrollments: 20,
+          noOfCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Vishakapatanam',
+          noOfEnrollments: 50,
+          noOfCompletions: 25
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Guntur',
+          noOfEnrollments: 70,
+          noOfCompletions: 30
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Kadapa',
+          noOfEnrollments: 65,
+          noOfCompletions: 10
+        },
+        {
+          state: 'Andhra Pradesh',
+          district: 'Nellore',
+          noOfEnrollments: 100,
+          noOfCompletions: 25
+        },
+        {
+          state: 'Telengana',
+          district: 'Hydrabad',
+          noOfEnrollments: 45,
+          noOfCompletions: 15
+        }
+      ];
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    })
+  }
+
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
- // TODO: This function will be removed. API got deprecated.
+  // TODO: This function will be removed. API got deprecated.
   populateCourseDashboardData(batch?: any): void {
-    return ;
+    return;
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
@@ -367,7 +431,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method helps to set order of a specific field
   *
-	* @param {string} value Field name that is to be sorted
+  * @param {string} value Field name that is to be sorted
   */
   setOrder(value: string): void {
     this.order = value;
@@ -415,6 +479,19 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.toasterService.error(this.resourceService.messages.stmsg.m0141);
         }
       }));
+  }
+
+  /**
+* To method helps to set filter description
+*/
+  setFilterDescription(): void {
+    const filterDesc = {
+      '7d': this.resourceService.messages.imsg.m0022,
+      '14d': this.resourceService.messages.imsg.m0023,
+      '5w': this.resourceService.messages.imsg.m0024,
+      'fromBegining': this.resourceService.messages.imsg.m0025
+    };
+    this.filterText = filterDesc[this.queryParams.timePeriod];
   }
 
   /**
@@ -470,12 +547,17 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     };
     this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        this.progressReportUpdatedOn =  _.get(response, 'result.course-progress-reports.lastModified') || null;
+        this.progressReportUpdatedOn = _.get(response, 'result.course-progress-reports.lastModified') || null;
         this.scoreReportUpdatedOn = _.get(response, 'result.assessment-reports.lastModified') || null;
       }
     });
   }
 
+
+
+  getFieldValue(array, field) {
+    return _.find(array, { "type": field }).count;
+  }
 
   /**
   * To method subscribes the user data to get the user id.
@@ -503,7 +585,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         (formResponsedata) => {
           if (formResponsedata) {
             const options = formResponsedata;
-            if(isCourseCreator){
+            if (isCourseCreator) {
               this.reportTypes = options;
             } else {
               this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
@@ -516,57 +598,19 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             //   this.reportTypes = options;
             // }
           }
-        },error=> {
+        }, error => {
           // error message
         });
     });
 
     this.fileName = 'State wise report';
-    this.stateWiseReportDate = [
-      {
-        state: 'Andhra Pradesh',
-        district: 'Chittoor',
-        noofEnrollments: 20,
-        noofCompletions: 10
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Vishakapatanam',
-        noofEnrollments: 50,
-        noofCompletions: 25
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Guntur',
-        noofEnrollments: 70,
-        noofCompletions: 30
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Kadapa',
-        noofEnrollments: 65,
-        noofCompletions: 10
-      },
-      {
-        state: 'Andhra Pradesh',
-        district: 'Nellore',
-        noofEnrollments: 100,
-        noofCompletions: 25
-      },
-      {
-        state: 'Telengana',
-        district: 'Hydrabad',
-        noofEnrollments: 45,
-        noofCompletions: 15
-      }
-    ];
     this.isDownloadReport = true;
     // this.searchFields = ['state', 'district'];
     // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
-        this.paramSubcription = combineLatest(this.activatedRoute.parent.params ,
+        this.paramSubcription = combineLatest(this.activatedRoute.parent.params,
           this.activatedRoute.params, this.activatedRoute.queryParams,
           (parentParams: any, params: any, queryParams: any) => {
             return {
@@ -621,10 +665,18 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * @param  {} currentBatch
    * @description - This will set completedCount and participantCount to the currentBatch object;
    */
-    setCounts(currentBatch) {
-      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
-      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+  setCounts(currentBatch) {
+    this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+    this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+  }
+
+  setInteractEventData() {
+    if (_.get(this.queryParams, 'batchIdentifier')) {
+      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier }];
+    } else {
+      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId }];
     }
+  }
 
   ngOnDestroy() {
     if (this.userDataSubscription) {
@@ -633,11 +685,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  setInteractEventData() {
-    if (_.get(this.queryParams, 'batchIdentifier')) {
-      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier }];
-    } else {
-      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId }];
-    }
-  }
+
+
+
 }
