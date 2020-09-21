@@ -38,7 +38,7 @@ const playerConfig = {
   data: {},
   metadata: {}
 };
-describe('PlayerComponent', () => {
+fdescribe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
   let userService;
@@ -58,7 +58,7 @@ describe('PlayerComponent', () => {
     component = fixture.componentInstance;
     component.contentProgressEvents$ = new Subject();
     userService = TestBed.get(UserService);
-    userService._authenticated = false;
+    userService._authenticated = true;
     component.contentIframe = {
       nativeElement: {
         contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
@@ -225,14 +225,18 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
-    spyOn(component , 'addUserDataToContext');
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
-    expect(component.addUserDataToContext).toHaveBeenCalled();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
       expect(component.isFullScreenView).toBeTruthy();
     });
+  });
+
+  it('should call addUserDataToContext', () => {
+    component.playerConfig = playerConfig;
+    component.ngOnInit();
+    expect(component.playerConfig.context['userData']).toBeDefined();
   });
 
   it('should make isFullScreenView to FALSE', () => {
