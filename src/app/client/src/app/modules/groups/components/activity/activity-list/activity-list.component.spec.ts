@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -49,7 +49,16 @@ describe('ActivityListComponent', () => {
       }
     },
     'frmelmnts': {
-      'lbl': {}
+      'lbl': {
+        ACTIVITY_COLLECTION_TITLE: 'Collection',
+        ACTIVITY_COURSE_TITLE: 'Courses',
+        ACTIVITY_EXPLANATION_CONTENT_TITLE: 'Explanation content',
+        ACTIVITY_PRACTICE_QUESTION_SET_TITLE: 'Practice question set',
+        ACTIVITY_PRACTICE_RESOURE_TITLE : 'Practice resource',
+        ACTIVITY_RESOURCE_TITLE: 'Resource',
+        ACTIVITY_TEXTBOOK_TITLE: 'Textbooks',
+        ACTIVITY_TV_EPISODE_TITLE: 'TV Episode'
+      }
     }
   };
 
@@ -90,32 +99,42 @@ describe('ActivityListComponent', () => {
 
   it('should call openActivity for Admin', () => {
     spyOn(component, 'addTelemetry');
-    const activity = {
+    const event = {
+      data: {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
       organisation: ['Pre-prod Custodian Organization'],
-      subject: 'Social Science'
-    };
-    component.openActivity(activity);
-    expect(router.navigate).toHaveBeenCalled();
+      subject: 'Social Science',
+      contentType: 'Course'
+    }};
+    component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_123523212190']);
     expect(component.addTelemetry).toHaveBeenCalled();
   });
 
-  it('should call openActivity for group member', () => {
+  it('should call openActivity for group member', fakeAsync(() => {
     spyOn(component, 'addTelemetry');
-    const activity = {
+    const event = {
+      data: {
       name: 'Class 5 English',
       identifier: 'do_123523212190',
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
       organisation: ['Pre-prod Custodian Organization'],
-      subject: 'Social Science'
-    };
+      subject: 'Social Science',
+      contentType: 'Course'
+    }};
     component.groupData.isAdmin = true;
-    component.openActivity(activity);
-    expect(router.navigate).toHaveBeenCalled();
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.changeQueryParams({ contentType: 'Course',
+    title: 'ACTIVITY_COURSE_TITLE'});
+    tick(100);
+    const option = {relativeTo: component['activateRoute'], queryParams: { contentType: 'Course',
+    title: 'ACTIVITY_COURSE_TITLE'}};
+    component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
+    expect(router.navigate).toHaveBeenCalledWith(['activity-details', 'do_123523212190'], option);
     expect(component.addTelemetry).toHaveBeenCalled();
-  });
+  }));
 
   it('should call getMenuData', () => {
     component.showMenu = false;
