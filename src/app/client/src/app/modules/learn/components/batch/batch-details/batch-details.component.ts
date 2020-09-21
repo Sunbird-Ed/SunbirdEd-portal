@@ -48,6 +48,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
+  batchMessage = '';
+  showMessageModal = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -240,8 +242,15 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   enrollBatch(batch) {
     this.showJoinModal = false;
-    this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    const batchStartDate = new Date(batch['startDate']);
+    const currentdate = new Date();
+    if (currentdate < batchStartDate) {
+      this.showMessageModal = true;
+      this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
+    } else {
+      this.courseBatchService.setEnrollToBatchDetails(batch);
+      this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    }
   }
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
