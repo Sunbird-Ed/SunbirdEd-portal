@@ -10113,10 +10113,10 @@ sunbird-chatbot-client@0.0.6:
   dependencies:
     tslib "^1.9.0"
 
-sunbird-pdf-player@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.11.tgz#3a9d89e5bc1e7697a2c0f51404e0fc7d369361bc"
-  integrity sha512-eysWLY4eRwLLS4ot5UCVLogW8lKMGZw2Q8UZM2ebwMt/cPsFynoztb7kXskzNv68pOCIKR1BxWx2TnPlGQI2XQ==
+sunbird-pdf-player@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.9.tgz#83ac1e9619d92a00c989b0b0c2eee3c9340d9847"
+  integrity sha512-fChVlcMpGTiVXMCAR+rH0FUG0nHICMRrUbYzwHsQpDGqyxTcaHpQhdW5AJ4ZAOHwwGFG8zbTJi2Zpt4u3m28+Q==
   dependencies:
     "@project-sunbird/client-services" "3.3.15"
     ngx-extended-pdf-viewer "^4.1.2"

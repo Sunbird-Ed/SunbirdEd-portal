@@ -103,7 +103,7 @@
     "sb-svg2pdf": "0.0.7",
     "slick-carousel": "^1.8.1",
     "sunbird-chatbot-client": "0.0.6",
-    "sunbird-pdf-player": "^0.0.11",
+    "sunbird-pdf-player": "^0.0.9",
     "tree-model": "^1.0.7",
     "zone.js": "^0.10.3"
   },
