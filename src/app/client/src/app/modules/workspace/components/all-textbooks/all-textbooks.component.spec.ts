@@ -80,7 +80,7 @@ describe('AllTextbooksComponent', () => {
   });
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountTwo));
-    component.fecthAlltextBooks(9, 1, bothParams);
+    component.fetchAllTextBooks(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.alltextbooks).toBeDefined();
   }));
@@ -88,13 +88,13 @@ describe('AllTextbooksComponent', () => {
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
     fixture.detectChanges();
-    component.fecthAlltextBooks(9, 1, bothParams);
+    component.fetchAllTextBooks(9, 1, bothParams);
     expect(component.alltextbooks.length).toBeLessThanOrEqual(0);
     expect(component.alltextbooks.length).toEqual(0);
   }));
   it('should show no results for result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(Response.searchSuccessWithCountZero));
-    component.fecthAlltextBooks(9, 1, bothParams);
+    component.fetchAllTextBooks(9, 1, bothParams);
     fixture.detectChanges();
     expect(component.alltextbooks).toBeDefined();
   }));
@@ -103,10 +103,10 @@ describe('AllTextbooksComponent', () => {
     (configService, route) => {
       component.queryParams = { subject: ['english'] };
       const queryParams = { subject: [] };
-      spyOn(component, 'fecthAlltextBooks').and.callThrough();
-      component.fecthAlltextBooks(9, 1, bothParams);
+      spyOn(component, 'fetchAllTextBooks').and.callThrough();
+      component.fetchAllTextBooks(9, 1, bothParams);
       fixture.detectChanges();
-      expect(component.fecthAlltextBooks).toHaveBeenCalledWith(9, 1, bothParams);
+      expect(component.fetchAllTextBooks).toHaveBeenCalledWith(9, 1, bothParams);
     }));
   it('should call setpage method and page number should be default, i,e 1', inject([ConfigService, Router],
     (configService, route) => {

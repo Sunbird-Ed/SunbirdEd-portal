@@ -218,7 +218,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     this.config = config;
     this.state = 'alltextbooks';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0110,
+      'loaderMessage': this.resourceService.messages.stmsg.m0127,
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
@@ -239,13 +239,13 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         }
         this.queryParams = bothParams.queryParams;
         this.query = this.queryParams['query'];
-        this.fecthAlltextBooks(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+        this.fetchAllTextBooks(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
   }
   /**
   * This method sets the make an api call to get all textbooks with page No and offset
   */
-  fecthAlltextBooks(limit: number, pageNumber: number, bothParams) {
+ fetchAllTextBooks(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
@@ -256,6 +256,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
+
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
     const searchParams = {
       filters: {
