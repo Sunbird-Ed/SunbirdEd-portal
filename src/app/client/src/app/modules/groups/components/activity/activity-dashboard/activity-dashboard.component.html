@@ -55,7 +55,7 @@
       </div>
       </div>
       <div class="px-16 pt-16">
-        <div *ngIf="!isContentTrackable(activity, activity?.contentType)" class="pb-16"><span class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span> {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (activity?.contentType).toLowerCase()}}</div>
+        <div *ngIf="!isContentTrackable(activity, activity?.contentType)" class="pb-16"><span class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span> {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (showActivityType())}}</div>
         <div class="sb-search-box no-btn">
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>

@@ -167,7 +167,7 @@ export const MockData = {
     'job_id': 'progress-exhaust',
     'requested_by': 'client-1',
     'requested_channel': 'in.ekstep',
-    'status': 'Processing request',
+    'status': 'SUBMITTED',
     'last_updated': 1599728944037,
     'request_data': {
       'batchFilters': [

@@ -102,18 +102,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
-      this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
-      if (this.userService.loggedIn) {
-        this.userService.userData$.subscribe((user: any) => {
-          if (user && !user.err) {
-            const userProfile = user.userProfile;
-            this.playerConfig.context['userData'] = {
-              firstName: userProfile.firstName ? userProfile.firstName : '',
-              lastName: userProfile.lastName ? userProfile.lastName : ''
-            };
-          }
-        });
-      }
+        this.addUserDataToContext();
     }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
@@ -126,6 +115,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.loadPlayer();
     });
   }
+
   /**
    * loadPlayer method will be called
    */
@@ -137,11 +127,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnChanges(changes) {
     this.contentRatingModal = false;
+    this.showNewPlayer = false;
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       if (this.playerLoaded) {
-        const playerElement = this.contentIframe.nativeElement;	
-        playerElement.contentWindow.initializePreview(this.playerConfig);	
+        if (this.playerConfig.metadata.mimeType === 'application/pdf') {
+          this.loadPDFPlayer();
+        } else {
+          const playerElement = this.contentIframe.nativeElement;
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+        }
       } else {
         this.loadPlayer();
       }
@@ -194,25 +189,30 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
+  loadPDFPlayer() {
+    const formReadInputParams = {
+      formType: 'content',
+      formAction: 'play',
+      contentType: 'pdf'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (data: any) => {
+       if (_.get(data, 'version') === 2) {
+          this.playerLoaded = false;
+          this.loadNewPlayer();
+       } else {
+         this.loadOldPlayer();
+       }
+      },
+      (error) => {
+        this.loadOldPlayer();
+      }
+    );
+  }
+
   loadPlayer() {
     if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-      const formReadInputParams = {
-        formType: 'content',
-        formAction: 'play',
-        contentType: 'pdf'
-      };
-      this.formService.getFormConfig(formReadInputParams).subscribe(
-        (data: any) => {
-         if (_.get(data, 'version') === 2) {
-            this.loadNewPlayer();
-         } else {
-           this.loadOldPlayer();
-         }
-        },
-        (error) => {
-          this.loadOldPlayer();
-        }
-      );
+      this.loadPDFPlayer();
     } else {
       this.loadOldPlayer();
     }
@@ -230,6 +230,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.loadDefaultPlayer();
   }
   loadNewPlayer() {
+    this.addUserDataToContext();
     if (this.isMobileOrTab) {
       this.isFullScreenView = true;
       this.rotatePlayer();
@@ -266,7 +267,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       event = { detail: {telemetryData: event}};
     }
     const eid = event.detail.telemetryData.eid;
-    if (eid && (eid === 'START' || eid === 'END')) {
+    if (eid && (eid === 'START' || eid === 'END') && this.contentProgressEvents$) {
       this.showRatingPopup(event);
       this.contentProgressEvents$.next(event);
     } else if (eid && (eid === 'IMPRESSION')) {
@@ -278,9 +279,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
-      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
-      const eventData = { stageId };
-      this.sceneChangeEvent.emit(eventData);
+      if (_.get(this, 'contentIframe.nativeElement')) {
+        const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+        const eventData = { stageId };
+        this.sceneChangeEvent.emit(eventData);
+      }
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 
@@ -371,6 +374,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   closeModal() {
     this.ratingPopupClose.emit({});
+  }
+
+  public addUserDataToContext() {
+    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          const userProfile = user.userProfile;
+          this.playerConfig.context['userData'] = {
+            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
+            lastName: userProfile.lastName ? userProfile.lastName : 'anonymous'
+          };
+        }
+      });
+    }
   }
 
   ngOnDestroy() {

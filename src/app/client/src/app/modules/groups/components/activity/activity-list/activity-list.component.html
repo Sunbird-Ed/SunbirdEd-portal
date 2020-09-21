@@ -17,11 +17,11 @@
   <!--Show Activity List-->
   <div  *ngIf="list?.value?.length && !showLoader" class="sb-card-grid" [ngClass]="{'hideActivityType': !isSelectedType(list?.key)}"> 
        <div class="sb-card-grid--item relative" *ngFor="let activity of list?.value; let i=index;">
-          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          <sb-course-card *ngIf="isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, list?.key)" [course]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
       || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-course-card>
 
-          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, activity)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
+          <sb-library-card *ngIf="!isCourse(list?.key) && viewSelectedTypeContents(list?.key, list?.value, i)"(cardClick)="openActivity($event, list?.key)" [content]="activity" [section]="null" [isMenu]="groupData?.isAdmin" [cardImg]="activity?.appIcon
           || config?.assetsPath?.book" (menuClick)="getMenuData($event, activity)">
           </sb-library-card>
           <div class="kabab-menu-dropdown-content" *ngIf="showMenu &&
