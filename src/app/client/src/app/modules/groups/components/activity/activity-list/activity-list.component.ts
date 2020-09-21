@@ -67,9 +67,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
 
-  openActivity(event: any) {
+  openActivity(event: any, activityType) {
     this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
-    const options = { relativeTo: this.activateRoute, queryParams: { contentType: _.get(event, 'data.contentType')} };
+    const options = { relativeTo: this.activateRoute, queryParams: { contentType: _.get(event, 'data.contentType'),
+    title: activityType} };
     if (_.get(this.groupData, 'isAdmin')) {
       this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
     } else {

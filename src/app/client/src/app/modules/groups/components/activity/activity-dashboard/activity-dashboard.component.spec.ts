@@ -47,7 +47,16 @@ describe('ActivityDashboardComponent', () => {
       }
     },
     'frmelmnts': {
-      'lbl': {}
+      'lbl': {
+        ACTIVITY_COLLECTION_TITLE: 'Collection',
+        ACTIVITY_COURSE_TITLE: 'Courses',
+        ACTIVITY_EXPLANATION_CONTENT_TITLE: 'Explanation content',
+        ACTIVITY_PRACTICE_QUESTION_SET_TITLE: 'Practice question set',
+        ACTIVITY_PRACTICE_RESOURE_TITLE : 'Practice resource',
+        ACTIVITY_RESOURCE_TITLE: 'Resource',
+        ACTIVITY_TEXTBOOK_TITLE: 'Textbooks',
+        ACTIVITY_TV_EPISODE_TITLE: 'TV Episode'
+      }
     }
   };
 
@@ -282,5 +291,12 @@ describe('ActivityDashboardComponent', () => {
     expect(value).toBe(false);
     expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
+
+  it ('should', fakeAsync(()  => {
+    activatedRoute.changeQueryParams({ title: 'ACTIVITY_COURSE_TITLE' });
+    tick(100);
+    const value = component.showActivityType();
+    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLocaleLowerCase());
+  }));
 
 });
