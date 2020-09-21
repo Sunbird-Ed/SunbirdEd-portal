@@ -20,7 +20,7 @@
           </div>
         </ng-template>
         <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-          <span  [ngClass]="{'success-label' : (col.prop === 'status' && value === 'Processing success'),'inprocess-label' : (col.prop === 'status' && value === 'Processing request'),'failed-label' : (col.prop === 'status' && value === 'Processing failed'),'expired-label' : (col.prop === 'status' && value === 'Expired') }"
+          <span  [ngClass]="{'success-label' : (col.prop === 'status' && value === 'COMPLETED'),'inprocess-label' : (col.prop === 'status' && value === 'SUBMITTED'),'failed-label' : (col.prop === 'status' && value === 'FAILED')}"
             (click)="downloadUrl(col.prop , row)">
             {{col.prop === 'download_urls' ? value[0] : value}}
           </span>
