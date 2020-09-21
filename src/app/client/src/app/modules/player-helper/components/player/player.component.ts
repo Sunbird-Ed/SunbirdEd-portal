@@ -116,20 +116,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
   }
 
-  public addUserDataToContext() {
-    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
-    if (this.userService.loggedIn) {
-      this.userService.userData$.subscribe((user: any) => {
-        if (user && !user.err) {
-          const userProfile = user.userProfile;
-          this.playerConfig.context['userData'] = {
-            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
-            lastName: userProfile.lastName ? userProfile.lastName : 'anonymous'
-          };
-        }
-      });
-    }
-  }
   /**
    * loadPlayer method will be called
    */
@@ -388,6 +374,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   closeModal() {
     this.ratingPopupClose.emit({});
+  }
+
+  public addUserDataToContext() {
+    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          const userProfile = user.userProfile;
+          this.playerConfig.context['userData'] = {
+            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
+            lastName: userProfile.lastName ? userProfile.lastName : 'anonymous'
+          };
+        }
+      });
+    }
   }
 
   ngOnDestroy() {
