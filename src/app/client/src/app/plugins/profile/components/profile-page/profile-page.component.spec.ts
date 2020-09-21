@@ -326,22 +326,22 @@ describe('ProfilePageComponent', () => {
   it('should not show self declared information if declaration is not available', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
-    spyOn(component, 'getSelfDeclaraedDetails').and.callThrough();
+    spyOn(component, 'getSelfDeclaredDetails').and.callThrough();
     component.ngOnInit();
     expect(component.declarationDetails).toBeDefined();
-    expect(component.getSelfDeclaraedDetails).toHaveBeenCalled();
+    expect(component.getSelfDeclaredDetails).toHaveBeenCalled();
   });
 
   it('should get self declared details', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'getTenants').and.returnValue(observableOf(Response.tenantsList));
-    spyOn(profileService, 'getTeacherDetailForm').and.returnValue(observableOf(Response.teacherDetailForm));
+    spyOn(profileService, 'getPersonaTenantForm').and.returnValue(observableOf(Response.personaTenantValues));
+    spyOn(profileService, 'getSelfDeclarationForm').and.returnValue(observableOf(Response.declarationFormValues));
     component.ngOnInit();
-    component.getSelfDeclaraedDetails();
+    component.getSelfDeclaredDetails();
     expect(component.tenantInfo).toBeDefined();
-    expect(component.selfDeclaredInfo).toEqual(Response.finalDeclarationObjStructure);
+    expect(component.selfDeclaredInfo).toBeDefined();
   });
 
   it('should call downloadCert with SVG format on success', () => {
