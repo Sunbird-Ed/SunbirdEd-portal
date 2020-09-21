@@ -22,8 +22,8 @@ const checkUserForCollaborator = async function getUser(resourceId, userId) {
 const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, res, next) {
     const resourceId = req.body.request.resourceId
     const userId = req.session.userId
-    const token =  _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
     if ( (req.url == '/content/lock/v1/create') && req.body.request.isRootOrgAdmin && checkUserForCollaborator(resourceId,userId)) {
+        const token =  _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
         const config = {
             method: "PATCH",
             url: envHelper.CONTENT_PROXY_URL +"/action/system/v3/content/update/" + resourceId,
