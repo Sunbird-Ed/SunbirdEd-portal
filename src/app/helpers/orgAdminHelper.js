@@ -22,6 +22,7 @@ const checkUserForCollaborator = async function getUser(resourceId, userId) {
 const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, res, next) {
     const resourceId = req.body.request.resourceId
     const userId = req.session.userId
+    const token =  _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
     if ( (req.url == '/content/lock/v1/create') && req.body.request.isRootOrgAdmin && checkUserForCollaborator(resourceId,userId)) {
         const config = {
             method: "PATCH",
@@ -31,7 +32,8 @@ const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, 
                 'x-msgid': uuidv1(),
                 'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                 'content-type': 'application/json',
-                'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
+                'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+                'x-authenticated-user-token': token,
             },
             data: {
                 "request": {
