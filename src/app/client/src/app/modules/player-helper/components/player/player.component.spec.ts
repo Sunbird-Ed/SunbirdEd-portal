@@ -225,8 +225,10 @@ describe('PlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     expect(component.isFullScreenView).toBeFalsy();
+    spyOn(component , 'addUserDataToContext');
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
+    expect(component.addUserDataToContext).toHaveBeenCalled();
     component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
       expect(response).toBeTruthy();
       expect(component.isFullScreenView).toBeTruthy();

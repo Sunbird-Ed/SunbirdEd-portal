@@ -116,7 +116,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
   }
 
-  private addUserDataToContext() {
+  public addUserDataToContext() {
     this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
