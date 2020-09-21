@@ -158,11 +158,11 @@ export class ProfileService {
     }));
   }
 
-  getTenants(orgId?: string) {
+  getPersonaTenantForm(orgId?: string) {
     const formServiceInputParams = {
       formType: 'user',
-      formAction: 'list',
-      contentType: 'tenantList',
+      formAction: 'get',
+      contentType: 'tenantPersonaInfo',
       component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
@@ -170,16 +170,15 @@ export class ProfileService {
     }));
   }
 
-  getTeacherDetailForm(action: string, orgId?: string) {
+  getSelfDeclarationForm(orgId?: string) {
     const formServiceInputParams = {
       formType: 'user',
-      formAction: action,
-      contentType: 'teacherDetails',
+      formAction: 'submit',
+      contentType: 'selfDeclaration',
       component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
       return response;
     }));
   }
-
 }
