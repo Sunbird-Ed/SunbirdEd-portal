@@ -70,64 +70,6 @@ describe('SbDatatableComponent', () => {
     }]);
   });
   
-  // it('should call search with search fields', () => {
-  //   component.searchFields = TableData.searchFields;
-  //   spyOn(component, 'filterData').and.stub();
-  //   component.data = TableData.responseData;
-  //   component.searchData = 'Nellore';
-  //   component.search()
-  //   expect(component.filterData).toHaveBeenCalled();
-  // });
-
-  // it('should call search with search fields else case', () => {
-  //   component.searchFields = TableData.searchFields;
-  //   component.data = TableData.responseData;
-  //   component.searchData = '';
-  //   component.search()
-  //   expect(component.tableData).toBe(component.data);
-  // })
-
-  // it('should call search without search fields', () => {
-  //   component.searchFields =[];
-  //   component.data = TableData.responseData;
-  //   component.searchData = 70;
-  //   component.search()
-  //   expect(component.tableData).toEqual([{
-  //     state: 'Andhra Pradesh',
-  //     district: 'Guntur',
-  //     noofEnrollments: 70,
-  //     noofCompletions: 30
-  //   }]);
-  // })
-
-  // it('should call filterData', () => {
-  //   const data = TableData.responseData;
-  //   component.searchFields = TableData.searchFields;
-  //   component.searchData = 'Nellore';
-  //   expect(component.filterData(data)).toEqual([{
-  //     state: 'Andhra Pradesh',
-  //     district: 'Nellore',
-  //     noofEnrollments: 100,
-  //     noofCompletions: 25
-  //   }]);
-  // });
-
-  // it('should call sort ASC', () => {
-  //   component.tableData = TableData.responseData;
-  //   component.sortOrder = 'desc';
-  //   component.sort({ name: 'District', isSortable: true, prop: 'district' });
-  //   expect(component.sortField).toBe('district');
-  //   expect(component.tableData).toEqual(TableData.sortData_ASC)
-  // });
-
-  // it('should call sort DESC', () => {
-  //   component.tableData = TableData.responseData;
-  //   component.sortOrder = 'asc';
-  //   component.sort({ name: 'District', isSortable: true, prop: 'district' });
-  //   expect(component.sortField).toBe('district');
-  //   expect(component.tableData).toEqual(TableData.sortData_DESC)
-  // });
-
   it('should call clearSearch', () => {
     component.clearSearch()
     expect(component.searchData).toBe('');
@@ -138,6 +80,13 @@ describe('SbDatatableComponent', () => {
     component.tableData = TableData.responseData;
     component.downloadCSVFile();
     expect(component.csvExporter instanceof ExportToCsv).toBeTruthy();
+  });
+  
+  it('should call downloadUrl', () => {
+    const mockData = {expires_at: '2020-09-15'};
+    spyOn(component.downloadLink, 'emit').and.stub();
+    component.downloadUrl('download_urls',mockData);
+    expect(component.downloadLink.emit).toHaveBeenCalled();
   });
 
 });

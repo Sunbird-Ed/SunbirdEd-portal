@@ -558,6 +558,42 @@ export const mockUserData = {
          startDate: "2020-08-10",
          status: 1
        }
-    ]
+    ],
+
+    summaryReports : {
+      "result":{
+        "metrics":[
+           {
+              "type":"completed",
+              "count":"100"
+           },
+           {
+              "type":"enrolled",
+              "count":"100"
+           },
+           {
+              "type":"certificate_issued",
+              "count":"100"
+           }
+        ],
+        "groupBy":[
+           {
+              "district":"Tumkur",
+              "state":"Karnataka",
+              "values":[
+                 {
+                    "type":"completed",
+                    "count":"100"
+                 },{
+                  "type":"enrolled",
+                  "count":"100"
+               }
+              ]
+           }
+        ]
+     }
+    },
+    stateWiseReportData : [{state: 'Karnataka', district: 'Tumkur', noOfEnrollments: '100', noOfCompletions: '100'}]
+
 
 };

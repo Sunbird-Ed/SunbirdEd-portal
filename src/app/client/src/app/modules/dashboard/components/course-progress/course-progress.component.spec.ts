@@ -1,3 +1,4 @@
+import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
@@ -54,7 +55,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
-    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
+    'parent': { params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }) },
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
@@ -257,8 +258,8 @@ describe('CourseProgressComponent', () => {
     expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
   });
 
-  it ( 'should set filterText', () => {
-     fakeActivatedRoute.queryParams.subscribe(data => {
+  it('should set filterText', () => {
+    fakeActivatedRoute.queryParams.subscribe(data => {
       component.queryParams = data;
     });
     component.setFilterDescription();
@@ -269,28 +270,62 @@ describe('CourseProgressComponent', () => {
     const userService = TestBed.get(UserService);
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptions))
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData});
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
     component.ngOnInit();
     expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptions);
   });
 
-   it('should set report type options for Course Mentor', () => {
+  it('should set report type options for Course Mentor', () => {
     const userService = TestBed.get(UserService);
     const formService = TestBed.get(FormService);
     testData.mockUserData.userMockData.userRoles = ['COURSE_MENTOR']
     spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptionsForMentor))
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData});
+    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
     component.ngOnInit();
     expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptionsForMentor);
   });
 
   it('should call setOrder', () => {
-    spyOn(component , 'setInteractEventData').and.stub();
-    spyOn(component , 'populateCourseDashboardData').and.stub();
-    component.reverse= false;
+    spyOn(component, 'setInteractEventData').and.stub();
+    spyOn(component, 'populateCourseDashboardData').and.stub();
+    component.reverse = false;
     component.currentBatch = '01307941196215910429';
     component.setOrder('test')
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.populateCourseDashboardData).toHaveBeenCalledWith('01307941196215910429');
-  });  
+  });
+
+  it('should call getSummaryReports', () => {
+    const onDemandService = TestBed.get(OnDemandReportService);
+    component.currentBatch = testData.mockUserData.batches[0];
+    spyOn(onDemandService, 'getSummeryReports').and.returnValue(observableOf(testData.mockUserData.summaryReports))
+    component.getSummaryReports();
+    expect(component.currentBatch.completedCount).toEqual('100');
+    expect(component.currentBatch.participantCount).toEqual('100');
+    expect(component.stateWiseReportData).toEqual(testData.mockUserData.stateWiseReportData);
+  });
+
+
+  it('should call getSummaryReports error case', () => {
+    const onDemandService = TestBed.get(OnDemandReportService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    component.currentBatch = testData.mockUserData.batches[0];
+    spyOn(onDemandService, 'getSummeryReports').and.returnValue(observableThrowError('error'));
+    component.getSummaryReports();
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call getFieldValue', () => {
+    const array = [{type: 'completed' , count: "100"},{type: 'enrolled' , count: "100"}];
+    const resultCount = component.getFieldValue(array,'completed');
+    expect(resultCount).toBe("100")
+  });
+
+  it('should call redirect', inject([Router], (route) => {
+      component.courseId = "do_21308303538717491213097"
+      component.redirect();
+      expect(route.navigate).toHaveBeenCalled();
+    }));
+
 });

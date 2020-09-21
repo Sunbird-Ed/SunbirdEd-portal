@@ -52,4 +52,16 @@ describe('OnDemandReportService', () => {
       expect(data).toEqual(mockData);
     });
   });
+
+  it('should get summary reports', () => {
+    const mockData = {test: 'ok'};
+    const http = TestBed.get(HttpClient, HttpHeaders);
+    spyOn(http, 'post').and.returnValue(of(mockData));
+    const service: OnDemandReportService = TestBed.get(OnDemandReportService);
+    service.submitRequest({}).subscribe((data) => {
+      expect(http.post).toHaveBeenCalled();
+      expect(http.post).toHaveBeenCalledTimes(1);
+      expect(data).toEqual(mockData);
+    });
+  });
 });
