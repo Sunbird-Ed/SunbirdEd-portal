@@ -281,7 +281,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       event = { detail: {telemetryData: event}};
     }
     const eid = event.detail.telemetryData.eid;
-    if (eid && (eid === 'START' || eid === 'END')) {
+    if (eid && (eid === 'START' || eid === 'END') && this.contentProgressEvents$) {
       this.showRatingPopup(event);
       this.contentProgressEvents$.next(event);
     } else if (eid && (eid === 'IMPRESSION')) {
@@ -293,9 +293,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
-      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
-      const eventData = { stageId };
-      this.sceneChangeEvent.emit(eventData);
+      if (_.get(this, 'contentIframe.nativeElement')) {
+        const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+        const eventData = { stageId };
+        this.sceneChangeEvent.emit(eventData);
+      }
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 
