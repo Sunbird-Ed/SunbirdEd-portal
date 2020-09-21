@@ -931,7 +931,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Published": {
@@ -969,7 +969,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Uploaded": {
