@@ -64,6 +64,24 @@ export class FaqComponent implements OnInit {
     });
   }
 
+  private getFaqJson() {
+    this.faqList = undefined;
+    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      this.faqList = data;
+      this.showLoader = false;
+    }, (err) => {
+      if (_.get(err, 'status') === 404) {
+        this.selectedLanguage = 'en';
+        this.getFaqJson();
+      } else {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
+    });
+  }
+
   setTelemetryImpression() {
     this.telemetryImpression = {
       context: {
@@ -87,24 +105,6 @@ export class FaqComponent implements OnInit {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
-  }
-
-  private getFaqJson() {
-    this.faqList = undefined;
-    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      this.faqList = data;
-      this.showLoader = false;
-    }, (err) => {
-      if (_.get(err, 'status') === 404) {
-        this.selectedLanguage = 'en';
-        this.getFaqJson();
-      } else {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      }
-    });
   }
 
   goBack() {
