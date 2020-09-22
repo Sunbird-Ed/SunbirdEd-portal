@@ -45,7 +45,7 @@
   <img class="play-icon" src="assets/images/play_circle.svg">
 </div>
 
-<div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen"> 
+<div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
   <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
   <sunbird-pdf-player 
   [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"

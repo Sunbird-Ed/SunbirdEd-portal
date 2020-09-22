@@ -55,8 +55,10 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
-    this.subscription = this.contentUtilsServiceService.contentShareEvent.subscribe(() => {
-      this.shareContent(this.contentData);
+    this.subscription = this.contentUtilsServiceService.contentShareEvent.subscribe((data) => {
+      if (data === 'open') {
+        this.shareContent(this.contentData);
+      }
     });
   }
   ngOnChanges(changes: SimpleChanges) {
