@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core';
-import { IInteractEventInput, IInteractEventObject, IInteractEventEdata, IProducerData } from '../../interfaces';
+import { IInteractEventInput, IInteractEventObject, IInteractEventEdata, IProducerData, ICData } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -21,7 +21,7 @@ export class TelemetryInteractDirective {
 
   @Input() telemetryInteractEdata: IInteractEventEdata;
 
-  @Input() telemetryInteractCdata: Array<{}>;
+  @Input() telemetryInteractCdata: Array<ICData>;
   @Input() telemetryInteractContext;
   @Input() telemetryInteractPdata: IProducerData;
 

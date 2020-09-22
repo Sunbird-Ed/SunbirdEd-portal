@@ -10,7 +10,7 @@ import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventObject, TelemetryService, ICData } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
@@ -53,7 +53,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   enableProgress = false;
   // courseMentor = false;
   // courseCreator = false;

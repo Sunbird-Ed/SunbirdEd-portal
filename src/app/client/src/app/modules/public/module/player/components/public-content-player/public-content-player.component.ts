@@ -10,7 +10,7 @@ import {
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
-import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata,ICData } from '@sunbird/telemetry';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 import { PlatformLocation } from '@angular/common';
@@ -54,7 +54,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public unsubscribe$ = new Subject<void>();
   public badgeData: Array<object>;
   public dialCode: string;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public printPdfInteractEdata: IInteractEventEdata;

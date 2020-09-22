@@ -5,7 +5,7 @@ import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash-es';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
-import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService, ICData } from '@sunbird/telemetry';
 @Component({
   selector: 'app-collaboration-content-filter',
   templateUrl: './collaboration-content-filter.component.html',
@@ -70,7 +70,7 @@ export class CollaborationContentFilterComponent implements OnInit {
   public telemetryService: TelemetryService;
 
   @Input() telemetryInteractContext;
-  @Input() telemetryInteractCdata: Array<{}>;
+  @Input() telemetryInteractCdata: Array<ICData>;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Input() telemetryInteractPdata: IProducerData;
 

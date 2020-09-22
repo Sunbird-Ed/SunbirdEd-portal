@@ -80,7 +80,7 @@ export interface ITelemetryContextData {
   'env': string;
   'pdata': IProducerData;
   'sid': string;
-  'did': string;
+  'did'?: string;
   'cdata'?: Array<ICData>;
   'rollup'?: {};
 }
@@ -134,7 +134,7 @@ export interface IImpressionEventInput {
   'context': {
     'env': string;
     'cdata'?: Array<ICData>;
-    'pdata': IProducerData
+    'pdata'?: IProducerData
   };
   'object'?: {
     'id': string;
@@ -149,7 +149,7 @@ export interface IInteractEventInput {
   'context': {
     'env': string;
     'cdata'?: Array<ICData>;
-    'pdata': IProducerData
+    'pdata'?: IProducerData
   };
   'object'?: IInteractEventObject;
   'edata': IInteractEventEdata;
@@ -256,7 +256,7 @@ export interface ITelemetry {
   'channel': string;
   'uid'?: string;
   'endpoint': string;
-  'did': string;
+  'did'?: string;
   'authtoken'?: string;
   'sid': string;
   'batchsize'?: Number;

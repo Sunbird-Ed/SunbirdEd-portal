@@ -6,7 +6,7 @@ import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
   ResourceService, ToasterService, WindowScrollService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
-import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject, IStartEventInput,ICData, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { combineLatest, merge, Subject } from 'rxjs';
@@ -54,7 +54,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
   public unsubscribe = new Subject<void>();
   public showJoinTrainingModal = false;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   pageId: string;
   cardType: TocCardType = TocCardType.COURSE;
   hasPreviewPermission = false;
