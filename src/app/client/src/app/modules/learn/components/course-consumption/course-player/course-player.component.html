@@ -170,6 +170,11 @@
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
+        <!-- Consent to share PII  -->
+        <div class="mb-16" *ngIf="showDataSettingSection">
+          <app-consent-pii [showConsentPopup]="showConsentPopup" [collection]="courseHierarchy" ></app-consent-pii>
+        </div>
+
         <!-- Credits & License information -->
         <div class="course-player--metadata text-left">
           <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
