@@ -78,4 +78,24 @@ describe('FaqComponent', () => {
     expect(component.faqBaseUrl).toEqual('https://test/test');
   });
 
+  it('should call ngOnInit and get success for getting faq json file', () => {
+    const faqService = TestBed.get(FaqService);
+    spyOn(component, 'setTelemetryImpression');
+    spyOn(component, 'initLayout');
+    spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
+    spyOn(component['http'], 'get').and.callFake(() => throwError({status: 404}));
+    component.ngOnInit();
+    expect(component.selectedLanguage).toEqual('en');
+  });
+
+  it('should call ngOnInit and get 404 for getting faq json file', () => {
+    const faqService = TestBed.get(FaqService);
+    spyOn(component, 'setTelemetryImpression');
+    spyOn(component, 'initLayout');
+    spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
+    spyOn(component['http'], 'get').and.returnValues(of({}));
+    component.ngOnInit();
+    expect(component.showLoader).toBeFalsy();
+  });
+
 });
