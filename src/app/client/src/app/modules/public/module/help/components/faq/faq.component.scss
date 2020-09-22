@@ -26,4 +26,16 @@
             }
         }
     }
+
+    .extraTemplate {
+        @include respond-below(sm) {
+            flex-wrap: wrap;
+            .visit-helpcenter__text, .visit-helpcenter__btn {
+                flex-basis: 100%;
+            }
+            .visit-helpcenter__btn {
+                margin-top: 16px;
+            }
+        }
+    }
 }
