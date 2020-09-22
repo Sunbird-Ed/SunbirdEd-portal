@@ -22,9 +22,11 @@
 
           <div class="ui grid">
             <div [ngClass]="showCommentBoxClass">
+              <div class="aspectratio" data-ratio="16:9" #aspectRatio>
               <app-player class="content-player" [playerConfig]="playerConfig"
                 (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)">
               </app-player>
+            </div>
             </div>
             <div class="four wide column"
               *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
