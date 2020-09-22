@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryService, IAuditEventInput,ICData, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
@@ -44,7 +44,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isParentCourse = false;
   telemetryContentImpression: IImpressionEventInput;
   telemetryPlayerPageImpression: IImpressionEventInput;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   shareLink: string;
   telemetryShareData: Array<ITelemetryShare>;
   shareLinkModal: boolean;

@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { IEndEventInput, IInteractEventEdata, TelemetryService, ICData } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
@@ -34,7 +34,7 @@ export class OtpComponent implements OnInit {
   generateOTPErrorInteractEdata: any;
   generateVerifyOtpErrorInteractEdata: any;
   createUserErrorInteractEdata: any;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   instance: string;
   emailAddress: any;
   phoneNumber: any;

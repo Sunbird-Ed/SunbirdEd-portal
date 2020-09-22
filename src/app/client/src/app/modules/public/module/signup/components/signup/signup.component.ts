@@ -14,7 +14,7 @@ import { SignupService } from './../../services';
 import { TenantService, TncService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IStartEventInput, IImpressionEventInput, IInteractEventEdata,ICData } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
 import { RecaptchaComponent } from 'ng-recaptcha';
@@ -43,7 +43,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryStart: IStartEventInput;
   telemetryImpression: IImpressionEventInput;
   submitInteractEdata: IInteractEventEdata;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<ICData>;
   instance: string;
   tncLatestVersion: string;
   termsAndConditionLink: string;

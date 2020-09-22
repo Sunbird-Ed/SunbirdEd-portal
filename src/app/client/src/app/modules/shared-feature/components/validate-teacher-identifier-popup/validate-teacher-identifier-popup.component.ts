@@ -1,4 +1,4 @@
-import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IImpressionEventInput, ICData } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { UserService } from '@sunbird/core';
@@ -28,7 +28,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestro
   userId: string;
   channelData: [];
   showStateDropdown: boolean;
-  telemetryCdata: Array<{}> = [];
+  telemetryCdata: Array<ICData> = [];
   telemetryInteractObject: IInteractEventObject;
   telemetryImpressionData: IImpressionEventInput;
   closeInteractEdata: any;
