@@ -79,7 +79,7 @@
         <div *ngIf="!showAddGroup && isTrackable">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
             <button  [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.lbl?.enrollcourse}}</button>
+              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
           </div>
 
           <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
