@@ -549,22 +549,22 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.3.10":
-  version "3.3.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.10.tgz#0e9f31a23bf37640d5d56f373e91439ec9c6b0b9"
-  integrity sha512-HSb9edpGwkYz2tOFh7bNq/oifttx7bHSkYStJtwQXXxBaOaS+bW9a8Lma6mbcmeybtm3c5tOWwne/KnZhFiHyA==
-  dependencies:
-    inversify "^5.0.1"
-    qs "^6.9.4"
-    reflect-metadata "^0.1.13"
-    whatwg-fetch "^3.1.0"
-
 "@project-sunbird/client-services@3.3.15":
   version "3.3.15"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.15.tgz#6016a40f92646a578a7961b4ebe961de5cf56006"
   integrity sha512-mMJufiqqZ/U+O7LdYx6ra69JhiWVzR0Fmi2v1SHbnFV6F6Rpif3F8L6hdi7WwanGMjgjncj325GK9EkOW8a7/A==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/client-services@3.3.22":
+  version "3.3.22"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.22.tgz#ceca4c90055f96f4c3b029af26d6171f1286de55"
+  integrity sha512-1eZ5CSuMYhnBQ6FSUDJ+erkFg83FQMTn4/uZ3Z9aS3mTnc+fVEmtVBHsTpBbNEqgJMOyoq4eAGQbjChCaBkc1w==
+  dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
@@ -10113,10 +10113,10 @@ sunbird-chatbot-client@0.0.6:
   dependencies:
     tslib "^1.9.0"
 
-sunbird-pdf-player@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.9.tgz#83ac1e9619d92a00c989b0b0c2eee3c9340d9847"
-  integrity sha512-fChVlcMpGTiVXMCAR+rH0FUG0nHICMRrUbYzwHsQpDGqyxTcaHpQhdW5AJ4ZAOHwwGFG8zbTJi2Zpt4u3m28+Q==
+sunbird-pdf-player@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.12.tgz#ba52c93873e1484eed4135d2988a785404afb6fa"
+  integrity sha512-8n3cTJRwVP1ZJHKDdHMe+q6cZKrTj2PtC2v6pG7o8IxHAhYCVEmOS7lFZqlPCb0Cgp9Z9zIo7WNvzar3qLsk0Q==
   dependencies:
     "@project-sunbird/client-services" "3.3.15"
     ngx-extended-pdf-viewer "^4.1.2"

@@ -857,8 +857,9 @@ html[layout='joy'] {
   .certified-course__progress {
     background: var(--sbt-compt-bg) !important;
     border-radius: var(--sbt-bradius-24);
+    padding: calculateRem(24px) !important;
     .fsmall {
-      font-size: var(--font-size-normal) !important;
+      font-size: var(--font-size-md) !important;
       font-weight: bold;
     }
   }
@@ -1065,6 +1066,29 @@ html[layout='joy'] {
     width: 100%;
     margin: 0;
   }
+  .sb-new-theme-accordion {
+    &.ui.styled.accordion .title{
+      padding:calculateRem(24px) !important;
+    }
+   .sb-accordion-title{
+     font-size:calculateRem(16px) !important;
+   }
+   .sb-accordion-content{
+     padding-top:0 !important;
+   }
+  }
+  .sb-update-data-settings{
+    .sb-radio-btn-checkbox label:after {
+      left:calculateRem(3px);
+      top: calculateRem(3px);
+      height: calculateRem(10px);
+      width: calculateRem(10px);
+   }
+  }
+}
+
+.data-labels{
+  color:var(--gray-400);
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container {
     padding: 0 0 0 0 !important;
   }

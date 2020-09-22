@@ -27,6 +27,7 @@ describe('WorkspacesidebarComponent', () => {
 
   it('should set the role for content  ', () => {
    const configService = TestBed.get(ConfigService);
+    component.alltextbookRole = configService.rolesConfig.workSpaceRole.alltextbookRole;
     component.draftRole = configService.rolesConfig.workSpaceRole.draftRole;
     component.inreviewRole = configService.rolesConfig.workSpaceRole.inreviewRole;
     component.publishedRole = configService.rolesConfig.workSpaceRole.publishedRole;
@@ -40,6 +41,7 @@ describe('WorkspacesidebarComponent', () => {
     component.collaboratingRole = configService.rolesConfig.workSpaceRole.collaboratingRole;
     component.trainingRole = configService.rolesConfig.workSpaceRole.trainingRole;
     component.ngOnInit();
+    expect(component.alltextbookRole).toBeDefined();
     expect(component.draftRole).toBeDefined();
     expect(component.inreviewRole).toBeDefined();
     expect(component.publishedRole).toBeDefined();
