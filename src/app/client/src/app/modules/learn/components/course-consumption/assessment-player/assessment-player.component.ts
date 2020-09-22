@@ -3,7 +3,7 @@ import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunb
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
@@ -76,7 +76,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private router: Router,
     private contentUtilsServiceService: ContentUtilsServiceService,
     private telemetryService: TelemetryService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.playerOption = {
       showContentRating: true
