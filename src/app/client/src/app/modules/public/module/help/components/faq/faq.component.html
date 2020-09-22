@@ -21,7 +21,7 @@
       <app-loader></app-loader>
     </div>
     <div class="help-page__content" *ngIf="faqList && !showLoader">
-      <sb-faq [data]="faqList" (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+      <sb-faq [extraTemplate]="extraTemplate" [data]="faqList" (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
         (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
         (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
         (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq>
@@ -38,3 +38,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #extraTemplate>
+  <div class="fnormal visit-helpcenter__text mr-16">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
+    <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
+  <a class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract
+    [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')" href="{{defaultFooterConfig?.helpCenterLink}}">
+    {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
+  </a>
+</ng-template>

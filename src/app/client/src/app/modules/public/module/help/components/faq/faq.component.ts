@@ -97,8 +97,13 @@ export class FaqComponent implements OnInit {
       this.faqList = data;
       this.showLoader = false;
     }, (err) => {
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      if (_.get(err, 'status') === 404) {
+        this.selectedLanguage = 'en';
+        this.getFaqJson();
+      } else {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
     });
   }
 
