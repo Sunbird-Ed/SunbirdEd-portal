@@ -118,7 +118,7 @@ describe('CoursePlayerComponent', () => {
       },
       lbl: {
         description: 'description',
-        joinTrainingToAcessContent : 'You must join the course to get complete access to content'
+        accessToLogin : 'You must join the course to get complete access to content'
       }
     }
   };
@@ -784,7 +784,7 @@ describe('CoursePlayerComponent', () => {
       startDate: "2020-08-25",
       status: 1
     }];
-    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    const message = resourceServiceMockData.frmelmnts.lbl.accessToLogin;
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
