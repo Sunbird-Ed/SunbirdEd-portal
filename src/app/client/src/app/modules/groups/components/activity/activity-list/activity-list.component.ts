@@ -115,9 +115,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata, _.get(this.groupData.id), extra);
   }
 
-  toggleViewAll(visibility: boolean, list?) {
+  toggleViewAll(visibility: boolean, type?) {
     this.disableViewAllMode = visibility;
-    this.selectedTypeContents = list || {};
+    this.selectedTypeContents = _.pick(this.activityList, type) || {};
   }
 
   isCourse(type) {
@@ -126,12 +126,12 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   viewSelectedTypeContents(type, list, index) {
-    const value = _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
-    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) : value);
+    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) :
+    !_.isEmpty(_.get(this.selectedTypeContents, type)));
   }
 
   isSelectedType (type) {
-   return _.isEmpty(this.selectedTypeContents) ? true : _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
+   return _.isEmpty(this.selectedTypeContents) ? true : !_.isEmpty(_.get(this.selectedTypeContents, type));
   }
 
   ngOnDestroy() {
