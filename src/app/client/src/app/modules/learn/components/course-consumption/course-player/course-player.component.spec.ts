@@ -118,7 +118,7 @@ describe('CoursePlayerComponent', () => {
       },
       lbl: {
         description: 'description',
-        joinTrainingToAcessContent : 'You must join the course to get complete access to content'
+        accessToLogin : 'You must join the course to get complete access to content'
       }
     }
   };
@@ -784,7 +784,7 @@ describe('CoursePlayerComponent', () => {
       startDate: "2020-08-25",
       status: 1
     }];
-    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    const message = resourceServiceMockData.frmelmnts.lbl.accessToLogin;
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
@@ -819,4 +819,33 @@ describe('CoursePlayerComponent', () => {
     component.addToGroup = false;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
+
+  it('should show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'Yes';
+    component.enrolledCourse = true;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.getDataSetting();
+    expect(response).toBeTruthy();
+  });
+
+  it('should now show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'No';
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.getDataSetting();
+    expect(response).toBeFalsy();
+  });
+
+  it('should open consent pii popup after enroll course', () => {
+    const activatedRouteStub = TestBed.get(ActivatedRoute);
+    activatedRouteStub.queryParamsMock['consent'] = 1;
+    component.ngOnInit();
+    expect(component.showConsentPopup).toBeTruthy();
+  });
+
 });

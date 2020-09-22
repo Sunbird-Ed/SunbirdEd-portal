@@ -79,6 +79,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
+  showConsentPopup = false;
+  showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -149,6 +151,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
+      if (response.consent) {
+        this.showConsentPopup = true;
+      }
     });
 
     this.courseConsumptionService.updateContentState
@@ -211,6 +216,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.hasPreviewPermission = true;
         }
+        this.showDataSettingSection = this.getDataSetting();
         this.loader = false;
       }, (error) => {
         this.loader = false;
@@ -437,7 +443,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
-      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
+      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
         this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
@@ -451,7 +457,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   validateBatchDate(batch) {
-    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
+    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);
@@ -599,5 +605,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   onCourseCompleteClose() {
     this.showCourseCompleteMessage = false;
+  }
+
+  getDataSetting() {
+    if (_.get(this.userService, 'userid') && (_.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES')
+      && !this.courseConsumptionService.canViewDashboard(this.courseHierarchy) && this.enrolledCourse) {
+        return true;
+    }
+    return false;
   }
 }

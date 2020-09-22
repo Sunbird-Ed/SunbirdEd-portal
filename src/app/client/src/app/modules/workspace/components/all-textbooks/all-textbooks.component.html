@@ -1,0 +1,162 @@
+<app-workspace-content-filter ></app-workspace-content-filter>
+<div class="twelve wide column mt-20" *ngIf="showLoader ">
+  <app-loader [data]="loaderMessage"></app-loader>
+</div>
+<div *ngIf="noResult && !showLoader">
+  <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+<table class="ui upForReviewTable table" *ngIf="alltextbooks.length > 0 && !showLoader && !noResult ">
+  <thead>
+    <tr>
+      <th class="six wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.contentLabel}}
+      </th>
+      <th class="four wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.lastupdatedCaps}}
+      </th>
+      <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.status}}
+      </th>
+      <th class="two wide UpReviewTableHeader">
+      </th>
+      <th class="two wide UpReviewTableHeader">
+      </th>
+    </tr>
+  </thead>
+  <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="alltextbooks">
+    <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of alltextbooks let i = index;" [id]="i" [data]="content"
+      appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+      [telemetryInteractEdata]="{id:'alltextbooks',type:'click',pageid:'alltextbooks'}">
+      <td (click)="contentClick(content)">
+        <h5 class="ui image header">
+          <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
+          <div class="content ">
+            <div class="UpReviewHeader">{{content.name | slice:0:30}}
+              <i *ngIf="content.name.length > 30">...</i>
+            </div>
+            <div class="UpReviewSubHeader">{{(content?.contentType).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : content?.contentType}}
+            </div>
+          </div>
+        </h5>
+      </td>
+      <td>
+        <h5 class="ui image header">
+          <div class="content">
+            <div class="UpReviewSubHeader">{{content.lastUpdatedOn | fromNow }}
+            </div>
+          </div>
+        </h5>
+      </td>
+      <td class="UpForReviewStatusOrange">{{content.status}}</td>
+      <td>
+        <i *ngIf="!(content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft'))" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+        [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'alltextbooks'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier, content.mimeType); $event.stopPropagation()">
+        </i>
+      </td>
+      <td>
+        <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+          <i class="lock icon large"  ></i>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="ui grid">
+  <div class="two wide column"></div>
+  <div class="ten wide column">
+    <div class="pb-10" *ngIf="alltextbooks && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+      <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template let-context let-modal="modal" #modalTemplate>
+  <div class="sb-modal sb-error">
+    <div class="ui modal visible active small">
+        <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+       <!--Header-->
+        <div class="sb-modal-header">
+          {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+        </div>
+      <!--/Header-->
+
+      <!--Content-->
+      <div class="sb-modal-content">
+        <p [class.sb-color-gray-100]="showCollectionLoader">{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+        <div class="py-30">
+          <div *ngIf="showCollectionLoader" class="sb-loader sb-gray-loader pb-20"></div>
+        </div>
+      </div>
+      <!--/Content-->
+  
+      <!--Actions-->
+      <div class="sb-modal-actions flex-jc-space-between">
+        <div>
+        <button 
+          class="sb-btn sb-btn-normal sb-btn-outline-error mr-10"
+          [class.fadInButton]="showCollectionLoader"
+          (click)="modal.deny('denied')"
+          [disabled]="showCollectionLoader"
+        >
+          {{resourceService?.frmelmnts?.btn?.no}}
+        </button>
+        <button 
+              class="sb-btn sb-btn-normal sb-btn-error ui disabled"
+              [class.fadInButton]="showCollectionLoader"
+              (click)="checkLinkedCollections(modal)"
+              autofocus
+              [disabled]="showCollectionLoader"
+        >
+              {{resourceService?.frmelmnts?.btn?.yes}}
+        </button>
+      </div>
+        <div *ngIf="showCollectionLoader">Scanning for linked content</div>
+      </div>
+      <!--/Actions-->
+
+    </div>
+  </div>
+</ng-template>
+<sui-modal *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" #modal>
+  <div class="sb-modal-header">
+  </div>
+  <div class="sb-modal-content">
+    <h5 class="font-weight-bold sb-color-red">{{resourceService?.frmelmnts?.lbl?.linkedContentErrorMessage}}</h5>
+    <div class="sb-table-responsive">
+      <table aria-hidden="true" class="sb-table sb-table-striped sb-table-sortable sb-table-blue-strip">
+        <thead>
+          <th class="w-10" id="contentType">{{headers.type}}</th>
+          <th class="w-30" id="contentName">{{headers.name}}</th>
+          <th class="w-10" id="contentSubject">{{headers.subject}}</th>
+          <th class="w-10" id="contentGrade">{{headers.grade}}</th>
+          <th class="w-10" id="contentMedium">{{headers.medium}}</th>
+          <th class="w-10" id="contentBoard">{{headers.board}}</th>
+          <th class="w-20" id="contentchannel">{{headers.channel}}</th>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let row of collectionData">
+            <td class="white-space-inherit">{{row['contentType']}}</td>
+            <td class="white-space-inherit font-weight-bold">{{row['name']}}</td>
+            <td class="white-space-inherit">{{row['subject']?.join(", ") || '-'}}</td>
+            <td class="white-space-inherit">{{row['gradeLevel']?.join(", ") || '-'}}</td>
+            <td class="white-space-inherit">{{row['medium']?.join(", ") || '-'}}</td>
+            <td class="white-space-inherit">{{row['board']}}</td>
+            <td class="white-space-inherit">{{row['channel']}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="modal.deny('denied')">
+    {{resourceService?.frmelmnts?.btn?.close}}
+  </button>
+  </div>
+</sui-modal>
+<app-contentlock-info-popup [content]="lockPopupData" (closeEvent)="onCloseLockInfoPopup($event)" *ngIf="showLockedContentModal"></app-contentlock-info-popup>
+

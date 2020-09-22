@@ -246,8 +246,8 @@ describe('ActivityListComponent', () => {
   });
 
   it('should return TRUE (when there is  SELECTED ACTIVITY TYPE)', () => {
-    component.selectedTypeContents = {key: 'resource', value: [{id: 123}]};
-    const value = component.isSelectedType('Resource');
+    component.selectedTypeContents = {ACTIVITY_RESOURCE_TITLE: [{id: 123}]};
+    const value = component.isSelectedType('ACTIVITY_RESOURCE_TITLE');
     expect(value).toBe(true);
   });
 
