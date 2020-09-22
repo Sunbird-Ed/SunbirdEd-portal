@@ -4,10 +4,18 @@
     </span>
 </h4>
 <div class="publicmenusection ui secondary vertical menu">
+  
   <a  appTelemetryInteract [telemetryInteractEdata]="setInteractData('create-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole' class="item" [routerLink]="['create']" routerLinkActive="active" suiPopup popupText="Create Resource, Course, Book, Collection, Lesson Plan or Upload"
   [popupPlacement]="'right'">
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
+
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
+    appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]" suiPopup popupText="View all Textbooks"
+    [popupPlacement]="'right'">
+         {{resourceService?.frmelmnts?.snav?.alltextbook}}
+  </a>  
+
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allmycontents-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/allcontent') " 
   appPermission [permission]='allContentRole' class="item" [routerLink]="['allcontent',1]" suiPopup popupText="View all your content in draft, review, published and more"
   [popupPlacement]="'right'">
