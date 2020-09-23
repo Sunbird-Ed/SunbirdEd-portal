@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ConsentPiiComponent implements OnInit {
 
-  @Input() showConsentPopup: boolean;
   @Input() collection;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   consentPii = 'Yes';
@@ -23,6 +22,7 @@ export class ConsentPiiComponent implements OnInit {
   userInformation = [];
   editSetting = false;
   isTncAgreed = false;
+  showConsentPopup = false;
   showTncPopup = false;
   termsAndConditionLink: string;
   unsubscribe = new Subject<void>();
@@ -43,7 +43,7 @@ export class ConsentPiiComponent implements OnInit {
   }
 
   getUserInformation() {
-    this.userInformation['name'] = `${this.usersProfile.firstName} ${this.usersProfile.lastName}`;
+    this.userInformation['name'] = this.usersProfile.lastName ? `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
@@ -99,7 +99,13 @@ export class ConsentPiiComponent implements OnInit {
 
   saveConsent() {
     const isActive = _.upperCase(this.consentPii) === 'YES';
-    this.updateUserConsent(isActive);
+
+    if (isActive) {
+      this.showConsentPopup = true;
+    } else {
+      this.updateUserConsent(isActive);
+    }
+
     this.toggleEditSetting();
   }
 
