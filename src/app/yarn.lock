@@ -103,6 +103,15 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
+"@project-sunbird/discussion-service@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussion-service/-/discussion-service-0.0.6.tgz#594aee51d33ae794cc209d51fb44b4ead41b853c"
+  integrity sha512-fAtwIvveq5hwtrOZ9fy8uNkxBshzgSLDVuwAhy8pwwD5C0KE3xt69x75wzwHz34p9sjyfIXclrqk9g4ku8p1Jg==
+  dependencies:
+    joi "^13.4.0"
+    lodash "^4.17.10"
+    uuid "^3.3.2"
+
 "@project-sunbird/ext-framework-server@0.1.27":
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/@project-sunbird/ext-framework-server/-/ext-framework-server-0.1.27.tgz#8b30558959eb912c7f40b93a509dd1465fc52128"
@@ -752,6 +761,13 @@ axios@^0.18.0:
   dependencies:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
+
+axios@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.20.0.tgz#057ba30f04884694993a8cd07fa394cff11c50bd"
+  integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
+  dependencies:
+    follow-redirects "^1.10.0"
 
 azure-storage@2.10.2:
   version "2.10.2"
@@ -2761,6 +2777,11 @@ follow-redirects@^1.0.0:
   integrity sha512-KZm0V+ll8PfBrKwMzdo5D13b1bur9Iq9Zd/RMmAoQQcl2PxxFml8cxXPaaPYVbV0RjNjq1CU7zIzAOqtUPudmA==
   dependencies:
     debug "^3.0.0"
+
+follow-redirects@^1.10.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+  integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
