@@ -2586,10 +2586,10 @@ commander@~2.8.1:
   dependencies:
     graceful-readlink ">= 1.0.0"
 
-common-form-elements@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-1.0.9.tgz#0de691362abfde6914e857a7b8a5fceb4562b0e0"
-  integrity sha512-3Op5PJRLMDAsAV2golcsUVhhwm1PTnOxPztVNUFK8vkAN61vNC9O6mS3JAiBMM+gzpNlx2JTcDL63GLqKMFlzg==
+common-form-elements@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-2.0.0.tgz#79213b85739e7aeb72fa077ee4b708eb7e7f75ed"
+  integrity sha512-CRUG59NYYJCq3kigHcWTrVmZ602TP1y0efpqDNF10StGJmTr6tMO1GbPtA/gw5xjXedHJWLsoIGgCZEZX+apKw==
   dependencies:
     immutable "^4.0.0-rc.12"
     tslib "^1.9.0"

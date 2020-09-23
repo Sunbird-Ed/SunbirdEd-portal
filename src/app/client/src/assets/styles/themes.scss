@@ -686,7 +686,13 @@ html[layout='joy'] {
       overflow: hidden;
     }
   }
-
+  .content-video__player, .sbt-shadow-radius {
+    box-shadow: var(--sbt-box-shadow-6px)!important;
+    border-radius: var(--sbt-bradius-24);
+  }
+  .sbt-shadow-radius {
+    overflow: hidden;
+  }
   .contentViewerIframeShadow {
     border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0px 0px;
     &.player-fullscreen{
