@@ -27,6 +27,7 @@ export class FaqComponent implements OnInit {
   layoutConfiguration: any;
   unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
+  defaultToEnglish = false;
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
@@ -71,9 +72,11 @@ export class FaqComponent implements OnInit {
     .subscribe(data => {
       this.faqList = data;
       this.showLoader = false;
+      this.defaultToEnglish = false;
     }, (err) => {
-      if (_.get(err, 'status') === 404) {
+      if (_.get(err, 'status') === 404 && !this.defaultToEnglish) {
         this.selectedLanguage = 'en';
+        this.defaultToEnglish = true;
         this.getFaqJson();
       } else {
         this.showLoader = false;
