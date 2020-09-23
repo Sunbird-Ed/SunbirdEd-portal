@@ -151,10 +151,14 @@ export class ConsentPiiComponent implements OnInit {
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        if (isActive) {
+          this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+        } else {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.dataSettingNotSubmitted'));
+        }
         this.getUserConsent();
       }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.dataSettingNotSubmitted'));
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
       });
   }
