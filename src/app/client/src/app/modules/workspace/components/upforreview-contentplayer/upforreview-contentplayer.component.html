@@ -22,7 +22,7 @@
 
           <div class="ui grid">
             <div [ngClass]="showCommentBoxClass">
-              <div class="aspectratio" data-ratio="16:9" #aspectRatio>
+              <div class="aspectratio sbt-shadow-radius" data-ratio="16:9" #aspectRatio>
               <app-player class="content-player" [playerConfig]="playerConfig"
                 (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)">
               </app-player>
