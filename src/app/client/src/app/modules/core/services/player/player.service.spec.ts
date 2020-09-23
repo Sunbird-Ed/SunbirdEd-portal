@@ -115,9 +115,30 @@ describe('PlayerService', () => {
     });
   });
 
-  it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
+
+  it('should navigate to course player if trackable object is not available', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const router = TestBed.get(Router);
+    playerService.playContent(MockResponse.contentMetadata);
+    tick(50);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier]);
+  }));
+
+  it('should navigate to collection player if trackable object is not available and content type is other then course', fakeAsync(() => {
+    const playerService = TestBed.get(PlayerService);
+    const router = TestBed.get(Router);
+    const mockData = MockResponse.contentMetadata;
+    mockData.contentType = 'TextBook';
+    playerService.playContent(mockData);
+    tick(50);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', MockResponse.contentMetadata.identifier],
+    {queryParams: {contentType: MockResponse.contentMetadata.contentType}});
+  }));
+
+  it('should navigate to collection player if course is not trackable', fakeAsync(() => {
+    const playerService = TestBed.get(PlayerService);
+    const router = TestBed.get(Router);
+    MockResponse.contentMetadata['trackable'] = { 'enabled': 'No' };
     playerService.playContent(MockResponse.contentMetadata);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', MockResponse.contentMetadata.identifier],

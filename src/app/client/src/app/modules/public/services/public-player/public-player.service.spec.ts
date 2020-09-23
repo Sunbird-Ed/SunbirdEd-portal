@@ -70,10 +70,31 @@ describe('PublicPlayerService', () => {
     expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
   });
 
+  it('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
+    const playerService = TestBed.get(PublicPlayerService);
+    const router = TestBed.get(Router);
+    spyOn(playerService, 'handleNavigation').and.callThrough();
+    playerService.playContent(contentMockData);
+    tick(50);
+    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier]);
+  }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
     const playerService = TestBed.get(PublicPlayerService);
     const router = TestBed.get(Router);
+    const mockData = contentMockData;
+    spyOn(playerService, 'handleNavigation').and.callThrough();
+    mockData.data.contentType = 'TextBook';
+    playerService.playContent(mockData);
+    tick(50);
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['play/collection', contentMockData.data.identifier], {queryParams: {contentType: contentMockData.data.contentType}});
+  }));
+
+  it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
+    const playerService = TestBed.get(PublicPlayerService);
+    const router = TestBed.get(Router);
+    contentMockData.data['trackable'] = { 'enabled': 'No' };
     playerService.playContent(contentMockData);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(
@@ -83,6 +104,7 @@ describe('PublicPlayerService', () => {
   it('should navigate to course player if collection is trackable', fakeAsync(() => {
     const playerService = TestBed.get(PublicPlayerService);
     const router = TestBed.get(Router);
+    spyOn(playerService, 'handleNavigation').and.callThrough();
     contentMockData.data['trackable'] = { 'enabled': 'Yes' };
     playerService.playContent(contentMockData);
     tick(50);
@@ -93,6 +115,7 @@ describe('PublicPlayerService', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const router = TestBed.get(Router);
     contentMockData.data['mimeType'] = 'pdf';
+    spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
     tick(50);
     expect(router.navigate).toHaveBeenCalledWith(['play/content', contentMockData.data.identifier],

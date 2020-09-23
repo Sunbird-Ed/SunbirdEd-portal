@@ -27,6 +27,7 @@ export class FaqComponent implements OnInit {
   layoutConfiguration: any;
   unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
+  defaultToEnglish = false;
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
@@ -64,6 +65,26 @@ export class FaqComponent implements OnInit {
     });
   }
 
+  private getFaqJson() {
+    this.faqList = undefined;
+    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      this.faqList = data;
+      this.showLoader = false;
+      this.defaultToEnglish = false;
+    }, (err) => {
+      if (_.get(err, 'status') === 404 && !this.defaultToEnglish) {
+        this.selectedLanguage = 'en';
+        this.defaultToEnglish = true;
+        this.getFaqJson();
+      } else {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      }
+    });
+  }
+
   setTelemetryImpression() {
     this.telemetryImpression = {
       context: {
@@ -87,19 +108,6 @@ export class FaqComponent implements OnInit {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
-  }
-
-  private getFaqJson() {
-    this.faqList = undefined;
-    this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      this.faqList = data;
-      this.showLoader = false;
-    }, (err) => {
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
   }
 
   goBack() {
