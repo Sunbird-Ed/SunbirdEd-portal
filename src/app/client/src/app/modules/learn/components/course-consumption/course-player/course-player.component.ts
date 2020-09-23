@@ -443,7 +443,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
-      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
+      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
         this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
@@ -457,7 +457,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   validateBatchDate(batch) {
-    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
+    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);
