@@ -97,5 +97,4 @@ describe('FaqComponent', () => {
     component.ngOnInit();
     expect(component.showLoader).toBeFalsy();
   });
-
 });
