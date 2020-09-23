@@ -840,12 +840,4 @@ describe('CoursePlayerComponent', () => {
     const response = component.getDataSetting();
     expect(response).toBeFalsy();
   });
-
-  it('should open consent pii popup after enroll course', () => {
-    const activatedRouteStub = TestBed.get(ActivatedRoute);
-    activatedRouteStub.queryParamsMock['consent'] = 1;
-    component.ngOnInit();
-    expect(component.showConsentPopup).toBeTruthy();
-  });
-
 });

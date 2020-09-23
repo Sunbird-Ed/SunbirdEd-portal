@@ -88,7 +88,7 @@
     </div>
     <p class="mb-0fnormal font-weight-normal">
       <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{resourceService?.frmelmnts?.lbl?.agreeToShareDetails}}
-      <span class="sb-color-primary" (click)="showTncPopup=true">{{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': resourceService?.instance}}</span>
+      <a class="sb-color-primary" href="javascript:void(0)" (click)="showTncPopup=true">{{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': resourceService?.instance}}</a>
     </p>
   </div>
   <!--/Content-->
