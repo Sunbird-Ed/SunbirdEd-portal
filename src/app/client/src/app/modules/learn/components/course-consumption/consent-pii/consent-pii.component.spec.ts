@@ -27,7 +27,8 @@ describe('ConsentPiiComponent', () => {
       }
     },
     messages: {
-      fmsg: { 'm0004': 'Something went wrong, try later', dataSettingNotSubmitted: 'Your data settings are not submitted' },
+      emsg: { 'm0005': 'Something went wrong, try again later' },
+      fmsg: { 'm0004': 'Could not fetch data, try again later', dataSettingNotSubmitted: 'Your data settings are not submitted!' },
       smsg: { dataSettingSubmitted: 'Your data settings are submitted successfully' },
     }
   };
@@ -162,7 +163,7 @@ describe('ConsentPiiComponent', () => {
     spyOn(toastService, 'error');
     component.getUserConsent();
     expect(csUserService.getConsent).toHaveBeenCalled();
-    expect(toastService.error).toHaveBeenCalledWith('Something went wrong, try later');
+    expect(toastService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
   });
 
   it('should not get getUserConsent and with error 404', () => {
@@ -203,7 +204,7 @@ describe('ConsentPiiComponent', () => {
     spyOn(toastService, 'error');
     component.updateUserConsent(true);
     expect(csUserService.updateConsent).toHaveBeenCalled();
-    expect(toastService.error).toHaveBeenCalledWith('Your data settings are not submitted');
+    expect(toastService.error).toHaveBeenCalledWith('Something went wrong, try again later');
     expect(component.showConsentPopup).toBe(false);
   });
 });

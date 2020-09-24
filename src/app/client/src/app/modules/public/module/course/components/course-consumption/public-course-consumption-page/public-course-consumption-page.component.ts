@@ -1,6 +1,7 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare,
+  LayoutService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +33,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
     public resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
     private configService: ConfigService, private telemetryService: TelemetryService,
-    public generaliseLabelService: GeneraliseLabelService) {
+    public generaliseLabelService: GeneraliseLabelService, public layoutService: LayoutService) {
   }
 
   showJoinModal(event) {
@@ -50,6 +51,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getCourseHierarchy(this.courseId, inputParams).pipe(takeUntil(this.unsubscribe))
     .subscribe((courseHierarchy: any) => {
       this.courseHierarchy = courseHierarchy;
+      this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
       this.showLoader = false;
     }, (error) => {
       if (_.isEqual(_.get(error, 'error.responseCode'), 'RESOURCE_NOT_FOUND')) {

@@ -66,7 +66,14 @@ export class GeneraliseLabelService {
 
   private getResourcedFileName(contentData, lang) {
     this.collectionType = contentData.contentType.toLocaleLowerCase();
-    this.isTrackable = _.lowerCase(_.get(contentData, 'trackable.enabled')) === 'yes' ? 'trackable' : 'nontrackable';
+    if (!contentData.trackable && this.collectionType === 'course') {
+      this.isTrackable = 'trackable';
+    } else if (_.get(contentData, 'trackable.enabled') === 'Yes') {
+      this.isTrackable = 'trackable';
+    } else {
+      this.isTrackable = 'nontrackable';
+    }
+    // this.isTrackable = _.lowerCase(_.get(contentData, 'trackable.enabled')) === 'yes' ? 'trackable' : 'nontrackable';
     const resourceBundleConfig = this.gResourseBundleForm;
     const resourceConfig = _.get(resourceBundleConfig, this.collectionType) || _.get(resourceBundleConfig, 'default');
     this.contentTypeLblKey = resourceConfig.key;
