@@ -150,17 +150,25 @@ export class PublicPlayerService {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        if (metaData.trackable && metaData.trackable.enabled === 'Yes') {
-          this.router.navigate(['explore-course/course', metaData.identifier]);
+        if (!metaData.trackable && metaData.contentType !== 'Course') {
+          this.handleNavigation(metaData, false);
         } else {
-          this.router.navigate(['play/collection', metaData.identifier],
-          {queryParams: {contentType: metaData.contentType}});
+          const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
+          this.handleNavigation(metaData, isTrackable);
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
         {queryParams: {contentType: metaData.contentType}});
       }
     }, 0);
+  }
+  handleNavigation(content, isTrackable) {
+    if (isTrackable) {
+      this.router.navigate(['explore-course/course', content.identifier]);
+    } else {
+      this.router.navigate(['play/collection', content.identifier],
+      {queryParams: {contentType: content.contentType}});
+    }
   }
 
   updateDownloadStatus(downloadListdata, content) {

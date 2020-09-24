@@ -819,4 +819,25 @@ describe('CoursePlayerComponent', () => {
     component.addToGroup = false;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
+
+  it('should show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'Yes';
+    component.enrolledCourse = true;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.getDataSetting();
+    expect(response).toBeTruthy();
+  });
+
+  it('should now show consent PII section', () => {
+    const userService = TestBed.get(UserService);
+    userService._userid = 'testUser1';
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy['userConsent'] = 'No';
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    const response = component.getDataSetting();
+    expect(response).toBeFalsy();
+  });
 });

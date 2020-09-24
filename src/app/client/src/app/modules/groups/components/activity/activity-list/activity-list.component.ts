@@ -1,13 +1,12 @@
+import { PlayerService } from '@sunbird/core';
 import { Component, Input, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-import { ResourceService } from '../../../../shared/services/resource/resource.service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ACTIVITY_DETAILS } from './../../../interfaces';
-import { ToasterService } from '@sunbird/shared';
+import { ToasterService, ConfigService, ResourceService } from '@sunbird/shared';
 
 export interface IActivity {
   name: string;
@@ -46,6 +45,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private groupService: GroupsService,
     private toasterService: ToasterService,
+    private playerService: PlayerService
   ) {
     this.config = this.configService.appConfig;
   }
@@ -74,7 +74,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     if (_.get(this.groupData, 'isAdmin')) {
       this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
     } else {
-      this.router.navigate(['/learn/course', _.get(event, 'data.identifier')]);
+      this.playerService.playContent(_.get(event, 'data'));
     }
   }
 
@@ -115,9 +115,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata, _.get(this.groupData.id), extra);
   }
 
-  toggleViewAll(visibility: boolean, list?) {
+  toggleViewAll(visibility: boolean, type?) {
     this.disableViewAllMode = visibility;
-    this.selectedTypeContents = list || {};
+    this.selectedTypeContents = _.pick(this.activityList, type) || {};
   }
 
   isCourse(type) {
@@ -126,12 +126,12 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   viewSelectedTypeContents(type, list, index) {
-    const value = _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
-    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) : value);
+    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) :
+    !_.isEmpty(_.get(this.selectedTypeContents, type)));
   }
 
   isSelectedType (type) {
-   return _.isEmpty(this.selectedTypeContents) ? true : _.lowerCase(_.get(this.selectedTypeContents, 'key')) === _.lowerCase(type);
+   return _.isEmpty(this.selectedTypeContents) ? true : !_.isEmpty(_.get(this.selectedTypeContents, type));
   }
 
   ngOnDestroy() {

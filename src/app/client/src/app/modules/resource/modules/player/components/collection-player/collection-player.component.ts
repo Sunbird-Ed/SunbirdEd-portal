@@ -375,6 +375,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.showLoader = false;
+        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
         this.getGeneraliseResourceBundle(data.data);
         this.setTelemetryData();
         this.setTelemetryStartEndData();

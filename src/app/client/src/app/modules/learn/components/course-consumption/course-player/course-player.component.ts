@@ -79,6 +79,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
+  showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -211,6 +212,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.hasPreviewPermission = true;
         }
+        this.showDataSettingSection = this.getDataSetting();
         this.loader = false;
       }, (error) => {
         this.loader = false;
@@ -599,5 +601,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   onCourseCompleteClose() {
     this.showCourseCompleteMessage = false;
+  }
+
+  getDataSetting() {
+    if (_.get(this.userService, 'userid') && (_.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES')
+      && !this.courseConsumptionService.canViewDashboard(this.courseHierarchy) && this.enrolledCourse) {
+        return true;
+    }
+    return false;
   }
 }

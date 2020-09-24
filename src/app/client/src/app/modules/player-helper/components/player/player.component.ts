@@ -51,6 +51,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   isFullScreenView = false;
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
+  mobileViewDisplay = 'block';
 
   /**
  * Dom element reference of contentRatingModal
@@ -113,6 +114,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
       this.loadPlayer();
+    });
+
+    this.contentUtilsServiceService.contentShareEvent.pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      if (this.isMobileOrTab && data === 'close') {
+        this.mobileViewDisplay = 'block';
+      }
     });
   }
 
@@ -258,7 +265,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   pdfEventHandler(event) {
     if (event.edata.type === 'SHARE') {
-      this.contentUtilsServiceService.contentShareEvent.emit();
+      this.contentUtilsServiceService.contentShareEvent.emit('open');
+      this.mobileViewDisplay = 'none';
     }
   }
 
@@ -267,9 +275,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       event = { detail: {telemetryData: event}};
     }
     const eid = event.detail.telemetryData.eid;
-    if (eid && (eid === 'START' || eid === 'END') && this.contentProgressEvents$) {
+    if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
-      this.contentProgressEvents$.next(event);
+      if (this.contentProgressEvents$) {
+        this.contentProgressEvents$.next(event);
+      }
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
