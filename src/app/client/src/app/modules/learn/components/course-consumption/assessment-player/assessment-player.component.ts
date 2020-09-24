@@ -166,6 +166,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
+              this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -187,6 +188,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.result.content;
+              this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
                 this.initPlayer(_.get(this.activeContent, 'identifier'));
