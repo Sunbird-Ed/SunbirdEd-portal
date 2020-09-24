@@ -79,7 +79,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
-  showConsentPopup = false;
   showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
@@ -151,9 +150,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
-      if (response.consent) {
-        this.showConsentPopup = true;
-      }
     });
 
     this.courseConsumptionService.updateContentState

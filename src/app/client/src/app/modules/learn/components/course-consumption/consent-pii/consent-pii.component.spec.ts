@@ -27,7 +27,8 @@ describe('ConsentPiiComponent', () => {
       }
     },
     messages: {
-      fmsg: { 'm0004': 'Something went wrong, try later', dataSettingNotSubmitted: 'Your data settings are not submitted' },
+      emsg: { 'm0005': 'Something went wrong, try again later' },
+      fmsg: { 'm0004': 'Could not fetch data, try again later', dataSettingNotSubmitted: 'Your data settings are not submitted!' },
       smsg: { dataSettingSubmitted: 'Your data settings are submitted successfully' },
     }
   };
@@ -110,12 +111,21 @@ describe('ConsentPiiComponent', () => {
     expect(component.showTncPopup).toBe(true);
   });
 
-  it('should call saveConsent', () => {
-    component.consentPii = 'Yes';
+  it('should call saveConsent and as NO', () => {
+    component.consentPii = 'No';
     spyOn(component, 'updateUserConsent');
     spyOn(component, 'toggleEditSetting');
     component.saveConsent();
     expect(component.updateUserConsent).toHaveBeenCalled();
+    expect(component.toggleEditSetting).toHaveBeenCalled();
+  });
+
+  it('should call saveConsent and as YES', () => {
+    component.consentPii = 'Yes';
+    spyOn(component, 'updateUserConsent');
+    spyOn(component, 'toggleEditSetting');
+    component.saveConsent();
+    expect(component.showConsentPopup).toBe(true);
     expect(component.toggleEditSetting).toHaveBeenCalled();
   });
 
@@ -153,9 +163,21 @@ describe('ConsentPiiComponent', () => {
     spyOn(toastService, 'error');
     component.getUserConsent();
     expect(csUserService.getConsent).toHaveBeenCalled();
-    expect(toastService.error).toHaveBeenCalledWith('Something went wrong, try later');
+    expect(toastService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
   });
 
+  it('should not get getUserConsent and with error 404', () => {
+    const userService = TestBed.get(UserService);
+    const toastService = TestBed.get(ToasterService);
+    userService._userProfile = MockData.userProfile;
+    component.collection = MockData.collection;
+    const csUserService = TestBed.get('CS_USER_SERVICE');
+    spyOn(csUserService, 'getConsent').and.returnValue(throwError({ code: 'HTTP_CLIENT_ERROR', response: { responseCode: 404 } }));
+    spyOn(toastService, 'error');
+    component.getUserConsent();
+    expect(csUserService.getConsent).toHaveBeenCalled();
+    expect(component.showConsentPopup).toBe(true);
+  });
   it('should update User Consent', () => {
     const userService = TestBed.get(UserService);
     const toastService = TestBed.get(ToasterService);
@@ -182,7 +204,7 @@ describe('ConsentPiiComponent', () => {
     spyOn(toastService, 'error');
     component.updateUserConsent(true);
     expect(csUserService.updateConsent).toHaveBeenCalled();
-    expect(toastService.error).toHaveBeenCalledWith('Your data settings are not submitted');
+    expect(toastService.error).toHaveBeenCalledWith('Something went wrong, try again later');
     expect(component.showConsentPopup).toBe(false);
   });
 });
