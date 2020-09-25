@@ -6,7 +6,7 @@
     </div>
   <div class="sb-table-responsive-div">
     <ngx-datatable #table class="material striped" [columnMode]="'force'" [rows]="tableData" [headerHeight]="80"
-      [footerHeight]="50" [messages]="tableMessage" [rowHeight]="'auto'" [reorderable]="false" [limit]="5">
+      [footerHeight]="50" [loadingIndicator]="!dataLoaded" [messages]="tableMessage" [rowHeight]="'auto'" [reorderable]="false" [limit]="5">
       <ngx-datatable-column *ngFor="let col of columns" [name]="col.name" [sortable]="col.isSortable"
         [draggable]="false" [resizeable]="false" [prop]="col.prop" [width]="100">
         <ng-template ngx-datatable-header-template>
@@ -20,9 +20,13 @@
           </div>
         </ng-template>
         <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-          <span  [ngClass]="{'success-label' : (col.prop === 'status' && value === 'COMPLETED'),'inprocess-label' : (col.prop === 'status' && value === 'SUBMITTED'),'failed-label' : (col.prop === 'status' && value === 'FAILED')}"
-            (click)="downloadUrl(col.prop , row)">
+          <span *ngIf="col.prop !== 'jobStats.dtJobSubmitted' && col.prop !== 'jobStats.dtJobCompleted'"
+                [ngClass]="{'success-label' : (col.prop === 'status' && value === 'COMPLETED'),'inprocess-label' : (col.prop === 'status' && value === 'SUBMITTED'),'failed-label' : (col.prop === 'status' && value === 'FAILED')}"
+                (click)="downloadUrl(col.prop , row)">
             {{col.prop === 'download_urls' ? value[0] : value}}
+          </span>
+          <span *ngIf="col.prop === 'jobStats.dtJobSubmitted' || col.prop === 'jobStats.dtJobCompleted'">
+            {{value | date: 'mediumDate'}}
           </span>
         </ng-template>
       </ngx-datatable-column>

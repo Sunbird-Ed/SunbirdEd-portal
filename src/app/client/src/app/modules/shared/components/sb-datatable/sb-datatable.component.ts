@@ -51,6 +51,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   public listFilter = {};
   public filterModel = {};
   public tableMessage;
+  dataLoaded = false;
   constructor() { }
 
   ngOnInit() {
@@ -80,6 +81,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
     _.forEach(this.columns, (x) => {
       this.filterModel[x.prop] = null
     });
+    this.dataLoaded = true;
   }
 
   downloadUrl(prop, row){
