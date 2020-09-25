@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
+import {ContentService, UserService, LearnerService, CoreModule, FormService} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
@@ -74,7 +74,7 @@ describe('CourseProgressComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
         CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
       declarations: [],
-      providers: [CourseProgressService, UsageService, TelemetryService,
+      providers: [CourseProgressService, UsageService, TelemetryService, FormService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
