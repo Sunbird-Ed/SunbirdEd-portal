@@ -87,6 +87,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
   }
   unenrollFromCourse() {
     this.setTelemetryData();
+    this.coursesService.unEnrolBatch.emit(false);
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
@@ -102,6 +103,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.toasterService.success(this.resourceService.messages.smsg.m0045);
         this.goBackToCoursePage();
       }, (err) => {
+        this.coursesService.unEnrolBatch.emit(true);
         this.disableSubmitBtn = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0009);
       });

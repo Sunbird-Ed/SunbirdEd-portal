@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { TncService, UserService } from '@sunbird/core';
+import { TncService, UserService, CoursesService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -30,16 +30,22 @@ export class ConsentPiiComponent implements OnInit {
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private toasterService: ToasterService,
+    private coursesService: CoursesService,
     public userService: UserService,
     public resourceService: ResourceService,
     public tncService: TncService,
-    public utilService: UtilService
+    public utilService: UtilService,
   ) { }
 
   ngOnInit() {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
+    this.coursesService.unEnrolBatch.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data) => {
+        this.updateUserConsent(false);
+      });
   }
 
   getUserInformation() {
