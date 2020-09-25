@@ -90,7 +90,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(CONTENT_URL),
       proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', '/v1/');
+        let urlParam = req.originalUrl.replace('/report/', 'v1/');
         let query = require('url').parse(req.url).query;
         if (query) {
           return require('url').parse(CONTENT_URL + urlParam + '?' + query).path
