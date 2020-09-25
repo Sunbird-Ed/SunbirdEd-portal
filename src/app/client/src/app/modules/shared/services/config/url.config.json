@@ -54,6 +54,10 @@
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
+      "DATASET_LIST": "/request/list",
+      "DATASET_SUBMIT_REQUEST": "/request/submit",
+      "DATASET_REQUEST_READ": "/request/read",
+      "COLLECTION": "/collection",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
       "RETIRE": "/retire",

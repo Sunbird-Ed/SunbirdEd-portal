@@ -64,6 +64,40 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
   }
 }
 
+// TODO: it should be generic function where any props should be replaceable
+const overRideRequestHeaders = function (upstreamUrl = "", data) {
+  return function (proxyReqOpts, srcReq) {
+    var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
+    if (data['X-Channel-Id']) {
+      proxyReqOpts.headers['X-Channel-Id'] = _.get(srcReq, 'session.rootOrgId');
+    } else if (channel && !srcReq.get('X-Channel-Id')) {
+      proxyReqOpts.headers['X-Channel-Id'] = channel
+    }
+
+    var userId;
+    if (srcReq.session) {
+      userId = srcReq.session.userId
+      if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
+    }
+    if(!srcReq.get('X-App-Id')){
+      proxyReqOpts.headers['X-App-Id'] = appId
+    }
+    if (srcReq.session.managedToken) {
+      proxyReqOpts.headers['x-authenticated-for'] = srcReq.session.managedToken
+    }
+
+    if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token &&
+      srcReq.kauth.grant.access_token.token) {
+      proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
+    }
+    proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
+    proxyReqOpts.rejectUnauthorized = false
+    proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
+    proxyReqOpts.headers['connection'] = 'keep-alive';
+    return proxyReqOpts
+  }
+}
+
 const decoratePublicRequestHeaders = function () {
   return function (proxyReqOpts, srcReq) {
     proxyReqOpts.headers['X-App-Id'] = appId
@@ -173,3 +207,4 @@ module.exports.validateUserToken = validateUserToken
 module.exports.handleSessionExpiry = handleSessionExpiry
 module.exports.addCorsHeaders = addCorsHeaders
 module.exports.addReqLog = addReqLog
+module.exports.overRideRequestHeaders = overRideRequestHeaders
