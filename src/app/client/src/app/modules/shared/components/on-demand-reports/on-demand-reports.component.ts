@@ -43,7 +43,6 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.loadReports();
   }
 
   loadReports() {
@@ -82,8 +81,8 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
   }
 
   submitRequest() {
-    const isPendingProcess = this.checkStatus();
-    if (!isPendingProcess) {
+    const isRequestAllowed = this.checkStatus();
+    if (isRequestAllowed) {
       this.isProcessed = false;
       const request = {
         request: {
@@ -112,17 +111,35 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
       });
     } else {
       this.isProcessed = true;
-      this.toasterService.error('The request is already in Processed State');
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
     }
   }
 
   checkStatus() {
-    const processPendingList = this.onDemandReportData.find(x => x.job_id === this.selectedReport.dataset) || null;
-    if (processPendingList) {
-      return processPendingList['status'] === this.reportStatus.submitted;
-    } else {
-      return false;
+    const selectedReportList = [];
+    _.forEach(this.onDemandReportData, (value) => {
+      if (value.dataset === this.selectedReport.dataset) {
+        selectedReportList.push(value);
+      }
+    });
+    const sortedReportList = _.sortBy(selectedReportList, [(data) => {
+      return data && data.jobStats && data.jobStats.dtJobSubmitted;
+    }]);
+    const reportListData = _.last(sortedReportList) || {};
+    let batchEndDate;
+    if (this.batch.endDate) {
+      batchEndDate = new Date(this.batch.endDate).getTime();
     }
+    if (!_.isEmpty(reportListData)) {
+      // report is already submitted so dont allow to req again
+      if (reportListData['status'] === this.reportStatus.submitted) {
+        return false;
+      }
+      if (batchEndDate && _.get(reportListData, 'jobStats.dtJobSubmitted ') < batchEndDate) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
