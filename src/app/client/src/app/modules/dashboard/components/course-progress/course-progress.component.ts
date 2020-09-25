@@ -307,14 +307,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
   getSummaryReports() {
     const request = {
-      "request": {
-        "filters": {
-          "collectionId": this.currentBatch.collectionId,
-          "batchId": this.currentBatch.batchId
+      'request': {
+        'filters': {
+          'collectionId': this.currentBatch.collectionId,
+          'batchId': this.currentBatch.batchId
         },
-        "groupBy": [
-        ],
-        "granularity": "LAST_30DAYS" // data conformation
+        'groupBy': ['dist', 'state'],
+        'granularity': 'LAST_30DAYS' // data conformation
       }
     };
     this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
@@ -635,7 +634,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports() {
-    // this.onDemandReports.loadReports();
+    this.onDemandReports.loadReports();
   }
 
   ngAfterViewInit() {

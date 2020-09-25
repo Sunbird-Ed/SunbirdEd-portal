@@ -22,6 +22,8 @@ import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ReactiveFormsModule } from '@angular/forms';
+
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
@@ -70,7 +72,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule, TelemetryModule.forRoot()],
+        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
       declarations: [],
       providers: [CourseProgressService, UsageService, TelemetryService,
         { provide: Router, useClass: RouterStub },
