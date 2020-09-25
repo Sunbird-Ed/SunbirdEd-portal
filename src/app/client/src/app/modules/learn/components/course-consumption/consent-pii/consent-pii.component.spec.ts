@@ -193,21 +193,6 @@ describe('ConsentPiiComponent', () => {
     expect(component.getUserConsent).toHaveBeenCalled();
     expect(component.showConsentPopup).toBe(false);
   });
-  it('should update User Consent', () => {
-    const userService = TestBed.get(UserService);
-    const toastService = TestBed.get(ToasterService);
-    userService._userProfile = MockData.userProfile;
-    component.collection = MockData.collection;
-    const csUserService = TestBed.get('CS_USER_SERVICE');
-    spyOn(csUserService, 'updateConsent').and.returnValue(of(MockData.updateConsentResponse));
-    spyOn(toastService, 'error');
-    spyOn(component, 'getUserConsent');
-    component.updateUserConsent(false);
-    expect(csUserService.updateConsent).toHaveBeenCalled();
-    expect(toastService.error).toHaveBeenCalledWith('Your data settings are not submitted!');
-    expect(component.getUserConsent).toHaveBeenCalled();
-    expect(component.showConsentPopup).toBe(false);
-  });
 
   it('should not update User Consent', () => {
     const userService = TestBed.get(UserService);

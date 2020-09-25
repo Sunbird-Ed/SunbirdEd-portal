@@ -182,6 +182,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
