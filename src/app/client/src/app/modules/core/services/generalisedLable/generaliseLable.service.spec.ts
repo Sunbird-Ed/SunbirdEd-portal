@@ -39,4 +39,58 @@ describe('GeneraliseLabelService', () => {
         expect(service.messages).toBeDefined();
         expect(service['_gLables']).toBeDefined();
     });
+
+    it('should not fetch labels from blob storage if already present', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        spyOn<any>(service, 'setLabels').and.callThrough();
+        service['_gLables']['all_labels_en.json'] = JSON.parse(MockResponse.generaliseLblResponse.result);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        service['getLabels'](MockResponse.courseHierarchy, 'en');
+        expect(service['setLabels']).toHaveBeenCalled();
+    });
+
+    it('should return filename', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
+        expect(fileName).toEqual('all_labels_en.json');
+    });
+
+    it('should return default resource bundle if content type wise resource bundle not found', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        MockResponse.courseHierarchy.contentType = 'LessionPlan';
+        const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
+        expect(service['contentTypeLblKey']).toEqual('dflt');
+        expect(fileName).toEqual('all_labels_en.json');
+    });
+
+    it('should return default english resource bundle', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        MockResponse.courseHierarchy.contentType = 'LessionPlan';
+        const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'mr');
+        expect(fileName).toEqual('all_labels_en.json');
+    });
+
+    it('should return nontrackable if content type is textbook and trackable = No ', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        const mockData = MockResponse.courseHierarchy;
+        mockData.contentType = 'TextBook';
+        mockData.trackable.enabled = 'No';
+        const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
+        expect(fileName).toEqual('all_labels_en.json');
+        expect(service['isTrackable']).toEqual('nontrackable');
+    });
+    it('should return trackable course resource bundle if content type is course and trackable object is not available', () => {
+        const service: GeneraliseLabelService = TestBed.get(GeneraliseLabelService);
+        service['gResourseBundleForm'] = MockResponse.resourceBundleConfig;
+        const mockData = MockResponse.courseHierarchy;
+        delete mockData.trackable;
+        mockData.contentType = 'Course';
+        const fileName = service['getResourcedFileName'](MockResponse.courseHierarchy, 'en');
+        expect(fileName).toEqual('all_labels_en.json');
+        expect(service['isTrackable']).toEqual('trackable');
+    });
 });
