@@ -18,7 +18,8 @@ describe('OnDemandReportsComponent', () => {
       'fmsg': {m0004: 'm0004'},
       'stmsg': {},
       'smsg': {}
-    }
+    },
+    frmelmnts: {lbl: {requestFailed: 'requestFailed'}}
   };
   let component: OnDemandReportsComponent;
   let fixture: ComponentFixture<OnDemandReportsComponent>;
@@ -44,17 +45,17 @@ describe('OnDemandReportsComponent', () => {
     component.reportChanged(MockData.data);
     expect(component.selectedReport).toEqual(MockData.data);
   });
-  it('should load report on ngoninit', () => {
+  it('should load report', () => {
     component.tag = 'mockTag';
     component.batch = {
       batchId: 'batchId'
     };
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(of(MockData.reportListResponse));
-    component.ngOnInit();
+    component.loadReports();
     expect(component.onDemandReportData).toEqual(MockData.reportListResponse.result.jobs);
   });
-  it('should throw error if not load report on ngoninit', () => {
+  it('should throw error if not load report', () => {
     component.tag = 'mockTag';
     component.batch = {
       batchId: 'batchId'
@@ -63,7 +64,7 @@ describe('OnDemandReportsComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    component.ngOnInit();
+    component.loadReports();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
   it('should throw error if not onDownloadLinkFail', () => {
@@ -97,7 +98,7 @@ describe('OnDemandReportsComponent', () => {
     spyOn(onDemandReportService, 'submitRequest').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
     component.submitRequest();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.requestFailed);
   });
   it('should populate data as submit request succeess', () => {
     component.tag = 'mockTag';

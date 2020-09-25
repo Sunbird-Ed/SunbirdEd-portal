@@ -1,16 +1,15 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { ResourceService, ToasterService } from '../../services';
-import { OnDemandReportService } from '../../services/on-demand-report/on-demand-report.service';
+import {Component, OnInit, Input} from '@angular/core';
+import {ResourceService, ToasterService} from '../../services';
+import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
-import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import {Validators, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-on-demand-reports',
   templateUrl: './on-demand-reports.component.html',
   styleUrls: ['./on-demand-reports.component.scss']
 })
-export class OnDemandReportsComponent implements OnInit, OnChanges {
+export class OnDemandReportsComponent implements OnInit {
 
   @Input() reportTypes;
   @Input() tag;
@@ -59,9 +58,6 @@ export class OnDemandReportsComponent implements OnInit, OnChanges {
 
   reportChanged(ev) {
     this.selectedReport = ev;
-  }
-
-  ngOnChanges() {
   }
 
   onDownloadLinkFail(data) {
