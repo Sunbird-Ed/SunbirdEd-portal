@@ -10,6 +10,7 @@ import {throwError, of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MockData} from './on-demand-report.component.spec.data';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
@@ -24,7 +25,7 @@ describe('OnDemandReportsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent],
-      imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule],
+      imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule],
       providers: [ToasterService, OnDemandReportService, HttpClient, ConfigService,
         {provide: ResourceService, useValue: resourceBundle}
       ]

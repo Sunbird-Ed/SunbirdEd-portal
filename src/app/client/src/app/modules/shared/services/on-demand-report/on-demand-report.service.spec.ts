@@ -37,7 +37,7 @@ describe('OnDemandReportService', () => {
     service.getReport('tag', 'requestId').subscribe((data) => {
       expect(http.get).toHaveBeenCalled();
       expect(http.get).toHaveBeenCalledTimes(1);
-      expect(http.get).toHaveBeenCalledWith('/report/request/read/tag/requestId', headers);
+      expect(http.get).toHaveBeenCalledWith('/report/request/read/tag?requestId=requestId', headers);
       expect(data).toEqual(mockData);
     });
   });
