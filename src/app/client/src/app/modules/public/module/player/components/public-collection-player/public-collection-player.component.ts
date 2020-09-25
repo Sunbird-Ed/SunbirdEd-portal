@@ -378,6 +378,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
         this.getGeneraliseResourceBundle(data.data);
         this.showLoader = false;
         this.route.queryParams.subscribe((queryParams) => {

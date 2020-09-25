@@ -1,28 +1,34 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { SharedModule, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentPlayerPageComponent } from './contentplayer-page.component';
 import { UtilService } from '../../../shared/services/util/util.service';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 const fakeActivatedRoute = {
-  'params': of({}),
+  'params': of({contentId: '123'}),
   snapshot: {
     data: {
       telemetry: {
         env: 'library', pageid: 'collection-player', type: 'play'
       }
-    }
+    },
+    queryParams: {}
   }
 };
 
 class RouterStub {
   url: '';
+  public navigationStart = new NavigationStart(0, '/learn');
   navigate = jasmine.createSpy('navigate');
+  public events = new Observable(observer => {
+    observer.next(this.navigationStart);
+    observer.complete();
+  });
 }
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerPageComponent;
@@ -50,6 +56,28 @@ describe('ContentPlayerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call ngOnInit', () => {
+    const activateRoute = TestBed.get(ActivatedRoute);
+    activateRoute.snapshot.queryParams = {
+      contentType: 'course', l1Parent: '1234'
+    };
+    spyOn(component, 'setPageExitTelemtry').and.callThrough();
+    component.telemetryImpression = { context: { env: 'content' }, edata: { type: 'play', uri: '/resources/play/content/do_2130404918568960001454', 'pageid': 'content-player' } };
+    component.ngOnInit();
+    expect(component.contentType).toEqual('course');
+    expect(component.setPageExitTelemtry).toHaveBeenCalled();
+    expect(component.objectRollUp).toBeDefined();
+  });
+
+  it('should get contentId from route params', () => {
+    const activateRoute = TestBed.get(ActivatedRoute);
+    spyOn(component, 'getContent').and.callThrough();
+    component.getContentIdFromRoute();
+    activateRoute.params.contentId = '123';
+    expect(component.contentId).toEqual('123');
+    expect(component.getContent).toHaveBeenCalled();
   });
 
   it('should call onAssessmentEvents', () => {
@@ -160,5 +188,14 @@ describe('ContentPlayerComponent', () => {
     component.tocPage = false;
     component.setTelemetryData();
     expect(component.telemetryImpression).toBeDefined();
+  });
+
+  it('should logTelemetry with defalut value', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    const activateRoute = TestBed.get(ActivatedRoute);
+    delete activateRoute.snapshot.data.telemetry;
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('do_3434223');
+    expect(telemetryService.interact).toHaveBeenCalled();
   });
 });

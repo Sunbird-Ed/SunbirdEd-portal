@@ -79,7 +79,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
-  showConsentPopup = false;
   showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
@@ -151,9 +150,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
-      if (response.consent) {
-        this.showConsentPopup = true;
-      }
     });
 
     this.courseConsumptionService.updateContentState
@@ -186,6 +182,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
