@@ -11,6 +11,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MockData} from './on-demand-report.component.spec.data';
 import { ReactiveFormsModule } from '@angular/forms';
+import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
@@ -25,7 +26,7 @@ describe('OnDemandReportsComponent', () => {
   let fixture: ComponentFixture<OnDemandReportsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OnDemandReportsComponent, SbDatatableComponent],
+      declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe],
       imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule],
       providers: [ToasterService, OnDemandReportService, HttpClient, ConfigService,
         {provide: ResourceService, useValue: resourceBundle}
@@ -108,12 +109,16 @@ describe('OnDemandReportsComponent', () => {
     component.userId = 'userId';
     component.selectedReport = {jobId: 'jobId'};
     component.onDemandReportData = [{1: 'a'}];
+    component.reportTypes = MockData.reportTypes;
     const onDemandReportService = TestBed.get(OnDemandReportService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(onDemandReportService, 'submitRequest').and.returnValue(of({result: {2: 'b'}}));
+    spyOn(onDemandReportService, 'submitRequest').and.returnValue(of({result: {2: 'b', dataset: 'response-exhaust'}}));
     spyOn(toasterService, 'error').and.callThrough();
     component.submitRequest();
-    expect(component.onDemandReportData).toEqual([{2: 'b'}, {1: 'a'}]);
+    expect(component.onDemandReportData).toEqual([{
+      2: 'b', dataset: 'response-exhaust',
+      title: 'Question set report'
+    }, {1: 'a'}]);
   });
 
   it('should call checkStatus', () => {
@@ -135,19 +140,22 @@ describe('OnDemandReportsComponent', () => {
   });
 
   it('should call dataModification', () => {
-    const row = {dataser: 'progress-exhaust'};
+    const row = {dataset: 'progress-exhaust'};
+    component.reportTypes = MockData.reportTypes;
     const result = component.dataModification(row);
-    expect(result.dataset).toBe('Course progress exhaust');
+    expect(result.title).toBe('Course progress exhaust');
   });
   it('should call dataModification', () => {
-    const row = {dataser: 'userinfo-exhaust'};
+    const row = {dataset: 'userinfo-exhaust'};
+    component.reportTypes = MockData.reportTypes;
     const result = component.dataModification(row);
-    expect(result.dataset).toBe('User profile exhaust');
+    expect(result.title).toBe('User profile exhaust');
   });
   it('should call dataModification', () => {
-    const row = {dataser: 'response-exhaust'};
+    const row = {dataset: 'response-exhaust'};
+    component.reportTypes = MockData.reportTypes;
     const result = component.dataModification(row);
-    expect(result.dataset).toBe('Question set report');
+    expect(result.title).toBe('Question set report');
   });
 
 });
