@@ -16,11 +16,11 @@ export class OnDemandReportsComponent implements OnInit {
   @Input() userId;
   @Input() batch;
   public columns = [
-    { name: 'Report Type', isSortable: true, prop: 'dataset', placeholder: 'Filter report type' },
-    { name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date' },
-    { name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status' },
-    { name: 'Download link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link' },
-    { name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date' },
+    {name: 'Report Type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
+    {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
+    {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
+    {name: 'Download link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
+    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'date'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
   public onDemandReportData: any[];
@@ -32,8 +32,9 @@ export class OnDemandReportsComponent implements OnInit {
   public isProcessed = false;
   reportStatus = {
     'submitted': 'SUBMITTED',
+    'processing': 'PROCESSING',
     'failed': 'FAILED',
-    'completed': 'COMPLETED',
+    'success': 'SUCCESS',
   };
 
 
@@ -48,7 +49,9 @@ export class OnDemandReportsComponent implements OnInit {
     if (this.batch) {
       this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
         if (data) {
-          this.onDemandReportData = _.get(data, 'result.jobs');
+          const reportData = _.get(data, 'result.jobs');
+          this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
+          this.onDemandReportData = [...this.onDemandReportData];
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -96,9 +99,9 @@ export class OnDemandReportsComponent implements OnInit {
       }
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
-          this.onDemandReportData.unshift({...data['result']});
-          this.onDemandReportData = _.slice(this.onDemandReportData, 0, 10);
-          this.onDemandReportData = [...this.onDemandReportData];
+          data = this.dataModification(data['result']);
+          const updatedReportList = [data, ...this.onDemandReportData];
+          this.onDemandReportData = _.slice(updatedReportList, 0, 10);
         }
         this.password.reset();
       }, error => {
@@ -124,18 +127,21 @@ export class OnDemandReportsComponent implements OnInit {
     const reportListData = _.last(sortedReportList) || {};
     let batchEndDate;
     if (this.batch.endDate) {
-      batchEndDate = new Date(this.batch.endDate).getTime();
+      batchEndDate = new Date(`${this.batch.endDate} 00:00:00`).getTime();
     }
-    if (!_.isEmpty(reportListData)) {
-      // report is already submitted so dont allow to req again
-      if (reportListData['status'] === this.reportStatus.submitted) {
-        return false;
+    if (!_.isEmpty(reportListData)) { // report is already submitted so dont allow to req again
+      if (this.onDemandReportService.isInProgress(reportListData, this.reportStatus)) {
+        return this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate);
       }
-      if (batchEndDate && _.get(reportListData, 'jobStats.dtJobSubmitted ') < batchEndDate) {
-        return false;
-      }
+      return false;
     }
     return true;
   }
 
+
+  dataModification(row) {
+    const dataSet = _.find(this.reportTypes, {dataset: row.dataset}) || {};
+    row.title = dataSet.title;
+    return row;
+  }
 }

@@ -309,7 +309,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     const request = {
       'request': {
         'filters': {
-          'collectionId': this.currentBatch.collectionId,
+          'collectionId': this.currentBatch.collectionId || this.currentBatch.courseId,
           'batchId': this.currentBatch.batchId
         },
         'groupBy': ['dist', 'state'],
@@ -328,6 +328,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             noOfCompletions: this.getFieldValue(x.values, 'completed'),
           }
         });
+        this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
         this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed');
         this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrolled')
@@ -641,7 +642,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   getFormData() {
-    const isCourseCreator = _.includes(this.userRoles, 'COURSE_CREATOR');
+    const isCourseCreator = _.includes(this.userRoles, 'CONTENT_CREATOR');
     const formReadInputParams = {
       formType: 'batch',
       formAction: 'list',
