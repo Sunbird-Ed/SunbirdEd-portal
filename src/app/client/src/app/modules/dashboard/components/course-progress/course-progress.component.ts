@@ -324,14 +324,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           return {
             state: x.state,
             district: x.district,
-            noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
-            noOfCompletions: this.getFieldValue(x.values, 'completed'),
+            noOfEnrollments: this.getFieldValue(x.values, 'enrollment'),
+            noOfCompletions: this.getFieldValue(x.values, 'complete'),
           }
         });
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
-        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed');
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrolled')
+        this.currentBatch.participantCount = this.getFieldValue(metrics, 'complete');
+        this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrollment')
       }
     }, error => {
       this.stateWiseReportData = [
