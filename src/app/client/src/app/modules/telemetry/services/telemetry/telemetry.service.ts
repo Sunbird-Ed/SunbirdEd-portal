@@ -7,6 +7,8 @@ import {
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { HttpClient } from '@angular/common/http';
+import { HttpOptions } from '@sunbird/shared';
 
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -62,7 +64,7 @@ export class TelemetryService {
   userSid;
   private deviceType: string;
 
-  constructor() {
+  constructor(public http: HttpClient) {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -390,5 +392,22 @@ export class TelemetryService {
       device = 'Desktop';
     }
     return device;
+  }
+
+  public telemetrySync(events) {
+    const request = {
+      'id': 'api.sunbird.telemetry',
+      'ver': '3.0',
+      'events': events
+    };
+
+    const httpOption: HttpOptions =  {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'dataType': 'json'
+      }
+    };
+    return this.http.post('/content/data/v1/telemetry', request, httpOption);
   }
 }

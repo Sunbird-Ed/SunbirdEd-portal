@@ -8,7 +8,7 @@ import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { UserService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
@@ -63,7 +63,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService, private telemetryService: TelemetryService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -332,8 +332,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
-    if (_.get(this.contentIframe, 'nativeElement')) {
-      this.contentIframe.nativeElement.remove();
+    const playerElement = _.get(this.contentIframe, 'nativeElement');
+    if (playerElement) {
+      if (_.get(playerElement, 'contentWindow.telemetry_web.tList.length')) {
+        const eventList = playerElement.contentWindow.telemetry_web.tList.map(item => JSON.parse(item));
+        this.telemetryService.telemetrySync(eventList).subscribe();
+      }
+      playerElement.remove();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
