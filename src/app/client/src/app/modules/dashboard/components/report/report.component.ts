@@ -204,17 +204,21 @@ export class ReportComponent implements OnInit {
   downloadReport(reportType: string) {
     this.reportExportInProgress = true;
     this.toggleHtmlVisibilty(true);
+    let telemetryObj;
     setTimeout(() => {
       switch (_.toLower(reportType)) {
         case 'img': {
+          telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: reportType });
           this.downloadReportAsImage();
           break;
         }
         case 'pdf': {
+          telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: reportType });
           this.downloadReportAsPdf();
           break;
         }
       }
+      this.telemetryService.impression(telemetryObj);
     }, 1500);
   }
 
@@ -486,7 +490,7 @@ export class ReportComponent implements OnInit {
     this.telemetryService.interact(interactData);
   }
 
-  public getTelemetryImpressionObj = ({ type }) => ({
+  public getTelemetryImpressionObj = ({ type, subtype = null }) => ({
     context: {
       env: this.activatedRoute.snapshot.data.telemetry.env
     },
@@ -499,7 +503,8 @@ export class ReportComponent implements OnInit {
       type: type || this.activatedRoute.snapshot.data.telemetry.type,
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
       uri: this.router.url,
-      duration: this.navigationhelperService.getPageLoadTime()
+      duration: this.navigationhelperService.getPageLoadTime(),
+      ...(subtype && { subtype })
     }
   })
 
