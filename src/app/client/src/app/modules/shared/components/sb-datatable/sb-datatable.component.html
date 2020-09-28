@@ -21,12 +21,11 @@
         </ng-template>
         <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
           <span *ngIf="col.prop !== 'downloadUrls'"
-                [ngClass]="{'success-label' : (col.prop === 'status' && value === 'SUCCESS'),'completed-label' : (col.prop === 'status' && value === 'PROCESSING'),'inprocess-label' : (col.prop === 'status' && value === 'SUBMITTED'),'failed-label' : (col.prop === 'status' && value === 'FAILED')}"
-                (click)="downloadUrl(col.prop , row)">
+                [ngClass]="{'success-label' : (col.prop === 'status' && value === 'SUCCESS'),'completed-label' : (col.prop === 'status' && value === 'PROCESSING'),'inprocess-label' : (col.prop === 'status' && value === 'SUBMITTED'),'failed-label' : (col.prop === 'status' && value === 'FAILED')}">
             {{ value | sbDataTable : col.type}}
           </span>
           <span *ngIf="col.prop === 'downloadUrls' && value && value.length > 0" (click)="downloadUrl(col.prop , row)">
-            <a [href]="value[0]" download>{{resourceService?.frmelmnts?.lbl?.clickHere}}</a>
+            <a href="javascript:void(0)">{{resourceService?.frmelmnts?.lbl?.clickHere}}</a>
           </span>
         </ng-template>
       </ngx-datatable-column>

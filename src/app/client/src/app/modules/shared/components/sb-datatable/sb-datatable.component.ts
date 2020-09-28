@@ -6,7 +6,6 @@ import {ResourceService} from '../../services/resource/resource.service';
 import { Subject } from 'rxjs';
 
 export const multiFilter = (arr: Object[], filters: Object) => {
-  console.log(arr, filters)
   const filterKeys = Object.keys(filters);
   return arr.filter(eachObj => {
     return filterKeys.every(eachKey => {
@@ -86,12 +85,12 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
 
   downloadUrl(prop, row){
-    if(prop === 'download_urls') {
+    if(prop === 'downloadUrls') {
       const isLinkExpired = new Date().getTime() > new Date(row.expires_at).getTime();
       if (isLinkExpired) {
         this.downloadLink.emit(row)
       } else {
-        window.open(row['download_urls'][0], '_blank');
+        window.open(row['downloadUrls'][0], '_blank');
       }
     }
   }
