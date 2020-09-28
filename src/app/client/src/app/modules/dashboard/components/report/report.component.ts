@@ -204,20 +204,18 @@ export class ReportComponent implements OnInit {
   downloadReport(reportType: string) {
     this.reportExportInProgress = true;
     this.toggleHtmlVisibilty(true);
-    let telemetryObj;
     setTimeout(() => {
       switch (_.toLower(reportType)) {
         case 'img': {
-          telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: reportType });
           this.downloadReportAsImage();
           break;
         }
         case 'pdf': {
-          telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: reportType });
           this.downloadReportAsPdf();
           break;
         }
       }
+      const telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: _.toLower(reportType) });
       this.telemetryService.impression(telemetryObj);
     }, 1500);
   }
