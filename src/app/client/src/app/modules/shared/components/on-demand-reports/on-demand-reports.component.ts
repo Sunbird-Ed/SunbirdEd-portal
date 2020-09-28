@@ -51,6 +51,7 @@ export class OnDemandReportsComponent implements OnInit {
         if (data) {
           const reportData = _.get(data, 'result.jobs');
           this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
+          this.onDemandReportData = [...this.onDemandReportData];
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));

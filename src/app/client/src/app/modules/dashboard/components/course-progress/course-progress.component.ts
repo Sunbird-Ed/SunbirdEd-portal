@@ -328,6 +328,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             noOfCompletions: this.getFieldValue(x.values, 'completed'),
           }
         });
+        this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
         this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed');
         this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrolled')
