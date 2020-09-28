@@ -99,6 +99,7 @@ describe('ActivityListComponent', () => {
 
   it('should call openActivity for Admin', () => {
     spyOn(component, 'addTelemetry');
+    spyOn(component['playerService'], 'playContent');
     const event = {
       data: {
       name: 'Class 5 English',
@@ -109,7 +110,7 @@ describe('ActivityListComponent', () => {
       contentType: 'Course'
     }};
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_123523212190']);
+    expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data);
     expect(component.addTelemetry).toHaveBeenCalled();
   });
 

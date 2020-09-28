@@ -79,7 +79,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
-  showConsentPopup = false;
   showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
@@ -151,9 +150,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
-      if (response.consent) {
-        this.showConsentPopup = true;
-      }
     });
 
     this.courseConsumptionService.updateContentState
@@ -186,6 +182,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
@@ -443,7 +440,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
-      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
+      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
         this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
@@ -457,7 +454,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   validateBatchDate(batch) {
-    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.accessToLogin;
+    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);
