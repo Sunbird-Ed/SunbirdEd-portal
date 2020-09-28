@@ -47,4 +47,28 @@ export class OnDemandReportService {
     return this.http.post(this.config.urlConFig.URLS.REPORT_PREFIX + '/v1' + this.config.urlConFig.URLS.REPORT.COLLECTION + this.config.urlConFig.URLS.REPORT.SUMMARY.PREFIX, request, options);
   }
 
+  /**
+   * check if report is in progress on not
+   * @param reportListData
+   * @param reportStatus
+   */
+  isInProgress(reportListData: any, reportStatus: any) {
+    if (reportListData['status'] === reportStatus.submitted || reportListData['status'] === reportStatus.processing) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * checks if user can request for generation of reports
+   * @param submittedDate
+   * @param batchEndDate
+   */
+  canRequestReport(submittedDate: any, batchEndDate: any) {
+    if (batchEndDate && submittedDate < batchEndDate) {
+      return false;
+    }
+    return true;
+  }
 }
+
