@@ -8,7 +8,6 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of, Subject } from 'rxjs';
 import { UserService } from '../../../core/services';
 import { PlayerComponent } from './player.component';
-import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 const startEvent = {
   detail: {
@@ -46,9 +45,9 @@ describe('PlayerComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator, TelemetryService],
+      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
