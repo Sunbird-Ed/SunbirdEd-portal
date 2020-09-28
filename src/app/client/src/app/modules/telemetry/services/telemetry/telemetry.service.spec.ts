@@ -3,13 +3,12 @@ import { TelemetryService, TELEMETRY_PROVIDER } from './telemetry.service';
 import { mockData } from './telemetry.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('TelemetryService', () => {
     configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientModule],
+            imports: [],
             providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, DeviceDetectorService]
         });
     });
@@ -156,13 +155,6 @@ describe('TelemetryService', () => {
             spyOn(EkTelemetry, 'audit');
             service.audit(mockData.auditEventData);
             expect(EkTelemetry.audit).not.toHaveBeenCalled();
-        }));
-    });
-
-    describe('telemetry sync', () => {
-        it('should sync telemetry events', inject([TelemetryService], (service: TelemetryService) => {
-            const resp = service.telemetrySync([]);
-            expect(resp).toBeDefined();
         }));
     });
 });
