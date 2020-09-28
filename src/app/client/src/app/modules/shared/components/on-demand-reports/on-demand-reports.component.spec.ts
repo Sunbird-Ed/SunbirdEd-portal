@@ -117,18 +117,18 @@ describe('OnDemandReportsComponent', () => {
   });
 
   it('should call checkStatus', () => {
-    component.selectedReport = OnDemandReports.selectedReport;
-    OnDemandReports.responseData.result.jobs[0]['status'] = 'COMPLETED';
-    component.onDemandReportData = OnDemandReports.responseData.result.jobs;
+    component.selectedReport = MockData.selectedReport;
+    MockData.responseData.result.jobs[0]['status'] = 'COMPLETED';
+    component.onDemandReportData = MockData.responseData.result.jobs;
     component.batch = {endDate: "2020-10-25"};
     const result = component.checkStatus();
     expect(result).toBeFalsy();
   });
 
   it('should call checkStatus', () => {
-    component.selectedReport = OnDemandReports.selectedReport;
-    OnDemandReports.responseData.result.jobs[0]['status'] = 'SUBMITTED';
-    component.onDemandReportData = OnDemandReports.responseData.result.jobs;
+    component.selectedReport = MockData.selectedReport;
+    MockData.responseData.result.jobs[0]['status'] = 'SUBMITTED';
+    component.onDemandReportData = MockData.responseData.result.jobs;
     component.batch = {endDate: null};
     const result = component.checkStatus();
     expect(result).toBeFalsy();

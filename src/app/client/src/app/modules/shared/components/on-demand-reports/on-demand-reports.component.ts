@@ -140,13 +140,8 @@ export class OnDemandReportsComponent implements OnInit {
 
 
   dataModification(row) {
-    if (row.dataset === 'progress-exhaust') {
-      row['dataset'] = "Course progress exhaust";
-    } else if (row.dataset === 'userinfo-exhaust') {
-      row['dataset'] = "User profile exhaust";
-    } else if (row.dataset === 'response-exhaust') {
-      row['dataset'] = "Question set report";
-    }
+    const dataSet = _.find(this.reportTypes, {dataset: row.dataset}) || {};
+    row.dataSet = dataSet.title;
     return row;
   }
 }

@@ -309,7 +309,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     const request = {
       'request': {
         'filters': {
-          'collectionId': this.currentBatch.courseId,
+          'collectionId': this.currentBatch.collectionId || this.currentBatch.courseId,
           'batchId': this.currentBatch.batchId
         },
         'groupBy': ['dist', 'state'],
@@ -641,7 +641,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   getFormData() {
-    const isCourseCreator = _.includes(this.userRoles, 'COURSE_CREATOR');
+    const isCourseCreator = _.includes(this.userRoles, 'CONTENT_CREATOR');
     const formReadInputParams = {
       formType: 'batch',
       formAction: 'list',

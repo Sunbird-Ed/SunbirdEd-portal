@@ -1,13 +1,12 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import * as dayjs from 'dayjs';
-import {TitleCasePipe} from '@angular/common';
 
 @Pipe({
   name: 'sbDataTable'
 })
 export class SbDataTablePipe implements PipeTransform {
 
-  constructor(private titlecasePipe: TitleCasePipe) {
+  constructor() {
 
   }
 

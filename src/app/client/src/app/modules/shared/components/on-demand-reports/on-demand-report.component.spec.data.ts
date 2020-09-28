@@ -208,5 +208,113 @@ export const MockData = {
       'https://www.google.com', 'https://www.google.com',
     ],
     'expires_at': '2020-08-20'
-  }
+  },
+  selectedReport: {
+    "title": " Course progress exhaust",
+    "dataset": "progress-exhaust",
+    "lang_key": "frmelmnts.lbl.progressExhaustReport",
+    "encrypt": "false"
+  },
+  responseData: {
+    result: {
+      jobs: [
+        {
+          'request_id': 'AE3DDC23B3F189ED2A57B567D6434BE7',
+          'tag': 'test-tag:in.ekstep',
+          'dataset': 'progress-exhaust',
+          'requested_by': 'client-1',
+          'requested_channel': 'in.ekstep',
+          'status': 'SUBMITTED',
+          'last_updated': 1599728944037,
+          'request_data': {
+            'batchFilters': [
+              'TPD',
+              'NCFCOPY'
+            ],
+            'contentFilters': {
+              'request': {
+                'filters': {
+                  'identifier': [
+                    'do_11305960936384921612216',
+                    'do_1130934466492252161819'
+                  ],
+                  'prevState': 'Draft'
+                },
+                'sort_by': {
+                  'createdOn': 'desc'
+                },
+                'limit': 10000,
+                'fields': [
+                  'framework',
+                  'identifier',
+                  'name',
+                  'channel',
+                  'prevState'
+                ]
+              }
+            },
+            'reportPath': 'course-progress-v2/'
+          },
+          'attempts': 0,
+          'jobStats': {
+            'dtJobSubmitted': 1599728944037,
+            'dt_job_completed': null,
+            'execution_time': null
+          },
+          'download_urls': [
+            'https://www.google.com', 'https://www.google.com',
+          ],
+          'expires_at': '2020-08-20'
+        },
+        {
+          'request_id': 'AE3DDC23B3F189ED2A57B567D6434BE7',
+          'tag': 'test-tag:in.ekstep',
+          'dataset': 'assessment-dashboard-metrics',
+          'requested_by': 'client-1',
+          'requested_channel': 'in.ekstep',
+          'status': 'Processing success',
+          'last_updated': 1599728944037,
+          'request_data': {
+            'batchFilters': [
+              'TPD',
+              'NCFCOPY'
+            ],
+            'contentFilters': {
+              'request': {
+                'filters': {
+                  'identifier': [
+                    'do_11305960936384921612216',
+                    'do_1130934466492252161819'
+                  ],
+                  'prevState': 'Draft'
+                },
+                'sort_by': {
+                  'createdOn': 'desc'
+                },
+                'limit': 10000,
+                'fields': [
+                  'framework',
+                  'identifier',
+                  'name',
+                  'channel',
+                  'prevState'
+                ]
+              }
+            },
+            'reportPath': 'course-progress-v2/'
+          },
+          'attempts': 0,
+          'jobStats': {
+            'dtJobSubmitted': 1599728944037,
+            'dt_job_completed': null,
+            'execution_time': null
+          },
+          'download_urls': [
+            'https://www.google.com',
+          ],
+          'expires_at': '2020-09-20'
+        }
+      ]
+    }
+  },
 };
