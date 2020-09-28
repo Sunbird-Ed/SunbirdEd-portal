@@ -52,7 +52,7 @@ export const MockData = {
           'attempts': 0,
           'job_stats': {
             'dt_job_submitted': 1599661955303,
-            'dt_job_completed': null,
+            'dt_job_completed': 1599661955303,
             'execution_time': null
           },
           'download_urls': [],

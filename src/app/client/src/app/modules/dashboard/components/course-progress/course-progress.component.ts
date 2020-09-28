@@ -186,6 +186,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   fileName: string;
   userConsent;
   reportTypes = [];
+  userRoles;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -279,7 +280,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
     this.getSummaryReports();
   }
 
@@ -532,30 +532,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.populateCourseDashboardData();
       });
   }
-  getReportUpdatedOnDate(batchIdentifier: string) {
-    const batchId = batchIdentifier;
-    const reportParams = {
-      'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
-      'assessment-reports': `assessment-reports/report-${batchId}.csv`
-    };
-    const requestParams = {
-      params: {
-        fileNames: JSON.stringify(reportParams)
-      },
-      telemetryData: this.activatedRoute
-    };
-    this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
-      if (_.get(response, 'responseCode') === 'OK') {
-        this.progressReportUpdatedOn = _.get(response, 'result.course-progress-reports.lastModified') || null;
-        this.scoreReportUpdatedOn = _.get(response, 'result.assessment-reports.lastModified') || null;
-      }
-    });
-  }
-
 
 
   getFieldValue(array, field) {
-    return _.find(array, { "type": field }).count;
+    if (_.find(array, {"type": field})) {
+      return _.find(array, {"type": field}).count;
+    } else {
+      return;
+    }
   }
 
   /**
@@ -569,39 +553,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       userConsent: 'No',
       audience: 'Teacher'
     };
-
-    this.user.userData$.subscribe((user) => {
-      const userProfile = user.userProfile;
-      let userRoles = _.get(userProfile, 'userRoles');
-      // userRoles = ['COURSE_MENTOR']
-      const isCourseCreator = _.includes(userRoles, 'COURSE_CREATOR');
-      const formReadInputParams = {
-        formType: 'batch',
-        formAction: 'list',
-        contentType: 'report_types'
-      };
-      this.formService.getFormConfig(formReadInputParams).subscribe(
-        (formResponsedata) => {
-          if (formResponsedata) {
-            const options = formResponsedata;
-            if (isCourseCreator) {
-              this.reportTypes = options;
-            } else {
-              this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
-            }
-            // const userConsent = _.get(apiData, 'userConsent');
-            // const audience = _.get(apiData, 'audience');
-            // if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
-            //   this.reportTypes = options.splice(0, 2);
-            // } else {
-            //   this.reportTypes = options;
-            // }
-          }
-        }, error => {
-          // error message
-        });
-    });
-
     this.fileName = 'State wise report';
     this.isDownloadReport = true;
     // this.searchFields = ['state', 'district'];
@@ -609,6 +560,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
+        this.userRoles = _.get(userdata, 'userProfile.userRoles');
         this.paramSubcription = combineLatest(this.activatedRoute.parent.params,
           this.activatedRoute.params, this.activatedRoute.queryParams,
           (parentParams: any, params: any, queryParams: any) => {
@@ -634,6 +586,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports() {
+    if (_.isEmpty(this.reportTypes)) {
+      this.getFormData();
+    }
     this.onDemandReports.loadReports();
   }
 
@@ -683,5 +638,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  getFormData() {
+    const isCourseCreator = _.includes(this.userRoles, 'COURSE_CREATOR');
+    const formReadInputParams = {
+      formType: 'batch',
+      formAction: 'list',
+      contentType: 'report_types'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe((formResponsedata) => {
+      if (formResponsedata) {
+        const options = formResponsedata;
+        if (isCourseCreator) {
+          this.reportTypes = options;
+        } else {
+          this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
+        }
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 }
