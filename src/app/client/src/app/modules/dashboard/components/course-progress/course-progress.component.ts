@@ -309,7 +309,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     const request = {
       'request': {
         'filters': {
-          'collectionId': this.currentBatch.collectionId,
+          'collectionId': this.currentBatch.courseId,
           'batchId': this.currentBatch.batchId
         },
         'groupBy': ['dist', 'state'],
