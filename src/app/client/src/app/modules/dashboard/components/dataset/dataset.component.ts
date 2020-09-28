@@ -30,7 +30,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   public get pickerMinDate() {
     if (get(this.dataset, 'dataAvailableFrom')) {
-      return dayjs(this.dataset.dataAvailableFrom);
+      return dayjs(this.dataset.dataAvailableFrom).toDate();
     }
     return dayjs().subtract(6, 'month').toDate();
   }
