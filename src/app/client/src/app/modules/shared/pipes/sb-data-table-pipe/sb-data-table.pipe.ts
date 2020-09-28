@@ -15,7 +15,7 @@ export class SbDataTablePipe implements PipeTransform {
       return ''
     }
     if (!type) {
-      return value || '';
+      return value;
     }
     if (type === 'date') {
       return dayjs(value).format('DD-MMM-YYYY');
