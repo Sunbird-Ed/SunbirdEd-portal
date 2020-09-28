@@ -16,7 +16,7 @@ export class OnDemandReportsComponent implements OnInit {
   @Input() userId;
   @Input() batch;
   public columns = [
-    {name: 'Report Type', isSortable: true, prop: 'dataset', placeholder: 'Filter report type'},
+    {name: 'Report Type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
     {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
     {name: 'Download link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
@@ -99,9 +99,8 @@ export class OnDemandReportsComponent implements OnInit {
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
           data = this.dataModification(data['result']);
-          this.onDemandReportData.unshift({...data['result']});
-          this.onDemandReportData = _.slice(this.onDemandReportData, 0, 10);
-          this.onDemandReportData = [...this.onDemandReportData];
+          const updatedReportList = [data, ...this.onDemandReportData];
+          this.onDemandReportData = _.slice(updatedReportList, 0, 10);
         }
         this.password.reset();
       }, error => {
@@ -141,7 +140,7 @@ export class OnDemandReportsComponent implements OnInit {
 
   dataModification(row) {
     const dataSet = _.find(this.reportTypes, {dataset: row.dataset}) || {};
-    row.dataSet = dataSet.title;
+    row.title = dataSet.title;
     return row;
   }
 }

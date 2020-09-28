@@ -25,7 +25,7 @@
                 (click)="downloadUrl(col.prop , row)">
             {{ value | sbDataTable : col.type}}
           </span>
-          <span *ngIf="col.prop === 'downloadUrls' && value" (click)="downloadUrl(col.prop , row)">
+          <span *ngIf="col.prop === 'downloadUrls' && value && value.length > 0" (click)="downloadUrl(col.prop , row)">
             <a [href]="value[0]" download>{{resourceService?.frmelmnts?.lbl?.clickHere}}</a>
           </span>
         </ng-template>
