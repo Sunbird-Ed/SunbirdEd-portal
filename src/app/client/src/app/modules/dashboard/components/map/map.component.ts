@@ -1,13 +1,15 @@
 import { ToasterService } from '@sunbird/shared';
-import { MapService, ReportService } from '../../services';
-import { IGeoJSON } from '../../interfaces';
+import { ReportService } from '../../services';
+import { IGeoJSON, ICustomMapObj, Properties, IInputMapData } from '../../interfaces';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Map } from 'leaflet';
-import { Subject, of } from 'rxjs';
-import { switchMap, map, retry, catchError, startWith, pluck } from 'rxjs/operators';
+import { of, throwError, iif, zip, BehaviorSubject } from 'rxjs';
+import { mergeMap, map, retry, catchError, skipWhile, pluck } from 'rxjs/operators';
+import * as mappingConfig from '../../config/nameToCodeMapping.json';
+import { cloneDeep, toLower, find, get, compact, pick } from 'lodash-es';
+
 
 declare var L;
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -15,6 +17,12 @@ declare var L;
 })
 export class MapComponent implements OnInit {
 
+  private map: Map;
+  private geoJSONRootLayer;
+  private infoControl;
+  private getGeoJSON = new BehaviorSubject(undefined);
+  @Output() featureClicked = new EventEmitter();
+  private mappingConfig: any;
   private readonly __defaultConfig = {
     initialCoordinate: [20, 78],
     latBounds: [6.4626999, 68.1097],
@@ -39,8 +47,6 @@ export class MapComponent implements OnInit {
   }
 
   private __mapData = {
-    fileName: "india.json",
-    states: [],
     folder: "geoJSON-sample",
     strict: false
   };
@@ -59,17 +65,12 @@ export class MapComponent implements OnInit {
       ...this.__mapData,
       ...data
     }
-    this.getGeoJSON.next({ file: this.__mapData.fileName, properties: this.__mapData.states })
+    this.getGeoJSON.next(this.__mapData);
   }
 
-  private map: Map;
-  private geoJSONRootLayer;
-  private infoControl;
-  private getGeoJSON = new Subject();
-  @Output() featureClicked = new EventEmitter();
-
-  constructor(private mapService: MapService, private toasterService: ToasterService,
-    private reportService: ReportService) { }
+  constructor(private toasterService: ToasterService, private reportService: ReportService) {
+    this.mappingConfig = (<any>mappingConfig.default);
+  }
 
   private getLayer(data?: IGeoJSON) {
     return L.geoJSON(data || null, {
@@ -99,14 +100,8 @@ export class MapComponent implements OnInit {
    * @param {*} event
    * @memberof Map2Component
    */
-  private clickHandler({ properties, metaData }, event) {
-    const { fileName, districts = [], drillDown = false, fitBounds = false } = metaData;
-    if (fitBounds) {
-      this.map.fitBounds(event.target.getBounds());
-    }
-    if (drillDown && fileName) {
-      this.getGeoJSON.next({ file: fileName, properties: districts })
-    }
+  private clickHandler({ properties = {}, metaData = {} }: { properties: Properties; metaData: Partial<ICustomMapObj> }, event) {
+    this.map.fitBounds(event.target.getBounds());
     this.featureClicked.emit({ ...metaData, ...properties });
   }
 
@@ -117,7 +112,7 @@ export class MapComponent implements OnInit {
    * @param {*} event
    * @memberof Map2Component
    */
-  private mouseoutHandler({ properties, metaData }, event) {
+  private mouseoutHandler({ properties = {}, metaData = {} }: { properties: Properties; metaData: Partial<ICustomMapObj> }, event) {
     this.geoJSONRootLayer.resetStyle(event.target);
   }
 
@@ -128,7 +123,7 @@ export class MapComponent implements OnInit {
    * @param {*} event
    * @memberof Map2Component
    */
-  private mouseoverHandler({ properties, metaData }, event) {
+  private mouseoverHandler({ properties = {}, metaData = {} }: { properties: Properties; metaData: Partial<ICustomMapObj> }, event) {
     var layer = event.target;
     layer.setStyle({
       weight: 3,
@@ -141,7 +136,7 @@ export class MapComponent implements OnInit {
     }
     this.infoControl.update(properties);
     const mergedObj = { ...properties, ...metaData };
-    layer.bindPopup(mergedObj.labelField || mergedObj.district || mergedObj.st_nm || mergedObj.name).openPopup();
+    layer.bindPopup(mergedObj[metaData.labelField] || mergedObj.district || mergedObj.st_nm || mergedObj.name || 'Unknown').openPopup();
   }
 
   /**
@@ -159,7 +154,6 @@ export class MapComponent implements OnInit {
       mouseout: this.mouseoutHandler.bind(this, { properties, metaData }),
       click: this.clickHandler.bind(this, { properties, metaData })
     });
-
   }
 
   private setControl() {
@@ -198,35 +192,58 @@ export class MapComponent implements OnInit {
     L.tileLayer(urlTemplate, options).addTo(this.map);
   }
 
-  private setGeoJSONData() {
-    this.getGeoJSON
-      .pipe(
-        startWith({ file: this.__mapData.fileName, properties: this.__mapData.states }),
-        switchMap((input: any) => {
-          return this.reportService.fetchDataSource(`/reports/fetch/${this.__mapData.folder}/${input.file}`)
-            .pipe(
-              pluck('result'),
-              map((geoJSON: any) => this.mapService.addPropertiesToGeoJSON(geoJSON, input.properties || [],
-                this.__mapData.strict || false)),
-              retry(5),
-              catchError(err => {
-                this.toasterService.warning('Failed to download geoJSON file');
-                return of({});
-              })
-            )
-        })
-      ).subscribe(res => {
-        this.geoJSONRootLayer.addData(res);
-      }, err => {
-        console.error(err);
+  private subscribeToRenderer() {
+    this.getGeoJSON.pipe(
+      skipWhile(input => input === undefined || input === null),
+      mergeMap((input: IInputMapData) => {
+        const { state, districts = [], metrics = [], labelExpr = "District", strict = false, folder } = input;
+        const { geoJSONFilename = null } = this.findRecordInConfigMapping({ type: "state", name: state }) || {};
+        if (!geoJSONFilename) {
+          return throwError('specified geoJSON file not found');
+        }
+        return zip(this.getGeoJSONFile({ fileName: geoJSONFilename, folder }), this.getDataSourceData())
+          .pipe(
+            map(([geoJSONData, reportData]) => {
+              const { type, features } = cloneDeep(geoJSONData) as IGeoJSON;
+              const filteredFeatures = [];
+              districts.forEach(district => {
+                const districtObj = this.findRecordInConfigMapping({ type: 'district', name: district });
+                
+                const dis = find(reportData || [], data => toLower(data[labelExpr]) === toLower(district));
+                
+                const featureObj = features.find(feature => {
+                  const { properties = {} } = feature;
+                  return districtObj && properties.district === district;
+                });
+
+                if (!districtObj || !dis || !featureObj) return;
+                featureObj['metaData'] = { name: district };
+                const metricsObject = pick(dis, metrics);
+                featureObj.properties = {
+                  ...(featureObj.properties || {}),
+                  ...metricsObject
+                }
+                filteredFeatures.push(featureObj);
+              });
+              return { type, features: strict ? filteredFeatures : features };
+            })
+          )
       })
+    ).subscribe(res => {
+      this.geoJSONRootLayer.addData(res);
+      this.map.fitBounds(this.geoJSONRootLayer.getBounds());
+    }, err => {
+      console.error(err);
+      const { errorText = 'Failed to render Map' } = err;
+      this.toasterService.error(errorText);
+    })
   }
 
   ngOnInit() {
     this.setInitialMapView();
     this.addTileLayer();
     this.setControl();
-    this.setGeoJSONData();
+    this.subscribeToRenderer();
   }
   /**
    * @description hide a particular state or district etc layer from the map by passing a hide key in the config
@@ -240,6 +257,35 @@ export class MapComponent implements OnInit {
         this.map.removeLayer(layer);
       }
     });
+  }
+
+  public findRecordInConfigMapping({ type, name, code = null }) {
+    return find(this.mappingConfig, config => {
+      const { type: configType, name: configName, code: configCode } = config;
+      if (code) return configType === code;
+      return configType && configName && toLower(configType) === toLower(type) && toLower(configName) === toLower(name);
+    })
+  }
+
+  public getGeoJSONFile({ folder = "geoJSON-sample", fileName }: Record<string, string>) {
+    return this.reportService.fetchDataSource(`/reports/fetch/${folder}/${fileName}`)
+      .pipe(
+        pluck('result'),
+        retry(2),
+        catchError(err => throwError({ errorText: 'Failed to download geoJSON file.' }))
+      )
+  }
+
+  private getDataSourceData() {
+    const { reportLoc, reportData } = this.__mapData as IInputMapData;
+    if (reportData) return of(reportData);
+    return this.reportService.fetchDataSource(reportLoc)
+      .pipe(
+        pluck('result'),
+        pluck('data'),
+        retry(2),
+        catchError(err => throwError({ errorText: 'Failed to download dataSource file.' }))
+      );
   }
 
 }

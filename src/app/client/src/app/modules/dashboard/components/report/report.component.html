@@ -225,8 +225,8 @@
                         <div class="sb-graph-section p-24 my-24"
                           *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
 
-                          <app-map *ngIf="chart?.chartConfig?.chartType === 'map'"
-                            [mapData]="chart?.chartConfig?.mapData" [options]="chart?.chartConfig?.options">
+                          <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
+                            [options]="chart?.chartConfig?.options">
                           </app-map>
 
                           <app-data-chart *ngIf="chart?.chartConfig?.chartType !== 'map'"
