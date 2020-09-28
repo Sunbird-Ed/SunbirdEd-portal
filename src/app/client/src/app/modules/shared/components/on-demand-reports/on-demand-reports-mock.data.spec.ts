@@ -40,7 +40,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -87,7 +87,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -134,7 +134,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -181,7 +181,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -228,7 +228,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -275,7 +275,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -322,7 +322,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -369,7 +369,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -416,7 +416,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -463,7 +463,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -510,7 +510,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null
@@ -557,7 +557,7 @@ export const OnDemandReports = {
             'reportPath': 'course-progress-v2/'
           },
           'attempts': 0,
-          'job_stats': {
+          'jobStats': {
             'dt_job_submitted': 1599728944037,
             'dt_job_completed': null,
             'execution_time': null

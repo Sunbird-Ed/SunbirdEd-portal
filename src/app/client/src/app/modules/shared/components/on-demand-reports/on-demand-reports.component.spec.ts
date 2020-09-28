@@ -116,4 +116,38 @@ describe('OnDemandReportsComponent', () => {
     expect(component.onDemandReportData).toEqual([{2: 'b'}, {1: 'a'}]);
   });
 
+  it('should call checkStatus', () => {
+    component.selectedReport = OnDemandReports.selectedReport;
+    OnDemandReports.responseData.result.jobs[0]['status'] = 'COMPLETED';
+    component.onDemandReportData = OnDemandReports.responseData.result.jobs;
+    component.batch = {endDate: "2020-10-25"};
+    const result = component.checkStatus();
+    expect(result).toBeFalsy();
+  });
+
+  it('should call checkStatus', () => {
+    component.selectedReport = OnDemandReports.selectedReport;
+    OnDemandReports.responseData.result.jobs[0]['status'] = 'SUBMITTED';
+    component.onDemandReportData = OnDemandReports.responseData.result.jobs;
+    component.batch = {endDate: null};
+    const result = component.checkStatus();
+    expect(result).toBeFalsy();
+  });
+
+  it('should call dataModification', () => {
+    const row = {dataser: 'progress-exhaust'};
+    const result = component.dataModification(row);
+    expect(result.dataset).toBe('Course progress exhaust');
+  });
+  it('should call dataModification', () => {
+    const row = {dataser: 'userinfo-exhaust'};
+    const result = component.dataModification(row);
+    expect(result.dataset).toBe('User profile exhaust');
+  });
+  it('should call dataModification', () => {
+    const row = {dataser: 'response-exhaust'};
+    const result = component.dataModification(row);
+    expect(result.dataset).toBe('Question set report');
+  });
+
 });

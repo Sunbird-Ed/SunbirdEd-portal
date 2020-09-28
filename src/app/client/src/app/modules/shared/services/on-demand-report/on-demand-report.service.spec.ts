@@ -1,10 +1,11 @@
-import {TestBed} from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 import {of} from 'rxjs';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {configureTestSuite} from '@sunbird/test-util';
 import {ConfigService} from '../config/config.service';
 import {OnDemandReportService} from './on-demand-report.service';
+
 describe('OnDemandReportService', () => {
   configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
@@ -64,4 +65,28 @@ describe('OnDemandReportService', () => {
       expect(data).toEqual(mockData);
     });
   });
+
+  it('should call canRequestReport', inject([OnDemandReportService], (service: OnDemandReportService) => {
+    const result = service.canRequestReport(1599728944037, 1603823400000);
+    expect(result).toBeFalsy();
+  }));
+
+  it('should call canRequestReport', inject([OnDemandReportService], (service: OnDemandReportService) => {
+    const result = service.canRequestReport(1604823400000, 1603823400000);
+    expect(result).toBeTruthy();
+  }));
+
+  it('should call isInProgress', inject([OnDemandReportService], (service: OnDemandReportService) => {
+    const reportStatus = {submitted: 'SUBMITTED'};
+    const reportListData = {status: 'SUBMITTED'}
+    const result = service.isInProgress(reportListData, reportStatus);
+    expect(result).toBeFalsy();
+  }));
+
+  it('should call isInProgress', inject([OnDemandReportService], (service: OnDemandReportService) => {
+    const reportStatus = {submitted: 'SUBMITTED'};
+    const reportListData = {status: 'COMPLETED'}
+    const result = service.isInProgress(reportListData, reportStatus);
+    expect(result).toBeTruthy();
+  }));
 });
