@@ -129,10 +129,10 @@ describe('GroupHeaderComponent', () => {
     expect(component.dropdownContent).toBeFalsy();
   });
 
-  it('show change dropdownMenuContent', () => {
-    component.showMemberPopup = false;
+  it('show emit closeModal event dropdownMenuContent', () => {
+    spyOn(component.handleFtuModal, 'emit');
     component.toggleFtuModal(true);
-    expect(component.showMemberPopup).toBeTruthy();
+    expect(component.handleFtuModal.emit).toHaveBeenCalledWith(true);
   });
 
   it('should call addTelemetry', () => {

@@ -27,6 +27,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   isAdmin = false;
   layoutConfiguration: any;
   activityList;
+  showMemberPopup = false;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -109,6 +110,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   addTelemetry (id) {
     this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  }
+
+  toggleFtuModal(visibility: boolean = false) {
+    this.showMemberPopup = visibility;
   }
 
   ngOnDestroy() {
