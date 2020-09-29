@@ -187,6 +187,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   userConsent;
   reportTypes = [];
   userRoles;
+  selectedTab = 1;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -266,6 +267,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
+  summaryReport(tabNumber){
+    this.selectedTab = tabNumber;
+    this.getSummaryReports();
+  }
+
   /**
   * To method helps to set batch id and calls the populateCourseDashboardData
   *
@@ -280,9 +286,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    this.getSummaryReports();
+    if(this.selectedTab === 1){
+      this.summaryReport(1);
+    } else {
+      this.loadOndemandReports(2);
+    } 
   }
-
 
 
   /**
@@ -586,11 +595,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * Load on demand reports
    */
-  loadOndemandReports() {
+  loadOndemandReports(tabNumber) {
+    this.selectedTab = tabNumber;
     if (_.isEmpty(this.reportTypes)) {
       this.getFormData();
     }
-    this.onDemandReports.loadReports();
+    this.onDemandReports.loadReports(this.courseId + '_'+this.batchId);
   }
 
   ngAfterViewInit() {

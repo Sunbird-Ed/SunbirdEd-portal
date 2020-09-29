@@ -43,7 +43,7 @@
                 <label class="fnormal font-weight-normal pl-4 text-left">Select Batch</label>
                   <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
                     [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id"
-                    [isSearchable]="true" #select>
+                    #select>
                     <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
                       (click)="setBatchId(course);" appTelemetryInteract [telemetryInteractObject]="interactObject"
                       [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
@@ -196,8 +196,8 @@
 
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
-      <a class="item" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
-      <a class="item" (click)="loadOndemandReports()" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+      <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
+      <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">
       <sb-datatable [name]="fileName" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
