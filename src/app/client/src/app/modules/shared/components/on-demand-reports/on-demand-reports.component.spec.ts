@@ -12,6 +12,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MockData} from './on-demand-report.component.spec.data';
 import { ReactiveFormsModule } from '@angular/forms';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
+import {InterpolatePipe} from '../../pipes/interpolate/interpolate.pipe';
 
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
@@ -26,7 +27,7 @@ describe('OnDemandReportsComponent', () => {
   let fixture: ComponentFixture<OnDemandReportsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe],
+      declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],
       imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule],
       providers: [ToasterService, OnDemandReportService, HttpClient, ConfigService,
         {provide: ResourceService, useValue: resourceBundle}
