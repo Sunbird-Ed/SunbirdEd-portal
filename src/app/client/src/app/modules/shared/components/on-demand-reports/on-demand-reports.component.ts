@@ -16,7 +16,7 @@ export class OnDemandReportsComponent implements OnInit {
   @Input() userId;
   @Input() batch;
   public columns = [
-    {name: 'Report Type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
+    {name: 'Report type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
     {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
     {name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
