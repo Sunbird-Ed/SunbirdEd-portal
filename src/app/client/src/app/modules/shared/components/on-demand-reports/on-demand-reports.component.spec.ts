@@ -121,6 +121,28 @@ describe('OnDemandReportsComponent', () => {
     }, {1: 'a'}]);
   });
 
+  it('should populate data and show toaster message as request failed', () => {
+    component.tag = 'mockTag';
+    component.batch = {
+      batchId: 'batchId'
+    };
+    component.userId = 'userId';
+    component.selectedReport = {jobId: 'jobId'};
+    component.onDemandReportData = [{1: 'a'}];
+    component.reportTypes = MockData.reportTypes;
+    const onDemandReportService = TestBed.get(OnDemandReportService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(onDemandReportService, 'submitRequest').and.returnValue(of(MockData.mockSubmitReqData));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.submitRequest();
+    expect(component.onDemandReportData).toEqual([{
+      2: 'b', dataset: 'response-exhaust',
+      title: 'Question set report',
+      status: 'FAILED', statusMessage: 'statusMessage'
+    }, {1: 'a'}]);
+    expect(toasterService.error).toHaveBeenCalledWith(MockData.mockSubmitReqData.result.statusMessage);
+  });
+
   it('should call checkStatus', () => {
     component.selectedReport = MockData.selectedReport;
     MockData.responseData.result.jobs[0]['status'] = 'COMPLETED';

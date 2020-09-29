@@ -27,7 +27,7 @@ export class OnDemandReportsComponent implements OnInit {
   public isDownloadReport = false;
   public fileName = '';
   public selectedReport;
-  public password = new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('[a-zA-Z0-9]*')]);
+  public password = new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]);
   public message = 'There is no data available';
   public isProcessed = false;
   reportStatus = {
@@ -100,6 +100,10 @@ export class OnDemandReportsComponent implements OnInit {
       console.log('submit the report');
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
+          if (data.result.status === this.reportStatus.failed) {
+            const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
+            this.toasterService.error(error);
+          }
           data = this.dataModification(data['result']);
           const updatedReportList = [data, ...this.onDemandReportData];
           this.onDemandReportData = _.slice(updatedReportList, 0, 10);
