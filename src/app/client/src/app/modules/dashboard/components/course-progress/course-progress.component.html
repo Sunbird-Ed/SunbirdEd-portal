@@ -200,7 +200,9 @@
       <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">
+      <p class="fsmall mt-8 mb-16 administrator-text">Summarized reports contain data from Sept. 6, 2020, onwards. If you need prior data, you may place a request for a detailed report</p>
       <sb-datatable [name]="fileName" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+   
     </div>
     <div class="ui segment detailed-report" suiTabContent="2">
       <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
