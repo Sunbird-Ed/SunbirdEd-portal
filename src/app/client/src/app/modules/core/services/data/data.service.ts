@@ -190,7 +190,7 @@ export class DataService {
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
       this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
-      this.sessionID = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      this.sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
     } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;
