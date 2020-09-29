@@ -36,7 +36,7 @@ export class OnDemandReportsComponent implements OnInit {
     'failed': 'FAILED',
     'success': 'SUCCESS',
   };
-
+  
 
   constructor(public resourceService: ResourceService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
@@ -45,9 +45,13 @@ export class OnDemandReportsComponent implements OnInit {
   ngOnInit() {
   }
 
-  loadReports(tag) {
+  loadReports(batchDetails?: any) {
+    if(batchDetails){
+      this.batch = batchDetails;
+      this.tag = batchDetails.courseId+'_'+batchDetails.batchId;
+    }
     if (this.batch) {
-      this.onDemandReportService.getReportList(tag).subscribe((data) => {
+      this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
         if (data) {
           const reportData = _.get(data, 'result.jobs');
           this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
@@ -58,7 +62,6 @@ export class OnDemandReportsComponent implements OnInit {
       });
     }
   }
-
 
   reportChanged(ev) {
     this.selectedReport = ev;

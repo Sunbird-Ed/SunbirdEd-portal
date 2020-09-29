@@ -600,7 +600,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     if (_.isEmpty(this.reportTypes)) {
       this.getFormData();
     }
-    this.onDemandReports.loadReports(this.courseId + '_'+this.batchId);
+    this.onDemandReports.loadReports(this.currentBatch);
   }
 
   ngAfterViewInit() {
