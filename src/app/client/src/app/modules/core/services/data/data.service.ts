@@ -40,6 +40,11 @@ export class DataService {
    * angular HttpClient
    */
   http: HttpClient;
+
+  /**
+   * contains sessionID
+   */
+  sessionID: string;
   /**
    * Constructor
    * @param {HttpClient} http HttpClient reference
@@ -180,11 +185,12 @@ export class DataService {
       'X-Source': 'web',
       'ts': dayjs().format(),
       'X-msgid': _uuid,
-      'X-Request-ID': _uuid
+      'X-Request-ID': _uuid,
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
       this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
+      this.sessionID = (<HTMLInputElement>document.getElementById('sessionId')).value;
     } catch (err) { }
     if (this.deviceId) {
       default_headers['X-Device-ID'] = this.deviceId;
@@ -197,6 +203,9 @@ export class DataService {
     }
     if (this.appId) {
       default_headers['X-App-Id'] = this.appId;
+    }
+    if (this.sessionID) {
+      default_headers['X-Session-ID'] = this.sessionID;
     }
     if (headers) {
       return { ...default_headers, ...headers };
