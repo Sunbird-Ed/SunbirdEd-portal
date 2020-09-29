@@ -1091,6 +1091,9 @@ html[layout='joy'] {
       width: calculateRem(10px);
    }
   }
+  .sb-modal .sb-bulk-upload-btn{
+    line-height: 1.5rem;
+  }
 }
 
 .data-labels{
