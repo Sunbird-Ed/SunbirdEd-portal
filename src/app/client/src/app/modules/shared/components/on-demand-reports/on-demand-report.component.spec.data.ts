@@ -1,4 +1,13 @@
 export const MockData = {
+  mockSubmitReqData: {
+    result: {
+      2: 'b',
+      dataset: 'response-exhaust',
+      status: 'FAILED',
+      statusMessage: 'statusMessage'
+    }
+  },
+  onDemandModifiedData: {},
   data: {data: 'testData'},
   reportListResponse: {
     'ver': '1.0',
