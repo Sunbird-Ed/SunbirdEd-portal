@@ -3,7 +3,7 @@
 </app-landing-section>
 
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''">
-  <div class="sb-pageSection my-24 ui container"
+  <div class="sb-pageSection my-24 ui container listallreports-section"
     [appTelemetryImpression]="getTelemetryImpression({type: 'page-request'})">
 
     <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
