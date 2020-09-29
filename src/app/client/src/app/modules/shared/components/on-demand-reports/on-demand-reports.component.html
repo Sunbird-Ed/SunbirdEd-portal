@@ -1,7 +1,7 @@
 <div class='ui stackable grid mt-0'>
   <div class="twelve wide column pt-0">
     <div class="d-flex flex-dc">
-      <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label>
+      <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
       <div class="d-flex flex-ai-center">
         <sui-select [isSearchable]="false" class="selection course-dashboard-select" placeholder="Choose your report"
                     [options]="reportTypes" labelField="title" valueField="title" #select>
@@ -18,29 +18,25 @@
           {{resourceService?.frmelmnts?.lbl?.request}}
         </button>
       </div>
-      <!-- <p *ngIf="!isProcessed" class="fnormal note-text mt-8 mb-24 administrator-text">Note: Each download request would take about 24 hours to generate</p>
+      <!-- <p *ngIf="!isProcessed" class="fnormal note-text mt-8 mb-24 administrator-text">{{resourceService.frmelmnts?.lbl?.downloadReqNote}}</p> -->
       <div *ngIf="isProcessed" class="d-flex">
         <div class="information-icon">
           <img src="assets/images/error-icon.svg" width="18px"></div>
-        <p class=" fnormal note-text mt-8 mb-24 ml-8 administrator-text">This report is already requested and is in process. Please check the downloads sections below for more details</p>
+        <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
       </div>
-      <p class="administrator-text">Administrators are responsible for the security of the profile information of users and to ensure that it is used only in accordance with the DIKSHA Course Terms.</p> -->
+      <!-- <p class="administrator-text">{{resourceService.frmelmnts?.lbl?.ondemandReportNote | interpolate:'{instance}': instance}}</p> -->
 
       <p class="fsmall note-text my-8 administrator-text" *ngIf="!isProcessed"> 
-        Your password should be 8 characters, alphanumeric, 
-        without special characters or spaces.Remember your password, 
-        as you require the same password to view the generated report.
+       {{resourceService?.frmelmnts?.lbl?.pswdRule}}
         </p>
      
          
     </div>
   </div>
 </div>
-<div class="pb-8 download-section-text">Downloads Section (Latest 10 requests)</div>
-<p class="fsmall mt-8 mb-16 administrator-text">It takes a minimum of 24 hours 
-  to generate the requested report.Administrators are responsible for the security 
-  of the profile information of users and to ensure that it is used only in accordance
-   with the DIKSHA Course Terms.</p>
+<div class="fsmall font-weight-bold download-section-text">{{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
+<p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote | interpolate:'{instance_course_terms}': instance}}</p>
+
 <sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
               [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
 
