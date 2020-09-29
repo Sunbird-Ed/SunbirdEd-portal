@@ -60,7 +60,7 @@ describe('OnDemandReportsComponent', () => {
     };
     const onDemandReportService = TestBed.get(OnDemandReportService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(of(MockData.reportListResponse));
-    component.loadReports();
+    component.loadReports('do_21310064620881510413775_01310067114129817611');
     expect(component.onDemandReportData).toEqual(MockData.reportListResponse.result.jobs);
   });
   it('should throw error if not load report', () => {
@@ -72,7 +72,7 @@ describe('OnDemandReportsComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(onDemandReportService, 'getReportList').and.returnValue(throwError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    component.loadReports();
+    component.loadReports('do_21310064620881510413775_01310067114129817611');
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
   it('should throw error if not onDownloadLinkFail', () => {

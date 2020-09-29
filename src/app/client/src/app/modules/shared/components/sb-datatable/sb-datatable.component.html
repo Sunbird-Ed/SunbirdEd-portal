@@ -1,7 +1,7 @@
 <div class="datatable-content">
-    <div  *ngIf="downloadCSV" class="d-flex flex-ai-center flex-jc-flex-end pb-24">
+    <div  *ngIf="downloadCSV" class="d-flex flex-ai-center flex-jc-flex-end download-report">
       <img src="assets/images/question.svg" width="16px" height="16px">
-      <span class="mx-8 cursor-pointer" (click)="downloadCSVFile()">{{resourceService.frmelmnts?.lbl?.downloadAsCSV}}</span>
+      <span class="mx-8 cursor-pointer fsmall" (click)="downloadCSVFile()">{{resourceService.frmelmnts?.lbl?.downloadAsCSV}}</span>
       <img src="assets/images/download-icon.svg">
     </div>
   <div class="sb-table-responsive-div">
@@ -25,7 +25,7 @@
             {{ value | sbDataTable : col.type}}
           </span>
           <span *ngIf="col.prop === 'downloadUrls' && value && value.length > 0" (click)="downloadUrl(col.prop , row)">
-            <a href="javascript:void(0)">{{resourceService?.frmelmnts?.lbl?.clickHere}}</a>
+            <a href="javascript:void(0)">{{resourceService?.frmelmnts?.btn?.download}}</a>
           </span>
         </ng-template>
       </ngx-datatable-column>

@@ -19,7 +19,7 @@ export class OnDemandReportsComponent implements OnInit {
     {name: 'Report Type', isSortable: true, prop: 'title', placeholder: 'Filter report type'},
     {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
-    {name: 'Download link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
+    {name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
     {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'date'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
@@ -46,7 +46,11 @@ export class OnDemandReportsComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
   }
 
-  loadReports() {
+  loadReports(batchDetails?: any) {
+    if(batchDetails){
+      this.batch = batchDetails;
+      this.tag = batchDetails.courseId+'_'+batchDetails.batchId;
+    }
     if (this.batch) {
       this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
         if (data) {
@@ -116,6 +120,9 @@ export class OnDemandReportsComponent implements OnInit {
       });
     } else {
       this.isProcessed = true;
+      setTimeout(()=>{
+        this.isProcessed = false;
+      }, 5000)
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
     }
   }
