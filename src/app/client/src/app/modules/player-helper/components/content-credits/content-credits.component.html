@@ -36,7 +36,7 @@
             <div class="header text-gray">{{resourceService.frmelmnts.lbl?.contenttype | uppercase}}</div>
             <div class="mt-5">{{contentData.originData.name}}</div>
           </div>
-          <div class="item mt-10">
+          <div class="item mt-10" *ngIf="contentData?.originData?.author">
             <div class="header text-gray">{{resourceService.frmelmnts.lbl?.authorofsourcecontent | uppercase}}</div>
             <div class="mt-5">{{contentData.originData.author}}</div>
           </div>
