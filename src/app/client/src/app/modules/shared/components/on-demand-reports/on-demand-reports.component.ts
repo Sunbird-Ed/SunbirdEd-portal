@@ -36,13 +36,14 @@ export class OnDemandReportsComponent implements OnInit {
     'failed': 'FAILED',
     'success': 'SUCCESS',
   };
-
+  instance: string;
 
   constructor(public resourceService: ResourceService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
   }
 
   loadReports() {

@@ -42,6 +42,12 @@ describe('OnDemandReportsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should init instance', () => {
+    component.ngOnInit();
+    expect(component.instance).toEqual('SUNBIRD');
+  });
+
   it('should set data on report change', () => {
     component.reportChanged(MockData.data);
     expect(component.selectedReport).toEqual(MockData.data);
