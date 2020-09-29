@@ -55,7 +55,7 @@ export const MockData = {
             'dt_job_completed': 1599661955303,
             'execution_time': null
           },
-          'download_urls': [],
+          'downloadUrls': [],
           'expires_at': 1600399619
         },
         {
@@ -101,7 +101,7 @@ export const MockData = {
             'dt_job_completed': null,
             'execution_time': null
           },
-          'download_urls': [],
+          'downloadUrls': [],
           'expires_at': 1600399619
         }
       ]
@@ -122,7 +122,7 @@ export const MockData = {
       },
       'attempts': 0,
       'tag': 'test-tag:ROOT_ORG',
-      'download_urls': [],
+      'downloadUrls': [],
       'job_id': 'assessment-dashboard-metrics',
       'expires_at': 1600400653,
       'last_updated': 1600160849298,
@@ -204,7 +204,7 @@ export const MockData = {
       'dt_job_completed': null,
       'execution_time': null
     },
-    'download_urls': [
+    'downloadUrls': [
       'https://www.google.com', 'https://www.google.com',
     ],
     'expires_at': '2020-08-20'
@@ -261,7 +261,7 @@ export const MockData = {
             'dt_job_completed': null,
             'execution_time': null
           },
-          'download_urls': [
+          'downloadUrls': [
             'https://www.google.com', 'https://www.google.com',
           ],
           'expires_at': '2020-08-20'
@@ -309,7 +309,7 @@ export const MockData = {
             'dt_job_completed': null,
             'execution_time': null
           },
-          'download_urls': [
+          'downloadUrls': [
             'https://www.google.com',
           ],
           'expires_at': '2020-09-20'

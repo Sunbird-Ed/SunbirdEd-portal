@@ -97,7 +97,7 @@ describe('SbDatatableComponent', () => {
   it('should call downloadUrl', () => {
     const mockData = {expires_at: '2020-09-15'};
     spyOn(component.downloadLink, 'emit').and.stub();
-    component.downloadUrl('download_urls', mockData);
+    component.downloadUrl('downloadUrls', mockData);
     expect(component.downloadLink.emit).toHaveBeenCalled();
   });
 

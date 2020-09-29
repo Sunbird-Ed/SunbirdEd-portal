@@ -66,7 +66,7 @@ export class OnDemandReportsComponent implements OnInit {
   onDownloadLinkFail(data) {
     this.onDemandReportService.getReport(data.tag, data.requestId).subscribe((data: any) => {
       if (data) {
-        const downloadUrls = _.get(data, 'result.download_urls') || [];
+        const downloadUrls = _.get(data, 'result.downloadUrls') || [];
         const downloadPath = _.head(downloadUrls);
         if (downloadPath) {
           window.open(downloadPath, '_blank');
@@ -97,6 +97,7 @@ export class OnDemandReportsComponent implements OnInit {
       if (this.selectedReport.encrypt === 'true') {
         request.request['encryptionKey'] = this.password.value;
       }
+      console.log('submit the report');
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
           data = this.dataModification(data['result']);
