@@ -1,6 +1,9 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
+<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
+</app-ftu-popup>
+
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
 
 <div class="ui container" *ngIf="isLoader" > 
@@ -8,7 +11,7 @@
 </div>
 
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
-  <app-group-header [groupData]="groupData"></app-group-header>
+  <app-group-header [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">
