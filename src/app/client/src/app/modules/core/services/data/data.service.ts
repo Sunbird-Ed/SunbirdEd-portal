@@ -205,7 +205,7 @@ export class DataService {
       default_headers['X-App-Id'] = this.appId;
     }
     if (this.sessionId) {
-      default_headers['X-Session-ID'] = this.sessionId;
+      default_headers['X-Session-Id'] = this.sessionId;
     }
     if (headers) {
       return { ...default_headers, ...headers };
