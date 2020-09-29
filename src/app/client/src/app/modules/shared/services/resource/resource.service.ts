@@ -119,7 +119,7 @@ export class ResourceService {
       'ts': dayjs().format(),
       'X-msgid': _uuid,
       'X-Request-ID': _uuid,
-      'X-Session-ID': 'X-Session-ID'
+      'X-Session-Id': 'X-Session-Id'
     };
   }
   /**

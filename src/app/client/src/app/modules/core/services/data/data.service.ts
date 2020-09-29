@@ -44,7 +44,7 @@ export class DataService {
   /**
    * contains sessionID
    */
-  sessionID: string;
+  sessionId: string;
   /**
    * Constructor
    * @param {HttpClient} http HttpClient reference
@@ -204,8 +204,8 @@ export class DataService {
     if (this.appId) {
       default_headers['X-App-Id'] = this.appId;
     }
-    if (this.sessionID) {
-      default_headers['X-Session-ID'] = this.sessionID;
+    if (this.sessionId) {
+      default_headers['X-Session-ID'] = this.sessionId;
     }
     if (headers) {
       return { ...default_headers, ...headers };
