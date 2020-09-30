@@ -1,4 +1,15 @@
 export const MockData = {
+  telemetryObj: {
+    context: {
+      env: 'reports',
+      cdata: [{id: 'courseId', type: 'Course'}, {id: 'batchId', type: 'Batch'}]
+    },
+    edata: {
+      id: 'response-exhaust',
+      type: 'click',
+      pageid: 'on-demand-reports'
+    }
+  },
   mockSubmitReqData: {
     result: {
       2: 'b',
