@@ -9,6 +9,7 @@ import {FilterPipe} from '../../pipes/filter/filter.pipe';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 import {ResourceService} from '../../services/resource/resource.service';
 import {of as observableOf} from "rxjs";
+import { TelemetryService } from '@sunbird/telemetry';
 
 describe('SbDatatableComponent', () => {
   let component: SbDatatableComponent;
@@ -26,7 +27,7 @@ describe('SbDatatableComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SbDatatableComponent, FilterPipe, SbDataTablePipe],
       imports: [FormsModule],
-      providers: [{provide: ResourceService, useValue: resourceBundle}],
+      providers: [{provide: ResourceService, useValue: resourceBundle}, TelemetryService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();

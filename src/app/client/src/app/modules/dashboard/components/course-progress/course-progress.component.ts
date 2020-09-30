@@ -188,6 +188,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   reportTypes = [];
   userRoles;
   selectedTab = 1;
+  tableConfig = {'footerHeight': 50, 'limit': 5}
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService

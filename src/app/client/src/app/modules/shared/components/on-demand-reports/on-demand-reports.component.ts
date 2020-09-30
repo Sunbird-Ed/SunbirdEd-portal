@@ -23,6 +23,7 @@ export class OnDemandReportsComponent implements OnInit {
     {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'date'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
+  tableConfig = {'footerHeight': 0, 'limit': 10}
   public onDemandReportData: any[];
   public isDownloadReport = false;
   public fileName = '';

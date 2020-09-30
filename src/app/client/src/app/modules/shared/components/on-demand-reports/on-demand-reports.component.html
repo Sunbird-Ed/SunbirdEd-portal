@@ -37,6 +37,6 @@
 <div class="fsmall font-weight-bold download-section-text">{{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
 <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote | interpolate:'{instance_course_terms}': instance}}</p>
 
-<sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
+<sb-datatable [name]="fileName" [tableConfig]="tableConfig" [message]="message" [data]="onDemandReportData" [columns]="columns"
               [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
 

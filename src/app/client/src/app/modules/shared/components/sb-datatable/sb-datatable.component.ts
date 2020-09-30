@@ -45,6 +45,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() isColumnsSearchable;
   @Output() downloadLink = new EventEmitter();
   @Input() batch;
+  @Input() tableConfig = {};
   public tableData = [];
   public searchData;
   public showLoader = false;

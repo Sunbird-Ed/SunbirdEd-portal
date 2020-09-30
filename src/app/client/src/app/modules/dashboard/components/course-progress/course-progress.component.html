@@ -202,7 +202,7 @@
     <div class="ui segment state-report" suiTabContent="1">
       <div class="ui stackable grid"><div class="nine wide column py-0"><p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}</p></div>
       </div>
-      <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
+      <sb-datatable [name]="fileName" [tableConfig]="tableConfig" [batch]="currentBatch" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
    
     </div>
     <div class="ui segment detailed-report" suiTabContent="2">
