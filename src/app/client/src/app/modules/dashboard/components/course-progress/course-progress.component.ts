@@ -327,7 +327,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         ]
       },
       edata: {
-        id: 'Tab switching',
+        id: id,
         type: 'click',
         pageid: id
       }
