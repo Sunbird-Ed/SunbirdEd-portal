@@ -13,6 +13,7 @@ import {MockData} from './on-demand-report.component.spec.data';
 import { ReactiveFormsModule } from '@angular/forms';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 import {InterpolatePipe} from '../../pipes/interpolate/interpolate.pipe';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
@@ -28,8 +29,9 @@ describe('OnDemandReportsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],
-      imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule],
-      providers: [ToasterService, OnDemandReportService, HttpClient, ConfigService,
+      imports: [SuiModule, FormsModule, NgxDatatableModule, HttpClientTestingModule, ReactiveFormsModule,
+        TelemetryModule.forRoot()],
+      providers: [ToasterService, OnDemandReportService, HttpClient, ConfigService, TelemetryService,
         {provide: ResourceService, useValue: resourceBundle}
       ]
     })
@@ -185,6 +187,14 @@ describe('OnDemandReportsComponent', () => {
     component.reportTypes = MockData.reportTypes;
     const result = component.dataModification(row);
     expect(result.title).toBe('Question set report');
+  });
+
+  it('should generate telemetry', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.generateTelemetry('response-exhaust', 'batchId', 'courseId');
+    expect(telemetryService.interact).toHaveBeenCalled();
+    expect(telemetryService.interact).toHaveBeenCalledWith(MockData.telemetryObj);
   });
 
 });
