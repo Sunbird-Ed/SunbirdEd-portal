@@ -45,7 +45,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() isColumnsSearchable;
   @Output() downloadLink = new EventEmitter();
   @Input() batch;
-  @Input() tableConfig = {};
+  @Input() tableConfig = {'footerHeight': 0, 'limit': 5};
   public tableData = [];
   public searchData;
   public showLoader = false;
