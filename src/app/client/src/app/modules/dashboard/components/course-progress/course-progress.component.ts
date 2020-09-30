@@ -181,8 +181,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   columns = [
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
     { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' },
-    { name: 'No. of Completions', isSortable: false, prop: 'noOfCompletions', placeholder: 'Filter completions' }];
+    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' }];
   fileName: string;
   userConsent;
   reportTypes = [];
@@ -333,8 +332,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           return {
             state: x.state,
             district: x.district,
-            noOfEnrollments: this.getFieldValue(x.values, 'enrolment'),
-            noOfCompletions: this.getFieldValue(x.values, 'complete'),
+            noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
           }
         });
         this.stateWiseReportData = [...this.stateWiseReportData];
@@ -347,38 +345,32 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         {
           state: 'Andhra Pradesh',
           district: 'Chittoor',
-          noOfEnrollments: 20,
-          noOfCompletions: 10
+          noOfEnrollments: 20
         },
         {
           state: 'Andhra Pradesh',
           district: 'Vishakapatanam',
-          noOfEnrollments: 50,
-          noOfCompletions: 25
+          noOfEnrollments: 50
         },
         {
           state: 'Andhra Pradesh',
           district: 'Guntur',
-          noOfEnrollments: 70,
-          noOfCompletions: 30
+          noOfEnrollments: 70
         },
         {
           state: 'Andhra Pradesh',
           district: 'Kadapa',
-          noOfEnrollments: 65,
-          noOfCompletions: 10
+          noOfEnrollments: 65
         },
         {
           state: 'Andhra Pradesh',
           district: 'Nellore',
-          noOfEnrollments: 100,
-          noOfCompletions: 25
+          noOfEnrollments: 100
         },
         {
           state: 'Telengana',
           district: 'Hydrabad',
-          noOfEnrollments: 45,
-          noOfCompletions: 15
+          noOfEnrollments: 45
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
