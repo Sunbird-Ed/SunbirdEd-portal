@@ -3,6 +3,7 @@ import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import {ResourceService} from '../../services/resource/resource.service';
+import { TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 
 export const multiFilter = (arr: Object[], filters: Object) => {
@@ -43,6 +44,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() message;
   @Input() isColumnsSearchable;
   @Output() downloadLink = new EventEmitter();
+  @Input() batch;
   public tableData = [];
   public searchData;
   public showLoader = false;
@@ -52,7 +54,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   public filterModel = {};
   public tableMessage;
 
-  constructor(public resourceService: ResourceService) {
+  constructor(public resourceService: ResourceService, public telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
@@ -95,11 +97,31 @@ export class SbDatatableComponent implements OnInit, OnChanges {
     }
   }
 
+  
   clearSearch() {
     this.searchData = '';
   }
 
+  setInteractEventData() {
+    const downloadReports = {
+      context: {
+        env: 'reports',
+        cdata: [
+          {id: _.get(this.batch , 'courseId'), type: 'Course'},
+          {id: _.get(this.batch , 'batchId'), type: 'Batch'}
+        ]
+      },
+      edata: {
+        id: 'download-summary-reports',
+        type: 'click',
+        pageid: 'summary-reports'
+      }
+    };
+    this.telemetryService.interact(downloadReports);
+  }
+
   downloadCSVFile() {
+    this.setInteractEventData();
     this.name = `${this.name}_${dayjs().format('YYYY-MM-DD_HH_mm')}`; 
     const options = {
       filename: this.name,

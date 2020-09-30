@@ -1,6 +1,7 @@
 <div class="datatable-content">
     <div  *ngIf="downloadCSV" class="d-flex flex-ai-center flex-jc-flex-end download-report">
-      <span class="mx-8 cursor-pointer fsmall" (click)="downloadCSVFile()">{{resourceService.frmelmnts?.lbl?.downloadAsCSV}}</span>
+      <span class="mx-8 cursor-pointer fsmall"
+       (click)="downloadCSVFile()">{{resourceService.frmelmnts?.lbl?.downloadAsCSV}}</span>
       <img src="assets/images/download-icon.svg">
     </div>
   <div class="sb-table-responsive-div">

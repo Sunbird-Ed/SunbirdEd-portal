@@ -11,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
 /**
@@ -202,6 +202,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
+    public telemetryService: TelemetryService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
     public onDemandReportService: OnDemandReportService,
@@ -268,6 +269,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   summaryReport(tabNumber){
+    this.setInteractEventDataForTabs('summary-report');
     this.selectedTab = tabNumber;
     this.getSummaryReports();
   }
@@ -313,6 +315,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.queryParams.timePeriod = timePeriod;
     this.populateCourseDashboardData();
   }
+
+
+  setInteractEventDataForTabs(id) {
+    const telemetryObj = {
+      context: {
+        env: 'reports',
+        cdata: [
+          {id: _.get(this.currentBatch , 'courseId'), type: 'Course'},
+          {id: _.get(this.currentBatch , 'batchId'), type: 'Batch'}
+        ]
+      },
+      edata: {
+        id: 'Tab switching',
+        type: 'click',
+        pageid: id
+      }
+    };
+    this.telemetryService.interact(telemetryObj);
+  }
+
 
   getSummaryReports() {
     const request = {
@@ -596,6 +618,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports(tabNumber) {
+    this.setInteractEventDataForTabs('on-demand-reports');
     this.selectedTab = tabNumber;
     if (_.isEmpty(this.reportTypes)) {
       this.getFormData();
