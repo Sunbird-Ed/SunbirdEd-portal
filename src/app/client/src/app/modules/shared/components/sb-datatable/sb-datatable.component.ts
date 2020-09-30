@@ -85,8 +85,8 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
 
   downloadUrl(prop, row){
-    if(prop === 'downloadUrls') {
-      const isLinkExpired = new Date().getTime() > new Date(row.expires_at).getTime();
+    if (prop === 'downloadUrls') {
+      const isLinkExpired = new Date().getTime() > new Date(row.expiresAt).getTime();
       if (isLinkExpired) {
         this.downloadLink.emit(row)
       } else {
