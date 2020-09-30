@@ -112,9 +112,9 @@ export class SbDatatableComponent implements OnInit, OnChanges {
         ]
       },
       edata: {
-        id: 'download-summary-reports',
+        id: 'download-summary-report',
         type: 'click',
-        pageid: 'summary-reports'
+        pageid: 'summary-report'
       }
     };
     this.telemetryService.interact(downloadReports);
