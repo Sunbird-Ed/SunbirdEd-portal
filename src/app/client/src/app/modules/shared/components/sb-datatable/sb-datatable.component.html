@@ -10,7 +10,7 @@
         [draggable]="false" [resizeable]="false" [prop]="col.prop" [width]="100">
         <ng-template ngx-datatable-header-template>
           <div class="sb-field-group">
-            <label class="pl-8 mb-8">{{col.name}}</label>
+            <label class="pl-0 mb-8">{{col.name}}</label>
             <div class="sb-field filterTable" *ngIf="isColumnsSearchable">
               <input class="sb-form-control" [(ngModel)]="filterModel[col.prop]"
                 (input)="keyUp.next({value:$event.target.value,key:col.prop})" type="text"
