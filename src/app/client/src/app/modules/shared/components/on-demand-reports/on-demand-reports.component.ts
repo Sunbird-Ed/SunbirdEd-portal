@@ -14,7 +14,6 @@ export class OnDemandReportsComponent implements OnInit {
 
   @Input() reportTypes;
   @Input() tag;
-  @Input() courseId;
   @Input() userId;
   @Input() batch;
   public columns = [
@@ -121,7 +120,7 @@ export class OnDemandReportsComponent implements OnInit {
         request.request['encryptionKey'] = this.password.value;
       }
       console.log('submit the report');
-      this.generateTelemetry(this.selectedReport.dataset, this.batch.batchId, this.courseId);
+      this.generateTelemetry(this.selectedReport.dataset, this.batch.batchId, this.batch.courseId);
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
           if (data.result.status === this.reportStatus.failed) {
