@@ -1,17 +1,19 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule, TncService, UserService } from '@sunbird/core';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
+import { CoreModule, TncService, UserService, CoursesService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
-import { of, throwError } from 'rxjs';
+import { of, throwError, BehaviorSubject } from 'rxjs';
 import { ConsentPiiComponent } from './consent-pii.component';
 import { MockData } from './consent-pii.component.spec.data';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('ConsentPiiComponent', () => {
   let component: ConsentPiiComponent;
   let fixture: ComponentFixture<ConsentPiiComponent>;
+  let activatedRoute;
   configureTestSuite();
   const resourceBundle = {
     frmelmnts: {
@@ -38,6 +40,15 @@ describe('ConsentPiiComponent', () => {
     getConsent() { return of({}); }
   };
 
+  class FakeActivatedRoute {
+    queryParamsMock = new BehaviorSubject<any>({});
+    get queryParams() { return this.queryParamsMock.asObservable(); }
+    public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+  }
+
+  const routerStub = {
+    navigate: jasmine.createSpy('navigate')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -49,6 +60,8 @@ describe('ConsentPiiComponent', () => {
         ToasterService,
         UserService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        { provide: Router, useValue: routerStub }
       ]
     })
       .compileComponents();
@@ -57,6 +70,7 @@ describe('ConsentPiiComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ConsentPiiComponent);
     component = fixture.componentInstance;
+    activatedRoute = TestBed.get(ActivatedRoute);
   });
 
   it('should create', () => {
@@ -207,4 +221,24 @@ describe('ConsentPiiComponent', () => {
     expect(toastService.error).toHaveBeenCalledWith('Something went wrong, try again later');
     expect(component.showConsentPopup).toBe(false);
   });
+
+  it('should listen to QueryParams', fakeAsync(() => {
+    activatedRoute.changeQueryParams({ consent: '1' });
+    spyOn(component, 'removeQueryParam');
+    component.checkQueryParams();
+    activatedRoute.changeQueryParams({ consent: '1' });
+    tick(100);
+    expect(component.showConsentPopup).toBe(true);
+    expect(component.removeQueryParam).toHaveBeenCalled();
+  }));
+
+  it('should remove query params from the active URL', () => {
+    const router = TestBed.get(Router);
+    component.removeQueryParam();
+    expect(router.navigate).toHaveBeenCalledWith([], {
+      queryParams: { 'consent': null },
+      queryParamsHandling: 'merge'
+    });
+  });
+
 });

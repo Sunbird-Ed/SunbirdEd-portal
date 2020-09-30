@@ -1,11 +1,12 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { TncService, UserService } from '@sunbird/core';
+import { TncService, UserService, CoursesService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-consent-pii',
@@ -33,13 +34,34 @@ export class ConsentPiiComponent implements OnInit {
     public userService: UserService,
     public resourceService: ResourceService,
     public tncService: TncService,
-    public utilService: UtilService
+    public utilService: UtilService,
+    private activatedRoute: ActivatedRoute,
+    private coursesService: CoursesService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
+    this.checkQueryParams();
+
+    this.coursesService.revokeConsent
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.updateUserConsent(false);
+      });
+  }
+
+  checkQueryParams() {
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        if (response.consent === '1') {
+          this.showConsentPopup = true;
+          this.removeQueryParam();
+        }
+      });
   }
 
   getUserInformation() {
@@ -153,10 +175,19 @@ export class ConsentPiiComponent implements OnInit {
       .subscribe(() => {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
+        this.isTncAgreed = false;
       }, error => {
+        this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
       });
+  }
+
+  removeQueryParam() {
+    this.router.navigate([], {
+      queryParams: { 'consent': null },
+      queryParamsHandling: 'merge'
+    });
   }
 
   ngOnDestroy() {
