@@ -3,6 +3,7 @@ import {ResourceService, ToasterService} from '../../services';
 import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
 import * as _ from 'lodash-es';
 import {Validators, FormControl} from '@angular/forms';
+import {TelemetryService} from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-on-demand-reports',
@@ -39,7 +40,7 @@ export class OnDemandReportsComponent implements OnInit {
   };
   instance: string;
 
-  constructor(public resourceService: ResourceService,
+  constructor(public resourceService: ResourceService, public telemetryService: TelemetryService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
   }
 
@@ -69,8 +70,24 @@ export class OnDemandReportsComponent implements OnInit {
     this.selectedReport = ev;
   }
 
+  generateTelemetry(fieldType, batchId, courseId) {
+    const interactData = {
+      context: {
+        env: 'reports',
+        cdata: [{id: courseId, type: 'Course'}, {id: batchId, type: 'Batch'}]
+      },
+      edata: {
+        id: fieldType,
+        type: 'click',
+        pageid: 'on-demand-reports'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
   onDownloadLinkFail(data) {
-    this.onDemandReportService.getReport(data.tag, data.requestId).subscribe((data: any) => {
+    const tagId = data && data.tag && data.tag.split(':');
+    this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
       if (data) {
         const downloadUrls = _.get(data, 'result.downloadUrls') || [];
         const downloadPath = _.head(downloadUrls);
@@ -104,6 +121,7 @@ export class OnDemandReportsComponent implements OnInit {
         request.request['encryptionKey'] = this.password.value;
       }
       console.log('submit the report');
+      this.generateTelemetry(this.selectedReport.dataset, this.batch.batchId, this.batch.courseId);
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
           if (data.result.status === this.reportStatus.failed) {

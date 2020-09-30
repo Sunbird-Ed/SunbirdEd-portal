@@ -67,7 +67,7 @@ module.exports = function (app) {
         let urlParam = req.originalUrl.replace('/report/', 'dataset/v1/');
         let query = require('url').parse(req.url).query;
         if (query) {
-          return require('url').parse(sunbird_data_product_service + urlParam + '?' + query).path
+          return require('url').parse(sunbird_data_product_service + urlParam).path
         } else {
           return require('url').parse(sunbird_data_product_service + urlParam).path
         }
