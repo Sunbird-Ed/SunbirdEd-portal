@@ -230,6 +230,9 @@ app-workspace {
   .ck.ck-editor__editable_inline {
     min-height: calc(100vh - 271px);
   }
+  ul {
+    list-style: disc;
+  }
 }
 
 .b-0 {
@@ -601,4 +604,20 @@ app-workspace {
       top: calculateRem(6px) !important;
       z-index: inherit !important;
      }
+  }
+
+  .report__summary .ui.unordered.list .item {
+    ul {
+      list-style: disc;
+    }
+    h2, h3, h4, p {
+      line-height: normal;
+    }
+    figure.table {
+      table {
+        td {
+          border: 1px solid var(--gray-800);
+        }
+      }
+    }
   }
