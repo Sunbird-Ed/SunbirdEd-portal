@@ -18,7 +18,6 @@ const ROLE = {
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  ORG_ADMIN: 'ORG_ADMIN',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -73,15 +72,6 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/content/content/v1/create': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.BOOK_CREATOR,
-        ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
-      ]
-    },
-    '/content/v1/media/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -540,10 +530,6 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/page/assemble': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-    '/learner/content/v1/media/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },

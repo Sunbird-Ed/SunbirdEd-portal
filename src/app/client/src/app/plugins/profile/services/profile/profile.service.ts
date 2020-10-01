@@ -10,17 +10,6 @@ export class ProfileService {
   constructor(private learnerService: LearnerService,
     public userService: UserService, public configService: ConfigService, public formService: FormService) { }
   /**
-   * This method is used to update profile picture of the user
-   */
-  public updateAvatar(file) {
-    return this.uploadMedia(file).pipe(mergeMap(results => {
-      const req = {
-        avatar: results.result.url
-      };
-      return this.updateProfile(req);
-    }));
-  }
-  /**
    * This method invokes learner service to update user profile
    */
   public updateProfile(request) {
@@ -59,16 +48,6 @@ export class ProfileService {
     const options = {
       url: this.configService.urlConFig.URLS.USER.UPDATE_PROF_VIS_FIELDS,
       data: data
-    };
-    return this.learnerService.post(options);
-  }
-  /**
-   * This method invokes learner service to upload user profile picture
-   */
-  public uploadMedia(file) {
-    const options = {
-      url: this.configService.urlConFig.URLS.CONTENT.UPLOAD_MEDIA,
-      data: file,
     };
     return this.learnerService.post(options);
   }

@@ -146,7 +146,6 @@
       "SEARCH": "content/v1/search",
       "CREATE": "content/v1/create",
       "PUBLISH": "content/v1/publish",
-      "UPLOAD_MEDIA": "content/v1/media/upload",
       "GET": "content/v1/read",
       "RETIRE": "content/v1/retire",
       "REJECT": "content/v1/reject",
