@@ -228,14 +228,18 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
       this.otherCertificatesCounts = _.get(data, 'result.response.count');
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
-        return {
+        const certObj: any =  {
           certificates: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
           issuedOn: _.get(val, '_source.data.issuedOn'),
-          certName: _.get(val, '_source.data.badge.name')
+          certName: _.get(val, '_source.data.badge.name'),
         };
+        if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
+          certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
+        }
+        return certObj;
       });
     });
   }
@@ -246,9 +250,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
       if (_.get(certificateInfo, 'identifier')) {
-        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
+        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
           if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
             this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          } else if (_.get(course, 'certificates.length')) {
+            this.downloadPdfCertificate(course.certificates[0]);
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0076);
           }
         }, error => {
           this.downloadPdfCertificate(certificateInfo);
