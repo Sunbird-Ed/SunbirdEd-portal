@@ -57,7 +57,7 @@ export class ConsentPiiComponent implements OnInit {
     this.activatedRoute.queryParams
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(response => {
-        if (response.consent === '1') {
+        if (response.consent) {
           this.showConsentPopup = true;
           this.removeQueryParam();
         }
@@ -186,7 +186,8 @@ export class ConsentPiiComponent implements OnInit {
   removeQueryParam() {
     this.router.navigate([], {
       queryParams: { 'consent': null },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      replaceUrl: true
     });
   }
 

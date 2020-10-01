@@ -1,16 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { CoreModule, TncService, UserService, CoursesService } from '@sunbird/core';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoreModule, TncService, UserService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
-import { of, throwError, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ConsentPiiComponent } from './consent-pii.component';
 import { MockData } from './consent-pii.component.spec.data';
-import { ActivatedRoute, Router } from '@angular/router';
 
-describe('ConsentPiiComponent', () => {
+fdescribe('ConsentPiiComponent', () => {
   let component: ConsentPiiComponent;
   let fixture: ComponentFixture<ConsentPiiComponent>;
   let activatedRoute;
@@ -223,10 +223,10 @@ describe('ConsentPiiComponent', () => {
   });
 
   it('should listen to QueryParams', fakeAsync(() => {
-    activatedRoute.changeQueryParams({ consent: '1' });
+    activatedRoute.changeQueryParams({ consent: true });
     spyOn(component, 'removeQueryParam');
     component.checkQueryParams();
-    activatedRoute.changeQueryParams({ consent: '1' });
+    activatedRoute.changeQueryParams({ consent: true });
     tick(100);
     expect(component.showConsentPopup).toBe(true);
     expect(component.removeQueryParam).toHaveBeenCalled();
@@ -237,8 +237,8 @@ describe('ConsentPiiComponent', () => {
     component.removeQueryParam();
     expect(router.navigate).toHaveBeenCalledWith([], {
       queryParams: { 'consent': null },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
+      replaceUrl: true
     });
   });
-
 });
