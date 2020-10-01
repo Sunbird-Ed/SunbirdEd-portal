@@ -10,7 +10,7 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ConsentPiiComponent } from './consent-pii.component';
 import { MockData } from './consent-pii.component.spec.data';
 
-fdescribe('ConsentPiiComponent', () => {
+describe('ConsentPiiComponent', () => {
   let component: ConsentPiiComponent;
   let fixture: ComponentFixture<ConsentPiiComponent>;
   let activatedRoute;
