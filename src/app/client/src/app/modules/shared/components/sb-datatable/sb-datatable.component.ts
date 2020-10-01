@@ -2,11 +2,10 @@ import { Component, OnInit, Input, OnChanges,EventEmitter,Output } from '@angula
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
-import { ResourceService } from '@sunbird/shared';
+import {ResourceService} from '../../services/resource/resource.service';
 import { Subject } from 'rxjs';
 
 export const multiFilter = (arr: Object[], filters: Object) => {
-  console.log(arr, filters)
   const filterKeys = Object.keys(filters);
   return arr.filter(eachObj => {
     return filterKeys.every(eachKey => {
@@ -42,6 +41,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() downloadCSV;
   @Input() name;
   @Input() message;
+  @Input() isColumnsSearchable;
   @Output() downloadLink = new EventEmitter();
   public tableData = [];
   public searchData;
@@ -51,7 +51,9 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   public listFilter = {};
   public filterModel = {};
   public tableMessage;
-  constructor() { }
+
+  constructor(public resourceService: ResourceService) {
+  }
 
   ngOnInit() {
       this.keyUp
@@ -83,12 +85,12 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   }
 
   downloadUrl(prop, row){
-    if(prop === 'download_urls') {
-      const isLinkExpired = new Date().getTime() > new Date(row.expires_at).getTime();
-      if(isLinkExpired){
+    if (prop === 'downloadUrls') {
+      const isLinkExpired = new Date().getTime() > new Date(row.expiresAt).getTime();
+      if (isLinkExpired) {
         this.downloadLink.emit(row)
-      }else{
-        window.open(row['download_urls'][0], '_blank');
+      } else {
+        window.open(row['downloadUrls'][0], '_blank');
       }
     }
   }

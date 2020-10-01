@@ -63,7 +63,8 @@ describe('ProfilePageComponent', () => {
     },
     'messages': {
       'smsg': {
-        'm0046': 'Profile updated successfully...'
+        'm0046': 'Profile updated successfully...',
+        'certificateGettingDownloaded': 'Certificate is getting downloaded'
       },
       'fmsg': {
         'm0001': 'api failed, please try again',
@@ -359,6 +360,7 @@ describe('ProfilePageComponent', () => {
     component.getSelfDeclaredDetails();
     expect(component.tenantInfo).toBeDefined();
     expect(component.selfDeclaredInfo).toBeDefined();
+    expect(component.selfDeclaredInfo).toBeDefined();
   });
 
   it('should call downloadPdfCertificate and return signedPdfUrl', () => {
@@ -373,10 +375,13 @@ describe('ProfilePageComponent', () => {
   xit('should call downloadCert with SVG format on success', () => {
     const course = { issuedCertificates: Response.svgCertificates };
     const courseCService = TestBed.get('CS_COURSE_SERVICE');
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success');
     spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: '<svg></svg>' }));
     spyOn(component['certDownloadAsPdf'], 'download');
     component.downloadCert(course);
     expect(component['certDownloadAsPdf'].download).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalledWith('Certificate is getting downloaded');
   });
 
   xit('should call downloadCert with SVG format on error', () => {
@@ -390,9 +395,12 @@ describe('ProfilePageComponent', () => {
 
   it('should call downloadCert', () => {
     const certificates = Response.pdfCertificate;
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success');
     spyOn(component, 'downloadPdfCertificate');
     component.downloadCert({ certificates });
     expect(component.downloadPdfCertificate).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalledWith('Certificate is getting downloaded');
   });
 
   it('should show error toast message', () => {

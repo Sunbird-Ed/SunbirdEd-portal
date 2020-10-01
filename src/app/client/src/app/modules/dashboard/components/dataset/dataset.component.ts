@@ -30,7 +30,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   public get pickerMinDate() {
     if (get(this.dataset, 'dataAvailableFrom')) {
-      return dayjs(this.dataset.dataAvailableFrom);
+      return dayjs(this.dataset.dataAvailableFrom).toDate();
     }
     return dayjs().subtract(6, 'month').toDate();
   }
@@ -135,7 +135,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
           });
         }),
         catchError(err => {
-          return of({});
+          return of([]);
         })
       );
   }
@@ -215,7 +215,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
             const downloadFormat = this.dataset.downloadFormats || ['json', 'csv'];
             const html = `<div>
             ${downloadFormat.map(format => {
-              return `<button filetype="${format}" class="sb-btn sb-btn-primary sb-left-icon-btn sb-btn-normal ${!row[format].length ? 'sb-btn-disabled' : ''}">
+              return `<button filetype="${format}" class="sb-btn sb-btn-primary sb-left-icon-btn sb-btn-normal ${row[format] && !row[format].length ? 'sb-btn-disabled' : ''}">
               <i class="download icon"></i>${format.toUpperCase()}</button>`;
             })}
              </div>`;

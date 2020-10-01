@@ -56,12 +56,12 @@
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
-      "JOB_LIST": "/job/request/list",
-      "JOB_SUBMIT_REQUEST": "/job/request/submit",
-      "JOB_REQUEST_READ": "/job/request/read",
+      "DATASET_LIST": "/request/list",
+      "DATASET_SUBMIT_REQUEST": "/request/submit",
+      "DATASET_REQUEST_READ": "/request/read",
+      "COLLECTION": "/collection",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
-      "COLLECTION": "/collection",
       "RETIRE": "/retire",
       "SUMMARY": {
         "PREFIX": "/summary",
