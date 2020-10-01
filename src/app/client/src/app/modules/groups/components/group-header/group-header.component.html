@@ -23,6 +23,8 @@
         <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
 
+          <div class="d-flex flex-ai-center list p-8 w-100 fnormal">Reactivate group</div>
+
           <div *ngIf="groupData?.isAdmin" class="d-flex flex-ai-center list p-8 w-100"
             (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
           </div>
@@ -30,6 +32,8 @@
           <div *ngIf="groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
             (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
           </div>
+
+          <div class="d-flex flex-ai-center list p-8 w-100 fnormal">Suspend group</div>
 
           <div *ngIf="!groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
             (click)="showLeaveGroupModal=true;dropdownMenu()">{{resourceService?.frmelmnts?.lbl?.leaveGroup}}

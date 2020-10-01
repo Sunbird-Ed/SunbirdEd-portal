@@ -100,3 +100,12 @@
     .sb-pageSection-activity-title{
       color: var(--primary-400);
     }
+
+    .group-status{
+      border: calculateRem(1px) solid var(--rc-E08A20);
+      border-radius: calculateRem(4px);
+      background-color: var(--white);
+      &__label{
+        color: var(--rc-E08A20);
+      }
+    }

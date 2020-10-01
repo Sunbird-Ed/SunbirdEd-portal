@@ -26,6 +26,13 @@
             </button>
           </div>
         </div>
+        <div class="d-flex flex-jc-space-between my-16 p-8 group-status">
+          <div class="d-flex fnormal flex-ai-center group-status__label">
+          <img class="mr-8" src="assets/images/exclamation.svg" width="18px">
+           This group has been suspended temporary. You can still reactivate the group
+          </div>
+         <button class="sb-btn sb-btn-primary sb-btn-normal" type="button">Reactivate group</button>
+        </div>
         <app-add-activity *ngIf="!showActivityList"></app-add-activity>
         <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>
       </div>
