@@ -840,7 +840,6 @@ describe('CoursePlayerComponent', () => {
     const response = component.getDataSetting();
     expect(response).toBeFalsy();
   });
-});
 
   it('shold call validateBatchDate with expired batch', () => {
     const batch = [{
