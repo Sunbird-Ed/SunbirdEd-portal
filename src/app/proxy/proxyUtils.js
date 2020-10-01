@@ -29,6 +29,8 @@ const apiInterceptor = new ApiInterceptor(keyCloakConfig, cacheConfig, [`${envHe
 const decorateRequestHeaders = function (upstreamUrl = "") {
   return function (proxyReqOpts, srcReq) {
     var channel = _.get(srcReq, 'session.rootOrghashTagId') || _.get(srcReq, 'headers.X-Channel-Id') || envHelper.DEFAULT_CHANNEL
+    var sessionId = _.get(srcReq, 'headers.x-session-id') || _.get(srcReq, 'sessionID');
+    proxyReqOpts.headers['X-Session-Id'] = sessionId;
     if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }

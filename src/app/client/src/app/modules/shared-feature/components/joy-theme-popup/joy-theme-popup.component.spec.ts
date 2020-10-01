@@ -5,6 +5,7 @@ import {JoyThemePopupComponent} from './joy-theme-popup.component';
 import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService, InterpolatePipe} from '@sunbird/shared';
 import {configureTestSuite} from '@sunbird/test-util';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('JoyThemePopupComponent', () => {
   let component: JoyThemePopupComponent;
@@ -20,9 +21,9 @@ describe('JoyThemePopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [SuiModule, TelemetryModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [JoyThemePopupComponent, InterpolatePipe],
-      providers: [LayoutService, {provide: ResourceService, useValue: resourceBundle}, ConfigService]
+      providers: [LayoutService, {provide: ResourceService, useValue: resourceBundle}, ConfigService, TelemetryService]
     })
       .compileComponents();
   }));

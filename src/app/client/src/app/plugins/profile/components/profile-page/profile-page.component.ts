@@ -247,6 +247,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCert(course) {
     // Check for V2
     if (_.get(course, 'issuedCertificates.length')) {
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
       if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
@@ -266,6 +267,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.downloadPdfCertificate(certificateInfo);
       }
     } else if (_.get(course, 'certificates.length')) { // For V1 - backward compatibility
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       this.downloadPdfCertificate(course.certificates[0]);
     } else {
       this.toasterService.error(this.resourceService.messages.emsg.m0076);
@@ -274,7 +276,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   downloadPdfCertificate(value) {
     if (_.get(value, 'url')) {
-
       const request = {
         request: {
           pdfUrl: _.get(value, 'url')
@@ -438,6 +439,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   /**
