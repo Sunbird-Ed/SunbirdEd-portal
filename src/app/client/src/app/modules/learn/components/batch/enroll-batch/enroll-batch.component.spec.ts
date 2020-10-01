@@ -57,6 +57,11 @@ describe('EnrollBatchComponent', () => {
       }
     }
   };
+
+  const routerStub = {
+    navigate: (route) => { },
+    url: 'http://localhost:3000/learn/course/do_2131140513216512001688/enroll/batch/01311408513794867224?autoEnroll=true',
+  };
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,7 +73,7 @@ describe('EnrollBatchComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: fakeResourceService },
         { provide: GeneraliseLabelService, useValue: fakeResourceService },
-        { provide: Router, useValue: { navigate: (route) => { } } }]
+        { provide: Router, useValue: routerStub }]
     })
       .compileComponents();
   }));
@@ -206,6 +211,7 @@ describe('EnrollBatchComponent', () => {
     expect(component.disableSubmitBtn).toBe(false);
     expect(toasterSpy).toHaveBeenCalled();
     expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.smsg.m0036);
+    expect(router.navigate).toHaveBeenCalled();
   }));
 
   it('should send audit event on course enrolled', () => {
@@ -217,5 +223,19 @@ describe('EnrollBatchComponent', () => {
     spyOn(telemetryService, 'audit');
     component.logAuditEvent();
     expect(telemetryService.audit).toHaveBeenCalled();
+  });
+
+  it('should call redirect', () => {
+    const router = TestBed.get(Router);
+    spyOn(router, 'navigate');
+    component.redirect();
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should log telemetry events', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
+    component.telemetryLogEvents(true);
+    expect(telemetryService.log).toHaveBeenCalled();
   });
 });
