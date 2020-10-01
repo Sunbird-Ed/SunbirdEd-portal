@@ -126,6 +126,7 @@ let envVariables = {
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
   DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
+  sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
 
 
   // Health Checks Configuration

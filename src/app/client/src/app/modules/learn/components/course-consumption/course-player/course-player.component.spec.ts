@@ -841,3 +841,66 @@ describe('CoursePlayerComponent', () => {
     expect(response).toBeFalsy();
   });
 });
+
+  it('shold call validateBatchDate with expired batch', () => {
+    const batch = [{
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: "2020-02-02",
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-01-25",
+      status: 1
+    }];
+    const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
+    expect( component.validateBatchDate(batch)).toBe(message);
+  });
+
+  it('shold call validateBatchDate with ongoing batch', () => {
+    const batch = [{
+      batchId: "0130936282663157765",
+      createdFor: ["0124784842112040965"],
+      endDate: null,
+      enrollmentEndDate: null,
+      enrollmentType: "open",
+      name: "SHS cert course 1 - 0825",
+      startDate: "2020-08-25",
+      status: 1
+    }];
+    const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
+    expect(component.validateBatchDate(batch)).toBe(message);
+  });
+
+  it('should navigate to the player page with, first non-consumed content', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_112832506508320768123']);
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+  });
+
+  it('should navigate to the player page with, first non-consumed content', () => {
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.batchId = '023214178121';
+    component.enrolledCourse = true;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
+    component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
+  });
+  it('should call navigateToContent with nogroupData', () => {
+    spyOn(component, 'logTelemetry');
+    spyOn<any>(component, 'navigateToPlayerPage');
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.addToGroup = true;
+    component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
+  });
+  it('should call navigateToContent with groupData', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.addToGroup = false;
+    component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
+  });
+});
