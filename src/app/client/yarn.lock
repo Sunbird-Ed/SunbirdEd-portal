@@ -582,10 +582,18 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/telemetry-sdk@0.0.27", "@project-sunbird/telemetry-sdk@^0.0.27":
+"@project-sunbird/telemetry-sdk@0.0.27":
   version "0.0.27"
   resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.27.tgz#f11eec6bc880d330ae01986512743c870804cd10"
   integrity sha512-rRqEjx8Y/tMHPpVGcZFIhnX9OckqkhJm3muPci18oInfAs7bN/PKe01B0y833wPDqdPdnoYsmAk/GpilpjkBJw==
+  dependencies:
+    grunt-karma "^0.12.2"
+    karma "^3.0.0"
+
+"@project-sunbird/telemetry-sdk@^0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
+  integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
   dependencies:
     grunt-karma "^0.12.2"
     karma "^3.0.0"
