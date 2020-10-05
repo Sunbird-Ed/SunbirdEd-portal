@@ -59,11 +59,13 @@
     ]
   },
   "dependencies": {
+    "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.27",
     "@project-sunbird/logger": "^0.0.9",
     "@project-sunbird/form-service": "0.0.13",
     "@project-sunbird/review-comment": "0.0.8",
     "async": "2.5.0",
+    "axios": "^0.20.0",
     "azure-storage": "2.10.2",
     "body-parser": "1.17.2",
     "cassandra-session-store": "1.0.6",

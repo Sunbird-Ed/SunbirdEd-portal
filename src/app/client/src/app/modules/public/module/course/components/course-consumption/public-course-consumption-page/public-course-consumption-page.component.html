@@ -47,7 +47,7 @@
             <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
                 <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
                     <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-                        (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
+                        (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
                 </div>
             </div>
         </div>

@@ -305,15 +305,12 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.workspace}}
           </li>
-          <li class="list-item p-0" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"'
-            appPermission (click)="toggleSideMenu(false)" [permission]='workSpaceRole'>
-            <a href="/help/creator/content-lifecycle/index.html" target="_blank" class="list-item-a">
+          <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+             (click)="toggleSideMenu(false);navigate('/faq')">
               <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#help"></use>
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
-            </a>
           </li>
           <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
@@ -359,6 +356,13 @@
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
+            <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+             (click)="toggleSideMenu(false);navigate('/faq')">
+              <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#help"></use>
+              </svg></i>
+            {{resourceService?.frmelmnts?.tab?.help}}
+          </li>
             <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
               <a href={{hrefPath}} class="d-flex flex-ai-center list-item-a">

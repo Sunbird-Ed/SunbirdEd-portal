@@ -24,7 +24,7 @@
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
             <div *ngIf="!noResult" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
-              <div id="report-header">
+              <div id="report-header" class="report__header">
 
                 <div class="textbook-container cc-player__content-header relative9 reports-content-header">
                   <div class="ui container py-16">
@@ -253,7 +253,7 @@
                       </ng-container>
                     </sui-tabset>
                   </div>
-                  <div id="report-summary" class="my-16"
+                  <div class="report__summary" id="report-summary" class="my-16"
                     *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
                     <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
                   </div>

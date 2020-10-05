@@ -2,7 +2,7 @@
 import { of as observableOf } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { PlayerService, PermissionService, UserService } from '@sunbird/core';
+import { PlayerService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import * as _ from 'lodash-es';
@@ -25,7 +25,7 @@ export class CourseConsumptionService {
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,
     private navigationHelperService: NavigationHelperService, private permissionService: PermissionService,
-    private userService: UserService) {
+    private userService: UserService, public generaliselabelService: GeneraliseLabelService) {
     }
 
   getCourseHierarchy(courseId, option: any = { params: {} }) {
@@ -120,7 +120,7 @@ getAllOpenBatches(contents) {
   });
   if (openBatchCount === 0) {
     this.enableCourseEntrollment.emit(false);
-    this.toasterService.error(this.resourceService.messages.emsg.m0003);
+    this.toasterService.error(this.generaliselabelService.messages.emsg.m0003);
   } else {
     this.enableCourseEntrollment.emit(true);
   }
@@ -161,12 +161,11 @@ getAllOpenBatches(contents) {
   }
 
   canViewDashboard(courseHierarchy) {
-    return (this.isTrackableCollection(courseHierarchy) &&
-    (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])));
+    return (this.canCreateBatch(courseHierarchy) || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
   }
 
   canAddCertificates(courseHierarchy) {
-    return this.canCreateBatch(courseHierarchy);
+    return  this.canCreateBatch(courseHierarchy) && this.isTrackableCollection(courseHierarchy) && _.lowerCase(_.get(courseHierarchy, 'credentials.enabled')) === 'yes';
   }
 
   isTrackableCollection(collection: {trackable?: {enabled?: string}, contentType: string}) {

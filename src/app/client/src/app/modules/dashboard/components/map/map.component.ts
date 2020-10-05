@@ -16,7 +16,7 @@ declare var L;
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  private mapId;
+  public mapId;
   private map: Map;
   private geoJSONRootLayer;
   private infoControl;

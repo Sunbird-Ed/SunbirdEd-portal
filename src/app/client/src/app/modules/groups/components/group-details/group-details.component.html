@@ -1,6 +1,9 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
+<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
+</app-ftu-popup>
+
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
 
 <div class="ui container" *ngIf="isLoader" > 
@@ -8,13 +11,13 @@
 </div>
 
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
-  <app-group-header [groupData]="groupData"></app-group-header>
+  <app-group-header [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">
         <div class="sb-pageSection">
           <div class="sb-pageSection-header">
-            <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity" (click)="toggleActivityModal(true)">
+            <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity">
               {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
             <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" *ngIf="isAdmin"
               (click)="navigateToAddActivity(); addTelemetry('add-activity')">
@@ -23,8 +26,8 @@
             </button>
           </div>
         </div>
-        <app-add-activity *ngIf="!groupData?.activities?.length"></app-add-activity>
-        <app-activity-list *ngIf="groupData?.activities?.length" [groupData]="groupData"></app-activity-list>
+        <app-add-activity *ngIf="!showActivityList"></app-add-activity>
+        <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>
       </div>
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 ">
         <app-group-members [config]="config" [members]="members" [groupData]="groupData"></app-group-members>

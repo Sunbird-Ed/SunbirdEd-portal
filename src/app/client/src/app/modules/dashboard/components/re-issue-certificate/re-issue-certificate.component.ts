@@ -21,6 +21,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   showModal = false;
   userBatch: {};
   telemetryImpression: IImpressionEventInput;
+  criteriaMet: boolean;
 
   public unsubscribe$ = new Subject<void>();
   constructor(
@@ -59,6 +60,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       this.modifyCss();
       if (!this.isErrorOccurred(_.get(data, 'result.response'))) {
         this.userData = _.get(data, 'result.response');
+        this.criteriaMet = this.certService.checkCriteria(_.get(this.userData, 'courses.batches'));
       }
     }, (err) => {
       this.modifyCss();
@@ -173,6 +175,11 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
     this.userName = this.userName ? this.userName.trim() : this.userName;
     const value = !_.isEmpty(this.userData) ? this.userData['courses'].batches = [] : [];
   }
+
+  enableReIssueCert(batch) {
+    return ((!_.isEmpty(_.get(batch, 'certificates')) || !_.isEmpty(_.get(batch, 'issuedCertificates')))  || _.get(batch, 'status') === 2);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

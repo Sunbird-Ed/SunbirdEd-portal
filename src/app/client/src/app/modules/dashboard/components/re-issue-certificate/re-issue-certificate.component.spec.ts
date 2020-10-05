@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { APP_BASE_HREF } from '@angular/common';
 import { By } from '@angular/platform-browser';
+import { CertRegService } from '@sunbird/core';
 
 describe('ReIssueCertificateComponent', () => {
   let component: ReIssueCertificateComponent;
@@ -63,7 +64,7 @@ describe('ReIssueCertificateComponent', () => {
       declarations: [ReIssueCertificateComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SuiModalModule,
         ReactiveFormsModule, FormsModule, SuiPopupModule],
-      providers: [TelemetryService,
+      providers: [TelemetryService, CertRegService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
@@ -137,6 +138,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[] empty', () => {
+    const certRegService = TestBed.get(CertRegService);
     const response = {
           userId: 'testUser',
           userName: 'user',
@@ -151,6 +153,7 @@ describe('ReIssueCertificateComponent', () => {
     };
     component.userName = 'testUser';
     component['userService'].setUserId('user1');
+    spyOn(certRegService, 'checkCriteria').and.stub();
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
     spyOn(component, 'isErrorOccurred').and.returnValue(false);
     component.searchCertificates();
@@ -165,6 +168,7 @@ describe('ReIssueCertificateComponent', () => {
   });
 
   it('should return  certList with batchList[]', () => {
+    const certRegService = TestBed.get(CertRegService);
     const response = {
       result: {
         response: {
@@ -184,10 +188,12 @@ describe('ReIssueCertificateComponent', () => {
       }
     };
     component.userName = 'testUser';
+    spyOn(certRegService, 'checkCriteria').and.stub();
     spyOn(component['certService'], 'getUserCertList').and.returnValue(of(response));
     component.searchCertificates();
     component['certService'].getUserCertList('testUser', '123', 'user1').subscribe(data => {
       expect(component.userData).toEqual(response.result.response);
+      expect(certRegService.checkCriteria).toHaveBeenCalledWith(response.result.response.courses.batches);
     });
     expect(component['certService'].getUserCertList).toHaveBeenCalledWith('testUser', '123', 'user1');
   });
@@ -459,4 +465,36 @@ describe('ReIssueCertificateComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it ('should enable "Re-Issue" button when status = 2 "', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], ssuedCertificates: [], createdBy: '123', status: 2 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length >0 (PDF)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND issuedCertificates.length >0 (SVG)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should enable "Re-Issue" button when status != 2 " AND certificates.length>0 AND issuedCertificates.length>0(PDF and SVG)', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [{id: '12'}],
+    issuedCertificates: [{id: '12'}], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeTruthy();
+  });
+
+  it ('should disable "Re-Issue" button when status != 2" AND certificates.length=0 AND issuedCertificates.length=0', () => {
+    const batch = {batchId: '1', name: 'batch 1', certificates: [], issuedCertificates: [], createdBy: '123', status: 1 };
+    const enableData = component.enableReIssueCert(batch);
+    expect(enableData).toBeFalsy();
+  });
+
 });

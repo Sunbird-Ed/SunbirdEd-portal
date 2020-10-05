@@ -96,4 +96,11 @@ export class CertRegService extends DataService {
     };
     return this.patch(options);
   }
+
+  public checkCriteria(batchData) {
+    if (batchData.length && batchData[0].status === 2) {
+      return true;
+    }
+    return false;
+  }
 }

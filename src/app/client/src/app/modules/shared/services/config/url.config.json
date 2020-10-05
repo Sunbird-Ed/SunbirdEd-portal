@@ -24,14 +24,15 @@
       "contentType",
       "organisation",
       "topic",
-      "mimeType"
+      "mimeType",
+      "trackable"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
     },
-    "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year",
+    "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     }
   },
@@ -51,9 +52,14 @@
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
+    "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
+      "DATASET_LIST": "/request/list",
+      "DATASET_SUBMIT_REQUEST": "/request/submit",
+      "DATASET_REQUEST_READ": "/request/read",
+      "COLLECTION": "/collection",
       "UPDATE": "/update",
       "PUBLISH": "/publish",
       "RETIRE": "/retire",
@@ -118,7 +124,8 @@
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
       "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
       "TENANT_CONFIG": "data/v1/system/settings/get",
-      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
+      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha",
+      "FAQ_URL": "data/v1/system/settings/get/portalFaqURL"
     },
     "COURSE_FRAMEWORK": {
       "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"

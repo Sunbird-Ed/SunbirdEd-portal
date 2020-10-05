@@ -1,12 +1,15 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit , OnDestroy} from '@angular/core';
 import { GroupsService } from '../../../services';
-import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ADD_ACTIVITY_TO_GROUP } from '../../../interfaces';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
 
 
 @Component({
@@ -14,13 +17,15 @@ import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './add-activity-content-types.component.html',
   styleUrls: ['./add-activity-content-types.component.scss']
 })
-export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
-
+export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, OnDestroy {
+  unsubscribe$ = new Subject<void>();
   public supportedActivityList;
   public groupName: string;
   public groupCreator: string;
   private csGroupAddableBloc: CsGroupAddableBloc;
-  telemetryImpression: IImpressionEventInput;
+  public telemetryImpression: IImpressionEventInput;
+  public layoutConfiguration: any;
+  public showLoader = true;
 
   constructor(
     public groupService: GroupsService,
@@ -29,7 +34,8 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public navigationHelperService: NavigationHelperService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    public layoutService: LayoutService
   ) {
     this.csGroupAddableBloc = CsGroupAddableBloc.instance;
    }
@@ -44,6 +50,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
      this.groupCreator = _.get(params, 'createdBy');
     });
     this.fetchActivityList();
+    this.initLayout();
   }
 
   ngAfterViewInit() {
@@ -52,18 +59,20 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
 
   fetchActivityList() {
     this.groupService.getSupportedActivityList().subscribe( data => {
+      this.showLoader = false;
       this.supportedActivityList = _.get(data, 'data.fields');
       this.supportedActivityList.forEach(activity => {
         activity['title'] = this.resourceService.frmelmnts.lbl[activity['title']];
       });
     }, (error) => {
+      this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
   onCardClick(cardData: CsGroupSupportedActivitiesFormField) {
     this.csGroupAddableBloc.updateState({
-      pageIds: [cardData.activityType.toLowerCase()],
+      pageIds: [cardData.activityType.toLowerCase(), ADD_ACTIVITY_TO_GROUP],
       groupId: _.get(this.groupService, 'groupData.id'),
       params: {
         searchQuery: cardData.searchQuery,
@@ -112,6 +121,20 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit {
       }
     };
     this.telemetryService.impression(this.telemetryImpression);
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

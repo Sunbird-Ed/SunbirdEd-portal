@@ -1,0 +1,22 @@
+@import "mixins/mixins";
+
+.content-header {
+    background: var(--rc-FAFAFA);
+    min-height: calculateRem(14px);
+
+      &__title {
+          color: var(--primary-400);
+          font-size: calculateRem(18px);
+      }
+      
+      &__info {
+          color: var(--gray-800);
+          font-size: calculateRem(14px);
+      }
+  }
+
+.sb-add-activity-content-cards{
+ @include respond-above(md){
+     grid-template-columns: repeat(4,1fr);
+ }
+}

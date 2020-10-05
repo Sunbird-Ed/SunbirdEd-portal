@@ -43,6 +43,9 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   pageTitleSrc;
   svgToDisplay;
   formData: any;
+  public facets;
+  public facetsList: any;
+  public selectedFilters;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
@@ -141,9 +144,25 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
           this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
         }
     }
+
   public getFilters(filters) {
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'identifier': value});
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
+        if (element && element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
         }
         return collector;
@@ -210,17 +229,28 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
+    this.publicPlayerService.playContent(event);
+  }
+
+  processOrgData(channels) {
+    const rootOrgIds = [];
+    _.forEach(channels, (channelData) => {
+      if (channelData.name) {
+        rootOrgIds.push(channelData.name);
+      }
+    });
+    return rootOrgIds;
   }
 
   private fetchPageData() {
-    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
       }
       return value.length;
     });
+    filters = _.omit(filters, ['utm_source']);
     if (localStorage.getItem('userType')) {
       const userType = localStorage.getItem('userType');
       const userTypeMapping = this.configService.appConfig.userTypeMapping;
@@ -237,15 +267,26 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       organisationId: this.hashTagId || '*',
       filters: filters,
       fields: _.get(currentPageData, 'search.fields') || this.configService.urlConFig.params.CourseSearchField,
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
       // exists: [],
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
+    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
+      const rootOrgIds = this.processOrgData(facetsList.channel);
+      this.orgDetailsService.searchOrgDetails({
+        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
+        fields: ['slug', 'identifier', 'orgName']
+      }).subscribe((orgDetails) => {
         this.showLoader = false;
         this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        facetsList.channel = _.get(orgDetails, 'content');
+        facetsList = this.utilService.removeDuplicate(facetsList);
+        this.facets = this.updateFacetsData(facetsList);
+        this.getFilters({filters: this.selectedFilters});
+        this.initFilters = true;
         if (!this.carouselMasterData.length) {
           return; // no page section
         }
@@ -260,6 +301,12 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
+    }, err => {
+      this.showLoader = false;
+      this.carouselMasterData = [];
+      this.pageSections = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
   }
 
   public viewAll(event) {
@@ -315,5 +362,91 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  updateFacetsData(facets) {
+    const facetsData = [];
+    _.forEach(facets, (facet, key) => {
+      switch (key) {
+        case 'board':
+          const boardData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(boardData);
+          break;
+        case 'medium':
+          const mediumData = {
+            index: '2',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(mediumData);
+          break;
+        case 'gradeLevel':
+          const gradeLevelData = {
+            index: '3',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(gradeLevelData);
+          break;
+        case 'subject':
+          const subjectData = {
+            index: '4',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(subjectData);
+          break;
+        case 'publisher':
+          const publisherData = {
+            index: '5',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(publisherData);
+          break;
+        case 'contentType':
+          const contentTypeData = {
+            index: '6',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(contentTypeData);
+          break;
+        case 'channel':
+          const channelLists = [];
+          _.forEach(facet, (channelList) => {
+            if (channelList.orgName) {
+              channelList.name = channelList.orgName;
+            }
+            channelLists.push(channelList);
+          });
+          const channelData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            values: channelLists,
+            name: key
+          };
+          facetsData.push(channelData);
+          break;
+      }
+    });
+    return facetsData;
   }
 }

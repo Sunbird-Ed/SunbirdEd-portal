@@ -187,7 +187,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   /**
   * To store deleteing content type
   */
-  private deletingContentType: string;
+  private contentMimeType: string;
 
   /**
    * To store modal object of first yes/No modal
@@ -268,7 +268,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
-        contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || this.config.appConfig.WORKSPACE.primaryCategory,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
@@ -306,9 +306,9 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     );
   }
 
-  public deleteConfirmModal(contentIds, contentType) {
+  public deleteConfirmModal(contentIds, mimeType) {
     this.currentContentId = contentIds;
-    this.deletingContentType = contentType;
+    this.contentMimeType = mimeType;
     this.showCollectionLoader = false;
     const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
     config.isClosable = false;
@@ -327,7 +327,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.deleteModal = modal;
     }
     this.showCollectionLoader = false;
-    if (['Course', 'TextBook', 'Collection', 'LessonPlan'].includes(this.deletingContentType)) {
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
       this.deleteContent(this.currentContentId);
       return;
     }

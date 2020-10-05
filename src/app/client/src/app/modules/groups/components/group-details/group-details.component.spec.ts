@@ -74,8 +74,14 @@ describe('GroupDetailsComponent', () => {
 
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
+    component['groupId'] = '123';
     spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
+    spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
+    expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
+    expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
+    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g'});
+    expect(component.showActivityList).toBeTruthy();
     expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
     isCreator: false, isAdmin: false, initial: 'g'});
   });
@@ -121,5 +127,11 @@ describe('GroupDetailsComponent', () => {
     component.ngOnInit();
     expect(component.telemetryImpression).toEqual(impressionObj);
     expect(component['groupService'].getImpressionObject).toHaveBeenCalled();
+  });
+
+  it('show change dropdownMenuContent', () => {
+    component.showMemberPopup = false;
+    component.toggleFtuModal(true);
+    expect(component.showMemberPopup).toBeTruthy();
   });
 });

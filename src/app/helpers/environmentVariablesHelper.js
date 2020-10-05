@@ -43,7 +43,8 @@ let envVariables = {
   sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird', 
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
-
+  sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
+  
 
   // TTL and Intervals
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
@@ -110,6 +111,7 @@ let envVariables = {
   desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
+  sunbird_azure_resourceBundle_container_name: env.sunbird_azure_resourceBundle_container_name || 'label',
 
 
   // Default Language Configuration
@@ -124,6 +126,7 @@ let envVariables = {
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
   DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
+  sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
 
 
   // Health Checks Configuration

@@ -23,7 +23,8 @@ const routes: Routes = [
         },
         filterType: 'explore-course',
         frameworkName: true,
-        formAction: 'filter'
+        formAction: 'filter',
+        facets: true
       }
     },
     {
