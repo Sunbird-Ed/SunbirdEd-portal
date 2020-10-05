@@ -66,7 +66,9 @@ describe('ListAllReportsComponent', () => {
       expect(reportService.isAuthenticated).toHaveBeenCalledWith('reportAdminRoles');
       expect(res).toEqual({
         table: {},
-        count: 0
+        count: 0,
+        reportsArr: [],
+        datasetsArr: []
       });
       expect(component.noResultFoundError).toEqual('messages.stmsg.m0144');
       done();
