@@ -83,6 +83,7 @@
     "jquery": "^3.5.1",
     "jquery.fancytree": "^2.35.0",
     "jspdf": "1.5.3",
+    "leaflet": "^1.7.1",
     "lodash-es": "^4.17.15",
     "marked": "1.1.1",
     "md5": "2.2.1",
