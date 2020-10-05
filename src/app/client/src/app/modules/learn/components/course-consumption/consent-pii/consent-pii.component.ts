@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { TncService, UserService, CoursesService } from '@sunbird/core';
+import { TncService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -37,7 +37,8 @@ export class ConsentPiiComponent implements OnInit {
     public utilService: UtilService,
     private activatedRoute: ActivatedRoute,
     private coursesService: CoursesService,
-    private router: Router
+    private router: Router,
+    public generaliseLabelService: GeneraliseLabelService
   ) { }
 
   ngOnInit() {
