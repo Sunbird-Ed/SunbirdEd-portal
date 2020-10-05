@@ -13,6 +13,7 @@ import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
+import { ContentService } from '@sunbird/core';
 
 @Component({
   selector: 'app-player',
@@ -66,7 +67,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
-    , public contentUtilsServiceService: ContentUtilsServiceService) {
+    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -402,8 +403,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
-    if (_.get(this.contentIframe, 'nativeElement')) {
-      this.contentIframe.nativeElement.remove();
+    const playerElement = _.get(this.contentIframe, 'nativeElement');
+    if (playerElement) {
+      if (_.get(playerElement, 'contentWindow.telemetry_web.tList.length')) {
+        const request = {
+          url: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          data: {
+            'id': 'api.sunbird.telemetry',
+            'ver': '3.0',
+            'events': playerElement.contentWindow.telemetry_web.tList.map(item => JSON.parse(item))
+          }
+        };
+        this.contentService.post(request).subscribe();
+      }
+      playerElement.remove();
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();

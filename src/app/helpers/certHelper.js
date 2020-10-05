@@ -38,15 +38,16 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
       }
     }
   }
+
   let district;
   if (!_.isEmpty(_.get(userData, 'locationIds'))) {
-     district = await getDistrictName(req, requestParams);
+  district = await getDistrictName(req, requestParams);
 
-    if (_.isEmpty(district) && _.get(userData, 'locationIds') && _.get(userData, 'locationIds').length > 1) {
-      requestParams.request.filters.id = _.get(userData, 'locationIds[1]');
-      district = await getDistrictName(req, requestParams);
-    }
+  if (_.isEmpty(district) && _.get(userData, 'locationIds') && _.get(userData, 'locationIds').length > 1) {
+    requestParams.request.filters.id = _.get(userData, 'locationIds[1]');
+    district = await getDistrictName(req, requestParams);
   }
+}
 
   const courseData = await getUserEnrolledCourses(req, courseId, _.get(userData, 'identifier'))
   const resObj = {

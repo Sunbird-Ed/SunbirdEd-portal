@@ -98,6 +98,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
     this.courseBatchService.unenrollFromCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
+        this.coursesService.revokeConsent.emit();
         this.disableSubmitBtn = true;
         this.toasterService.success(this.resourceService.messages.smsg.m0045);
         this.goBackToCoursePage();

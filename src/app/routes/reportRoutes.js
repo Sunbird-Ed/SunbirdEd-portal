@@ -56,16 +56,17 @@ module.exports = function (app) {
         })
     )
 
-    app.all(['/report/job/request/read/:tag/:requestId', '/report/job/request/list/:tag', '/report/job/request/submit'],
+
+  app.all(['/report/request/read/:tag', '/report/request/list/:tag', '/report/request/submit'],
     proxyUtils.verifyToken(),
     proxy(sunbird_data_product_service, {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.overRideRequestHeaders(sunbird_data_product_service, {'X-Channel-Id': true}),
       proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', 'data/v3/');
+        let urlParam = req.originalUrl.replace('/report/', 'dataset/v1/');
         let query = require('url').parse(req.url).query;
         if (query) {
-          return require('url').parse(sunbird_data_product_service + urlParam + '?' + query).path
+          return require('url').parse(sunbird_data_product_service + urlParam).path
         } else {
           return require('url').parse(sunbird_data_product_service + urlParam).path
         }
@@ -82,13 +83,13 @@ module.exports = function (app) {
     })
   )
 
-  app.all(['/report/collection/summary'],
-  proxyUtils.verifyToken(),
-  proxy(CONTENT_URL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(CONTENT_URL),
-    proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', '/v1/');
+  app.all(['/report/v1/collection/summary'],
+    proxyUtils.verifyToken(),
+    proxy(CONTENT_URL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(CONTENT_URL),
+      proxyReqPathResolver: function (req) {
+        let urlParam = req.originalUrl.replace('/report/', '');
         let query = require('url').parse(req.url).query;
         if (query) {
           return require('url').parse(CONTENT_URL + urlParam + '?' + query).path
@@ -96,18 +97,17 @@ module.exports = function (app) {
           return require('url').parse(CONTENT_URL + urlParam).path
         }
       },
-    userResDecorator: (proxyRes, proxyResData, req, res) => {
-      try {
-        const data = JSON.parse(proxyResData.toString('utf8'));
-        if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-        else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-      } catch (err) {
-        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        try {
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
       }
-    }
-  })
-)
-
+    })
+  )
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
@@ -128,29 +128,35 @@ module.exports = function (app) {
             }
         })
     )
+
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
         reportHelper.azureBlobStream());
+
     app.get('/course-reports/metadata',
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR', 'REPORT_VIEWER', 'REPORT_ADMIN', 'ORG_ADMIN']),
         reportHelper.getLastModifiedDate);
+
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
+
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['public']),
         reportHelper.validateRoles(['ORG_ADMIN', 'REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
+
     app.get('/admin-reports/:slug/:filename',
         proxyUtils.verifyToken(),
         reportHelper.validateSlug(['geo-summary', 'geo-detail', 'geo-summary-district', 'user-summary', 'user-detail',
             'validated-user-summary', 'validated-user-summary-district', 'validated-user-detail', 'declared_user_detail']),
         reportHelper.validateRoles(['ORG_ADMIN']),
         reportHelper.azureBlobStream());
+
     app.get(`${BASE_REPORT_URL}/dataset/get/:datasetId`,
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
@@ -171,6 +177,5 @@ module.exports = function (app) {
                 }
             }
         })
-    );
-
-};
+    )
+}
