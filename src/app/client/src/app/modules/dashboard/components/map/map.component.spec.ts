@@ -8,7 +8,7 @@ import { MapComponent } from './map.component';
 import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
-import { geoJSONDataMock } from './map.component.spec.data'
+import { geoJSONDataMock } from './map.component.spec.data';
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
@@ -31,7 +31,7 @@ describe('MapComponent', () => {
   });
 
   it('should find config from the mapping', () => {
-    const recordByNameAndType = component['findRecordInConfigMapping']({ type: "country", name: "india" });
+    const recordByNameAndType = component['findRecordInConfigMapping']({ type: 'country', name: 'india' });
     expect(recordByNameAndType).toEqual({
       name: 'India',
       code: '',
@@ -46,7 +46,7 @@ describe('MapComponent', () => {
       type: 'district',
       geoJSONFilename: ''
     });
-  })
+  });
 
   it('should get geoJSON file', done => {
     const reportService = TestBed.get(ReportService);
@@ -56,15 +56,15 @@ describe('MapComponent', () => {
         expect(reportService.fetchDataSource).toHaveBeenCalledWith(`/reports/fetch/geoJSON-sample/sampleFile.json`);
         expect(res).toEqual({});
         done();
-      })
-  })
+      });
+  });
 
   it('should use data if passed in config', done => {
     component.mapData = {
       reportData: {
         data: [123]
       }
-    }
+    };
     const reportService = TestBed.get(ReportService);
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: {} }));
     component['getDataSourceData']()
@@ -73,11 +73,11 @@ describe('MapComponent', () => {
         expect(reportService.fetchDataSource).not.toHaveBeenCalledWith(`/reports/fetch/geoJSON-sample/sampleFile.json`);
         expect(res).toEqual(component['__mapData']['reportData']);
         done();
-      })
-  })
+      });
+  });
 
   it('should download reportData if reportData is not present and reportLoc is present in the configuration', done => {
-    component.mapData = { reportLoc: "/reports/fetch/sunbird/sample.json" };
+    component.mapData = { reportLoc: '/reports/fetch/sunbird/sample.json' };
     const reportService = TestBed.get(ReportService);
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: { data: {} } }));
     component['getDataSourceData']()
@@ -85,52 +85,52 @@ describe('MapComponent', () => {
         expect(res).toEqual({});
         expect(reportService.fetchDataSource).toHaveBeenCalledWith(component['__mapData']['reportLoc']);
         done();
-      })
-  })
+      });
+  });
 
   it('subscribe to data hander', done => {
     const getGeoJSONFileSpy = spyOn<any>(component, 'getGeoJSONFile').and.returnValue(of(geoJSONDataMock));
-    const getDataSourceDataSpy = spyOn<any>(component, 'getDataSourceData').and.returnValue(of([{ District: "Daman", plays: 22 }]));
+    const getDataSourceDataSpy = spyOn<any>(component, 'getDataSourceData').and.returnValue(of([{ District: 'Daman', plays: 22 }]));
     const findRecordInConfigMappingSpy = spyOn<any>(component, 'findRecordInConfigMapping').and.callThrough();
     const addPropertiesSpy = spyOn<any>(component, 'addProperties').and.callThrough();
     const input = {
-      state: "Daman & Diu",
-      districts: ["Daman"],
-      labelExpr: "District",
-      metrics: ["plays"],
-    }
+      state: 'Daman & Diu',
+      districts: ['Daman'],
+      labelExpr: 'District',
+      metrics: ['plays'],
+    };
     component.mapData = input;
     component['dataHandler']().subscribe(res => {
-      expect(findRecordInConfigMappingSpy).toHaveBeenCalledWith({ type: "state", name: input.state });
-      expect(getGeoJSONFileSpy).toHaveBeenCalledWith({ fileName: "damandiu_district.json", folder: "geoJSON-sample" });
+      expect(findRecordInConfigMappingSpy).toHaveBeenCalledWith({ type: 'state', name: input.state });
+      expect(getGeoJSONFileSpy).toHaveBeenCalledWith({ fileName: 'damandiu_district.json', folder: 'geoJSON-sample' });
       expect(getDataSourceDataSpy).toHaveBeenCalled();
       expect(addPropertiesSpy).toHaveBeenCalled();
       done();
     });
-  })
+  });
 
   it('should handle error if unknow state or country is passed', done => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     const findRecordInConfigMappingSpy = spyOn<any>(component, 'findRecordInConfigMapping').and.callThrough();
     const input = {
-      state: "random Country",
-      districts: ["Daman"],
-      labelExpr: "District",
-      metrics: ["plays"],
-    }
+      state: 'random Country',
+      districts: ['Daman'],
+      labelExpr: 'District',
+      metrics: ['plays'],
+    };
     component.mapData = input;
     component['dataHandler']().subscribe(res => {
       expect(toasterService.error).toHaveBeenCalledWith('Failed to render Map');
-      expect(findRecordInConfigMappingSpy).toHaveBeenCalledWith({ type: "state", name: input.state });
+      expect(findRecordInConfigMappingSpy).toHaveBeenCalledWith({ type: 'state', name: input.state });
       done();
     });
-  })
+  });
 
   it('click handler on a feature should emit event', () => {
     const spy = spyOn<any>(component.featureClicked, 'emit');
-    component['clickHandler']({ properties: { testKey: 2 }, metaData: { st_nm: "gujrat" } }, {});;
+    component['clickHandler']({ properties: { testKey: 2 }, metaData: { st_nm: 'gujrat' } }, {});
     expect(spy).toHaveBeenCalled();
-  })
+  });
 
 });

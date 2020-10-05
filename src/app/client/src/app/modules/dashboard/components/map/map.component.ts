@@ -45,10 +45,10 @@ export class MapComponent implements OnInit, AfterViewInit {
       fillOpacity: 0.7,
       cursor: 'no-drop'
     }
-  }
+  };
 
   private __mapData = {
-    folder: "geoJSON-sample",
+    folder: 'geoJSON-sample',
     strict: false
   };
 
@@ -58,14 +58,14 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.__options = {
       ...this.__defaultConfig,
       ...options
-    }
+    };
   }
 
   @Input() set mapData(data) {
     this.__mapData = {
       ...this.__mapData,
       ...data
-    }
+    };
     this.getGeoJSON.next(this.__mapData);
   }
 
@@ -78,7 +78,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     return L && L.geoJSON(data || null, {
       style: this.setStyle.bind(this),
       onEachFeature: this.onEachFeature.bind(this)
-    })
+    });
   }
 
   /**
@@ -91,8 +91,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map = L && L.map(this.mapId).setView(initialCoordinate, initialZoomLevel);
     this.geoJSONRootLayer = this.map && this.getLayer().addTo(this.map);
     const maxBounds = L && L.latLngBounds([latBounds, lonBounds]);
-    this.map && this.map.setMaxBounds(maxBounds);
-    this.map && this.map.fitBounds(maxBounds);
+    if(this.map){
+      this.map.setMaxBounds(maxBounds);
+      this.map.fitBounds(maxBounds);
+    }
   }
 
   /**
@@ -126,14 +128,14 @@ export class MapComponent implements OnInit, AfterViewInit {
    * @memberof Map2Component
    */
   private mouseoverHandler({ properties = {}, metaData = {} }: { properties: Properties; metaData: Partial<ICustomMapObj> }, event) {
-    var layer = event.target;
+    const layer = event.target;
     layer.setStyle({
       weight: 3,
       color: '#666',
       dashArray: '',
       fillOpacity: 0.8
     });
-    if (L && !L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+    if (L && (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge)) {
       layer.bringToFront();
     }
     this.infoControl && this.infoControl.update(properties);
@@ -161,7 +163,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   private setControl() {
     const { controlTitle } = this.__options;
-    let infoControl = this.infoControl = L && L.control();
+    const infoControl = this.infoControl = L && L.control();
     infoControl.onAdd = function (map) {
       this._div = L && L.DomUtil.create('div', 'infoControl');
       this.update();
@@ -170,7 +172,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     infoControl.update = function (properties = {}) {
       const text = Object.entries(properties).map(([key, value]) => `<br />${key}: ${value}`).join('<br />');
       this._div.innerHTML = `<h4>${controlTitle}</h4>
-      ${text}`
+      ${text}`;
     };
     infoControl.addTo(this.map);
   }
@@ -210,13 +212,13 @@ export class MapComponent implements OnInit, AfterViewInit {
         const { properties = {} } = feature;
         return recordFromConfigMapping && properties.code === recordFromConfigMapping.code;
       });
-      if (!recordFromConfigMapping || !recordFromExternalJSON || !featureObj) return;
+      if (!recordFromConfigMapping || !recordFromExternalJSON || !featureObj) { return; }
       featureObj['metaData'] = { name: layer };
       const metricsObject = pick(recordFromExternalJSON, metrics);
       featureObj.properties = {
         ...(featureObj.properties || {}),
         ...metricsObject
-      }
+      };
       filteredFeatures.push(featureObj);
     });
     return filteredFeatures;
@@ -226,12 +228,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     return this.getGeoJSON.pipe(
       skipWhile(input => input === undefined || input === null || !(input.hasOwnProperty('state') || input.hasOwnProperty('country'))),
       mergeMap((input: IInputMapData) => {
-        const { country = null, states = [], state, districts = [], metrics = [], labelExpr = "District", strict = false, folder } = input;
+        const { country = null, states = [], state, districts = [], metrics = [], labelExpr = 'District', strict = false, folder } = input;
         let paramter;
         if (country) {
-          paramter = { type: "country", name: country };
+          paramter = { type: 'country', name: country };
         } else {
-          paramter = { type: "state", name: state };
+          paramter = { type: 'state', name: state };
         }
         const { geoJSONFilename = null } = this.findRecordInConfigMapping(paramter) || {};
         if (!geoJSONFilename) {
@@ -249,7 +251,7 @@ export class MapComponent implements OnInit, AfterViewInit {
               }
               return { type, features: strict ? filteredFeatures : features };
             })
-          )
+          );
       }),
       tap(response => {
         if (this.geoJSONRootLayer && this.map && response) {
@@ -262,13 +264,13 @@ export class MapComponent implements OnInit, AfterViewInit {
         this.toasterService.error(errorText);
       }),
       catchError(err => {
-        return of(null)
+        return of(null);
       })
-    )
+    );
   }
 
   ngOnInit() {
-    this.subscription$ = this.dataHandler()
+    this.subscription$ = this.dataHandler();
   }
 
   ngAfterViewInit() {
@@ -280,23 +282,23 @@ export class MapComponent implements OnInit, AfterViewInit {
   private findRecordInConfigMapping({ type = null, name = null, code = null }) {
     return find(this.mappingConfig, config => {
       const { type: configType, name: configName, code: configCode } = config;
-      if (code) return configCode === code;
+      if (code) { return configCode === code; }
       return configType && configName && toLower(configType) === toLower(type) && toLower(configName) === toLower(name);
-    })
+    });
   }
 
-  private getGeoJSONFile({ folder = "geoJSON-sample", fileName }: Record<string, string>) {
+  private getGeoJSONFile({ folder = 'geoJSON-sample', fileName }: Record<string, string>) {
     return this.reportService.fetchDataSource(`/reports/fetch/${folder}/${fileName}`)
       .pipe(
         pluck('result'),
         retry(2),
         catchError(err => throwError({ errorText: 'Failed to download geoJSON file.' }))
-      )
+      );
   }
 
   private getDataSourceData() {
     const { reportLoc, reportData } = this.__mapData as IInputMapData;
-    if (reportData) return of(reportData);
+    if (reportData) { return of(reportData); }
     return this.reportService.fetchDataSource(reportLoc)
       .pipe(
         pluck('result'),

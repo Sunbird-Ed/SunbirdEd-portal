@@ -15,7 +15,7 @@ export interface Geometry {
 }
 
 export enum GeometryType {
-    Polygon = "Polygon",
+    Polygon = 'Polygon',
 }
 
 export interface Properties {
@@ -23,7 +23,7 @@ export interface Properties {
 }
 
 export enum FeatureType {
-    Feature = "Feature",
+    Feature = 'Feature',
 }
 
 export interface ICustomMapObj {
@@ -47,5 +47,5 @@ export interface IInputMapData {
     reportData?: string;
     strict?: boolean;
     country?: string;
-    states?: string[]
+    states?: string[];
 }

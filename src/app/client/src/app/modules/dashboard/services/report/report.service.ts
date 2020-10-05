@@ -182,7 +182,7 @@ export class ReportService {
         chartObj.mapData = {
           ...mapData,
           reportData: chartObj.chartData
-        }
+        };
       }
       return chartObj;
     });
