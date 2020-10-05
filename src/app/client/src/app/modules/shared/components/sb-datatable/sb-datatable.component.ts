@@ -4,6 +4,7 @@ import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import {ResourceService} from '../../services/resource/resource.service';
 import { Subject } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
 
 export const multiFilter = (arr: Object[], filters: Object) => {
   const filterKeys = Object.keys(filters);
@@ -41,6 +42,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   @Input() downloadCSV;
   @Input() name;
   @Input() message;
+  @Input() batch;
   @Input() isColumnsSearchable;
   @Output() downloadLink = new EventEmitter();
   public tableData = [];
@@ -52,7 +54,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   public filterModel = {};
   public tableMessage;
 
-  constructor(public resourceService: ResourceService) {
+  constructor(public resourceService: ResourceService, public telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
@@ -99,7 +101,27 @@ export class SbDatatableComponent implements OnInit, OnChanges {
     this.searchData = '';
   }
 
+  setInteractEventData() {
+    const downloadReports = {
+      context: {
+        env: 'reports',
+        cdata: [
+          {id: _.get(this.batch , 'courseId'), type: 'Course'},
+          {id: _.get(this.batch , 'batchId'), type: 'Batch'}
+        ]
+      },
+      edata: {
+        id: 'download-summary-report',
+        type: 'click',
+        pageid: 'summary-report'
+      }
+    };
+    this.telemetryService.interact(downloadReports);
+  }
+
+
   downloadCSVFile() {
+    this.setInteractEventData();
     this.name = `${this.name}_${dayjs().format('YYYY-MM-DD_HH_mm')}`; 
     const options = {
       filename: this.name,

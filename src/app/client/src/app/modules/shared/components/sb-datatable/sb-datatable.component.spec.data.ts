@@ -118,5 +118,16 @@ export const TableData = {
       { name: 'District', isSortable: true,  prop: 'district' },
       { name: 'No. of Enrollment', isSortable: true,  prop: 'noofEnrollments'},
       { name: 'No. of Completions', isSortable: true,  prop: 'noofCompletions' }],
-    searchFields : ['state', 'district']
+    searchFields : ['state', 'district'],
+    telemetryDataForDownload: {
+      context: {
+        env: 'reports',
+        cdata: [{id: 'do_112470675618004992181', type: 'Course'}, {id: '01248661388792627227', type: 'Batch'}]
+      },
+      edata: {
+        id: 'download-summary-report',
+        type: 'click',
+        pageid: 'summary-report'
+      }
+    }
 }
