@@ -27,13 +27,8 @@ export enum FeatureType {
 }
 
 export interface ICustomMapObj {
-    layers: ICustomMapObj[];
-    metrics: Properties[];
     drillDown: boolean;
     name: string;
-    identifier: [string, any],
-    labelField: string;
-    fileName: string;
     fitBounds: boolean;
     district?: string;
     st_nm?: string;
@@ -51,4 +46,6 @@ export interface IInputMapData {
     reportLoc?: string;
     reportData?: string;
     strict?: boolean;
+    country?: string;
+    states?: string[]
 }
