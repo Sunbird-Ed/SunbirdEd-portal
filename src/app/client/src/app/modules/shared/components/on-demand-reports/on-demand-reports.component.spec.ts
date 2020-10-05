@@ -152,7 +152,7 @@ describe('OnDemandReportsComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(MockData.mockSubmitReqData.result.statusMessage);
   });
 
-  it('should call checkStatus', () => {
+  it('should call checkStatus and user can create new report', () => {
     component.selectedReport = MockData.selectedReport;
     MockData.responseData.result.jobs[0]['status'] = 'SUCCESS';
     component.onDemandReportData = MockData.responseData.result.jobs;
@@ -161,9 +161,18 @@ describe('OnDemandReportsComponent', () => {
     expect(result).toBeTruthy();
   });
 
-  it('should call checkStatus', () => {
+  it('should call checkStatus and can not create report and it is in SUBMITTED state', () => {
     component.selectedReport = MockData.selectedReport;
     MockData.responseData.result.jobs[0]['status'] = 'SUBMITTED';
+    component.onDemandReportData = MockData.responseData.result.jobs;
+    component.batch = {endDate: null};
+    const result = component.checkStatus();
+    expect(result).toBeFalsy();
+  });
+
+  it('should call checkStatus and can not create report and it is in PROCESSING state', () => {
+    component.selectedReport = MockData.selectedReport;
+    MockData.responseData.result.jobs[0]['status'] = 'PROCESSING';
     component.onDemandReportData = MockData.responseData.result.jobs;
     component.batch = {endDate: null};
     const result = component.checkStatus();

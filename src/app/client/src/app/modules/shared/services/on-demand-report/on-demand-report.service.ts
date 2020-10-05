@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ConfigService} from '../config/config.service';
+import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,10 @@ export class OnDemandReportService {
    * @param reportStatus
    */
   isInProgress(reportListData: any, reportStatus: any) {
-    if ((reportListData['status'] === reportStatus.submitted) || (reportListData['status'] === reportStatus.processing)) {
+    const reportListDataStatus = _.toLower(reportListData['status']);
+    const reportSubmitted = _.toLower(reportStatus.submitted)
+    const reportProcessing = _.toLower(reportStatus.processing)
+    if ((reportListDataStatus === reportSubmitted) || (reportListDataStatus === reportProcessing)) {
       return true;
     }
     return false;

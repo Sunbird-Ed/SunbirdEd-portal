@@ -9,6 +9,7 @@ import {FilterPipe} from '../../pipes/filter/filter.pipe';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 import {ResourceService} from '../../services/resource/resource.service';
 import {of as observableOf} from "rxjs";
+import { TelemetryService } from '@sunbird/telemetry';
 
 describe('SbDatatableComponent', () => {
   let component: SbDatatableComponent;
@@ -26,7 +27,7 @@ describe('SbDatatableComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SbDatatableComponent, FilterPipe, SbDataTablePipe],
       imports: [FormsModule],
-      providers: [{provide: ResourceService, useValue: resourceBundle}],
+      providers: [{provide: ResourceService, useValue: resourceBundle}, TelemetryService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
@@ -99,6 +100,15 @@ describe('SbDatatableComponent', () => {
     spyOn(component.downloadLink, 'emit').and.stub();
     component.downloadUrl('downloadUrls', mockData);
     expect(component.downloadLink.emit).toHaveBeenCalled();
+  });
+
+  it('should generate telemetry for download summary report', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    component.batch = {courseId: 'do_112470675618004992181', batchId: '01248661388792627227'}
+    spyOn(telemetryService, 'interact');
+    component.setInteractEventData();
+    expect(telemetryService.interact).toHaveBeenCalled();
+    expect(telemetryService.interact).toHaveBeenCalledWith(TableData.telemetryDataForDownload);
   });
 
 });

@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {ResourceService, ToasterService} from '../../services';
 import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
 import * as _ from 'lodash-es';
-import {Validators, FormControl} from '@angular/forms';
+import {Validators, FormControl, FormGroup} from '@angular/forms';
 import {TelemetryService} from '@sunbird/telemetry';
 
 @Component({
@@ -28,7 +28,8 @@ export class OnDemandReportsComponent implements OnInit {
   public isDownloadReport = false;
   public fileName = '';
   public selectedReport;
-  public password = new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]);
+  public reportForm: FormGroup;
+  // public password = new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')]);
   public message = 'There is no data available';
   public isProcessed = false;
   reportStatus = {
@@ -41,6 +42,10 @@ export class OnDemandReportsComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public telemetryService: TelemetryService,
     public onDemandReportService: OnDemandReportService, public toasterService: ToasterService) {
+      this.reportForm = new FormGroup({
+        reportType: new FormControl('', [Validators.required]),
+        password : new FormControl('', [Validators.minLength(6), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
+      })
   }
 
   ngOnInit() {
@@ -117,7 +122,7 @@ export class OnDemandReportsComponent implements OnInit {
         }
       };
       if (this.selectedReport.encrypt === 'true') {
-        request.request['encryptionKey'] = this.password.value;
+        request.request['encryptionKey'] = this.reportForm.controls.password.value;
       }
       console.log('submit the report');
       this.generateTelemetry(this.selectedReport.dataset, this.batch.batchId, this.batch.courseId);
@@ -131,9 +136,9 @@ export class OnDemandReportsComponent implements OnInit {
           const updatedReportList = [data, ...this.onDemandReportData];
           this.onDemandReportData = _.slice(updatedReportList, 0, 10);
         }
-        this.password.reset();
+        this.reportForm.reset();
       }, error => {
-        this.password.reset();
+        this.reportForm.reset();
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
     } else {
@@ -146,7 +151,7 @@ export class OnDemandReportsComponent implements OnInit {
   }
 
   checkStatus() {
-    let requeStatus = true;
+    let requestStatus = true;
     const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
       if (value.dataset === this.selectedReport.dataset) {
@@ -161,15 +166,15 @@ export class OnDemandReportsComponent implements OnInit {
     if (this.batch.endDate) {
       batchEndDate = new Date(`${this.batch.endDate} 00:00:00`).getTime();
     }
-    if (!_.isEmpty(reportListData)) { // report is already submitted so dont allow to req again
-      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus);
+    if (!_.isEmpty(reportListData)) { // checking the report is already created or not
+      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
       if (!isInProgress) {
-        requeStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate);
+        requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
       } else {
-        requeStatus = false;
+        requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
       }
     }
-    return requeStatus;
+    return requestStatus;
   }
 
 
