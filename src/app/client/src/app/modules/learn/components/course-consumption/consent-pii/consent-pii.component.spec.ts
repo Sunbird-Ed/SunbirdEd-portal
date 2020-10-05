@@ -9,6 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ConsentPiiComponent } from './consent-pii.component';
 import { MockData } from './consent-pii.component.spec.data';
+import { GeneraliseLabelService } from '../../../../core/services/generalisedLable/generaliseLable.service';
 
 describe('ConsentPiiComponent', () => {
   let component: ConsentPiiComponent;
@@ -61,7 +62,8 @@ describe('ConsentPiiComponent', () => {
         UserService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
-        { provide: Router, useValue: routerStub }
+        { provide: Router, useValue: routerStub },
+        GeneraliseLabelService
       ]
     })
       .compileComponents();
