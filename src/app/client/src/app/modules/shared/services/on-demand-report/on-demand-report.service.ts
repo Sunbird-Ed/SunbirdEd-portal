@@ -53,10 +53,10 @@ export class OnDemandReportService {
    * @param reportStatus
    */
   isInProgress(reportListData: any, reportStatus: any) {
-    if (reportListData['status'] === reportStatus.submitted || reportListData['status'] === reportStatus.processing) {
-      return false;
+    if ((reportListData['status'] === reportStatus.submitted) || (reportListData['status'] === reportStatus.processing)) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   /**
@@ -65,7 +65,7 @@ export class OnDemandReportService {
    * @param batchEndDate
    */
   canRequestReport(submittedDate: any, batchEndDate: any) {
-    if (batchEndDate && submittedDate < batchEndDate) {
+    if (batchEndDate && (submittedDate > batchEndDate)) {
       return false;
     }
     return true;

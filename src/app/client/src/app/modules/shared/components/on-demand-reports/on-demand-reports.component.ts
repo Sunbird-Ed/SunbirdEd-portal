@@ -146,6 +146,7 @@ export class OnDemandReportsComponent implements OnInit {
   }
 
   checkStatus() {
+    let requeStatus = true;
     const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
       if (value.dataset === this.selectedReport.dataset) {
@@ -161,12 +162,14 @@ export class OnDemandReportsComponent implements OnInit {
       batchEndDate = new Date(`${this.batch.endDate} 00:00:00`).getTime();
     }
     if (!_.isEmpty(reportListData)) { // report is already submitted so dont allow to req again
-      if (this.onDemandReportService.isInProgress(reportListData, this.reportStatus)) {
-        return this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate);
+      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus);
+      if (!isInProgress) {
+        requeStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate);
+      } else {
+        requeStatus = false;
       }
-      return false;
     }
-    return true;
+    return requeStatus;
   }
 
 

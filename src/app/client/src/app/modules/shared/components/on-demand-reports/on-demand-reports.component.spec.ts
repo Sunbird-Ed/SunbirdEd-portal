@@ -154,11 +154,11 @@ describe('OnDemandReportsComponent', () => {
 
   it('should call checkStatus', () => {
     component.selectedReport = MockData.selectedReport;
-    MockData.responseData.result.jobs[0]['status'] = 'COMPLETED';
+    MockData.responseData.result.jobs[0]['status'] = 'SUCCESS';
     component.onDemandReportData = MockData.responseData.result.jobs;
     component.batch = {endDate: "2020-10-25"};
     const result = component.checkStatus();
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   });
 
   it('should call checkStatus', () => {

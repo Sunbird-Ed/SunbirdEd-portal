@@ -68,25 +68,25 @@ describe('OnDemandReportService', () => {
 
   it('should call canRequestReport', inject([OnDemandReportService], (service: OnDemandReportService) => {
     const result = service.canRequestReport(1599728944037, 1603823400000);
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   }));
 
   it('should call canRequestReport', inject([OnDemandReportService], (service: OnDemandReportService) => {
     const result = service.canRequestReport(1604823400000, 1603823400000);
-    expect(result).toBeTruthy();
+    expect(result).toBeFalsy();
   }));
 
   it('should call isInProgress', inject([OnDemandReportService], (service: OnDemandReportService) => {
     const reportStatus = {submitted: 'SUBMITTED'};
     const reportListData = {status: 'SUBMITTED'}
     const result = service.isInProgress(reportListData, reportStatus);
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   }));
 
   it('should call isInProgress', inject([OnDemandReportService], (service: OnDemandReportService) => {
     const reportStatus = {submitted: 'SUBMITTED'};
-    const reportListData = {status: 'COMPLETED'}
+    const reportListData = {status: 'SUCCESS'}
     const result = service.isInProgress(reportListData, reportStatus);
-    expect(result).toBeTruthy();
+    expect(result).toBeFalsy();
   }));
 });
