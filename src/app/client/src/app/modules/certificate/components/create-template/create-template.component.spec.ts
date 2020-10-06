@@ -33,4 +33,12 @@ describe('CreateTemplateComponent', () => {
   it('should initialize the data', () => {
     component.ngOnInit();
   });
+
+  it('should create new certificate template', () => {
+    component.createCertTemplate();
+  });
+
+  it('should detect template change', () => {
+    component.onTemplateChange();
+  });
 });
