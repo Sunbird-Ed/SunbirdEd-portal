@@ -34,7 +34,7 @@ export class CertRegService extends DataService {
     this.baseUrl = this.config.urlConFig.URLS.CERT_REG_PREFIX;
   }
 
-  public fetchCertificates(userId, certType) {
+  public fetchCertificates(params) {
     const request = {
       request: {
         _source: ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn', 'data.badge.name'],
@@ -43,12 +43,7 @@ export class CertRegService extends DataService {
             must: [
               {
                 match_phrase: {
-                  'recipient.id': userId
-                }
-              },
-              {
-                match_phrase: {
-                  'related.type': certType
+                  'recipient.id': params.userId
                 }
               }
             ]
@@ -56,6 +51,12 @@ export class CertRegService extends DataService {
         }
       }
     };
+    if (params.certType && params.certType !== 'all') {
+      request.request.query.bool.must[0].match_phrase['related.type'] = params.certType;
+    }
+    if (params.limit) {
+      request.request['size'] = params.limit;
+    }
     const options = {
       url: this.config.urlConFig.URLS.CERTIFICATE.FETCH_CERTIFICATES,
       data: request,
@@ -94,5 +95,12 @@ export class CertRegService extends DataService {
       data: request,
     };
     return this.patch(options);
+  }
+
+  public checkCriteria(batchData) {
+    if (batchData.length && batchData[0].status === 2) {
+      return true;
+    }
+    return false;
   }
 }

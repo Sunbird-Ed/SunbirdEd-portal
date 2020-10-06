@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
-import { CoursesService, PermissionService, UserService } from '@sunbird/core';
+import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
   ResourceService, ToasterService, WindowScrollService, ITelemetryShare, LayoutService
@@ -10,7 +10,7 @@ import { IEndEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEv
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { combineLatest, merge, Subject } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
@@ -79,6 +79,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   courseMentor = false;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
+  showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
@@ -101,7 +102,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private deviceDetectorService: DeviceDetectorService,
     public telemetryService: TelemetryService,
     private contentUtilsServiceService: ContentUtilsServiceService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -113,6 +115,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
     this.initLayout();
+    this.courseProgressService.courseProgressData.pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(courseProgressData => {
+        this.courseProgressData = courseProgressData;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
+          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true });
+        }
+      });
     this.courseConsumptionService.updateContentConsumedStatus
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
@@ -170,6 +182,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
         this.isExpandedAll = this.courseHierarchy.children.length === 1 ? true : false;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
@@ -200,20 +213,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
           || this.courseHierarchy.createdBy === this.userService.userid) {
           this.hasPreviewPermission = true;
         }
+        this.showDataSettingSection = this.getDataSetting();
         this.loader = false;
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
-      });
-    this.courseProgressService.courseProgressData.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(courseProgressData => {
-        this.courseProgressData = courseProgressData;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
-          this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
-          this.router.navigate(['.'], {relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true});
-        }
       });
 
     this.courseBatchService.updateEvent.subscribe((event) => {
@@ -436,7 +440,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['/learn/course/play', collectionUnit.identifier], navigationExtras);
     } else {
-      this.batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+      this.batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
       this.showJoinTrainingModal = true;
       if (this.courseHierarchy.batches && this.courseHierarchy.batches.length === 1) {
         this.batchMessage = this.validateBatchDate(this.courseHierarchy.batches);
@@ -448,8 +452,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   validateBatchDate(batch) {
-    let batchMessage = this.resourceService.frmelmnts.lbl.joinTrainingToAcessContent;
+    let batchMessage = this.generaliseLabelService.frmelmnts.lbl.joinTrainingToAcessContent;
     if (batch && batch.length === 1) {
       const currentDate = new Date();
       const batchStartDate = new Date(batch[0].startDate);
@@ -597,5 +602,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   onCourseCompleteClose() {
     this.showCourseCompleteMessage = false;
+  }
+
+  getDataSetting() {
+    if (_.get(this.userService, 'userid') && (_.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES')
+      && !this.courseConsumptionService.canViewDashboard(this.courseHierarchy) && this.enrolledCourse) {
+        return true;
+    }
+    return false;
   }
 }

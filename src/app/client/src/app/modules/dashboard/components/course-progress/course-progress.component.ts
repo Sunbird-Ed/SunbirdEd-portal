@@ -4,10 +4,10 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService, FormService } from '@sunbird/core';
+import {UserService, FormService, GeneraliseLabelService} from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService, IPagination, OnDemandReportsComponent
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
@@ -24,9 +24,6 @@ import { OnDemandReportService } from './../../../shared/services/on-demand-repo
 })
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
-
-  @ViewChild(OnDemandReportsComponent)
-  private onDemandReports: OnDemandReportsComponent;
 
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
@@ -84,20 +81,20 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 */
   reverse = true;
   /**
-	 * This variable sets the queryparams on url
-	 */
+   * This variable sets the queryparams on url
+   */
   queryParams: any;
   /**
-	 * This variable sets selected batch id, if exist
-	 */
+   * This variable sets selected batch id, if exist
+   */
   selectedOption: string;
   /**
-	 * This variable helps to unsubscribe the params and queryparams
-	 */
+   * This variable helps to unsubscribe the params and queryparams
+   */
   paramSubcription: any;
   /**
-	 * This variable helps to show the warning div
-	 */
+   * This variable helps to show the warning div
+   */
   showWarningDiv = false;
   /**
   * This variable helps to show the csv downloadURl
@@ -170,8 +167,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   public progressReportUpdatedOn;
 
   /**
-	 * telemetryImpression object for course progress page
-	*/
+   * telemetryImpression object for course progress page
+  */
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
@@ -204,9 +201,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     public telemetryService: TelemetryService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public onDemandReportService: OnDemandReportService,
     public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService,
+    public generaliseLabelService: GeneraliseLabelService
    ) {
     this.user = user;
     this.route = route;
@@ -287,11 +284,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
-      this.summaryReport(1);
-    } else {
-      this.loadOndemandReports(2);
-    } 
   }
 
 
@@ -452,7 +444,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method helps to set order of a specific field
   *
-	* @param {string} value Field name that is to be sorted
+  * @param {string} value Field name that is to be sorted
   */
   setOrder(value: string): void {
     this.order = value;
@@ -555,34 +547,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-
-  getFieldValue(array, field) {
-    if (_.find(array, {"type": field})) {
-      return _.find(array, {"type": field}).count;
-    } else {
-      return;
-    }
-  }
-
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
   * course id and timeperiod
   */
   ngOnInit() {
-    // ---- Mock data Start-----
-    const apiData = {
-      userConsent: 'No',
-      audience: 'Teacher'
-    };
-    this.fileName = 'State wise report';
-    this.isDownloadReport = true;
-    // this.searchFields = ['state', 'district'];
-    // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
-        this.userRoles = _.get(userdata, 'userProfile.userRoles');
         this.paramSubcription = combineLatest(this.activatedRoute.parent.params,
           this.activatedRoute.params, this.activatedRoute.queryParams,
           (parentParams: any, params: any, queryParams: any) => {
@@ -664,24 +637,4 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe.complete();
   }
 
-  getFormData() {
-    const isCourseCreator = _.includes(this.userRoles, 'CONTENT_CREATOR');
-    const formReadInputParams = {
-      formType: 'batch',
-      formAction: 'list',
-      contentType: 'report_types'
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe((formResponsedata) => {
-      if (formResponsedata) {
-        const options = formResponsedata;
-        if (isCourseCreator) {
-          this.reportTypes = options;
-        } else {
-          this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
-        }
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
 }

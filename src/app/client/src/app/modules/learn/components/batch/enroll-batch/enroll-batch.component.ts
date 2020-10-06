@@ -1,6 +1,6 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { UserService, CoursesService } from '@sunbird/core';
+import { UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
@@ -33,7 +33,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
     private telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService) { }
+    public navigationhelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -44,7 +44,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.batchDetails = data;
           this.setTelemetryData();
           if (this.batchDetails.enrollmentType !== 'open') {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0082);
+            this.toasterService.error(this.generaliseLabelService.messages.fmsg.m0082);
             this.redirect();
           }
           if (this.activatedRoute.queryParams) {
@@ -122,7 +122,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(() => {
           this.disableSubmitBtn = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
-          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]).then(() => {
+          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier],
+          { queryParams: { consent: true } }).then(() => {
             window.location.reload();
           });
         }, (err) => {

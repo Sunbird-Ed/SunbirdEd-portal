@@ -1,3 +1,5 @@
+import { ADD_ACTIVITY_TO_GROUP } from './../../../interfaces/routerLinks';
+import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
 import {
@@ -16,6 +18,8 @@ import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+
 
 @Component({
   selector: 'app-activity-search',
@@ -45,10 +49,18 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   groupId: string;
   telemetryImpression: IImpressionEventInput;
   layoutConfiguration: any;
+  groupAddableBlocData: any;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
+  public selectedFilters;
+  public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
+
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
     (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+
+
   constructor(
     public resourceService: ResourceService,
     public configService: ConfigService,
@@ -63,10 +75,20 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private cacheService: CacheService,
     private router: Router,
     private groupsService: GroupsService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    public courseConsumptionService: CourseConsumptionService
   ) { }
 
   ngOnInit() {
+    CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.groupAddableBlocData = data;
+    });
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+  }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+  });
     this.initLayout();
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
@@ -139,7 +161,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
 
       /* istanbul ignore else */
@@ -179,11 +201,13 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters.contentType = [_.get(this.groupAddableBlocData, 'params.contentType')];
     const option: any = {
       filters: filters,
+      fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
-      facets: this.facets,
+      facets: this.globalSearchFacets,
       params: this.configService.appConfig.Course.contentApiQueryParams
     };
 
@@ -200,15 +224,31 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     if (this.frameWorkName) {
       option.params.framework = this.frameWorkName;
     }
-    this.searchService.courseSearch(option)
+    this.searchService.contentSearch(option)
       .subscribe(data => {
         this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
-        this.contentList = _.map(data.result.course, (content: any) =>
+        this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
+          _.each(this.contentList, item => {
+            item.hoverData = {
+              'actions': [
+                {
+                  'type': 'view',
+                  'label': this.resourceService.frmelmnts.lbl.group.viewActivity
+                },
+                {
+                  'type': 'addToGroup',
+                  'label': this.resourceService.frmelmnts.lbl.AddtoGroup
+                }
+              ]
+            };
+          });
+
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -238,10 +278,23 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     // TOTO add interact telemetry here
   }
 
-  addActivity(event) {
-    const cdata = [{id: _.get(event, 'data.identifier'), type: 'Course'}];
+  addActivity(activityCard) {
+    const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
     this.addTelemetry('activity-course-card', cdata);
-    this.router.navigate(['/learn/course', _.get(event, 'data.identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+    const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
+    const contentMimeType = _.get(activityCard, 'mimeType');
+
+    if (contentMimeType === 'application/vnd.ekstep.content-collection' && isTrackable) {
+
+      this.router.navigate(['/learn/course', _.get(activityCard, 'identifier')], { queryParams: { groupId: _.get(this.groupData, 'id') } });
+
+    } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
+
+      this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')]);
+
+    } else {
+      this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')]);
+    }
   }
 
   addTelemetry(id, cdata, extra?) {
@@ -260,4 +313,15 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  hoverActionClicked(event, appAddToGroupElement: HTMLDivElement) {
+   const mode =  _.get(event, 'hover.type').toLowerCase();
+   switch (mode) {
+    case 'view':
+      this.addActivity(_.get(event, 'content'));
+      break;
+    case 'addtogroup':
+      appAddToGroupElement.click();
+      break;
+   }
+  }
 }

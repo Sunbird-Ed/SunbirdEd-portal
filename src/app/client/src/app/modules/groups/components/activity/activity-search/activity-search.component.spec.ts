@@ -12,6 +12,7 @@ import { activitySearchMockData } from './activity-search.component.data.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../services/groups/groups.service';
+import { CourseConsumptionService } from '@sunbird/learn';
 
 describe('ActivitySearchComponent', () => {
   let component: ActivitySearchComponent;
@@ -132,7 +133,7 @@ describe('ActivitySearchComponent', () => {
     component.showLoader = true;
     component.frameworkId = 'abcd1234cd';
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.returnValue(of({ result: { content: [] } }));
+    spyOn(searchService, 'contentSearch').and.returnValue(of({ result: { content: [] } }));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
@@ -141,7 +142,7 @@ describe('ActivitySearchComponent', () => {
   it('should fetch Contents on error', () => {
     component.showLoader = true;
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'courseSearch').and.returnValue(throwError({}));
+    spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
     component['fetchContents']();
     expect(component.showLoader).toBe(false);
     expect(component.contentList).toEqual([]);
@@ -200,14 +201,71 @@ describe('ActivitySearchComponent', () => {
     expect(router.navigate).toHaveBeenCalled();
   });
 
-  it('should call addActivity', () => {
+  it('should navigate to resource page if contentType is non-trackable and mime type is not collection', () => {
     spyOn(component, 'addTelemetry');
     const router = TestBed.get(Router);
-    const event = { data: { identifier: 'do_234324446565' } };
+    const event = activitySearchMockData.eventDataForResource;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', 'do_234324446565'],
-      { queryParams: { groupId: 'adfddf-sdsds-wewew-sds' } });
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.identifier]);
+  });
+
+  it('should navigate to resource page if contentType is trackable and mime type is collection', () => {
+    spyOn(component, 'addTelemetry');
+    const router = TestBed.get(Router);
+    const event = activitySearchMockData.eventDataForCourse;
+    component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
+    component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', event.identifier], {queryParams: {
+      groupId: component.groupData.id
+    }});
+  });
+
+  it('should navigate to resource page if contentType is non-trackable and mime type is collection', () => {
+    spyOn(component, 'addTelemetry');
+    const router = TestBed.get(Router);
+    const event = activitySearchMockData.eventDataForTextbook;
+    component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
+    component.addActivity(event);
+    expect(component.addTelemetry).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.identifier]);
+  });
+
+  it('should navigate to content details page on click of "View activity" from hover card', () => {
+    /** Arrange */
+    const appAddToGroupElement = document.createElement('div');
+    const event = {
+      hover: {
+        type: 'view'
+      },
+      content: activitySearchMockData.eventDataForCourse
+    };
+    spyOn(component, 'addActivity').and.stub();
+
+    /** Act */
+    component.hoverActionClicked(event, appAddToGroupElement);
+
+    /** Assert */
+    expect(component.addActivity).toHaveBeenCalledWith(activitySearchMockData.eventDataForCourse);
+  });
+
+  it('should add activity to group on click of "Add for group" button from hover card', () => {
+    /** Arrange */
+    const appAddToGroupElement = document.createElement('div');
+    const event = {
+      hover: {
+        type: 'addToGroup'
+      },
+      content: activitySearchMockData.eventDataForCourse
+    };
+    spyOn(appAddToGroupElement, 'click').and.stub();
+
+    /** Act */
+    component.hoverActionClicked(event, appAddToGroupElement);
+
+    /** Assert */
+    expect(appAddToGroupElement.click).toHaveBeenCalled();
   });
 });

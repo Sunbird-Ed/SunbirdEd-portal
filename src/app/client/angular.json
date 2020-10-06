@@ -28,6 +28,11 @@
                 "glob": "**/*.*",
                 "input": "./node_modules/@project-sunbird/common-consumption/assets",
                 "output": "./assets/common-consumption"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/sunbird-pdf-player/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -35,6 +40,7 @@
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -48,6 +54,7 @@
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
+              "node_modules/leaflet/dist/leaflet.js",
               {
                 "input": "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
                 "lazy": true,
@@ -150,7 +157,8 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic.min.js",
-              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "node_modules/leaflet/dist/leaflet.js"
             ],
             "styles": [
               "src/assets/styles/semantic/semantic.min.css",

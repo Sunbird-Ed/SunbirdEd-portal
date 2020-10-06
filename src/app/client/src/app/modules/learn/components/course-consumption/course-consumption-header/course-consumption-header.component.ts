@@ -5,7 +5,7 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -43,7 +43,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() showAddGroup = false;
   enrolledCourse = false;
   batchId: any;
-  dashboardPermission = ['COURSE_MENTOR'];
+  dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
@@ -55,15 +55,17 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
-  courseMentor = false;
-
+  // courseMentor = false;
+  // courseCreator = false;
+  isTrackable = false;
+  viewDashboard = false;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -73,11 +75,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
-    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
-    } else {
-      this.courseMentor = false;
-    }
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };

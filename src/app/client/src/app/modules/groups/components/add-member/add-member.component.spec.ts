@@ -23,6 +23,11 @@ describe('AddMemberComponent', () => {
   const resourceBundle = {
     instance: 'DEV',
     messages: {
+      groups: {
+        emsg: {
+          m002: 'You have exceeded the maximum number of members that can be added to the group',
+        },
+      },
       emsg: {
         m007: 'Member is already existing',
         m006: 'Unable to add {name} to group',
@@ -172,11 +177,21 @@ describe('AddMemberComponent', () => {
 
   it('should throw error while adding member to group id there is error {}', () => {
     component.membersList = [];
-    spyOn(component['groupsService'], 'addMemberById').and.returnValue(of ({errors: ['2']}));
+    const response = {
+      error: {
+      members: [
+        {
+          errorMessage: 'Exceeded the activity max size limit',
+          errorCode: 'EXCEEDED_MEMBER_MAX_LIMIT'
+        }
+      ]
+    }
+    };
+    spyOn(component['groupsService'], 'addMemberById').and.returnValue(of (response));
     spyOn(component, 'showErrorMsg');
     component.addMemberToGroup();
     component['groupsService'].addMemberById('123', {members: [{userId: '2', role: 'member'}]}).subscribe(data => {
-      expect(data).toEqual({errors: ['2']});
+      expect(data).toEqual(response);
       expect(component.showErrorMsg).toHaveBeenCalledWith(data);
     });
   });
@@ -191,11 +206,10 @@ describe('AddMemberComponent', () => {
     });
   });
 
-
-
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, []);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup',
+    fakeActivatedRouteWithGroupId.snapshot, [], '123', undefined);
   });
 
   it('should load re-captcha when recaptcha is enable from system setting', () => {
@@ -246,5 +260,64 @@ describe('AddMemberComponent', () => {
     expect(component.verifyMember).toHaveBeenCalled();
   });
 
+  it('isVerifiedUser value should become TRUE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(false);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: true, identifier: '2', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
+  indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeTruthy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeTruthy();
+  expect(component.showInvalidUser).not.toHaveBeenCalled();
+  expect(component.isExistingMember).toHaveBeenCalled();
+  });
+});
+
+it('isVerifiedUser value should become FALSE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(true);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: true, identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+  indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeTruthy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeFalsy();
+  expect(component.showInvalidUser).not.toHaveBeenCalled();
+  expect(component.isExistingMember).toHaveBeenCalled();
+  });
+});
+
+it('isVerifiedUser value should become FALSE', () => {
+  spyOn(component, 'isExistingMember').and.returnValue(true);
+  spyOn(component, 'showInvalidUser');
+  spyOn(component['groupsService'], 'getRecaptchaSettings').and.returnValue(of(addMemberMockData.enabledRecaptchaResponse));
+  spyOn(component['groupsService'], 'getUserData').and.returnValue(of ({
+  exists: false, identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
+  indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}
+  ));
+  component.initRecaptcha();
+  fixture.detectChanges();
+  component.verifyMember();
+  component['groupsService'].getUserData('1', {token: ''}).subscribe(member => {
+  expect(member.exists).toBeFalsy();
+  expect(member.showLoader).toBeFalsy();
+  expect(component.isVerifiedUser).toBeFalsy();
+  expect(component.showInvalidUser).toHaveBeenCalled();
+  expect(component.isExistingMember).not.toHaveBeenCalled();
+  });
+});
 
 });

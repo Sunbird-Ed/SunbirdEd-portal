@@ -53,7 +53,7 @@ describe('ExploreComponent', () => {
     languageSelected$: of({})
   };
   class FakeActivatedRoute {
-    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'], selectedTab: 'textbook'  });
     params = of({});
     get queryParams() { return this.queryParamsMock.asObservable(); }
     snapshot = {
@@ -261,5 +261,29 @@ describe('ExploreComponent', () => {
     component.redoLayout();
     component.layoutConfiguration = null;
     component.redoLayout();
+  });
+  it('should generate visit telemetry impression event', () => {
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398',
+          contentType: 'textbook'
+        },
+        section: 'Featured courses'
+      }
+    };
+    component['setTelemetryData']();
+    component['prepareVisits'](event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
+  it('should call the getFilter Method and set audience type as filters', () => {
+    const data = {
+      filters: {},
+      status: 'NotFetching'
+    };
+    spyOn(component, 'getPageData').and.returnValues(RESPONSE.mockCurrentPageData);
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.getFilters(data);
+    expect(component.selectedFilters).toEqual({audience: [ 'Teacher' ]});
   });
 });

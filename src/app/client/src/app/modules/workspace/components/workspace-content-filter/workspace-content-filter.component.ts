@@ -124,6 +124,9 @@ export class WorkspaceContentFilterComponent implements OnInit {
     } else if (_.includes(this.route.url, 'draft')) {
       this.filterType = this.config.appConfig.draft.filterType;
       this.redirectUrl = this.config.appConfig.draft.inPageredirectUrl;
+    } else if (_.includes(this.route.url, 'alltextbooks')) {
+      this.filterType = this.config.appConfig.alltextbooks.filterType;
+      this.redirectUrl = this.config.appConfig.alltextbooks.inPageredirectUrl;
     } else {
       this.filterType = this.config.appConfig.allmycontent.filterType;
       this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;

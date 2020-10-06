@@ -46,7 +46,7 @@
               <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyAsCourseInteractEdata" 
               href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked" appPermission
               [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse()" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-              <img src="assets/images/copy-clone.svg" class="mr-4 pt-2"> {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
+              <img src="assets/images/copy-clone.svg" class="mr-4 pt-2"> {{generaliseLabelService?.frmelmnts?.lbl?.copyAsCourse}}
               </button>
 
               <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="cancelInteractEdata" 
@@ -58,8 +58,16 @@
               <button [ngClass]="{ 'sb-btn-disabled': !(selectedItems.length > 0) }" [disabled]="!(selectedItems.length > 0)" type="button"  appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
               href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked" appPermission
               [permission]="['CONTENT_CREATOR']" (click)="createCourse()" class="sb-btn sb-btn-normal sb-btn-primary">
-              {{resourceService?.frmelmnts?.btn?.createCourse}}
+              {{generaliseLabelService?.frmelmnts?.btn?.create}}
               </button>
+
+              <div class="certified-course__btn">
+                <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" 
+                  appAddToGroup
+                  [identifier]="collectionData?.identifier"
+                  [pageId]="collectionData?.contentType.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+                </button>
+              </div>
              
               <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                 <div class="ui text centered inline loader mt-40">
@@ -82,7 +90,7 @@
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9" *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
               <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
-                  <h6 class="sb-color-primary font-weight-normal">{{resourceService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
+                  <h6 class="sb-color-primary font-weight-normal">{{generaliseLabelService?.frmelmnts?.lbl?.selectContentFromCourse}}</h6>
                   <div class="sb-checkbox sb-checkbox-rightaligned sb-checkbox-primary ml-auto m-0">
                       <input (click)="selectAllItem()" type="checkbox" id="checkbox" name="example">
                       <label class="mb-0 mr-0 sb-color-primary" for="checkbox"> {{resourceService?.frmelmnts?.lbl?.selectAll}}</label>

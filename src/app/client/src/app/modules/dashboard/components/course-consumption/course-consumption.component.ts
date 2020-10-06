@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 // Custom service(s)
 import { RendererService, CourseConsumptionService } from './../../services';
-import { UserService, SearchService } from '@sunbird/core';
+import { UserService, SearchService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 // Interface
 import { DashboardData } from './../../interfaces';
@@ -146,7 +146,8 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
    * @param {ResourceService} resourceService To get language constant
    */
   constructor(route: Router, consumption: CourseConsumptionService, activatedRoute: ActivatedRoute, searchService: SearchService,
-    rendererService: RendererService, resourceService: ResourceService, public navigationhelperService: NavigationHelperService) {
+    rendererService: RendererService, resourceService: ResourceService, public navigationhelperService: NavigationHelperService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.consumptionService = consumption;
     this.activatedRoute = activatedRoute;
     this.searchService = searchService;

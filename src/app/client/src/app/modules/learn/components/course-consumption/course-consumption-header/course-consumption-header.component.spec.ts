@@ -82,6 +82,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -101,6 +102,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue([]);
     spyOn(courseConsumptionService.updateContentConsumedStatus, 'emit');
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     const courseProgressService = TestBed.get(CourseProgressService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -123,6 +125,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     activatedRouteStub.changeFirstChildParams({ courseId: 'do_212347136096788480178' });
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
@@ -313,4 +316,24 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
+  it ('should enable isTrackable', () => {
+    CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'Yes';
+    component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
+    component.ngOnInit();
+    expect(component.isTrackable).toBeTruthy();
+    expect(component.viewDashboard).toBeTruthy();
+  });
+
+  it ('should disable isTrackable', () => {
+    CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'No';
+    CourseHierarchyGetMockResponseFlagged.result.content['contentType'] = 'Textbook';
+    component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    component.ngOnInit();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.viewDashboard).toBeFalsy();
+  });
 });

@@ -136,7 +136,7 @@ describe('DataDrivenComponent', () => {
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework, 'Draft']);
   });
@@ -157,7 +157,7 @@ describe('DataDrivenComponent', () => {
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
   });
@@ -175,7 +175,7 @@ describe('DataDrivenComponent', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
   });
@@ -193,7 +193,7 @@ describe('DataDrivenComponent', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
   });
@@ -213,7 +213,7 @@ describe('DataDrivenComponent', () => {
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework]);
   });
@@ -276,7 +276,7 @@ describe('DataDrivenComponent', () => {
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0078);
   });
 
@@ -300,7 +300,7 @@ describe('DataDrivenComponent', () => {
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.callFake(() => observableThrowError({}));
     spyOn(toasterService, 'error').and.callThrough();
-    componentParent.createContent();
+    componentParent.createContent(undefined);
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);
   });
   it('When contentType is present', () => {

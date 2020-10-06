@@ -11,7 +11,8 @@ import {
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import {combineLatest } from 'rxjs';
+import { combineLatest, forkJoin } from 'rxjs';
+import { ContentIDParam } from '../../interfaces/delteparam';
 
 /**
  * Interface for passing the configuartion for modal
@@ -25,7 +26,8 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 
 @Component({
   selector: 'app-published',
-  templateUrl: './published.component.html'
+  templateUrl: './published.component.html',
+  styleUrls: ['./published.component.scss']
 })
 export class PublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
   @ViewChild('modalTemplate')
@@ -128,6 +130,41 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   query: string;
   sort: object;
 
+   /**
+  * To store all the collection details to be shown in collection modal
+  */
+  public collectionData: Array<any>;
+
+  /**
+  * Flag to show/hide loader on first modal
+  */
+  private showCollectionLoader: boolean;
+
+  /**
+  * To define collection modal table header
+  */
+  private headers: any;
+
+  /**
+  * To store deleting content id
+  */
+  private currentContentId: ContentIDParam;
+
+  /**
+  * To store deleteing content type
+  */
+  private contentMimeType: string;
+
+  /**
+   * To store modal object of first yes/No modal
+   */
+  private deleteModal: any;
+
+  /**
+   * To show/hide collection modal
+   */
+  public collectionListModal = false;
+
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -225,7 +262,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         status: ['Live'],
         createdBy: this.userService.userid,
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || this.config.appConfig.WORKSPACE.primaryCategory,
         mimeType: this.config.appConfig.WORKSPACE.mimeType,
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,
@@ -271,23 +308,94 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method launch the content editior
   */
-  contentClick(param) {
+  contentClick(param, content) {
+    this.contentMimeType = content.metaData.mimeType;
     if (param.action.eventName === 'delete') {
-      this.deleteConfirmModal(param.data.metaData.identifier);
+      this.currentContentId = param.data.metaData.identifier;
+      const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
+      config.isClosable = false;
+      config.size = 'small';
+      config.transitionDuration = 0;
+      config.mustScroll = true;
+      this.modalService
+        .open(config);
+      this.showCollectionLoader = false;
     } else {
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 
-  public deleteConfirmModal(contentIds) {
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = false;
-    config.size = 'small';
-    config.transitionDuration = 0;
-    config.mustScroll = true;
-    this.modalService
-      .open(config)
-      .onApprove(result => {
+  /**
+  * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
+  */
+  public checkLinkedCollections(modal) {
+    if (!_.isUndefined(modal)) {
+      this.deleteModal = modal;
+    }
+    this.showCollectionLoader = false;
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
+      this.deleteContent(this.currentContentId);
+      return;
+    }
+    this.getLinkedCollections(this.currentContentId)
+      .subscribe((response) => {
+        const count = _.get(response, 'result.count');
+        if (!count) {
+          this.deleteContent(this.currentContentId);
+          return;
+        }
+        this.showCollectionLoader = true;
+        const collections = _.get(response, 'result.content', []);
+
+        const channels = _.map(collections, (collection) => {
+          return _.get(collection, 'channel');
+        });
+        const channelMapping = {};
+        forkJoin(_.map(channels, (channel: string) => {
+            return this.getChannelDetails(channel);
+          })).subscribe((forkResponse) => {
+            this.collectionData = [];
+            _.forEach(forkResponse, channelResponse => {
+              const channelId = _.get(channelResponse, 'result.channel.code');
+              const channelName = _.get(channelResponse, 'result.channel.name');
+              channelMapping[channelId] = channelName;
+            });
+
+            _.forEach(collections, collection => {
+              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+              obj['channel'] = channelMapping[obj.channel];
+              this.collectionData.push(obj);
+          });
+
+          this.headers = {
+             type: 'Type',
+             name: 'Name',
+             subject: 'Subject',
+             grade: 'Grade',
+             medium: 'Medium',
+             board: 'Board',
+             channel: 'Tenant Name'
+             };
+             if (!_.isUndefined(this.deleteModal)) {
+              this.deleteModal.deny();
+            }
+          this.collectionListModal = true;
+          },
+          (error) => {
+           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
+            console.log(error);
+          });
+        },
+        (error) => {
+         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
+          console.log(error);
+        });
+  }
+
+  /**
+  * This method deletes content using the content id.
+  */
+  public deleteContent(contentIds) {
         this.showLoader = true;
         this.loaderMessage = {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
@@ -306,9 +414,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
             this.toasterService.success(this.resourceService.messages.fmsg.m0022);
           }
         );
-      })
-      .onDeny(result => {
-      });
+        if (!_.isUndefined(this.deleteModal)) {
+          this.deleteModal.deny();
+        }
   }
 
   /**

@@ -5,7 +5,7 @@ import { CourseConsumptionService, CourseBatchService } from './../../../service
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService } from '@sunbird/core';
+import { CoursesService, PermissionService, GeneraliseLabelService } from '@sunbird/core';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 @Component({
@@ -27,7 +27,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
     public navigationHelperService: NavigationHelperService, public permissionService: PermissionService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService) {
   }
   ngOnInit() {
     this.initLayout();
@@ -71,18 +71,27 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
         this.enrolledBatchInfo = enrolledBatchDetails;
         this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(courseHierarchy.contentType);
+        this.getGeneraliseResourceBundle();
         this.checkCourseStatus(courseHierarchy);
         this.updateBreadCrumbs();
         this.showLoader = false;
       }, (err) => {
         if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
-          this.toasterService.error(this.resourceService.messages.emsg.m0002);
+          this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
         }
         this.navigationHelperService.navigateToResource('/learn');
       });
   }
+
+  getGeneraliseResourceBundle() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+      this.generaliseLabelService.initialize(this.courseHierarchy, item.value);
+    });
+  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -117,7 +126,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   private checkCourseStatus(courseHierarchy) {
     if (!['Live', 'Unlisted', 'Flagged'].includes(courseHierarchy.status)) {
-      this.toasterService.warning(this.resourceService.messages.imsg.m0026);
+      this.toasterService.warning(this.generaliseLabelService.messages.imsg.m0026);
       this.router.navigate(['/learn']);
     }
   }

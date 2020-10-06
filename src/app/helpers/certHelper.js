@@ -1,7 +1,7 @@
 const { HTTPService } = require('@project-sunbird/ext-framework-server/services');
 const envHelper = require('./environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash');
 const { logError } = require('./utilityService.js');
 

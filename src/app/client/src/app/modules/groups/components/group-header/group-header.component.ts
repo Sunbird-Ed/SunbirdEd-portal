@@ -1,5 +1,5 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
 import { GroupsService } from '../../services';
@@ -16,10 +16,10 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
   @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
+  @Output() handleFtuModal = new EventEmitter();
   showModal = false;
   showEditModal: boolean;
   creator: string;
-  showMemberPopup = false;
   showLeaveGroupModal = false;
   showLoader = false;
   private unsubscribe$ = new Subject<void>();
@@ -80,7 +80,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleFtuModal(visibility: boolean = false) {
-    this.showMemberPopup = visibility;
+    this.handleFtuModal.emit(visibility);
   }
 
   addTelemetry(id) {

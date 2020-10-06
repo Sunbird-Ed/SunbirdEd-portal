@@ -18,6 +18,24 @@ describe('CertRegService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('should fetch all quiz certificates', () => {
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+    spyOn(certRegService, 'post').and.returnValue(observableOf({}));
+    const params = {
+      'request': {
+        '_source': ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn', 'data.badge.name'],
+        'query': {
+          'bool': {
+            'must': [{ 'match_phrase': { 'recipient.id': '123456', 'related.type': 'quiz' } }]
+          }
+        }
+      }
+    };
+    certRegService.fetchCertificates({userId: '123456', certType: 'quiz'});
+    const options = { url: 'v1/certs/search', data: params };
+    expect(certRegService.post).toHaveBeenCalledWith(options);
+  });
+
   it('should fetch all certificates', () => {
     const certRegService: CertRegService = TestBed.get(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
@@ -26,17 +44,16 @@ describe('CertRegService', () => {
         '_source': ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn', 'data.badge.name'],
         'query': {
           'bool': {
-            'must': [{ 'match_phrase': { 'recipient.id': '123456' } },
-            { 'match_phrase': { 'related.type': 'quiz' } }]
+            'must': [{ 'match_phrase': { 'recipient.id': '123456'} }]
           }
-        }
+        },
+        'size': '20'
       }
     };
-    certRegService.fetchCertificates('123456', 'quiz');
+    certRegService.fetchCertificates({userId: '123456', limit: '20'});
     const options = { url: 'v1/certs/search', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
   });
-
 
   it('should fetch all user certificates', () => {
     const certRegService: CertRegService = TestBed.get(CertRegService);
@@ -92,5 +109,16 @@ describe('CertRegService', () => {
     certRegService.addCertificateTemplate(params);
     const options = { url: 'v1/add/template', data: params };
     expect(certRegService.patch).toHaveBeenCalledWith(options);
+  });
+
+  it('should return the status of re-issue criteria as true if the status of the batch is 2', () => {
+    /** Arrange */
+    const certRegService: CertRegService = TestBed.get(CertRegService);
+
+    /** Act */
+    certRegService.checkCriteria(mockResponseData.batches);
+
+    /** Assert */
+    expect(certRegService.checkCriteria).toBeTruthy();
   });
 });
