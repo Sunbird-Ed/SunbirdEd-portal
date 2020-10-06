@@ -112,6 +112,9 @@
     text-align: right !important;
 }
 
+.ngx-datatable.scroll-vertical .datatable-body{
+  height: 200px !important;
+}
 .ngx-datatable.fixed-header .datatable-header {
   background-color: var(--primary-100) !important;
  

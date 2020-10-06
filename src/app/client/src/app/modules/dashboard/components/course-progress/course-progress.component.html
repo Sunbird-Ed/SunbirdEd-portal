@@ -70,24 +70,24 @@
                 </span>
               </span>
 
-              <span *ngIf="currentBatch.participantCount !== null" 
+              <span *ngIf="currentBatch.participantCount !== null"
               class="course-participants course-participants-label">
-                <!-- <span>{{resourceService?.frmelmnts?.lbl?.participants}}
-                </span>  -->
+                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}
+                </span>
               </span>
-  
-              <span *ngIf="currentBatch.completedCount !== null"
-                class="course-participants course-participants-label">
-                <!-- <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
-                </span> -->
-              </span>
-  
-              <!-- TODO: Need to revert when changes are done from KP side-->
-               <span *ngIf="currentBatch.certificateCount!==null"
-                class="course-participants course-participants-label">
-                <!-- <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
-                </span> -->
-              </span> 
+
+<!--            <span *ngIf="currentBatch.completedCount !== null"
+                  class="course-participants course-participants-label">
+                 <span>{{resourceService?.frmelmnts?.lbl?.totalCompletionsCourse}}
+                </span>
+              </span>-->
+
+           <!-- TODO: Need to revert when changes are done from KP side-->
+<!--            <span *ngIf="currentBatch.certificateCount!==null"
+                  class="course-participants course-participants-label">
+                &lt;!&ndash; <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
+                </span> &ndash;&gt;
+              </span>-->
           </div>
 
             <div class="sb-bg-color-white sb-course-progress-status-result">
@@ -101,19 +101,19 @@
               </span>
 
             <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label">
-                 <!-- <span class="font-weight-bold">{{currentBatch.participantCount}}</span> -->
+                 <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
               </span>
 
-           <span *ngIf="currentBatch.completedCount !== null"
+<!--            <span *ngIf="currentBatch.completedCount !== null"
                   class="course-participants course-participants-label">
-                 <!-- <span class="font-weight-bold">{{currentBatch.completedCount}}</span> -->
-              </span>
+                 <span class="font-weight-bold">{{currentBatch.completedCount}}</span>
+              </span>-->
 
-                <!-- TODO: Need to revert when changes are done from KP side-->
-                <span *ngIf="currentBatch.certificateCount!==null"
+              <!-- TODO: Need to revert when changes are done from KP side-->
+               <!--<span *ngIf="currentBatch.certificateCount!==null"
                 class="course-participants course-participants-label">
-                <!-- <span class="font-weight-bold">{{currentBatch.certificateCount}}</span> -->
-              </span>
+                &lt;!&ndash; <span class="font-weight-bold">{{currentBatch.certificateCount}}</span> &ndash;&gt;
+              </span>-->
           </div>
 
            </div>
@@ -193,6 +193,7 @@
       </div>
     </div>
   </div>
+
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
       <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>

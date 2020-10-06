@@ -5,7 +5,7 @@
     </div>
   <div class="sb-table-responsive-div">
     <ngx-datatable #table class="material striped" [columnMode]="'force'" [rows]="tableData" [headerHeight]="50"
-      [footerHeight]="50" [messages]="tableMessage" [rowHeight]="'auto'" [reorderable]="false" [limit]="5">
+      [messages]="tableMessage" [reorderable]="false"  [scrollbarV]="true"  [virtualization]="false" [rowHeight]="50" [footerHeight]="0" >
       <ngx-datatable-column *ngFor="let col of columns" [name]="col.name" [sortable]="col.isSortable"
         [draggable]="false" [resizeable]="false" [prop]="col.prop" [width]="100">
         <ng-template ngx-datatable-header-template>
