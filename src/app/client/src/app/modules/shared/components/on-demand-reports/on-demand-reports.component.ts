@@ -164,7 +164,7 @@ export class OnDemandReportsComponent implements OnInit {
     const reportListData = _.last(sortedReportList) || {};
     let batchEndDate;
     if (this.batch.endDate) {
-      batchEndDate = new Date(`${this.batch.endDate} 00:00:00`).getTime();
+      batchEndDate = new Date(`${this.batch.endDate} 23:59:59`).getTime();
     }
     if (!_.isEmpty(reportListData)) { // checking the report is already created or not
       let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
