@@ -1,4 +1,3 @@
-import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
@@ -23,7 +22,6 @@ import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { ReactiveFormsModule } from '@angular/forms';
 
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
@@ -46,9 +44,6 @@ describe('CourseProgressComponent', () => {
       'stmsg': {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
-      },
-      "fmsg": {
-        "m0004": "Could not fetch data, try again later"
       }
     },
     'frmelmnts': {
@@ -76,7 +71,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
+        CoreModule, DashboardModule, TelemetryModule.forRoot()],
       declarations: [],
       providers: [CourseProgressService, UsageService, TelemetryService, FormService,
         { provide: Router, useClass: RouterStub },
@@ -259,29 +254,5 @@ describe('CourseProgressComponent', () => {
     });
     component.setFilterDescription();
     expect(component.filterText).toEqual('Stats for last 7 days');
-  });
-
-  it ( 'should call getFormData as a COURSE_CREATOR', () => {
-    component.userRoles = ['CONTENT_CREATOR'];
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
-    component.getFormData();
-    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypes);
-  });
-  it ( 'should call getFormData as a COURSE_MENTOR', () => {
-    component.userRoles = ['COURSE_MENTOR'];
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
-    component.getFormData();
-    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypesMentor);
-  });
-  it ( 'should call getFormData error case ', () => {
-    component.userRoles = ['COURSE_MENTOR'];
-    const toasterService = TestBed.get(ToasterService);
-    const formService = TestBed.get(FormService);
-    spyOn(toasterService, 'error').and.stub();
-    spyOn(formService, 'getFormConfig' ).and.returnValue(observableThrowError('error'));
-    component.getFormData();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 });

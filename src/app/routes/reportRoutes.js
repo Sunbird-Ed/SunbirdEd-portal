@@ -55,59 +55,7 @@ module.exports = function (app) {
             }
         })
     )
-
-
-  app.all(['/report/request/read/:tag', '/report/request/list/:tag', '/report/request/submit'],
-    proxyUtils.verifyToken(),
-    proxy(sunbird_data_product_service, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.overRideRequestHeaders(sunbird_data_product_service, {'X-Channel-Id': true}),
-      proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', 'dataset/v1/');
-        let query = require('url').parse(req.url).query;
-        if (query) {
-          return require('url').parse(sunbird_data_product_service + urlParam).path
-        } else {
-          return require('url').parse(sunbird_data_product_service + urlParam).path
-        }
-      },
-      userResDecorator: (proxyRes, proxyResData, req, res) => {
-        try {
-          const data = JSON.parse(proxyResData.toString('utf8'));
-          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-        } catch (err) {
-          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-        }
-      }
-    })
-  )
-
-  app.all(['/report/v1/collection/summary'],
-    proxyUtils.verifyToken(),
-    proxy(CONTENT_URL, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(CONTENT_URL),
-      proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', '');
-        let query = require('url').parse(req.url).query;
-        if (query) {
-          return require('url').parse(CONTENT_URL + urlParam + '?' + query).path
-        } else {
-          return require('url').parse(CONTENT_URL + urlParam).path
-        }
-      },
-      userResDecorator: (proxyRes, proxyResData, req, res) => {
-        try {
-          const data = JSON.parse(proxyResData.toString('utf8'));
-          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-        } catch (err) {
-          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-        }
-      }
-    })
-  )
+    
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
