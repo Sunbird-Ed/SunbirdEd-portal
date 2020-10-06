@@ -11,13 +11,16 @@ import { CertificateService, UserService, PlayerService, CertRegService } from '
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { response as CertMockResponse } from './certificate-configuration.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CertificateConfigurationComponent', () => {
   let component: CertificateConfigurationComponent;
   let fixture: ComponentFixture<CertificateConfigurationComponent>;
+  configureTestSuite();
 
   class RouterStub {
     public url = '/cert/configure/add';
+    navigate = jasmine.createSpy('navigate');
   }
 
   const fakeActivatedRoute = {
@@ -951,5 +954,11 @@ describe('CertificateConfigurationComponent', () => {
 
     /** Assert */
     expect(telemetryService.interact).toHaveBeenCalledWith(mockTelemetryInteractObject);
+  });
+
+  it('should navigate to create-template page', () => {
+    const router = TestBed.get(Router);
+    component.navigateToCreateTemplate();
+    expect(router.navigate).toHaveBeenCalledWith(['certs', 'configure', 'create-template']);
   });
 });
