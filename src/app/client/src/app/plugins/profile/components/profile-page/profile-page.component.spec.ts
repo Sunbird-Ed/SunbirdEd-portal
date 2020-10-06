@@ -174,7 +174,7 @@ describe('ProfilePageComponent', () => {
       certificates: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
       issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
       issuedOn: mockData.result.response.content[0]._source.data.issuedOn,
-      certName: mockData.result.response.content[0]._source.data.badge.name,
+      courseName: mockData.result.response.content[0]._source.data.badge.name,
       issuedCertificates: [Object({ identifier: 'id5dd24', name: 'Sunbird installation' })]
     }]);
   });
