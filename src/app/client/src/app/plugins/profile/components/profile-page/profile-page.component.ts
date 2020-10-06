@@ -234,7 +234,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
           issuedOn: _.get(val, '_source.data.issuedOn'),
-          certName: _.get(val, '_source.data.badge.name'),
+          courseName: _.get(val, '_source.data.badge.name'),
         };
         if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
           certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
@@ -249,12 +249,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(course, 'issuedCertificates.length')) {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
+      const courseName = course.courseName || _.get(course, 'issuedCertificates[0].name') || 'certificate';
       if (_.get(certificateInfo, 'identifier')) {
         this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((resp) => {
-          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
-            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+          if (_.get(resp, 'printUri')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, courseName);
           } else if (_.get(course, 'certificates.length')) {
             this.downloadPdfCertificate(course.certificates[0]);
           } else {

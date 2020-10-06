@@ -341,7 +341,7 @@
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
             <div class="list-items" *ngIf="data.issuingAuthority">
-              <label class="list-items__item mr-auto mb-0 text-left">{{data.certName}}</label>
+              <label class="list-items__item mr-auto mb-0 text-left">{{data.courseName}}</label>
               <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.certificates?.length">
