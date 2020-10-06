@@ -182,6 +182,7 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-3">
           <div class="select-template-content p-24">
             <div class="select-template-container d-flex flex-dc mb-16">
+              <button (click)="navigateToCreateTemplate()" class="sb-btn-primary">Create template</button>
               <div class="fnormal pb-24 font-weight-bold text-left">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}
               </div>
               <div *ngIf="certTemplateList" class="certificate-scrollbar">
