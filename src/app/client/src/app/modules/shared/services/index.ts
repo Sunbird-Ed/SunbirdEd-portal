@@ -12,4 +12,3 @@ export * from './exturl-util/exturl-util.service';
 export * from './offline-card-service/offline-card.service';
 export * from './recaptcha/recaptcha.service';
 export * from './layoutconfig/layout.service';
-export * from './on-demand-report/on-demand-report.service';

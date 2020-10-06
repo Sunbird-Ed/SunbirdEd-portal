@@ -7,12 +7,11 @@ import * as _ from 'lodash-es';
 import {UserService, FormService, GeneraliseLabelService} from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService, IPagination, OnDemandReportsComponent
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
 /**
  * This component shows the course progress dashboard
@@ -24,9 +23,6 @@ import { OnDemandReportService } from './../../../shared/services/on-demand-repo
 })
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
-
-  @ViewChild(OnDemandReportsComponent)
-  private onDemandReports: OnDemandReportsComponent;
 
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
@@ -175,18 +171,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
-  isDownloadReport = false;
-  stateWiseReportData = [];
-  public message = 'There is no data available';
-  columns = [
-    { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
-    { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' }];
-  fileName: string;
-  userConsent;
-  reportTypes = [];
-  userRoles;
-  selectedTab = 1;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -203,7 +187,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public onDemandReportService: OnDemandReportService,
     public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService,
     public generaliseLabelService: GeneraliseLabelService
@@ -267,10 +250,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  summaryReport(tabNumber){
-    this.selectedTab = tabNumber;
-    this.getSummaryReports();
-  }
 
   /**
   * To method helps to set batch id and calls the populateCourseDashboardData
@@ -286,11 +265,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
-      this.summaryReport(1);
-    } else {
-      this.loadOndemandReports(2);
-    }
   }
 
 
@@ -312,70 +286,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   setTimePeriod(timePeriod: string): void {
     this.queryParams.timePeriod = timePeriod;
     this.populateCourseDashboardData();
-  }
-
-  getSummaryReports() {
-    const request = {
-      'request': {
-        'filters': {
-          'collectionId': this.currentBatch.collectionId || this.currentBatch.courseId,
-          'batchId': this.currentBatch.batchId
-        },
-        'groupBy': ['dist', 'state'],
-        'granularity': 'LAST_30DAYS' // data conformation
-      }
-    };
-    this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
-      if (reports && reports.result && !_.isEmpty(reports.result)) {
-        const result = _.get(reports, 'result');
-        const groupData = _.get(result, 'groupBy');
-        this.stateWiseReportData = _.map(groupData, (x) => {
-          return {
-            state: x.state,
-            district: x.district,
-            noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
-          }
-        });
-        this.stateWiseReportData = [...this.stateWiseReportData];
-        const metrics = _.get(result, 'metrics');
-        this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete')
-      }
-    }, error => {
-      this.stateWiseReportData = [
-        {
-          state: 'Andhra Pradesh',
-          district: 'Chittoor',
-          noOfEnrollments: 20
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Vishakapatanam',
-          noOfEnrollments: 50
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Guntur',
-          noOfEnrollments: 70
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Kadapa',
-          noOfEnrollments: 65
-        },
-        {
-          state: 'Andhra Pradesh',
-          district: 'Nellore',
-          noOfEnrollments: 100
-        },
-        {
-          state: 'Telengana',
-          district: 'Hydrabad',
-          noOfEnrollments: 45
-        }
-      ];
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
   }
 
   /**
@@ -536,34 +446,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-
-  getFieldValue(array, field) {
-    if (_.find(array, {"type": field})) {
-      return _.find(array, {"type": field}).count;
-    } else {
-      return;
-    }
-  }
-
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
   * course id and timeperiod
   */
   ngOnInit() {
-    // ---- Mock data Start-----
-    const apiData = {
-      userConsent: 'No',
-      audience: 'Teacher'
-    };
-    this.fileName = 'State wise report';
-    this.isDownloadReport = true;
-    // this.searchFields = ['state', 'district'];
-    // ----- Mock date end -------------
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
-        this.userRoles = _.get(userdata, 'userProfile.userRoles');
         this.paramSubcription = combineLatest(this.activatedRoute.parent.params,
           this.activatedRoute.params, this.activatedRoute.queryParams,
           (parentParams: any, params: any, queryParams: any) => {
@@ -585,16 +476,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.setInteractEventData();
   }
 
-  /**
-   * Load on demand reports
-   */
-  loadOndemandReports(tabNumber) {
-    this.selectedTab = tabNumber;
-    if (_.isEmpty(this.reportTypes)) {
-      this.getFormData();
-    }
-    this.onDemandReports.loadReports(this.currentBatch);
-  }
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -644,24 +525,4 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe.complete();
   }
 
-  getFormData() {
-    const isCourseCreator = _.includes(this.userRoles, 'CONTENT_CREATOR');
-    const formReadInputParams = {
-      formType: 'batch',
-      formAction: 'list',
-      contentType: 'report_types'
-    };
-    this.formService.getFormConfig(formReadInputParams).subscribe((formResponsedata) => {
-      if (formResponsedata) {
-        const options = formResponsedata;
-        if (isCourseCreator) {
-          this.reportTypes = options;
-        } else {
-          this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
-        }
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
 }
