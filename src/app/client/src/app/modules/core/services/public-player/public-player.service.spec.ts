@@ -62,14 +62,6 @@ describe('PublicPlayerService', () => {
     expect(playerConfig.context.contentId).toContain('domain_66675');
   });
 
-  it('should call player updateDownloadStatus()', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = serverRes.resourceServiceMockData.messages;
-    playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
-    expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
-  });
-
   it('should navigate to course player if collection does not has trackable object and content type is course', fakeAsync(() => {
     const playerService = TestBed.get(PublicPlayerService);
     const router = TestBed.get(Router);
