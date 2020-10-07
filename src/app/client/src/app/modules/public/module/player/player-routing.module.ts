@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PublicCollectionPlayerComponent, PublicContentPlayerComponent } from './components';
+import { PublicCollectionPlayerComponent } from './components';
+import { ContentPlayerComponent } from '@sunbird/shared-feature';
+
 const routes: Routes = [
     {
-        path: 'content/:contentId', component: PublicContentPlayerComponent, data: {
+        path: 'content/:contentId', component: ContentPlayerComponent, data: {
             // routeReuse: {
             //     reuse: true,
             //     path: '/play/content'
