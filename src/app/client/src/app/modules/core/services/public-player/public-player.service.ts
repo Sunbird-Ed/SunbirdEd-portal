@@ -7,7 +7,8 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { OrgDetailsService } from './../org-details/org-details.service';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService,
+  ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
@@ -25,21 +26,18 @@ export class PublicPlayerService {
   collectionData: ContentData;
   previewCdnUrl: string;
   sessionId;
-  private _libraryFilters: any = {};
 
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private utilService: UtilService) {
-      this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+    this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
-      this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
+    this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
       ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
   }
 
   /**
-   *
-   *
    * @param {string} id
    * @returns {Observable<{contentId: string, contentData: ContentData }>}
    */
@@ -63,7 +61,7 @@ export class PublicPlayerService {
       licenseDetails: 'name,description,url'
     };
     let param = { fields: this.configService.urlConFig.params.contentGet };
-    param = { ...param, ...option.params, ...licenseParam};
+    param = { ...param, ...option.params, ...licenseParam };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: param
@@ -73,6 +71,7 @@ export class PublicPlayerService {
       return response;
     }));
   }
+
   private getRollUpData(data: Array<string> = []) {
     const rollUp = {};
     data.forEach((element, index) => rollUp['l' + (index + 1)] = element);
@@ -110,6 +109,7 @@ export class PublicPlayerService {
     configuration.config.previewCdnUrl = this.previewCdnUrl;
     return configuration;
   }
+
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
     const req = {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
@@ -124,31 +124,8 @@ export class PublicPlayerService {
     }));
   }
 
-
-  /**
-   * This method accepts content details and help to play the content player in offline desktop app browse page
-   *
-   * @param {object} event
-   */
-  public playContentForOfflineBrowse(event) {
-    this.navigationHelperService.storeResourceCloseUrl();
-    setTimeout(() => {
-      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        if (event.data.contentType === 'Course') {
-          this.router.navigate(['browse/play/learn/course', event.data.metaData.identifier]);
-        } else {
-          this.router.navigate(['browse/play/collection', event.data.metaData.identifier],
-            { queryParams: { contentType: event.data.metaData.contentType } });
-        }
-      } else {
-        this.router.navigate(['browse/play/content', event.data.metaData.identifier],
-          { queryParams: { contentType: event.data.metaData.contentType } });
-      }
-    }, 0);
-  }
-
   public playContent(event) {
-    const metaData =  event.data.metaData || event.data;
+    const metaData = event.data.metaData || event.data;
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
@@ -160,40 +137,18 @@ export class PublicPlayerService {
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
-        {queryParams: {contentType: metaData.contentType}});
+          { queryParams: { contentType: metaData.contentType } });
       }
     }, 0);
   }
+
   handleNavigation(content, isTrackable) {
     if (isTrackable) {
       this.router.navigate(['explore-course/course', content.identifier]);
     } else {
       this.router.navigate(['play/collection', content.identifier],
-      {queryParams: {contentType: content.contentType}});
+        { queryParams: { contentType: content.contentType } });
     }
   }
-
-  updateDownloadStatus(downloadListdata, content) {
-    const status = {
-      inProgress: this.resourceService.messages.stmsg.m0140,
-      inQueue: this.resourceService.messages.stmsg.m0140,
-      failed: this.resourceService.messages.stmsg.m0143,
-      completed: this.resourceService.messages.stmsg.m0139,
-      paused: this.resourceService.messages.stmsg.m0142,
-      canceled: this.resourceService.messages.stmsg.m0143
-    };
-    const identifier = _.get(content, 'metaData.identifier') || _.get(content, 'identifier');
-    content['downloadStatus'] = downloadListdata[identifier];
-
-    return content;
-  }
-
-    get libraryFilters() {
-        return this._libraryFilters;
-    }
-
-    set libraryFilters(filters) {
-        this._libraryFilters = filters;
-    }
 
 }
