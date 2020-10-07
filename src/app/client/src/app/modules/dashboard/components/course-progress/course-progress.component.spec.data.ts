@@ -1,4 +1,38 @@
 export const mockUserData = {
+  reportTypes: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "User profile exhaust",
+      "dataset": "userinfo-exhaust",
+      "lang_key": "frmelmnts.lbl.userExhaustReport",
+      "encrypt": "true"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
+  reportTypesMentor: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
    frombeginng: {
       'id': 'api.dashboard.progress.course',
       'ver': 'v1',
@@ -97,7 +131,7 @@ export const mockUserData = {
       'lastLoginTime': 1519809987692,
       'createdDate': '2017-10-31 10:47:04:723+0000',
       'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
-      },
+   },
    dashboardError: {
       error: {
          'id': 'api.dashboard.progress.coursex', 'ver': '1.0', 'ts': '2018-02-26 09:22:46:452+0000',
@@ -415,5 +449,4 @@ export const mockUserData = {
       'completedCount': 4,
       'participantCount': 2
     }
-
 };
