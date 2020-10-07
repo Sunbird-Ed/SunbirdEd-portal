@@ -165,9 +165,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
             org.locations = this.userProfile.organisations[0].locations;
           }
         }
+        if (org.orgjoindate) {
+          org.modifiedJoinDate = new Date(org.orgjoindate).getTime();
+        }
         orgList.push(org);
       } else {
         if (org.locations && org.locations.length !== 0) {
+          if (org.orgjoindate) {
+            org.modifiedJoinDate = new Date(org.orgjoindate).getTime();
+          }
           orgList.push(org);
         }
       }
@@ -181,8 +187,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
     this.roles = _.uniq(this.roles).sort();
-    orgList = _.sortBy(orgList, ['orgjoindate']);
-    this.orgDetails = orgList[0];
+    orgList = _.sortBy(orgList, ['modifiedJoinDate']);
+    this.orgDetails = _.last(orgList);
   }
 
   convertToString(value) {
