@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService, ICData } from '@sunbird/telemetry';
 import {mergeMap, tap, retry, catchError, map, finalize, debounceTime, takeUntil} from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
@@ -35,7 +35,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public loaderMessage: any;
   public searchResults: Array<any> = [];
   public unsubscribe$ = new Subject<void>();
-  public telemetryCdata: Array<{}> = [];
+  public telemetryCdata: Array<ICData> = [];
   public backInteractEdata: IInteractEventEdata;
   public selectChapterTelemetryCdata: Array<{}> = [];
   public selectChapterInteractEdata: IInteractEventEdata;

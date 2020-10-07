@@ -9,7 +9,7 @@ import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
   ExternalUrlPreviewService, LayoutService } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput,ICData, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
@@ -119,7 +119,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public contentDetails = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
-  public telemetryCdata: Array<{}>;
+  public telemetryCdata: Array<ICData>;
   selectedContent: {};
   public unsubscribe$ = new Subject<void>();
   mimeTypeFilters;

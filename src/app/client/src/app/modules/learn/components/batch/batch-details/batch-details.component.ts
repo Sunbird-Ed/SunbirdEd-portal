@@ -7,7 +7,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } 
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, ICData } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import * as dayjs from 'dayjs';
 
@@ -45,7 +45,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showAllBatchList = false;
   showAllBatchError = false;
   showJoinModal = false;
-  telemetryCdata: Array<{}> = [];
+  telemetryCdata: Array<ICData> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
   @ViewChild('batchListModal') batchListModal;
