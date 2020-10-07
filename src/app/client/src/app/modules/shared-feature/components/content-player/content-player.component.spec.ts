@@ -3,7 +3,7 @@ import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
-import { CoreModule, UserService, PlayerService } from '@sunbird/core';
+import { CoreModule, UserService, PlayerService, PublicPlayerService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
@@ -84,14 +84,13 @@ describe('ContentPlayerComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
-    serverRes.result.content.status = 'Live';
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     component.ngOnInit();
-    expect(component.playerConfig).toBeTruthy();
+    expect(component.showLoader).toBeTruthy();
   });
 
   it('should make isFullScreenView to TRUE', () => {

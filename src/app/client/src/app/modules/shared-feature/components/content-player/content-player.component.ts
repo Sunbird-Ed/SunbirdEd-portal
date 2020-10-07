@@ -141,6 +141,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
           }
         },
         (err) => {
+          this.showLoader = false;
           this.showError = true;
           this.errorMessage = this.resourceService.messages.stmsg.m0009;
         });
@@ -173,6 +174,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
         this.contentData = response.result.content;
         this.showPlayer = true;
       }, (err) => {
+        this.showLoader = false;
         this.showError = true;
         this.errorMessage = this.resourceService.messages.stmsg.m0009;
       });
