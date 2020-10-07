@@ -435,6 +435,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(data);
   }
 
+  navigateToCreateTemplate() {
+    this.router.navigate(['certs', 'configure', 'create-template']);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
