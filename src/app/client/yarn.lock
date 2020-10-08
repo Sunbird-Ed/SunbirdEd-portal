@@ -549,22 +549,12 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.3.22":
-  version "3.3.22"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.22.tgz#ceca4c90055f96f4c3b029af26d6171f1286de55"
-  integrity sha512-1eZ5CSuMYhnBQ6FSUDJ+erkFg83FQMTn4/uZ3Z9aS3mTnc+fVEmtVBHsTpBbNEqgJMOyoq4eAGQbjChCaBkc1w==
+"@project-sunbird/client-services@3.3.26":
+  version "3.3.26"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.26.tgz#295576cf7d3f00411892a7ffa0773ea23b6616e4"
+  integrity sha512-axp8m5vVdBUu0ajOcrEMWpgKNM7H6JW0aoOZQ9Rys6huc8p84mM5UiYibBlKZPWjXzLGRLDRZEzXs9ZHI0sAyw==
   dependencies:
-    inversify "^5.0.1"
-    qs "^6.9.4"
-    reflect-metadata "^0.1.13"
-    whatwg-fetch "^3.1.0"
-
-"@project-sunbird/client-services@3.3.24":
-  version "3.3.24"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.24.tgz#329efde918abbd1ad3c6d3ac65f86dbeb83464c2"
-  integrity sha512-vrHDm08l931xkpIZ9Q6GCqNi8cZ6DwijiPUGLGuC5ujfcumjOg79CVRbTpIDYJzMJfCpg4wVKuZ6bOWutooYrw==
-  dependencies:
-    "@project-sunbird/telemetry-sdk" "0.0.27"
+    "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
@@ -582,10 +572,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/telemetry-sdk@0.0.27", "@project-sunbird/telemetry-sdk@^0.0.27":
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.27.tgz#f11eec6bc880d330ae01986512743c870804cd10"
-  integrity sha512-rRqEjx8Y/tMHPpVGcZFIhnX9OckqkhJm3muPci18oInfAs7bN/PKe01B0y833wPDqdPdnoYsmAk/GpilpjkBJw==
+"@project-sunbird/telemetry-sdk@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
+  integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
   dependencies:
     grunt-karma "^0.12.2"
     karma "^3.0.0"
@@ -6289,6 +6279,11 @@ lead@^1.0.0:
   dependencies:
     flush-write-stream "^1.0.2"
 
+leaflet@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
+  integrity sha512-/xwPEBidtg69Q3HlqPdU3DnrXQOvQU/CCHA1tcDQVzOwm91YMYaILjNp7L4Eaw5Z4sOYdbBz6koWyibppd8Zqw==
+
 less-loader@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-4.1.0.tgz#2c1352c5b09a4f84101490274fd51674de41363e"
@@ -10113,12 +10108,12 @@ sunbird-chatbot-client@0.0.6:
   dependencies:
     tslib "^1.9.0"
 
-sunbird-pdf-player@^0.0.13:
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.13.tgz#0525d9e246fa0b83b93bee09528baf3ed4b95a42"
-  integrity sha512-4Qj8pGDt4SV2eexfRFtIGACtiLFE6RstM7vCEFR9UL/hC2AYC9YWBjoLraDl86LrqqbrXqxhlZHtb9nvthYV7A==
+sunbird-pdf-player@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.14.tgz#a378133af172f0e8b2cde983dd6817dedc8d0b8f"
+  integrity sha512-EfWEL204LibnY1wbHU6Y5r+rBYGlEx+Gag+JWDIcOpmtlJGrDHhLlF4fAbdgivZUdDLpmFmOXchR/zMuBJ+zoA==
   dependencies:
-    "@project-sunbird/client-services" "3.3.24"
+    "@project-sunbird/client-services" "3.3.26"
     ngx-extended-pdf-viewer "^4.1.2"
     tslib "^1.9.0"
 

@@ -1,4 +1,24 @@
 export const MockData = {
+  telemetryObj: {
+    context: {
+      env: 'reports',
+      cdata: [{id: 'courseId', type: 'Course'}, {id: 'batchId', type: 'Batch'}]
+    },
+    edata: {
+      id: 'response-exhaust',
+      type: 'click',
+      pageid: 'on-demand-reports'
+    }
+  },
+  mockSubmitReqData: {
+    result: {
+      2: 'b',
+      dataset: 'response-exhaust',
+      status: 'FAILED',
+      statusMessage: 'statusMessage'
+    }
+  },
+  onDemandModifiedData: {},
   data: {data: 'testData'},
   reportListResponse: {
     'ver': '1.0',
@@ -52,10 +72,10 @@ export const MockData = {
           'attempts': 0,
           'job_stats': {
             'dt_job_submitted': 1599661955303,
-            'dt_job_completed': null,
+            'dt_job_completed': 1599661955303,
             'execution_time': null
           },
-          'download_urls': [],
+          'downloadUrls': [],
           'expires_at': 1600399619
         },
         {
@@ -101,7 +121,7 @@ export const MockData = {
             'dt_job_completed': null,
             'execution_time': null
           },
-          'download_urls': [],
+          'downloadUrls': [],
           'expires_at': 1600399619
         }
       ]
@@ -122,7 +142,7 @@ export const MockData = {
       },
       'attempts': 0,
       'tag': 'test-tag:ROOT_ORG',
-      'download_urls': [],
+      'downloadUrls': [],
       'job_id': 'assessment-dashboard-metrics',
       'expires_at': 1600400653,
       'last_updated': 1600160849298,
@@ -204,9 +224,137 @@ export const MockData = {
       'dt_job_completed': null,
       'execution_time': null
     },
-    'download_urls': [
+    'downloadUrls': [
       'https://www.google.com', 'https://www.google.com',
     ],
     'expires_at': '2020-08-20'
-  }
+  },
+  selectedReport: {
+    "title": " Course progress exhaust",
+    "dataset": "progress-exhaust",
+    "lang_key": "frmelmnts.lbl.progressExhaustReport",
+    "encrypt": "false"
+  },
+  responseData: {
+    result: {
+      jobs: [
+        {
+          'request_id': 'AE3DDC23B3F189ED2A57B567D6434BE7',
+          'tag': 'test-tag:in.ekstep',
+          'dataset': 'progress-exhaust',
+          'requested_by': 'client-1',
+          'requested_channel': 'in.ekstep',
+          'status': 'SUBMITTED',
+          'last_updated': 1599728944037,
+          'request_data': {
+            'batchFilters': [
+              'TPD',
+              'NCFCOPY'
+            ],
+            'contentFilters': {
+              'request': {
+                'filters': {
+                  'identifier': [
+                    'do_11305960936384921612216',
+                    'do_1130934466492252161819'
+                  ],
+                  'prevState': 'Draft'
+                },
+                'sort_by': {
+                  'createdOn': 'desc'
+                },
+                'limit': 10000,
+                'fields': [
+                  'framework',
+                  'identifier',
+                  'name',
+                  'channel',
+                  'prevState'
+                ]
+              }
+            },
+            'reportPath': 'course-progress-v2/'
+          },
+          'attempts': 0,
+          'jobStats': {
+            'dtJobSubmitted': 1599728944037,
+            'dt_job_completed': null,
+            'execution_time': null
+          },
+          'downloadUrls': [
+            'https://www.google.com', 'https://www.google.com',
+          ],
+          'expires_at': '2020-08-20'
+        },
+        {
+          'request_id': 'AE3DDC23B3F189ED2A57B567D6434BE7',
+          'tag': 'test-tag:in.ekstep',
+          'dataset': 'assessment-dashboard-metrics',
+          'requested_by': 'client-1',
+          'requested_channel': 'in.ekstep',
+          'status': 'Processing success',
+          'last_updated': 1599728944037,
+          'request_data': {
+            'batchFilters': [
+              'TPD',
+              'NCFCOPY'
+            ],
+            'contentFilters': {
+              'request': {
+                'filters': {
+                  'identifier': [
+                    'do_11305960936384921612216',
+                    'do_1130934466492252161819'
+                  ],
+                  'prevState': 'Draft'
+                },
+                'sort_by': {
+                  'createdOn': 'desc'
+                },
+                'limit': 10000,
+                'fields': [
+                  'framework',
+                  'identifier',
+                  'name',
+                  'channel',
+                  'prevState'
+                ]
+              }
+            },
+            'reportPath': 'course-progress-v2/'
+          },
+          'attempts': 0,
+          'jobStats': {
+            'dtJobSubmitted': 1599728944037,
+            'dt_job_completed': null,
+            'execution_time': null
+          },
+          'downloadUrls': [
+            'https://www.google.com',
+          ],
+          'expires_at': '2020-09-20'
+        }
+      ]
+    }
+  },
+  reportTypes: [
+    {
+      "title": "Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "User profile exhaust",
+      "dataset": "userinfo-exhaust",
+      "lang_key": "frmelmnts.lbl.userExhaustReport",
+      "encrypt": "true"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ]
 };

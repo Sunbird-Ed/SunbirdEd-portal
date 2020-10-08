@@ -215,6 +215,8 @@ export class ReportComponent implements OnInit {
           break;
         }
       }
+      const telemetryObj = this.getTelemetryImpressionObj({ type: 'export-request', subtype: _.toLower(reportType) });
+      this.telemetryService.impression(telemetryObj);
     }, 1500);
   }
 
@@ -486,7 +488,7 @@ export class ReportComponent implements OnInit {
     this.telemetryService.interact(interactData);
   }
 
-  public getTelemetryImpressionObj = ({ type }) => ({
+  public getTelemetryImpressionObj = ({ type, subtype = null }) => ({
     context: {
       env: this.activatedRoute.snapshot.data.telemetry.env
     },
@@ -499,7 +501,8 @@ export class ReportComponent implements OnInit {
       type: type || this.activatedRoute.snapshot.data.telemetry.type,
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
       uri: this.router.url,
-      duration: this.navigationhelperService.getPageLoadTime()
+      duration: this.navigationhelperService.getPageLoadTime(),
+      ...(subtype && { subtype })
     }
   })
 

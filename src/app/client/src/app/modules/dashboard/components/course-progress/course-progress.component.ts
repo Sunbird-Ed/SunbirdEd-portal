@@ -4,14 +4,14 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { UserService, GeneraliseLabelService, FormService } from '@sunbird/core';
+import { UserService, FormService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService, IPagination, OnDemandReportsComponent
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 
 /**
@@ -35,69 +35,69 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
   interactObject: any;
   /**
-   * This variable helps to show and hide page loader.
-   */
+	 * This variable helps to show and hide page loader.
+	 */
   showLoader = true;
   /**
-   * This variable sets the batch list data related to the given course
-   */
+	 * This variable sets the batch list data related to the given course
+	 */
   batchlist: Array<IBatchListData>;
   /**
-   * This variable sets the course id
-   */
+	 * This variable sets the course id
+	 */
   courseId: string;
   userDataSubscription: Subscription;
 
-  //TODO: We have to remove this & use currentBatch.id
+  // TODO: We have to remove this & use currentBatch.id
   batchId: string;
   /**
-   * This variable sets the user id
-   */
+	 * This variable sets the user id
+	 */
   userId: string;
   /**
  * value typed
  */
   searchText: string;
   /**
-   * This variable sets the dashboard result related to the given batch
-   */
+	 * This variable sets the dashboard result related to the given batch
+	 */
   dashboarData: ICourseProgressData;
   /**
-   * This variable is set to true when the length of batch is 0.
+	 * This variable is set to true when the length of batch is 0.
    * It helps to show a message div on html
-   */
+	 */
   showNoBatch = false;
   /**
-   * This variable helps to show the download modal after successful download API call
-   */
+	 * This variable helps to show the download modal after successful download API call
+	 */
   showDownloadModal = false;
   /**
-   * This variable sets the filter description which is displayed inside the dashboard
-   */
+	 * This variable sets the filter description which is displayed inside the dashboard
+	 */
   filterText: string;
   /**
-   * This variable sets the name of the field which is to be sorted
-   */
+	 * This variable sets the name of the field which is to be sorted
+	 */
   order: string;
   /**
-   * This variable sets the order to true or false
-   */
+	 * This variable sets the order to true or false
+	 */
   reverse = true;
   /**
-   * This variable sets the queryparams on url
-   */
+	 * This variable sets the queryparams on url
+	 */
   queryParams: any;
   /**
-   * This variable sets selected batch id, if exist
-   */
+	 * This variable sets selected batch id, if exist
+	 */
   selectedOption: string;
   /**
-   * This variable helps to unsubscribe the params and queryparams
-   */
+	 * This variable helps to unsubscribe the params and queryparams
+	 */
   paramSubcription: any;
   /**
-   * This variable helps to show the warning div
-   */
+	 * This variable helps to show the warning div
+	 */
   showWarningDiv = false;
   /**
   * This variable helps to show the csv downloadURl
@@ -170,8 +170,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   public progressReportUpdatedOn;
 
   /**
-   * telemetryImpression object for course progress page
-  */
+	 * telemetryImpression object for course progress page
+	*/
   telemetryImpression: IImpressionEventInput;
   telemetryCdata: Array<{}>;
   subscription: Subscription;
@@ -181,31 +181,33 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   columns = [
     { name: 'State', isSortable: true, prop: 'state', placeholder: 'Filter state' },
     { name: 'District', isSortable: true, prop: 'district', placeholder: 'Filter district' },
-    { name: 'No. of Enrollments', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' },
-    { name: 'No. of Completions', isSortable: false, prop: 'noOfCompletions', placeholder: 'Filter completions' }];
+    { name: 'No. of Enrolment', isSortable: false, prop: 'noOfEnrollments', placeholder: 'Filter enrollment' }];
   fileName: string;
   userConsent;
   reportTypes = [];
+  userRoles;
+  selectedTab = 1;
   /**
-   * Constructor to create injected service(s) object
+	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService
    * @param {CourseProgressService} courseProgressService Reference of CourseProgressService
-   */
+	 */
   constructor(user: UserService,
     route: Router,
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
+    public telemetryService: TelemetryService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
     public onDemandReportService: OnDemandReportService,
     public formService: FormService,
     public navigationhelperService: NavigationHelperService, private usageService: UsageService,
-    public generaliseLabelService: GeneraliseLabelService) {
+   ) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -265,10 +267,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
+  summaryReport(tabNumber){
+    this.setInteractEventDataForTabs('summary-report');
+    this.selectedTab = tabNumber;
+    this.getSummaryReports();
+  }
+
   /**
   * To method helps to set batch id and calls the populateCourseDashboardData
   *
-  * @param {string} batchId batch identifier
+	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
     this.showWarningDiv = false;
@@ -279,15 +287,17 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
-    this.getSummaryReports();
+    if(this.selectedTab === 1){
+      this.summaryReport(1);
+    } else {
+      this.loadOndemandReports(2);
+    } 
   }
 
 
-
   /**
-  * Method to update the url with selected query params
-  */
+   * Method to update the url with selected query params
+   */
   navigate(): void {
     this.route.navigate([], { queryParams: this.queryParams });
   }
@@ -296,80 +306,91 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   /**
-* To method helps to set time period and calls the populateCourseDashboardData
-*
-* @param {string} timePeriod time period
-*/
+  * To method helps to set time period and calls the populateCourseDashboardData
+  *
+	* @param {string} timePeriod time period
+  */
   setTimePeriod(timePeriod: string): void {
     this.queryParams.timePeriod = timePeriod;
     this.populateCourseDashboardData();
   }
 
+  setInteractEventDataForTabs(id) {
+    const telemetryObj = {
+      context: {
+        env: 'reports',
+        cdata: [
+          {id: _.get(this.currentBatch , 'courseId'), type: 'Course'},
+          {id: _.get(this.currentBatch , 'batchId'), type: 'Batch'}
+        ]
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: id
+      }
+    };
+    this.telemetryService.interact(telemetryObj);
+  }
+
   getSummaryReports() {
     const request = {
-      "request": {
-        "filters": {
-          "collectionId": this.currentBatch.collectionId,
-          "batchId": this.currentBatch.batchId
+      'request': {
+        'filters': {
+          'collectionId': this.currentBatch.collectionId || this.currentBatch.courseId,
+          'batchId': this.currentBatch.batchId
         },
-        "groupBy": [
-        ],
-        "granularity": "LAST_30DAYS" // data conformation
+        'groupBy': ['dist', 'state'],
+        'granularity': 'LAST_30DAYS' // data conformation
       }
-    }
+    };
     this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {
-      if (reports && reports.result) {
+      if (reports && reports.result && !_.isEmpty(reports.result)) {
         const result = _.get(reports, 'result');
-        const groupData = _.get(result, 'groupBy')
+        const groupData = _.get(result, 'groupBy');
         this.stateWiseReportData = _.map(groupData, (x) => {
           return {
             state: x.state,
             district: x.district,
-            noOfEnrollments: this.getFieldValue(x.values, 'enrolled'),
-            noOfCompletions: this.getFieldValue(x.values, 'completed'),
+            noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
           }
-        })
+        });
+        this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
-        this.currentBatch.participantCount = this.getFieldValue(metrics, 'completed')
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'enrolled')
+        this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
+        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete')
       }
     }, error => {
       this.stateWiseReportData = [
         {
           state: 'Andhra Pradesh',
           district: 'Chittoor',
-          noOfEnrollments: 20,
-          noOfCompletions: 10
+          noOfEnrollments: 20
         },
         {
           state: 'Andhra Pradesh',
           district: 'Vishakapatanam',
-          noOfEnrollments: 50,
-          noOfCompletions: 25
+          noOfEnrollments: 50
         },
         {
           state: 'Andhra Pradesh',
           district: 'Guntur',
-          noOfEnrollments: 70,
-          noOfCompletions: 30
+          noOfEnrollments: 70
         },
         {
           state: 'Andhra Pradesh',
           district: 'Kadapa',
-          noOfEnrollments: 65,
-          noOfCompletions: 10
+          noOfEnrollments: 65
         },
         {
           state: 'Andhra Pradesh',
           district: 'Nellore',
-          noOfEnrollments: 100,
-          noOfCompletions: 25
+          noOfEnrollments: 100
         },
         {
           state: 'Telengana',
           district: 'Hydrabad',
-          noOfEnrollments: 45,
-          noOfCompletions: 15
+          noOfEnrollments: 45
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -379,9 +400,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
-  // TODO: This function will be removed. API got deprecated.
+ // TODO: This function will be removed. API got deprecated.
   populateCourseDashboardData(batch?: any): void {
-    return;
+    return ;
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
@@ -431,7 +452,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method helps to set order of a specific field
   *
-  * @param {string} value Field name that is to be sorted
+	* @param {string} value Field name that is to be sorted
   */
   setOrder(value: string): void {
     this.order = value;
@@ -482,8 +503,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   /**
-* To method helps to set filter description
-*/
+   * To method helps to set filter description
+   */
   setFilterDescription(): void {
     const filterDesc = {
       '7d': this.resourceService.messages.imsg.m0022,
@@ -533,30 +554,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.populateCourseDashboardData();
       });
   }
-  getReportUpdatedOnDate(batchIdentifier: string) {
-    const batchId = batchIdentifier;
-    const reportParams = {
-      'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
-      'assessment-reports': `assessment-reports/report-${batchId}.csv`
-    };
-    const requestParams = {
-      params: {
-        fileNames: JSON.stringify(reportParams)
-      },
-      telemetryData: this.activatedRoute
-    };
-    this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
-      if (_.get(response, 'responseCode') === 'OK') {
-        this.progressReportUpdatedOn = _.get(response, 'result.course-progress-reports.lastModified') || null;
-        this.scoreReportUpdatedOn = _.get(response, 'result.assessment-reports.lastModified') || null;
-      }
-    });
-  }
-
 
 
   getFieldValue(array, field) {
-    return _.find(array, { "type": field }).count;
+    if (_.find(array, {"type": field})) {
+      return _.find(array, {"type": field}).count;
+    } else {
+      return;
+    }
   }
 
   /**
@@ -570,39 +575,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       userConsent: 'No',
       audience: 'Teacher'
     };
-
-    this.user.userData$.subscribe((user) => {
-      const userProfile = user.userProfile;
-      let userRoles = _.get(userProfile, 'userRoles');
-      // userRoles = ['COURSE_MENTOR']
-      const isCourseCreator = _.includes(userRoles, 'COURSE_CREATOR');
-      const formReadInputParams = {
-        formType: 'batch',
-        formAction: 'list',
-        contentType: 'report_types'
-      };
-      this.formService.getFormConfig(formReadInputParams).subscribe(
-        (formResponsedata) => {
-          if (formResponsedata) {
-            const options = formResponsedata;
-            if (isCourseCreator) {
-              this.reportTypes = options;
-            } else {
-              this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
-            }
-            // const userConsent = _.get(apiData, 'userConsent');
-            // const audience = _.get(apiData, 'audience');
-            // if (userConsent && ((userConsent === 'Yes' && audience === 'Student') || userConsent === 'No')) {
-            //   this.reportTypes = options.splice(0, 2);
-            // } else {
-            //   this.reportTypes = options;
-            // }
-          }
-        }, error => {
-          // error message
-        });
-    });
-
     this.fileName = 'State wise report';
     this.isDownloadReport = true;
     // this.searchFields = ['state', 'district'];
@@ -610,6 +582,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
+        this.userRoles = _.get(userdata, 'userProfile.userRoles');
         this.paramSubcription = combineLatest(this.activatedRoute.parent.params,
           this.activatedRoute.params, this.activatedRoute.queryParams,
           (parentParams: any, params: any, queryParams: any) => {
@@ -634,8 +607,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * Load on demand reports
    */
-  loadOndemandReports() {
-    this.onDemandReports.loadReports();
+  loadOndemandReports(tabNumber) {
+    this.setInteractEventDataForTabs('on-demand-reports');
+    this.selectedTab = tabNumber;
+    if (_.isEmpty(this.reportTypes)) {
+      this.getFormData();
+    }
+    this.onDemandReports.loadReports(this.currentBatch);
   }
 
   ngAfterViewInit() {
@@ -665,10 +643,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * @param  {} currentBatch
    * @description - This will set completedCount and participantCount to the currentBatch object;
    */
-  setCounts(currentBatch) {
-    this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
-    this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
-  }
+    setCounts(currentBatch) {
+      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+    }
 
   setInteractEventData() {
     if (_.get(this.queryParams, 'batchIdentifier')) {
@@ -686,6 +664,24 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe.complete();
   }
 
-
-
+  getFormData() {
+    const isCourseCreator = _.includes(this.userRoles, 'CONTENT_CREATOR');
+    const formReadInputParams = {
+      formType: 'batch',
+      formAction: 'list',
+      contentType: 'report_types'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe((formResponsedata) => {
+      if (formResponsedata) {
+        const options = formResponsedata;
+        if (isCourseCreator) {
+          this.reportTypes = options;
+        } else {
+          this.reportTypes = _.filter(options, (report) => report.title !== 'User profile exhaust');
+        }
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
+  }
 }
