@@ -12,3 +12,4 @@ export * from './joy-theme-popup/joy-theme-popup.component';
 export * from './confirmation-popup/confirmation-popup.component';
 export * from './cert-preview-popup/cert-preview-popup.component';
 export * from './content-player/content-player.component';
+export * from './collection-player/collection-player.component';
