@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
 import { TncService, UserService } from '@sunbird/core';
@@ -6,6 +6,7 @@ import { ResourceService, ServerResponse, ToasterService, UtilService } from '@s
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-global-consent-pii',
@@ -18,6 +19,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() type;
   @Input() showConsentPopup;
   @ViewChild('profileDetailsModal') profileDetailsModal;
+  @Output() close = new EventEmitter<any>();
   consentPii = 'Yes';
   isDataShareOn = false;
   lastUpdatedOn = '';
@@ -36,7 +38,8 @@ export class GlobalConsentPiiComponent implements OnInit {
     public userService: UserService,
     public resourceService: ResourceService,
     public tncService: TncService,
-    public utilService: UtilService
+    public utilService: UtilService,
+    public popupControlService: PopupControlService
   ) { }
 
   ngOnInit() {
@@ -123,13 +126,15 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
+    this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   getUserConsent() {
     const request = {
       userId: this.userService.userid,
-      consumerId: this.collection.channel,
-      objectId: this.collection.identifier
+      consumerId: this.collection ? this.collection.channel : '',
+      objectId: this.collection ? this.collection.identifier : ''
     };
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -152,8 +157,8 @@ export class GlobalConsentPiiComponent implements OnInit {
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
-      consumerId: this.collection.channel,
-      objectId: this.collection.identifier,
+      consumerId: this.collection ? this.collection.channel : '',
+      objectId: this.collection ? this.collection.identifier : '',
       objectType: 'Collection'
     };
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
@@ -161,6 +166,8 @@ export class GlobalConsentPiiComponent implements OnInit {
       .subscribe(() => {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
+        this.close.emit();
+        this.popupControlService.changePopupStatus(true);
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);

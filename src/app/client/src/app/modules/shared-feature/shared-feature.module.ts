@@ -46,19 +46,11 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
-<<<<<<< HEAD
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, GlobalConsentPiiComponent
-=======
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent
->>>>>>> upstream/release-3.4.0
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-<<<<<<< HEAD
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, GlobalConsentPiiComponent]
-=======
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent]
->>>>>>> upstream/release-3.4.0
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent]
 })
 export class SharedFeatureModule { }

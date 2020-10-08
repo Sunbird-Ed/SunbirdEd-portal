@@ -96,7 +96,7 @@
   <div class="sb-modal-actions">
     <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="updateUserConsent(false)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
-    <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'global-consent'">continue</button>
+    <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
   </div>
   <!--/Actions-->
 </sui-modal>
