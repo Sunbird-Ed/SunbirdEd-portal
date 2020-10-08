@@ -1,3 +1,4 @@
+import { IGroup } from './../../interfaces/group';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
@@ -8,7 +9,6 @@ import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@s
 import * as _ from 'lodash-es';
 import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CsGroup, Group, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
 @Injectable({
   providedIn: 'root'
@@ -91,7 +91,7 @@ export class GroupsService {
     return group;
   }
 
-  createGroup(groupData: Group) {
+  createGroup(groupData: IGroup) {
     return this.groupCservice.create(groupData);
   }
 
