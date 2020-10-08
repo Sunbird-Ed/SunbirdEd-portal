@@ -16,10 +16,10 @@
         </div>
 
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-            <!-- <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+            <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                 <i class="blue share alternate icon"></i>
                 {{resourceService?.frmelmnts?.lbl?.share}}
-            </a> -->
+            </a>
 
             <button type="button" *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
             (click)="copyContent(contentData)" appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract"
