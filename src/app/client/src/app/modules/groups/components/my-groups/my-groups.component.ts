@@ -1,5 +1,5 @@
 import { UserService } from '@sunbird/core';
-import { IGroupSearchRequest, IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../../interfaces';
+import { IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP } from './../../interfaces';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService, LayoutService } from '@sunbird/shared';
@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { CsGroupSearchCriteria } from '@project-sunbird/client-services/services/group/interface';
 
 @Component({
   selector: 'app-my-groups',
@@ -53,7 +54,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   getMyGroupList() {
     this.isLoader = true;
     this.groupsList = [];
-    const request: IGroupSearchRequest = {filters: {userId: this.userService.userid}};
+    const request: CsGroupSearchCriteria = {filters: {userId: this.userService.userid}};
     this.groupService.searchUserGroups(request).pipe(takeUntil(this.unsubscribe$)).subscribe(groups => {
       this.groupService.groupListCount = groups.length;
       this.isLoader = false;

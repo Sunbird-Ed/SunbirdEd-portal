@@ -45,20 +45,9 @@ export interface IGroupCard {
   id: string;
   isCreator?: boolean;
   memberRole?: string;
+  active?: boolean;
 }
-export interface IGroupSearchRequest {
-  filters: {
-    userId: string;
-    groupAttribute?: {
-      [key: string]: any | any[];
-    }[];
-  };
-  sort_by?: {
-    [key: string]: 'asc' | 'desc';
-  };
-  limit?: number;
-  offset?: number;
-}
+
 
 export interface IGroupMemberConfig {
   showMemberCount: boolean;

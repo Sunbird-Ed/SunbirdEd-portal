@@ -16,8 +16,8 @@
       </div>
     </div>
 
-    <div *ngIf="config?.showAddMemberButton && !showSearchResults && groupData?.isAdmin" (click)="addMember();addTelemetry('add-member-btn')">
-      <div class="cursor-pointer mb-8 fnormal px-8">
+    <div [ngClass]="{'disabled': !groupData?.active}" *ngIf="config?.showAddMemberButton && !showSearchResults && groupData?.isAdmin" (click)="!groupData?.active ? $event.stopPropagation(): addMember();addTelemetry('add-member-btn')">
+      <div class="mb-8 fnormal px-8" [ngClass]="{'cursor-pointer': groupData?.active}">
         <img alt="admin" src="./assets/images/add-member-1.png" width="32">
         {{resourceService?.frmelmnts?.lbl?.addMember}}
       </div>

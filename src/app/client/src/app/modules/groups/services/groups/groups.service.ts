@@ -1,13 +1,14 @@
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService, LearnerService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import { IGroup, IGroupCard, IGroupMember, IGroupSearchRequest, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
+import { IGroup, IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,10 @@ export class GroupsService {
   public closeForm = new EventEmitter();
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
+  public showActivateModal = new EventEmitter();
   public _groupListCount: number;
+  private _isActive: boolean;
+
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -95,13 +99,14 @@ export class GroupsService {
     return this.groupCservice.updateById(groupId, updateRequest);
   }
 
-  searchUserGroups(request: IGroupSearchRequest) {
+  searchUserGroups(request: CsGroupSearchCriteria) {
     return this.groupCservice.search(request);
   }
 
   // To get groupData from csService
   getGroupById(groupId: string, includeMembers?: boolean, includeActivities?: boolean, groupActivities?: boolean) {
-    return this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
+    const groupData = this.groupCservice.getById(groupId, { includeMembers, includeActivities, groupActivities });
+    return groupData;
   }
 
   deleteGroupById(groupId: string) {
@@ -283,4 +288,25 @@ getActivity(groupId, activity, mergeGroup) {
     }
     return { showList, activities: activitiesGrouped || {} };
 }
+
+  emitActivateEvent() {
+    this.showActivateModal.emit();
+  }
+
+  deActivateGroupById(groupId: string) {
+    return this.groupCservice.suspendById(groupId);
+  }
+
+  activeGroupById(groupId: string) {
+    return this.groupCservice.reactivateById(groupId);
+  }
+
+  setIsActive(groupData, status: GroupEntityStatus) {
+    groupData.status = status;
+    this._isActive = groupData.isActive();
+  }
+
+  get isActive () {
+   return  this._isActive;
+  }
 }

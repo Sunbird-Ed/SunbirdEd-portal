@@ -1,0 +1,23 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="emitEvent();" #modal>
+  <div class="sb-modal-header">
+    {{modalTitle}}
+  </div>
+  <div class="sb-modal-content">
+    <p> {{modalMsg}} ?</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button *ngIf="modalName === 'delete'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+      (click)="emitEvent('delete')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+
+    <button *ngIf="modalName === 'deActivate'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+      (click)="emitEvent('deActivate')">{{resourceService?.frmelmnts?.lbl?.deactivategrpques}}</button>
+
+      <button *ngIf="modalName === 'activate'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+      (click)="emitEvent('activate')">{{resourceService?.frmelmnts?.lbl?.activategrpques}}</button>
+
+    <button class="sb-btn sb-btn-normal sb-btn-error"
+      (click)="emitEvent()">{{resourceService?.frmelmnts?.btn?.no}}</button>
+    </div>
+</sui-modal>
+
