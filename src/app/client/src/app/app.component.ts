@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * this variable is used to show the terms and conditions popup
    */
-  public showTermsAndCondPopUp = true;
+  public showTermsAndCondPopUp = false;
 
   /**
    * this variable is used to show the global consent pop up
