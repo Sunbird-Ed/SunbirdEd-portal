@@ -1,21 +1,5 @@
 import { GroupMembershipType, GroupEntityStatus, GroupActivity, GroupMember } from '@project-sunbird/client-services/models/group';
 
-export interface IGroup {
-  name: string;
-  description?: string;
-  id: string;
-  status: GroupEntityStatus;
-  membershipType?: GroupMembershipType;
-  createdOn?: string;
-  createdBy?: string;
-  updatedOn?: string;
-  updatedBy?: string;
-  activities?: GroupActivity[];
-  members?: GroupMember[];
-  isAdmin: boolean;
-  active?: boolean;
-}
-
 export interface IMember {
   members: [
     {

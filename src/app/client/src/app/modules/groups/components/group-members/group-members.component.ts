@@ -7,7 +7,6 @@ import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS } from '../../interfaces';
-import { IGroup } from '../../interfaces/group';
 import { GroupsService } from '../../services';
 
 @Component({
@@ -24,7 +23,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData: IGroup;
+  @Input() groupData;
   currentUser;
   showKebabMenu = false;
   showModal = false;

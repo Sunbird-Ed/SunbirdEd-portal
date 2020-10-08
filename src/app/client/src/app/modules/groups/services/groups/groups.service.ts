@@ -6,7 +6,7 @@ import { UserService, LearnerService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import { IGroup, IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
+import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
@@ -91,7 +91,7 @@ export class GroupsService {
     return group;
   }
 
-  createGroup(groupData: IGroup) {
+  createGroup(groupData) {
     return this.groupCservice.create(groupData);
   }
 
