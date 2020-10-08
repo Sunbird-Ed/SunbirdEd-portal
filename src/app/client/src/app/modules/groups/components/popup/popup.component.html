@@ -1,4 +1,5 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal" [ngClass]="{'sb-error': (modalName !== 'activate')}"
   appBodyScroll (dismissed)="emitEvent();" #modal>
   <div class="sb-modal-header">
     {{modalTitle}}
@@ -7,17 +8,19 @@
     <p> {{modalMsg}} ?</p>
   </div>
   <div class="sb-modal-actions">
-    <button *ngIf="modalName === 'delete'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+    <button *ngIf="modalName === 'delete'" class="sb-btn sb-btn-normal
+      sb-btn-outline-error"
       (click)="emitEvent('delete')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-
-    <button *ngIf="modalName === 'deActivate'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+    <button *ngIf="modalName === 'deActivate'" class="sb-btn sb-btn-normal
+      sb-btn-outline-error"
       (click)="emitEvent('deActivate')">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</button>
 
-      <button *ngIf="modalName === 'activate'" class="sb-btn sb-btn-normal sb-btn-outline-error"
+    <button *ngIf="modalName === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary"
       (click)="emitEvent('activate')">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
 
-    <button class="sb-btn sb-btn-normal sb-btn-error"
+    <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (modalName !== 'activate'),
+    'sb-btn-outline-primary': (modalName === 'activate')}"
       (click)="emitEvent()">{{resourceService?.frmelmnts?.btn?.no}}</button>
-    </div>
+  </div>
 </sui-modal>
 
