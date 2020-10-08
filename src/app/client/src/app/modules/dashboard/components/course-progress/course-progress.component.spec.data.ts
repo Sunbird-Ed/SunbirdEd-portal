@@ -18,7 +18,7 @@ export const mockUserData = {
       "lang_key": "frmelmnts.lbl.qsResponseReport",
       "encrypt": "false"
     }
-  ],
+  ], 
   reportTypesMentor: [
     {
       "title": " Course progress exhaust",
