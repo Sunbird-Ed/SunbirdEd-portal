@@ -9,7 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { GroupHeaderComponent } from './group-header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP, EDIT_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -154,7 +154,7 @@ describe('GroupHeaderComponent', () => {
   it('should route to create-edit-group', () => {
     component.editGroup();
     expect(component['router'].navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`,
-    _.get(component.groupData, 'id'), CREATE_GROUP]);
+    _.get(component.groupData, 'id'), EDIT_GROUP]);
   });
 
   it('show call goBack', () => {

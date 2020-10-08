@@ -82,13 +82,11 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   getMenuData(event, member) {
-    if (this.groupData.active) {
       this.showKebabMenu = !this.showKebabMenu;
       this.groupsService.emitMenuVisibility('member');
       this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
       this.selectedMember = member;
-      event.event.stopImmediatePropagation()
-    }
+      event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {
