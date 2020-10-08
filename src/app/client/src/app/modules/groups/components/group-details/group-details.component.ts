@@ -28,7 +28,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   layoutConfiguration: any;
   activityList;
   showMemberPopup = false;
-  isCreator = false;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -79,7 +78,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.groupData = this.groupService.addGroupFields(groupData);
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;
-        this.isCreator = this.groupService.isCurrentUserCreator;
         this.isLoader = false;
         const response = this.groupService.groupContentsByActivityType(false, groupData);
         this.showActivityList = response.showList;

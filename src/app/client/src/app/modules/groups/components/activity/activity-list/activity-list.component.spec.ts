@@ -109,6 +109,7 @@ describe('ActivityListComponent', () => {
       subject: 'Social Science',
       contentType: 'Course'
     }};
+    component.groupData.active = true;
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
     expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data);
     expect(component.addTelemetry).toHaveBeenCalled();
@@ -126,6 +127,7 @@ describe('ActivityListComponent', () => {
       contentType: 'Course'
     }};
     component.groupData.isAdmin = true;
+    component.groupData.active = true;
     const activatedRoute = TestBed.get(ActivatedRoute);
     activatedRoute.changeQueryParams({ contentType: 'Course',
     title: 'ACTIVITY_COURSE_TITLE'});
@@ -139,6 +141,7 @@ describe('ActivityListComponent', () => {
 
   it('should call getMenuData', () => {
     component.showMenu = false;
+    component.groupData.active = true;
     const eventData = {
       event: {
         stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
@@ -218,7 +221,7 @@ describe('ActivityListComponent', () => {
   });
 
   it('should return TRUE (when type is COURSE)', () => {
-    const value = component.isCourse('Course');
+    const value = component.isCourse('ACTIVITY_COURSE_TITLE');
     expect(value).toBe(true);
   });
 

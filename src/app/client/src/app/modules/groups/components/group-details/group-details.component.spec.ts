@@ -134,4 +134,10 @@ describe('GroupDetailsComponent', () => {
     component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
   });
+
+  it('should emitActivateEvent', () => {
+    spyOn(component['groupService'], 'emitActivateEvent');
+    component.handleEvent();
+    expect(component['groupService'].emitActivateEvent).toHaveBeenCalled();
+  });
 });

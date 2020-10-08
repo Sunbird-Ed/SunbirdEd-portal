@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, EDIT_GROUP } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -56,7 +56,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   editGroup() {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), CREATE_GROUP]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), EDIT_GROUP]);
   }
 
   goBack() {
@@ -100,7 +100,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   handleEvent(event) {
     this.showModal = false;
-    console.log('handleEvent', event);
     switch (event) {
       case 'delete':
         this.deleteGroup();
@@ -133,7 +132,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   deleteGroup() {
-    this.toggleModal(false);
     this.showLoader = true;
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
@@ -145,7 +143,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   deActivateGroup() {
-    // this.toggleModal(false);
     this.showLoader = true;
     this.groupService.deActivateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
@@ -158,9 +155,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   activateGroup() {
-    // this.toggleModal(false);
     this.showLoader = true;
-    this.groupService.activeGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    this.groupService.activateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
       this.showLoader = false;
       this.updateEvent.emit();

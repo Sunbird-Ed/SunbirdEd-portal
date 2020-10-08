@@ -297,16 +297,8 @@ getActivity(groupId, activity, mergeGroup) {
     return this.groupCservice.suspendById(groupId);
   }
 
-  activeGroupById(groupId: string) {
+  activateGroupById(groupId: string) {
     return this.groupCservice.reactivateById(groupId);
   }
 
-  setIsActive(groupData, status: GroupEntityStatus) {
-    groupData.status = status;
-    this._isActive = groupData.isActive();
-  }
-
-  get isActive () {
-   return  this._isActive;
-  }
 }

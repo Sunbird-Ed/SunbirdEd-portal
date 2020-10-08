@@ -24,12 +24,24 @@ describe('GroupHeaderComponent', () => {
   const resourceBundle = {
     messages: {
       smsg: { m002: '' },
-      emsg: { m003: '' }
+      emsg: { m003: '' },
+      imsg: { m0082: 'Deleting {group name} will permanently remove the group from the application' }
     },
     frmelmnts: {
       lbl: {
         createGroup: 'create group',
-        you: 'You'
+        you: 'You',
+        deactivategrpques: 'Deactivate group',
+        activategrpques: 'Activate group?',
+        deleteGroup: 'Delete Group'
+      },
+      msg: {
+        deactivategrpsuccess: 'Group deactivated successfully',
+        deactivategrpfailed: 'Could not deactivate group, try again later',
+        activategrpsuccess: 'Group activated successfully',
+        activategrpfailed: 'Could not activate group, try again later',
+        deactivategrpmsg: 'Deactivating the group will take it off from the list of active groups and you will not be able to check member progress on it',
+        activategrppopup: 'This group is temporarily deactivated. Group Admin can activate the group'
       }
     }
   };
@@ -84,9 +96,32 @@ describe('GroupHeaderComponent', () => {
     expect(component.creator).toEqual('Admin user');
   });
 
-  it('should make showModal TRUE', () => {
-    component.toggleModal(true);
+  it('should assign modalTitle and msg as deactivate strings when name = "deActivate" ', () => {
+    spyOn(component, 'assignModalStrings');
+    component.toggleModal(true, 'deActivate');
     expect(component.showModal).toBeTruthy();
+    expect(component.modalName).toBe('deActivate');
+    expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deactivategrpques,
+      resourceBundle.frmelmnts.msg.deactivategrpmsg);
+  });
+
+  it('should assign modalTitle and msg as deactivate strings when name = "delete" ', () => {
+    spyOn(component, 'assignModalStrings');
+    component.groupData.name = 'group';
+    component.toggleModal(true, 'delete');
+    expect(component.showModal).toBeTruthy();
+    expect(component.modalName).toBe('delete');
+    expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deleteGroup,
+      resourceBundle.messages.imsg.m0082, '{group name}');
+  });
+
+  it('should assign modalTitle and msg as deactivate strings when name = "activate" ', () => {
+    spyOn(component, 'assignModalStrings');
+    component.toggleModal(true, 'activate');
+    expect(component.showModal).toBeTruthy();
+    expect(component.modalName).toBe('activate');
+    expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.activategrpques,
+      resourceBundle.frmelmnts.msg.activategrppopup);
   });
 
   it('should make showModal FALSE', () => {
@@ -94,13 +129,18 @@ describe('GroupHeaderComponent', () => {
     expect(component.showModal).toBeFalsy();
   });
 
+  it ('should assign modaltitle and modalmsg strings', () => {
+    component.assignModalStrings(resourceBundle.frmelmnts.lbl.activategrpques,
+      resourceBundle.frmelmnts.msg.activategrppopup);
+      expect(component.modalTitle).toEqual(resourceBundle.frmelmnts.lbl.activategrpques);
+      expect(component.modalMsg).toEqual(resourceBundle.frmelmnts.msg.activategrppopup);
+  });
+
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
-    spyOn(component, 'toggleModal');
     spyOn(component, 'navigateToPreviousPage');
     spyOn(component['groupService'], 'deleteGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
     component.deleteGroup();
-    expect(component.toggleModal).toHaveBeenCalledWith(false);
     tick(1500);
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -161,4 +201,81 @@ describe('GroupHeaderComponent', () => {
     component.leaveGroup();
     expect(toastService.error).toHaveBeenCalled();
   });
+
+  it('should "deActivateGroup on SUCCESS" ', () => {
+    spyOn(component['groupService'], 'deActivateGroupById').and.returnValue(of(true));
+    spyOn(component['toasterService'], 'success');
+    spyOn(component.updateEvent, 'emit');
+    component.deActivateGroup();
+    component['groupService'].deActivateGroupById('123').subscribe(response => {
+      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.deactivategrpsuccess);
+      expect(component.showLoader).toBeFalsy();
+      expect(component.updateEvent.emit).toHaveBeenCalled();
+    });
+  });
+
+  it('should " throw ERROR on deActivateGroup on Failure" ', () => {
+    spyOn(component['groupService'], 'deActivateGroupById').and.returnValue(throwError(true));
+    spyOn(component['toasterService'], 'error');
+    component.deActivateGroup();
+      component['groupService'].deActivateGroupById('123').subscribe(response => {}, err => {
+        expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.deactivategrpfailed);
+        expect(component.showLoader).toBeFalsy();
+      });
+  });
+
+  it('should "activateGroup on SUCCESS" ', () => {
+    spyOn(component['groupService'], 'activateGroupById').and.returnValue(of(true));
+    spyOn(component['toasterService'], 'success');
+    spyOn(component.updateEvent, 'emit');
+    component.activateGroup();
+    component['groupService'].activateGroupById('123').subscribe(response => {
+      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.activategrpsuccess);
+      expect(component.showLoader).toBeFalsy();
+      expect(component.updateEvent.emit).toHaveBeenCalled();
+    });
+  });
+
+  it('should " throw ERROR on activateGroup on Failure" ', () => {
+    spyOn(component['groupService'], 'activateGroupById').and.returnValue(throwError(true));
+    spyOn(component['toasterService'], 'error');
+    component.activateGroup();
+      component['groupService'].activateGroupById('123').subscribe(response => {}, err => {
+        expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.activategrpfailed);
+        expect(component.showLoader).toBeFalsy();
+      });
+  });
+
+  it('should "call deleteGroup() when event id delete" ', () => {
+    spyOn(component, 'deleteGroup');
+    component.handleEvent('delete');
+    expect(component.deleteGroup).toHaveBeenCalled();
+    expect(component.showModal).toBeFalsy();
+  });
+
+  it('should "call deActivateGroup() when event id deActivate" ', () => {
+    spyOn(component, 'deActivateGroup');
+    component.handleEvent('deActivate');
+    expect(component.deActivateGroup).toHaveBeenCalled();
+    expect(component.showModal).toBeFalsy();
+  });
+
+  it('should "call activateGroup() when event id activate" ', () => {
+    spyOn(component, 'activateGroup');
+    component.handleEvent('activate');
+    expect(component.activateGroup).toHaveBeenCalled();
+    expect(component.showModal).toBeFalsy();
+  });
+
+  it ('should call "toggleModal() when showActivateModal event emitted"', () => {
+    spyOn(component, 'toggleModal');
+    spyOn(component['groupService'], 'showActivateModal').and.returnValue(of (true));
+    component.ngOnInit();
+
+    component['groupService'].showActivateModal.subscribe(data => {
+      expect(component.toggleModal).toHaveBeenCalledWith(true, 'activate');
+    });
+
+  });
+
 });
