@@ -81,12 +81,10 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   getMenuData(event) {
-    if (this.groupData.active) {
       this.showMenu = !this.showMenu;
       this.groupService.emitMenuVisibility('activity');
       this.selectedActivity = _.get(event, 'data');
       this.addTelemetry('activity-kebab-menu-open');
-    }
   }
 
   toggleModal(show = false) {

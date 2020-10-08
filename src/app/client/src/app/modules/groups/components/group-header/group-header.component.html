@@ -20,10 +20,10 @@
             </svg>
           </i>
         </button>
-        <div [ngClass]="{'disable-menu': !groupData?.active && !groupData?.isCreator}" class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
+        <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
 
-          <div *ngIf="groupData?.isCreator && !groupData?.active" class="d-flex flex-ai-center list p-8 w-100 fnormal"
+          <div *ngIf="groupData?.isAdmin && !groupData?.active" class="d-flex flex-ai-center list p-8 w-100 fnormal"
             (click)="toggleModal(true, 'activate');">{{resourceService?.frmelmnts.lbl.activategrp}}</div>
 
           <div *ngIf="groupData?.isAdmin && groupData?.active" class="d-flex flex-ai-center list p-8 w-100"
@@ -31,13 +31,13 @@
           </div>
 
           <div *ngIf="groupData?.isAdmin && groupData?.active" class="d-flex flex-ai-center list p-8 w-100 fnormal"
-          (click)="toggleModal(true, 'deActivate')">{{resourceService?.frmelmnts?.lbl?.deactivategrpques}}</div>
+          (click)="toggleModal(true, 'deActivate')">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</div>
 
           <div *ngIf="groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
             (click)="toggleModal(true, 'delete');addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
           </div>
 
-          <div *ngIf="!groupData?.isCreator && groupData?.active" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+          <div *ngIf="!groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
             (click)="showLeaveGroupModal=true;dropdownMenu()">{{resourceService?.frmelmnts?.lbl?.leaveGroup}}
           </div>
 

@@ -141,7 +141,6 @@ describe('ActivityListComponent', () => {
 
   it('should call getMenuData', () => {
     component.showMenu = false;
-    component.groupData.active = true;
     const eventData = {
       event: {
         stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')

@@ -1,3 +1,4 @@
+import { CsModule } from '@project-sunbird/client-services';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';

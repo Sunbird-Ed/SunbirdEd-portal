@@ -13,6 +13,7 @@ export interface IGroup {
   activities?: GroupActivity[];
   members?: GroupMember[];
   isAdmin: boolean;
+  active?: boolean;
 }
 
 export interface IMember {

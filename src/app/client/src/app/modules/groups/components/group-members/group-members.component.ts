@@ -1,7 +1,7 @@
 import { UserService } from '@sunbird/core';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { GroupMemberRole, CsGroup } from '@project-sunbird/client-services/models/group';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
@@ -24,7 +24,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData: IGroup;
+  @Input() groupData: CsGroup;
   currentUser;
   showKebabMenu = false;
   showModal = false;
@@ -82,11 +82,13 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   getMenuData(event, member) {
-    this.showKebabMenu = !this.showKebabMenu;
-    this.groupsService.emitMenuVisibility('member');
-    this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
-    this.selectedMember = member;
-    event.event.stopImmediatePropagation();
+    if (this.groupData.active) {
+      this.showKebabMenu = !this.showKebabMenu;
+      this.groupsService.emitMenuVisibility('member');
+      this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
+      this.selectedMember = member;
+      event.event.stopImmediatePropagation()
+    }
   }
 
   search(searchKey: string) {
