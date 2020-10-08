@@ -2,12 +2,13 @@ import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
 } from 'ng2-semantic-ui';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NoResultComponent, AppLoaderComponent, CardComponent,
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
-  OfflineBannerComponent,SbDatatableComponent,OnDemandReportsComponent, OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent
+  OfflineBannerComponent,
+  OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent,SbDatatableComponent, OnDemandReportsComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -17,7 +18,7 @@ import {
 import { ContentDirectionDirective, MarkdownDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe } from './pipes';
+import {DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe} from './pipes';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -28,14 +29,15 @@ import { AppLandingSectionComponent } from './components/app-landing-section/app
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import {TitleCasePipe} from '@angular/common';
 
 @NgModule({
   imports: [
     CommonModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
-    FormsModule,
-    TelemetryModule,NgxDatatableModule,
+    FormsModule,ReactiveFormsModule,NgxDatatableModule,
+    TelemetryModule,
     TranslateModule.forChild()
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
@@ -43,15 +45,14 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
-    ConfirmPopupComponent, SbDatatableComponent, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective, OnDemandReportsComponent,
-    AddToGroupDirective],
+    ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,SbDatatableComponent, OnDemandReportsComponent,SbDataTablePipe],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, SelectOptionGroupComponent, AppLandingSectionComponent,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule]
+    MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
@@ -60,7 +61,7 @@ export class SharedModule {
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
         DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService,
-        LayoutService,TranslateStore]
+        LayoutService, TranslateStore,TitleCasePipe]
     };
   }
 }

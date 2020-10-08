@@ -18,7 +18,7 @@ import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent,
   AddSummaryModalComponent, CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent,
-  DatasetComponent
+  DatasetComponent, MapComponent
 } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
@@ -45,7 +45,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

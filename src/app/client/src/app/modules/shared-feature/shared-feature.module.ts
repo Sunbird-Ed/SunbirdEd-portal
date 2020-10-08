@@ -6,7 +6,7 @@ import {
   ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-  ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent
+  ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -17,6 +17,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { GlobalConsentPiiComponent } from './components/global-consent-pii/global-consent-pii.component';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -35,7 +36,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
     SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PlayerHelperModule
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
@@ -44,11 +46,19 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
+<<<<<<< HEAD
     ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, GlobalConsentPiiComponent
+=======
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent
+>>>>>>> upstream/release-3.4.0
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
+<<<<<<< HEAD
     ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, GlobalConsentPiiComponent]
+=======
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent]
+>>>>>>> upstream/release-3.4.0
 })
 export class SharedFeatureModule { }
