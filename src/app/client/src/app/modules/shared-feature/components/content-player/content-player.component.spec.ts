@@ -3,7 +3,7 @@ import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
-import { CoreModule, UserService, PlayerService, PublicPlayerService } from '@sunbird/core';
+import { CoreModule, UserService, PlayerService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
