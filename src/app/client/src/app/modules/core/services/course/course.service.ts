@@ -1,5 +1,5 @@
 import { catchError, map, skipWhile } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
@@ -43,6 +43,7 @@ export class CoursesService {
    * Notification message for external content onclick of Resume course button
    */
   showExtContentMsg = false;
+  public revokeConsent = new EventEmitter<void>();
   /**
   * the "constructor"
   *

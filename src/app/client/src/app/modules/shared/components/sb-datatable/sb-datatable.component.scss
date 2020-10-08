@@ -112,6 +112,9 @@
     text-align: right !important;
 }
 
+.ngx-datatable.scroll-vertical .datatable-body{
+  height: 200px !important;
+}
 .ngx-datatable.fixed-header .datatable-header {
   background-color: var(--primary-100) !important;
  
@@ -154,4 +157,10 @@ text-align: center !important;
   text-align: center !important;
 }
 }
+}
+
+.download-report{
+  position: relative;
+  bottom: 10px;
+  padding-bottom: 12px;
 }

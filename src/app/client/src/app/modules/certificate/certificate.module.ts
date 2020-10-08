@@ -7,13 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { CertificateConfigurationComponent, CertificateDetailsComponent} from './components';
+import { CertificateConfigurationComponent, CertificateDetailsComponent, CreateTemplateComponent} from './components';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   declarations: [
   CertificateDetailsComponent,
-  CertificateConfigurationComponent
+  CertificateConfigurationComponent,
+  CreateTemplateComponent
 ],
   imports: [
     CommonModule,

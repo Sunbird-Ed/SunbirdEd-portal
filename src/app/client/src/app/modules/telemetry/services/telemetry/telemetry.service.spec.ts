@@ -9,7 +9,7 @@ describe('TelemetryService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry}, DeviceDetectorService]
+            providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, DeviceDetectorService]
         });
     });
 

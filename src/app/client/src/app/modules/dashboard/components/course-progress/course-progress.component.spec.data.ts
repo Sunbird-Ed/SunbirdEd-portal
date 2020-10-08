@@ -1,4 +1,38 @@
 export const mockUserData = {
+  reportTypes: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "User profile exhaust",
+      "dataset": "userinfo-exhaust",
+      "lang_key": "frmelmnts.lbl.userExhaustReport",
+      "encrypt": "true"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
+  reportTypesMentor: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
    frombeginng: {
       'id': 'api.dashboard.progress.course',
       'ver': 'v1',
@@ -96,8 +130,7 @@ export const mockUserData = {
       'firstName': 'Cretation',
       'lastLoginTime': 1519809987692,
       'createdDate': '2017-10-31 10:47:04:723+0000',
-      'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45',
-      "userRoles": ["PUBLIC", "COURSE_CREATOR", "CONTENT_CREATOR", "BOOK_CREATOR", "COURSE_MENTOR"]
+      'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45'
    },
    dashboardError: {
       error: {
@@ -415,185 +448,5 @@ export const mockUserData = {
       'status': 1,
       'completedCount': 4,
       'participantCount': 2
-    },
-
-    reportTypeOptions : [
-      {
-        "title": " Course progress exhaust",
-        "jobId": "progress-report-v3",
-        "lang_key":"frmelmnts.lbl.progressExhaustReport"
-      },
-      {
-        "title": "User profile exhaust",
-        "jobId": "User-profile-report-v3",
-        "lang_key":"frmelmnts.lbl.userExhaustReport"
-      },
-      {
-        "title": "Question set report",
-        "jobId": "qs-report-v3",
-        "lang_key":"frmelmnts.lbl.qsResponseReport"
-      }
-    ],
-    reportTypeOptionsForMentor : [
-      {
-        "title": " Course progress exhaust",
-        "jobId": "progress-report-v3",
-        "lang_key":"frmelmnts.lbl.progressExhaustReport"
-      },
-      {
-        "title": "Question set report",
-        "jobId": "qs-report-v3",
-        "lang_key":"frmelmnts.lbl.qsResponseReport"
-      }
-    ],
-    formApiResponse : {
-      "request": {
-        "type": "batch",
-        "subType": "report_types",
-        "action": "list",
-        "replaceKeys": ["?framework", "?courseId", "?status" ],
-        "data": {
-          "templateName": "defaultTemplate",
-          "action": "list",
-          "fields": [
-            {
-              "title": "Course progress exhaust",
-              "jobId": "progress-exhaust",
-              "encrypt": "false",
-              "lang_key": "frmelmnts.lbl.progressExhaustReport",
-              "jobConfig": {
-                "batchFilters": ["?_framework"],
-                "contentFilters": {
-                  "request": {
-                    "filters": {
-                      "identifier": [
-                        "?batchId", "?_courseId"
-                      ],
-                      "prevState": "?_status"
-                    }
-                  }
-                },
-                "output_format": "csv"
-              }
-            },
-            {
-              "title": "User profile exhaust",
-              "jobId": "userinfo-exhaust",
-              "encrypt": "true",
-              "lang_key":"frmelmnts.lbl.userExhaustReport",
-              "jobConfig" : {
-                "batchFilters": ["?_framework"],
-                "contentFilters": {
-                  "request": {
-                    "filters": {
-                      "identifier": [
-                        "?batchId", "?_courseId"
-                      ],
-                      "prevState": "?_status"
-                    }
-                  }
-                },
-                "output_format": "csv"
-              }
-            },
-            {
-              "title": "Question set report",
-              "jobId": "response-exhaust",
-              "encrypt": "false",
-              "lang_key": "frmelmnts.lbl.qsResponseReport",
-              "jobConfig": {
-                "batchFilters": ["?_framework"],
-                "contentFilters": {
-                  "request": {
-                    "filters": {
-                      "identifier": [
-                        "?batchId", "?_courseId"
-                      ],
-                      "prevState": "?_status"
-                    }
-                  }
-                },
-                "output_format": "csv"
-              }
-            }  
-          ]
-        }
-      }
-    },
-
-    batches : [
-       {
-         batchId: "01308304154718208038",
-         collectionId: "do_21308303538717491213097",
-         completedCount: 0,
-         courseId: "do_21308303538717491213097",
-         createdBy: "ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e",
-         createdDate: "2020-08-10 09:07:36:143+0000",
-         createdFor: ["0124784842112040965"],
-         endDate: null,
-         enrollmentEndDate: null,
-         enrollmentType: "open",
-         id: "01308304154718208038",
-         identifier: "01308304154718208038",
-         name: "SH 628 aca",
-         participantCount: 0,
-         startDate: "2020-08-10",
-         status: 1
-       },
-       {
-         batchId: "01308304154718208038",
-         collectionId: "do_21308303538717491213097",
-         completedCount: 0,
-         courseId: "do_21308303538717491213097",
-         createdBy: "ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e",
-         createdDate: "2020-08-10 09:07:36:143+0000",
-         createdFor: ["0124784842112040965"],
-         endDate: "2020-08-12",
-         enrollmentEndDate: "2020-08-12",
-         enrollmentType: "open",
-         id: "01308304154718208038",
-         identifier: "01308304154718208038",
-         name: "SH 628 aca",
-         participantCount: 0,
-         startDate: "2020-08-10",
-         status: 1
-       }
-    ],
-
-    summaryReports : {
-      "result":{
-        "metrics":[
-           {
-              "type":"completed",
-              "count":"100"
-           },
-           {
-              "type":"enrolled",
-              "count":"100"
-           },
-           {
-              "type":"certificate_issued",
-              "count":"100"
-           }
-        ],
-        "groupBy":[
-           {
-              "district":"Tumkur",
-              "state":"Karnataka",
-              "values":[
-                 {
-                    "type":"completed",
-                    "count":"100"
-                 },{
-                  "type":"enrolled",
-                  "count":"100"
-               }
-              ]
-           }
-        ]
-     }
-    },
-    stateWiseReportData : [{state: 'Karnataka', district: 'Tumkur', noOfEnrollments: '100', noOfCompletions: '100'}]
-
-
+    }
 };

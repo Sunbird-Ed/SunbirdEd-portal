@@ -1,4 +1,3 @@
-import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService, CoreModule, FormService } from '@sunbird/core';
+import {ContentService, UserService, LearnerService, CoreModule, FormService} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
@@ -23,6 +22,8 @@ import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ReactiveFormsModule } from '@angular/forms';
+
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
@@ -44,6 +45,9 @@ describe('CourseProgressComponent', () => {
       'stmsg': {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
+      },
+      "fmsg": {
+        "m0004": "Could not fetch data, try again later"
       }
     },
     'frmelmnts': {
@@ -55,7 +59,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
-    'parent': { params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }) },
+    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
@@ -71,9 +75,9 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule, TelemetryModule.forRoot()],
+        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
       declarations: [],
-      providers: [CourseProgressService, UsageService, TelemetryService,
+      providers: [CourseProgressService, UsageService, TelemetryService, FormService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -216,16 +220,6 @@ describe('CourseProgressComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
-  it('should get last updatedOn date for score report and progress report', fakeAsync(() => {
-    const courseProgressService = TestBed.get(CourseProgressService);
-    spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
-    component.getReportUpdatedOnDate('0124963192947507200');
-    // tslint:disable-next-line: max-line-length
-    expect(component.scoreReportUpdatedOn).toEqual(null);
-    // tslint:disable-next-line: max-line-length
-    expect(component.progressReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified);
-  }));
-
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const courseProgressService = TestBed.get(CourseProgressService);
@@ -258,74 +252,35 @@ describe('CourseProgressComponent', () => {
     expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
   });
 
-  it('should set filterText', () => {
-    fakeActivatedRoute.queryParams.subscribe(data => {
+  it ( 'should set filterText', () => {
+     fakeActivatedRoute.queryParams.subscribe(data => {
       component.queryParams = data;
     });
     component.setFilterDescription();
     expect(component.filterText).toEqual('Stats for last 7 days');
   });
 
-  it('should set report type options', () => {
-    const userService = TestBed.get(UserService);
+  it ( 'should call getFormData as a COURSE_CREATOR', () => {
+    component.userRoles = ['CONTENT_CREATOR'];
     const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptions))
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-    component.ngOnInit();
-    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptions);
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
+    component.getFormData();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypes);
   });
-
-  it('should set report type options for Course Mentor', () => {
-    const userService = TestBed.get(UserService);
+  it ( 'should call getFormData as a COURSE_MENTOR', () => {
+    component.userRoles = ['COURSE_MENTOR'];
     const formService = TestBed.get(FormService);
-    testData.mockUserData.userMockData.userRoles = ['COURSE_MENTOR']
-    spyOn(formService, 'getFormConfig').and.returnValues(observableOf(testData.mockUserData.reportTypeOptionsForMentor))
-    userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-    component.ngOnInit();
-    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypeOptionsForMentor);
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
+    component.getFormData();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypesMentor);
   });
-
-  it('should call setOrder', () => {
-    spyOn(component, 'setInteractEventData').and.stub();
-    spyOn(component, 'populateCourseDashboardData').and.stub();
-    component.reverse = false;
-    component.currentBatch = '01307941196215910429';
-    component.setOrder('test')
-    expect(component.setInteractEventData).toHaveBeenCalled();
-    expect(component.populateCourseDashboardData).toHaveBeenCalledWith('01307941196215910429');
-  });
-
-  it('should call getSummaryReports', () => {
-    const onDemandService = TestBed.get(OnDemandReportService);
-    component.currentBatch = testData.mockUserData.batches[0];
-    spyOn(onDemandService, 'getSummeryReports').and.returnValue(observableOf(testData.mockUserData.summaryReports))
-    component.getSummaryReports();
-    expect(component.currentBatch.completedCount).toEqual('100');
-    expect(component.currentBatch.participantCount).toEqual('100');
-    expect(component.stateWiseReportData).toEqual(testData.mockUserData.stateWiseReportData);
-  });
-
-
-  it('should call getSummaryReports error case', () => {
-    const onDemandService = TestBed.get(OnDemandReportService);
+  it ( 'should call getFormData error case ', () => {
+    component.userRoles = ['COURSE_MENTOR'];
     const toasterService = TestBed.get(ToasterService);
+    const formService = TestBed.get(FormService);
     spyOn(toasterService, 'error').and.stub();
-    component.currentBatch = testData.mockUserData.batches[0];
-    spyOn(onDemandService, 'getSummeryReports').and.returnValue(observableThrowError('error'));
-    component.getSummaryReports();
-    expect(toasterService.error).toHaveBeenCalled();
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableThrowError('error'));
+    component.getFormData();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
-
-  it('should call getFieldValue', () => {
-    const array = [{type: 'completed' , count: "100"},{type: 'enrolled' , count: "100"}];
-    const resultCount = component.getFieldValue(array,'completed');
-    expect(resultCount).toBe("100")
-  });
-
-  it('should call redirect', inject([Router], (route) => {
-      component.courseId = "do_21308303538717491213097"
-      component.redirect();
-      expect(route.navigate).toHaveBeenCalled();
-    }));
-
 });
