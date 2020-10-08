@@ -1,7 +1,7 @@
 import { UserService } from '@sunbird/core';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { Group, GroupMemberRole } from '@project-sunbird/client-services/models/group';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
@@ -23,7 +23,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData;
+  @Input() groupData: Group;
   currentUser;
   showKebabMenu = false;
   showModal = false;
