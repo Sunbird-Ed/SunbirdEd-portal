@@ -21,7 +21,7 @@ describe('ActivityDashboardComponent', () => {
     paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });
     get params() { return this.paramsMock.asObservable(); }
     get queryParams() { return this.queryParamsMock.asObservable(); }
-    snapshot: any = {
+    snapshot = {
       params: {},
       data: {
         telemetry: {}
