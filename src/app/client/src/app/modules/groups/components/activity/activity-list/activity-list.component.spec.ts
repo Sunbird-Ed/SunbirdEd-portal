@@ -1,3 +1,4 @@
+import { configureTestSuite } from '@sunbird/test-util';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { ActivityListComponent } from './activity-list.component';
@@ -18,6 +19,7 @@ describe('ActivityListComponent', () => {
   let fixture: ComponentFixture<ActivityListComponent>;
   let router;
 
+  configureTestSuite();
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
     paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });

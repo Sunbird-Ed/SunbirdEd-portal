@@ -161,7 +161,7 @@ describe('ActivityDashboardComponent', () => {
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
     expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
-    undefined, [{id: '123', type: 'group'}]);
+    { params: {}, data: { telemetry: {} }}, [{id: '123', type: 'group'}]);
   });
 
   it('should sort and return members', () => {
