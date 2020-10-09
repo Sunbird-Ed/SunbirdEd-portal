@@ -8,5 +8,6 @@ export const ADD_MEMBER_TO_GROUP = `${WORKSPACE.GROUP_ID}/${ADD_MEMBER}`;
 export const ADD_ACTIVITY_TO_GROUP = 'add-activity-to-group';
 export const ACTIVITY_DETAILS = 'activity-details';
 export const COURSES = 'courses';
-export const CREATE_GROUP  = 'create-edit-group';
+export const CREATE_GROUP  = 'group/create';
+export const EDIT_GROUP  = 'edit';
 export const ADD_ACTIVITY_CONTENT_TYPES = 'add-activity-content-types';

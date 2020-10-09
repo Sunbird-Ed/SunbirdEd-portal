@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
 import { GroupsService } from '../../services/groups/groups.service';
-import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@project-sunbird/client-services/models/group';
 
 describe('GroupMembersComponent', () => {
   let component: GroupMembersComponent;
@@ -74,18 +74,32 @@ describe('GroupMembersComponent', () => {
     members = [
       {
         identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
-        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'
+        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: GroupMemberRole.ADMIN, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE
       },
       {
         identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
-        indexOfMember: 5, isCreator: false, name: 'Paul Walke', userId: '2', role: 'member'
+        indexOfMember: 5, isCreator: false, name: 'Paul Walke', userId: '2', role: GroupMemberRole.MEMBER, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE
       },
       {
         identifier: '6', initial: 'R', title: 'Robert Downey', isAdmin: true, isMenu: true,
-        indexOfMember: 7, isCreator: false, name: 'Robert Downey', userId: '3', role: 'member'
+        indexOfMember: 7, isCreator: false, name: 'Robert Downey', userId: '3', role: GroupMemberRole.MEMBER, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE
       }
     ];
-    component['groupsService'].groupData = { id: '123', name: 'Test group', members: members, createdBy: '1' };
+    component.groupData = {id: '123', name: 'Test', members: [
+      {
+        groupId: '',
+        status: GroupEntityStatus.ACTIVE,
+        userId: '1',
+        role: GroupMemberRole.ADMIN,
+        name: 'user'
+      }],
+      createdBy: '1',
+      description: '',
+      membershipType: GroupMembershipType.INVITE_ONLY
+    };
     spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
     spyOn(component['groupsService'], 'membersList').and.returnValue(of(members));
     fixture.detectChanges();
@@ -121,7 +135,8 @@ describe('GroupMembersComponent', () => {
     members = [
       {
         identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
-        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'
+        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: GroupMemberRole.ADMIN, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE
       },
     ];
     component.members = members;
@@ -135,7 +150,8 @@ describe('GroupMembersComponent', () => {
     members = [
       {
         identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
-        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'
+        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: GroupMemberRole.ADMIN, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE
       },
     ];
     component.members = members;
@@ -148,8 +164,8 @@ describe('GroupMembersComponent', () => {
     members = [
       {
         identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
-        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'
-      },
+        indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: GroupMemberRole.ADMIN, id: '1',
+        groupId: '', status: GroupEntityStatus.ACTIVE},
     ];
     component.members = members;
     component.search(' j ');
@@ -286,7 +302,11 @@ describe('GroupMembersComponent', () => {
       id: '123', name: 'Test', members:
         [{ userId: '2', role: 'member', name: 'user' }, { userId: '1', role: 'admin', name: 'user 2' }]
     };
-    component.groupData = { id: 'asbcd-hsdhois', name: 'Test', isAdmin: true, status: GroupEntityStatus.ACTIVE };
+    component.groupData = {
+      id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
+      description: '', membershipType: GroupMembershipType.INVITE_ONLY,
+      members: []
+    };
     spyOn(component['groupsService'], 'getGroupById').and.returnValue(of(response));
     component.getUpdatedGroupData();
     expect(component.groupData).toBeDefined();
