@@ -54,6 +54,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
     this.initRecaptcha();
+    window['csModule'] = CsModule.instance;
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);

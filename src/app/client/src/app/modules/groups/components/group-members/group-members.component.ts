@@ -203,6 +203,15 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
   }
 
+  showAddMember () {
+    if (!this.groupData.active) {
+      return false;
+    }
+    if (this.config.showAddMemberButton) {
+      return (this.groupData.isAdmin && !this.showSearchResults);
+    }
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

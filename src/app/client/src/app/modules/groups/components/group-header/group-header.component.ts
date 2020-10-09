@@ -1,3 +1,4 @@
+import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
@@ -43,8 +44,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
     });
-    this.groupService.showActivateModal.subscribe(data => {
-      this.toggleModal(true, 'activate');
+    this.groupService.showActivateModal.subscribe(name => {
+      this.toggleModal(true, name);
     });
   }
 
@@ -80,13 +81,13 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.emitMenuVisibility('group');
     this.modalName = name;
     switch (name) {
-      case 'delete':
-        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup,this.resourceService.messages.imsg.m0082, '{group name}');
+      case actions.DELETE:
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{group name}');
         break;
-      case 'deActivate':
+      case actions.DEACTIVATE:
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deactivategrpques, this.resourceService.frmelmnts.msg.deactivategrpmsg);
         break;
-      case 'activate':
+      case actions.ACTIVATE:
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.activategrpques, this.resourceService.frmelmnts.msg.activategrppopup);
         break;
     }
@@ -100,14 +101,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   handleEvent(event) {
     this.showModal = false;
+    this.showLoader = !_.isEmpty(event);
     switch (event) {
-      case 'delete':
+      case actions.DELETE:
         this.deleteGroup();
         break;
-      case 'deActivate':
+      case actions.DEACTIVATE:
         this.deActivateGroup();
         break;
-      case 'activate':
+      case actions.ACTIVATE:
         this.activateGroup();
         break;
     }
@@ -132,7 +134,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   deleteGroup() {
-    this.showLoader = true;
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.toasterService.success(this.resourceService.messages.smsg.m002);
         this.navigateToPreviousPage();
@@ -143,7 +144,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   deActivateGroup() {
-    this.showLoader = true;
     this.groupService.deActivateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
       this.showLoader = false;
@@ -155,7 +155,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   activateGroup() {
-    this.showLoader = true;
     this.groupService.activateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
       this.showLoader = false;

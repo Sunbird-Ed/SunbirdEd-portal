@@ -25,8 +25,6 @@ export class GroupsService {
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
   public _groupListCount: number;
-  private _isActive: boolean;
-
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -289,8 +287,8 @@ getActivity(groupId, activity, mergeGroup) {
     return { showList, activities: activitiesGrouped || {} };
 }
 
-  emitActivateEvent() {
-    this.showActivateModal.emit();
+  emitActivateEvent(name) {
+    this.showActivateModal.emit(name);
   }
 
   deActivateGroupById(groupId: string) {

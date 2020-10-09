@@ -1,8 +1,9 @@
-import { GroupMembershipType, GroupEntityStatus, Group } from '@project-sunbird/client-services/models/group';
+import { GroupMembershipType, GroupEntityStatus, Group, GroupMember } from '@project-sunbird/client-services/models/group';
 
 export interface IGroup extends Group {
-  isAdmin: boolean;
+  isAdmin?: boolean;
   active?: boolean;
+  members?: IGroupMember[];
 }
 
 export interface IMember {
@@ -21,21 +22,14 @@ export interface IGroupUpdate {
   status?: GroupEntityStatus;
 }
 
-export interface IGroupCard {
-  name: string;
-  description?: string;
-  members?: Array<{}>;
-  createdBy: string;
+export interface IGroupCard extends IGroup {
   cardBgColor?: any;
   cardTitleColor?: any;
   isLoading?: boolean;
   theme?: string;
-  isAdmin?: boolean;
   initial?: string;
-  id: string;
   isCreator?: boolean;
   memberRole?: string;
-  active?: boolean;
 }
 
 
@@ -46,17 +40,19 @@ export interface IGroupMemberConfig {
   showMemberMenu: boolean;
 }
 
-export interface IGroupMember {
-  identifier: string;
-  initial: string;
-  title: string;
-  isAdmin: boolean;
-  isMenu: boolean;
-  indexOfMember: number;
-  isCreator: boolean;
-  userId: string;
-  role: string;
-  name: string;
+export interface IGroupMember extends GroupMember {
+  identifier?: string;
+  initial?: string;
+  title?: string;
+  isAdmin?: boolean;
+  isMenu?: boolean;
+  indexOfMember?: number;
+  isCreator?: boolean;
   id?: string;
 }
 
+export enum actions {
+  DELETE = 'delete',
+  DEACTIVATE = 'deActivate',
+  ACTIVATE = 'activate'
+}

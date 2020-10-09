@@ -1,3 +1,4 @@
+import { GroupEntityStatus, GroupMemberRole, GroupMembershipType } from '@project-sunbird/client-services/models/group';
 import { TelemetryService } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
@@ -70,7 +71,10 @@ describe('GroupHeaderComponent', () => {
     component = fixture.componentInstance;
     component.groupData = {
       id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
-      members: [{ userId: 'user_123', createdBy: 'user_123', name: 'user123', role: 'admin' }]
+      members: [{ userId: 'user_123', createdBy: 'user_123', name: 'user123', role: GroupMemberRole.ADMIN, id: '1',
+      groupId: '', status: GroupEntityStatus.ACTIVE }],
+      description: '',
+      membershipType: GroupMembershipType.INVITE_ONLY,
     };
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
@@ -90,8 +94,14 @@ describe('GroupHeaderComponent', () => {
       name: 'Test',
       createdBy: 'abcd-pqr-xyz',
       id: 'pop-wer',
-      members: [{ userId: 'abcd-pqr-xyz', createdBy: 'abcd-pqr-xyz', name: 'Admin user' }]
+      description: '',
+      membershipType: GroupMembershipType.INVITE_ONLY,
+      members: [{
+        identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
+      indexOfMember: 5, isCreator: false, name: 'Admin user', userId: 'abcd-pqr-xyz', role: GroupMemberRole.MEMBER, id: '1',
+      groupId: '', status: GroupEntityStatus.ACTIVE, createdBy: 'abcd-pqr-xyz'}]
     };
+
     component.ngOnInit();
     expect(component.creator).toEqual('Admin user');
   });
@@ -124,9 +134,11 @@ describe('GroupHeaderComponent', () => {
       resourceBundle.frmelmnts.msg.activategrppopup);
   });
 
-  it('should make showModal FALSE', () => {
+  it('should not call "assignModalStrings when there is name param is passed"', () => {
+    spyOn(component, 'assignModalStrings');
     component.toggleModal(false);
     expect(component.showModal).toBeFalsy();
+    expect(component.assignModalStrings).not.toHaveBeenCalled();
   });
 
   it ('should assign modaltitle and modalmsg strings', () => {

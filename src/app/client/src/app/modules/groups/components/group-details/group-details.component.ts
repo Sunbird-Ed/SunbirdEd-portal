@@ -117,7 +117,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   }
 
   handleEvent() {
-    this.groupService.emitActivateEvent();
+    this.groupService.emitActivateEvent('activate');
   }
 
   ngOnDestroy() {
