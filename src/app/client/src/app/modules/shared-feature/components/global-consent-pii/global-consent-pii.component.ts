@@ -18,6 +18,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() collection;
   @Input() type;
   @Input() showConsentPopup;
+  @Input() consentConfig;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
   consentPii = 'Yes';
@@ -54,6 +55,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   }
 
   getUserInformation() {
+    // tslint:disable-next-line: max-line-length
     this.userInformation['name'] = this.usersProfile.lastName ? `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
