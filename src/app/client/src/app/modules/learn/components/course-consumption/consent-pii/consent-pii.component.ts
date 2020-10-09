@@ -91,10 +91,10 @@ export class ConsentPiiComponent implements OnInit {
           case 'declared-phone':
             this.userInformation['phone'] = value;
             break;
-          case 'declared-ext-id':
+          case 'declared-school-udise-code':
             this.userInformation['schoolId'] = value;
             break;
-          case 'declared-school-udise-code':
+          case 'declared-school-name':
             this.userInformation['schoolName'] = value;
             break;
         }
