@@ -7,8 +7,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { FormsModule } from '@angular/forms';
 import {
   CoursePlayerComponent, CourseConsumptionHeaderComponent, CourseConsumptionPageComponent,
-  CurriculumCardComponent,
-  ConsentPiiComponent,  } from './components';
+  CurriculumCardComponent,  } from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -48,6 +47,6 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
   providers: [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
-    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, ConsentPiiComponent]
+    AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent]
 })
 export class CourseConsumptionModule { }
