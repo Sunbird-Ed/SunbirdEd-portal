@@ -19,14 +19,15 @@ describe('ActivityDashboardComponent', () => {
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
     paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });
-    snapshotMock: any = {
+    get params() { return this.paramsMock.asObservable(); }
+    get queryParams() { return this.queryParamsMock.asObservable(); }
+    snapshot: any = {
       params: {},
       data: {
         telemetry: {}
       }
     };
-    get params() { return this.paramsMock.asObservable(); }
-    get queryParams() { return this.queryParamsMock.asObservable(); }
+
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
