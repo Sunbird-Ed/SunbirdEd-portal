@@ -1,12 +1,13 @@
 import { Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { TncService, UserService } from '@sunbird/core';
+import { TncService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ServerResponse, ToasterService, UtilService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PopupControlService } from '../../../../service/popup-control.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-global-consent-pii',
@@ -40,7 +41,11 @@ export class GlobalConsentPiiComponent implements OnInit {
     public resourceService: ResourceService,
     public tncService: TncService,
     public utilService: UtilService,
-    public popupControlService: PopupControlService
+    public popupControlService: PopupControlService,
+    private activatedRoute: ActivatedRoute,
+    private coursesService: CoursesService,
+    private router: Router,
+    public generaliseLabelService: GeneraliseLabelService
   ) { }
 
   ngOnInit() {
@@ -52,10 +57,27 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else {
       this.showSettingsPage = true;
     }
+    this.checkQueryParams();
+
+    this.coursesService.revokeConsent
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.updateUserConsent(false);
+      });
+  }
+
+  checkQueryParams() {
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        if (response.consent) {
+          this.showConsentPopup = true;
+          this.removeQueryParam();
+        }
+      });
   }
 
   getUserInformation() {
-    // tslint:disable-next-line: max-line-length
     this.userInformation['name'] = this.usersProfile.lastName ? `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
@@ -171,9 +193,18 @@ export class GlobalConsentPiiComponent implements OnInit {
         this.close.emit();
         this.popupControlService.changePopupStatus(true);
       }, error => {
+        this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
         console.error('Error while updating user consent', error);
       });
+  }
+
+  removeQueryParam() {
+    this.router.navigate([], {
+      queryParams: { 'consent': null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
   ngOnDestroy() {
