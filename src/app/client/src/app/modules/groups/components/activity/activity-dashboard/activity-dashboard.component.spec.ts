@@ -27,7 +27,6 @@ describe('ActivityDashboardComponent', () => {
         telemetry: {}
       }
     };
-
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
