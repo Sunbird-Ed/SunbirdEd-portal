@@ -38,7 +38,6 @@ describe('GroupDetailsComponent', () => {
     url: '/my-groups';
   }
 
-  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupDetailsComponent],
