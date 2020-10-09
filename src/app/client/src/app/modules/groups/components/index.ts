@@ -10,3 +10,4 @@ export * from './back-button/back-button.component';
 export * from './activity';
 export * from './create-edit-group/create-edit-group.component';
 export * from './group-details/group-details.component';
+export * from './popup/popup.component';

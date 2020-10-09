@@ -207,4 +207,25 @@ describe('GroupsService', () => {
     expect(response.activities).toEqual({});
   });
 
+  it('should emit "showActivateModal EVENT"', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.showActivateModal, 'emit');
+    service.emitActivateEvent();
+    expect(service.showActivateModal.emit).toHaveBeenCalled();
+  });
+
+  it('should call CsGroupService "suspendById()" ', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'suspendById');
+    service.deActivateGroupById('123');
+    expect(service.groupCservice.suspendById).toHaveBeenCalledWith('123');
+  });
+
+  it('should call CsGroupService "reactivateById()" ', () => {
+    const service = TestBed.get(GroupsService);
+    spyOn(service.groupCservice, 'reactivateById');
+    service.activateGroupById('123');
+    expect(service.groupCservice.reactivateById).toHaveBeenCalledWith('123');
+  });
+
 });

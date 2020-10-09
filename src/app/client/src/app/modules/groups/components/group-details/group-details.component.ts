@@ -116,6 +116,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.showMemberPopup = visibility;
   }
 
+  handleEvent() {
+    this.groupService.emitActivateEvent('activate');
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { GroupDetailsData } from './group-details.component.spec.data';
 import * as _ from 'lodash-es';
+import { GroupMembershipType } from '@project-sunbird/client-services/models';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -75,15 +76,18 @@ describe('GroupDetailsComponent', () => {
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
     component['groupId'] = '123';
-    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
+    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1', description: '',
+    membershipType: GroupMembershipType.INVITE_ONLY}));
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
     expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
     expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
-    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g'});
+    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
+    description: '', membershipType: GroupMembershipType.INVITE_ONLY});
     expect(component.showActivityList).toBeTruthy();
     expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
-    isCreator: false, isAdmin: false, initial: 'g'});
+    isCreator: false, isAdmin: false, initial: 'g', description: '',
+    membershipType: GroupMembershipType.INVITE_ONLY});
   });
 
 
@@ -133,5 +137,11 @@ describe('GroupDetailsComponent', () => {
     component.showMemberPopup = false;
     component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
+  });
+
+  it('should emit "EVENT when user clicked on activate group next to msg: activate"', () => {
+    spyOn(component['groupService'], 'emitActivateEvent');
+    component.handleEvent();
+    expect(component['groupService'].emitActivateEvent).toHaveBeenCalledWith('activate');
   });
 });

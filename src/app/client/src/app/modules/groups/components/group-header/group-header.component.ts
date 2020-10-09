@@ -1,7 +1,8 @@
+import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, CREATE_GROUP, GROUP_DETAILS, IGroupCard } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, EDIT_GROUP } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -17,11 +18,15 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
+  @Output() updateEvent = new EventEmitter();
   showModal = false;
   showEditModal: boolean;
   creator: string;
   showLeaveGroupModal = false;
   showLoader = false;
+  public modalTitle: string;
+  public modalMsg: string;
+  public modalName: string;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
@@ -36,28 +41,12 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
-
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
     });
-  }
-
-  toggleModal(visibility = false) {
-    this.showModal = visibility;
-    this.groupService.emitMenuVisibility('group');
-  }
-
-  deleteGroup() {
-    this.toggleModal(false);
-    this.showLoader = true;
-      this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.toasterService.success(this.resourceService.messages.smsg.m002);
-        this.navigateToPreviousPage();
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m003);
-        this.navigateToPreviousPage();
-      });
-
+    this.groupService.showActivateModal.subscribe(name => {
+      this.toggleModal(true, name);
+    });
   }
 
   navigateToPreviousPage() {
@@ -68,7 +57,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   editGroup() {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), CREATE_GROUP]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), EDIT_GROUP]);
   }
 
   goBack() {
@@ -87,6 +76,45 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
   }
 
+  toggleModal(visibility = false, name?: string) {
+    this.showModal = visibility;
+    this.groupService.emitMenuVisibility('group');
+    this.modalName = name;
+    switch (name) {
+      case actions.DELETE:
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{group name}');
+        break;
+      case actions.DEACTIVATE:
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deactivategrpques, this.resourceService.frmelmnts.msg.deactivategrpmsg);
+        break;
+      case actions.ACTIVATE:
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.activategrpques, this.resourceService.frmelmnts.msg.activategrppopup);
+        break;
+    }
+  }
+
+
+  assignModalStrings(title, msg, replaceStr?) {
+    this.modalTitle = title;
+    this.modalMsg = replaceStr ? msg.replace(replaceStr, this.groupData.name) : msg;
+  }
+
+  handleEvent(event) {
+    this.showModal = false;
+    this.showLoader = !_.isEmpty(event);
+    switch (event) {
+      case actions.DELETE:
+        this.deleteGroup();
+        break;
+      case actions.DEACTIVATE:
+        this.deActivateGroup();
+        break;
+      case actions.ACTIVATE:
+        this.activateGroup();
+        break;
+    }
+  }
+
   leaveGroup() {
     this.showLoader = true;
     /* istanbul ignore else */
@@ -103,6 +131,38 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         });
     }
     // TODO: leave group API integration and add telemetry
+  }
+
+  deleteGroup() {
+      this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.toasterService.success(this.resourceService.messages.smsg.m002);
+        this.navigateToPreviousPage();
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m003);
+        this.navigateToPreviousPage();
+      });
+  }
+
+  deActivateGroup() {
+    this.groupService.deActivateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
+      this.showLoader = false;
+      this.updateEvent.emit();
+    }, err => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.frmelmnts.msg.deactivategrpfailed);
+    });
+  }
+
+  activateGroup() {
+    this.groupService.activateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
+      this.showLoader = false;
+      this.updateEvent.emit();
+    }, err => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.frmelmnts.msg.activategrpfailed);
+    });
   }
 
   ngOnDestroy() {

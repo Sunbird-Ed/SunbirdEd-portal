@@ -1,3 +1,4 @@
+import { IGroup } from './../../interfaces/group';
 import { UserService } from '@sunbird/core';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +8,6 @@ import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS } from '../../interfaces';
-import { IGroup } from '../../interfaces/group';
 import { GroupsService } from '../../services';
 
 @Component({
@@ -201,6 +201,13 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   addTelemetry(id, extra?) {
     this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
+  }
+
+  showAddMember () {
+    if (!this.groupData.active || !this.config.showAddMemberButton) {
+      return false;
+    }
+    return (this.groupData.isAdmin && !this.showSearchResults);
   }
 
   ngOnDestroy() {
