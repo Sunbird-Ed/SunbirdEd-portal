@@ -47,7 +47,7 @@
   <div class="ui container mt-24">
     <div class="sb-card-grid">
       <div class="sbcard sbcard--resource sbcard--course" *ngFor="let group of groupsList">
-        <sb-group-card [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
+        <sb-group-card [isSuspended]="group?.status === 'suspended'" [suspendBadgeText]="resourceService?.frmelmnts?.lbl?.deactivategrp" [group]= "group" [isAdmin]="group?.isAdmin" [initial]="group?.initial" (cardClick)="navigateToDetailPage($event)"></sb-group-card>
       </div>
     </div>
   </div>

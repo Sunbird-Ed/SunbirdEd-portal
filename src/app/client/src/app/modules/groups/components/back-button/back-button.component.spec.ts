@@ -38,7 +38,7 @@ describe('BackButtonComponent', () => {
     spyOn(component['groupService'], 'addTelemetry');
     spyOn(component['groupService'], 'goBack');
     component.goBack();
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('back-button', fakeActivatedRoute.snapshot, []);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'back-button'}, fakeActivatedRoute.snapshot, [{id: '123', type: 'group'}]);
     expect(component['groupService'].goBack).toHaveBeenCalled();
 
   });

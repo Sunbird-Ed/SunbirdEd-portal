@@ -3,7 +3,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormService } from '@sunbird/core';
 import { GroupsService } from '../../../services';
 import { ActivatedRoute } from '@angular/router';
-
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',
@@ -43,7 +43,8 @@ export class ActivityFormComponent implements OnInit {
   }
 
   next() {
-    this.groupService.addTelemetry('activity-type', this.activateRoute.snapshot, [{id: this.selectedActivity.title, type: 'activityType'}]);
+    const cdata = [{id: this.selectedActivity.title, type: 'activityType'}, {id: _.get(this.activateRoute.snapshot, 'params.groupId'), type: 'group'}]
+    this.groupService.addTelemetry({id: 'activity-type'}, this.activateRoute.snapshot, cdata);
     this.nextClick.emit({ activityType: this.selectedActivity.title });
     // TODO: Handle telemetry here
   }

@@ -189,7 +189,7 @@ describe('GroupHeaderComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRoute.snapshot, []);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined}, fakeActivatedRoute.snapshot, [{id: '123', type: 'group'}]);
   });
 
   it('should call leaveGroup on success', () => {
@@ -260,23 +260,26 @@ describe('GroupHeaderComponent', () => {
 
   it('should "call deleteGroup() when event id delete" ', () => {
     spyOn(component, 'deleteGroup');
-    component.handleEvent('delete');
+    component.handleEvent({name: 'delete', action: true});
     expect(component.deleteGroup).toHaveBeenCalled();
     expect(component.showModal).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
 
   it('should "call deActivateGroup() when event id deActivate" ', () => {
     spyOn(component, 'deActivateGroup');
-    component.handleEvent('deActivate');
+    component.handleEvent({name: 'deActivate', action: true});
     expect(component.deActivateGroup).toHaveBeenCalled();
     expect(component.showModal).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
 
   it('should "call activateGroup() when event id activate" ', () => {
     spyOn(component, 'activateGroup');
-    component.handleEvent('activate');
+    component.handleEvent({name: 'activate', action: true});
     expect(component.activateGroup).toHaveBeenCalled();
     expect(component.showModal).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
   });
 
   it ('should call "toggleModal() when showActivateModal event emitted"', () => {

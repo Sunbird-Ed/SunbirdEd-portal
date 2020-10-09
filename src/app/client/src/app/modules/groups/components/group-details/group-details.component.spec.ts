@@ -142,6 +142,6 @@ describe('GroupDetailsComponent', () => {
   it('should emit "EVENT when user clicked on activate group next to msg: activate"', () => {
     spyOn(component['groupService'], 'emitActivateEvent');
     component.handleEvent();
-    expect(component['groupService'].emitActivateEvent).toHaveBeenCalledWith('activate');
+    expect(component['groupService'].emitActivateEvent).toHaveBeenCalledWith('activate', 'activate-group');
   });
 });

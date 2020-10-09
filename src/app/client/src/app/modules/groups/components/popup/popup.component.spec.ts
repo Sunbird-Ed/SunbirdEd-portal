@@ -45,34 +45,38 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit event with name: delete " when param is delete', () => {
+    component.modalName = 'delete';
     spyOn(component.handleEvent, 'emit');
     spyOn(component.modal, 'close');
-    component.emitEvent('delete');
-    expect(component.handleEvent.emit).toHaveBeenCalledWith('delete');
+    component.emitEvent(true);
+    expect(component.handleEvent.emit).toHaveBeenCalledWith({name: 'delete', action: true});
     expect(component.modal.close).toHaveBeenCalled();
   });
 
   it ('should "emit event with name: deActivate " when param is delete', () => {
+    component.modalName = 'deActivate';
     spyOn(component.handleEvent, 'emit');
     spyOn(component.modal, 'close');
-    component.emitEvent('deActivate');
-    expect(component.handleEvent.emit).toHaveBeenCalledWith('deActivate');
+    component.emitEvent(true);
+    expect(component.handleEvent.emit).toHaveBeenCalledWith({name: 'deActivate', action: true});
     expect(component.modal.close).toHaveBeenCalled();
   });
 
   it ('should "emit event with name: activate " when param is delete', () => {
+    component.modalName = 'activate';
     spyOn(component.handleEvent, 'emit');
     spyOn(component.modal, 'close');
-    component.emitEvent('activate');
-    expect(component.handleEvent.emit).toHaveBeenCalledWith('activate');
+    component.emitEvent(true);
+    expect(component.handleEvent.emit).toHaveBeenCalledWith({name: 'activate', action: true});
     expect(component.modal.close).toHaveBeenCalled();
   });
 
   it ('should "emit empty event "', () => {
+    component.modalName = 'delete';
     spyOn(component.handleEvent, 'emit');
     spyOn(component.modal, 'close');
-    component.emitEvent();
-    expect(component.handleEvent.emit).toHaveBeenCalledWith();
+    component.emitEvent(false);
+    expect(component.handleEvent.emit).toHaveBeenCalledWith({name: 'delete', action: false});
     expect(component.modal.close).toHaveBeenCalled();
   });
 

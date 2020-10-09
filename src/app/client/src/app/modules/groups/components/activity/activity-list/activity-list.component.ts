@@ -68,7 +68,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   openActivity(event: any, activityType) {
       if (!this.groupData.active) {
-        this.addTelemetry('activity-suspend-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
+        this.addTelemetry('activity-suspend-card', [], {},
+      {id: _.get(event, 'data.identifier'), type: _.get(event, 'data.primaryCategory'),
+      ver: _.get(event, 'data.pkgVersion') ? `${_.get(event, 'data.pkgVersion')}` : '1.0'});
         return;
       }
       this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
@@ -86,7 +88,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       this.showMenu = !this.showMenu;
       this.groupService.emitMenuVisibility('activity');
       this.selectedActivity = _.get(event, 'data');
-      this.addTelemetry('activity-kebab-menu-open');
+      this.addTelemetry('activity-kebab-menu-open', [], {}, {id: _.get(event, 'data.identifier'), type: _.get(event, 'data.primaryCategory'),
+      ver: _.get(event, 'data.pkgVersion') ? `${_.get(event, 'data.pkgVersion')}` : '1.0'});
   }
 
   toggleModal(show = false) {
@@ -115,8 +118,11 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     // TODO: add telemetry here
   }
 
-  addTelemetry (id, cdata?, extra?) {
-    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata, _.get(this.groupData.id), extra);
+  addTelemetry (id, cdata?, extra?, obj?) {
+      if (cdata) {
+        cdata.push({id: _.get(this.groupData, 'id'), type : 'group'});
+      }
+    this.groupService.addTelemetry({id, extra}, this.activateRoute.snapshot, cdata, obj);
   }
 
   toggleViewAll(visibility: boolean, type?) {

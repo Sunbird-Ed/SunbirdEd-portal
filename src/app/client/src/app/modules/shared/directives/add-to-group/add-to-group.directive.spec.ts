@@ -45,7 +45,9 @@ describe('AddToGroupDirective', () => {
   }
 
   const fakeActivatedRoute = {
-
+    snapshot : {
+      params: {groupId: '123'}
+    }
   };
 
   const elementRefStub = {
@@ -196,14 +198,19 @@ describe('AddToGroupDirective', () => {
       context: {
         env: 'groups',
         cdata: [{
-          type: _.get(directive.groupAddableBlocData, 'params.contentType'),
-          id: directive.identifier
+          type: 'group',
+          id: '123'
         }]
       },
       edata: {
         id: 'add-to-group-button',
         type: 'CLICK',
         pageid: directive.pageId
+      },
+      object: {
+        type: _.get(directive.groupAddableBlocData, 'params.contentType'),
+        id: directive.identifier,
+        ver: '1.0'
       }
     };
     spyOn(telemetryService, 'interact');

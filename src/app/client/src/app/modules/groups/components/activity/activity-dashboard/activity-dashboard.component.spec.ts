@@ -19,14 +19,14 @@ describe('ActivityDashboardComponent', () => {
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({});
     paramsMock = new BehaviorSubject<any>({ groupId: 'abcd12322', activityId: 'do_34534' });
-    get params() { return this.paramsMock.asObservable(); }
-    get queryParams() { return this.queryParamsMock.asObservable(); }
-    snapshot = {
+    snapshotMock: any = {
       params: {},
       data: {
         telemetry: {}
       }
     };
+    get params() { return this.paramsMock.asObservable(); }
+    get queryParams() { return this.queryParamsMock.asObservable(); }
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
@@ -157,9 +157,11 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call addTelemetry', () => {
     const groupService = TestBed.get(GroupsService);
+    component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
-    expect(groupService.addTelemetry).toHaveBeenCalled();
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
+    undefined, [{id: '123', type: 'group'}]);
   });
 
   it('should sort and return members', () => {
@@ -292,11 +294,11 @@ describe('ActivityDashboardComponent', () => {
     expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
 
-  it ('should', fakeAsync(()  => {
+  it ('should return "courses"', fakeAsync(()  => {
     activatedRoute.changeQueryParams({ title: 'ACTIVITY_COURSE_TITLE' });
     tick(100);
     const value = component.showActivityType();
-    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLocaleLowerCase());
+    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
   }));
 
 });

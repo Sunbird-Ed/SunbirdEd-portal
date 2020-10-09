@@ -176,7 +176,10 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+    cdata.push({
+      id: this.groupId, type: 'group'
+    });
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
   }
 
   checkForNestedCourses(activityData) {

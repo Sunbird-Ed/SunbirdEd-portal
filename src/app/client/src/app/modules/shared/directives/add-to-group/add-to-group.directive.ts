@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Directive, OnInit, HostListener, ElementRef, Input, Inject } from '@angular/core';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { filter } from 'rxjs/operators';
@@ -37,6 +38,7 @@ export class AddToGroupDirective implements OnInit {
     public resourceService: ResourceService,
     @Inject('CS_GROUP_SERVICE')
     private csGroupService: CsGroupService,
+    private activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService ) { }
 
   @HostListener('click', ['$event'])
@@ -59,8 +61,7 @@ export class AddToGroupDirective implements OnInit {
   }
 
   addActivityToGroup() {
-    this.sendInteractData('add-to-group-button', {activities_count:
-      (_.get(this.groupAddableBlocData, 'params.groupData.activities')).length});
+    this.sendInteractData('add-to-group-button');
     const isActivityAdded = _.find(_.get(this.groupAddableBlocData, 'params.groupData.activities'), {id: this.identifier});
     if ( _.isEmpty(isActivityAdded)) {
       const request = {
@@ -68,9 +69,14 @@ export class AddToGroupDirective implements OnInit {
       };
         this.csGroupService.addActivities(_.get(this.groupAddableBlocData, 'groupId'), request).subscribe(response => {
         this.goBack();
-        _.get(response, 'error.activities[0].errorCode') === 'EXCEEDED_ACTIVITY_MAX_LIMIT' ?
-        this.showErrorMsg(this.resourceService.messages.groups.emsg.m003) :
-        this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
+        if (_.get(response, 'error.activities[0].errorCode') === 'EXCEEDED_ACTIVITY_MAX_LIMIT') {
+          this.showErrorMsg(this.resourceService.messages.groups.emsg.m003);
+          this.sendInteractData('exceeded-activity-max-limit', {activities_count:
+            (_.get(this.groupAddableBlocData, 'params.groupData.activities')).length});
+        } else {
+          this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess)
+        }
+
       }, error => {
         console.error('Error while adding activity to the group', error);
         this.goBack();
@@ -87,15 +93,22 @@ export class AddToGroupDirective implements OnInit {
     const data = {
       context: {
         env: 'groups',
-        cdata: [{
-          type: _.get(this.groupAddableBlocData, 'params.contentType'),
-          id: this.identifier
-        }]
+        cdata: [
+        {
+          type: 'group',
+          id: _.get(this.activatedRoute.snapshot, 'params.groupId')
+        }
+      ]
       },
       edata: {
         id: id,
         type: 'CLICK',
         pageid: this.pageId
+      },
+      object: {
+        type: _.get(this.groupAddableBlocData, 'params.contentType'),
+        id: this.identifier,
+        ver: '1.0'
       }
     };
     if (extra) {

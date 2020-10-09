@@ -44,7 +44,7 @@
   <div class="sb-modal-actions">
     <button *ngIf="!groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
     [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid || disableBtn}"
-    (click)="onSubmitForm();addTelemetry('submit-group-form', {group_count: groupService?.groupListCount})">
+    (click)="onSubmitForm();">
     <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
       <use xlink:href="./assets/images/sprite.svg#groups"></use>
     </svg></i>
