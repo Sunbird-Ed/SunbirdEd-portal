@@ -1,4 +1,3 @@
-import { IGroup } from './../../interfaces/group';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -6,8 +5,8 @@ import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
+import { IGroup } from './../../interfaces/group';
 import * as _ from 'lodash-es';
-
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',

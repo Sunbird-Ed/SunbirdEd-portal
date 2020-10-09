@@ -82,11 +82,11 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   getMenuData(event, member) {
-      this.showKebabMenu = !this.showKebabMenu;
-      this.groupsService.emitMenuVisibility('member');
-      this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
-      this.selectedMember = member;
-      event.event.stopImmediatePropagation();
+    this.showKebabMenu = !this.showKebabMenu;
+    this.groupsService.emitMenuVisibility('member');
+    this.showKebabMenu ? this.addTelemetry('member-card-menu-show') : this.addTelemetry('member-card-menu-close');
+    this.selectedMember = member;
+    event.event.stopImmediatePropagation();
   }
 
   search(searchKey: string) {
@@ -204,12 +204,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   showAddMember () {
-    if (!this.groupData.active) {
+    if (!this.groupData.active || !this.config.showAddMemberButton) {
       return false;
     }
-    if (this.config.showAddMemberButton) {
-      return (this.groupData.isAdmin && !this.showSearchResults);
-    }
+    return (this.groupData.isAdmin && !this.showSearchResults);
   }
 
   ngOnDestroy() {
