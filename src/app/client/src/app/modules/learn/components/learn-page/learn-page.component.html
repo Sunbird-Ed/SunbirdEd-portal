@@ -9,7 +9,7 @@
       </app-global-search-filter>
 
     </div>
-    <div [ngClass]="SECOND_PANEL_LAYOUT">
+    <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
       <div class="ui container mt-8">
   <div [appTelemetryImpression]="telemetryImpression" *ngIf="!showLoader" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui grid stackable my-0'">
     <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"

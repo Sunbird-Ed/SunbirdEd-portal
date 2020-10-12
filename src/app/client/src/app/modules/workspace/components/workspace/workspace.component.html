@@ -19,7 +19,7 @@
       <div class="relative9" [ngClass]="FIRST_TO_PANEL_LAYOUT">
         <app-workspacesidebar ></app-workspacesidebar>
       </div>
-      <div [ngClass]="SECOND_TO_PANEL_LAYOUT">
+      <div [ngClass]="SECOND_TO_PANEL_LAYOUT" class="w-100">
         <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'workspacesegment'">
           <router-outlet></router-outlet>
         </div>
