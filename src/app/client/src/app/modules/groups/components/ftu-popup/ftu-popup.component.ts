@@ -51,9 +51,7 @@ export class FtuPopupComponent implements OnInit {
   }
 
   addTelemetry (id) {
-    const groupId = _.get(this.activatedRoute.snapshot, 'params.groupId');
-    const cdata = groupId ? [{id: groupId, type : 'group'}] : [];
-    this.groupService.addTelemetry({id}, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id}, this.activatedRoute.snapshot, []);
   }
 
 

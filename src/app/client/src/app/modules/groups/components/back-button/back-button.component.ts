@@ -16,9 +16,7 @@ export class BackButtonComponent {
     private groupService: GroupsService, private activatedRoute: ActivatedRoute) { }
 
   goBack() {
-    const groupId = _.get(this.activatedRoute.snapshot, 'params.groupId');
-    const cdata = groupId ? [{id: groupId , type : 'group'}] : [];
-    this.groupService.addTelemetry({id: 'back-button'}, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id: 'back-button'}, this.activatedRoute.snapshot, []);
     this.groupService.goBack();
   }
 }

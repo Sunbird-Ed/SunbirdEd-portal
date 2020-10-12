@@ -157,7 +157,7 @@ describe('CreateEditGroupComponent', () => {
     component.groupId = '123';
     component.addTelemetry('ftu-popup');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined},
-    fakeActivatedRouteWithGroupId.snapshot, [{id: '123', type: 'group'}]);
+    fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 
   it('should throw on EXCEEDED_GROUP_MAX_LIMIT', () => {

@@ -76,7 +76,11 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDetailPage(event) {
-    this.addTelemetry('group-card', _.get(event, 'data.id'));
+    if (_.get(event, 'data.status') === 'suspended') {
+      this.addTelemetry('suspended-group-card', _.get(event, 'data.id'));
+    } else {
+      this.addTelemetry('group-card', _.get(event, 'data.id'));
+    }
     this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
   }
 
@@ -92,7 +96,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   addTelemetry (id, groupId?) {
     const selectedGroup = _.find(this.groupsList, {id: groupId});
     const obj = selectedGroup ? {id: groupId, type: 'group', ver: '1.0'} : {};
-    this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], obj);
+    this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], groupId, obj);
   }
 
   ngOnDestroy() {

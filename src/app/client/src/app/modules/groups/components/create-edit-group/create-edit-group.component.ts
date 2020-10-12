@@ -138,8 +138,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, extra?) {
-    const cdata = this.groupId ? [{id: this.groupId , type : 'group'}] : [];
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   ngOnDestroy() {

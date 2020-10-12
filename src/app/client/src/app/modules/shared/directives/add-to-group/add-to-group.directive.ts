@@ -95,7 +95,7 @@ export class AddToGroupDirective implements OnInit {
         env: 'groups',
         cdata: [
         {
-          type: 'group',
+          type: 'Group',
           id: _.get(this.activatedRoute.snapshot, 'params.groupId')
         }
       ]

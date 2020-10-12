@@ -53,6 +53,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.initLayout();
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
+    window['csModule'] = CsModule.instance;
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
@@ -196,10 +197,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, memberId?, extra?) {
-    const cdata = memberId ? [{id: this.memberId, type: 'member'}, {id: _.get(this.groupData, 'id'), type : 'group'}] : [
-      {id: _.get(this.groupData, 'id'), type : 'group'}
-    ];
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, _.get(this.groupData, 'id'));
   }
 
 

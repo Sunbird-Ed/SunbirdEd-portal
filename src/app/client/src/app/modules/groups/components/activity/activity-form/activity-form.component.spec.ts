@@ -66,7 +66,7 @@ describe('ActivityFormComponent', () => {
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith(
       {id: 'activity-type'},
       fakeActivatedRoute.snapshot,
-      [{id: 'courses' ,type: 'activityType'}, {id:fakeActivatedRoute.snapshot.params.groupId , type: 'group'}]
+      [{id: 'courses', type: 'activityType'}]
     );
   });
 

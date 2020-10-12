@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { GroupDetailsData } from './group-details.component.spec.data';
 import * as _ from 'lodash-es';
-import { GroupMembershipType } from '@project-sunbird/client-services/models';
+import { CsGroup, GroupMembershipType } from '@project-sunbird/client-services/models';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -75,18 +75,18 @@ describe('GroupDetailsComponent', () => {
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
     component['groupId'] = '123';
-    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1', description: '',
-    membershipType: GroupMembershipType.INVITE_ONLY}));
+    spyOn(groupService, 'getGroupById').and.returnValue(of());
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
-    expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
-    expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
-    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
-    description: '', membershipType: GroupMembershipType.INVITE_ONLY});
-    expect(component.showActivityList).toBeTruthy();
-    expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
-    isCreator: false, isAdmin: false, initial: 'g', description: '',
-    membershipType: GroupMembershipType.INVITE_ONLY});
+
+    groupService.getGroupById('123',true, true, true).subscribe((data: CsGroup) => {
+      expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
+        {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
+        description: '', membershipType: GroupMembershipType.INVITE_ONLY});
+
+        expect(component.showActivityList).toBeTruthy();
+    });
+
   });
 
 
@@ -101,7 +101,7 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should call handleNextClick', () => {
-    component.groupData = GroupDetailsData.groupData;
+    component.groupData = (GroupDetailsData.groupData) as {} as CsGroup;
     const router = TestBed.get(Router);
     component.navigateToAddActivity();
     expect(router.navigate).toHaveBeenCalledWith(['add-activity-content-types'], {

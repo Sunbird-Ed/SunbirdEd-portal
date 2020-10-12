@@ -43,8 +43,7 @@ export class ActivityFormComponent implements OnInit {
   }
 
   next() {
-    const cdata = [{id: this.selectedActivity.title, type: 'activityType'}, {id: _.get(this.activateRoute.snapshot, 'params.groupId'), type: 'group'}]
-    this.groupService.addTelemetry({id: 'activity-type'}, this.activateRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id: 'activity-type'}, this.activateRoute.snapshot, [{id: this.selectedActivity.title, type: 'activityType'}]);
     this.nextClick.emit({ activityType: this.selectedActivity.title });
     // TODO: Handle telemetry here
   }

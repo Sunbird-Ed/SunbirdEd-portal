@@ -9,6 +9,7 @@ import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@s
 import * as _ from 'lodash-es';
 import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
 @Injectable({
   providedIn: 'root'
@@ -187,8 +188,8 @@ getActivity(groupId, activity, mergeGroup) {
     }
 
 
-  addTelemetry(eid: {id: string, extra?: {}}, routeData, cdata, obj?) {
-
+  addTelemetry(eid: {id: string, extra?: {}}, routeData, cdata, groupId?, obj?) {
+    const id = _.get(routeData, 'params.groupId') || groupId;
     const interactData: IInteractEventInput = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
@@ -205,15 +206,18 @@ getActivity(groupId, activity, mergeGroup) {
       interactData.edata.extra = eid.extra;
     }
 
+    if (id) {
+      interactData.context.cdata.push({id: id, type: 'Group'});
+    }
+
     if (obj) {
       interactData['object'] = obj;
     }
-
     this.telemetryService.interact(interactData);
+
   }
 
   getImpressionObject(routeData, url): IImpressionEventInput {
-
     const impressionObj = {
       context: {
         env: _.get(routeData, 'data.telemetry.env')
@@ -294,6 +298,11 @@ getActivity(groupId, activity, mergeGroup) {
 
   activateGroupById(groupId: string) {
     return this.groupCservice.reactivateById(groupId);
+  }
+
+  updateGroupStatus(group: CsGroup, status: GroupEntityStatus) {
+    group.status = status;
+    return group.isActive();
   }
 
 }

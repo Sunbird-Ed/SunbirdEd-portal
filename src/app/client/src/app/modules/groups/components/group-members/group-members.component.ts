@@ -200,8 +200,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, extra?) {
-    const cdata = [{id: this.groupId, type: 'group'}];
-    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   showAddMember () {
