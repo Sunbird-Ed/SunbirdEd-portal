@@ -19,7 +19,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
-  @Output() updateEvent = new EventEmitter();
   showModal = false;
   showEditModal: boolean;
   creator: string;
@@ -163,7 +162,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
       this.showLoader = false;
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, GroupEntityStatus.SUSPENDED);
-      this.updateEvent.emit(GroupEntityStatus.SUSPENDED);
+      this.groupService.emitUpdateEvent(GroupEntityStatus.SUSPENDED);
     }, err => {
       this.addTelemetry('confirm-deactivate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;
@@ -177,7 +176,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
       this.showLoader = false;
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, GroupEntityStatus.ACTIVE);
-      this.updateEvent.emit(GroupEntityStatus.ACTIVE);
+      this.groupService.emitUpdateEvent(GroupEntityStatus.ACTIVE);
     }, err => {
       this.addTelemetry('confirm-activate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;

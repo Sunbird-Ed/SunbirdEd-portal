@@ -3,7 +3,6 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormService } from '@sunbird/core';
 import { GroupsService } from '../../../services';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
 @Component({
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',

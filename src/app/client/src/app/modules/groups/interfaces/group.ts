@@ -1,5 +1,4 @@
-import { GroupMembershipType, GroupEntityStatus, Group, CsGroup, GroupMember } from '@project-sunbird/client-services/models/group';
-
+import { GroupMembershipType, GroupEntityStatus, CsGroup, GroupMember } from '@project-sunbird/client-services/models/group';
 
 export interface IMember {
   members: [

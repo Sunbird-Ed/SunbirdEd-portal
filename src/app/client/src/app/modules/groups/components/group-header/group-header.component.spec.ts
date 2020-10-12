@@ -230,12 +230,12 @@ describe('GroupHeaderComponent', () => {
   it('should "deActivateGroup on SUCCESS" ', () => {
     spyOn(component['groupService'], 'deActivateGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
-    spyOn(component.updateEvent, 'emit');
+    spyOn(component['groupService'], 'emitUpdateEvent');
     component.deActivateGroup();
     component['groupService'].deActivateGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.deactivategrpsuccess);
       expect(component.showLoader).toBeFalsy();
-      expect(component.updateEvent.emit).toHaveBeenCalled();
+      expect(component['groupService'].emitUpdateEvent).toHaveBeenCalledWith(GroupEntityStatus.SUSPENDED);
     });
   });
 
@@ -252,12 +252,12 @@ describe('GroupHeaderComponent', () => {
   it('should "activateGroup on SUCCESS" ', () => {
     spyOn(component['groupService'], 'activateGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
-    spyOn(component.updateEvent, 'emit');
+    spyOn(component['groupService'], 'emitUpdateEvent');
     component.activateGroup();
     component['groupService'].activateGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.activategrpsuccess);
       expect(component.showLoader).toBeFalsy();
-      expect(component.updateEvent.emit).toHaveBeenCalled();
+      expect(component['groupService'].emitUpdateEvent).toHaveBeenCalledWith(GroupEntityStatus.ACTIVE);
     });
   });
 

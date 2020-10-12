@@ -2,8 +2,6 @@ import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
-import { MY_GROUPS } from '../../interfaces';
 
 @Component({
   selector: 'app-back-button',
