@@ -6,7 +6,7 @@ import { Map } from 'leaflet';
 import { of, throwError, zip, BehaviorSubject } from 'rxjs';
 import { mergeMap, map, retry, catchError, skipWhile, pluck, tap } from 'rxjs/operators';
 import * as mappingConfig from '../../config/nameToCodeMapping.json';
-import { cloneDeep, toLower, find, random, pick, groupBy, reduce } from 'lodash-es';
+import { cloneDeep, toLower, find, random, groupBy, reduce } from 'lodash-es';
 
 
 declare var L;
@@ -217,7 +217,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       featureObj['metaData'] = { name: layer };
       const result = reduce(dataset, (accumulator, value) => {
         metrics.forEach(metric => {
-          result[metric] = ((accumulator[metric] || 0) + +value[metric]);
+          accumulator[metric] = (accumulator[metric] || 0) + (+value[metric]);
         });
         return result;
       }, {});
