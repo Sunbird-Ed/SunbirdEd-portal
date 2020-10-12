@@ -98,7 +98,9 @@ describe('GroupMembersComponent', () => {
       }],
       createdBy: '1',
       description: '',
-      membershipType: GroupMembershipType.INVITE_ONLY
+      membershipType: GroupMembershipType.INVITE_ONLY,
+      active: true,
+      isActive() { return true ;}
     };
     spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
     spyOn(component['groupsService'], 'membersList').and.returnValue(of(members));
@@ -305,7 +307,9 @@ describe('GroupMembersComponent', () => {
     component.groupData = {
       id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
       description: '', membershipType: GroupMembershipType.INVITE_ONLY,
-      members: []
+      members: [],
+      active: true,
+      isActive() { return true ;}
     };
     spyOn(component['groupsService'], 'getGroupById').and.returnValue(of(response));
     component.getUpdatedGroupData();

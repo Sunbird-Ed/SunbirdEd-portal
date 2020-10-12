@@ -1,4 +1,3 @@
-import { IGroupUpdate } from './../../interfaces/group';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';

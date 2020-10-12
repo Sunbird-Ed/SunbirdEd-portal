@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-edit-group',
@@ -59,7 +58,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
     this.disableBtn = true;
     this.addTelemetry('submit-group-form');
     if (this.groupForm.valid) {
-      const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
+      const request = _.omit(this.groupForm.value, 'groupToc');
       request.name = _.trim(request.name);
       request.description = _.trim(request.description);
       this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {

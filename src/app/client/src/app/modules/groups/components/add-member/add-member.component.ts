@@ -53,7 +53,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.initLayout();
     this.showModal = !localStorage.getItem('login_members_ftu');
     this.groupData = this.groupsService.groupData;
-    window['csModule'] = CsModule.instance;
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));

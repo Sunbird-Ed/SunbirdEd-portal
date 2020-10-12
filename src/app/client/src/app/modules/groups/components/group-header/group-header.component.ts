@@ -1,4 +1,4 @@
-import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
@@ -17,7 +17,7 @@ import { UserService } from '@sunbird/core';
 export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
   @ViewChild('modal') modal;
-  @Input() groupData: CsGroup;
+  @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
   @Output() updateEvent = new EventEmitter();
   showModal = false;
@@ -47,6 +47,10 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     });
     this.groupService.showActivateModal.subscribe((data: {name: string, eventName: string}) => {
       this.toggleModal(true, data.name, data.eventName);
+    });
+
+    this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
   }
 

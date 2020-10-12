@@ -1,4 +1,3 @@
-import { IGroup } from './../../interfaces/group';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
@@ -25,6 +24,7 @@ export class GroupsService {
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
+  public updateEvent = new EventEmitter();
   public _groupListCount: number;
 
   constructor(
@@ -90,7 +90,7 @@ export class GroupsService {
     return group;
   }
 
-  createGroup(groupData: IGroup) {
+  createGroup(groupData: IGroupCard) {
     return this.groupCservice.create(groupData);
   }
 
@@ -298,6 +298,10 @@ getActivity(groupId, activity, mergeGroup) {
 
   activateGroupById(groupId: string) {
     return this.groupCservice.reactivateById(groupId);
+  }
+
+  emitUpdateEvent(value) {
+    this.updateEvent.emit(value);
   }
 
   updateGroupStatus(group: CsGroup, status: GroupEntityStatus) {

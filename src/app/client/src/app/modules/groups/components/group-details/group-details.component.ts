@@ -1,4 +1,4 @@
-import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
+import { GroupEntityStatus, CsGroup } from '@project-sunbird/client-services/models/group';
 import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { CsGroup } from '@project-sunbird/client-services/models';
+
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -17,7 +17,7 @@ import { CsGroup } from '@project-sunbird/client-services/models';
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('addActivityModal') addActivityModal;
-  groupData: CsGroup;
+  groupData: IGroupCard;
   showModal = false;
   private groupId: string;
   public unsubscribe$ = new Subject<void>();
@@ -56,6 +56,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.getGroupData();
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getGroupData();
+    });
+
+    this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
@@ -120,10 +124,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   handleEvent() {
     this.groupService.emitActivateEvent('activate', 'activate-group' );
-  }
-
-  updateStatus(status: GroupEntityStatus) {
-    this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
   }
 
   ngOnDestroy() {

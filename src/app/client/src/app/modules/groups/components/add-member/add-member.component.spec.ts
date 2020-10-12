@@ -109,7 +109,9 @@ describe('AddMemberComponent', () => {
     }],
     createdBy: '1',
     description: '',
-    membershipType: GroupMembershipType.INVITE_ONLY
+    membershipType: GroupMembershipType.INVITE_ONLY,
+    active: true,
+    isActive() { return true ;}
   };
 
     component.memberId = '2';
