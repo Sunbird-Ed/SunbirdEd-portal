@@ -157,9 +157,11 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call addTelemetry', () => {
     const groupService = TestBed.get(GroupsService);
+    component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
-    expect(groupService.addTelemetry).toHaveBeenCalled();
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
+    { params: {}, data: { telemetry: {} }}, [{id: '123', type: 'group'}]);
   });
 
   it('should sort and return members', () => {
@@ -292,11 +294,11 @@ describe('ActivityDashboardComponent', () => {
     expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
 
-  it ('should', fakeAsync(()  => {
+  it ('should return "courses"', fakeAsync(()  => {
     activatedRoute.changeQueryParams({ title: 'ACTIVITY_COURSE_TITLE' });
     tick(100);
     const value = component.showActivityType();
-    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLocaleLowerCase());
+    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
   }));
 
 });

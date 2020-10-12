@@ -21,8 +21,8 @@ export class PopupComponent {
     this.groupService.emitMenuVisibility('activate');
   }
 
-  emitEvent(name?) {
-    const event = name ? this.handleEvent.emit(name) : this.handleEvent.emit();
+  emitEvent(value) {
+    const event = this.handleEvent.emit({name: this.modalName, action: value});
     this.modal.close();
   }
 }

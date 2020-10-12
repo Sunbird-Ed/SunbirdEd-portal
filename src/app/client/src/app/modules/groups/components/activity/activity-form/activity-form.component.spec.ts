@@ -1,3 +1,4 @@
+import { fakeActivatedRoute } from './../../../services/groups/groups.service.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -9,6 +10,7 @@ import { CoreModule, FormService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 describe('ActivityFormComponent', () => {
   let component: ActivityFormComponent;
@@ -34,6 +36,7 @@ describe('ActivityFormComponent', () => {
         RouterTestingModule],
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     })
       .compileComponents();
@@ -60,7 +63,11 @@ describe('ActivityFormComponent', () => {
     spyOn(component.nextClick, 'emit');
     component.next();
     expect(component.nextClick.emit).toHaveBeenCalledWith({ activityType: 'courses' });
-    expect(component['groupService'].addTelemetry).toHaveBeenCalled();
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith(
+      {id: 'activity-type'},
+      fakeActivatedRoute.snapshot,
+      [{id: 'courses' ,type: 'activityType'}, {id:fakeActivatedRoute.snapshot.params.groupId , type: 'group'}]
+    );
   });
 
   it('should get getFormDetails', () => {

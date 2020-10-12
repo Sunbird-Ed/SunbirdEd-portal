@@ -44,8 +44,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
     });
-    this.groupService.showActivateModal.subscribe(name => {
-      this.toggleModal(true, name);
+    this.groupService.showActivateModal.subscribe((data: {name: string, eventName: string}) => {
+      this.toggleModal(true, data.name, data.eventName);
     });
   }
 
@@ -72,22 +72,26 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.handleFtuModal.emit(visibility);
   }
 
-  addTelemetry(id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  addTelemetry(id, extra?) {
+    const cdata = [{id: _.get(this.groupData, 'id'), type : 'group'}] ;
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
   }
 
-  toggleModal(visibility = false, name?: string) {
+  toggleModal(visibility = false, name?: string, eventName?: string) {
     this.showModal = visibility;
     this.groupService.emitMenuVisibility('group');
     this.modalName = name;
     switch (name) {
       case actions.DELETE:
+        this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{group name}');
         break;
       case actions.DEACTIVATE:
+        this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deactivategrpques, this.resourceService.frmelmnts.msg.deactivategrpmsg);
         break;
       case actions.ACTIVATE:
+        this.addTelemetry((eventName ? eventName : 'activate-group-menu'), {status: _.get(this.groupData, 'status')});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.activategrpques, this.resourceService.frmelmnts.msg.activategrppopup);
         break;
     }
@@ -99,10 +103,14 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.modalMsg = replaceStr ? msg.replace(replaceStr, this.groupData.name) : msg;
   }
 
-  handleEvent(event) {
+  handleEvent(event: {name: string, action?: boolean}) {
     this.showModal = false;
-    this.showLoader = !_.isEmpty(event);
-    switch (event) {
+    this.showLoader = event.action;
+    if (!event.action) {
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')})
+      return;
+    }
+    switch (event.name) {
       case actions.DELETE:
         this.deleteGroup();
         break;
@@ -135,9 +143,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.addTelemetry('confirm-delete-group', {status: 'inactive', prev_status: _.get(this.groupData, 'status')});
         this.toasterService.success(this.resourceService.messages.smsg.m002);
         this.navigateToPreviousPage();
       }, err => {
+        this.addTelemetry('confirm-delete-group', {status: _.get(this.groupData, 'status')});
         this.toasterService.error(this.resourceService.messages.emsg.m003);
         this.navigateToPreviousPage();
       });
@@ -145,10 +155,12 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deActivateGroup() {
     this.groupService.deActivateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.addTelemetry('confirm-deactivate-group', {status: 'suspended', prev_status: _.get(this.groupData, 'status')});
       this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
       this.showLoader = false;
       this.updateEvent.emit();
     }, err => {
+      this.addTelemetry('confirm-deactivate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;
       this.toasterService.error(this.resourceService.frmelmnts.msg.deactivategrpfailed);
     });
@@ -156,10 +168,12 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   activateGroup() {
     this.groupService.activateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.addTelemetry('confirm-activate-group', {status: 'active', prev_status: _.get(this.groupData, 'status')});
       this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
       this.showLoader = false;
       this.updateEvent.emit();
     }, err => {
+      this.addTelemetry('confirm-activate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;
       this.toasterService.error(this.resourceService.frmelmnts.msg.activategrpfailed);
     });

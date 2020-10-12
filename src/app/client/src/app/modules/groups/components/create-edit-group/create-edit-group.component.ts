@@ -57,6 +57,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   onSubmitForm() {
     this.disableBtn = true;
+    this.addTelemetry('submit-group-form');
     if (this.groupForm.valid) {
       const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
       request.name = _.trim(request.name);
@@ -68,12 +69,17 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.groupService.emitCloseForm();
         this.disableBtn = false;
         this.closeModal();
-      }, err => {
+    }, err => {
         this.disableBtn = false;
         const errMsg: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
-        (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') ?
-       this.toasterService.error(this.resourceService.messages.groups.emsg.m001)
-        : this.toasterService.error(this.resourceService.messages.emsg.m001);
+
+        if (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') {
+          this.toasterService.error(this.resourceService.messages.groups.emsg.m001);
+          this.addTelemetry('exceeded-group-max-limit', {group_count: this.groupService.groupListCount});
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m001);
+        }
+
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
           control.markAsTouched({ onlySelf: true });
@@ -132,7 +138,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, extra?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
+    const cdata = this.groupId ? [{id: this.groupId , type : 'group'}] : [];
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
   }
 
   ngOnDestroy() {

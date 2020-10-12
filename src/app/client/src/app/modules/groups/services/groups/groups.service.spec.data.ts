@@ -38,6 +38,7 @@ export const interactObj = {
 export const fakeActivatedRoute = {
   'params': of ({}),
   snapshot: {
+    params: {groupId: '123'},
       data: {
           telemetry: {
               env: 'groups', pageid: 'my-groups', type: 'view', subtype: 'paginate'

@@ -298,7 +298,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+     cdata.push({id: _.get(this.groupData, 'id'), type : 'group'});
+    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId);
   }
 
   private setNoResultMessage() {

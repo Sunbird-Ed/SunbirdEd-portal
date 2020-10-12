@@ -64,7 +64,7 @@ describe('FtuPopupComponent', () => {
   it('should call addTelemetry', () => {
     spyOn(component['groupService'], 'addTelemetry');
     component.addTelemetry('close-ftu');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('close-ftu', fakeActivatedRoute.snapshot, []);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'close-ftu'}, fakeActivatedRoute.snapshot, [{id: '123', type: 'group'}]);
   });
 
 });

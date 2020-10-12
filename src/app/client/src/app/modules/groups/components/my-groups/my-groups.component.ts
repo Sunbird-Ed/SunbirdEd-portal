@@ -90,7 +90,9 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, groupId?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], groupId);
+    const selectedGroup = _.find(this.groupsList, {id: groupId});
+    const obj = selectedGroup ? {id: groupId, type: 'group', ver: '1.0'} : {};
+    this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], obj);
   }
 
   ngOnDestroy() {

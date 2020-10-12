@@ -151,7 +151,8 @@ describe('ActivityListComponent', () => {
         appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
         organisation: ['Prod Custodian Organization'],
         subject: 'Social Science',
-        type: 'Course'
+        type: 'Course',
+        primaryCategory: 'Course'
       }
     };
 
@@ -160,7 +161,8 @@ describe('ActivityListComponent', () => {
     component.getMenuData(eventData);
     expect(component.selectedActivity).toEqual(eventData.data);
     expect(component.showMenu).toBe(true);
-    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open',
+    [], {}, {id: 'do_1235232121343', type: 'Course', ver: '1.0' });
     expect(component['groupService'].emitMenuVisibility).toHaveBeenCalledWith('activity');
   });
 
