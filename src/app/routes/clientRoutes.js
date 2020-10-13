@@ -157,6 +157,7 @@ function getLocals(req) {
     locals.sessionId = null
     locals.userSid = null;
   }
+  locals.userName = _.get(req, 'session.userName') || null;
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language

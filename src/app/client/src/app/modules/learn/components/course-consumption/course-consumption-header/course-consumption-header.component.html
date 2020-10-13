@@ -54,6 +54,16 @@
                 </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
+              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 
+              appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 
+              (click)="openDiscussionForum()"
+              title="Discussion Forum">
+              <!-- <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+              </svg></i> -->
+                Discussion Forum
+            </button>
             </div>
           </div>
         </div>
@@ -122,3 +132,5 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
+<div id="discussionIframe">
+</div>

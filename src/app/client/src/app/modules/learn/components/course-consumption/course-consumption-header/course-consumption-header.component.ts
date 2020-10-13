@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -5,6 +6,7 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import * as  iziModal from 'izimodal/js/iziModal';
 import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
@@ -14,6 +16,7 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
+jQuery.fn.iziModal = iziModal;
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -65,7 +68,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService
+    , public http: HttpClient) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -261,6 +265,27 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
+  }
+
+  openDiscussionForum() {
+    // learn/course/do_1130206856421867521137
+    // iframeURL: `discussions/auth/sunbird-oidc/callback?id=<encrypted_id>&returnTo=/category/<forumId>`,
+    const userName = (<HTMLInputElement>document.getElementById('userName')).value;
+    this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
+      jQuery('#discussionIframe').iziModal({
+        iframe: true,
+        iframeURL: `https://dev.sunbirded.org/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
+        history: false,
+        onClosing: () => {
+          jQuery('#discussionIframe').remove();
+          this.closeDashboard();
+          setTimeout(() => {
+            jQuery('body').append('<div id="discussionIframe"></div>');
+          }, 1000);
+        }
+      }).iziModal('open');
+    });
+
   }
 
   goBack() {
