@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -62,14 +62,20 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   // courseCreator = false;
   isTrackable = false;
   viewDashboard = false;
+  private buildNumber: string;
+  discussionUrl: string = (<HTMLInputElement>document.getElementById('discussionUrl')) ?
+  (<HTMLInputElement>document.getElementById('discussionUrl')).value : '';
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService
-    , public http: HttpClient) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,
+    private _zone: NgZone
+    , public http: HttpClient) {
+      const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+     }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -110,6 +116,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.showResumeCourse = false;
       }
     }, 500);
+    // this.initEditor();
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -267,26 +274,19 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }
   }
 
-  openDiscussionForum() {
-    // learn/course/do_1130206856421867521137
-    // iframeURL: `discussions/auth/sunbird-oidc/callback?id=<encrypted_id>&returnTo=/category/<forumId>`,
-    const userName = (<HTMLInputElement>document.getElementById('userName')).value;
-    this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
-      jQuery('#discussionIframe').iziModal({
-        iframe: true,
-        iframeURL: `https://dev.sunbirded.org/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
-        history: false,
-        onClosing: () => {
-          jQuery('#discussionIframe').remove();
-          this.closeDashboard();
-          setTimeout(() => {
-            jQuery('body').append('<div id="discussionIframe"></div>');
-          }, 1000);
-        }
-      }).iziModal('open');
-    });
 
+  openDiscussionForum() {
+    this.router.navigate(['/discussions']);
   }
+
+  public closeModal() {
+    // this.showLoader = true;
+    if (document.getElementById('discussionIframe')) {
+      document.getElementById('discussionIframe').remove();
+    }
+    this.closeDashboard();
+  }
+
 
   goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;

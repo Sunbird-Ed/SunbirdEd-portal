@@ -424,7 +424,8 @@ module.exports = (app) => {
   });
 
   app.all('/get/user/sessionId', (req, res) => {
-      res.send({id: getEncyptedQueryParams({userName: req.params.userName})})
+    console.log('collectionEditorURL', req.query);
+      res.send({id: getEncyptedQueryParams({userName: req.query.userName})})
   })
 
   app.all('/migrate/account/login/callback', async (req, res) => {
@@ -562,7 +563,7 @@ const getQueryParams = (queryObj) => {
  */
 const getEncyptedQueryParams = (data) => {
   data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
-  return '?id=' + JSON.stringify(encrypt(JSON.stringify(data)));
+  return ('?id=' + JSON.stringify(encrypt(JSON.stringify(data))));
 };
 
 const ssoValidations = async (req, res) => {
