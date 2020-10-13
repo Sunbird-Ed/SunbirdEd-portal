@@ -23,7 +23,8 @@
           <div class="sb-field">
             <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
               [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name"></sui-select-option>
+              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'"
+                                 [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
             </sui-select>
           </div>
         </div>

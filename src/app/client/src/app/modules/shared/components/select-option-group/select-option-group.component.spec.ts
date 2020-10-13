@@ -3,6 +3,7 @@ import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectOptionGroupComponent } from './select-option-group.component';
+import {InterpolatePipe} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
@@ -36,7 +37,7 @@ describe('SelectOptionGroupComponent', () => {
               useClass: TranslateFakeLoader
            }
         })],
-      declarations: [SelectOptionGroupComponent]
+      declarations: [SelectOptionGroupComponent, InterpolatePipe]
     })
       .compileComponents();
   }));
