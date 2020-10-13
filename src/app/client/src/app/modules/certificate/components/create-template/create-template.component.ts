@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-import { FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-create-template',
@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 export class CreateTemplateComponent implements OnInit {
 
   public unsubscribe$ = new Subject<void>();
-  userPreference: FormGroup;
+  // userPreference: FormGroup;
   // selectStateOption: any = [];
   // selectLanguageOption: any = [];
   // selectState:any;
