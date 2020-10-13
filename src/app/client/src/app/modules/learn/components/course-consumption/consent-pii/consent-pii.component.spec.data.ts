@@ -64,6 +64,12 @@ export const MockData = {
         'name': 'Andhra Pradesh',
         'id': '1222633c-bef9-4be8-a42d-edffa5a9c7ab',
         'type': 'state'
+      },
+      {
+        'code': '333',
+        'name': 'Amantura',
+        'id': '1222633c-bef9-4be8-a42d-edffa5a9c7ab',
+        'type': 'block'
       }
     ],
     'userName': 'devuser13',

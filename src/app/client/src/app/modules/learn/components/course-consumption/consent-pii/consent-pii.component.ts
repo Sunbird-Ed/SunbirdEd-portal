@@ -73,11 +73,16 @@ export class ConsentPiiComponent implements OnInit {
 
     if (_.get(this.usersProfile, 'userLocations.length')) {
       this.usersProfile.userLocations.forEach(locDetail => {
-        if (locDetail.type === 'state') {
-          this.userInformation['state'] = locDetail.name;
-        }
-        if (locDetail.type === 'district') {
-          this.userInformation['district'] = locDetail.name;
+        switch (locDetail.type) {
+          case 'state':
+            this.userInformation['state'] = locDetail.name;
+            break;
+          case 'district':
+            this.userInformation['district'] = locDetail.name;
+            break;
+          case 'block':
+            this.userInformation['block'] = locDetail.name;
+            break;
         }
       });
     }
