@@ -1,5 +1,3 @@
-import { HttpClient } from '@angular/common/http';
-
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
@@ -15,7 +13,6 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
-
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -67,7 +64,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,) {
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) {
      }
 
   showJoinModal(event) {
@@ -109,7 +106,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.showResumeCourse = false;
       }
     }, 500);
-    // this.initEditor();
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(

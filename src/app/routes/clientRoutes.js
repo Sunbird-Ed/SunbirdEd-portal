@@ -199,7 +199,6 @@ function getLocals(req) {
   locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
   locals.enableSSO = envHelper.sunbird_enable_sso;
   locals.reportsListVersion = envHelper.reportsListVersion;
-  locals.discussionUrl = 'https://dev.sunbirded.org/discussions';
   return locals
 }
 

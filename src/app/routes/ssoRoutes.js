@@ -563,7 +563,7 @@ const getQueryParams = (queryObj) => {
  */
 const getEncyptedQueryParams = (data) => {
   data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
-  return ('?id=' + JSON.stringify(encrypt(JSON.stringify(data))));
+  return '?id=' + JSON.stringify(encrypt(JSON.stringify(data)));
 };
 
 const ssoValidations = async (req, res) => {
