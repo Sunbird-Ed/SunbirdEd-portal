@@ -49,19 +49,19 @@
               <div class="six wide column py-8">
                 <div class="sb-field">
                   <label for="state">State name</label>
-                  <sui-select class="selection" labelField="name" name="state" [(ngModel)]="selectState"
+                  <!-- <sui-select class="selection" labelField="name" name="state" [(ngModel)]="selectState"
                     placeholder="select state">
                     <sui-select-option *ngFor="let option of selectStateOption" [value]="option">
                     </sui-select-option>
-                  </sui-select>
+                  </sui-select> -->
                 </div>
               </div>
               <div class="six wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <div class="sb-field d-flex flex-dc">
                     <label>signature</label>
-                    <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn"
-                      (click)="showSelectImageModal = !showSelectImageModal">
+                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
+                    <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">
                       Upload state logo
                     </button>
                   </div>
@@ -116,8 +116,8 @@
               <div class="six wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label>signature</label>
-                  <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn"
-                    (click)="showSelectImageModal = !showSelectImageModal">
+                  <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
+                  <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">  
                     Upload signature
                   </button>
                 </div>
@@ -216,7 +216,7 @@
 </div>
 
 <!-- select image modal -->
-<sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+<!-- <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="showSelectImageModal = !showSelectImageModal" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
@@ -346,10 +346,10 @@
       Upload and use
     </button>
   </div>
-</sui-modal>
+</sui-modal> -->
 
 <!--  upload modal -->
-<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+<!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
   #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
@@ -436,4 +436,4 @@
       Back
     </button>
   </div>
-</sui-modal>
+</sui-modal> -->
