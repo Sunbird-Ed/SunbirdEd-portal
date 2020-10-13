@@ -262,7 +262,7 @@ describe('PublicCourseComponent', () => {
     component['fetchPageData']();
     const option = {
       source: 'web', name: 'Course', organisationId: '*',
-      filters: { sort_by: 'name', sortType: 'desc', audience: [ 'Teacher' ] },
+      filters: { sort_by: 'name', sortType: 'desc' },
       fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable' ],
       params: { orgdetails: 'orgName,email' },
       facets: [ 'channel', 'gradeLevel', 'subject', 'medium' ]
