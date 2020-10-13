@@ -1,7 +1,6 @@
 import { PlayerRoutingModule } from './player-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CollectionPlayerComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
 import { BadgingModule } from '@sunbird/badge';
@@ -27,6 +26,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         SharedFeatureModule
     ],
     providers: [],
-    declarations: [CollectionPlayerComponent]
+    declarations: []
 })
 export class PlayerModule { }
