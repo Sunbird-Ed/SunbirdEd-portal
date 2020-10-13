@@ -68,3 +68,12 @@
   </div>
   <!--Actions-->
 </sui-modal>
+<sui-modal
+[isClosable]="false"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal" *ngIf="showLoader">
+    <div class="twelve wide column mt-20">
+        <app-loader></app-loader>
+    </div>
+</sui-modal>
