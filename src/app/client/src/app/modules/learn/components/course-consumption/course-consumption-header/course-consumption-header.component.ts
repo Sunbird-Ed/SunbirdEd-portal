@@ -2,11 +2,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as  iziModal from 'izimodal/js/iziModal';
 import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
@@ -16,7 +15,7 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
-jQuery.fn.iziModal = iziModal;
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -62,19 +61,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   // courseCreator = false;
   isTrackable = false;
   viewDashboard = false;
-  private buildNumber: string;
-  discussionUrl: string = (<HTMLInputElement>document.getElementById('discussionUrl')) ?
-  (<HTMLInputElement>document.getElementById('discussionUrl')).value : '';
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,
-    private _zone: NgZone
-    , public http: HttpClient) {
-      const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,) {
      }
 
   showJoinModal(event) {
@@ -277,14 +270,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   openDiscussionForum() {
     this.router.navigate(['/discussions']);
-  }
-
-  public closeModal() {
-    // this.showLoader = true;
-    if (document.getElementById('discussionIframe')) {
-      document.getElementById('discussionIframe').remove();
-    }
-    this.closeDashboard();
   }
 
 
