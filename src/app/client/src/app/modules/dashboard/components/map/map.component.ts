@@ -219,7 +219,7 @@ export class MapComponent implements OnInit, AfterViewInit {
         metrics.forEach(metric => {
           accumulator[metric] = (accumulator[metric] || 0) + (+value[metric]);
         });
-        return result;
+        return accumulator;
       }, {});
       featureObj.properties = {
         ...(featureObj.properties || {}),
