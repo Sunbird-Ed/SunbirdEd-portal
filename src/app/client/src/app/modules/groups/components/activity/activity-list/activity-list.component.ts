@@ -65,7 +65,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       this.showMenu = data === 'activity';
     });
 
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+    this.resourceService.languageSelected$.pipe(delay(600), takeUntil(this.unsubscribe$)).subscribe(item => {
       this.showLoader = false;
       const response = this.groupService.groupContentsByActivityType(false, this.groupData);
       this.activityList = response.activities;
