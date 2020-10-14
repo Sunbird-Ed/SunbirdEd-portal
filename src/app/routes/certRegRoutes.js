@@ -1,6 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const envHelper = require('../helpers/environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
+const contentProxy = envHelper.CONTENT_PROXY_URL;
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const { logger } = require('@project-sunbird/logger');
@@ -10,7 +11,7 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { getUserCertificates, addTemplateToBatch } = require('./../helpers/certHelper');
 const { logError } = require('./../helpers/utilityService');
 const validate = require('uuid-validate');
-
+// const mockData = require('./mockdata/asset.json');
 
 var certRegServiceApi = {
   searchCertificate: 'certreg/v1/certs/search',
@@ -20,6 +21,45 @@ var certRegServiceApi = {
   addTemplate: 'course/batch/cert/v1/template/add'
 }
 
+const createMock = {
+  "id":"api.content.create",
+  "ver":"3.0",
+  "ts":"2020-10-12T09:31:27ZZ",
+  "params":{
+     "resmsgid":"18b3cf91-6d7e-4bb9-b393-b5385e81b011",
+     "msgid":null,
+     "err":null,
+     "status":"successful",
+     "errmsg":null
+  },
+  "responseCode":"OK",
+  "result":{
+     "identifier":"do_11312763976015872012",
+     "node_id":"do_11312763976015872012",
+     "versionKey":"1602495087918"
+  }
+};
+
+const uploadMock = {
+  "id":"api.content.upload",
+  "ver":"3.0",
+  "ts":"2020-10-12T09:31:32ZZ",
+  "params":{
+     "resmsgid":"bb3bf3fa-d542-45f5-ac9d-a4352c373946",
+     "msgid":null,
+     "err":null,
+     "status":"successful",
+     "errmsg":null
+  },
+  "responseCode":"OK",
+  "result":{
+     "identifier":"do_11312763976015872012",
+     "artifactUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11312763976015872012/artifact/apgov.png",
+     "content_url":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11312763976015872012/artifact/apgov.png",
+     "node_id":"do_11312763976015872012",
+     "versionKey":"1602495092097"
+  }
+}
 
 module.exports = function (app) {
 
@@ -134,4 +174,93 @@ module.exports = function (app) {
         }
       },
     }))
+
+  //   app.all(['/composite/v3/search'],
+  //   proxyUtils.verifyToken(),
+  //   proxy(contentProxy, {
+  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
+  //     proxyReqPathResolver: function (req) {
+  //       let urlParam = req.originalUrl;
+  //       let query = require('url').parse(req.url).query;
+  //       if (query) {
+  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
+  //       } else {
+  //         return require('url').parse(contentProxy + urlParam).path
+  //       }
+  //     },
+  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
+  //       try {
+  //         const mock = mockData.assetList;
+  //         const data = JSON.parse(proxyResData.toString('utf8'));
+  //         if(!data.result){
+  //           res.send(mock)
+  //         }
+  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+  //       } catch (err) {
+  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+  //       }
+  //     }
+  //   }))
+
+  // app.all(['/action/content/v3/create'],
+  //   proxyUtils.verifyToken(),
+  //   proxy(contentProxy, {
+  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
+  //     proxyReqPathResolver: function (req) {
+  //       let urlParam = req.originalUrl;
+  //       let query = require('url').parse(req.url).query;
+  //       if (query) {
+  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
+  //       } else {
+  //         return require('url').parse(contentProxy + urlParam).path
+  //       }
+  //     },
+  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
+  //       try {
+  //         const data = JSON.parse(proxyResData.toString('utf8'));
+  //         // mock data         
+  //         console.log('create------', data)
+  //         if(data.params.err){
+  //           res.send(createMock)
+  //         }
+  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+  //       } catch (err) {
+  //         if(data.params.err){
+  //           res.send(createMock)
+  //         }
+  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+  //       }
+  //     }
+  //   }))
+
+  // app.all(['/content/v3/upload/:id'],
+  //   proxyUtils.verifyToken(),
+  //   proxy(contentProxy, {
+  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
+  //     proxyReqPathResolver: function (req) {
+  //       let urlParam = req.originalUrl;
+  //       let query = require('url').parse(req.url).query;
+  //       if (query) {
+  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
+  //       } else {
+  //         return require('url').parse(contentProxy + urlParam).path
+  //       }
+  //     },
+  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
+  //       try {
+  //         const data = JSON.parse(proxyResData.toString('utf8'));
+  //         // mock data
+  //         console.log('upload------', data)
+  //         if(data.params.err){
+  //           res.send(uploadMock)
+  //         }
+  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+  //       } catch (err) {
+  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+  //       }
+  //     }
+  //   }))
 };

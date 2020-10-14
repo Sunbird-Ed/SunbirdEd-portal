@@ -60,8 +60,8 @@
                 <div class="sb-field d-flex flex-dc">
                   <div class="sb-field d-flex flex-dc">
                     <label>signature</label>
-                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">
+                   
+                    <button  (click)="openSateLogos('LOGO')" class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">
                       Upload state logo
                     </button>
                   </div>
@@ -72,10 +72,10 @@
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">state-logo1.svg</li>
+                  <div *ngFor="let logo of certLogos; let i = index" class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                    <li  class="mb-0 py-8 fnormal">{{logo.name}}</li>
                     <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
+                      <img (click)="removeLogo(i)" src="assets/images/delete-icon.svg">
                       <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
                         Browse
                         <input type="file" class="sb-btn-upload" name="file" />
@@ -85,7 +85,7 @@
                       </button>
                     </div>
                   </div>
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                  <!-- <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">state-logo2.svg</li>
                     <div class="d-flex flex-ai-center">
                       <img src="assets/images/delete-icon.svg">
@@ -97,7 +97,7 @@
                         Add
                       </button>
                     </div>
-                  </div>
+                  </div> -->
                 </ul>
               </div>
             </div>
@@ -116,8 +116,8 @@
               <div class="six wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label>signature</label>
-                  <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">  
+                  
+                  <button (click)="openSignLogos('SIGN')" class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">  
                     Upload signature
                   </button>
                 </div>
@@ -127,10 +127,10 @@
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">signature1.svg</li>
+                  <div *ngFor="let sign of certSigns; let i = index" class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                    <li class="mb-0 py-8 fnormal">{{sign.name}}</li>
                     <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
+                      <img (click)="removeSigns(i)" src="assets/images/delete-icon.svg">
                       <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
                         Browse
                         <input type="file" class="sb-btn-upload" name="file" />
@@ -140,7 +140,7 @@
                       </button>
                     </div>
                   </div>
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                  <!-- <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">signature2.svg</li>
                     <div class="d-flex flex-ai-center">
                       <img src="assets/images/delete-icon.svg">
@@ -152,22 +152,22 @@
                         Add
                       </button>
                     </div>
-                  </div>
+                  </div> -->
                 </ul>
               </div>
             </div>
 
             <div class="sb-g my-24">
               <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
-                <div class="d-flex flex-dc cert-select-image">
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
+                <div *ngFor="let certificate of defaultCertificates" class="d-flex flex-dc cert-select-image">
+                  <img (click)="chooseCertificate(certificate)" [src]="certificate.path" />
+                  <!-- <img src="assets/images/banner-svg/all-banner-img.svg" />
+                  <img src="assets/images/banner-svg/all-banner-img.svg" /> -->
                 </div>
               </div>
               <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
                 <div class="cert-view-image">
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
+                  <img [src]="selectedCertificate?.path" />
                 </div>
               </div>
             </div>
@@ -207,7 +207,7 @@
     <div class="ui stackable grid m-0">
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview certificate</button>
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button>
           <button class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">Save as template</button>
         </div>
       </div>
@@ -216,7 +216,7 @@
 </div>
 
 <!-- select image modal -->
-<!-- <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+<sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="showSelectImageModal = !showSelectImageModal" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
@@ -234,13 +234,20 @@
         <div class="twelve wide column">
           <div class="sb-search-box mb-16">
             <div class="input-div relative">
-              <input class="sb-search-input" type="text" placeholder="Search Image..." />
+              <input class="sb-search-input" [(ngModel)]="imageName" (keyup.enter)="searchImage()" type="text" placeholder="Search Image..." />
               <i class="close icon"></i>
               <i class="search icon"></i>
             </div>
           </div>
           <div class="ui grid m-0">
-            <div class="three wide column p-8">
+            <div class="three wide column p-8" *ngFor="let image of imagesList">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img [src]="image.artifactUrl" (click)="sclectLogo(image)" rel="placeholder">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="three wide column p-8">
               <div class="ui card text-center common-contribution-card">
                 <div class="content">
                   <img src="assets/images/book.png" rel="placeholder">
@@ -267,14 +274,7 @@
                   <img src="assets/images/book.png" rel="placeholder">
                 </div>
               </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </section>
@@ -338,7 +338,7 @@
       <div class="or-toggle">
         <span>or</span></div>
       <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled"
-        (click)="showUploadUserModal = !showUploadUserModal">
+        (click)="selectAndUseLogo()">
         Select
       </button>
     </div>
@@ -346,10 +346,10 @@
       Upload and use
     </button>
   </div>
-</sui-modal> -->
+</sui-modal>
 
 <!--  upload modal -->
-<!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+ <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
   #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
@@ -361,7 +361,7 @@
       <div class='ui stackable grid mt-0'>
         <div class="six wide column">
           <label>Choose or drag and drop your image here *</label>
-          <div class="choose-img-box"><input class="sb-btn-upload upload-btn fnormal" name="file" type="file"></div>
+          <div class="choose-img-box"><input (change)="fileChange($event)" class="sb-btn-upload upload-btn fnormal" name="file" type="file"></div>
           <div class="ui info message">
             <ol class="ui list">
               <li class="fsmall">Allowed types files are: jpeg, jpg ,png</li>
@@ -379,7 +379,7 @@
           </div>
         </div>
         <div class="six wide column pl-0">
-          <div class="border-line">
+          <div [formGroup]="uploadForm" class="border-line">
           <div  class="ui info message p-16">
             <div class="d-flex">
               <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8"> 
@@ -388,7 +388,7 @@
           <div class="sb-field mb-16">
             <label>Asset caption <span class="asterik">*</span></label>
             <div class="sb-field">
-              <input class="sb-form-control is-valid" placeholder="Enter asset caption">
+              <input formControlName="assetCaption" class="sb-form-control is-valid" placeholder="Enter asset caption">
             </div>
           </div>
           <div class="sb-field mb-16">
@@ -401,7 +401,7 @@
           </div>
           <div class="sb-field mb-16">
             <label for="language">Languages</label>
-            <sui-select class="selection" labelField="name" name="language" [(ngModel)]="selectLanguage"
+            <sui-select formControlName="language" class="selection" labelField="name" name="language" [(ngModel)]="selectLanguage"
               placeholder="select">
               <sui-select-option *ngFor="let option of selectLanguageOption" [value]="option">
               </sui-select-option>
@@ -410,7 +410,7 @@
           <div class="sb-field">
             <label>Creator</label>
             <div class="sb-field">
-              <input class="sb-form-control is-valid" placeholder="Enter Name">
+              <input formControlName="creator" class="sb-form-control is-valid" placeholder="Enter Name">
             </div>
           </div>
       </div>
@@ -428,7 +428,7 @@
       <div class="or-toggle">
         <span>or</span></div>
       <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled"
-        (click)="showUploadUserModal = !showUploadUserModal">
+        (click)="upload()">
         Upload and use
       </button>
     </div>
@@ -436,4 +436,4 @@
       Back
     </button>
   </div>
-</sui-modal> -->
+</sui-modal> 
