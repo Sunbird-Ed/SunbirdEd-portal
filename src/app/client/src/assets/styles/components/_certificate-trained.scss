@@ -42,7 +42,7 @@
       text-align: center !important;
     }
     &:first-child{
-      flex: 1 1 40%;
+      flex: 1 1 45%;
       text-align: left;
       @include respond-below(xl) {
         flex: 1 1 35%;
