@@ -92,3 +92,10 @@
   top: calculateRem(48px);
   cursor: pointer;
 }
+
+::ng-deep{
+  iframe {
+    width: 100%;
+    height: 100% !important;
+  }
+}
