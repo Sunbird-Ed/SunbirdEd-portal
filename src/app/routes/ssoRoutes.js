@@ -424,7 +424,6 @@ module.exports = (app) => {
   });
 
   app.all('/get/user/sessionId', (req, res) => {
-    console.log('collectionEditorURL', req.query);
       res.send({id: getEncyptedQueryParams({userName: req.query.userName})})
   })
 
