@@ -25,16 +25,12 @@ export class ForumComponent implements OnInit {
     this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
 
     jQuery('#discussionIframe').iziModal({
-      // title: '',
       iframe: true,
-      iframeURL: `https://dev.sunbirded.org/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
-      // navigateArrows: false,
+      iframeURL: `/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
       fullscreen: true,
       openFullscreen: true,
-      // closeOnEscape: false,
-      // overlayClose: false,
-      // overlay: false,
-      // overlayColor: '',
+      closeButton: true,
+      overlayClose: true,
       history: false,
       onClosing: () => {
         this._zone.run(() => {
@@ -46,9 +42,8 @@ export class ForumComponent implements OnInit {
   }
 
   public closeModal() {
-    // this.showLoader = true;
     if (document.getElementById('discussionIframe')) {
-      document.getElementById('discussionIframe').remove();
+      jQuery('#discussionIframe').iziModal('close');
     }
 }
 
