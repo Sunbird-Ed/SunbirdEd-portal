@@ -585,7 +585,8 @@
         "mimeType",
         "framework",
         "contentType",
-        "trackable"
+        "trackable",
+        "forumId"
       ]
     },
     "dynamicFields": {
