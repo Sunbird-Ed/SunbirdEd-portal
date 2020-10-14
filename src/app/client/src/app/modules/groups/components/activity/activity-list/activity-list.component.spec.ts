@@ -37,6 +37,7 @@ describe('ActivityListComponent', () => {
   }
 
   const resourceBundle = {
+    languageSelected$: of ({}),
     'messages': {
       'fmsg': {
         'm0085': 'Please wait',

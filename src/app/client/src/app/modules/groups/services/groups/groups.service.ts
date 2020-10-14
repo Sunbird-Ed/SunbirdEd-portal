@@ -1,7 +1,8 @@
+import { delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSupportedActivitiesFormField, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
 import { UserService, LearnerService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
@@ -260,12 +261,26 @@ getActivity(groupId, activity, mergeGroup) {
     return this._groupListCount;
   }
 
+  getSelectedLanguageStrings(activity: CsGroupSupportedActivitiesFormField) {
+    this.resourceService.languageSelected$.pipe(delay(600)).subscribe(item => {
+      if (!_.isEmpty(activity) ) {
+            if (activity.translations) {
+              _.find(JSON.parse(activity.translations), (value, key) => {
+                if (item.value === key) {
+                  activity.title = value;
+                }
+            });
+          }
+      }
+    });
+    return activity;
+  }
+
   groupContentsByActivityType (showList, groupData) {
     const activitiesGrouped = _.get(groupData, 'activitiesGrouped');
     if (activitiesGrouped) {
-
         const activityList = activitiesGrouped.reduce((acc, activityGroup) => {
-            if (activityGroup.title !== this.resourceService.frmelmnts.lbl[activityGroup.title]) {
+            activityGroup = this.getSelectedLanguageStrings(activityGroup);
               acc[activityGroup.title] = activityGroup.items.map((i) => {
                 const activity = {
                   ...i.activityInfo,
@@ -276,7 +291,6 @@ getActivity(groupId, activity, mergeGroup) {
               });
               showList = !showList ? Object.values(acc).length > 0 : showList;
               return acc;
-            }
         }, {});
         Object.keys(activityList).forEach(key => activityList[key].length <= 0 && delete activityList[key]);
         return { showList, activities: activityList };
