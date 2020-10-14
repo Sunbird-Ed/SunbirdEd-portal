@@ -42,8 +42,11 @@
       text-align: center !important;
     }
     &:first-child{
-      flex: 1 1 48%;
+      flex: 1 1 40%;
       text-align: left;
+      @include respond-below(xl) {
+        flex: 1 1 35%;
+      }
       @include respond-below(sm) {
         flex:0 0 100%;
       }
@@ -56,8 +59,11 @@
     }
     &:last-child {
       text-align: right;
-      flex: 1 1 12%;
+      flex: 1 1 15%;
       min-width: calculateRem(172px);
+      @include respond-below(xl) {
+        flex: 1 1 25%;
+      }
       html[dir="rtl"] & {
         text-align: left;
       }
