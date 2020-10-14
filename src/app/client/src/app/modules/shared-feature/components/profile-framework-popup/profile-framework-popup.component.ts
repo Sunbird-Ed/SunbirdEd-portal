@@ -212,6 +212,13 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     const selectedOption = _.cloneDeep(this.selectedOption);
     selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
     selectedOption.id = this.frameWorkId;
+    if (selectedOption.board) {
+      _.forEach(selectedOption.board, (data, index) => {
+        if (data === 'CBSE/NCERT') {
+          selectedOption.board[index] = 'CBSE';
+        }
+      });
+    }
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {
