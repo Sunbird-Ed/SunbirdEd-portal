@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -14,6 +15,7 @@ import { groupData, modifiedActivities } from './groups.service.spec.data';
 describe('GroupsService', () => {
   configureTestSuite();
   const resourceBundle = {
+    languageSelected$: of ({}),
     frmelmnts: {
       lbl: {
         you: 'You',
