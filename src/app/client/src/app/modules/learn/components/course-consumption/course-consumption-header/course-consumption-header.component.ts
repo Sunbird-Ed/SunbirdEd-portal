@@ -57,6 +57,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   enableProgress = false;
   // courseMentor = false;
   // courseCreator = false;
+  forumId;
   isTrackable = false;
   viewDashboard = false;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
@@ -72,6 +73,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
@@ -262,6 +264,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
   }
+
+
+  openDiscussionForum() {
+    this.router.navigate(['/discussions'], {queryParams: {forumId: this.forumId} });
+  }
+
 
   goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
