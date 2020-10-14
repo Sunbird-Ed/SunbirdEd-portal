@@ -42,7 +42,7 @@
       text-align: center !important;
     }
     &:first-child{
-      flex: 1 1 50%;
+      flex: 1 1 48%;
       text-align: left;
       @include respond-below(sm) {
         flex:0 0 100%;
@@ -55,9 +55,12 @@
       flex:1 1 20%;
     }
     &:last-child {
-      // text-align: right;
-      flex: 1 1 10%;
+      text-align: right;
+      flex: 1 1 12%;
       min-width: calculateRem(172px);
+      html[dir="rtl"] & {
+        text-align: left;
+      }
     }
   }
 
