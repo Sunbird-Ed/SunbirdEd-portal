@@ -33,7 +33,7 @@ export class ForumComponent implements OnInit, OnDestroy {
     this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
       jQuery('#discussionIframe').iziModal({
         iframe: true,
-        iframeURL: `https://dev.sunbirded.org/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
+        iframeURL: `/discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/15`,
         history: false,
         onClosing: () => {
           this._zone.run(() => {
