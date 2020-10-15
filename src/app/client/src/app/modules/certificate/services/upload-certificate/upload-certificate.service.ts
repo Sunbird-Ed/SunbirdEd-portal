@@ -11,7 +11,10 @@ export class UploadCertificateService {
 
   constructor(public publicDataService: PublicDataService, public http: HttpClient, public configService: ConfigService) { }
 
-
+  /**
+   * To get the asset images (State logos and Signs)
+   * to get the particular asset we need to pass asset naem as query
+   */
   getAssetData(query?) {
     const body = {
       "request": {
@@ -36,6 +39,9 @@ export class UploadCertificateService {
     return this.publicDataService.post(option);
   }
 
+  /**
+  * To create new asset images (State logos and Signs) and it create space 
+  */
   createAsset(reqObj) {
     const body = {
       "request":
@@ -61,11 +67,14 @@ export class UploadCertificateService {
     return this.publicDataService.post(option);
   }
 
+  /**
+   * To upload new asset images (State logos and Signs) into the particular space 
+   */
   storeAsset(file, identifier) {
     const formData = new FormData();
     formData.append('file', file);
     const option = {
-      url: `${this.configService.urlConFig.URLS.CONTENT.UPLOAD}/do_21312922276882022411186`,
+      url: `${this.configService.urlConFig.URLS.CONTENT.UPLOAD}/${identifier}`,
       data: formData
     };
     return this.publicDataService.post(option);

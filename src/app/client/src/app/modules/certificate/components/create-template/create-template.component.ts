@@ -106,6 +106,7 @@ export class CreateTemplateComponent implements OnInit {
     } else {
       this.certSigns.push(data);
     }
+    console.log(this.certLogos)
   }
 
   close() {
@@ -142,6 +143,7 @@ export class CreateTemplateComponent implements OnInit {
 
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml)
+    console.log(this.svgData)
     const logosArray = _.concat(this.certLogos, this.certSigns);
     this.editSVG(logosArray).then(res => {
       this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
@@ -158,7 +160,7 @@ export class CreateTemplateComponent implements OnInit {
           }
           this.toDataURL(data.url).then(res => {
             if (res) {
-              console.log(res)
+              console.log(index)
               const left = (index + 1) * 100;
               let doc = this.svgData;
               let image = doc.createElement("image");
@@ -171,6 +173,7 @@ export class CreateTemplateComponent implements OnInit {
               let element = doc.getElementsByTagName("svg")[0];
               element.appendChild(image);
               if (index === (logosArray.length - 1)) {
+                console.log('resolve')
                 resolve()
               }
             }
@@ -203,7 +206,10 @@ export class CreateTemplateComponent implements OnInit {
   certificateCreation(ev) {
     console.log(ev)
     const url = this.getBase64Data(ev);
-    this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) }
+    this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) };
+    console.log('*******************Final certificate base64 data********************')
+    console.log(url);
+    console.log('********************************************************************')
   }
   getImagePath() {
     if (this.selectedCertificate) {

@@ -1,1 +1,40 @@
-
+{
+    "/api/content/v1/create": {
+        "id": "api.content.create",
+        "ver": "3.0",
+        "ts": "2020-10-12T09:31:27ZZ",
+        "params": {
+            "resmsgid": "18b3cf91-6d7e-4bb9-b393-b5385e81b011",
+            "msgid": null,
+            "err": null,
+            "status": "successful",
+            "errmsg": null
+        },
+        "responseCode": "OK",
+        "result": {
+            "identifier": "do_11312763976015872012",
+            "node_id": "do_11312763976015872012",
+            "versionKey": "1602495087918"
+        }
+    },
+    "/api/content/v1/upload/do_11312763976015872012": {
+        "id": "api.content.upload",
+        "ver": "3.0",
+        "ts": "2020-10-12T09:31:32ZZ",
+        "params": {
+            "resmsgid": "bb3bf3fa-d542-45f5-ac9d-a4352c373946",
+            "msgid": null,
+            "err": null,
+            "status": "successful",
+            "errmsg": null
+        },
+        "responseCode": "OK",
+        "result": {
+            "identifier": "do_11312763976015872012",
+            "artifactUrl": "https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11312763976015872012/artifact/apgov.png",
+            "content_url": "https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11312763976015872012/artifact/apgov.png",
+            "node_id": "do_11312763976015872012",
+            "versionKey": "1602495092097"
+        }
+    }
+}

@@ -6,6 +6,7 @@ const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const contentServiceBaseUrl = envHelper.CONTENT_URL
 const { logger } = require('@project-sunbird/logger');
 const proxyUtils = require('../proxy/proxyUtils.js')
+const mockData = require("./mockData/asset.json")
 
 
 module.exports = function (app) {
@@ -47,9 +48,13 @@ function proxyObj() {
             try {
                 logger.info({ msg: 'proxyObj' + req.method + ' - ' + req.url });
                 const data = JSON.parse(proxyResData.toString('utf8'));
+                if (data.params.err) {
+                    res.send(mockData[req.url])
+                }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
+                res.send(mockData[req.url])
                 const data = JSON.parse(proxyResData.toString('utf8'));
                 logger.error({ msg: 'Error occurred while featching the data', data });
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);

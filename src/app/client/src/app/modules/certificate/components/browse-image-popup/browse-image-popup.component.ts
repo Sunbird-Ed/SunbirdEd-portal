@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -11,7 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
   templateUrl: './browse-image-popup.component.html',
   styleUrls: ['./browse-image-popup.component.scss']
 })
-export class BrowseImagePopupComponent implements OnInit, OnChanges {
+export class BrowseImagePopupComponent implements OnInit {
 
   @Input() showSelectImageModal = false;
   @Input() logoType;
@@ -39,16 +39,10 @@ export class BrowseImagePopupComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.uploadCertificateService.getAssetData().subscribe(res => {
-      console.log(res);
       this.imagesList = res.result.content;
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     });
-  }
-
-  ngOnChanges(){
-    console.log('**********chnage**********')
-    console.log(this.showSelectImageModal)
   }
 
   searchImage() {
@@ -102,8 +96,10 @@ export class BrowseImagePopupComponent implements OnInit, OnChanges {
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      // have to remove one the api is working - start
       const createResponse = error.error;
       this.uploadBlob(createResponse);
+      //  end
     });
   }
 
@@ -120,13 +116,23 @@ export class BrowseImagePopupComponent implements OnInit, OnChanges {
             'type': this.logoType
           }
           this.assetData.emit(image)
+          this.uploadForm.reset();
           this.claseModel()
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
         this.showUploadUserModal = false;
         this.showSelectImageModal = false;
+        // have to remove once the api is working - start
+        const image = {
+          'name': this.uploadForm.controls.assetCaption.value,
+          'url': error.error.result.artifactUrl,
+          'type': this.logoType
+        }
+        this.assetData.emit(image)
+        // end
         this.claseModel()
+        this.uploadForm.reset();
       })
     }
   }
