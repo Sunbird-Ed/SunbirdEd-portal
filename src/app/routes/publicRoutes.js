@@ -19,6 +19,9 @@ module.exports = function (app) {
 
     app.all('/api/content/v1/upload/:id', proxyObj());
 
+    app.all('/api/asset/v1/create', proxyObj());
+
+    app.all('/api/asset/v1/upload/:id', proxyObj());
 
     app.use('/api/*', proxy(contentProxyUrl, {
         proxyReqPathResolver: proxyReqPathResolverMethod
