@@ -26,9 +26,9 @@
           </div>
           <div class="ui grid m-0">
             <div class="three wide column p-8" *ngFor="let image of imagesList">
-              <div class="ui card text-center common-contribution-card">
+              <div [ngClass]="{'active' : image?.versionKey === selectedLogo?.versionKey }" class="ui card text-center common-contribution-card">
                 <div class="content">
-                  <img [src]="image.artifactUrl" (click)="sclectLogo(image)" rel="placeholder">
+                  <img [src]="image.artifactUrl" (click)="selectLogo(image)" rel="placeholder">
                 </div>
               </div>
             </div>

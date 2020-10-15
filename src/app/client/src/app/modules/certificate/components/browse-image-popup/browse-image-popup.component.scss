@@ -92,12 +92,20 @@
         }
   
         .common-contribution-card {
-          box-sizing: border-box;
-          border: .5px solid rgba(123, 134, 244, .39);
-          border-radius: .25rem;
-          background-color: var(--white);
-          box-shadow: none;
-        }
+            box-sizing: border-box;
+            border: .5px solid rgba(123, 134, 244, .39);
+            border-radius: .25rem;
+            background-color: var(--white);
+            box-shadow: none;
+            height: 100%;
+            &:hover {
+              transform: scale(1.03, 1.03);
+           }
+           &:active{border:2px solid var(--primary-400);}
+          }
+        //   .common-contribution-card .active{ 
+        //     border: 1px solid var(--primary-400);
+        //   }
   
         .ui.card {
           margin: 1em 0;

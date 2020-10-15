@@ -131,7 +131,7 @@ export class BrowseImagePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  sclectLogo(logo) {
+  selectLogo(logo) {
     this.selectedLogo = logo;
   }
 

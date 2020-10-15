@@ -8,6 +8,7 @@ import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
+import { fromFetch } from 'rxjs/fetch';
 
 @Component({
   selector: 'app-create-template',
@@ -47,10 +48,6 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   ngOnInit() {
-    // for testing  
-    this.toDataURL('https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212391432703451136165/artifact/boys_1512626063334.png').then(res => {
-      console.log(res)
-    })
     this.selectedCertificate = this.defaultCertificates[0];
     this.initializeFormFields();
     this.getSVGTemplate();
@@ -78,15 +75,6 @@ export class CreateTemplateComponent implements OnInit {
     }
   }
 
-  getBase64Image(img) {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    const dataURL = canvas.toDataURL('image/png');
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
-  }
 
   getSVGTemplate() {
     this.uploadCertificateService.getSvg(this.selectedCertificate.path).then(res => {
@@ -115,12 +103,12 @@ export class CreateTemplateComponent implements OnInit {
   assetData(data) {
     if (data.type === 'LOGO') {
       this.certLogos.push(data);
-    }else{
+    } else {
       this.certSigns.push(data);
     }
   }
 
-  close(){
+  close() {
     this.showSelectImageModal = false;
   }
 
@@ -154,35 +142,54 @@ export class CreateTemplateComponent implements OnInit {
 
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml)
-    const logsArray = _.concat(this.certLogos, this.certSigns);
-    logsArray.forEach((x, index) => {
-      this.editSVG(x, index)
+    const logosArray = _.concat(this.certLogos, this.certSigns);
+    this.editSVG(logosArray).then(res => {
+      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
     })
-    this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
   }
 
-  editSVG(data, index) {
-    if (data) {
-      let bottom = 75;
-      if (data.type === 'SIGN') {
-        bottom = 400
-      }
-      const left = (index + 1) * 100;
-      let doc = this.svgData;
-      let image = doc.createElement("image");
-      image.setAttribute('xlink:href', data.url)
-      image.setAttribute('id', index)
-      image.setAttribute('x', (this.center + left))
-      image.setAttribute('y', bottom)
-      image.setAttribute('width', 100)
-      image.setAttribute('height', 100)
-      let element = doc.getElementsByTagName("svg")[0];
-      element.appendChild(image);
-    }
+  editSVG(logosArray) {
+    return new Promise((resolve, reject) => {
+      logosArray.forEach((data, index) => {
+        if (data) {
+          let bottom = 75;
+          if (data.type === 'SIGN') {
+            bottom = 400
+          }
+          this.toDataURL(data.url).then(res => {
+            if (res) {
+              console.log(res)
+              const left = (index + 1) * 100;
+              let doc = this.svgData;
+              let image = doc.createElement("image");
+              image.setAttribute('xlink:href', res)
+              image.setAttribute('id', index)
+              image.setAttribute('x', (this.center + left))
+              image.setAttribute('y', bottom)
+              image.setAttribute('width', 100)
+              image.setAttribute('height', 100)
+              let element = doc.getElementsByTagName("svg")[0];
+              element.appendChild(image);
+              if (index === (logosArray.length - 1)) {
+                resolve()
+              }
+            }
+          })
+        }
+      })
+    });
+
   }
 
   toDataURL(url) {
-    return fetch(url)
+    return fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => response.blob())
       .then(blob => new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -194,20 +201,9 @@ export class CreateTemplateComponent implements OnInit {
 
 
   certificateCreation(ev) {
+    console.log(ev)
     const url = this.getBase64Data(ev);
     this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) }
-    //  console.log(this.selectedCertificate)
-    // const imageTag = document.getElementById('updatedSvg')
-    // if (imageTag) {
-    //   const data = this.sanitizer.bypassSecurityTrustStyle(url)
-    //   imageTag.setAttribute('src', data)
-    // } 
-    // else {
-    //   const image = document.createElement('img');
-    //   image.setAttribute('src', url)
-    //   image.setAttribute('id', 'updatedSvg')
-    //   document.getElementById('imageSrc').appendChild(image)
-    // }
   }
   getImagePath() {
     if (this.selectedCertificate) {
