@@ -1,0 +1,200 @@
+<!-- select image modal -->
+<sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-imagemodal" appBodyScroll
+  (dismissed)="claseModel()" #modal>
+  <div class="d-flex flex-ai-center sb-modal-header">
+    <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
+    Select Image
+  </div>
+  <div class="sb-modal-content">
+    <div class="image-tabs px-8">
+      <input class="image-input" id="tab1" type="radio" name="tabs" checked>
+      <label for="tab1" class="image-label">My Images</label>
+
+      <input class="image-input" id="tab2" type="radio" name="tabs">
+      <label for="tab2" class="image-label">All Images</label>
+
+      <section id="content1">
+        <div class="twelve wide column">
+          <div class="sb-search-box mb-16">
+            <div class="input-div relative">
+              <input class="sb-search-input" [(ngModel)]="imageName" (keyup.enter)="searchImage()" type="text"
+                placeholder="Search Image..." />
+              <i class="close icon"></i>
+              <i class="search icon"></i>
+            </div>
+          </div>
+          <div class="ui grid m-0">
+            <div class="three wide column p-8" *ngFor="let image of imagesList">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img [src]="image.artifactUrl" (click)="sclectLogo(image)" rel="placeholder">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="content2">
+        <div class="twelve wide column">
+          <div class="sb-search-box mb-16">
+            <div class="input-div relative">
+              <input class="sb-search-input" type="text" placeholder="Search Image..." />
+              <i class="close icon"></i>
+              <i class="search icon"></i>
+            </div>
+          </div>
+          <div class="ui grid m-0">
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img src="assets/images/book.png" rel="placeholder">
+                </div>
+              </div>
+            </div>
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img src="assets/images/book.png" rel="placeholder">
+                </div>
+              </div>
+            </div>
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img src="" rel="placeholder">
+                </div>
+              </div>
+            </div>
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img src="assets/images/book.png" rel="placeholder">
+                </div>
+              </div>
+            </div>
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card">
+                <div class="content">
+                  <img src="assets/images/book.png" rel="placeholder">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
+    <div class="d-flex flex-ai-center relative">
+      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="claseModel()">
+        Cancel
+      </button>
+      <div class="or-toggle">
+        <span>or</span></div>
+      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled" (click)="selectAndUseLogo()">
+        Select
+      </button>
+    </div>
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showUploadUserModal = !showUploadUserModal">
+      Upload and use
+    </button>
+  </div>
+</sui-modal>
+
+<!--  upload modal -->
+<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
+  #modal>
+  <div class="d-flex flex-ai-center sb-modal-header">
+    <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
+    Upload and Use
+  </div>
+  <div class="sb-modal-content px-24 sb-bg-color-white">
+    <div class="twelve wide column">
+      <div class='ui stackable grid mt-0'>
+        <div class="six wide column">
+          <label>Choose or drag and drop your image here *</label>
+          <div class="choose-img-box"><input (change)="fileChange($event)" class="sb-btn-upload upload-btn fnormal"
+              name="file" type="file"></div>
+          <div class="ui info message">
+            <ol class="ui list">
+              <li class="fsmall">Allowed types files are: jpeg, jpg ,png</li>
+              <li class="fsmall">maximum allowed files size: 1MB</li>
+            </ol>
+          </div>
+          <div>
+            <label>Copyrights and License:<span class="asterik">*</span></label>
+            <p class="fsmall">I understand and confirm that all resources and assets created through the content editor
+              or uploaded on the platform shall be available for free and public use without limitations on
+              the platform (web portal,applications and any other end user interface that the platform would be enable)
+              and will be licensed under terms & conditions and policy guidelines of the platform.In doing so, the
+              copyright
+              and license of the original author is not infringed.
+            </p>
+          </div>
+        </div>
+        <div class="six wide column pl-0">
+          <div [formGroup]="uploadForm" class="border-line">
+            <div class="ui info message p-16">
+              <div class="d-flex">
+                <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8">
+                <div class="fsmall" class="drop-img-text fsmall"> Drop or choose the file before entering the details
+                </div>
+              </div>
+            </div>
+
+            <div class="sb-field mb-16">
+              <label>Asset caption <span class="asterik">*</span></label>
+              <div class="sb-field">
+                <input formControlName="assetCaption" class="sb-form-control is-valid"
+                  placeholder="Enter asset caption">
+              </div>
+            </div>
+            <div class="sb-field mb-16">
+              <label>Tags</label>
+              <ul class="tags">
+                <li><a href="#" class="tag">Tag 1</a></li>
+                <li><a href="#" class="tag">Tag 2</a></li>
+                <li><a href="#" class="tag">Tag 3</a></li>
+              </ul>
+            </div>
+            <div class="sb-field mb-16">
+              <label for="language">Languages</label>
+              <sui-select formControlName="language" class="selection" labelField="name" name="language"
+                [(ngModel)]="selectLanguage" placeholder="select">
+                <sui-select-option *ngFor="let option of selectLanguageOption" [value]="option">
+                </sui-select-option>
+              </sui-select>
+            </div>
+            <div class="sb-field">
+              <label>Creator</label>
+              <div class="sb-field">
+                <input formControlName="creator" class="sb-form-control is-valid" placeholder="Enter Name">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
+    <div class="d-flex flex-ai-center relative">
+      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="showUploadUserModal = !showUploadUserModal">
+        Cancel
+      </button>
+      <div class="or-toggle">
+        <span>or</span></div>
+      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled" (click)="upload()">
+        Upload and use
+      </button>
+    </div>
+    <button class="sb-btn sb-btn-normal sb-btn-gray" (click)="showUploadUserModal = !showUploadUserModal">
+      Back
+    </button>
+  </div>
+</sui-modal>

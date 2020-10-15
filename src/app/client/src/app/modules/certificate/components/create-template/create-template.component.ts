@@ -23,15 +23,8 @@ export class CreateTemplateComponent implements OnInit {
   selectState: any;
   selectLanguage: any;
   showSelectImageModal;
-  showUploadUserModal;
 
-
-  imagesList = [];
-  imageName: any;
-  uploadForm: FormGroup;
-  fileObj: any;
   certLogos: any = [];
-  selectedLogo: any;
   certSigns: any = [];
   logoType;
   defaultCertificates = [
@@ -54,27 +47,17 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   ngOnInit() {
-
     // for testing  
     this.toDataURL('https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212391432703451136165/artifact/boys_1512626063334.png').then(res => {
       console.log(res)
     })
-
     this.selectedCertificate = this.defaultCertificates[0];
     this.initializeFormFields();
     this.getSVGTemplate();
-    this.uploadCertificateService.getAssetData().subscribe(res => {
-      console.log(res);
-      this.imagesList = res.result.content;
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-
   }
 
   initializeFormFields() {
     this.createTemplateForm = new FormGroup({
-      // certificateName: new FormControl('', [Validators.required]),
       certificateTitle: new FormControl('', [Validators.required]),
       stateName: new FormControl('', [Validators.required]),
       authoritySignature: new FormControl('', [Validators.required]),
@@ -82,14 +65,6 @@ export class CreateTemplateComponent implements OnInit {
     });
 
     // TODO: Move to a separate component this browse logic;
-    this.uploadForm = new FormGroup({
-      assetCaption: new FormControl(''),
-      tags: new FormControl(''),
-      language: new FormControl(''),
-      creator: new FormControl(''),
-      creatorId: new FormControl('')
-    });
-
     this.createTemplateForm.valueChanges.subscribe(val => {
       this.validateForm();
     });
@@ -136,99 +111,17 @@ export class CreateTemplateComponent implements OnInit {
 
   }
 
-  searchImage() {
-    this.uploadCertificateService.getAssetData(this.imageName).subscribe(res => {
-      if (res && res.result) {
-        this.imagesList = res.result.content;
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  }
 
-  async fileChange(ev) {
-    const imageProperties = await this.getImageProperties(ev);
-    if (imageProperties && imageProperties['size'] < 1) {
-      this.fileObj = ev.target.files[0];
-      const fileName = _.get(this.fileObj, 'name').split('.')[0];
-      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
-      this.uploadForm.patchValue({
-        'assetCaption': fileName,
-        'creator': userName,
-        'creatorId': _.get(this.userService, 'userProfile.id')
-      });
+  assetData(data) {
+    if (data.type === 'LOGO') {
+      this.certLogos.push(data);
+    }else{
+      this.certSigns.push(data);
     }
   }
 
-  getImageProperties(ev) {
-    return new Promise((resolve, reject) => {
-      let imageData;
-      const file = ev.target.files[0];
-      const img = new Image();
-      img.src = window.URL.createObjectURL(file);
-      img.onload = () => {
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-        imageData = {
-          'height': height,
-          'width': width,
-          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
-          'type': file.type
-        }
-        resolve(imageData);
-      };
-    });
-  }
-
-  upload() {
-    this.uploadCertificateService.createAsset(this.uploadForm.value).subscribe(res => {
-      if (res && res.result) {
-        this.uploadBlob(res);
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      const createResponse = error.error;
-      this.uploadBlob(createResponse);
-    });
-  }
-
-  uploadBlob(data) {
-    if (data) {
-      const identifier = _.get(data, 'result.identifier');
-      this.uploadCertificateService.storeAsset(this.fileObj, identifier).subscribe(imageData => {
-        if (imageData.result) {
-          this.showUploadUserModal = false;
-          this.showSelectImageModal = false;
-          const image = {
-            'name': this.uploadForm.controls.assetCaption,
-            'url': imageData.result.artifactUrl,
-            'type': this.logoType
-          }
-          if (this.logoType === 'LOGO') {
-            this.certLogos.push(image)
-          } else {
-            this.certSigns.push(image)
-          }
-        }
-      }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        // const uploadedImageData = error.error;
-        // console.log(uploadedImageData)
-        // this.showUploadUserModal = false;
-        // this.showSelectImageModal = false;
-        // const image = {
-        //   'name': this.uploadForm.controls.assetCaption.value,
-        //   'url': uploadedImageData.result.artifactUrl,
-        //   'type': this.logoType
-        // }
-        // if (this.logoType === 'LOGO') {
-        //   this.certLogos.push(image)
-        // } else {
-        //   this.certSigns.push(image)
-        // }
-        // console.log(this.certLogos)
-      })
-    }
+  close(){
+    this.showSelectImageModal = false;
   }
 
   removeLogo(index) {
@@ -237,24 +130,6 @@ export class CreateTemplateComponent implements OnInit {
 
   removeSigns(index) {
     this.certSigns.splice(index, 1)
-  }
-
-  sclectLogo(logo) {
-    this.selectedLogo = logo;
-  }
-
-  selectAndUseLogo() {
-    this.showSelectImageModal = false;
-    const image = {
-      'name': this.selectedLogo.name,
-      'url': this.selectedLogo.artifactUrl,
-      'type': this.logoType
-    }
-    if (this.logoType === 'LOGO') {
-      this.certLogos.push(image)
-    } else {
-      this.certSigns.push(image)
-    }
   }
 
   openSateLogos(type) {
@@ -276,7 +151,6 @@ export class CreateTemplateComponent implements OnInit {
     const html = tag.toString();
     return new DOMParser().parseFromString(html, "text/html");
   }
-
 
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml)
