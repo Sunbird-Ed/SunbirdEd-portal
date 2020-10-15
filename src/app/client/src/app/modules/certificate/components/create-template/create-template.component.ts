@@ -3,11 +3,11 @@ import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { MockData } from './create-template.component.data';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 
 @Component({
   selector: 'app-create-template',
@@ -17,7 +17,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class CreateTemplateComponent implements OnInit {
 
   public unsubscribe$ = new Subject<void>();
-  // userPreference: FormGroup;
+  createTemplateForm: FormGroup;
   selectStateOption: any = [];
   selectLanguageOption: any = [];
   selectState: any;
@@ -43,54 +43,17 @@ export class CreateTemplateComponent implements OnInit {
   logoHtml;
   svgData;
   center = 150;
+  disableCreateTemplate = true;
+  certConfigModalInstance = new CertConfigModel();
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
     private sanitizer: DomSanitizer,
     public toasterService: ToasterService,
     public resourceService: ResourceService) {
-    this.uploadForm = new FormGroup({
-      assetCaption: new FormControl(''),
-      tags: new FormControl(''),
-      language: new FormControl(''),
-      creator: new FormControl(''),
-      creatorId: new FormControl('')
-    })
   }
 
   ngOnInit() {
-    // this.selectStateOption = [
-    //   {
-    //     name: 'Karnataka',
-    //     value: '0'
-    //   },
-    //   {
-    //     name: 'Maharashtra',
-    //     value: '1'
-    //    },
-    //    {
-    //     name: 'Tamil Nadu',
-    //     value: '2'
-    //   },
-    //   {
-    //     name: 'Andhra Pradesh',
-    //     value: '3'
-    //    },
-    // ];
-    // this.selectLanguageOption = [
-    //   {
-    //     name: 'All',
-    //     value: '0'
-    //   },
-    //   {
-    //     name: 'hindi',
-    //     value: '1'
-    //    },
-    //    {
-    //     name: 'English',
-    //     value: '2'
-    //   }
-    // ];
 
     // for testing  
     this.toDataURL('https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212391432703451136165/artifact/boys_1512626063334.png').then(res => {
@@ -98,22 +61,69 @@ export class CreateTemplateComponent implements OnInit {
     })
 
     this.selectedCertificate = this.defaultCertificates[0];
-    this.getSVGTemplate()
+    this.initializeFormFields();
+    this.getSVGTemplate();
+    const img = new Image();
+    img.src = 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21299382129774592011428/artifact/0_d4u2l9.png';
+    const data = this.getBase64Data(img);
+    console.log(data);
     this.uploadCertificateService.getAssetData().subscribe(res => {
-      if (res && res.result) {
-        this.imagesList = res.result.content;
-      }
+      console.log(res);
+      this.imagesList = MockData.searchData.result.content;
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+      this.imagesList = MockData.searchData.result.content;
+      // console.log(allImages)
+    });
 
+  }
+
+  initializeFormFields() {
+    this.createTemplateForm = new FormGroup({
+      // certificateName: new FormControl('', [Validators.required]),
+      certificateTitle: new FormControl('', [Validators.required]),
+      stateName: new FormControl('', [Validators.required]),
+      authoritySignature: new FormControl('', [Validators.required]),
+      allowPermission: new FormControl('', [Validators.required])
+    });
+
+    // TODO: Move to a separate component this browse logic;
+    this.uploadForm = new FormGroup({
+      assetCaption: new FormControl(''),
+      tags: new FormControl(''),
+      language: new FormControl(''),
+      creator: new FormControl(''),
+      creatorId: new FormControl('')
+    });
+
+    this.createTemplateForm.valueChanges.subscribe(val => {
+      this.validateForm();
+    });
+  }
+
+  validateForm() {
+    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')) {
+      this.disableCreateTemplate = false;
+    } else {
+      this.disableCreateTemplate = true;
+    }
+  }
+
+  getBase64Image(img) {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const dataURL = canvas.toDataURL('image/png');
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
   }
 
   getSVGTemplate() {
     this.uploadCertificateService.getSvg(this.selectedCertificate.path).then(res => {
       this.svgFile = res;
       this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(this.svgFile);
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -122,7 +132,10 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   createCertTemplate() {
+    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'));
+    console.log('request body to make create cert api call', request);
 
+    // TODO: Api call to make cert create: api/asset/v1/create
   }
 
   onTemplateChange() {
@@ -136,7 +149,7 @@ export class CreateTemplateComponent implements OnInit {
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
   }
 
   async fileChange(ev) {
@@ -144,12 +157,12 @@ export class CreateTemplateComponent implements OnInit {
     if (imageProperties && imageProperties['size'] < 1) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
-      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`
+      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
       this.uploadForm.patchValue({
         'assetCaption': fileName,
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
-      })
+      });
     }
   }
 
@@ -165,12 +178,12 @@ export class CreateTemplateComponent implements OnInit {
         imageData = {
           'height': height,
           'width': width,
-          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), //file.size,
+          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
           'type': file.type
         }
         resolve(imageData);
-      }
-    })
+      };
+    });
   }
 
   upload() {
@@ -182,7 +195,7 @@ export class CreateTemplateComponent implements OnInit {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       const createResponse = error.error;
       this.uploadBlob(createResponse);
-    })
+    });
   }
 
   uploadBlob(data) {

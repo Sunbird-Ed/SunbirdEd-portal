@@ -1,3 +1,4 @@
+<!-- Header section-->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
     <div class="py-8 d-flex flex-ai-center">
@@ -12,32 +13,34 @@
     </div>
   </div>
 </div>
+<!-- / Header section-->
 
+<!-- Create template form-->
 <div class="certificate-container py-16 cc-player__content-header relative9">
   <div class="ui container">
     <div class="sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-13">
         <div class="certificate-content-area sb-bg-color-white p-24">
-          <form>
-            <div class="fs-1">Edit template</div>
-            <div class='ui stackable grid mt-0'>
+          <form [formGroup]="createTemplateForm" >
+            <div class="fs-1">Create template</div>
+            <!-- <div class='ui stackable grid mt-0'>
               <div class="six wide column">
                 <div class="sb-field">
                   <label>Certificate name</label>
                   <div class="sb-field">
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="certificateName" class="sb-form-control is-valid">
                     <small class="text-success">help text information</small>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class='ui stackable grid mt-0'>
               <div class="six wide column">
                 <div class="sb-field">
                   <label>Certificate title</label>
                   <div class="sb-field">
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="certificateTitle" class="sb-form-control is-valid">
                     <small class="text-success">help text information</small>
                   </div>
                 </div>
@@ -49,6 +52,10 @@
               <div class="six wide column py-8">
                 <div class="sb-field">
                   <label for="state">State name</label>
+                  <div class="sb-field">
+                    <input formControlName="stateName" class="sb-form-control is-valid">
+                    <small class="text-success">help text information</small>
+                  </div>
                   <!-- <sui-select class="selection" labelField="name" name="state" [(ngModel)]="selectState"
                     placeholder="select state">
                     <sui-select-option *ngFor="let option of selectStateOption" [value]="option">
@@ -108,7 +115,7 @@
                 <div class="sb-field">
                   <label>Signature authority name</label>
                   <div class="sb-field">
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="authoritySignature" class="sb-form-control is-valid">
                     <small class="text-success">help text information</small>
                   </div>
                 </div>
@@ -116,7 +123,6 @@
               <div class="six wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label>signature</label>
-                  
                   <button (click)="openSignLogos('SIGN')" class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">  
                     Upload signature
                   </button>
@@ -159,7 +165,7 @@
 
             <div class="sb-g my-24">
               <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
-                <div *ngFor="let certificate of defaultCertificates" class="d-flex flex-dc cert-select-image">
+                <div [ngClass]="{'active': selectedCertificate === certificate }" *ngFor="let certificate of defaultCertificates" class="d-flex flex-dc cert-select-image">
                   <img (click)="chooseCertificate(certificate)" [src]="certificate.path" />
                   <!-- <img src="assets/images/banner-svg/all-banner-img.svg" />
                   <img src="assets/images/banner-svg/all-banner-img.svg" /> -->
@@ -208,12 +214,14 @@
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">Save as template</button>
+          <button (click)="createCertTemplate()" [ngClass]="{'sb-btn-disabled': disableCreateTemplate }" [disabled]="disableCreateTemplate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">Save as template</button>
         </div>
       </div>
     </div>
   </div>
 </div>
+<!-- / Create template form-->
+
 
 <!-- select image modal -->
 <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"

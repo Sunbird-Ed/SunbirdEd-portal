@@ -1,4 +1,5 @@
 @import "mixins/mixins";
+@import 'variables';
 
 :host ::ng-deep {
   html[layout='joy'] {
@@ -220,6 +221,10 @@
       }
     }
   }
+}
+
+.active {
+  border: calculateRem(1px) solid var(--secondary-color);
 }
 
 // upload and use modal css //
