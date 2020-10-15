@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
-import { ActionService } from '@sunbird/core';
+import { PublicDataService } from '@sunbird/core';
 import { HttpClient } from '@angular/common/http'
 
 
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http'
 })
 export class UploadCertificateService {
 
-  constructor(public actionService: ActionService, public http: HttpClient, public configService: ConfigService) { }
+  constructor(public publicDataService: PublicDataService, public http: HttpClient, public configService: ConfigService) { }
 
 
   getAssetData(query?) {
@@ -17,7 +17,7 @@ export class UploadCertificateService {
       "request": {
         "filters": {
           "mediaType": ["image"],
-          "primaryCategory": ["CertAsset"],
+          "contentType": ["Asset"],
           "compatibilityLevel": { "min": 1, "max": 2 },
           "status": ["Live"],
           "channel": "b00bc992ef25f1a9a8d63291e20efc8d"
@@ -30,10 +30,10 @@ export class UploadCertificateService {
       body['request']['query'] = query;
     }
     const option = {
-      url: this.configService.urlConFig.URLS.COMPOSITE.SEARCH_IMAGES,
+      url: this.configService.urlConFig.URLS.CONTENT.SEARCH,
       data: body
     };
-    return this.actionService.post(option);
+    return this.publicDataService.post(option);
   }
 
   createAsset(reqObj) {
@@ -47,7 +47,7 @@ export class UploadCertificateService {
           "code": "org.ekstep0.9002440445885993",
           "mimeType": "image/png",
           "mediaType": "image",
-          "contentType": "CertAsset",
+          "contentType": "Asset",
           "osId": "org.ekstep.quiz.app",
           "language": ["English"]
         }
@@ -55,20 +55,20 @@ export class UploadCertificateService {
     }
 
     const option = {
-      url: this.configService.urlConFig.URLS.ASSET.CREATE,
+      url: this.configService.urlConFig.URLS.CONTENT.CREATE,
       data: body
     };
-    return this.actionService.post(option);
+    return this.publicDataService.post(option);
   }
 
   storeAsset(file, identifier) {
     const formData = new FormData();
     formData.append('file', file);
     const option = {
-      url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${identifier}`,
+      url: `${this.configService.urlConFig.URLS.CONTENT.UPLOAD}/do_21312922276882022411186`,
       data: formData
     };
-    return this.actionService.post(option);
+    return this.publicDataService.post(option);
   }
 
   getSvg(path): Promise<any> {

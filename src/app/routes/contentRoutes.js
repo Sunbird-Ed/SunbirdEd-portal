@@ -47,7 +47,6 @@ module.exports = (app) => {
                 proxyReqPathResolver: (req) => {
                     let urlParam = req.params['0']
                     let query = require('url').parse(req.url).query
-                    console.log('-----------------------------**************************--------------------------------', query)
                     if (query) {
                         return require('url').parse(contentURL + urlParam + '?' + query).path
                     } else {

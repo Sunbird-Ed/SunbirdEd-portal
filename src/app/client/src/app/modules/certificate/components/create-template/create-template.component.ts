@@ -35,9 +35,9 @@ export class CreateTemplateComponent implements OnInit {
   certSigns: any = [];
   logoType;
   defaultCertificates = [
-    { path: 'assets/images/certificate-frame.svg' },
-    { path: 'assets/images/certificate-frame.svg' },
-    { path: 'assets/images/certificate-frame.svg' }]
+    { path: 'assets/images/gj.svg' },
+    { path: 'assets/images/dl.svg' },
+    { path: 'assets/images/jh.svg' }]
   selectedCertificate: any;
   svgFile;
   logoHtml;
@@ -92,32 +92,21 @@ export class CreateTemplateComponent implements OnInit {
     //   }
     // ];
 
-    this.selectedCertificate = this.defaultCertificates[0];
-    this.getSVGTemplate()
-    const img = new Image();
-    img.src = "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21299382129774592011428/artifact/0_d4u2l9.png";
-    const data =this.getBase64Data(img);
-    console.log(data)
-    this.uploadCertificateService.getAssetData().subscribe(res => {
+    // for testing  
+    this.toDataURL('https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_212391432703451136165/artifact/boys_1512626063334.png').then(res => {
       console.log(res)
-      this.imagesList = MockData.searchData.result.content;
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      this.imagesList = MockData.searchData.result.content;
-      // console.log(allImages)
     })
 
-  }
+    this.selectedCertificate = this.defaultCertificates[0];
+    this.getSVGTemplate()
+    this.uploadCertificateService.getAssetData().subscribe(res => {
+      if (res && res.result) {
+        this.imagesList = res.result.content;
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    })
 
-
-  getBase64Image(img) {
-    var canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
 
   getSVGTemplate() {
@@ -143,17 +132,15 @@ export class CreateTemplateComponent implements OnInit {
   searchImage() {
     this.uploadCertificateService.getAssetData(this.imageName).subscribe(res => {
       if (res && res.result) {
-        this.imagesList = this.imageName ? MockData.searchSingleImage.result.content : MockData.searchData.result.content;
+        this.imagesList = res.result.content;
       }
     }, error => {
-      console.log(error)
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     })
   }
 
   async fileChange(ev) {
     const imageProperties = await this.getImageProperties(ev);
-    console.log(imageProperties)
     if (imageProperties && imageProperties['size'] < 1) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
@@ -181,7 +168,6 @@ export class CreateTemplateComponent implements OnInit {
           'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), //file.size,
           'type': file.type
         }
-        console.log(imageData)
         resolve(imageData);
       }
     })
@@ -203,35 +189,37 @@ export class CreateTemplateComponent implements OnInit {
     if (data) {
       const identifier = _.get(data, 'result.identifier');
       this.uploadCertificateService.storeAsset(this.fileObj, identifier).subscribe(imageData => {
-        console.log('image data', imageData);
-        this.showUploadUserModal = false;
-        this.showSelectImageModal = false;
-        const image = {
-          'name': this.uploadForm.controls.assetCaption,
-          'url': imageData.result.artifactUrl,
-          'type': this.logoType
-        }
-        if (this.logoType === 'LOGO') {
-          this.certLogos.push(image)
-        } else {
-          this.certSigns.push(image)
+        if (imageData.result) {
+          this.showUploadUserModal = false;
+          this.showSelectImageModal = false;
+          const image = {
+            'name': this.uploadForm.controls.assetCaption,
+            'url': imageData.result.artifactUrl,
+            'type': this.logoType
+          }
+          if (this.logoType === 'LOGO') {
+            this.certLogos.push(image)
+          } else {
+            this.certSigns.push(image)
+          }
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        const uploadedImageData = error.error;
-        console.log(uploadedImageData)
-        this.showUploadUserModal = false;
-        this.showSelectImageModal = false;
-        const image = {
-          'name': this.uploadForm.controls.assetCaption.value,
-          'url': uploadedImageData.result.artifactUrl,
-          'type': this.logoType
-        }
-        if (this.logoType === 'LOGO') {
-          this.certLogos.push(image)
-        } else {
-          this.certSigns.push(image)
-        }
+        // const uploadedImageData = error.error;
+        // console.log(uploadedImageData)
+        // this.showUploadUserModal = false;
+        // this.showSelectImageModal = false;
+        // const image = {
+        //   'name': this.uploadForm.controls.assetCaption.value,
+        //   'url': uploadedImageData.result.artifactUrl,
+        //   'type': this.logoType
+        // }
+        // if (this.logoType === 'LOGO') {
+        //   this.certLogos.push(image)
+        // } else {
+        //   this.certSigns.push(image)
+        // }
+        // console.log(this.certLogos)
       })
     }
   }
@@ -282,27 +270,24 @@ export class CreateTemplateComponent implements OnInit {
     return new DOMParser().parseFromString(html, "text/html");
   }
 
+
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml)
     const logsArray = _.concat(this.certLogos, this.certSigns);
     logsArray.forEach((x, index) => {
       this.editSVG(x, index)
     })
-    console.log(this.svgData.getElementsByTagName('svg')[0])
     this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
   }
 
   editSVG(data, index) {
     if (data) {
-      console.log(data)
       let bottom = 75;
       if (data.type === 'SIGN') {
         bottom = 400
       }
-
       const left = (index + 1) * 100;
       let doc = this.svgData;
-      console.log(this.svgData)
       let image = doc.createElement("image");
       image.setAttribute('xlink:href', data.url)
       image.setAttribute('id', index)
@@ -310,25 +295,44 @@ export class CreateTemplateComponent implements OnInit {
       image.setAttribute('y', bottom)
       image.setAttribute('width', 100)
       image.setAttribute('height', 100)
-      let element = doc.getElementById("Layer_1");
+      let element = doc.getElementsByTagName("svg")[0];
       element.appendChild(image);
     }
   }
 
-  certificateCreation(ev) {
-    console.log(ev)
-    const url = this.getBase64Data(ev);
-    const imageTag = document.getElementById('updatedSvg')
-    if (imageTag) {
-      imageTag.setAttribute('src', url)
-    } else {
-      const image = document.createElement('img');
-      image.setAttribute('src', url)
-      image.setAttribute('id', 'updatedSvg')
-      // document.getElementById('imageSrc').appendChild(image)
-    }
+  toDataURL(url) {
+    return fetch(url)
+      .then(response => response.blob())
+      .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onloadend = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+      }))
   }
 
+
+  certificateCreation(ev) {
+    const url = this.getBase64Data(ev);
+    this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) }
+    //  console.log(this.selectedCertificate)
+    // const imageTag = document.getElementById('updatedSvg')
+    // if (imageTag) {
+    //   const data = this.sanitizer.bypassSecurityTrustStyle(url)
+    //   imageTag.setAttribute('src', data)
+    // } 
+    // else {
+    //   const image = document.createElement('img');
+    //   image.setAttribute('src', url)
+    //   image.setAttribute('id', 'updatedSvg')
+    //   document.getElementById('imageSrc').appendChild(image)
+    // }
+  }
+  getImagePath() {
+    if (this.selectedCertificate) {
+      return this.selectedCertificate.path;
+    }
+  }
   getBase64Data(ev) {
     const div = document.createElement('div');
     div.appendChild(ev.cloneNode(true));

@@ -71,6 +71,16 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+ 
+    '/content/v1/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/content/content/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [

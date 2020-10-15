@@ -151,6 +151,7 @@
       "RETIRE": "content/v1/retire",
       "REJECT": "content/v1/reject",
       "FLAG": "content/v1/flag",
+      "UPLOAD": "content/v1/upload",
       "ACCEPT_FLAG": "content/v1/flag/accept",
       "DISCARD_FLAG": "content/v1/flag/reject",
       "COPY": "content/v1/copy",
