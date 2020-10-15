@@ -63,17 +63,11 @@ export class CreateTemplateComponent implements OnInit {
     this.selectedCertificate = this.defaultCertificates[0];
     this.initializeFormFields();
     this.getSVGTemplate();
-    const img = new Image();
-    img.src = 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21299382129774592011428/artifact/0_d4u2l9.png';
-    const data = this.getBase64Data(img);
-    console.log(data);
     this.uploadCertificateService.getAssetData().subscribe(res => {
       console.log(res);
-      this.imagesList = MockData.searchData.result.content;
+      this.imagesList = res.result.content;
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      this.imagesList = MockData.searchData.result.content;
-      // console.log(allImages)
     });
 
   }
