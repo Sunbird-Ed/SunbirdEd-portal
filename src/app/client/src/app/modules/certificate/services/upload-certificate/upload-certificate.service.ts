@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ConfigService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import { ContentService } from './../../../../modules/core/services/content/content.service';
 
 
 @Injectable({
@@ -9,7 +10,12 @@ import { HttpClient } from '@angular/common/http'
 })
 export class UploadCertificateService {
 
-  constructor(public publicDataService: PublicDataService, public http: HttpClient, public configService: ConfigService) { }
+  constructor(
+    public publicDataService: PublicDataService,
+    public http: HttpClient,
+    public configService: ConfigService,
+    public contentService: ContentService
+  ) { }
 
   /**
    * To get the asset images (State logos and Signs)
@@ -40,7 +46,7 @@ export class UploadCertificateService {
   }
 
   /**
-  * To create new asset images (State logos and Signs) and it create space 
+  * To create new asset images (State logos and Signs) and it create space
   */
   createAsset(reqObj) {
     const body = {
@@ -58,7 +64,7 @@ export class UploadCertificateService {
           "language": ["English"]
         }
       }
-    }
+    };
 
     const option = {
       url: this.configService.urlConFig.URLS.CONTENT.CREATE,
@@ -68,7 +74,7 @@ export class UploadCertificateService {
   }
 
   /**
-   * To upload new asset images (State logos and Signs) into the particular space 
+   * To upload new asset images (State logos and Signs) into the particular space
    */
   storeAsset(file, identifier) {
     const formData = new FormData();
@@ -84,5 +90,11 @@ export class UploadCertificateService {
     return this.http.get('/' + path, { responseType: 'text' }).toPromise();
   }
 
-
+  createCertTemplate(data) {
+    const option = {
+      url: this.configService.urlConFig.URLS.CERTIFICATE.CREATE_CERT_TEMPLATE,
+      data: data
+    };
+    return this.contentService.post(option);
+  }
 }
