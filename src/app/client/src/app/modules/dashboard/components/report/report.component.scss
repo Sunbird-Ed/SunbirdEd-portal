@@ -91,15 +91,17 @@
     }
 }
 
-.report-description{
-    width: 80%;
-    @include respond-below(xl) {
-        width: 70%;
-    }
-    @include respond-below(md) {
-        width: 60%;
-    }
+.report-panel{
     @include respond-below(sm) {
-        width: 50%;
+        padding: 1rem;
+        flex-direction: column;
+    }
+}
+.report-description{
+    flex: 1;
+    margin-right: calculateRem(50px) !important;
+    @include respond-below(sm) {
+        flex: auto;
+        margin:0 0 1rem 0 !important;
     }
 }
