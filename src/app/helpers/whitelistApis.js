@@ -82,7 +82,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
-    '/asset/v1/create': {
+    '/content/asset/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },

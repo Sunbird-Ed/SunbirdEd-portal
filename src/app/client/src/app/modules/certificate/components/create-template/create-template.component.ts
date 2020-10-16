@@ -90,9 +90,14 @@ export class CreateTemplateComponent implements OnInit {
 
   createCertTemplate() {
     const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'));
-    console.log('request body to make create cert api call', request);
-
-    // TODO: Api call to make cert create: api/asset/v1/create
+    this.disableCreateTemplate = true;
+    this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+      this.toasterService.success('Template created successfully');
+      this.createTemplateForm.reset();
+    }, error => {
+      this.toasterService.error('Something went wrong, please try again later');
+      console.log('error', error);
+    });
   }
 
   onTemplateChange() {
@@ -106,7 +111,7 @@ export class CreateTemplateComponent implements OnInit {
     } else {
       this.certSigns.push(data);
     }
-    console.log(this.certLogos)
+    console.log(this.certLogos);
   }
 
   close() {
@@ -114,15 +119,15 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   removeLogo(index) {
-    this.certLogos.splice(index, 1)
+    this.certLogos.splice(index, 1);
   }
 
   removeSigns(index) {
-    this.certSigns.splice(index, 1)
+    this.certSigns.splice(index, 1);
   }
 
   openSateLogos(type) {
-    this.logoType = type
+    this.logoType = type;
     this.showSelectImageModal = true;
   }
 
@@ -138,11 +143,11 @@ export class CreateTemplateComponent implements OnInit {
 
   convertHtml(tag) {
     const html = tag.toString();
-    return new DOMParser().parseFromString(html, "text/html");
+    return new DOMParser().parseFromString(html, 'text/html');
   }
 
   previewCertificate() {
-    this.svgData = this.convertHtml(this.logoHtml)
+    this.svgData = this.convertHtml(this.logoHtml);
     console.log(this.svgData)
     const logosArray = _.concat(this.certLogos, this.certSigns);
     this.editSVG(logosArray).then(res => {
@@ -163,23 +168,23 @@ export class CreateTemplateComponent implements OnInit {
               console.log(index)
               const left = (index + 1) * 100;
               let doc = this.svgData;
-              let image = doc.createElement("image");
+              let image = doc.createElement('image');
               image.setAttribute('xlink:href', res)
               image.setAttribute('id', index)
-              image.setAttribute('x', (this.center + left))
+              image.setAttribute('x', (this.center + left));
               image.setAttribute('y', bottom)
               image.setAttribute('width', 100)
               image.setAttribute('height', 100)
-              let element = doc.getElementsByTagName("svg")[0];
+              let element = doc.getElementsByTagName('svg')[0];
               element.appendChild(image);
               if (index === (logosArray.length - 1)) {
                 console.log('resolve')
-                resolve()
+                resolve();
               }
             }
           })
         }
-      })
+      });
     });
 
   }
@@ -199,17 +204,17 @@ export class CreateTemplateComponent implements OnInit {
         reader.onloadend = () => resolve(reader.result)
         reader.onerror = reject
         reader.readAsDataURL(blob)
-      }))
+      }));
   }
 
 
   certificateCreation(ev) {
-    console.log(ev)
+    console.log(ev);
     const url = this.getBase64Data(ev);
     this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) };
-    console.log('*******************Final certificate base64 data********************')
+    console.log('*******************Final certificate base64 data********************');
     console.log(url);
-    console.log('********************************************************************')
+    console.log('********************************************************************');
   }
   getImagePath() {
     if (this.selectedCertificate) {
