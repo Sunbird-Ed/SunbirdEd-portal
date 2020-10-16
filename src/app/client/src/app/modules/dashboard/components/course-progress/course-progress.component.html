@@ -71,10 +71,11 @@
               </span>
 
               <span *ngIf="currentBatch.participantCount !== null"
-              class="course-participants course-participants-label">
-                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}
-                </span>
+              class="d-flex flex-dc course-participants course-participants-label">
+                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
+                 <span class="py-8 fsmall">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote}}</span>
               </span>
+
 
 <!--            <span *ngIf="currentBatch.completedCount !== null"
                   class="course-participants course-participants-label">
@@ -200,7 +201,12 @@
       <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">
-      <div class="ui stackable grid"><div class="nine wide column py-0"><p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}</p></div>
+      <div class="ui stackable grid">
+        <div class="nine wide column py-0">
+        <p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
+          <span class="font-weight-bold" >{{resourceService?.frmelmnts?.lbl?.summaryReportUpdateNote}}</span>
+        </p>  
+      </div>
       </div>
       <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
    
