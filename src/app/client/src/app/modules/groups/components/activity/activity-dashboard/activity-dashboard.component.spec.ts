@@ -292,11 +292,11 @@ describe('ActivityDashboardComponent', () => {
     expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
 
-  it ('should', fakeAsync(()  => {
-    activatedRoute.changeQueryParams({ title: 'ACTIVITY_COURSE_TITLE' });
+  it ('should ', fakeAsync(()  => {
+    activatedRoute.changeQueryParams({ title: 'Course' });
     tick(100);
     const value = component.showActivityType();
-    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLocaleLowerCase());
+    expect(value).toEqual(('Course').toLocaleLowerCase());
   }));
 
 });
