@@ -90,3 +90,16 @@
         }
     }
 }
+
+.report-description{
+    width: 80%;
+    @include respond-below(xl) {
+        width: 70%;
+    }
+    @include respond-below(md) {
+        width: 60%;
+    }
+    @include respond-below(sm) {
+        width: 50%;
+    }
+}
