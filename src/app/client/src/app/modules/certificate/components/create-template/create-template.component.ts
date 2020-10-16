@@ -5,7 +5,7 @@ import { UploadCertificateService } from '../../services/upload-certificate/uplo
 import { MockData } from './create-template.component.data';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { fromFetch } from 'rxjs/fetch';
@@ -44,10 +44,12 @@ export class CreateTemplateComponent implements OnInit {
     public userService: UserService,
     private sanitizer: DomSanitizer,
     public toasterService: ToasterService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService,
+    public navigationHelperService: NavigationHelperService,) {
   }
 
   ngOnInit() {
+    this.navigationHelperService.setNavigationUrl();
     this.selectedCertificate = this.defaultCertificates[0];
     this.initializeFormFields();
     this.getSVGTemplate();
@@ -97,7 +99,7 @@ export class CreateTemplateComponent implements OnInit {
     this.disableCreateTemplate = true;
     this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
       this.toasterService.success('Template created successfully');
-      this.createTemplateForm.reset();
+      this.navigationHelperService.navigateToLastUrl();
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
       console.log('error', error);

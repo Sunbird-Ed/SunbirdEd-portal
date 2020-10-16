@@ -187,8 +187,7 @@
               </div>
               <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
-                  <sb-certificate-actions [select]="getConfig(config?.select, template)"
-                    [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
+                  <sb-certificate-actions [preview]="config?.preview"
                     [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal"
                     [template]="template?.value" (buttonClick)="handleCertificateEvent($event, template)">
                   </sb-certificate-actions>
