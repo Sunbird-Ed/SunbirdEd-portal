@@ -71,9 +71,9 @@
               </span>
 
               <span *ngIf="currentBatch.participantCount !== null"
-              class="course-participants course-participants-label">
-                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}
-                </span>
+              class="d-flex flex-dc course-participants course-participants-label">
+                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
+                 <span class="py-8 fsmall">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote}}</span>
               </span>
 
 <!--            <span *ngIf="currentBatch.completedCount !== null"
