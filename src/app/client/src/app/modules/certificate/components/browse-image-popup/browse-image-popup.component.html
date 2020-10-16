@@ -106,8 +106,8 @@
 
 <!--  upload modal -->
 <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
-  #modal>
+  [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (dismissed)="claseModel()"
+  #uploadmodal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
     Upload and Use
@@ -121,8 +121,9 @@
               name="file" type="file"></div>
           <div class="ui info message">
             <ol class="ui list">
-              <li class="fsmall">Allowed types files are: jpeg, jpg ,png</li>
+              <li class="fsmall">Allowed types files are: {{imageDimensions[logoType]?.type}}</li>
               <li class="fsmall">maximum allowed files size: 1MB</li>
+              <li class="fsmall">maximum allowed dimensions are: {{imageDimensions[logoType]?.dimensions}}</li>
             </ol>
           </div>
           <div>
@@ -141,7 +142,7 @@
             <div class="ui info message p-16">
               <div class="d-flex">
                 <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8">
-                <div class="fsmall" class="drop-img-text fsmall"> Drop or choose the file before entering the details
+                <div class="fsmall" class="drop-img-text fsmall"> Choose the file before entering the details
                 </div>
               </div>
             </div>
@@ -153,22 +154,22 @@
                   placeholder="Enter asset caption">
               </div>
             </div>
-            <div class="sb-field mb-16">
+            <!-- <div class="sb-field mb-16">
               <label>Tags</label>
               <ul class="tags">
                 <li><a href="#" class="tag">Tag 1</a></li>
                 <li><a href="#" class="tag">Tag 2</a></li>
                 <li><a href="#" class="tag">Tag 3</a></li>
               </ul>
-            </div>
-            <div class="sb-field mb-16">
+            </div> -->
+            <!-- <div class="sb-field mb-16">
               <label for="language">Languages</label>
               <sui-select formControlName="language" class="selection" labelField="name" name="language"
                 [(ngModel)]="selectLanguage" placeholder="select">
                 <sui-select-option *ngFor="let option of selectLanguageOption" [value]="option">
                 </sui-select-option>
               </sui-select>
-            </div>
+            </div> -->
             <div class="sb-field">
               <label>Creator</label>
               <div class="sb-field">
@@ -184,16 +185,16 @@
   </div>
   <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
     <div class="d-flex flex-ai-center relative">
-      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="showUploadUserModal = !showUploadUserModal">
+      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="back()">
         Cancel
       </button>
       <div class="or-toggle">
         <span>or</span></div>
-      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled" (click)="upload()">
+      <button [ngClass]="{'sb-btn-disabled': (!uploadForm.valid || !fileObj)}" [disabled]="(!uploadForm.valid || !fileObj)" class="sb-btn sb-btn-normal sb-btn-primary" (click)="upload()">
         Upload and use
       </button>
     </div>
-    <button class="sb-btn sb-btn-normal sb-btn-gray" (click)="showUploadUserModal = !showUploadUserModal">
+    <button class="sb-btn sb-btn-normal sb-btn-gray" (click)="back()">
       Back
     </button>
   </div>

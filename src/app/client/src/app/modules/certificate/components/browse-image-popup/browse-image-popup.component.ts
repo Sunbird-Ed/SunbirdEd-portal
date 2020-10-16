@@ -3,7 +3,7 @@ import { UploadCertificateService } from '../../services/upload-certificate/uplo
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -23,17 +23,19 @@ export class BrowseImagePopupComponent implements OnInit {
   uploadForm: FormGroup;
   fileObj: any;
   selectedLogo: any;
+  imageDimensions = {
+    'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
+    'SIGN': { type: 'PNG', dimensions: '112px X46px' }
+  };
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public userService: UserService) {
     this.uploadForm = new FormGroup({
-      assetCaption: new FormControl(''),
-      tags: new FormControl(''),
-      language: new FormControl(''),
-      creator: new FormControl(''),
-      creatorId: new FormControl('')
+      assetCaption: new FormControl('', [Validators.required]),
+      creator: new FormControl('', [Validators.required]),
+      creatorId: new FormControl('', [Validators.required])
     });
   }
 
@@ -140,8 +142,15 @@ export class BrowseImagePopupComponent implements OnInit {
   selectLogo(logo) {
     this.selectedLogo = logo;
   }
+  back(){
+    this.showUploadUserModal = false;
+    this.uploadForm.reset();
+  }
 
   claseModel() {
+    console.log('************close***********')
+    this.showUploadUserModal = false;
+    this.showSelectImageModal = false;
     this.close.emit();
   }
 

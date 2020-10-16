@@ -29,14 +29,14 @@ export class CreateTemplateComponent implements OnInit {
   certSigns: any = [];
   logoType;
   defaultCertificates = [
-    { path: 'assets/images/gj.svg' },
-    { path: 'assets/images/dl.svg' },
+    { path: 'assets/images/mp.svg' },
+    { path: 'assets/images/odisha.svg' },
     { path: 'assets/images/jh.svg' }]
   selectedCertificate: any;
   svgFile;
   logoHtml;
   svgData;
-  center = 150;
+  center = 275;
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
 
@@ -80,6 +80,10 @@ export class CreateTemplateComponent implements OnInit {
     this.uploadCertificateService.getSvg(this.selectedCertificate.path).then(res => {
       this.svgFile = res;
       this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(this.svgFile);
+      const logoArray = _.concat(this.certLogos, this.certSigns);
+      if (!_.isEmpty(logoArray)) {
+        this.previewCertificate();
+      }
     });
   }
 
@@ -132,6 +136,7 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   chooseCertificate(certificate) {
+    this.logoHtml = null;
     this.selectedCertificate = certificate;
     this.getSVGTemplate();
   }
@@ -144,6 +149,7 @@ export class CreateTemplateComponent implements OnInit {
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml)
     console.log(this.svgData)
+    this.svgData.getElementsByClassName('cert-state-symbol')[0].remove();
     const logosArray = _.concat(this.certLogos, this.certSigns);
     this.editSVG(logosArray).then(res => {
       this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
@@ -154,7 +160,7 @@ export class CreateTemplateComponent implements OnInit {
     return new Promise((resolve, reject) => {
       logosArray.forEach((data, index) => {
         if (data) {
-          let bottom = 75;
+          let bottom = 72;
           if (data.type === 'SIGN') {
             bottom = 400
           }

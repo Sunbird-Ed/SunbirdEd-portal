@@ -6,7 +6,7 @@ const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const contentServiceBaseUrl = envHelper.CONTENT_URL
 const { logger } = require('@project-sunbird/logger');
 const proxyUtils = require('../proxy/proxyUtils.js')
-const mockData = require("./mockData/asset.json")
+const mockData = require("./mockdata/asset.json")
 
 
 module.exports = function (app) {
