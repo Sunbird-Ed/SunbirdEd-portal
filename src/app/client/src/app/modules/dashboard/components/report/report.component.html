@@ -70,7 +70,7 @@
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
                           (click)="openConfirmationModal('retire')"
                           *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
-                          type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                          type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                           <i class="white minus alternate icon"></i>
                           {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                         </button>
@@ -88,9 +88,9 @@
                   </div>
                 </div>
 
-                <div class="ui container py-16 d-flex">
-                  <p class="m-0 w-50" *ngIf="report?.description || currentReport?.reportMetaData?.description"
-                    [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
+                <div class="ui container py-16 d-flex report-panel">
+                  <p class="m-0 report-description" *ngIf="report?.description || currentReport?.reportMetaData?.description"
+                  [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                   </p>
                   <div class="ml-auto d-flex flex-jc-flex-end sb-last-update-status fnormal sb-color-gray-400"
                     *ngIf="currentReport?.lastUpdatedOn && type === 0">
