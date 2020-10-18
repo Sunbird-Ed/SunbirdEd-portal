@@ -1112,3 +1112,19 @@ html[layout='joy'][dir='rtl'] {
     right: auto;
   }
 }
+
+html[layout='joy'] {
+    .certificate-bg {
+      background: #F2F2EA !important;
+      border-radius: calculateRem(24px) !important;
+    }
+  .sb-browse-btn{
+    height: 2.1rem;
+    border: 2px solid #7ab4ee;
+    color: #7ab4ee;
+    font-weight: bold;
+    background: #edf4f9;
+    }
+  }
+
+
