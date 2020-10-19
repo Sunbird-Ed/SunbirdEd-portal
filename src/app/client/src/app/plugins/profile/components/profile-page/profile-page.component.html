@@ -239,21 +239,6 @@
         <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
         <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
       </div>
-      
-      <div class="my-8">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.status}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{declarationDetails.status || 'PENDING'}}</div>
-          <div class="sb-toaster sb-toast-danger sb-toast-normal" *ngIf="declarationDetails.status === 'ERROR'">
-            <div class="sb-toast-body mr-0">
-              <div class="sb-toast-texts w-100 text-center">
-                <div class="sb-toast-title">{{resourceService.frmelmnts?.scttl?.error | uppercase }}</div>
-                <ul class="error-lists p-0 my-8" *ngIf="selfDeclaredErrorTypes.length > 0">
-                  <li class="error-list mb-4" *ngFor="let errorType of selfDeclaredErrorTypes">{{ errorType }}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-      </div>
       <div class="my-8">
         <button appTelemetryInteract
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
