@@ -1,9 +1,11 @@
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, NgZone, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash-es';
 import * as  iziModal from 'izimodal/js/iziModal';
+import { Location } from '@angular/common';
 jQuery.fn.iziModal = iziModal;
 
 @Component({
@@ -14,10 +16,11 @@ jQuery.fn.iziModal = iziModal;
 
 export class ForumComponent implements OnInit, OnDestroy {
 
-
-
+  discussionUrl: SafeResourceUrl;
+  @ViewChild('modal')modal;
   constructor(private userService: UserService, private http: HttpClient,
-    private _zone: NgZone, private router: Router, private activatedRoute: ActivatedRoute) { }
+    public sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
+    private location: Location) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -25,34 +28,26 @@ export class ForumComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initEditor();
+    this.getDiscussionUrl();
   }
 
-  initEditor() {
+  getDiscussionUrl() {
     const userName = _.get(this.userService.userProfile, 'userName');
     this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
-      jQuery('#discussionIframe').iziModal({
-        iframe: true,
-        iframeURL: `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`,
-        history: false,
-        onClosing: () => {
-          this._zone.run(() => {
-            this.closeModal();
-          });
-        }
-      }).iziModal('open');
+      this.discussionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`
+      );
     });
   }
 
-  public closeModal() {
-    if (document.getElementById('discussionIframe')) {
-      document.getElementById('discussionIframe').remove();
-      jQuery('#discussionIframe').iziModal('close');
-    }
+  navigateToPreviousPage() {
+    this.location.back();
   }
 
-  navigateToPreviousPage() {
-    this.router.navigate([], { relativeTo: this.activatedRoute.parent });
+  closeModal() {
+    if (this.modal) {
+      this.modal.deny();
+    }
   }
 
   ngOnDestroy() {
