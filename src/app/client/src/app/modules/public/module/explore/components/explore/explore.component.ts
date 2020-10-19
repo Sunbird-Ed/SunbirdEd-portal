@@ -63,14 +63,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private initConfiguration() {
         const { userProfile: { framework = null } = {} } = this.userService;
-        const userFramework = (this.isUserLoggedIn && framework && pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
-        this.defaultFilters = { board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
+        const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+        this.defaultFilters = { board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [], ...userFramework };
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.redoLayout();
     }
 
-    private isUserLoggedIn(): boolean {
+    public isUserLoggedIn(): boolean {
         return this.userService && (this.userService.loggedIn || false);
     }
 
@@ -128,15 +128,15 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private getChannelId(): Observable<{ channelId: string, custodianOrg: boolean }> {
-        if (this.isUserLoggedIn) {
+        if (this.isUserLoggedIn()) {
             return this.orgDetailsService.getCustodianOrgDetails()
                 .pipe(
                     map(custodianOrg => {
+                        let result = { channelId: this.userService.hashTagId, custodianOrg: false };
                         if (this.userService.hashTagId === get(custodianOrg, 'result.response.value')) {
-                            return { channelId: this.userService.hashTagId, custodianOrg: true };
-                        } else {
-                            return { channelId: this.userService.hashTagId, custodianOrg: false };
+                            result.custodianOrg = true;
                         }
+                        return result;
                     }));
         } else {
             if (this.userService.slug) {
@@ -187,9 +187,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
                         frameworkId: this.contentSearchService.frameworkId,
-                        ...(this.isUserLoggedIn && { limit: get(currentPageData, 'limit') })
+                        ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') })
                     };
-                    if (!this.isUserLoggedIn && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
+                    if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, contentType);
@@ -258,7 +258,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         };
         this.getInteractEdata(telemetryData);
-        if (this.isUserLoggedIn) {
+        if (this.isUserLoggedIn()) {
             this.playerService.playContent(event);
         } else {
             this.publicPlayerService.playContent(event);
@@ -277,7 +277,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private setTelemetryData() {
-        const uri = this.isUserLoggedIn ? this.router.url : (this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url);
+        const uri = this.isUserLoggedIn() ? this.router.url : (this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url);
         this.exploreMoreButtonEdata = {
             id: 'explore-more-content-button',
             type: 'click',
@@ -318,11 +318,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public navigateToExploreContent() {
-        const navigationUrl = this.isUserLoggedIn ? 'search/Library' : 'explore';
+        const navigationUrl = this.isUserLoggedIn() ? 'search/Library' : 'explore';
         const queryParams = {
             ...this.selectedFilters,
             appliedFilters: false,
-            ...(!this.isUserLoggedIn && {
+            ...(!this.isUserLoggedIn() && {
                 pageTitle: this.pageTitle,
                 softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
             })
@@ -343,7 +343,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.getInteractEdata(telemetryData);
         if (event.data.contents.length === 1) {
-            if (!this.isUserLoggedIn) {
+            if (!this.isUserLoggedIn()) {
                 this.router.navigate(['explore-course/course', get(event.data, 'contents[0].identifier')]);
             } else {
                 const metaData = pick(event.data.contents[0], ['identifier', 'mimeType', 'framework', 'contentType']);
@@ -364,7 +364,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else {
             this.searchService.subjectThemeAndCourse = event.data;
-            let navigationUrl = this.isUserLoggedIn ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
+            let navigationUrl = this.isUserLoggedIn() ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
             this.router.navigate([navigationUrl], {
                 queryParams: {
                     title: get(event, 'data.title')
@@ -390,13 +390,3 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 }
-
-
-//TODO
-
-/*
-navigateToCourses - resource.component - done
-navigateToExploreContent - done
-telemetry check
-error handling
-*/
