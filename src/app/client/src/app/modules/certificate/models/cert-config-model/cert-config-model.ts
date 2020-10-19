@@ -63,13 +63,12 @@ export class CertConfigModel {
             'request': {
                 'asset': {
                     'name': _.get(rawFormValues, 'certificateTitle'),
-                    'identifier': _.get(rawFormValues, 'certificateTitle'),
                     'code': _.get(rawFormValues, 'certificateTitle'),
                     'mimeType': 'application/vnd.ekstep.content-archive',
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
                     'issuer': {
-                        'name': 'Gujarat Council of Educational Research and Training',
+                        'name': _.get(rawFormValues, 'stateName'),
                         'url': 'https://gcert.gujarat.gov.in/gcert/'
                     },
                     'signatoryList': [

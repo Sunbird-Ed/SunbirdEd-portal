@@ -114,7 +114,8 @@
       "FETCH_USER": "v1/user/search",
       "REISSUE_CERTIFICATE": "v1/cert/reissue",
       "ADD_CERTIFICATE" : "v1/add/template",
-      "CREATE_CERT_TEMPLATE": "asset/v1/create"
+      "CREATE_CERT_TEMPLATE": "asset/v1/create",
+      "UPLOAD_CERT_TEMPLATE": "asset/v1/upload"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search",
