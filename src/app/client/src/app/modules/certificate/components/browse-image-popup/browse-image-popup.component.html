@@ -94,11 +94,11 @@
       </button>
       <div class="or-toggle">
         <span>or</span></div>
-      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled" (click)="selectAndUseLogo()">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!selectedLogo" [ngClass]="{'sb-btn-disabled' : !selectedLogo}" (click)="selectAndUseLogo()">
         Select
       </button>
     </div>
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showUploadUserModal = !showUploadUserModal">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="browseImages()">
       Upload and use
     </button>
   </div>

@@ -24,7 +24,7 @@ export class CreateTemplateComponent implements OnInit {
   selectState: any;
   selectLanguage: any;
   showSelectImageModal;
-
+  showUploadUserModal;
   certLogos: any = [];
   certSigns: any = [];
   logoType;
@@ -118,10 +118,12 @@ export class CreateTemplateComponent implements OnInit {
       this.certSigns.push(data);
     }
     console.log(this.certLogos);
+    console.log(this.certSigns);
   }
 
   close() {
     this.showSelectImageModal = false;
+    this.showUploadUserModal = false;
   }
 
   removeLogo(index) {
@@ -139,7 +141,8 @@ export class CreateTemplateComponent implements OnInit {
 
   openSignLogos(type) {
     this.logoType = type;
-    this.showSelectImageModal = true;
+    this.showSelectImageModal = false;
+    this.showUploadUserModal = true;
   }
 
   chooseCertificate(certificate) {
@@ -164,15 +167,18 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   editSVG(logosArray) {
+    console.log(logosArray)
     return new Promise((resolve, reject) => {
       logosArray.forEach((data, index) => {
         if (data) {
+          console.log('index------', index, data)
           let bottom = 72;
           if (data.type === 'SIGN') {
             bottom = 400
           }
           this.toDataURL(data.url).then(res => {
             if (res) {
+              // this.svgData.getElementsByClassName('cert-state-symbol')[index].setAttribute('xlink:href', res)
               console.log(index)
               const left = (index + 1) * 100;
               let doc = this.svgData;
@@ -224,6 +230,7 @@ export class CreateTemplateComponent implements OnInit {
     console.log(url);
     console.log('********************************************************************');
   }
+
   getImagePath() {
     if (this.selectedCertificate) {
       return this.selectedCertificate.path;

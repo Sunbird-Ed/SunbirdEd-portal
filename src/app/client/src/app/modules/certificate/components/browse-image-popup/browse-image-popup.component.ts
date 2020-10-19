@@ -17,7 +17,7 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  showUploadUserModal;
+  @Input() showUploadUserModal;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
@@ -91,18 +91,51 @@ export class BrowseImagePopupComponent implements OnInit {
     });
   }
 
+  browseImages() {
+    this.showUploadUserModal = true;
+    this.selectedLogo = null;
+  }
+
   upload() {
-    this.uploadCertificateService.createAsset(this.uploadForm.value).subscribe(res => {
-      if (res && res.result) {
-        this.uploadBlob(res);
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      // have to remove one the api is working - start
-      const createResponse = error.error;
-      this.uploadBlob(createResponse);
-      //  end
-    });
+    if (this.logoType === 'LOGO') {
+      this.uploadCertificateService.createAsset(this.uploadForm.value).subscribe(res => {
+        if (res && res.result) {
+          this.uploadBlob(res);
+        }
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        // have to remove one the api is working - start
+        const createResponse = error.error;
+        this.uploadBlob(createResponse);
+        //  end
+      });
+    } else {
+      this.getImageURLs();
+    }
+  }
+
+  /**
+  *  converting images files as data URLs
+  */
+  getImageURLs() {
+    const file = this.fileObj;
+    const reader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const imageURL = reader.result as string;
+        this.showUploadUserModal = false;
+        this.showSelectImageModal = false;
+        const image = {
+          'name': this.uploadForm.controls.assetCaption.value,
+          'url': imageURL,
+          'type': this.logoType
+        }
+        this.assetData.emit(image)
+        this.uploadForm.reset();
+        this.claseModel();
+      };
+    }
   }
 
   uploadBlob(data) {
@@ -113,7 +146,7 @@ export class BrowseImagePopupComponent implements OnInit {
           this.showUploadUserModal = false;
           this.showSelectImageModal = false;
           const image = {
-            'name': this.uploadForm.controls.assetCaption,
+            'name': this.uploadForm.controls.assetCaption.value,
             'url': imageData.result.artifactUrl,
             'type': this.logoType
           }
@@ -142,25 +175,29 @@ export class BrowseImagePopupComponent implements OnInit {
   selectLogo(logo) {
     this.selectedLogo = logo;
   }
-  back(){
+  back() {
     this.showUploadUserModal = false;
+    this.showSelectImageModal = false;
     this.uploadForm.reset();
+    this.close.emit();
+    this.selectedLogo = null;
   }
 
   claseModel() {
-    console.log('************close***********')
     this.showUploadUserModal = false;
     this.showSelectImageModal = false;
+    this.selectedLogo = null;
     this.close.emit();
   }
 
   selectAndUseLogo() {
-    this.claseModel()
     const image = {
       'name': this.selectedLogo.name,
       'url': this.selectedLogo.artifactUrl,
       'type': this.logoType
     }
-    this.assetData.emit(image)
+    this.assetData.emit(image);
+    this.selectedLogo = null;
+    this.claseModel()
   }
 }
