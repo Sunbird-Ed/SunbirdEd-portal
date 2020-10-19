@@ -1,13 +1,12 @@
-import { IGroup } from './../../interfaces/group';
 import { UserService } from '@sunbird/core';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { GroupMemberRole, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS } from '../../interfaces';
+import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS, IGroupCard } from '../../interfaces';
 import { GroupsService } from '../../services';
 
 @Component({
@@ -24,7 +23,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     showMemberMenu: false
   };
   @Input() members: IGroupMember[] = [];
-  @Input() groupData: IGroup;
+  @Input() groupData: IGroupCard;
   currentUser;
   showKebabMenu = false;
   showModal = false;
@@ -71,6 +70,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
     this.groupsService.showMenu.subscribe(data => {
       this.showKebabMenu = data === 'member';
+    });
+
+    this.groupsService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
+      this.groupData.active = this.groupsService.updateGroupStatus(this.groupData, status);
     });
   }
 
@@ -200,15 +203,14 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, extra?) {
-    const cdata = [{id: this.groupId, type: 'group'}];
-    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   showAddMember () {
     if (!this.groupData.active || !this.config.showAddMemberButton) {
       return false;
     }
-    return (this.groupData.isAdmin && !this.showSearchResults);
+    return (this.groupData['isAdmin'] && !this.showSearchResults);
   }
 
   ngOnDestroy() {

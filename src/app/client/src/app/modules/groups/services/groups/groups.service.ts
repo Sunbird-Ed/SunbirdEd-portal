@@ -1,4 +1,3 @@
-import { IGroup } from './../../interfaces/group';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
@@ -9,6 +8,7 @@ import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@s
 import * as _ from 'lodash-es';
 import { IGroupCard, IGroupMember, IGroupUpdate, IMember, MY_GROUPS } from '../../interfaces';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,7 @@ export class GroupsService {
   public showLoader = new EventEmitter();
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
+  public updateEvent = new EventEmitter();
   public _groupListCount: number;
 
   constructor(
@@ -89,7 +90,7 @@ export class GroupsService {
     return group;
   }
 
-  createGroup(groupData: IGroup) {
+  createGroup(groupData: IGroupCard) {
     return this.groupCservice.create(groupData);
   }
 
@@ -187,8 +188,8 @@ getActivity(groupId, activity, mergeGroup) {
     }
 
 
-  addTelemetry(eid: {id: string, extra?: {}}, routeData, cdata, obj?) {
-
+  addTelemetry(eid: {id: string, extra?: {}}, routeData, cdata, groupId?, obj?) {
+    const id = _.get(routeData, 'params.groupId') || groupId;
     const interactData: IInteractEventInput = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
@@ -205,15 +206,18 @@ getActivity(groupId, activity, mergeGroup) {
       interactData.edata.extra = eid.extra;
     }
 
+    if (id) {
+      interactData.context.cdata.push({id: id, type: 'Group'});
+    }
+
     if (obj) {
       interactData['object'] = obj;
     }
-
     this.telemetryService.interact(interactData);
+
   }
 
   getImpressionObject(routeData, url): IImpressionEventInput {
-
     const impressionObj = {
       context: {
         env: _.get(routeData, 'data.telemetry.env')
@@ -294,6 +298,15 @@ getActivity(groupId, activity, mergeGroup) {
 
   activateGroupById(groupId: string) {
     return this.groupCservice.reactivateById(groupId);
+  }
+
+  emitUpdateEvent(value) {
+    this.updateEvent.emit(value);
+  }
+
+  updateGroupStatus(group: CsGroup, status: GroupEntityStatus) {
+    group.status = status;
+    return group.isActive();
   }
 
 }
