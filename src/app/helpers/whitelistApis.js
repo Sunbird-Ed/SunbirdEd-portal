@@ -396,8 +396,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v3/read/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.ALL],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__adminCheck__userId', params: [] }
+        ]
+      }
     },
     '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],
