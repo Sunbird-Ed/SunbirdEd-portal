@@ -152,8 +152,9 @@ const urlChecks = {
    * @param  {Object} req            - API request object
    * @param  {Object} ownerCheckObj  - `OWNER_CHECK` object
    * @access Private
-   * @description - Function to check session userId for incoming API along with request userId
-   * @since - release-3.1.0
+   * @description - Function to check session userId is an admin if yes resolve or if 
+   *  the session userId is same as that of the request userId then also resolve
+   * @since - release-3.3.0
    */
   __adminCheck__userId: (resolve, reject, req, ownerCheckObj) => {
     try {
@@ -167,7 +168,7 @@ const urlChecks = {
           resolve();
         } else {
           return reject('Mismatch in user id verification. Session UserId [ ' + _sessionUserId +
-            ' ] does not match with request body UserId [ ' + _reqUserId + ' ]');
+            ' ] is not an admin or does not match with request body UserId [ ' + _reqUserId + ' ]');
         }
       }
     } catch (error) {
