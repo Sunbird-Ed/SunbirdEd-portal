@@ -9,8 +9,8 @@
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
     <div class="ui container">
       <div class="py-8 d-flex flex-ai-center">
-        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack" type="button"
-          (click)="goBack()">
+        <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
+          type="button" (click)="goBack()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -61,17 +61,20 @@
     <div class="ui container">
       <div class="ui stackable grid m-0">
         <div class="four wide column">
-          <div class="certificate-sidebar p-24">
+          <div class="certificate-sidebar p-24 certificate-bg">
             <div class="select-template-container d-flex flex-dc mb-16">
               <div class="certificates-label pb-24 font-weight-bold text-left">
                 {{resourceService?.frmelmnts?.cert?.lbl?.configure}}</div>
               <div class="certificate-scrollbar">
-                <div class="certificate-sbcard mb-16">
+                <div class="certificate-sbcard mb-16 py-16">
                   <div class="d-flex flex-ai-center flex-jc-space-between">
-                    <div class="certificate-card-title sb__ellipsis sb__ellipsis--three">{{courseDetails?.name}}</div>
+                    <div class="certificate-card-title sb__ellipsis sb__ellipsis--three px-16">{{courseDetails?.name}}
+                    </div>
                     <div class="d-flex flex-ai-center">
-                      <div class="certificate-card-img pl-16"> <img src="assets/images/certificate-icon.png"
-                          width="25px" height="20px" /></div>
+                      <div class="certificate-card-img px-16"> 
+                        <img src="assets/images/certificate-icon.png" width="25px" height="20px"/>
+                      </div>
+                      <div class="border-right"></div>
                     </div>
                   </div>
                 </div>
@@ -110,7 +113,8 @@
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable"
-                          (click)="editCertificate()" class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+                          (click)="editCertificate()"
+                          class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
                       </div>
                     </div>
                   </div>
@@ -128,8 +132,8 @@
     *ngIf="currentState === screenStates.certRules">
     <div class="ui container">
       <div class="sb-g">
-        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-13">
-          <div class="certificate-content-area sb-bg-color-white p-24">
+        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+          <div class="certificate-content-area sb-bg-color-white p-24 certificate-bg">
             <form [formGroup]="userPreference">
               <div class='ui stackable grid mt-0'>
                 <div class="five wide column pt-0">
@@ -155,7 +159,8 @@
                   <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
                     {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
                   <div class="d-flex flex-dc">
-                    <label class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
+                    <label
+                      class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
                     <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
                       [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
                       [isDisabled]="configurationMode === 'edit'" #selectRecipient>
@@ -179,12 +184,18 @@
         </div>
 
         <!-- Side panel of cert-templates -->
-        <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-3">
-          <div class="select-template-content p-24">
-            <div class="select-template-container d-flex flex-dc mb-16">
-              <button (click)="navigateToCreateTemplate()" class="sb-btn-primary">Create template</button>
-              <div class="fnormal pb-24 font-weight-bold text-left">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}
-              </div>
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
+          <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
+            <div class="select-template-container mb-16">
+              <div class="d-flex flex-jc-space-between">
+                <div class="d-flex flex-dc text-left mr-16">
+                  <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
+                  <label class="font-weight-normal mt-8 fsmall">Choose and select from available templates</label>
+                </div>
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
+               (click)="navigateToCreateTemplate()">
+                <i class="plus alternate outline icon"></i>Create template</button>
+               </div>
               <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
                   <sb-certificate-actions [preview]="config?.preview"
@@ -208,8 +219,9 @@
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
               [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
-            <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'edit'"
-              [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+            <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
+              *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"
+              class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
           </div>
         </div>
@@ -218,7 +230,8 @@
   </div>
 </div>
 
-<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate"></app-cert-preview-popup>
+<app-cert-preview-popup *ngIf="showPreviewModal" (close)="closeModal($event)" [template]="previewTemplate">
+</app-cert-preview-popup>
 
 <!-- footer certificate -->
 <sui-modal *ngIf="isTemplateChanged" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
@@ -237,7 +250,7 @@
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="attachCertificateToBatch()"class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="attachCertificateToBatch()" class="sb-btn sb-btn-normal sb-btn-primary">
       {{resourceService?.frmelmnts?.lbl?.continue}}
     </button>
     <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
