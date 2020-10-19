@@ -1097,6 +1097,22 @@ html[layout='joy'] {
   .sb-sideview-tab-container .report__header .sb-last-update-status {
     margin-right: calculateRem(16px);
   }
+  .sb-graph-section{
+    border-radius: var(--sbt-bradius-24) !important;
+  }
+  .sbt-report-tabs-panel{
+    border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0px 0px !important;
+  }
+  .sbt-report-btns-panel{
+    border-radius: 0 0 var(--sbt-bradius-24) var(--sbt-bradius-24) !important;
+  }
+  #report-summary{
+    app-report-summary{
+      .ui.message{
+        border-radius: var(--sbt-bradius-24);
+      }
+    }
+  }
 }
 
 .data-labels{

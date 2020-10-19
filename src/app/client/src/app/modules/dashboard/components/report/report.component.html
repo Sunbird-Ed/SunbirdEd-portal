@@ -70,7 +70,7 @@
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
                           (click)="openConfirmationModal('retire')"
                           *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
-                          type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                          type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                           <i class="white minus alternate icon"></i>
                           {{report?.status === 'live' ? 'Retire' : 'Discard'}}
                         </button>
@@ -109,7 +109,7 @@
                   </div>
                   <div id="report-body" class="my-16" *ngIf="type === 0">
                     <sui-tabset>
-                      <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
+                      <!-- <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
@@ -134,6 +134,42 @@
                           class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
                             class="download icon"></i>
                           {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
+                        <div class="sb-field mb-0 mr-8">
+                          <sui-select *ngIf="showExportsOption" class="selection mr-8"
+                            [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}"
+                            [placeholder]="'Export As'" (selectedOptionChange)="downloadReport($event)">
+                            <sui-select-option *ngFor="let option of exportOptions" [value]="option"
+                              appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                              [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})">
+                            </sui-select-option>
+                          </sui-select>
+                        </div>
+                      </div> -->
+
+                      <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel" *ngIf="!hideElements">
+                        <a appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
+                          suiTabHeader="graph" (activate)="showExportsOption=true"
+                          (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                        <a appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
+                          (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
+                          (click)="setDownloadUrl(table.downloadUrl)" class="item"
+                          [suiTabHeader]="table.id">{{table?.name}}</a>
+                        <a *ngIf="currentReport?.files?.length" appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject()"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item"
+                          suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
+                      </div>
+                      <div class="sbt-report-btns-panel d-flex flex-ai-center flex-jc-flex-end py-8" *ngIf="!hideElements">
+                        <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
+                        *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
+                        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
+                          class="download icon"></i>
+                        {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
                         <div class="sb-field mb-0 mr-8">
                           <sui-select *ngIf="showExportsOption" class="selection mr-8"
                             [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}"
