@@ -29,9 +29,9 @@ export class CreateTemplateComponent implements OnInit {
   certSigns: any = [];
   logoType;
   defaultCertificates = [
-    { path: 'assets/images/mp.svg' },
-    { path: 'assets/images/odisha.svg' },
-    { path: 'assets/images/jh.svg' }]
+    { path: 'assets/images/mp.svg', id: 0 },
+    { path: 'assets/images/odisha.svg', id: 1 },
+    { path: 'assets/images/jh.svg', id: 2 }]
   selectedCertificate: any;
   svgFile;
   logoHtml;
@@ -58,8 +58,10 @@ export class CreateTemplateComponent implements OnInit {
   initializeFormFields() {
     this.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('', [Validators.required]),
+      certificateName: new FormControl('', [Validators.required]),
       stateName: new FormControl('', [Validators.required]),
       authoritySignature: new FormControl('', [Validators.required]),
+      authoritySignature2: new FormControl('', [Validators.required]),
       allowPermission: new FormControl('', [Validators.required])
     });
 
@@ -113,9 +115,9 @@ export class CreateTemplateComponent implements OnInit {
 
   assetData(data) {
     if (data.type === 'LOGO') {
-      this.certLogos.push(data);
+      this.certLogos[data.index] = data;
     } else {
-      this.certSigns.push(data);
+      this.certSigns[data.index] = data;
     }
     console.log(this.certLogos);
     console.log(this.certSigns);
@@ -173,38 +175,49 @@ export class CreateTemplateComponent implements OnInit {
         if (data) {
           console.log('index------', index, data)
           let bottom = 72;
-          if (data.type === 'SIGN') {
+          if (data.type === "SIGN") {
             bottom = 400
+
           }
-          this.toDataURL(data.url).then(res => {
-            if (res) {
-              // this.svgData.getElementsByClassName('cert-state-symbol')[index].setAttribute('xlink:href', res)
-              console.log(index)
-              const left = (index + 1) * 100;
-              let doc = this.svgData;
-              let image = doc.createElement('image');
-              image.setAttribute('xlink:href', res)
-              image.setAttribute('id', index)
-              image.setAttribute('x', (this.center + left));
-              image.setAttribute('y', bottom)
-              image.setAttribute('width', 100)
-              image.setAttribute('height', 100)
-              let element = doc.getElementsByTagName('svg')[0];
-              element.appendChild(image);
-              if (index === (logosArray.length - 1)) {
-                console.log('resolve')
-                resolve();
-              }
+           this.toDataURL(data).then(res => {
+          console.log('waiting***********', res)
+          if (res) {
+            // this.svgData.getElementsByClassName('cert-state-symbol')[index].setAttribute('xlink:href', res)
+            console.log(index, res['type'])
+            const left = (index + 1) * 100;
+            let doc = this.svgData;
+            let image = doc.createElement('image');
+            image.setAttribute('xlink:href', res['url'])
+            image.setAttribute('id', index)
+            image.setAttribute('x', (this.center + left));
+            image.setAttribute('y', bottom)
+            image.setAttribute('width', 100)
+            image.setAttribute('height', 100)
+            let element = doc.getElementsByTagName('svg')[0];
+            element.appendChild(image);
+            if (index === (logosArray.length - 1)) {
+              console.log('resolve')
+              resolve();
             }
+          }
           })
+
         }
       });
     });
 
   }
 
-  toDataURL(url) {
-    return fetch(url, {
+  appendingBase64ToSVG(res, index, bottom) {
+
+  }
+
+  toDataURL(image) {
+    console.log(image)
+    if (image.type === 'SIGN') {
+      return new Promise((resolve, reject) => resolve({ url: image.url, type: image.type }))
+    }
+    return fetch(image.url, {
       method: 'GET',
       mode: 'cors',
       cache: 'no-cache',
@@ -215,7 +228,7 @@ export class CreateTemplateComponent implements OnInit {
       .then(response => response.blob())
       .then(blob => new Promise((resolve, reject) => {
         const reader = new FileReader()
-        reader.onloadend = () => resolve(reader.result)
+        reader.onloadend = () => resolve({ url: reader.result, type: image.type })
         reader.onerror = reject
         reader.readAsDataURL(blob)
       }));
@@ -225,7 +238,7 @@ export class CreateTemplateComponent implements OnInit {
   certificateCreation(ev) {
     console.log(ev);
     const url = this.getBase64Data(ev);
-    this.selectedCertificate = { 'path': this.sanitizer.bypassSecurityTrustResourceUrl(url) };
+    this.selectedCertificate['path'] = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     console.log('*******************Final certificate base64 data********************');
     console.log(url);
     console.log('********************************************************************');

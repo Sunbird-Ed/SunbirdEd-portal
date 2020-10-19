@@ -97,7 +97,7 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
-    if (this.logoType === 'LOGO') {
+    if (this.logoType.type === 'LOGO') {
       this.uploadCertificateService.createAsset(this.uploadForm.value).subscribe(res => {
         if (res && res.result) {
           this.uploadBlob(res);
@@ -129,7 +129,8 @@ export class BrowseImagePopupComponent implements OnInit {
         const image = {
           'name': this.uploadForm.controls.assetCaption.value,
           'url': imageURL,
-          'type': this.logoType
+          'type': this.logoType.type,
+          'index': this.logoType.index
         }
         this.assetData.emit(image)
         this.uploadForm.reset();
@@ -148,7 +149,8 @@ export class BrowseImagePopupComponent implements OnInit {
           const image = {
             'name': this.uploadForm.controls.assetCaption.value,
             'url': imageData.result.artifactUrl,
-            'type': this.logoType
+            'type': this.logoType.type,
+            'index': this.logoType.index
           }
           this.assetData.emit(image)
           this.uploadForm.reset();
@@ -162,7 +164,8 @@ export class BrowseImagePopupComponent implements OnInit {
         const image = {
           'name': this.uploadForm.controls.assetCaption.value,
           'url': error.error.result.artifactUrl,
-          'type': this.logoType
+          'type': this.logoType.type,
+          'index': this.logoType.index
         }
         this.assetData.emit(image)
         // end
@@ -194,7 +197,8 @@ export class BrowseImagePopupComponent implements OnInit {
     const image = {
       'name': this.selectedLogo.name,
       'url': this.selectedLogo.artifactUrl,
-      'type': this.logoType
+      'type': this.logoType.type,
+      'index': this.logoType.index
     }
     this.assetData.emit(image);
     this.selectedLogo = null;

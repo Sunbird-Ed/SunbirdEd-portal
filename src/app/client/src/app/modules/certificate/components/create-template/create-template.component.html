@@ -24,12 +24,12 @@
     <div class='ui stackable grid mt-0'>
       <div class="six wide column">
         <div class="certificate-content certificate-bg p-24">
-          <form>
+          <form [formGroup]="createTemplateForm">
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column pt-0">
                 <div class="sb-field">
                   <label class="state-labels">Certificate name<span class="asterik">*</span></label>
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="certificateName" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -39,7 +39,7 @@
               <div class="twelve wide column">
                 <div class="sb-field d-flex flex-dc">
                   <label class="state-labels">Certificate title<span class="asterik">*</span></label>
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="certificateTitle" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -51,7 +51,7 @@
                   <div class="sb-field d-flex flex-dc">
                     <label class="pl-4 state-labels">State logo 1 <span class="asterik">*</span></label>
                     <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button class="sb-btn sb-btn-normal sb-browse-btn">
+                    <button (click)="openSateLogos({type: 'LOGO', index: 0})" class="sb-btn sb-btn-normal sb-browse-btn">
                       Browse
                     </button>
                     <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
@@ -60,7 +60,7 @@
               <div class="eight wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label for="state" class="state-labels">State name<span class="asterik">*</span></label>
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="stateName" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                   <div class="sb-field d-flex flex-dc">
                     <label class="pl-4 state-labels">State logo 2<span class="asterik">*</span></label>
                     <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button class="sb-btn sb-btn-normal sb-browse-btn">
+                    <button (click)="openSateLogos({type: 'LOGO', index: 1})" class="sb-btn sb-btn-normal sb-browse-btn">
                       Browse
                     </button>
                     <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
@@ -83,18 +83,11 @@
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">state-logo1.svg</li>
+                  <div *ngFor="let logo of certLogos; let i = index"  class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                    <li class="mb-0 py-8 fnormal">{{logo.name}}</li>
                     <div class="d-flex flex-ai-center mx-8">
-                      <img src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img (click)="removeLogo(i)" src="assets/images/close.svg" width="24px" class="mr-8">
                       <img src="assets/images/add.svg" width="24px">
-                    </div>
-                  </div>
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">state-logo2.svg</li>
-                    <div class="d-flex flex-ai-center mx-8">
-                    <img src="assets/images/close.svg" width="24px" class="mr-8">
-                    <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
                 </ul>
@@ -107,7 +100,7 @@
                 <div class="sb-field d-flex flex-dc">
                   <label class="pl-4 state-labels">signature 1<span class="asterik">*</span></label>
                   <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button class="sb-btn sb-btn-normal sb-browse-btn">
+                  <button  (click)="openSignLogos({type: 'SIGN', index: 0})" class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
                 </div>
@@ -115,7 +108,7 @@
               <div class="eight wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label class="state-labels">Signature authority designation<span class="asterik">*</span></label>
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="authoritySignature" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -124,9 +117,9 @@
             <div class='ui stackable grid mt-0'>
               <div class="four wide column py-8">
                 <div class="sb-field d-flex flex-dc">
-                  <label class="pl-4 state-labels">signature 1 <span class="asterik">*</span></label>
+                  <label class="pl-4 state-labels">signature 2 <span class="asterik">*</span></label>
                   <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button class="sb-btn sb-btn-normal sb-browse-btn">
+                  <button (click)="openSignLogos({type: 'SIGN', index: 1})" class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
                 </div>
@@ -134,7 +127,7 @@
               <div class="eight wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label class="state-labels">Signature authority designation <span class="asterik">*</span></label>
-                    <input class="sb-form-control is-valid">
+                    <input formControlName="authoritySignature2" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -143,17 +136,10 @@
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">signature1.svg</li>
+                  <div *ngFor="let sign of certSigns; let i = index" class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
+                    <li class="mb-0 py-8 fnormal">{{sign.name}}</li>
                     <div class="d-flex flex-ai-center mx-8" >
-                      <img src="assets/images/close.svg" width="24px" class="mr-8">
-                      <img src="assets/images/add.svg" width="24px">
-                    </div>
-                  </div>
-                  <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">signature2.svg</li>
-                    <div class="d-flex flex-ai-center mx-8">
-                      <img src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img (click)="removeSigns(i)"  src="assets/images/close.svg" width="24px" class="mr-8">
                       <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
@@ -186,10 +172,10 @@
               <div class="cert-select-card">
                 <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
                   <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
-                    <div class="title d-flex flex-ai-center flex-jc-center p-16">
+                    <!-- <div class="title d-flex flex-ai-center flex-jc-center p-16">
                       Choose a layout below and refresh to preview
-                    </div>
-                    <!-- <img src="assets/images/book.png" class="w-100"> -->
+                    </div> -->
+                    <img [src]="getImagePath()" class="w-100">
                   </div>
                 </div>
               </div>
@@ -199,22 +185,10 @@
             <div class="twelve wide column">
               <label>Choose layout</label>
               <div class="d-flex">
-                <div class="cert-img-sb-card active mr-16">
+                <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content">
-                    <img src="assets/images/banner-svg/all-banner-img.svg" />
-                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
-                  </div>
-                </div>
-                <div class="cert-img-sb-card mr-16">
-                  <div class="cert-img-sb-card__content">
-                    <img src="assets/images/groups.png" />
-                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
-                  </div>
-                </div>
-                <div class="cert-img-sb-card mr-16">
-                  <div class="cert-img-sb-card__content">
-                    <img src="assets/images/default.png" />
-                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                    <img (click)="chooseCertificate(certificate)" [src]="certificate.path"  />
+                    <div *ngIf="selectedCertificate?.id === certificate?.id" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
                   </div>
                 </div>
               </div>
@@ -468,3 +442,6 @@
     </button>
   </div>
 </sui-modal> -->
+
+
+<browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" [showUploadUserModal]="showUploadUserModal"></browse-image-popup>
