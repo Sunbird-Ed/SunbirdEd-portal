@@ -1,3 +1,4 @@
+import { CourseConsumptionService } from '@sunbird/learn';
 import { PermissionService } from '@sunbird/core';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,9 +16,12 @@ export class DashboardSidebarComponent implements OnInit {
   courseBatchesEdata: IInteractEventEdata;
   courseCertificatesEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  courseHierarchy: {};
 
   constructor(public resourceService: ResourceService, public router: Router,
-    private activatedRoute: ActivatedRoute, public permissionService: PermissionService) {
+    private activatedRoute: ActivatedRoute, public permissionService: PermissionService,
+    private courseConsumptionService: CourseConsumptionService) {
+      this.courseHierarchy = this.courseConsumptionService.courseHierarchy;
     }
 
     ngOnInit() {
@@ -25,7 +29,7 @@ export class DashboardSidebarComponent implements OnInit {
     }
 
     canReissueCert() {
-      return this.permissionService.checkRolesPermissions(['CONTENT_CREATOR']);
+      return this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
     }
 
     setTelemetryData() {
