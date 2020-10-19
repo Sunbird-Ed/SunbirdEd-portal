@@ -1,3 +1,4 @@
+import { courseHierarchy } from './dashboard-sidebar.component.spec.data';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -54,6 +55,7 @@ describe('DashboardSidebarComponent', () => {
     fixture = TestBed.createComponent(DashboardSidebarComponent);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
+    component.courseHierarchy = courseHierarchy;
     fixture.detectChanges();
   });
 
@@ -72,13 +74,13 @@ describe('DashboardSidebarComponent', () => {
   });
 
   it ('should enable reissueCert', () => {
-    spyOn(component.permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(true);
     const canReissue = component.canReissueCert();
     expect(canReissue).toBeTruthy();
   });
 
   it ('should disable reissueCert', () => {
-    spyOn(component.permissionService, 'checkRolesPermissions').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
     const canReissue = component.canReissueCert();
     expect(canReissue).toBeFalsy();
   });

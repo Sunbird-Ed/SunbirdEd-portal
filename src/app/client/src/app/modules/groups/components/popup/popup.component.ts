@@ -1,7 +1,7 @@
 import { GroupsService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
 import { IGroupCard } from './../../interfaces/group';
-import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -16,6 +16,11 @@ export class PopupComponent {
   @Input() groupData: IGroupCard;
   @Output() handleEvent = new EventEmitter();
   @ViewChild('modal') modal;
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+   this.modal.deny();
+  }
 
   constructor(public resourceService: ResourceService, private groupService: GroupsService) {
     this.groupService.emitMenuVisibility('activate');
