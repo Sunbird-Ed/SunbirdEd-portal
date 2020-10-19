@@ -1,6 +1,6 @@
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
-    <div class="py-8 d-flex flex-ai-center">
+    <div class="py-16 d-flex flex-ai-center flex-jc-space-between">
       <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
         type="button">
         <i class="icon-svg icon-svg--xxs icon-back mr-4">
@@ -9,169 +9,154 @@
           </svg></i>
         Back
       </button>
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-primary">
+        Create and Use template
+      </button>
     </div>
   </div>
 </div>
 
 <div class="certificate-container py-16 cc-player__content-header relative9">
   <div class="ui container">
-    <div class="sb-g">
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-13">
-        <div class="certificate-content-area sb-bg-color-white p-24">
+    <div class='ui stackable grid mt-0'>
+      <div class="six wide column">
+        <div class="certificate-content certificate-bg p-24">
           <form>
-            <div class="fs-1">Edit template</div>
             <div class='ui stackable grid mt-0'>
-              <div class="six wide column">
+              <div class="twelve wide column pt-0">
                 <div class="sb-field">
-                  <label>Certificate name</label>
-                  <div class="sb-field">
+                  <label class="state-labels">Certificate name<span class="asterik">*</span></label>
                     <input class="sb-form-control is-valid">
-                    <small class="text-success">help text information</small>
+                    <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
               </div>
-            </div>
 
             <div class='ui stackable grid mt-0'>
-              <div class="six wide column">
-                <div class="sb-field">
-                  <label>Certificate title</label>
-                  <div class="sb-field">
-                    <input class="sb-form-control is-valid">
-                    <small class="text-success">help text information</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="fnormal pt-16 state-labels">State details</div>
-            <div class='ui stackable grid mt-0'>
-              <div class="six wide column py-8">
-                <div class="sb-field">
-                  <label for="state">State name</label>
-                  <!-- <sui-select class="selection" labelField="name" name="state" [(ngModel)]="selectState"
-                    placeholder="select state">
-                    <sui-select-option *ngFor="let option of selectStateOption" [value]="option">
-                    </sui-select-option>
-                  </sui-select> -->
-                </div>
-              </div>
-              <div class="six wide column py-8">
+              <div class="twelve wide column">
                 <div class="sb-field d-flex flex-dc">
-                  <div class="sb-field d-flex flex-dc">
-                    <label>signature</label>
-                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">
-                      Upload state logo
-                    </button>
+                  <label class="state-labels">Certificate title<span class="asterik">*</span></label>
+                    <input class="sb-form-control is-valid">
+                    <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
               </div>
+
+            <div class="fnormal py-16 state-labels">State details</div>
+            <div class='ui stackable grid mt-0'>
+              <div class="four wide column py-8">
+                  <div class="sb-field d-flex flex-dc">
+                    <label class="pl-4 state-labels">State logo 1 <span class="asterik">*</span></label>
+                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
+                    <button class="sb-btn sb-btn-normal sb-browse-btn">
+                      Browse
+                    </button>
+                    <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                  </div>
+              </div>
+              <div class="eight wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label for="state" class="state-labels">State name<span class="asterik">*</span></label>
+                    <input class="sb-form-control is-valid">
+                    <small class="pl-4 fsmall">Help text information</small>
+                  </div>
+                </div>
+              </div>
+
+            <div class='ui stackable grid mt-0'>
+              <div class="four wide column py-8">
+                  <div class="sb-field d-flex flex-dc">
+                    <label class="pl-4 state-labels">State logo 2<span class="asterik">*</span></label>
+                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
+                    <button class="sb-btn sb-btn-normal sb-browse-btn">
+                      Browse
+                    </button>
+                    <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                  </div>
+              </div>
             </div>
 
+            
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
                   <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">state-logo1.svg</li>
-                    <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
-                      <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
-                        Browse
-                        <input type="file" class="sb-btn-upload" name="file" />
-                      </button>
-                      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal sb-bulk-upload-btn">
-                        Add
-                      </button>
+                    <div class="d-flex flex-ai-center mx-8">
+                      <img src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
                   <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">state-logo2.svg</li>
-                    <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
-                      <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
-                        Browse
-                        <input type="file" class="sb-btn-upload" name="file" />
-                      </button>
-                      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal sb-bulk-upload-btn">
-                        Add
-                      </button>
+                    <div class="d-flex flex-ai-center mx-8">
+                    <img src="assets/images/close.svg" width="24px" class="mr-8">
+                    <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
                 </ul>
               </div>
             </div>
 
-            <div class="fnormal pt-24 state-labels">State authority details</div>
+            <div class="fnormal pt-24 pb-16 state-labels">Signature authority details</div>
             <div class='ui stackable grid mt-0'>
-              <div class="six wide column py-8">
-                <div class="sb-field">
-                  <label>Signature authority name</label>
-                  <div class="sb-field">
-                    <input class="sb-form-control is-valid">
-                    <small class="text-success">help text information</small>
-                  </div>
-                </div>
-              </div>
-              <div class="six wide column py-8">
+              <div class="four wide column py-8">
                 <div class="sb-field d-flex flex-dc">
-                  <label>signature</label>
+                  <label class="pl-4 state-labels">signature 1<span class="asterik">*</span></label>
                   <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-bulk-upload-btn">  
-                    Upload signature
+                  <button class="sb-btn sb-btn-normal sb-browse-btn">
+                    Browse
                   </button>
                 </div>
               </div>
-            </div>
+              <div class="eight wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="state-labels">Signature authority designation<span class="asterik">*</span></label>
+                    <input class="sb-form-control is-valid">
+                    <small class="pl-4 fsmall">Help text information</small>
+                  </div>
+                </div>
+              </div>
+
+            <div class='ui stackable grid mt-0'>
+              <div class="four wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="pl-4 state-labels">signature 1 <span class="asterik">*</span></label>
+                  <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
+                  <button class="sb-btn sb-btn-normal sb-browse-btn">
+                    Browse
+                  </button>
+                </div>
+              </div>
+              <div class="eight wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="state-labels">Signature authority designation <span class="asterik">*</span></label>
+                    <input class="sb-form-control is-valid">
+                    <small class="pl-4 fsmall">Help text information</small>
+                  </div>
+                </div>
+              </div>
 
             <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
                   <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">signature1.svg</li>
-                    <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
-                      <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
-                        Browse
-                        <input type="file" class="sb-btn-upload" name="file" />
-                      </button>
-                      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal sb-bulk-upload-btn">
-                        Add
-                      </button>
+                    <div class="d-flex flex-ai-center mx-8" >
+                      <img src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
                   <div class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
                     <li class="mb-0 py-8 fnormal">signature2.svg</li>
-                    <div class="d-flex flex-ai-center">
-                      <img src="assets/images/delete-icon.svg">
-                      <button class="sb-btn sb-btn-outline-gray sb-btn-normal sb-bulk-upload-btn mx-16">
-                        Browse
-                        <input type="file" class="sb-btn-upload" name="file" />
-                      </button>
-                      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal sb-bulk-upload-btn">
-                        Add
-                      </button>
+                    <div class="d-flex flex-ai-center mx-8">
+                      <img src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img src="assets/images/add.svg" width="24px">
                     </div>
                   </div>
                 </ul>
               </div>
             </div>
-
-            <div class="sb-g my-24">
-              <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
-                <div class="d-flex flex-dc cert-select-image">
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                </div>
-              </div>
-              <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
-                <div class="cert-view-image">
-                  <img src="assets/images/banner-svg/all-banner-img.svg" />
-                </div>
-              </div>
-            </div>
-
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                 <div class="sb-checkbox sb-checkbox-secondary pt-24">
@@ -185,25 +170,58 @@
       </div>
 
       <!-- Side panel of cert-templates -->
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-3">
-        <div class="select-template-content p-24">
-          <div class="select-template-container d-flex flex-dc mb-16">
-            <div class="fnormal pb-24 font-weight-bold text-left">Instructions</div>
-            <label>Course title</label>
-            <p>Title of the course should not be exceed 40 characters</p>
-            <label>Image Uploads</label>
-            <p>All the image should be of size not greater than 1mb and the dimensions should be 100*100(width*height)
-            </p>
-            <label>Signature Authority</label>
-            <p>Signature authority,signature and name should match as this will be seen as printed information on the
-              certificate
-            </p>
+      <div class="six wide column">
+        <div class="select-template-content certificate-bg p-24">
+          <div class="d-flex flex-jc-space-between">
+            <label class="preview-title mb-0">Certificate template Preview</label>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+              Refresh
+            </button>
+          </div>
+          <div class="ui stackable grid mt-0">
+            <div class="twelve wide column">
+              <div class="cert-select-card">
+                <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
+                  <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
+                    <div class="title d-flex flex-ai-center flex-jc-center p-16">
+                      Choose a layout below and refresh to preview
+                    </div>
+                    <!-- <img src="assets/images/book.png" class="w-100"> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui stackable grid mt-0">
+            <div class="twelve wide column">
+              <label>Choose layout</label>
+              <div class="d-flex">
+                <div class="cert-img-sb-card active mr-16">
+                  <div class="cert-img-sb-card__content">
+                    <img src="assets/images/banner-svg/all-banner-img.svg" />
+                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                  </div>
+                </div>
+                <div class="cert-img-sb-card mr-16">
+                  <div class="cert-img-sb-card__content">
+                    <img src="assets/images/groups.png" />
+                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                  </div>
+                </div>
+                <div class="cert-img-sb-card mr-16">
+                  <div class="cert-img-sb-card__content">
+                    <img src="assets/images/default.png" />
+                    <div class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div>
+
     <div class="ui stackable grid m-0">
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
@@ -212,11 +230,11 @@
         </div>
       </div>
     </div>
-  </div>
 </div>
 
+
 <!-- select image modal -->
-<!-- <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+ <!-- <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
   class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="showSelectImageModal = !showSelectImageModal" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
@@ -241,10 +259,12 @@
           </div>
           <div class="ui grid m-0">
             <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
+              <div class="ui card text-center common-contribution-card active">
                 <div class="content">
                   <img src="assets/images/book.png" rel="placeholder">
                 </div>
+                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
+                  height="24px"></div>
               </div>
             </div>
             <div class="three wide column p-8">
@@ -252,6 +272,8 @@
                 <div class="content">
                   <img src="assets/images/book.png" rel="placeholder">
                 </div>
+                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
+                  height="24px"></div>
               </div>
             </div>
             <div class="three wide column p-8">
@@ -259,6 +281,17 @@
                 <div class="content">
                   <img src="assets/images/book.png" rel="placeholder">
                 </div>
+                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
+                  height="24px"></div>
+              </div>
+            </div>
+            <div class="three wide column p-8">
+              <div class="ui card text-center common-contribution-card active">
+                <div class="content">
+                  <img src="assets/images/book.png" rel="placeholder">
+                </div>
+                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
+                  height="24px"></div>
               </div>
             </div>
             <div class="three wide column p-8">
@@ -266,13 +299,8 @@
                 <div class="content">
                   <img src="assets/images/book.png" rel="placeholder">
                 </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
+                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
+                  height="24px"></div>
               </div>
             </div>
           </div>
@@ -346,11 +374,11 @@
       Upload and use
     </button>
   </div>
-</sui-modal> -->
+</sui-modal>  -->
 
 <!--  upload modal -->
 <!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
+  [size]="'large'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
   #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">

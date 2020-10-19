@@ -85,15 +85,14 @@
       }
 
       .certificate-sbcard {
-        color: var(--gray-800);
+        color: var(--gray-400);
         font-family: "Noto Sans";
-        font-size: calculateRem(14px);
-        padding: calculateRem(16px);
+        font-size: calculateRem(12px);
         min-height: calculateRem(52px);
         box-shadow: 0 3px 4px 0 rgba(2, 79, 157, 0.1);
         background-color: var(--white);
         border: .0625rem solid var(--rc-dedede);
-        border-radius: .25rem;
+        border-radius: calculateRem(12px);
         cursor: pointer;
         position: relative;
         overflow: hidden;
@@ -101,9 +100,14 @@
         transition-delay: .1s;
 
         &:active {
-          border: .0625rem solid var(--primary-400);
-          background-color: rgba(2, 79, 157, 0.1);
+          // border: .0625rem solid var(--primary-400);
+          // background-color: rgba(2, 79, 157, 0.1);
           color: var(--primary-400);
+          font-weight: bold;
+          .border-right{
+            border-right: calculateRem(4px) solid var(--primary-400);
+            height: calculateRem(24px);
+          }
         }
 
         .certificate-card-img {
@@ -124,7 +128,7 @@
     .select-template-content {
       height: 100vh;
       width: 100%;
-      background: var(--white);
+      // background: var(--white);
 
       @include respond-below(sm) {
         height: auto;
@@ -240,3 +244,4 @@
   }
 
 }
+
