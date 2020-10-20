@@ -57,7 +57,7 @@ describe('SelectOptionGroupComponent', () => {
   it('should call choosedValue with publisher block', () => {
     spyOn(component, 'choosedValue');
     component.choosedValue();
-    expect(component.preSelectedValue).toEqual('publisher_name');
+    expect(component.preSelectedValue).toEqual('012519677821');
   });
   it('should call choosedValue with nonpublisher block', () => {
     component.selectedOption = { label: 'Board', selectedOption: 'board_name', value: 'channel' };
