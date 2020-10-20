@@ -27,8 +27,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   modelChanged: Subject<string> = new Subject<string>();
 
   @ViewChild(OnDemandReportsComponent)
-  private onDemandReports: OnDemandReportsComponent;
-
+  public onDemandReports: OnDemandReportsComponent;
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -360,7 +359,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
         this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete')
+        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
+        this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
       }
     }, error => {
       this.stateWiseReportData = [
@@ -610,13 +610,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports(tabNumber) {
+    this.getSummaryReports();
+    setTimeout(()=> {
+      if(this.onDemandReports) {
       this.setInteractEventDataForTabs('on-demand-reports');
       this.selectedTab = tabNumber;
       if (_.isEmpty(this.reportTypes)) {
         this.getFormData();
       }
-      setTimeout(()=>{
-        this.onDemandReports.loadReports(this.currentBatch)
+      this.onDemandReports.loadReports(this.currentBatch)
+    }
       }, 500);
   }
 
