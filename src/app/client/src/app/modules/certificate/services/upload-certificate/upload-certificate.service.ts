@@ -3,6 +3,7 @@ import { ConfigService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from './../../../../modules/core/services/content/content.service';
+import { UserService } from '@sunbird/core';
 
 
 @Injectable({
@@ -14,7 +15,8 @@ export class UploadCertificateService {
     public publicDataService: PublicDataService,
     public http: HttpClient,
     public configService: ConfigService,
-    public contentService: ContentService
+    public contentService: ContentService,
+    public userService: UserService
   ) { }
 
   /**
@@ -29,7 +31,7 @@ export class UploadCertificateService {
           "contentType": ["Asset"],
           "compatibilityLevel": { "min": 1, "max": 2 },
           "status": ["Live"],
-          "channel": "b00bc992ef25f1a9a8d63291e20efc8d"
+          "channel": this.userService.channel
         },
         "limit": 50,
         "offset": 0
