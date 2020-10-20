@@ -51,10 +51,13 @@
                   <div class="sb-field d-flex flex-dc">
                     <label class="pl-4 state-labels">State logo 1 <span class="asterik">*</span></label>
                     <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button (click)="openSateLogos({type: 'LOGO', index: 0})" class="sb-btn sb-btn-normal sb-browse-btn">
+                    <button (click)="openSateLogos({type: 'LOGO', index: 0,  key:'LOGO1'})" class="sb-btn sb-btn-normal sb-browse-btn">
                       Browse
                     </button>
-                    <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="!(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO1?.name}}
+                      <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="24px" class="mr-8">
+                    </small> 
                   </div>
               </div>
               <div class="eight wide column py-8">
@@ -71,16 +74,19 @@
                   <div class="sb-field d-flex flex-dc">
                     <label class="pl-4 state-labels">State logo 2<span class="asterik">*</span></label>
                     <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button (click)="openSateLogos({type: 'LOGO', index: 1})" class="sb-btn sb-btn-normal sb-browse-btn">
+                    <button (click)="openSateLogos({type: 'LOGO', index: 1, key:'LOGO2'})" class="sb-btn sb-btn-normal sb-browse-btn">
                       Browse
                     </button>
-                    <small class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="!(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO2?.name}}
+                      <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="24px" class="mr-8">
+                    </small> 
                   </div>
               </div>
             </div>
 
             
-            <div class='ui stackable grid mt-0'>
+            <!-- <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
                   <div *ngFor="let logo of certLogos; let i = index"  class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
@@ -92,7 +98,7 @@
                   </div>
                 </ul>
               </div>
-            </div>
+            </div> -->
 
             <div class="fnormal pt-24 pb-16 state-labels">Signature authority details</div>
             <div class='ui stackable grid mt-0'>
@@ -100,9 +106,13 @@
                 <div class="sb-field d-flex flex-dc">
                   <label class="pl-4 state-labels">signature 1<span class="asterik">*</span></label>
                   <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button  (click)="openSignLogos({type: 'SIGN', index: 0})" class="sb-btn sb-btn-normal sb-browse-btn">
+                  <button  (click)="openSignLogos({type: 'SIGN', index: 0,  key:'SIGN1'})" class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
+                  <small *ngIf="!(images?.SIGN1?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="(images?.SIGN1?.name)" class="pl-16 py-4 fsmall">{{images?.SIGN1?.name}} 
+                      <img (click)="removeImage('SIGN1')" src="assets/images/close.svg" width="24px" class="mr-8">
+                    </small> 
                 </div>
               </div>
               <div class="eight wide column py-8">
@@ -119,9 +129,13 @@
                 <div class="sb-field d-flex flex-dc">
                   <label class="pl-4 state-labels">signature 2 <span class="asterik">*</span></label>
                   <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button (click)="openSignLogos({type: 'SIGN', index: 1})" class="sb-btn sb-btn-normal sb-browse-btn">
+                  <button (click)="openSignLogos({type: 'SIGN', index: 1, key:'SIGN2'})" class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
+                  <small *ngIf="!(images?.SIGN2?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
+                    <small *ngIf="(images?.SIGN2?.name)" class="pl-16 py-4 fsmall">{{images?.SIGN2?.name}}
+                      <img (click)="removeImage('SIGN2')" src="assets/images/close.svg" width="24px" class="mr-8">
+                    </small> 
                 </div>
               </div>
               <div class="eight wide column py-8">
@@ -133,7 +147,7 @@
                 </div>
               </div>
 
-            <div class='ui stackable grid mt-0'>
+            <!-- <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
                 <ul class="pl-0">
                   <div *ngFor="let sign of certSigns; let i = index" class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
@@ -145,7 +159,8 @@
                   </div>
                 </ul>
               </div>
-            </div>
+            </div> -->
+
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                 <div class="sb-checkbox sb-checkbox-secondary pt-24">
@@ -163,7 +178,7 @@
         <div class="select-template-content certificate-bg p-24">
           <div class="d-flex flex-jc-space-between">
             <label class="preview-title mb-0">Certificate template Preview</label>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+            <button type="button" (click)="previewCertificate()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
               Refresh
             </button>
           </div>
@@ -187,7 +202,7 @@
               <div class="d-flex">
                 <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content">
-                    <img (click)="chooseCertificate(certificate)" [src]="certificate.path"  />
+                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.path"  />
                     <div *ngIf="selectedCertificate?.id === certificate?.id" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
                   </div>
                 </div>
@@ -202,246 +217,11 @@
     <div class="ui stackable grid m-0">
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button>
+          <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button> -->
           <button (click)="createCertTemplate()" [ngClass]="{'sb-btn-disabled': disableCreateTemplate }" [disabled]="disableCreateTemplate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">Save as template</button>
         </div>
       </div>
     </div>
 </div>
-
-
-<!-- select image modal -->
- <!-- <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="showSelectImageModal = !showSelectImageModal" #modal>
-  <div class="d-flex flex-ai-center sb-modal-header">
-    <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
-    Select Image
-  </div>
-  <div class="sb-modal-content">
-    <div class="image-tabs px-8">
-      <input class="image-input" id="tab1" type="radio" name="tabs" checked>
-      <label for="tab1" class="image-label">My Images</label>
-        
-      <input class="image-input" id="tab2" type="radio" name="tabs">
-      <label for="tab2" class="image-label">All Images</label>
-        
-      <section id="content1">
-        <div class="twelve wide column">
-          <div class="sb-search-box mb-16">
-            <div class="input-div relative">
-              <input class="sb-search-input" type="text" placeholder="Search Image..." />
-              <i class="close icon"></i>
-              <i class="search icon"></i>
-            </div>
-          </div>
-          <div class="ui grid m-0">
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card active">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
-                  height="24px"></div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
-                  height="24px"></div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
-                  height="24px"></div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card active">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
-                  height="24px"></div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-                <div class="selected-mark"><img src="assets/images/checkbox-icon.svg" width="24px" 
-                  height="24px"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-        
-      <section id="content2">
-        <div class="twelve wide column">
-          <div class="sb-search-box mb-16">
-            <div class="input-div relative">
-              <input class="sb-search-input" type="text" placeholder="Search Image..." />
-              <i class="close icon"></i>
-              <i class="search icon"></i>
-            </div>
-          </div>
-          <div class="ui grid m-0">
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>   
-    </div>
-  </div>
-
-  <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
-    <div class="d-flex flex-ai-center relative">
-      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="showUploadUserModal = !showUploadUserModal">
-        Cancel
-      </button>
-      <div class="or-toggle">
-        <span>or</span></div>
-      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled"
-        (click)="showUploadUserModal = !showUploadUserModal">
-        Select
-      </button>
-    </div>
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showUploadUserModal = !showUploadUserModal">
-      Upload and use
-    </button>
-  </div>
-</sui-modal>  -->
-
-<!--  upload modal -->
-<!-- <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'large'" class="sb-modal sb-uploadmodal" appBodyScroll (click)="showUploadUserModal = !showUploadUserModal"
-  #modal>
-  <div class="d-flex flex-ai-center sb-modal-header">
-    <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
-    Upload and Use
-  </div>
-  <div class="sb-modal-content px-24 sb-bg-color-white">
-    <div class="twelve wide column">
-      <div class='ui stackable grid mt-0'>
-        <div class="six wide column">
-          <label>Choose or drag and drop your image here *</label>
-          <div class="choose-img-box"><input class="sb-btn-upload upload-btn fnormal" name="file" type="file"></div>
-          <div class="ui info message">
-            <ol class="ui list">
-              <li class="fsmall">Allowed types files are: jpeg, jpg ,png</li>
-              <li class="fsmall">maximum allowed files size: 1MB</li>
-            </ol>
-          </div>
-          <div>
-            <label>Copyrights and License:<span class="asterik">*</span></label>
-            <p class="fsmall">I understand and confirm that all resources and assets created through the content editor
-              or uploaded on the platform shall be available for free and public use without limitations on
-              the platform (web portal,applications and any other end user interface that the platform would be enable)
-              and will be licensed under terms & conditions and policy guidelines of the platform.In doing so, the copyright
-              and license of the original author is not infringed.
-            </p>
-          </div>
-        </div>
-        <div class="six wide column pl-0">
-          <div class="border-line">
-          <div  class="ui info message p-16">
-            <div class="d-flex">
-              <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8"> 
-              <div class="fsmall" class="drop-img-text fsmall"> Drop or choose the file before entering the details</div></div></div>
-
-          <div class="sb-field mb-16">
-            <label>Asset caption <span class="asterik">*</span></label>
-            <div class="sb-field">
-              <input class="sb-form-control is-valid" placeholder="Enter asset caption">
-            </div>
-          </div>
-          <div class="sb-field mb-16">
-            <label>Tags</label>
-              <ul class="tags">
-                <li><a href="#" class="tag">Tag 1</a></li>
-                <li><a href="#" class="tag">Tag 2</a></li>
-                <li><a href="#" class="tag">Tag 3</a></li>
-              </ul>
-          </div>
-          <div class="sb-field mb-16">
-            <label for="language">Languages</label>
-            <sui-select class="selection" labelField="name" name="language" [(ngModel)]="selectLanguage"
-              placeholder="select">
-              <sui-select-option *ngFor="let option of selectLanguageOption" [value]="option">
-              </sui-select-option>
-            </sui-select>
-          </div>
-          <div class="sb-field">
-            <label>Creator</label>
-            <div class="sb-field">
-              <input class="sb-form-control is-valid" placeholder="Enter Name">
-            </div>
-          </div>
-      </div>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
-    <div class="d-flex flex-ai-center relative">
-      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="showUploadUserModal = !showUploadUserModal">
-        Cancel
-      </button>
-      <div class="or-toggle">
-        <span>or</span></div>
-      <button class="sb-btn sb-btn-normal sb-btn-primary sb-btn-disabled"
-        (click)="showUploadUserModal = !showUploadUserModal">
-        Upload and use
-      </button>
-    </div>
-    <button class="sb-btn sb-btn-normal sb-btn-gray" (click)="showUploadUserModal = !showUploadUserModal">
-      Back
-    </button>
-  </div>
-</sui-modal> -->
-
 
 <browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" [showUploadUserModal]="showUploadUserModal"></browse-image-popup>

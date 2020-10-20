@@ -25,7 +25,7 @@ export class BrowseImagePopupComponent implements OnInit {
   selectedLogo: any;
   imageDimensions = {
     'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
-    'SIGN': { type: 'PNG', dimensions: '112px X46px' }
+    'SIGN': { type: 'PNG', dimensions: '112px X 46px' }
   };
 
   constructor(public uploadCertificateService: UploadCertificateService,
@@ -58,8 +58,14 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   async fileChange(ev) {
+    this.uploadForm.reset();
     const imageProperties = await this.getImageProperties(ev);
-    if (imageProperties && imageProperties['size'] < 1) {
+    console.log(imageProperties)
+    const isDimensionMatched = this.dimentionCheck(imageProperties);
+    const isTypeMatched = _.get(imageProperties, 'type').includes('png');
+    const isSizeMatched = _.get(imageProperties, 'size') < 1;
+    console.log(isDimensionMatched, isTypeMatched, isSizeMatched)
+    if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
       const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
@@ -68,7 +74,24 @@ export class BrowseImagePopupComponent implements OnInit {
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
+    }else{
+      console.log('*********Error: Image requirments are not matched*******************')
     }
+  }
+
+  dimentionCheck(image) {
+    let flag = false;
+    if (image) {
+      const dimension = `${_.get(image,'width')}px X ${_.get(image,'height')}px`;
+      const logoType = _.get(this.logoType, 'type')
+      const requiredDimensions = this.imageDimensions[logoType]['dimensions'];
+      flag = _.isEqual(dimension,requiredDimensions);
+      console.log(flag)
+      console.log(logoType, this.imageDimensions[logoType]['dimensions'])
+      console.log(dimension)
+      console.log(requiredDimensions)
+    }
+    return flag;
   }
 
   getImageProperties(ev) {
@@ -130,6 +153,7 @@ export class BrowseImagePopupComponent implements OnInit {
           'name': this.uploadForm.controls.assetCaption.value,
           'url': imageURL,
           'type': this.logoType.type,
+          'key': this.logoType.key,
           'index': this.logoType.index
         }
         this.assetData.emit(image)
@@ -150,6 +174,7 @@ export class BrowseImagePopupComponent implements OnInit {
             'name': this.uploadForm.controls.assetCaption.value,
             'url': imageData.result.artifactUrl,
             'type': this.logoType.type,
+            'key': this.logoType.key,
             'index': this.logoType.index
           }
           this.assetData.emit(image)
@@ -165,6 +190,7 @@ export class BrowseImagePopupComponent implements OnInit {
           'name': this.uploadForm.controls.assetCaption.value,
           'url': error.error.result.artifactUrl,
           'type': this.logoType.type,
+          'key': this.logoType.key,
           'index': this.logoType.index
         }
         this.assetData.emit(image)
@@ -198,6 +224,7 @@ export class BrowseImagePopupComponent implements OnInit {
       'name': this.selectedLogo.name,
       'url': this.selectedLogo.artifactUrl,
       'type': this.logoType.type,
+      'key': this.logoType.key,
       'index': this.logoType.index
     }
     this.assetData.emit(image);
