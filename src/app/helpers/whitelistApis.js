@@ -87,7 +87,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
-    '/asset/v1/upload/:id': {
+    '/content/asset/v1/upload/:id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -630,7 +630,8 @@ const API_LIST = {
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
-    '/learner/certreg/v2/certs/download/:id'
+    '/learner/certreg/v2/certs/download/:id',
+    '/content/asset/v1/upload/:id'
   ]
 };
 module.exports = API_LIST;

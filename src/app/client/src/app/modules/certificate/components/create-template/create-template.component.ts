@@ -31,7 +31,7 @@ export class CreateTemplateComponent implements OnInit {
   defaultCertificates = [
     { path: 'assets/images/mp.svg', id: 0 },
     { path: 'assets/images/odisha.svg', id: 1 },
-    { path: 'assets/images/jh.svg', id: 2 }]
+    { path: 'assets/images/jh.svg', id: 2 }];
   selectedCertificate: any;
   logoHtml;
   svgData;
@@ -39,13 +39,14 @@ export class CreateTemplateComponent implements OnInit {
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
   images = {};
+  finalSVGurl: any;
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
     private sanitizer: DomSanitizer,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
-    public navigationHelperService: NavigationHelperService,) {
+    public navigationHelperService: NavigationHelperService ) {
   }
 
   ngOnInit() {
@@ -58,7 +59,6 @@ export class CreateTemplateComponent implements OnInit {
   initializeFormFields() {
     this.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('', [Validators.required]),
-      certificateName: new FormControl('', [Validators.required]),
       stateName: new FormControl('', [Validators.required]),
       authoritySignature: new FormControl('', [Validators.required]),
       authoritySignature2: new FormControl('', [Validators.required]),
@@ -97,9 +97,22 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   createCertTemplate() {
+    // TODO: Need to remove this method call;
+    this.previewCertificate();
     const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'));
     this.disableCreateTemplate = true;
     this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+      console.log('create response', response);
+      const assetId = _.get(response, 'result.identifier');
+      this.uploadTemplate(this.finalSVGurl, assetId);
+    }, error => {
+      this.toasterService.error('Something went wrong, please try again later');
+      console.log('error', error);
+    });
+  }
+
+  uploadTemplate(base64Url, identifier) {
+    this.uploadCertificateService.uploadTemplate(base64Url, identifier).subscribe(response => {
       this.toasterService.success('Template created successfully');
       this.navigationHelperService.navigateToLastUrl();
     }, error => {
@@ -167,14 +180,14 @@ export class CreateTemplateComponent implements OnInit {
 
   previewCertificate() {
     this.svgData = this.convertHtml(this.logoHtml);
-    console.log(this.svgData)
+    console.log(this.svgData);
     this.svgData.getElementsByClassName('cert-state-symbol')[0].remove();
     this.svgData.getElementsByClassName('cert-title')[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
     // const logosArray = _.concat(this.certLogos, this.certSigns);
     const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x));
     this.editSVG(logosArray).then(res => {
       this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
-    })
+    });
   }
 
 
@@ -214,7 +227,7 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   toDataURL(image) {
-    console.log(image)
+    console.log(image);
     if (image.type === 'SIGN') {
       return new Promise((resolve, reject) => resolve({ url: image.url, type: image.type }))
     }
@@ -228,20 +241,20 @@ export class CreateTemplateComponent implements OnInit {
     })
       .then(response => response.blob())
       .then(blob => new Promise((resolve, reject) => {
-        const reader = new FileReader()
+        const reader = new FileReader();
         reader.onloadend = () => resolve({ url: reader.result, type: image.type })
-        reader.onerror = reject
-        reader.readAsDataURL(blob)
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
       }));
   }
 
 
   certificateCreation(ev) {
     console.log(ev);
-    const url = this.getBase64Data(ev);
-    this.selectedCertificate['path'] = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    this.finalSVGurl = this.getBase64Data(ev);
+    this.selectedCertificate['path'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalSVGurl);
     console.log('*******************Final certificate base64 data********************');
-    console.log(url);
+    console.log(this.finalSVGurl);
     console.log('********************************************************************');
   }
 
