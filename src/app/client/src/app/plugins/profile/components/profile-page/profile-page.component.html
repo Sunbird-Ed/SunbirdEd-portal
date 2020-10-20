@@ -170,7 +170,7 @@
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
             <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
+              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>

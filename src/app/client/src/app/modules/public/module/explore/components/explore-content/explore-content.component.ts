@@ -160,6 +160,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
     filters.mimeType = _.get(mimeType, 'values');
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle === pageType) {
