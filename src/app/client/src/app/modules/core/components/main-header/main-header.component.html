@@ -360,9 +360,7 @@
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#manage"></use>
               </svg></i>
-              <!-- <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span> -->
-              <!-- <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span> -->
-              <span>Manage Location</span>
+              <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
             <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
              (click)="toggleSideMenu(false);navigate('/faq')">
