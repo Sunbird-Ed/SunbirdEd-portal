@@ -119,10 +119,8 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, cdata?, extra?, obj?) {
-      if (cdata) {
-        cdata.push({id: _.get(this.groupData, 'id'), type : 'group'});
-      }
-    this.groupService.addTelemetry({id, extra}, this.activateRoute.snapshot, cdata, obj);
+
+    this.groupService.addTelemetry({id, extra}, this.activateRoute.snapshot, cdata || [], _.get(this.groupData, 'id'), obj);
   }
 
   toggleViewAll(visibility: boolean, type?) {
