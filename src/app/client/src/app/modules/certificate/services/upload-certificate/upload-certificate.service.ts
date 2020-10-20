@@ -97,4 +97,14 @@ export class UploadCertificateService {
     };
     return this.contentService.post(option);
   }
+
+  uploadTemplate(svgFile, identifier) {
+    const formData = new FormData();
+    formData.append('file', svgFile);
+    const option = {
+      url: `${this.configService.urlConFig.URLS.CERTIFICATE.UPLOAD_CERT_TEMPLATE}/${identifier}`,
+      data: formData
+    };
+    return this.contentService.post(option);
+  }
 }
