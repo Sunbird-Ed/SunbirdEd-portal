@@ -385,9 +385,8 @@
   </div>
 </div>
 
-<!-- <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  #onboardingModal> -->
+<!-- Manage location for an anonymous user -->
 <app-onboarding-location  *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
-  [isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
+[isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
 </app-onboarding-location>
-<!-- </sui-modal> -->
+<!-- Manage location for an anonymous user -->
