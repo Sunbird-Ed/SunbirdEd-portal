@@ -287,11 +287,13 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
-      this.summaryReport(1);
-    } else {
-      this.loadOndemandReports(2);
-    } 
+    this.loadOndemandReports(1);
+    // if(this.selectedTab === 1){
+    //   this.summaryReport(1);
+    // } else {
+    //   console.log('load ondemand reports')
+    //   this.loadOndemandReports(2);
+    // } 
   }
 
 
@@ -608,12 +610,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports(tabNumber) {
-    this.setInteractEventDataForTabs('on-demand-reports');
-    this.selectedTab = tabNumber;
-    if (_.isEmpty(this.reportTypes)) {
-      this.getFormData();
-    }
-    this.onDemandReports.loadReports(this.currentBatch);
+      this.setInteractEventDataForTabs('on-demand-reports');
+      this.selectedTab = tabNumber;
+      if (_.isEmpty(this.reportTypes)) {
+        this.getFormData();
+      }
+      setTimeout(()=>{
+        this.onDemandReports.loadReports(this.currentBatch)
+      }, 500);
   }
 
   ngAfterViewInit() {

@@ -197,10 +197,10 @@
 
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
-      <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
-      <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+      <!-- <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a> -->
+      <a class="item" (click)="loadOndemandReports(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
-    <div class="ui segment state-report" suiTabContent="1">
+    <div class="ui segment state-report" suiTabContent="2">
       <div class="ui stackable grid">
         <div class="nine wide column py-0">
         <p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
@@ -211,7 +211,7 @@
       <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
    
     </div>
-    <div class="ui segment detailed-report" suiTabContent="2">
+    <div class="ui segment detailed-report" suiTabContent="1">
       <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
     </div>
   </sui-tabset>
