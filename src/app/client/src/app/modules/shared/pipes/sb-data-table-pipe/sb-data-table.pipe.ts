@@ -18,7 +18,7 @@ export class SbDataTablePipe implements PipeTransform {
       return value;
     }
     if (type === 'date') {
-      return dayjs(value).format('DD-MMM-YYYY');
+      return dayjs(value).format('DD-MMM-YYYY hh:mm a');
     } else {
       return '-';
     }
