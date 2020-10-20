@@ -90,3 +90,21 @@
         }
     }
 }
+.sbt-report-btns-panel{
+    margin-top: calculateRem(1px);
+    background: var(--white);
+}
+.report-panel{
+    @include respond-below(sm) {
+        padding: 1rem;
+        flex-direction: column;
+    }
+}
+.report-description{
+    flex: 1;
+    margin-right: calculateRem(50px) !important;
+    @include respond-below(sm) {
+        flex: auto;
+        margin:0 0 1rem 0 !important;
+    }
+}

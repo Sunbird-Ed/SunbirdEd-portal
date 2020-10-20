@@ -8,7 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
-import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { GroupMemberRole, CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 import { groupData, modifiedActivities } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
@@ -226,6 +226,24 @@ describe('GroupsService', () => {
     spyOn(service.groupCservice, 'reactivateById');
     service.activateGroupById('123');
     expect(service.groupCservice.reactivateById).toHaveBeenCalledWith('123');
+  });
+
+  it('should return when group is "suspended FALSE" ', () => {
+    const group = new CsGroup();
+    const service = TestBed.get(GroupsService);
+    spyOn(group, 'isActive').and.returnValue(false);
+    const isGroupActive = service.updateGroupStatus(group, GroupEntityStatus.SUSPENDED);
+    expect(group.isActive).toHaveBeenCalled();
+    expect(isGroupActive).toEqual(false);
+  });
+
+  it('should return when group is "active TRUE" ', () => {
+    const group = new CsGroup();
+    const service = TestBed.get(GroupsService);
+    spyOn(group, 'isActive').and.returnValue(true);
+    const isGroupActive = service.updateGroupStatus(group, GroupEntityStatus.ACTIVE);
+    expect(group.isActive).toHaveBeenCalled();
+    expect(isGroupActive).toEqual(true);
   });
 
 });

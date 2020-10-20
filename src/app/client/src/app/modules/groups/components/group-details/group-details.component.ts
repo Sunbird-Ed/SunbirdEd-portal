@@ -1,3 +1,4 @@
+import { GroupEntityStatus, CsGroup } from '@project-sunbird/client-services/models/group';
 import { UserService } from '@sunbird/core';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
@@ -55,6 +57,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getGroupData();
     });
+
+    this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
+    });
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
   initLayout() {
@@ -69,7 +75,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   getGroupData() {
     this.isLoader = true;
-    this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
       const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
         if (!user || _.get(groupData, 'status') === 'inactive') {
           this.groupService.goBack();
@@ -109,8 +115,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
 
   addTelemetry (id, extra?) {
-    const cdata = [{id: this.groupId || _.get(this.groupData, 'id'), type : 'group'}] ;
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   toggleFtuModal(visibility: boolean = false) {
