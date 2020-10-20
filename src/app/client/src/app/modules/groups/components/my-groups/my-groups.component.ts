@@ -23,6 +23,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   isLoader = true;
   layoutConfiguration;
+  showTncModal = false;
+
   constructor(public groupService: GroupsService,
     public router: Router,
     public resourceService: ResourceService,
@@ -32,11 +34,16 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
+
+    this.groupService.isUserAcceptedLatestTnc();
     this.initLayout();
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.getMyGroupList();
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
+    });
+    this.groupService.emitNotAcceptedGroupsTnc.subscribe(show => {
+      this.showTncModal = show;
     });
     this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
@@ -76,8 +83,11 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDetailPage(event) {
+    this.showTncModal = _.get(event, 'data.visited') === false;
     this.addTelemetry('group-card', _.get(event, 'data.id'));
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
+    if (!this.showTncModal) {
+      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(event, 'data.id')]);
+    }
   }
 
   showFtuPopup() {
@@ -93,6 +103,14 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     const selectedGroup = _.find(this.groupsList, {id: groupId});
     const obj = selectedGroup ? {id: groupId, type: 'group', ver: '1.0'} : {};
     this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], obj);
+  }
+
+  getShowTnc() {
+    return this.showTncModal;
+  }
+
+  acceptGroupsTnc() {
+    this.showTncModal = false;
   }
 
   ngOnDestroy() {

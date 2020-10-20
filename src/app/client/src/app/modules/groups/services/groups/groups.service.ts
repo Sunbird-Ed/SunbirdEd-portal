@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
-import { UserService, LearnerService } from '@sunbird/core';
+import { UserService, LearnerService, TncService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -25,6 +25,7 @@ export class GroupsService {
   public showMenu = new EventEmitter();
   public showActivateModal = new EventEmitter();
   public _groupListCount: number;
+  public emitNotAcceptedGroupsTnc = new EventEmitter();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -34,7 +35,8 @@ export class GroupsService {
     private navigationhelperService: NavigationHelperService,
     private router: Router,
     private configService: ConfigService,
-    private learnerService: LearnerService
+    private learnerService: LearnerService,
+    private tncService: TncService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -296,4 +298,26 @@ getActivity(groupId, activity, mergeGroup) {
     return this.groupCservice.reactivateById(groupId);
   }
 
+  isUserAcceptedLatestTnc () {
+    this.tncService.getTncList().subscribe(data => {
+
+      let groupsTnc = _.get(data, 'result.response').find(item => item.id === 'groupsTnc');
+      const userTncAccepted = _.get(this.userService.userProfile, 'allTncAccepted');
+      groupsTnc = _.head(_.compact(groupsTnc));
+      const lVer = JSON.parse(_.get(groupsTnc, 'value'));
+      console.log('lVER', lVer);
+      // allTncAccepted  === {}
+      // allTncAccepted === groupsTnc
+      // allTncAccepted < version
+      if (_.isEmpty(userTncAccepted)) {
+        this.emitNotAcceptedGroupsTnc.emit(true);
+      } else if (_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) {
+        this.emitNotAcceptedGroupsTnc.emit(true);
+      } else if (_.get(userTncAccepted, 'version') < _.get(groupsTnc, 'latestVersion')) {
+        this.emitNotAcceptedGroupsTnc.emit(true);
+      } else {
+        this.emitNotAcceptedGroupsTnc.emit(false);
+      }
+    });
+  }
 }

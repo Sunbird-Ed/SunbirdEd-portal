@@ -1,4 +1,4 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+<sui-modal *ngIf="showGroupActionsModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'small'" class="sb-modal" [ngClass]="{'sb-error': (modalName !== 'activate')}"
   appBodyScroll (dismissed)="emitEvent(false);" #modal>
   <div class="sb-modal-header">
@@ -23,5 +23,19 @@
     'sb-btn-outline-primary': (modalName === 'activate')}"
       (click)="emitEvent(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
+</sui-modal>
+
+
+<sui-modal *ngIf="showTncModal" [mustScroll]="true"  [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+appBodyScroll (dismissed)="showTncModal= !showTncModal" #modal >
+<div class="sb-modal-header">Group Guidelines</div>
+<div class="sb-modal-content o-y-visible">
+  <!-- showTncModal{{showTncModal}} -->
+{{resourceService?.frmelmnts?.lbl?.agreeCourseToc | interpolate:'{instance}': channel }} <a href="{{url}}/term-of-use.html#groupGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" 
+    (click)="acceptGroupTnc();showTncModal=!showTncModal">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+</div>
 </sui-modal>
 
