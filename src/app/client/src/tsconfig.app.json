@@ -74,6 +74,9 @@
       "@sunbird/groups": [
         "app/modules/groups"
       ],
+      "@sunbird/location": [
+        "app/modules/location"
+      ]
     },
     "module": "es2015",
     "types": []
