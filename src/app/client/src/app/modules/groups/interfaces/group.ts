@@ -1,10 +1,4 @@
-import { GroupMembershipType, GroupEntityStatus, Group, GroupMember } from '@project-sunbird/client-services/models/group';
-
-export interface IGroup extends Group {
-  isAdmin?: boolean;
-  active?: boolean;
-  members?: IGroupMember[];
-}
+import { GroupMembershipType, GroupEntityStatus, CsGroup, GroupMember } from '@project-sunbird/client-services/models/group';
 
 export interface IMember {
   members: [
@@ -22,7 +16,7 @@ export interface IGroupUpdate {
   status?: GroupEntityStatus;
 }
 
-export interface IGroupCard extends IGroup {
+export interface IGroupCard extends CsGroup {
   cardBgColor?: any;
   cardTitleColor?: any;
   isLoading?: boolean;
@@ -30,6 +24,7 @@ export interface IGroupCard extends IGroup {
   initial?: string;
   isCreator?: boolean;
   memberRole?: string;
+  isAdmin?: boolean;
 }
 
 

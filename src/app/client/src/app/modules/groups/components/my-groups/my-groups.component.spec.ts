@@ -101,11 +101,13 @@ describe('MyGroupsComponent', () => {
     name: 'group',
     description: 'test',
     membershipType: GroupMembershipType.INVITE_ONLY,
-    status: GroupEntityStatus.ACTIVE
+    status: GroupEntityStatus.ACTIVE,
+    active: true,
+    isActive() { return true ;}
     });
     component.addTelemetry('ftu-popup', '137cabc7-79b6-495e-b987-b0c87c317e91');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup',
     extra: {status: 'active'}}, fakeActivatedRouteWithGroupId.snapshot,
-    [], {id: '137cabc7-79b6-495e-b987-b0c87c317e91', type: 'group', ver: '1.0'});
+    [], '137cabc7-79b6-495e-b987-b0c87c317e91', {id: '137cabc7-79b6-495e-b987-b0c87c317e91', type: 'group', ver: '1.0'});
   });
 });

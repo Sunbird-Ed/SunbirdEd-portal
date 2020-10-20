@@ -1,17 +1,75 @@
 @import "mixins/mixins";
 
-:host ::ng-deep {
-  html[layout='joy'] {
-    .sb-btn-normal {
-      height: 2rem;
-    }
-
-    .sb-btn {
-      box-shadow: none;
-      /* border: 0px; */
-    }
+.certificate-content{
+    height: 100%;
+    background: var(--white);
   }
+
+.cert-img-sb-card {
+    width: 6.375rem;
+    background-color: var(--white);
+    border: .0625rem solid var(--rc-dedede);
+    border-radius: .25rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-top: .1875rem;
+    transition: box-shadow .3s ease-out,transform .3s ease-out,opacity .2s ease-out;
+    transition-delay: .1s;
+    &.active {
+      border: 2px solid var(--primary-300);
+      transform: scale(1.03, 1.03);
+      .selected-mark{
+        position: absolute;
+        right:calculateRem(4px);
+        top:0;
+        display: block;
+      }
+    }
+      &:hover{
+        border: 2px solid var(--primary-300);
+        transform: scale(1.03, 1.03);
+    }
+	&__content {
+    height: 5.375rem;
+    padding: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    .selected-mark{
+      display: none;
+    }
+	img{
+	width:100%;
+	height:100%;
+  }
+ }
 }
+
+.select-template-content{
+  background: var(--white);
+  height:100%;
+}
+
+.cert-select-card{
+    width: 100%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    &__content{
+      height: 100%;
+      background: var(--white);
+     &__description{
+      width: 100%;
+      min-height: 418px;
+      text-align: center;
+      border-style: dashed;
+      border-color: var(--gray-100);
+      .title{
+        font-size: 1.125rem;
+        color: var(--gray-100);
+      }
+     }
+    }
+ }
 
 .cert-select-image {
   width: 100%;
@@ -36,31 +94,35 @@
   }
 }
 
+.asterik{
+  color: var(--red-400);
+} 
+
+.preview-title{
+font-size: calculateRem(20px);
+}
+
 .state-labels {
-  color: var(--gray-200);
+  color: var(--gray-800);
 }
 
 .list-border {
   border-bottom: calculateRem(1px) solid var(--gray-200);
 }
 
-.sb-bulk-upload-btn {
+.sb-browse-btn {
   position: relative;
   overflow: hidden;
   margin-top: calculateRem(3px);
   cursor: pointer;
-
-  .sb-btn-upload {
-    position: absolute;
-    opacity: 0;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    height: 100%;
-    cursor: pointer;
-  }
+  border-radius: 24px;
+  border: 2px solid var(--primary-300);
+  color: var(--primary-300);
+  font-weight: bold;
+  background:var(--primary-100);
 }
+
+
 
 // image modal css //
 .sb-imagemodal {
@@ -156,6 +218,7 @@
         border-radius: .25rem;
         background-color: var(--white);
         box-shadow: none;
+        height: 100%;
       }
 
       .ui.card {
@@ -177,6 +240,22 @@
         box-shadow: 0 calculateRem(1px) calculateRem(3px) 0 #d4d4d5, 0 0 0 calculateRem(1px) #d4d4d5;
         transition: box-shadow .1s ease, transform .1s ease;
         z-index: '';
+        position: relative;
+        .selected-mark{
+          display: none;
+        }
+        &.active {
+          transform: scale(1.03, 1.03);
+          .selected-mark{
+            position: absolute;
+            right:calculateRem(4px);
+            top:0;
+            display: block;
+          }
+        }
+        &:hover {
+          transform: scale(1.03, 1.03);
+       }
       }
 
       .ui.card>.content,
@@ -197,6 +276,7 @@
         display: inline-block;
         vertical-align: middle;
         width: 100%;
+        height: calculateRem(150px);
       }
     }
 
