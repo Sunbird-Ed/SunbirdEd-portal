@@ -186,7 +186,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   userConsent;
   reportTypes = [];
   userRoles;
-  selectedTab = 1;
+  selectedTab = 2;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -287,13 +287,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    this.loadOndemandReports(1);
-    // if(this.selectedTab === 1){
-    //   this.summaryReport(1);
-    // } else {
-    //   console.log('load ondemand reports')
-    //   this.loadOndemandReports(2);
-    // } 
+    if(this.selectedTab === 1){
+      this.summaryReport(1);
+    } else {
+      this.loadOndemandReports(2);
+    } 
   }
 
 
