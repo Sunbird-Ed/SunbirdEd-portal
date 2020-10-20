@@ -44,6 +44,10 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
+      this.contentData.board = 'CBSE/NCERT';
+    }
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
