@@ -168,12 +168,19 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       this.toasterService.success(this.resourceService.frmelmnts.msg.guidelinesacceptsuccess);
       this.showTncModal = false;
       this.isTncAccepted = true;
-      window.location.href = window.location.href;
+      if (this.groupsList.length > 0) {
+        this.reload();
+      }
     }, err => {
       this.toasterService.error(this.resourceService.frmelmnts.msg.guidelinesacceptfailed);
       this.showTncModal = false;
       this.isTncAccepted = false;
     });
+  }
+
+  reload() {
+    this.groupService.isUserAcceptedTnc();
+    this.groupService.emitCloseForm();
   }
 
   ngOnDestroy() {

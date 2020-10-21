@@ -22,6 +22,14 @@ describe('MyGroupsComponent', () => {
 
   configureTestSuite();
 
+  const resourceBundle = {
+    frmelmnts: {
+      msg: {
+        guidelinesacceptsuccess: '',
+        guidelinesacceptfailed: ''
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url: '/my-groups';
@@ -32,7 +40,8 @@ describe('MyGroupsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
       providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, ResourceService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
+        { provide: ResourceService, useValue: resourceBundle},
         { provide: APP_BASE_HREF, useValue: '/' } ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -162,6 +171,7 @@ describe('MyGroupsComponent', () => {
   it('should call acceptTermsAndConditions', () => {
     component.latestTnc = {field: 'groups', value: {latestVersion: 'V1'}};
     spyOn(component, 'navigate');
+    spyOn(component, 'reload');
     spyOn(component['userService'], 'acceptTermsAndConditions').and.returnValue(of ({}));
     spyOnProperty(component['userService'], 'userid').and.returnValue('123');
     const requestBody = {
@@ -175,6 +185,7 @@ describe('MyGroupsComponent', () => {
 
     component['userService'].acceptTermsAndConditions(requestBody).subscribe(data => {
       expect(component.showTncModal).toBeFalsy();
+      expect(component.reload).toHaveBeenCalled();
     });
   });
 
