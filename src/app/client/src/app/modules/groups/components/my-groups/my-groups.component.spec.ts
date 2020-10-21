@@ -187,6 +187,7 @@ describe('MyGroupsComponent', () => {
       expect(component.showTncModal).toBeFalsy();
       expect(component.reload).toHaveBeenCalled();
     });
+  
   });
 
 
