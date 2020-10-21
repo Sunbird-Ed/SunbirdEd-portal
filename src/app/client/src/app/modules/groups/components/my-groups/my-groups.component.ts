@@ -27,6 +27,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   selectedType: acceptTnc = acceptTnc.ALL;
   selectedGroup: {};
   latestTnc: {};
+  isTncAccepted = true;
 
   constructor(public groupService: GroupsService,
     public router: Router,
@@ -92,7 +93,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   public navigateToDetailPage(event) {
     this.selectedType = acceptTnc.GROUP;
     this.selectedGroup = event.data;
-    this.showTncModal = _.get(event, 'data.visited') === false;
+    this.showTncModal = this.isTncAccepted ? _.get(event, 'data.visited') === false : !_.has(_.get(event, 'data'), 'visited');
     if (_.get(event, 'data.status') === 'suspended') {
       this.addTelemetry('suspended-group-card', _.get(event, 'data.id'));
     } else {
@@ -164,9 +165,11 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
     this.userService.acceptTermsAndConditions(requestBody).subscribe(data => {
       this.showTncModal = false;
+      this.isTncAccepted = true;
       window.location.reload();
     }, err => {
       this.showTncModal = false;
+      this.isTncAccepted = false;
     });
   }
 

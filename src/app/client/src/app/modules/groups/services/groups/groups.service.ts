@@ -313,21 +313,14 @@ getActivity(groupId, activity, mergeGroup) {
 
   isUserAcceptedTnc () {
     this.tncService.getTncList().subscribe(data => {
-
-      const groupsTnc = _.get(data, 'result.response').find(item => {
-        if (item.id === 'groupsTnc') {
-          item.value = JSON.parse(item.value);
-          return item;
-        }
-      });
+      const groupsTnc = _.find(_.get(data, 'result.response'), {id: 'groupsTnc'});
+      groupsTnc.value = typeof groupsTnc.value === 'string' ? JSON.parse(groupsTnc.value) : groupsTnc.value;
 
       const userTncAccepted = _.get(this.userService.userProfile, 'allTncAccepted');
-
       const isTncAccepted = (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc')) &&
       (_.get(userTncAccepted, 'groupsTnc.version') >= _.get(groupsTnc, 'value.latestVersion')));
 
       this.emitNotAcceptedGroupsTnc.emit({tnc: groupsTnc, accepted: isTncAccepted});
-
     });
   }
 
