@@ -46,16 +46,6 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 
-const elementRefStub = {
-  nativeElement: {
-    'lang': 'en',
-    'dir': 'ltr',
-    style: {
-      display: 'none'
-    }
-  }
-};
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, CoreModule, ReactiveFormsModule, HttpClientTestingModule, RouterModule.forRoot([]) ],
@@ -189,6 +179,58 @@ const elementRefStub = {
     spyOn(uploadCertService, 'uploadTemplate').and.callFake(() => throwError({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+  });
+
+  it('should close the browse', () => {
+    component.close();
+    expect(component.showSelectImageModal).toEqual(false);
+    expect(component.showUploadUserModal).toEqual(false);
+  });
+
+  it('should remove the selected logo', () => {
+    component.certLogos = [
+      {
+        id: '123'
+      },
+      {
+        id: '456'
+      },
+      {
+        id: '789'
+      }
+    ];
+    component.removeLogo(1);
+    expect(component.certLogos).toEqual([
+      {
+        id: '123'
+      },
+      {
+        id: '789'
+      }
+    ]);
+  });
+
+  it('should remove the selected sign', () => {
+    component.certSigns = [
+      {
+        id: '123'
+      },
+      {
+        id: '456'
+      },
+      {
+        id: '789'
+      }
+    ];
+    component.removeSigns(1);
+    expect(component.certSigns).toEqual([
+      {
+        id: '123'
+      },
+      {
+        id: '789'
+      }
+    ]);
   });
 
 });
