@@ -25,18 +25,18 @@ export class UploadCertificateService {
    */
   getAssetData(query?) {
     const body = {
-      "request": {
-        "filters": {
-          "mediaType": ["image"],
-          "contentType": ["Asset"],
-          "compatibilityLevel": { "min": 1, "max": 2 },
-          "status": ["Live"],
-          "channel": this.userService.channel
+      'request': {
+        'filters': {
+          'mediaType': ['image'],
+          'contentType': ['Asset'],
+          'compatibilityLevel': { 'min': 1, 'max': 2 },
+          'status': ['Live'],
+          'channel': this.userService.channel
         },
-        "limit": 50,
-        "offset": 0
+        'limit': 50,
+        'offset': 0
       }
-    }
+    };
     if (query) {
       body['request']['query'] = query;
     }
@@ -52,18 +52,18 @@ export class UploadCertificateService {
   */
   createAsset(reqObj) {
     const body = {
-      "request":
+      'request':
       {
-        "content": {
-          "name": reqObj.assetCaption,
-          "creator": reqObj.creator,
-          "createdBy": reqObj.creatorId,
-          "code": "org.ekstep0.9002440445885993",
-          "mimeType": "image/png",
-          "mediaType": "image",
-          "contentType": "Asset",
-          "osId": "org.ekstep.quiz.app",
-          "language": ["English"]
+        'content': {
+          'name': reqObj.assetCaption,
+          'creator': reqObj.creator,
+          'createdBy': reqObj.creatorId,
+          'code': 'org.ekstep0.9002440445885993',
+          'mimeType': 'image/png',
+          'mediaType': 'image',
+          'contentType': 'Asset',
+          'osId': 'org.ekstep.quiz.app',
+          'language': ['English']
         }
       }
     };

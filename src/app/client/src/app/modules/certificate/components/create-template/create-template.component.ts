@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
-import { MockData } from './create-template.component.data';
+import { MockData } from './create-template.component.spec.data';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
@@ -104,6 +104,7 @@ export class CreateTemplateComponent implements OnInit {
     this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
       console.log('create response', response);
       const assetId = _.get(response, 'result.identifier');
+      console.log('this.finalSVGurl', this.finalSVGurl);
       this.uploadTemplate(this.finalSVGurl, assetId);
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
@@ -120,11 +121,6 @@ export class CreateTemplateComponent implements OnInit {
       console.log('error', error);
     });
   }
-
-  onTemplateChange() {
-
-  }
-
 
   assetData(data) {
     // if (data.type === 'LOGO') {
