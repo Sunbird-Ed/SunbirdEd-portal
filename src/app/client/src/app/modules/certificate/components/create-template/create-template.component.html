@@ -192,8 +192,8 @@
               <div class="d-flex">
                 <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content">
-                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.path"  />
-                    <div *ngIf="selectedCertificate?.id === certificate?.id" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl"  />
+                    <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
                   </div>
                 </div>
               </div>
@@ -214,4 +214,5 @@
     </div>
 </div>
 
-<browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" [showUploadUserModal]="showUploadUserModal"></browse-image-popup>
+<browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" ></browse-image-popup>
+<!-- [showUploadUserModal]="showUploadUserModal" -->

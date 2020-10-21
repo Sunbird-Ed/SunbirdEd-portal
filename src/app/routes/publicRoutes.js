@@ -20,6 +20,7 @@ module.exports = function (app) {
 
     app.all('/api/content/v1/upload/:id', proxyObj());
 
+    app.all('/api/content/v1/read/:id', proxyObj());
     // app.all('/api/asset/v1/create', proxyObj());
 
     app.all('/api/asset/v1/upload/:id', proxyObj());
@@ -48,13 +49,13 @@ function proxyObj() {
             try {
                 logger.info({ msg: 'proxyObj' + req.method + ' - ' + req.url });
                 const data = JSON.parse(proxyResData.toString('utf8'));
-                if (data.params.err) {
-                    res.send(mockData[req.url])
-                }
+                // if (data.params.err) {
+                //     res.send(mockData[req.url])
+                // }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
-                res.send(mockData[req.url])
+                // res.send(mockData[req.url])
                 const data = JSON.parse(proxyResData.toString('utf8'));
                 logger.error({ msg: 'Error occurred while featching the data', data });
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);

@@ -28,6 +28,7 @@ export class CreateTemplateComponent implements OnInit {
   certLogos: any = [];
   certSigns: any = [];
   logoType;
+  // api call
   defaultCertificates = [
     { path: 'assets/images/mp.svg', id: 0 },
     { path: 'assets/images/odisha.svg', id: 1 },
@@ -38,7 +39,7 @@ export class CreateTemplateComponent implements OnInit {
   center = 275;
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
-  images = null;
+  images: object = {};
   finalSVGurl: any;
 
   constructor(public uploadCertificateService: UploadCertificateService,
@@ -46,14 +47,18 @@ export class CreateTemplateComponent implements OnInit {
     private sanitizer: DomSanitizer,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
-    public navigationHelperService: NavigationHelperService ) {
+    public navigationHelperService: NavigationHelperService) {
   }
 
   ngOnInit() {
     this.navigationHelperService.setNavigationUrl();
-    this.selectedCertificate = _.clone(this.defaultCertificates[0]);
     this.initializeFormFields();
-    this.getSVGTemplate();
+    this.uploadCertificateService.getCertificates().subscribe(res => {
+      console.log(res);
+      this.defaultCertificates = _.get(res, 'result.content');
+      this.selectedCertificate = _.clone(this.defaultCertificates[0]);
+      this.getSVGTemplate();
+    });
   }
 
   initializeFormFields() {
@@ -81,9 +86,10 @@ export class CreateTemplateComponent implements OnInit {
 
 
   getSVGTemplate() {
-    this.uploadCertificateService.getSvg(this.selectedCertificate.path).then(res => {
+    this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(svgFile);
+      console.log(this.convertHtml(this.logoHtml));
       // const logoArray = _.concat(this.certLogos, this.certSigns);
       // if (!_.isEmpty(logoArray)) {
       //   this.previewCertificate();
@@ -129,7 +135,7 @@ export class CreateTemplateComponent implements OnInit {
   assetData(data) {
     // if (data.type === 'LOGO') {
     // this.certLogos[data.index] = data;
-    this.images[data.key] = data
+    this.images[data.key] = data;
     // } else {
     //   this.certSigns[data.index] = data;
     // }
@@ -161,8 +167,8 @@ export class CreateTemplateComponent implements OnInit {
 
   openSignLogos(type) {
     this.logoType = type;
-    this.showSelectImageModal = false;
-    this.showUploadUserModal = true;
+    this.showSelectImageModal = true;
+    // this.showUploadUserModal = true;
   }
 
   chooseCertificate(certificate) {
@@ -179,58 +185,90 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   previewCertificate() {
+    console.log(this.images);
     this.svgData = this.convertHtml(this.logoHtml);
-    console.log(this.svgData);
-    this.svgData.getElementsByClassName('cert-state-symbol')[0].remove();
-    this.svgData.getElementsByClassName('cert-title')[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
-    // const logosArray = _.concat(this.certLogos, this.certSigns);
-    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x));
-    this.editSVG(logosArray).then(res => {
-      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0])
+    const stateLogos = this.svgData.getElementsByClassName('state-symbol');
+    const digitalSigns = this.svgData.getElementsByClassName('digital-sign');
+    // const title = this.svgData.getElementsByClassName('title') || this.svgData.getElementsByClassName('cert-title');
+    console.log(stateLogos);
+
+    console.log(digitalSigns);
+    // title[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
+    this.updateStateLogos(stateLogos);
+    this.updateSigns(digitalSigns);
+  }
+
+  updateStateLogos(stateLogos) {
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x.type === 'LOGO');
+    this.editSVG(logosArray, stateLogos).then(res => {
+      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
     });
   }
 
+  updateSigns(stateLogos) {
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x.type === 'SIGN');
+    this.editSVG(logosArray, stateLogos).then(res => {
+      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+    });
+  }
 
-  editSVG(logosArray) {
-    console.log(logosArray)
+  editSVG(logosArray, stateLogos) {
+    console.log(logosArray);
     return new Promise(async (resolve, reject) => {
-      for (let i = 0; i < logosArray.length; i++) {
-        const logo = logosArray[i];
-        if (logo) {
-          let bottom = 72;
-          if (logo.type && logo.type.includes('SIGN')) {
-            bottom = 400
-          }
-          const res = await this.toDataURL(logo);
-          if (res) {
-            // this.svgData.getElementsByClassName('cert-state-symbol')[index].setAttribute('xlink:href', res)
-            console.log(i, res['type'])
-            const left = (i + 1) * 100;
-            let doc = this.svgData;
-            let image = doc.createElement('image');
-            image.setAttribute('xlink:href', res['url'])
-            image.setAttribute('id', i)
-            image.setAttribute('x', (this.center + left));
-            image.setAttribute('y', bottom)
-            image.setAttribute('width', 100)
-            image.setAttribute('height', 100)
-            let element = doc.getElementsByTagName('svg')[0];
-            element.appendChild(image);
-            if (i === (logosArray.length - 1)) {
-              console.log('resolve')
-              resolve();
+      const g_tag = document.createElement('g');
+      g_tag.setAttribute('transform', 'translate(322.5,65)');
+        for (let i = 0; i < logosArray.length; i++) {
+          const logo = logosArray[i];
+          const left = ((i) * 110) + '';
+          if (logo) {
+            let bottom = '72';
+            if (logo.type && logo.type.includes('SIGN')) {
+              bottom = '400';
+            }
+            const res = await this.toDataURL(logo);
+
+            if (res && !_.isEmpty(stateLogos)) {
+              stateLogos[i].setAttribute('xlink:href', res['url']);
+            } else if (res && _.isEmpty(stateLogos)) {
+              const doc = this.svgData;
+              const image = document.createElement('image');
+              image.setAttribute('xlink:href', res['url']);
+              image.setAttribute('class', 'state-symbol');
+              image.setAttribute('x', left);
+              image.setAttribute('y', bottom);
+              image.setAttribute('width', '88');
+              image.setAttribute('height', '88');
+              g_tag.appendChild(image);
+              const element = doc.getElementsByTagName('svg')[0];
+              element.appendChild(g_tag);
+            }
+              // this.svgData.getElementsByClassName('cert-state-symbol')[index].setAttribute('xlink:href', res)
+              // console.log(i, res['type']);
+              // const left = (i + 1) * 100;
+              // const doc = this.svgData;
+              // const image = doc.createElement('image');
+              // image.setAttribute('xlink:href', res['url']);
+              // image.setAttribute('id', i);
+              // image.setAttribute('x', (this.center + left));
+              // image.setAttribute('y', bottom);
+              // image.setAttribute('width', 100);
+              // image.setAttribute('height', 100);
+              // const element = doc.getElementsByTagName('svg')[0];
+              // element.appendChild(image);
+              if (i === (logosArray.length - 1)) {
+                console.log('resolve');
+                resolve();
+              }
             }
           }
-        }
-      }
     });
   }
 
   toDataURL(image) {
     console.log(image);
-    if (image.type === 'SIGN') {
-      return new Promise((resolve, reject) => resolve({ url: image.url, type: image.type }))
-    }
+    // if (image.type === 'SIGN') {
+    //   return new Promise((resolve, reject) => resolve({ url: image.url, type: image.type }));
+    // }
     return fetch(image.url, {
       method: 'GET',
       mode: 'cors',
@@ -242,7 +280,7 @@ export class CreateTemplateComponent implements OnInit {
       .then(response => response.blob())
       .then(blob => new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onloadend = () => resolve({ url: reader.result, type: image.type })
+        reader.onloadend = () => resolve({ url: reader.result, type: image.type });
         reader.onerror = reject;
         reader.readAsDataURL(blob);
       }));
@@ -252,7 +290,7 @@ export class CreateTemplateComponent implements OnInit {
   certificateCreation(ev) {
     console.log(ev);
     this.finalSVGurl = this.getBase64Data(ev);
-    this.selectedCertificate['path'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalSVGurl);
+    this.selectedCertificate['artifactUrl'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalSVGurl);
     console.log('*******************Final certificate base64 data********************');
     console.log(this.finalSVGurl);
     console.log('********************************************************************');
@@ -260,7 +298,7 @@ export class CreateTemplateComponent implements OnInit {
 
   getImagePath() {
     if (this.selectedCertificate) {
-      return this.selectedCertificate.path;
+      return this.selectedCertificate.artifactUrl;
     }
   }
   getBase64Data(ev) {

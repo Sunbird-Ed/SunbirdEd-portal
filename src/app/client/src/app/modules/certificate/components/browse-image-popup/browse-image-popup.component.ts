@@ -17,7 +17,7 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  @Input() showUploadUserModal;
+  showUploadUserModal;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
@@ -60,11 +60,11 @@ export class BrowseImagePopupComponent implements OnInit {
   async fileChange(ev) {
     this.uploadForm.reset();
     const imageProperties = await this.getImageProperties(ev);
-    console.log(imageProperties)
+    console.log(imageProperties);
     const isDimensionMatched = this.dimentionCheck(imageProperties);
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
     const isSizeMatched = _.get(imageProperties, 'size') < 1;
-    console.log(isDimensionMatched, isTypeMatched, isSizeMatched)
+    console.log(isDimensionMatched, isTypeMatched, isSizeMatched);
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
@@ -74,8 +74,8 @@ export class BrowseImagePopupComponent implements OnInit {
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
-    }else{
-      console.log('*********Error: Image requirments are not matched*******************')
+    } else {
+      console.log('*********Error: Image requirments are not matched*******************');
     }
   }
 
@@ -83,13 +83,9 @@ export class BrowseImagePopupComponent implements OnInit {
     let flag = false;
     if (image) {
       const dimension = `${_.get(image,'width')}px X ${_.get(image,'height')}px`;
-      const logoType = _.get(this.logoType, 'type')
+      const logoType = _.get(this.logoType, 'type');
       const requiredDimensions = this.imageDimensions[logoType]['dimensions'];
-      flag = _.isEqual(dimension,requiredDimensions);
-      console.log(flag)
-      console.log(logoType, this.imageDimensions[logoType]['dimensions'])
-      console.log(dimension)
-      console.log(requiredDimensions)
+      flag = _.isEqual(dimension, requiredDimensions);
     }
     return flag;
   }
@@ -108,7 +104,7 @@ export class BrowseImagePopupComponent implements OnInit {
           'width': width,
           'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
           'type': file.type
-        }
+        };
         resolve(imageData);
       };
     });
@@ -120,8 +116,8 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
-    if (this.logoType.type === 'LOGO') {
-      this.uploadCertificateService.createAsset(this.uploadForm.value).subscribe(res => {
+    // if (this.logoType.type === 'LOGO') {
+      this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
         if (res && res.result) {
           this.uploadBlob(res);
         }
@@ -130,11 +126,12 @@ export class BrowseImagePopupComponent implements OnInit {
         // have to remove one the api is working - start
         const createResponse = error.error;
         this.uploadBlob(createResponse);
+        this.claseModel();
         //  end
       });
-    } else {
-      this.getImageURLs();
-    }
+    // } else {
+    //   this.getImageURLs();
+    // }
   }
 
   /**
@@ -147,16 +144,14 @@ export class BrowseImagePopupComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         const imageURL = reader.result as string;
-        this.showUploadUserModal = false;
-        this.showSelectImageModal = false;
         const image = {
           'name': this.uploadForm.controls.assetCaption.value,
           'url': imageURL,
           'type': this.logoType.type,
           'key': this.logoType.key,
           'index': this.logoType.index
-        }
-        this.assetData.emit(image)
+        };
+        this.assetData.emit(image);
         this.uploadForm.reset();
         this.claseModel();
       };
@@ -165,7 +160,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   uploadBlob(data) {
     if (data) {
-      const identifier = _.get(data, 'result.identifier');
+      const identifier = _.get(data, 'result.content_id');
       this.uploadCertificateService.storeAsset(this.fileObj, identifier).subscribe(imageData => {
         if (imageData.result) {
           this.showUploadUserModal = false;
@@ -176,10 +171,10 @@ export class BrowseImagePopupComponent implements OnInit {
             'type': this.logoType.type,
             'key': this.logoType.key,
             'index': this.logoType.index
-          }
-          this.assetData.emit(image)
+          };
+          this.assetData.emit(image);
           this.uploadForm.reset();
-          this.claseModel()
+          this.claseModel();
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -192,12 +187,12 @@ export class BrowseImagePopupComponent implements OnInit {
           'type': this.logoType.type,
           'key': this.logoType.key,
           'index': this.logoType.index
-        }
-        this.assetData.emit(image)
+        };
+        this.assetData.emit(image);
         // end
-        this.claseModel()
+        this.claseModel();
         this.uploadForm.reset();
-      })
+      });
     }
   }
 
@@ -206,9 +201,9 @@ export class BrowseImagePopupComponent implements OnInit {
   }
   back() {
     this.showUploadUserModal = false;
-    this.showSelectImageModal = false;
+    this.showSelectImageModal = true;
     this.uploadForm.reset();
-    this.close.emit();
+    // this.close.emit();
     this.selectedLogo = null;
   }
 
@@ -226,9 +221,9 @@ export class BrowseImagePopupComponent implements OnInit {
       'type': this.logoType.type,
       'key': this.logoType.key,
       'index': this.logoType.index
-    }
+    };
     this.assetData.emit(image);
     this.selectedLogo = null;
-    this.claseModel()
+    this.claseModel();
   }
 }
