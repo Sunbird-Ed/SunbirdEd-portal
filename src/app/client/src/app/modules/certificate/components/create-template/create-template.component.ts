@@ -38,7 +38,12 @@ export class CreateTemplateComponent implements OnInit {
   center = 275;
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
-  images = {};
+  images = {
+    'LOGO1':{},
+    'LOGO2':{},
+    'SIGN1':{},
+    'SIGN2':{}
+  };
   finalSVGurl: any;
 
   constructor(public uploadCertificateService: UploadCertificateService,
