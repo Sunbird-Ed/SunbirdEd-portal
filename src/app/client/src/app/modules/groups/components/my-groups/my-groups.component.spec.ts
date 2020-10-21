@@ -163,7 +163,6 @@ describe('MyGroupsComponent', () => {
     component.latestTnc = {field: 'groups', value: {latestVersion: 'V1'}};
     spyOn(component, 'navigate');
     spyOn(component['userService'], 'acceptTermsAndConditions').and.returnValue(of ({}));
-    window.location.href = 'url';
     spyOnProperty(component['userService'], 'userid').and.returnValue('123');
     const requestBody = {
       request: {
@@ -176,7 +175,6 @@ describe('MyGroupsComponent', () => {
 
     component['userService'].acceptTermsAndConditions(requestBody).subscribe(data => {
       expect(component.showTncModal).toBeFalsy();
-      expect(window.location.href).toEqual('url');
     });
   });
 
