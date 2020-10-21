@@ -2,9 +2,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateTemplateComponent } from './create-template.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA, ElementRef } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
-import { UserService, PlayerService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
@@ -13,7 +12,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
-import { of } from 'rxjs';
+import { of, throwError, observable } from 'rxjs';
+import { MockData } from './create-template.component.spec.data';
 describe('CreateTemplateComponent', () => {
   let component: CreateTemplateComponent;
   let fixture: ComponentFixture<CreateTemplateComponent>;
@@ -131,7 +131,7 @@ const elementRefStub = {
     expect(component.disableCreateTemplate).toEqual(true);
   });
 
-  xit('should create the certificate template with all the ', () => {
+  it('should create the certificate template with all the form values', () => {
     const uploadCertService = TestBed.get(UploadCertificateService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
@@ -140,11 +140,55 @@ const elementRefStub = {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
+    spyOn(component, 'uploadTemplate');
+    spyOn(component, 'previewCertificate').and.stub();
+    spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+    spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of(MockData.create));
 
-    const request = new CertConfigModel().prepareCreateAssetRequest(_.get(component.createTemplateForm, 'value'));
-    spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of({}));
     component.createCertTemplate();
 
+    expect(component.disableCreateTemplate).toEqual(true);
+    expect(component.uploadTemplate).toHaveBeenCalledWith(component.finalSVGurl, MockData.create.result.identifier);
+  });
+
+  it('should not create the certificate template with all the form values', () => {
+    const uploadCertService = TestBed.get(UploadCertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    component.createTemplateForm = new FormGroup({
+      certificateTitle: new FormControl('Completion certificate'),
+      stateName: new FormControl('Gujrat'),
+      authoritySignature: new FormControl('vinu kumar'),
+      authoritySignature2: new FormControl('Sudip Mukherjee'),
+      allowPermission: new FormControl(true)
+    });
+    spyOn(component, 'uploadTemplate');
+    spyOn(component, 'previewCertificate').and.stub();
+    spyOn(toasterService, 'error').and.stub();
+    spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
+    spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
+    component.createCertTemplate();
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+  });
+
+  it('should upload the final certificate svg image', () => {
+    const uploadCertService = TestBed.get(UploadCertificateService);
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success').and.stub();
+    spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
+    spyOn(uploadCertService, 'uploadTemplate').and.returnValue(of({}));
+    component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
+    expect(toasterService.success).toHaveBeenCalledWith('Template created successfully');
+    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
+  });
+
+  it('should not upload the final certificate svg image', () => {
+    const uploadCertService = TestBed.get(UploadCertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    spyOn(uploadCertService, 'uploadTemplate').and.callFake(() => throwError({}));
+    component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
   });
 
 });
