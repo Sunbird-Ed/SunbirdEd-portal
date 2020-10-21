@@ -28,7 +28,7 @@
 
 <sui-modal *ngIf="showTncModal" [mustScroll]="true"  [isClosable]="type === acceptTncType.GROUP" [transitionDuration]="0" [size]="'small'" class="sb-modal"
 appBodyScroll (dismissed)="closeModal()" #tncModal >
-<div class="sb-modal-header">Terms and conditions</div>
+<div class="sb-modal-header">{{resourceService?.frmelmnts?.lbl?.groupGuidelinesold}}</div>
 <div class="sb-modal-content o-y-visible">
   <input [(ngModel)]="checked" type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
 {{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a href="{{latestTnc?.value[latestTnc?.value?.latestVersion]?.url}}" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>

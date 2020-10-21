@@ -2,7 +2,7 @@ import { UserService } from '@sunbird/core';
 import { IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP, acceptTnc } from './../../interfaces';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { ResourceService, LayoutService } from '@sunbird/shared';
+import { ResourceService, LayoutService, ToasterService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -34,7 +34,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private toasterService: ToasterService
     ) { }
 
   ngOnInit() {
@@ -164,10 +165,12 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     };
 
     this.userService.acceptTermsAndConditions(requestBody).subscribe(data => {
+      this.toasterService.success(this.resourceService.frmelmnts.msg.guidelinesacceptsuccess);
       this.showTncModal = false;
       this.isTncAccepted = true;
-      window.location.reload();
+      window.location.href = window.location.href;
     }, err => {
+      this.toasterService.error(this.resourceService.frmelmnts.msg.guidelinesacceptfailed);
       this.showTncModal = false;
       this.isTncAccepted = false;
     });
