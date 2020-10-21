@@ -21,7 +21,7 @@ export class OnDemandReportsComponent implements OnInit {
     {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
     {name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
-    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'date'},
+    {name: 'Generated date(UTC)', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'dateTime'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
   public onDemandReportData: any[];

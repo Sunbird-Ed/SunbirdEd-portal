@@ -55,7 +55,9 @@
 
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
-      <div class="d-flex current-batch-list">
+      <div class="d-flex flex-dc current-batch-list">
+        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 fsmall mt-8 mb-0 update-text">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn | sbDataTable : 'dateTime')}}</p>
+
         <div class="d-flex flex-dc my-16 sb-course-progress-status"
             *ngIf="currentBatch">
             <div class="sb-course-progress-status-label">
@@ -73,7 +75,7 @@
               <span *ngIf="currentBatch.participantCount !== null"
               class="d-flex flex-dc course-participants course-participants-label">
                  <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
-                 <span class="py-8 fsmall">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote}}</span>
+                 <!-- <span class="py-8 fsmall">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote}}</span> -->
               </span>
 
 
@@ -197,7 +199,7 @@
 
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
-      <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a>
+      <!-- <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a> -->
       <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">

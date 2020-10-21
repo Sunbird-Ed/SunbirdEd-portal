@@ -22,6 +22,13 @@ describe('SbDataTablePipe', () => {
     expect(result).toBe('28-Feb-1605');
   });
 
+  it('should format date', () => {
+    const pipe = new SbDataTablePipe();
+    expect(pipe).toBeTruthy();
+    const result = pipe.transform('1599728944037', 'dateTime');
+    expect(result).toBe('28-Feb-1605 20:02');
+  });
+
   it('should return empty as no type defined', () => {
     const pipe = new SbDataTablePipe();
     expect(pipe).toBeTruthy();
