@@ -171,7 +171,6 @@ describe('MyGroupsComponent', () => {
   it('should call acceptTermsAndConditions', () => {
     component.latestTnc = {field: 'groups', value: {latestVersion: 'V1'}};
     spyOn(component, 'navigate');
-    spyOn(component, 'reload');
     spyOn(component['userService'], 'acceptTermsAndConditions').and.returnValue(of ({}));
     spyOnProperty(component['userService'], 'userid').and.returnValue('123');
     const requestBody = {
@@ -185,9 +184,8 @@ describe('MyGroupsComponent', () => {
 
     component['userService'].acceptTermsAndConditions(requestBody).subscribe(data => {
       expect(component.showTncModal).toBeFalsy();
-      expect(component.reload).toHaveBeenCalled();
     });
-  
+
   });
 
 
