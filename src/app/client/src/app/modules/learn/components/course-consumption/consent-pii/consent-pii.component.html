@@ -2,37 +2,37 @@
   <sui-accordion-panel [isOpen]="false">
 
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-      <span>{{generaliseLabelService?.frmelmnts?.lbl?.dataSetting}}</span>
+      <span>{{resourceService?.frmelmnts?.lbl?.dataSetting}}</span>
       <i class="chevron down icon" aria-hidden="true"></i>
     </div>
 
     <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
-      <label class="fnormal font-weight-normal text-uppercase">{{generaliseLabelService?.frmelmnts?.lbl?.dataSharingIs}}
-        <span>{{ isDataShareOn ? generaliseLabelService?.frmelmnts?.lbl?.on : generaliseLabelService?.frmelmnts?.lbl?.off }}</span>
+      <label class="fnormal font-weight-normal text-uppercase">{{resourceService?.frmelmnts?.lbl?.dataSharingIs}}
+        <span>{{ isDataShareOn ? resourceService?.frmelmnts?.lbl?.on : resourceService?.frmelmnts?.lbl?.off }}</span>
       </label>
 
-      <p class="fsmall mb-0" *ngIf="isDataShareOn">{{generaliseLabelService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
-      <p class="fsmall mb-0" *ngIf="!isDataShareOn">{{generaliseLabelService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
-      <label class="fsmall font-weight-normal data-labels" *ngIf="lastUpdatedOn">{{generaliseLabelService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn  | date :'dd/MM/yyyy'}}</label>
+      <p class="fsmall mb-0" *ngIf="isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOnNote}}</p>
+      <p class="fsmall mb-0" *ngIf="!isDataShareOn">{{resourceService?.frmelmnts?.lbl?.dataShareOffNote}}</p>
+      <label class="fsmall font-weight-normal data-labels" *ngIf="lastUpdatedOn">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}} {{lastUpdatedOn  | date :'dd/MM/yyyy'}}</label>
 
       <div class="d-flex flex-ai-end flex-jc-flex-end">
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold"
           (click)="toggleEditSetting()">
-          {{ editSetting ? resourceService?.frmelmnts?.btn?.close : generaliseLabelService?.frmelmnts?.lbl?.editSetting }}
+          {{ editSetting ? resourceService?.frmelmnts?.btn?.close : resourceService?.frmelmnts?.lbl?.editSetting }}
         </button>
       </div>
 
       <div *ngIf="editSetting" class="sb-update-data-settings">
         <hr>
-        <label class="fsmall mb-0 font-weight-bold data-labels">{{generaliseLabelService?.frmelmnts?.lbl?.updateSetting}}</label>
+        <label class="fsmall mb-0 font-weight-bold data-labels">{{resourceService?.frmelmnts?.lbl?.updateSetting}}</label>
         <div class="d-flex py-8 flex-w-wrap">
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
             <input [value]="'Yes'" id="shareConsent" type="radio" [(ngModel)]="consentPii">
-            <label for="shareConsent" class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.shareProfileDetails}}</label>
+            <label for="shareConsent" class="fsmall">{{resourceService?.frmelmnts?.lbl?.shareProfileDetails}}</label>
           </div>
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
             <input [value]="'No'" id="noShareContent" type="radio" [(ngModel)]="consentPii">
-            <label for="noShareContent" class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.notShareProfileDetails}}</label>
+            <label for="noShareContent" class="fsmall">{{resourceService?.frmelmnts?.lbl?.notShareProfileDetails}}</label>
           </div>
         </div>
         <button class="sb-btn sb-btn-normal sb-btn-outline-primary w-100 text-uppercase"
@@ -47,7 +47,7 @@
   (dismissed)="showConsentPopup = false;" #profileDetailsModal>
   <!--Header-->
   <div class="sb-modal-header">
-    {{generaliseLabelService?.frmelmnts?.lbl?.profileDetails}}
+    {{resourceService?.frmelmnts?.lbl?.profileDetails}}
   </div>
   <!--/Header-->
   <!--Content-->
@@ -62,10 +62,10 @@
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.userId}} :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}} :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.block}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{generaliseLabelService?.frmelmnts?.lbl?.schoolId}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{generaliseLabelService?.frmelmnts?.lbl?.schoolName}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{generaliseLabelService?.frmelmnts?.lbl?.mobileNo}} :</label>
-          <label class="mb-24 fnormal font-weight-normal">{{generaliseLabelService?.frmelmnts?.lbl?.emailId}} :</label>
+          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolId}} :</label>
+          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolName}} :</label>
+          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobileNo}} :</label>
+          <label class="mb-24 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.emailId}} :</label>
         </div>
       </div>
       <div class="nine wide column">
@@ -84,10 +84,10 @@
       </div>
     </div>
     <div class="mb-16 fnormal font-weight-normal">
-      <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">{{generaliseLabelService?.frmelmnts?.lbl?.canEditProfileDetails}}
+      <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
     </div>
     <p class="mb-0fnormal font-weight-normal">
-      <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{generaliseLabelService?.frmelmnts?.lbl?.agreeToShareDetails}}
+      <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{resourceService?.frmelmnts?.lbl?.agreeToShareDetails}}
       <a class="sb-color-primary" href="javascript:void(0)" (click)="showTncPopup=true">{{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': resourceService?.instance}}</a>
     </p>
   </div>
@@ -95,7 +95,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)">{{resourceService?.frmelmnts?.lbl?.share}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="updateUserConsent(false)">{{generaliseLabelService?.frmelmnts?.lbl?.dontShare}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="updateUserConsent(false)">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
   </div>
   <!--/Actions-->
 </sui-modal>
