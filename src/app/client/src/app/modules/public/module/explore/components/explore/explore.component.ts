@@ -164,7 +164,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if ( _.get(this.selectedFilters, 'channel') && (_.get(this.selectedFilters, 'channel')).length > 0) {
       request.channelId = this.selectedFilters['channel'];
     }
-    const option = this.searchService.getSearchRequest(request, currentPageData.search.filters.contentType);
+    const option = this.searchService.getSearchRequest(request, currentPageData.search.filters.primaryCategory);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
