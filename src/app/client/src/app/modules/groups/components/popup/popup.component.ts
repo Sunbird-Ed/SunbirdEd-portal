@@ -1,6 +1,6 @@
 import { GroupsService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
-import { IGroupCard } from './../../interfaces/group';
+import { acceptTnc, IGroupCard } from './../../interfaces/group';
 import { Component, Input, EventEmitter, Output, ViewChild, HostListener } from '@angular/core';
 import * as _ from 'lodash-es';
 @Component({
@@ -14,15 +14,28 @@ export class PopupComponent {
   @Input() modalMsg: string;
   @Input() modalName: string;
   @Input() groupData: IGroupCard;
-  @Output() handleEvent = new EventEmitter();
-  @ViewChild('modal') modal;
+  @Input() latestTnc;
+  @Input() type: acceptTnc;
   @Input() showTncModal: boolean;
   @Input() showGroupActionsModal: boolean;
+
   @Output() handleGroupTnc = new EventEmitter();
+  @Output() handleEvent = new EventEmitter();
+
+  @ViewChild('modal') modal;
+  @ViewChild('tncModal') tncModal;
+
   channel: string;
+  acceptTncType = acceptTnc;
+  checked = false;
+
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
-   this.modal.deny();
+    if (this.modal) {
+      this.modal.deny();
+    } else if (this.tncModal) {
+      this.tncModal.deny();
+    }
   }
 
   constructor(public resourceService: ResourceService, private groupService: GroupsService) {
@@ -32,12 +45,17 @@ export class PopupComponent {
 
   emitEvent(value) {
     const event = this.handleEvent.emit({name: this.modalName, action: value});
-    this.modal.close();
+    this.modal.deny();
   }
 
   acceptGroupTnc() {
     this.showTncModal = false;
-    this.modal.close();
+    this.closeModal();
+    this.handleGroupTnc.emit({type: this.type, data: this.groupData});
+  }
+
+  closeModal() {
+    this.tncModal.deny();
     this.handleGroupTnc.emit();
   }
 }

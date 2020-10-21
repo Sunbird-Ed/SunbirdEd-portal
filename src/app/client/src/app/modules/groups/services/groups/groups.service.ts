@@ -311,26 +311,23 @@ getActivity(groupId, activity, mergeGroup) {
     return group.isActive();
   }
 
-  isUserAcceptedLatestTnc () {
+  isUserAcceptedTnc () {
     this.tncService.getTncList().subscribe(data => {
 
-      let groupsTnc = _.get(data, 'result.response').find(item => item.id === 'groupsTnc');
+      const groupsTnc = _.get(data, 'result.response').find(item => {
+        if (item.id === 'groupsTnc') {
+          item.value = JSON.parse(item.value);
+          return item;
+        }
+      });
+
       const userTncAccepted = _.get(this.userService.userProfile, 'allTncAccepted');
-      groupsTnc = _.head(_.compact(groupsTnc));
-      const lVer = JSON.parse(_.get(groupsTnc, 'value'));
-      console.log('lVER', lVer);
-      // allTncAccepted  === {}
-      // allTncAccepted === groupsTnc
-      // allTncAccepted < version
-      if (_.isEmpty(userTncAccepted)) {
-        this.emitNotAcceptedGroupsTnc.emit(true);
-      } else if (_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) {
-        this.emitNotAcceptedGroupsTnc.emit(true);
-      } else if (_.get(userTncAccepted, 'version') < _.get(groupsTnc, 'latestVersion')) {
-        this.emitNotAcceptedGroupsTnc.emit(true);
-      } else {
-        this.emitNotAcceptedGroupsTnc.emit(false);
-      }
+
+      const isTncAccepted = (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc')) &&
+      (_.get(userTncAccepted, 'groupsTnc.version') >= _.get(groupsTnc, 'value.latestVersion')));
+
+      this.emitNotAcceptedGroupsTnc.emit({tnc: groupsTnc, accepted: isTncAccepted});
+
     });
   }
 

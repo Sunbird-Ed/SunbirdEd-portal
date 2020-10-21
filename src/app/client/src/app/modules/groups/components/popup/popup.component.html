@@ -26,16 +26,16 @@
 </sui-modal>
 
 
-<sui-modal *ngIf="showTncModal" [mustScroll]="true"  [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-appBodyScroll (dismissed)="showTncModal= !showTncModal" #modal >
-<div class="sb-modal-header">Group Guidelines</div>
+<sui-modal *ngIf="showTncModal" [mustScroll]="true"  [isClosable]="type === acceptTncType.GROUP" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+appBodyScroll (dismissed)="closeModal()" #tncModal >
+<div class="sb-modal-header">Terms and conditions</div>
 <div class="sb-modal-content o-y-visible">
-  <!-- showTncModal{{showTncModal}} -->
-{{resourceService?.frmelmnts?.lbl?.agreeCourseToc | interpolate:'{instance}': channel }} <a href="{{url}}/term-of-use.html#groupGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
+  <input [(ngModel)]="checked" type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
+{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a href="{{latestTnc?.value[latestTnc?.value?.latestVersion]?.url}}" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
 </div>
 <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" 
-    (click)="acceptGroupTnc();showTncModal=!showTncModal">{{resourceService?.frmelmnts?.btn?.yes}}</button>
+  <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!checked" [ngClass]="{'sb-btn-disabled': !checked}"
+    (click)="acceptGroupTnc();">{{resourceService?.frmelmnts?.btn?.yes}}</button>
 </div>
 </sui-modal>
 

@@ -66,5 +66,4 @@
 
 <app-ftu-popup *ngIf="showModal" [showWelcomePopup]="showModal" (close)="closeModal()"></app-ftu-popup>
 
-showTncModal : {{showTncModal}}
-<app-modal *ngIf="showTncModal" [showTncModal]="showTncModal" (handleGroupTnc)="acceptGroupsTnc()"></app-modal>
+<app-modal *ngIf="showTncModal" [latestTnc]="latestTnc" [type]="selectedType" [showTncModal]="showTncModal" (handleGroupTnc)="handleGroupTnc($event)" [groupData]="selectedGroup"></app-modal>
