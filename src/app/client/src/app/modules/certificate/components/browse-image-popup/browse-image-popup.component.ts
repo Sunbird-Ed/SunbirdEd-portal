@@ -108,7 +108,7 @@ export class BrowseImagePopupComponent implements OnInit {
           'width': width,
           'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
           'type': file.type
-        }
+        };
         resolve(imageData);
       };
     });
@@ -226,9 +226,9 @@ export class BrowseImagePopupComponent implements OnInit {
       'type': this.logoType.type,
       'key': this.logoType.key,
       'index': this.logoType.index
-    }
+    };
     this.assetData.emit(image);
     this.selectedLogo = null;
-    this.claseModel()
+    this.claseModel();
   }
 }
