@@ -47,34 +47,10 @@ export class UploadCertificateService {
     return this.publicDataService.post(option);
   }
 
-
-    /**
-   * To get the asset images (State logos and Signs)
-   * to get the particular asset we need to pass asset naem as query
-   */
-  getCertificates() {
-    const body = {
-      'request': {
-          'filters': {
-              'certType': 'cert template',
-              'channel': 'in.ekstep' // this.userService.channel
-          },
-          'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
-          'limit': 100
-      }
-  };
-
-    const option = {
-      url: this.configService.urlConFig.URLS.CONTENT.SEARCH,
-      data: body
-    };
-    return this.publicDataService.post(option);
-  }
-
   /**
   * To create new asset images (State logos and Signs) and it create space
   */
-  createAsset(reqObj, type) {
+  createAsset(reqObj) {
     const body = {
       'request':
       {
@@ -86,18 +62,11 @@ export class UploadCertificateService {
           'mimeType': 'image/png',
           'mediaType': 'image',
           'contentType': 'Asset',
-          'primaryCategory': 'Asset',
           'osId': 'org.ekstep.quiz.app',
-          'language': ['English'],
-          'channel':  this.userService.channel
-
+          'language': ['English']
         }
       }
     };
-
-    if (type === 'SIGN') {
-      body.request.content.primaryCategory = 'CertAsset';
-    }
 
     const option = {
       url: this.configService.urlConFig.URLS.CONTENT.CREATE,
@@ -120,7 +89,7 @@ export class UploadCertificateService {
   }
 
   getSvg(path): Promise<any> {
-    return this.http.get(path, { responseType: 'text' }).toPromise();
+    return this.http.get('/' + path, { responseType: 'text' }).toPromise();
   }
 
   createCertTemplate(data) {
