@@ -67,7 +67,7 @@ export class CertConfigModel {
                     'mimeType': 'application/vnd.ekstep.content-archive',
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
-                    'contentType': 'Asset',
+                    // 'contentType': 'Asset',
                     'issuer': {
                         'name': _.get(rawFormValues, 'stateName'),
                         'url': 'https://gcert.gujarat.gov.in/gcert/'

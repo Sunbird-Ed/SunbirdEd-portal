@@ -46,7 +46,7 @@
                     </button>
                     <small *ngIf="!(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
                     <small *ngIf="(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO1?.name}}
-                      <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="24px" class="mr-8">
+                      <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="18px" class="mr-8">
                     </small> 
                   </div>
               </div>
@@ -68,13 +68,13 @@
                       Browse
                     </button>
                     <small *ngIf="!(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
-                    <small *ngIf="(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO2?.name}}
-                      <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="24px" class="mr-8">
-                    </small> 
+                    
                   </div>
               </div>
             </div>
-
+            <small *ngIf="(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO2?.name}}
+              <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="18px" class="mr-8">
+            </small>
             
             <!-- <div class='ui stackable grid mt-0'>
               <div class='twelve wide column'>
@@ -108,7 +108,7 @@
               <div class="eight wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label class="state-labels">Signature authority designation<span class="asterik">*</span></label>
-                    <input formControlName="authoritySignature" class="sb-form-control is-valid">
+                    <input formControlName="authoritySignature_0" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>
@@ -131,7 +131,7 @@
               <div class="eight wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label class="state-labels">Signature authority designation <span class="asterik">*</span></label>
-                    <input formControlName="authoritySignature2" class="sb-form-control is-valid">
+                    <input formControlName="authoritySignature_1" class="sb-form-control is-valid">
                     <small class="pl-4 fsmall">Help text information</small>
                   </div>
                 </div>

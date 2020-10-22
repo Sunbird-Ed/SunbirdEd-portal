@@ -72,9 +72,10 @@ class RouterStub {
     fixture = TestBed.createComponent(CreateTemplateComponent);
     component = fixture.componentInstance;
     component.defaultCertificates = [
-      { path: 'assets/images/mp.svg', id: 0 },
-      { path: 'assets/images/odisha.svg', id: 1 },
-      { path: 'assets/images/jh.svg', id: 2 }];
+      { artifactUrl: 'assets/images/template-1.svg', identifier: 0 },
+      { artifactUrl: 'assets/images/template-2.svg', identifier: 1 },
+      { artifactUrl: 'assets/images/template-3.svg', identifier: 2 },
+      { artifactUrl: 'assets/images/template-4.svg', identifier: 3 }];
     fixture.detectChanges();
   });
 
@@ -187,50 +188,50 @@ class RouterStub {
     expect(component.showUploadUserModal).toEqual(false);
   });
 
-  it('should remove the selected logo', () => {
-    component.certLogos = [
-      {
-        id: '123'
-      },
-      {
-        id: '456'
-      },
-      {
-        id: '789'
-      }
-    ];
-    component.removeLogo(1);
-    expect(component.certLogos).toEqual([
-      {
-        id: '123'
-      },
-      {
-        id: '789'
-      }
-    ]);
-  });
+  // it('should remove the selected logo', () => {
+  //   component.certLogos = [
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '456'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ];
+  //   component.removeLogo(1);
+  //   expect(component.certLogos).toEqual([
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ]);
+  // });
 
-  it('should remove the selected sign', () => {
-    component.certSigns = [
-      {
-        id: '123'
-      },
-      {
-        id: '456'
-      },
-      {
-        id: '789'
-      }
-    ];
-    component.removeSigns(1);
-    expect(component.certSigns).toEqual([
-      {
-        id: '123'
-      },
-      {
-        id: '789'
-      }
-    ]);
-  });
+  // it('should remove the selected sign', () => {
+  //   component.certSigns = [
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '456'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ];
+  //   component.removeSigns(1);
+  //   expect(component.certSigns).toEqual([
+  //     {
+  //       id: '123'
+  //     },
+  //     {
+  //       id: '789'
+  //     }
+  //   ]);
+  // });
 
 });

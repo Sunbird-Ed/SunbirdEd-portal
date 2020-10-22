@@ -90,14 +90,13 @@ export class UploadCertificateService {
           'osId': 'org.ekstep.quiz.app',
           'language': ['English'],
           'channel':  this.userService.channel
-
         }
       }
     };
 
-    if (type === 'SIGN') {
-      body.request.content.primaryCategory = 'CertAsset';
-    }
+    // if (type === 'SIGN') {
+    //   body.request.content.primaryCategory = 'CertAsset';
+    // }
 
     const option = {
       url: this.configService.urlConFig.URLS.CONTENT.CREATE,
@@ -113,7 +112,7 @@ export class UploadCertificateService {
     const formData = new FormData();
     formData.append('file', file);
     const option = {
-      url: `${this.configService.urlConFig.URLS.CONTENT.UPLOAD}/${identifier}`,
+      url: `${this.configService.urlConFig.URLS.CERTIFICATE.UPLOAD_CERT_TEMPLATE}/${identifier}`,
       data: formData
     };
     return this.publicDataService.post(option);

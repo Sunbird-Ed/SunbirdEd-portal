@@ -40,6 +40,12 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('comp loaded fresh s');
+    // this.getAssetList();
+  }
+
+  getAssetList() {
+    this.imageName = '';
     this.uploadCertificateService.getAssetData().subscribe(res => {
       this.imagesList = res.result.content;
     }, error => {
@@ -82,7 +88,7 @@ export class BrowseImagePopupComponent implements OnInit {
   dimentionCheck(image) {
     let flag = false;
     if (image) {
-      const dimension = `${_.get(image,'width')}px X ${_.get(image,'height')}px`;
+      const dimension = `${_.get(image, 'width')}px X ${_.get(image, 'height')}px`;
       const logoType = _.get(this.logoType, 'type');
       const requiredDimensions = this.imageDimensions[logoType]['dimensions'];
       flag = _.isEqual(dimension, requiredDimensions);
@@ -116,22 +122,13 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
-    // if (this.logoType.type === 'LOGO') {
-      this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
-        if (res && res.result) {
-          this.uploadBlob(res);
-        }
-      }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        // have to remove one the api is working - start
-        const createResponse = error.error;
-        this.uploadBlob(createResponse);
-        this.claseModel();
-        //  end
-      });
-    // } else {
-    //   this.getImageURLs();
-    // }
+    this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
+      if (res && res.result) {
+        this.uploadBlob(res);
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
   /**
@@ -178,18 +175,6 @@ export class BrowseImagePopupComponent implements OnInit {
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        this.showUploadUserModal = false;
-        this.showSelectImageModal = false;
-        // have to remove once the api is working - start
-        const image = {
-          'name': this.uploadForm.controls.assetCaption.value,
-          'url': error.error.result.artifactUrl,
-          'type': this.logoType.type,
-          'key': this.logoType.key,
-          'index': this.logoType.index
-        };
-        this.assetData.emit(image);
-        // end
         this.claseModel();
         this.uploadForm.reset();
       });
