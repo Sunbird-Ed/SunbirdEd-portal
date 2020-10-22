@@ -14,6 +14,7 @@ import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
+import { actionButtons } from './actionButtons';
 
 @Component({
   selector: 'app-player',
@@ -28,6 +29,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
+  actionButtons = actionButtons;
   playerLoaded = false;
   buildNumber: string;
   @Input() playerOption: any;
@@ -37,7 +39,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
-
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};
@@ -85,6 +86,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
+    this.actionButtons = _.cloneDeep(actionButtons);
+    _.find(this.actionButtons, (button) => {
+      button.disabled = (button.label === 'Fullscreen') ? (this.deviceDetectorService.isMobile() ||
+        this.deviceDetectorService.isTablet()) : button.disabled;
+    });
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -399,6 +405,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           };
         }
       });
+    }
+  }
+
+  onActionButtonClick(event, content) {
+    switch (event.data.name.toUpperCase()) {
+      case 'MINIMIZE':
+        this.closeContentFullScreen();
+        break;
+      case 'SHARE':
+        this.contentUtilsServiceService.contentShareEvent.emit('open');
+        this.mobileViewDisplay = 'none';
+        break;
     }
   }
 
