@@ -125,6 +125,12 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toBe(null);
   });
 
+  it('should call setContentTypeOnUrlChange', () => {
+    spyOn(component, 'setContentTypeOnUrlChange');
+    component.setContentTypeOnUrlChange();
+    expect(component.setContentTypeOnUrlChange).toHaveBeenCalled();
+  });
+
   it('should set selected content type for explore-groups', () => {
     component.setSelectedContentType('/explore-groups', {}, {});
     expect(component.selectedContentType).toBe(null);

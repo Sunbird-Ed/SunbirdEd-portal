@@ -1,6 +1,6 @@
 
 import {of as observableOf } from 'rxjs';
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick, async, ComponentFixture } from '@angular/core/testing';
 import { SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, PlayerService, UserService, PublicDataService } from '@sunbird/core';
@@ -21,13 +21,14 @@ const fakeActivatedRoute = {
 };
 describe('PlayerService', () => {
   configureTestSuite();
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
       providers: [ NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub}, PublicDataService ]
-    });
-  });
+    })
+      .compileComponents();
+  }));
 
   it('should return content details', () => {
     const playerService = TestBed.get(PlayerService);
@@ -115,6 +116,13 @@ describe('PlayerService', () => {
     });
   });
 
+  it('should get updateContentBodyForReviewer', () => {
+    const playerService = TestBed.get(PlayerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(playerService, 'updateContentBodyForReviewer');
+    playerService.updateContentBodyForReviewer(MockResponse.collectionHierarchy);
+    expect(playerService.updateContentBodyForReviewer).toHaveBeenCalledWith(MockResponse.collectionHierarchy);
+  });
 
   it('should navigate to course player if trackable object is not available', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
