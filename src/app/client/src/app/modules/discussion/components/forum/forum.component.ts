@@ -1,7 +1,7 @@
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, OnDestroy, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash-es';
 import * as  iziModal from 'izimodal/js/iziModal';
@@ -14,7 +14,7 @@ jQuery.fn.iziModal = iziModal;
   styleUrls: ['./forum.component.scss']
 })
 
-export class ForumComponent implements OnInit, OnDestroy {
+export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
 
   discussionUrl: SafeResourceUrl;
   @ViewChild('modal')modal;
@@ -29,6 +29,10 @@ export class ForumComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getDiscussionUrl();
+  }
+
+  ngAfterViewInit(){
+    document.body.className = "o-y-hide";
   }
 
   getDiscussionUrl() {
