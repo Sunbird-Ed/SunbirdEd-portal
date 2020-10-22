@@ -234,10 +234,8 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should give login redirection path for explore course', () => {
-    spyOn(component, 'updateHrefPath');
     component.updateHrefPath('/explore-course');
     expect(component.hrefPath).toBe('/learn');
-    expect(component.updateHrefPath).toHaveBeenCalled();
   });
 
   it('should give login redirection path for explore', () => {
