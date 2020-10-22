@@ -20,7 +20,7 @@ export class SbDataTablePipe implements PipeTransform {
     if (type === 'date') {
       return dayjs(value).format('DD-MMM-YYYY');
     } else if (type === 'dateTime') {
-      return dayjs(value).format('DD-MMM-YYYY HH:MM');
+      return dayjs(value).format('DD-MMM-YYYY HH:mm');
     } else {
       return '-';
     }
