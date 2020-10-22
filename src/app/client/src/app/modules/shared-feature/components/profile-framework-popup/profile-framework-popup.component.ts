@@ -42,6 +42,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
+
+    // Replacing CBSE with CBSE/NCERT
+    if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {
+      this.selectedOption['board'] = ['CBSE/NCERT'];
+    }
     this.editMode = _.some(this.selectedOption, 'length') || false ;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
