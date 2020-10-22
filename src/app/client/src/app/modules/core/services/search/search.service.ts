@@ -471,7 +471,7 @@ export class SearchService {
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectBoard;
           // Replacing cbse value with cbse/ncert
           _.map(facet['values'], val => {
-            if (_.toLower(val.name) === 'cbse') { val.name = 'cbse/ncert'; }
+            if (_.toLower(val.name) === 'cbse') { val.name = 'CBSE/NCERT'; }
           });
           break;
         case 'medium':
