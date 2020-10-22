@@ -5,7 +5,7 @@ import { GroupsService } from '../../services';
 import { ResourceService, LayoutService, ToasterService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupSearchCriteria } from '@project-sunbird/client-services/services/group/interface';
@@ -48,9 +48,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     });
     this.groupService.emitNotAcceptedGroupsTnc.pipe(delay(600)).subscribe((data) => {
       this.latestTnc = _.get(data, 'tnc');
-      if (this.groupsList.length === 0) {
-        this.acceptAllGroupsTnc();
-      } else {
+      if (this.groupsList.length > 0) {
         this.showTncModal = !_.get(data, 'accepted');
       }
     });
@@ -156,22 +154,37 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   acceptAllGroupsTnc() {
-    const requestBody = {
+    const groupIds = _.map(this.groupsList, group => {
+      group.visited = true;
+      return {
+        groupId: group.id,
+        visited: true
+      };
+    });
+
+    const userProfileUpdateRequest = {
       request: {
         tncType: _.get(this.latestTnc, 'field'),
-        version:  _.get(this.latestTnc, 'value.latestVersion'),
-        userId:  this.userService.userid
+        version:  _.get(this.latestTnc, 'value.latestVersion')
       }
     };
 
-    this.userService.acceptTermsAndConditions(requestBody).subscribe(data => {
+    const groupUpdateRequest = {
+      userId: this.userService.userid,
+      groups: groupIds
+    };
+
+    combineLatest(
+    // this.groupService.updateGroupGuidelines(groupUpdateRequest),
+    this.userService.acceptTermsAndConditions(userProfileUpdateRequest)
+    ).subscribe(() => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.guidelinesacceptsuccess);
       this.showTncModal = false;
       this.isTncAccepted = true;
       if (this.groupsList.length > 0) {
         this.reload();
       }
-    }, err => {
+    }, (err) => {
       this.toasterService.error(this.resourceService.frmelmnts.msg.guidelinesacceptfailed);
       this.showTncModal = false;
       this.isTncAccepted = false;

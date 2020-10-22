@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -258,23 +258,29 @@ describe('GroupsService', () => {
     parsedData.value = typeof parsedData.value === 'string' ? JSON.parse(parsedData.value) : parsedData.value;
 
     spyOn(service['tncService'], 'getTncList').and.returnValue(of (groupsTnc));
-    spyOnProperty(service['userService'], 'userProfile').and.returnValue(( {
-      allTncAccepted: {
-        groupsTnc: {
-          tncAcceptedOn: '2020-10-19 09:28:36:077+0000',
-          version: '3.4.0'
+    spyOn(service['userService'], 'getUserData').and.returnValue(of ({
+      result: {
+        response: {
+          allTncAccepted: {
+            groupsTnc: {
+              tncAcceptedOn: '2020-10-19 09:28:36:077+0000',
+              version: '3.4.0'
+            }
+          }
         }
       }
-    } ));
+    }));
+
     spyOn(service.emitNotAcceptedGroupsTnc, 'emit').and.callThrough();
 
     service.isUserAcceptedTnc();
 
     expect(service['tncService'].getTncList).toHaveBeenCalled();
 
-    service['tncService'].getTncList().subscribe(data => {
-
-      expect(data).toEqual(groupsTnc);
+    combineLatest(
+    service['userService'].getUserData('123'),
+    service['tncService'].getTncList()
+    ) .subscribe(data => {
       expect(service.emitNotAcceptedGroupsTnc.emit).toHaveBeenCalledWith(
         {tnc: parsedData, accepted: true}
       );
