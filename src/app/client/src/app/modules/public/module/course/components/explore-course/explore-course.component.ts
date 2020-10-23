@@ -167,6 +167,12 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
+
+        // Replacing cbse/ncert value with cbse
+        if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+            filters.board = ['cbse'];
+        }
+
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {
             delete softConstraints['board'];

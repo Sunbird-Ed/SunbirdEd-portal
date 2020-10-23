@@ -1,0 +1,10 @@
+ <sui-modal  [mustScroll]="false" [isClosable]="true" [transitionDuration]="0"
+  [size]="'fullscreen'" class="sb-modal sb-modal-fullscreen" appBodyScroll
+  (dismissed)="navigateToPreviousPage()" #modal>
+
+  <div class="sb-modal-content">
+    <iframe scrolling="no" [src]="discussionUrl"></iframe>
+  </div>
+
+</sui-modal>
+    

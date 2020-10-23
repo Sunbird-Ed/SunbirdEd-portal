@@ -3,6 +3,7 @@ import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { DebugElement } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectOptionGroupComponent } from './select-option-group.component';
+import {InterpolatePipe} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
@@ -36,7 +37,7 @@ describe('SelectOptionGroupComponent', () => {
               useClass: TranslateFakeLoader
            }
         })],
-      declarations: [SelectOptionGroupComponent]
+      declarations: [SelectOptionGroupComponent, InterpolatePipe]
     })
       .compileComponents();
   }));
@@ -56,7 +57,7 @@ describe('SelectOptionGroupComponent', () => {
   it('should call choosedValue with publisher block', () => {
     spyOn(component, 'choosedValue');
     component.choosedValue();
-    expect(component.preSelectedValue).toEqual('publisher_name');
+    expect(component.preSelectedValue).toEqual('012519677821');
   });
   it('should call choosedValue with nonpublisher block', () => {
     component.selectedOption = { label: 'Board', selectedOption: 'board_name', value: 'channel' };

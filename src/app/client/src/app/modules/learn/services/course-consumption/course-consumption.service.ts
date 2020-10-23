@@ -22,6 +22,8 @@ export class CourseConsumptionService {
   showJoinCourseModal = new EventEmitter<any>();
   enableCourseEntrollment = new EventEmitter();
   coursePagePreviousUrl: any;
+  userCreatedAnyBatch = new EventEmitter();
+
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,
     private navigationHelperService: NavigationHelperService, private permissionService: PermissionService,
@@ -170,5 +172,17 @@ getAllOpenBatches(contents) {
 
   isTrackableCollection(collection: {trackable?: {enabled?: string}, contentType: string}) {
   return (_.lowerCase(_.get(collection, 'trackable.enabled')) === 'yes' || _.lowerCase(_.get(collection, 'contentType')) === 'course');
+  }
+
+  emitBatchList(batches) {
+     const mentorBatches = _.map(batches, batch => {
+        if ((batch.createdBy === this.userService.userid) ||
+        _.includes(batch.mentors, this.userService.userid)
+        ) {
+          return batch;
+          }
+      });
+      const visibility: boolean = mentorBatches ? mentorBatches.length > 0 : false;
+      this.userCreatedAnyBatch.emit(visibility);
   }
 }

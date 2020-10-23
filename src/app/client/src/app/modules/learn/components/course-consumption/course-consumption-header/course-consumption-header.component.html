@@ -54,6 +54,15 @@
                 </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
+              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 
+              appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 
+              [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"
+              (click)="openDiscussionForum()"
+              title="Forum" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))">
+              <img src="assets/images/forum.svg" width="16px" class="mr-8">
+                Forum
+            </button>
             </div>
           </div>
         </div>

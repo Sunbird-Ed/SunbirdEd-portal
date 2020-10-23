@@ -44,7 +44,7 @@ export class FaqComponent implements OnInit {
       this.tenantFooter = data;
     });
     this.defaultFooterConfig = {
-      helpCenterLink: `/help/faqs/faqs/index.html`,
+      helpCenterLink: `/help/faqs/user/index.html`,
       helpDeskEmail: `support@${_.lowerCase(this.instance)}-ncte.freshdesk.com`
     };
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';

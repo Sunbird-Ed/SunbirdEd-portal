@@ -299,6 +299,11 @@ describe('ActivityDashboardComponent', () => {
     tick(100);
     const value = component.showActivityType();
     expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
+  it ('should ', fakeAsync(()  => {
+    activatedRoute.changeQueryParams({ title: 'Course' });
+    tick(100);
+    const value = component.showActivityType();
+    expect(value).toEqual(('Course').toLocaleLowerCase());
   }));
 
 });

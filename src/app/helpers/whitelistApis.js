@@ -107,7 +107,7 @@ const API_LIST = {
 
     '/content/content/v1/copy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],

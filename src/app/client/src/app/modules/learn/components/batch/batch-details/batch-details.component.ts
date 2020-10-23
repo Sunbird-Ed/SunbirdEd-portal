@@ -128,6 +128,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       ).pipe(takeUntil(this.unsubscribe))
        .subscribe((data) => {
           this.ongoingAndUpcomingBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.courseConsumptionService.emitBatchList(this.ongoingAndUpcomingBatchList);
           this.getSelectedBatches();
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
