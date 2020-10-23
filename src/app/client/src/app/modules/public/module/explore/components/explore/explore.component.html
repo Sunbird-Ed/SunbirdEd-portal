@@ -1,52 +1,44 @@
 <app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
-  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
-    [appTelemetryImpression]="telemetryImpression">
-    <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-        (filterChange)="getFilters($event)" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
-      </app-search-filter>
-    </div>
-    <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
-      <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
-          <div class="sb-bg-color-white py-16 mb-24">
+<div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
+  <div [ngClass]="FIRST_PANEL_LAYOUT">
+  <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
+  </app-search-filter>
+  </div>
+  <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        <div *ngIf="false">
+  <div class="sb-bg-color-white py-16 mb-24">
             <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
-            <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-              <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
-                <sb-course-curiculum-card ngClass="{'sb--card--seperator': !isUserLoggedIn()}" [index]="index" [cardData]="content"
-                  (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
-              </div>
-            </ngx-slick>
+        <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+          <div ngxSlickItem *ngFor="let content of cardData;let index=index" class="mr-16 course-card-width">
+            <sb-course-curiculum-card class="sb--card--seperator" [index]="index" [cardData]="content" (cardClick)="navigateToCourses($event)"></sb-course-curiculum-card>
           </div>
+      </ngx-slick>
+    </div>
         </div>
-        <div class="sb-library-cards relative9">
-          <div *ngIf="!layoutConfiguration">
-            <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
-              {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
-          </div>
-          <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
-            <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
-              [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
-            </sb-library-cards-grid>
-          </div>
-          <div *ngIf="showLoader">
-            <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
-              [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
-          </div>
-          <div *ngIf="apiContentList.length === 0 && !showLoader">
-            <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
-              [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
-              [buttonText]="noResultMessage?.buttonText"
-              [showExploreContentButton]="noResultMessage?.showExploreContentButton"
-              [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
-          </div>
+      <div class="sb-library-cards relative9">
+       <div *ngIf="!layoutConfiguration">
+        <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">{{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+       </div>
+      <div *ngFor="let section of pageSections; let last = last"
+        [ngClass]="{'last mb-0':last}">
+        <sb-library-cards-grid [layoutConfig]="layoutConfiguration"
+          [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
+          [maxCardCount]="3" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+        </sb-library-cards-grid>
+      </div>
+      <div *ngIf="showLoader">
+          <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
+      </div>
+      <div *ngIf="apiContentList.length === 0 && !showLoader">
+        <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
+[buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton" [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
+      </div>
         </div>
       </div>
-    </div>
   </div>
 </div>
-<app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
+</div>
+<app-offline-banner [slug]="userService.slug"></app-offline-banner>
