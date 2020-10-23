@@ -1,8 +1,11 @@
+import { combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest } from '@project-sunbird/client-services/services/group/interface';
-import { UserService, LearnerService } from '@sunbird/core';
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
+  // CsGroupUpdateGroupGuidelinesRequest
+} from '@project-sunbird/client-services/services/group/interface';
+import { UserService, LearnerService, TncService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput, TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -26,6 +29,7 @@ export class GroupsService {
   public showActivateModal = new EventEmitter();
   public updateEvent = new EventEmitter();
   public _groupListCount: number;
+  public emitNotAcceptedGroupsTnc = new EventEmitter();
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -35,7 +39,8 @@ export class GroupsService {
     private navigationhelperService: NavigationHelperService,
     private router: Router,
     private configService: ConfigService,
-    private learnerService: LearnerService
+    private learnerService: LearnerService,
+    private tncService: TncService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -309,4 +314,25 @@ getActivity(groupId, activity, mergeGroup) {
     return group.isActive();
   }
 
+  isUserAcceptedTnc() {
+
+    combineLatest(this.userService.getUserData(this.userService.userid), this.tncService.getTncList())
+      .subscribe(([userData, systemList]) => {
+        const groupsTnc = _.find(_.get(systemList, 'result.response'), { id: 'groupsTnc' });
+        groupsTnc.value = typeof groupsTnc.value === 'string' ? JSON.parse(groupsTnc.value) : groupsTnc.value;
+
+        const userTncAccepted = _.get(userData, 'result.response.allTncAccepted');
+        const isTncAccepted = (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc')) &&
+          (_.get(userTncAccepted, 'groupsTnc.version') >= _.get(groupsTnc, 'value.latestVersion')));
+
+        this.emitNotAcceptedGroupsTnc.emit({ tnc: groupsTnc, accepted: isTncAccepted });
+
+      }, err => {
+        console.log('Error: ', err);
+      });
+  }
+
+  // updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {
+  // return this.groupCservice.updateGroupGuidelines(request);
+  // }
 }

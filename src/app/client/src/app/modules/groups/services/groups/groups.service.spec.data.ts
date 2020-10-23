@@ -1,3 +1,4 @@
+import { GroupEntityStatus, GroupMembershipType, GroupMemberRole } from '@project-sunbird/client-services/models/group';
 import { of } from 'rxjs';
 
 export const impressionObj = {
@@ -59,7 +60,7 @@ export const fakeActivatedRouteWithGroupId = {
 };
 
 export const groupData = {
-  'membershipType': 'invite_only',
+  'membershipType': GroupMembershipType.INVITE_ONLY,
   'updatedBy': '97961992-b2ee-4b41-8f85-dc0e6f466697',
   'createdBy': '97961992-b2ee-4b41-8f85-dc0e6f466697',
   'activitiesGrouped': [
@@ -82,7 +83,9 @@ export const groupData = {
             'contentType': 'Course'
           }
         },
-      ]
+      ],
+      isEnabled: true,
+      objectType: 'content'
     },
     {
       'title': 'ACTIVITY_TEXTBOOK_TITLE',
@@ -104,15 +107,17 @@ export const groupData = {
 
           }
         }
-      ]
+      ],
+      isEnabled: true,
+      objectType: 'content'
     }
   ],
   'members': [
     {
       'userId': '97961992-b2ee-4b41-8f85-dc0e6f466697',
       'groupId': '4130b072-fb0a-453b-a07b-4c93812c741b',
-      'role': 'admin',
-      'status': 'active',
+      'role': GroupMemberRole.ADMIN,
+      'status': GroupEntityStatus.ACTIVE,
       'createdOn': '2020-07-13 17:23:15:503+0000',
       'createdBy': '97961992-b2ee-4b41-8f85-dc0e6f466697',
       'updatedOn': null,
@@ -127,7 +132,9 @@ export const groupData = {
   'updatedOn': '2020-07-13 18:11:53:022+0000',
   'id': '4130b072-fb0a-453b-a07b-4c93812c741b',
   'createdOn': '2020-07-13 17:23:15:496+0000',
-  'status': 'active'
+  'status': GroupEntityStatus.ACTIVE,
+  active: true,
+  isActive () { return true},
 };
 
 export const modifiedActivities = {

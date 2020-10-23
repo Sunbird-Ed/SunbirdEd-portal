@@ -167,7 +167,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       frameworkId: this.contentSearchService.frameworkId,
       limit: currentPageData.limit
     };
-    const option = this.searchService.getSearchRequest(request, currentPageData.search.filters.contentType);
+    const option = this.searchService.getSearchRequest(request, currentPageData.search.filters.primaryCategory);
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);

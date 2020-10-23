@@ -128,7 +128,7 @@ const API_LIST = {
 
     '/content/content/v1/copy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
@@ -259,6 +259,10 @@ const API_LIST = {
       checksNeeded: []
     },
     '/learner/data/v1/system/settings/get/googleReCaptcha': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/data/v1/system/settings/list': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -417,8 +421,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v3/read/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.ALL],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__adminCheck__userId', params: [] }
+        ]
+      }
     },
     '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],

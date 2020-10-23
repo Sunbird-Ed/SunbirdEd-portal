@@ -161,8 +161,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (Object.keys(this.queryParams).length > 0) {
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
-        filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
+
+        // Replacing cbse/ncert value with cbse
+        if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+            filters.board = ['cbse'];
+        }
 
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {

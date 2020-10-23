@@ -1,7 +1,7 @@
 
 import { mergeMap, filter, map, catchError, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -15,6 +15,7 @@ import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
+import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 
 @Component({
   selector: 'app-collection-player',
@@ -85,6 +86,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     loaderMessage: 'Fetching content details!'
   };
   playerServiceReference: any;
+  TocCardType = TocCardType;
+  PlatformType = PlatformType;
+  private tocId;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -94,7 +98,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
     public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
-    public publicPlayerService: PublicPlayerService) {
+    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -111,6 +115,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
+    this.tocId = _.get(this.route, 'snapshot.params.collectionId');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();
   }
@@ -403,6 +408,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   closeCollectionPlayer() {
     if (this.dialCode) {
       this.router.navigate(['/get/dial/', this.dialCode]);
+    } else if (this.tocId) {
+      const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
+      this.router.navigate([navigateUrl, 1], { queryParams: { key: this.tocId } });
     } else {
       const url = this.userService.loggedIn ? '/resources' : '/explore';
       this.navigationHelperService.navigateToPreviousUrl(url);
@@ -442,7 +450,24 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   tocCardClickHandler(event) {
     this.setTelemetryInteractData();
-    this.callinitPlayer(event);
+    if (event && event.data && event.data.trackable && event.data.trackable.enabled === 'Yes') {
+      if (this.userService.loggedIn) {
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+          this.coursesService.findEnrolledCourses(event.data.identifier);
+
+        if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+        } else if (onGoingBatchCount === 1) { // play course if only one open batch is present
+          event.data.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+        }
+
+      } else {
+        this.publicPlayerService.playContent(event, {textbook: this.collectionData.identifier});
+      }
+    } else {
+      this.callinitPlayer(event);
+    }
   }
 
   tocChapterClickHandler(event) {

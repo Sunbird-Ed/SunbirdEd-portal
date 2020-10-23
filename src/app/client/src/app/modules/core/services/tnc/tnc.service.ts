@@ -18,4 +18,11 @@ export class TncService {
     };
     return this.learnerService.get(options);
   }
+
+  getTncList() {
+    const options = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.TNC_LIST
+    };
+    return this.learnerService.get(options);
+  }
 }

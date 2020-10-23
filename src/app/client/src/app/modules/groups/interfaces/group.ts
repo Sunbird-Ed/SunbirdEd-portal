@@ -51,3 +51,8 @@ export enum actions {
   DEACTIVATE = 'deActivate',
   ACTIVATE = 'activate'
 }
+
+export enum acceptTnc {
+  ALL = 'all',
+  GROUP = 'group'
+}

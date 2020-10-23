@@ -1,9 +1,10 @@
+import { of, combineLatest } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { GroupsService } from './groups.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
+import { CoreModule, FrameworkService, UserService, ChannelService, OrgDetailsService, TncService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
@@ -14,6 +15,7 @@ import { groupData, modifiedActivities } from './groups.service.spec.data';
 describe('GroupsService', () => {
   configureTestSuite();
   const resourceBundle = {
+    languageSelected$: of ({}),
     frmelmnts: {
       lbl: {
         you: 'You',
@@ -30,7 +32,7 @@ describe('GroupsService', () => {
       providers: [GroupsService, ConfigService, UserService, FrameworkService, ChannelService, OrgDetailsService,
         { provide: APP_BASE_HREF, useValue: '/' },
         { provide: ResourceService, useValue: resourceBundle },
-        TelemetryService,
+        TelemetryService, TncService
       ]
     });
   });
@@ -244,6 +246,46 @@ describe('GroupsService', () => {
     const isGroupActive = service.updateGroupStatus(group, GroupEntityStatus.ACTIVE);
     expect(group.isActive).toHaveBeenCalled();
     expect(isGroupActive).toEqual(true);
+  });
+
+  it('should emit "emitNotAcceptedGroupsTnc" ', () => {
+    const service = TestBed.get(GroupsService);
+    const parsedData =  {
+      id: 'groupsTnc',
+      field: 'groupsTnc',
+      value: '{\"latestVersion\":\"3.4.0\",\"3.4.0\":{\"url\":\"https:/terms-of-use.html#groupGuidelines\"}}'
+    };
+    const groupsTnc = {result: {response: [ parsedData ] }};
+    parsedData.value = typeof parsedData.value === 'string' ? JSON.parse(parsedData.value) : parsedData.value;
+
+    spyOn(service['tncService'], 'getTncList').and.returnValue(of (groupsTnc));
+    spyOn(service['userService'], 'getUserData').and.returnValue(of ({
+      result: {
+        response: {
+          allTncAccepted: {
+            groupsTnc: {
+              tncAcceptedOn: '2020-10-19 09:28:36:077+0000',
+              version: '3.4.0'
+            }
+          }
+        }
+      }
+    }));
+
+    spyOn(service.emitNotAcceptedGroupsTnc, 'emit').and.callThrough();
+
+    service.isUserAcceptedTnc();
+
+    expect(service['tncService'].getTncList).toHaveBeenCalled();
+
+    combineLatest(
+    service['userService'].getUserData('123'),
+    service['tncService'].getTncList()
+    ) .subscribe(data => {
+      expect(service.emitNotAcceptedGroupsTnc.emit).toHaveBeenCalledWith(
+        {tnc: parsedData, accepted: true}
+      );
+    });
   });
 
 });

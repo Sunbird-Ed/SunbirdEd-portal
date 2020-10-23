@@ -73,11 +73,16 @@ export class ConsentPiiComponent implements OnInit {
 
     if (_.get(this.usersProfile, 'userLocations.length')) {
       this.usersProfile.userLocations.forEach(locDetail => {
-        if (locDetail.type === 'state') {
-          this.userInformation['state'] = locDetail.name;
-        }
-        if (locDetail.type === 'district') {
-          this.userInformation['district'] = locDetail.name;
+        switch (locDetail.type) {
+          case 'state':
+            this.userInformation['state'] = locDetail.name;
+            break;
+          case 'district':
+            this.userInformation['district'] = locDetail.name;
+            break;
+          case 'block':
+            this.userInformation['block'] = locDetail.name;
+            break;
         }
       });
     }
@@ -91,10 +96,10 @@ export class ConsentPiiComponent implements OnInit {
           case 'declared-phone':
             this.userInformation['phone'] = value;
             break;
-          case 'declared-ext-id':
+          case 'declared-school-udise-code':
             this.userInformation['schoolId'] = value;
             break;
-          case 'declared-school-udise-code':
+          case 'declared-school-name':
             this.userInformation['schoolName'] = value;
             break;
         }

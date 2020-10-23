@@ -42,6 +42,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
+
+    // Replacing CBSE with CBSE/NCERT
+    if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {
+      this.selectedOption['board'] = ['CBSE/NCERT'];
+    }
     this.editMode = _.some(this.selectedOption, 'length') || false ;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
@@ -212,6 +217,13 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     const selectedOption = _.cloneDeep(this.selectedOption);
     selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
     selectedOption.id = this.frameWorkId;
+    if (selectedOption.board) {
+      _.forEach(selectedOption.board, (data, index) => {
+        if (data === 'CBSE/NCERT') {
+          selectedOption.board[index] = 'CBSE';
+        }
+      });
+    }
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {
