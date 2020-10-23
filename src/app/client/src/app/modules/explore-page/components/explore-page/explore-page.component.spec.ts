@@ -5,21 +5,21 @@ import { ResourceService, ToasterService, SharedModule, ConfigService, UtilServi
 } from '@sunbird/shared';
 import {SearchService, OrgDetailsService, CoreModule, UserService, FormService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PublicPlayerService } from './../../../../services';
+import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RESPONSE } from './explore.component.spec.data';
+import { RESPONSE } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ExploreComponent } from './explore.component';
+import { ExplorePageComponent } from './explore-page.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 
 
-describe('ExploreComponent', () => {
-  let component: ExploreComponent;
-  let fixture: ComponentFixture<ExploreComponent>;
+describe('ExplorePageComponent', () => {
+  let component: ExplorePageComponent;
+  let fixture: ComponentFixture<ExplorePageComponent>;
   let toasterService, userService, pageApiService, orgDetailsService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
@@ -68,7 +68,7 @@ describe('ExploreComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
-      declarations: [ExploreComponent],
+      declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
         FormService,
       { provide: Router, useClass: RouterStub },
@@ -78,7 +78,7 @@ describe('ExploreComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExploreComponent);
+    fixture = TestBed.createComponent(ExplorePageComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
     userService = TestBed.get(UserService);

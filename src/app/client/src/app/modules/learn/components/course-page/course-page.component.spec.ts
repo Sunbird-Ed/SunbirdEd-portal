@@ -1,4 +1,4 @@
-import { PublicCourseComponent } from './public-course.component';
+import { CoursePageComponent } from '././course-page.component
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
@@ -9,15 +9,15 @@ import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Response } from './public-course.component.spec.data';
+import { Response } from './course-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('PublicCourseComponent', () => {
-  let component: PublicCourseComponent;
-  let fixture: ComponentFixture<PublicCourseComponent>;
+describe('CoursePageComponent', () => {
+  let component: CoursePageComponent;
+  let fixture: ComponentFixture<CoursePageComponent>;
   let toasterService, formService, pageApiService, orgDetailsService, cacheService, utilService;
   const mockPageSection: Array<any> = Response.successData.result.response.sections;
   let sendOrgDetails = true;
@@ -52,7 +52,7 @@ describe('PublicCourseComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
-      declarations: [PublicCourseComponent],
+      declarations: [CoursePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
@@ -61,7 +61,7 @@ describe('PublicCourseComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PublicCourseComponent);
+    fixture = TestBed.createComponent(CoursePageComponent);
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
     formService = TestBed.get(FormService);
