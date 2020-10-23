@@ -271,15 +271,6 @@ export class SearchService {
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
-
-    if (_.get(option, 'data.request.filters') && !_.get(option, 'data.request.filters.contentType') && addDefaultContentTypesInRequest) {
-      option.data.request.filters.contentType = [
-        'Collection',
-        'TextBook',
-        'LessonPlan',
-        'Resource'
-      ];
-    }
     return this.publicDataService.post(option);
   }
   /**
@@ -332,8 +323,8 @@ export class SearchService {
     return facetObj;
   }
 
-  public fetchCourses(request, contentType) {
-    const option = this.getSearchRequest(request, contentType);
+  public fetchCourses(request, primaryCategory) {
+    const option = this.getSearchRequest(request, primaryCategory);
     let cardData = [];
     return this.contentSearch(option).pipe(map((response) => {
       const contents = _.get(response, 'result.content');
@@ -363,10 +354,10 @@ export class SearchService {
     return this._subjectThemeAndCourse;
   }
 
-  getSearchRequest(request, contentType) {
+  getSearchRequest(request, primaryCategory) {
     let filters = request.filters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = contentType; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters['primaryCategory'] = primaryCategory;
     if (!request.isCustodianOrg) {
       filters['channel'] = request.channelId;
     }
@@ -490,7 +481,7 @@ export class SearchService {
           facet['label'] = this.resourceService.frmelmnts.lbl.publisher;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectPublisher;
           break;
-        case 'contentType':
+        case 'primaryCategory':
           facet['index'] = '6';
           facet['label'] = this.resourceService.frmelmnts.lbl.contentType;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectContentType;

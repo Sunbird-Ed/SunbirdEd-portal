@@ -90,13 +90,14 @@ export class AddToGroupDirective implements OnInit {
   }
 
   sendInteractData(id, extra?) {
+    console.log('nc,mvbdf', this.activatedRoute);
     const data = {
       context: {
         env: 'groups',
         cdata: [
         {
-          type: 'group',
-          id: _.get(this.activatedRoute.snapshot, 'params.groupId')
+          type: 'Group',
+          id: _.get(this.activatedRoute.snapshot, 'params.groupId') || _.get(this.activatedRoute.snapshot, 'queryParams.groupId')
         }
       ]
       },

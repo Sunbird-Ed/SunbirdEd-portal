@@ -375,9 +375,6 @@ html[layout='joy'] {
   }
   .sb-btn-sm {
     border-radius: var(--sbt-bradius-24);
-    &:hover {
-      border-radius: var(--sbt-bradius-8);
-    }
   }
   .sb-btn-xs {
     border-radius: var(--sbt-bradius-24);
@@ -1097,6 +1094,22 @@ html[layout='joy'] {
   .sb-sideview-tab-container .report__header .sb-last-update-status {
     margin-right: calculateRem(16px);
   }
+  .sb-graph-section{
+    border-radius: var(--sbt-bradius-24) !important;
+  }
+  .sbt-report-tabs-panel{
+    border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0px 0px !important;
+  }
+  .sbt-report-btns-panel{
+    border-radius: 0 0 var(--sbt-bradius-24) var(--sbt-bradius-24) !important;
+  }
+  #report-summary{
+    app-report-summary{
+      .ui.message{
+        border-radius: var(--sbt-bradius-24);
+      }
+    }
+  }
 }
 
 .data-labels{
@@ -1112,3 +1125,19 @@ html[layout='joy'][dir='rtl'] {
     right: auto;
   }
 }
+
+html[layout='joy'] {
+    .certificate-bg {
+      background: #F2F2EA !important;
+      border-radius: calculateRem(24px) !important;
+    }
+  .sb-browse-btn{
+    height: 2.1rem;
+    border: 2px solid #7ab4ee;
+    color: #7ab4ee;
+    font-weight: bold;
+    background: #edf4f9;
+    }
+  }
+
+

@@ -83,6 +83,13 @@ export class DialCodeService {
   public parseCollection(collection) {
     const contents = [];
     const parsedCollection = treeModel.parse(collection);
+    parsedCollection.all(() => true).forEach(node => {
+      if (node.model.trackable && node.model.trackable.enabled === 'Yes') {
+        node.model.l1Parent = collection.identifier;
+        contents.push(node.model);
+        node.drop();
+      }
+    });
     parsedCollection.walk((node) => {
       if (_.get(node, 'model.mimeType') && node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
         node.model.l1Parent = collection.identifier;

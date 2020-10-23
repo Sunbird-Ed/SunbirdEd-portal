@@ -153,19 +153,12 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
       return o.name === (selectedMediaType || 'all');
     });
-    const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
-    filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
-    _.forEach(this.formData, (form, key) => {
-      const pageTitle = _.get(this.resourceService, form.title);
-      if (pageTitle === pageType) {
-        filters.contentType = _.get(form, 'search.filters.contentType');
-      }
-    });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
     if (this.queryParams.key) {
       delete softConstraints['board'];
