@@ -76,7 +76,7 @@ describe('PublicPlayerService', () => {
     spyOn(playerService, 'handleNavigation').and.callThrough();
     playerService.playContent(contentMockData);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier], { queryParams: undefined });
   }));
 
   it('should navigate to collection player if collection is not trackable', fakeAsync(() => {
@@ -108,7 +108,7 @@ describe('PublicPlayerService', () => {
     contentMockData.data['trackable'] = { 'enabled': 'Yes' };
     playerService.playContent(contentMockData);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['explore-course/course', contentMockData.data.identifier], { queryParams: undefined });
   }));
 
   it('should navigate to resource player if content mime type is not collection', fakeAsync(() => {
