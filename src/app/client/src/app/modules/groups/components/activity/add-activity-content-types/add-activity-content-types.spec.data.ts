@@ -91,8 +91,6 @@ export const AddActivityContentTypesData = {
         'sortBy': [{
         }],
         'searchQuery': `{"request":{"filters":{"primaryCategory":["Course"],"status":["Live"],"objectType":["Content"]},"fields":["name","appIcon","contentType","identifier","objectType","createdBy"]}}`,
-        'translations': '',
-        'isEnabled': true,
     },
     groupData : {
         'membershipType': 'invite_only',
