@@ -44,7 +44,7 @@ export class CreateTemplateComponent implements OnInit {
   center = 275;
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
-  images: object = {
+  images = {
     'LOGO1': { 'name' : '' },
     'LOGO2': { 'name' : '' },
     'SIGN1': { 'name' : '' },
