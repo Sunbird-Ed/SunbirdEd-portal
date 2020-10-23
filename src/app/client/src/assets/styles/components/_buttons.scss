@@ -28,6 +28,9 @@ a.sb-btn {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  &:hover{
+    text-decoration: none;
+  }
 }
 
 button.sb-btn:focus {

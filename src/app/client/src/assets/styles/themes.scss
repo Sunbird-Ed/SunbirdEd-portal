@@ -379,6 +379,9 @@ html[layout='joy'] {
   .sb-btn-xs {
     border-radius: var(--sbt-bradius-24);
   }
+  .sb-btn-square:hover{
+    border-radius: var(--sbt-bradius-8);
+  }
   .sb-btn-link-primary {
     border-radius: 0px;
     box-shadow: none;
