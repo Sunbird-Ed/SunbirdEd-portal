@@ -62,7 +62,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
       this.showLoader = false;
       this.supportedActivityList = _.get(data, 'data.fields');
       this.supportedActivityList.forEach(activity => {
-        activity = this.groupService.getSelectedLanguageStrings(activity);
+        activity['title'] = this.resourceService.frmelmnts.lbl[activity['title']];
       });
     }, (error) => {
       this.showLoader = false;
