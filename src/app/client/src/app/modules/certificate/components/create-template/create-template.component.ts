@@ -218,14 +218,14 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   updateStateLogos(stateLogos) {
-    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x.type === 'LOGO');
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'LOGO');
     this.editSVG(logosArray, stateLogos).then(res => {
       this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
     });
   }
 
   updateSigns(stateLogos) {
-    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x.type === 'SIGN');
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'SIGN');
     this.editSVG(logosArray, stateLogos).then(res => {
       this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
     });
