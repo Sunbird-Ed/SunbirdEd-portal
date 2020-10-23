@@ -180,7 +180,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields, filters: { contentType } } = currentPageData.search;
+                    const { fields, filters: { primaryCategory } } = currentPageData.search;
                     const request = {
                         filters: this.selectedFilters,
                         fields,
@@ -192,7 +192,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
                     }
-                    const option = this.searchService.getSearchRequest(request, contentType);
+                    const option = this.searchService.getSearchRequest(request, primaryCategory);
                     return this.searchService.contentSearch(option).pipe(
                         map((response) => {
                             const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
