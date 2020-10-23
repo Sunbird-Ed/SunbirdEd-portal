@@ -1,4 +1,4 @@
-import { LearnPageComponent } from './components/learn-page/learn-page.component';
+import { LearnPageComponent, CoursePageComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
@@ -8,14 +8,10 @@ const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
   {
-    path: '', loadChildren: '../public/module/course/course.module#CourseModule',
+    path: '', component: CoursePageComponent,
     data: {
-      routeReuse: {
-        reuse: true,
-        path: 'learn'
-      },
       breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '' }],
-      telemetry: { env: telemetryEnv, pageid: 'learn', type: 'view', subtype: 'paginate' },
+      telemetry: { env: 'explore-course', pageid: 'explore-course', type: 'view', subtype: 'paginate' },
       baseUrl: 'learn'
     }
   },

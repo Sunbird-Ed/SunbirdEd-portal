@@ -4,3 +4,5 @@ export * from './course-consumption/course-consumption-page/course-consumption-p
 export * from './course-consumption/curriculum-card/curriculum-card.component';
 export * from './course-consumption/course-details/course-details.component';
 export * from './course-consumption/consent-pii/consent-pii.component';
+export * from './learn-page/learn-page.component';
+export * from './course-page/course-page.component';

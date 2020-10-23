@@ -5,10 +5,12 @@ import { CommonModule } from '@angular/common';
  import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
-import { LearnPageComponent } from './components/learn-page/learn-page.component';
+import { LearnPageComponent, CoursePageComponent } from './components';
 import { CoreModule } from '@sunbird/core';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
@@ -20,9 +22,11 @@ import { ContentSearchModule } from '@sunbird/content-search';
     CoreModule,
     TelemetryModule,
     SharedFeatureModule,
-    ContentSearchModule
+    ContentSearchModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiRatingModule, SuiCollapseModule,
   ],
   providers: [],
-  declarations: [LearnPageComponent]
+  declarations: [LearnPageComponent, CoursePageComponent]
 })
 export class LearnModule { }
