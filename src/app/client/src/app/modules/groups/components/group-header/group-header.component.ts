@@ -24,9 +24,9 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   creator: string;
   showLeaveGroupModal = false;
   showLoader = false;
-  public modalTitle: string;
-  public modalMsg: string;
-  public modalName: string;
+  public title: string;
+  public msg: string;
+  public name: string;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
@@ -83,7 +83,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   toggleModal(visibility = false, name?: string, eventName?: string) {
     this.showModal = visibility;
     this.groupService.emitMenuVisibility('group');
-    this.modalName = name;
+    this.name = name;
     switch (name) {
       case actions.DELETE:
         this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')});
@@ -102,8 +102,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
 
   assignModalStrings(title, msg, replaceStr?) {
-    this.modalTitle = title;
-    this.modalMsg = replaceStr ? msg.replace(replaceStr, this.groupData.name) : msg;
+    this.title = title;
+    this.msg = replaceStr ? msg.replace(replaceStr, this.groupData.name) : msg;
   }
 
   handleEvent(event: {name: string, action?: boolean}) {

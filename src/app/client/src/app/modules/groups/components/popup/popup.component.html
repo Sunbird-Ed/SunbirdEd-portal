@@ -1,37 +1,37 @@
-<sui-modal *ngIf="showGroupActionsModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'small'" class="sb-modal" [ngClass]="{'sb-error': (modalName !== 'activate')}"
+<sui-modal *ngIf="!type" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal" [ngClass]="{'sb-error': (name !== 'activate')}"
   appBodyScroll (dismissed)="emitEvent(false);" #modal>
   <div class="sb-modal-header">
-    {{modalTitle}}
+    {{title}}
   </div>
   <div class="sb-modal-content">
-    <p> {{modalMsg}} ?</p>
+    <p> {{msg}} ?</p>
   </div>
   <div class="sb-modal-actions">
-    <button *ngIf="modalName === 'delete'" class="sb-btn sb-btn-normal
+    <button *ngIf="name === 'delete'" class="sb-btn sb-btn-normal
       sb-btn-outline-error"
       (click)="emitEvent(true)">{{resourceService?.frmelmnts?.btn?.delete}}</button>
       
-    <button *ngIf="modalName === 'deActivate'" class="sb-btn sb-btn-normal
+    <button *ngIf="name === 'deActivate'" class="sb-btn sb-btn-normal
       sb-btn-outline-error"
       (click)="emitEvent(true)">{{resourceService?.frmelmnts?.btn?.deactivategrp}}</button>
 
-    <button *ngIf="modalName === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary"
+    <button *ngIf="name === 'activate'" class="sb-btn sb-btn-normal sb-btn-primary"
       (click)="emitEvent(true)">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
 
-    <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (modalName !== 'activate'),
-    'sb-btn-outline-primary': (modalName === 'activate')}"
+    <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (name !== 'activate'),
+    'sb-btn-outline-primary': (name === 'activate')}"
       (click)="emitEvent(false)">{{resourceService?.frmelmnts?.btn?.no}}</button>
   </div>
 </sui-modal>
 
 
-<sui-modal *ngIf="showTncModal" [mustScroll]="true"  [isClosable]="type === acceptTncType.GROUP" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+<sui-modal *ngIf="type" [mustScroll]="true"  [isClosable]="type === acceptTncType.GROUP" [transitionDuration]="0" [size]="'small'" class="sb-modal"
 appBodyScroll (dismissed)="closeModal()" #tncModal >
 <div class="sb-modal-header">{{resourceService?.frmelmnts?.lbl?.groupGuidelinesold}}</div>
 <div class="sb-modal-content o-y-visible">
   <input [(ngModel)]="checked" type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
-{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a href="{{latestTnc?.value[latestTnc?.value?.latestVersion]?.url}}" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
+{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': channel }} <a href="{{url}}/term-of-use.html#groupGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a>
 </div>
 <div class="sb-modal-actions">
   <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!checked" [ngClass]="{'sb-btn-disabled': !checked}"
