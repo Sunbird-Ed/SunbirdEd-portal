@@ -22,7 +22,7 @@
     <div class="ui container">
       <div class="sb-card-grid sb-add-activity-content-cards my-24">
         <div class="add-activity-content" *ngFor="let activity of supportedActivityList; let i = index;">
-          <sb-course-curiculum-card  (click)="onCardClick(activity)" [isActivityTypeCard]="true" [cardData]="activity" [index]="i"></sb-course-curiculum-card>
+          <sb-course-curiculum-card  [title]="activity?.title" (click)="onCardClick(activity)" [isActivityTypeCard]="true" [cardData]="activity" [index]="i"></sb-course-curiculum-card>
         </div>
       </div>
     </div>

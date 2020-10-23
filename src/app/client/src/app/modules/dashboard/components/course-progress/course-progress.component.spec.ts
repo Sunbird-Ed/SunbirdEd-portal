@@ -262,6 +262,7 @@ describe('CourseProgressComponent', () => {
 
   it ( 'should call getFormData as a COURSE_CREATOR', () => {
     component.userRoles = ['CONTENT_CREATOR'];
+    component.selectedTab = 2;
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
     component.getFormData();
