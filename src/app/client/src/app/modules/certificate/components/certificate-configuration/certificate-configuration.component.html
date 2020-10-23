@@ -90,7 +90,7 @@
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                 <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                 {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-              <button type="button" id="addNewCert" (click)="currentState = screenStates.certRules"
+              <button type="button" id="addNewCert" (click)="certificateCreation()"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                 <img src="assets/images/plus-icon.svg" width="8px" class="ml-4 plus-icon"></button>
@@ -180,6 +180,9 @@
                 </div>
               </div>
             </form>
+            <div>
+            <img [src]="certificate">
+            </div>
           </div>
         </div>
 
@@ -196,6 +199,8 @@
                (click)="navigateToCreateTemplate()">
                 <i class="plus alternate outline icon"></i>Create template</button>
                </div>
+               <img [src]="certificate">
+
               <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
                   <sb-certificate-actions [preview]="config?.preview"

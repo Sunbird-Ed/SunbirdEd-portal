@@ -1,3 +1,4 @@
+import { UploadCertificateService } from './../../services/upload-certificate/upload-certificate.service';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
@@ -8,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry'
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface IConfigLabels {
   label: string;
@@ -49,14 +51,16 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   isTemplateChanged = false;
   certEditable = true;
   config: {select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels};
-
+  certificate: any;
 
   constructor(
     private certificateService: CertificateService,
     private userService: UserService,
     private playerService: PlayerService,
+    private sanitizer: DomSanitizer,
     private resourceService: ResourceService,
     private certRegService: CertRegService,
+    public uploadCertificateService : UploadCertificateService,
     public navigationHelperService: NavigationHelperService,
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService,
@@ -79,6 +83,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeLabels();
     this.currentState = this.screenStates.default;
+    // this.currentState = false;
+console.log(this.currentState);
+console.log(this.screenStates);
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -86,8 +93,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.configurationMode = _.get(this.queryParams, 'type');
     });
     combineLatest(
-    this.getCourseDetails(_.get(this.queryParams, 'courseId')),
-    this.getBatchDetails(_.get(this.queryParams, 'batchId')),
+    // this.getCourseDetails(_.get(this.queryParams, 'courseId')),
+    // this.getBatchDetails(_.get(this.queryParams, 'batchId')),
     this.getTemplateList(),
     ).subscribe((data) => {
       this.showLoader = false;
@@ -95,8 +102,18 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
+    this.uploadCertificateService.certificate.subscribe(res => {
+      if (res) {
+        console.log('res-------------------', res);
+        this.currentState = "certRules";
+        this.certificate =  this.sanitizer.bypassSecurityTrustResourceUrl(res);
+      }
+    });
   }
 
+  certificateCreation() {
+    this.currentState = this.screenStates.certRules;
+  }
   /**
    * @description - It will trigger impression telemetry event once the view is ready.
    */

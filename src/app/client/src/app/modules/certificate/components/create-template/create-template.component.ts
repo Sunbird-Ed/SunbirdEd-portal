@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { fromFetch } from 'rxjs/fetch';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
-
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
@@ -64,6 +64,7 @@ export class CreateTemplateComponent implements OnInit {
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
     private sanitizer: DomSanitizer,
+    public router : Router,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public navigationHelperService: NavigationHelperService) {
@@ -286,5 +287,10 @@ export class CreateTemplateComponent implements OnInit {
     div.appendChild(ev.cloneNode(true));
     const b64 = 'data:image/svg+xml;base64,' + window.btoa(div.innerHTML);
     return b64;
+  }
+
+  useTemplate() {
+    this.router.navigate(['certs', 'configure', 'certificate']);
+    this.uploadCertificateService.certificate.next(this.finalSVGurl);
   }
 }

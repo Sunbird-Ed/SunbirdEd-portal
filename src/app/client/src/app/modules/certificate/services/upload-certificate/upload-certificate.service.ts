@@ -4,12 +4,14 @@ import { PublicDataService } from '@sunbird/core';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from './../../../../modules/core/services/content/content.service';
 import { UserService } from '@sunbird/core';
-
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadCertificateService {
+
+  certificate: BehaviorSubject<any>;
 
   constructor(
     public publicDataService: PublicDataService,
@@ -17,7 +19,9 @@ export class UploadCertificateService {
     public configService: ConfigService,
     public contentService: ContentService,
     public userService: UserService
-  ) { }
+  ) {
+    this.certificate = new BehaviorSubject(null);
+  }
 
   /**
    * To get the asset images (State logos and Signs)
