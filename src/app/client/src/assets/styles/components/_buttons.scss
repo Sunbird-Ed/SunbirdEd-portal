@@ -28,6 +28,9 @@ a.sb-btn {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  &:hover{
+    text-decoration: none;
+  }
 }
 
 button.sb-btn:focus {
@@ -430,21 +433,3 @@ $btnSquaresizes: "xs"1.5rem 1.5rem 1rem null,
   line-height: normal;
 }
 
-.sb-btn-round {
-  html[layout="joy"] & {
-    background: var(--white) !important;
-    border-radius: 50% !important;
-    box-shadow: var(--sbt-box-shadow-6px) !important;
-    min-width: auto !important;
-    padding: calculateRem(16px) !important;
-    height: auto !important;
-    width: auto !important;
-    span {
-      display: none;
-    }
-    .icon-svg--xxs {
-      width: calculateRem(16px);
-      height: calculateRem(16px);
-    }
-  }
-}

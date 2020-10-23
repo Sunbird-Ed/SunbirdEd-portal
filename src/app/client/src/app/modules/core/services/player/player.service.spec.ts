@@ -121,7 +121,7 @@ describe('PlayerService', () => {
     const router = TestBed.get(Router);
     playerService.playContent(MockResponse.contentMetadata);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier], { queryParams: undefined });
   }));
 
   it('should navigate to collection player if trackable object is not available and content type is other then course', fakeAsync(() => {
@@ -151,7 +151,7 @@ describe('PlayerService', () => {
     MockResponse.contentMetadata['trackable'] = { 'enabled': 'Yes' };
     playerService.playContent(MockResponse.contentMetadata);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier], { queryParams: undefined });
   }));
 
   it('should navigate to course player with batch id if collection is trackable and enrolled course', fakeAsync(() => {
@@ -161,7 +161,8 @@ describe('PlayerService', () => {
     MockResponse.contentMetadata['batchId'] = '123';
     playerService.playContent(MockResponse.contentMetadata);
     tick(50);
-    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier, 'batch', '123']);
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course', MockResponse.contentMetadata.identifier, 'batch', '123'],
+      { queryParams: undefined });
   }));
 
   it('should navigate to resource player if content mime type is not collection', fakeAsync(() => {

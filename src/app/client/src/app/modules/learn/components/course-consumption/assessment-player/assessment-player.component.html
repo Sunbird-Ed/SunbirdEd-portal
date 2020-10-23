@@ -88,6 +88,8 @@
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
                   (ratingPopupClose)="onRatingPopupClose()"></app-player>
               </div>
+              <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              </app-content-actions>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
             </section>

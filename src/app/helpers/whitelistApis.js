@@ -241,6 +241,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/data/v1/system/settings/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     //Course related APIs
     '/learner/course/v1/hierarchy/:do_id': {

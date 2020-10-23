@@ -198,7 +198,7 @@ describe('AddToGroupDirective', () => {
       context: {
         env: 'groups',
         cdata: [{
-          type: 'group',
+          type: 'Group',
           id: '123'
         }]
       },

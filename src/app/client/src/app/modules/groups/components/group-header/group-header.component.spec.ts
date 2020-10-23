@@ -70,11 +70,19 @@ describe('GroupHeaderComponent', () => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
     component.groupData = {
-      id: '123', isAdmin: true, createdBy: 'user_123', name: 'Test group',
-      members: [{ userId: 'user_123', createdBy: 'user_123', name: 'user123', role: GroupMemberRole.ADMIN, id: '1',
-      groupId: '', status: GroupEntityStatus.ACTIVE }],
+      id: '123', createdBy: 'user_123', name: 'Test group',
+      members: [{
+      name: 'user123',
+      groupId: '123',
+      userId: 'user_123',
+      role: GroupMemberRole.ADMIN,
+      status: GroupEntityStatus.ACTIVE,
+      createdBy: 'user_123'
+      }],
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
+      active: true,
+      isActive() { return true ;}
     };
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
@@ -90,16 +98,20 @@ describe('GroupHeaderComponent', () => {
 
   it('should set creator name', () => {
     component.groupData = {
-      isAdmin: false,
       name: 'Test',
       createdBy: 'abcd-pqr-xyz',
       id: 'pop-wer',
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       members: [{
-        identifier: '2', initial: 'P', title: 'Paul Walker', isAdmin: false, isMenu: true,
-      indexOfMember: 5, isCreator: false, name: 'Admin user', userId: 'abcd-pqr-xyz', role: GroupMemberRole.MEMBER, id: '1',
-      groupId: '', status: GroupEntityStatus.ACTIVE, createdBy: 'abcd-pqr-xyz'}]
+      name: 'Admin user',
+      userId: 'abcd-pqr-xyz',
+      role: GroupMemberRole.MEMBER,
+      groupId: '',
+      status: GroupEntityStatus.ACTIVE,
+      createdBy: 'abcd-pqr-xyz'}],
+      active: true,
+      isActive() { return true ;}
     };
 
     component.ngOnInit();
@@ -110,7 +122,7 @@ describe('GroupHeaderComponent', () => {
     spyOn(component, 'assignModalStrings');
     component.toggleModal(true, 'deActivate');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('deActivate');
+    expect(component.name).toBe('deActivate');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deactivategrpques,
       resourceBundle.frmelmnts.msg.deactivategrpmsg);
   });
@@ -120,7 +132,7 @@ describe('GroupHeaderComponent', () => {
     component.groupData.name = 'group';
     component.toggleModal(true, 'delete');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('delete');
+    expect(component.name).toBe('delete');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deleteGroup,
       resourceBundle.messages.imsg.m0082, '{group name}');
   });
@@ -129,7 +141,7 @@ describe('GroupHeaderComponent', () => {
     spyOn(component, 'assignModalStrings');
     component.toggleModal(true, 'activate');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('activate');
+    expect(component.name).toBe('activate');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.activategrpques,
       resourceBundle.frmelmnts.msg.activategrppopup);
   });
@@ -144,8 +156,8 @@ describe('GroupHeaderComponent', () => {
   it ('should assign modaltitle and modalmsg strings', () => {
     component.assignModalStrings(resourceBundle.frmelmnts.lbl.activategrpques,
       resourceBundle.frmelmnts.msg.activategrppopup);
-      expect(component.modalTitle).toEqual(resourceBundle.frmelmnts.lbl.activategrpques);
-      expect(component.modalMsg).toEqual(resourceBundle.frmelmnts.msg.activategrppopup);
+      expect(component.title).toEqual(resourceBundle.frmelmnts.lbl.activategrpques);
+      expect(component.msg).toEqual(resourceBundle.frmelmnts.msg.activategrppopup);
   });
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {
@@ -189,7 +201,8 @@ describe('GroupHeaderComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined}, fakeActivatedRoute.snapshot, [{id: '123', type: 'group'}]);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith(
+      {id: 'ftu-popup', extra: undefined}, fakeActivatedRoute.snapshot, [], '123');
   });
 
   it('should call leaveGroup on success', () => {
@@ -217,12 +230,12 @@ describe('GroupHeaderComponent', () => {
   it('should "deActivateGroup on SUCCESS" ', () => {
     spyOn(component['groupService'], 'deActivateGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
-    spyOn(component.updateEvent, 'emit');
+    spyOn(component['groupService'], 'emitUpdateEvent');
     component.deActivateGroup();
     component['groupService'].deActivateGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.deactivategrpsuccess);
       expect(component.showLoader).toBeFalsy();
-      expect(component.updateEvent.emit).toHaveBeenCalled();
+      expect(component['groupService'].emitUpdateEvent).toHaveBeenCalledWith(GroupEntityStatus.SUSPENDED);
     });
   });
 
@@ -239,12 +252,12 @@ describe('GroupHeaderComponent', () => {
   it('should "activateGroup on SUCCESS" ', () => {
     spyOn(component['groupService'], 'activateGroupById').and.returnValue(of(true));
     spyOn(component['toasterService'], 'success');
-    spyOn(component.updateEvent, 'emit');
+    spyOn(component['groupService'], 'emitUpdateEvent');
     component.activateGroup();
     component['groupService'].activateGroupById('123').subscribe(response => {
       expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.frmelmnts.msg.activategrpsuccess);
       expect(component.showLoader).toBeFalsy();
-      expect(component.updateEvent.emit).toHaveBeenCalled();
+      expect(component['groupService'].emitUpdateEvent).toHaveBeenCalledWith(GroupEntityStatus.ACTIVE);
     });
   });
 

@@ -649,3 +649,13 @@ app-workspace {
       }
     }
   }
+
+  .player-fullscreen-action-items{
+    .content-video__player__details{
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}

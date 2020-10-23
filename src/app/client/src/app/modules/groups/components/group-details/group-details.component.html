@@ -11,7 +11,7 @@
 </div>
 
 <div *ngIf="groupData && !isLoader" [appTelemetryImpression]="telemetryImpression">
-  <app-group-header [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup" (updateEvent)="getGroupData()"></app-group-header>
+  <app-group-header [groupData]="groupData" (handleFtuModal)="showMemberPopup=!showMemberPopup"></app-group-header>
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">

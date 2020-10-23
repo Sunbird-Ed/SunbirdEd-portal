@@ -356,6 +356,12 @@
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
+            <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
+              <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+              </svg></i>
+              <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
+            </li>
             <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
              (click)="toggleSideMenu(false);navigate('/faq')">
               <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
@@ -378,3 +384,9 @@
     </ng-container>
   </div>
 </div>
+
+<!-- Manage location for an anonymous user -->
+<app-onboarding-location  *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
+[isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
+</app-onboarding-location>
+<!-- Manage location for an anonymous user -->

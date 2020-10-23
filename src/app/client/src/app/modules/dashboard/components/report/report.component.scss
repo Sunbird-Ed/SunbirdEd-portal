@@ -108,3 +108,7 @@
         margin:0 0 1rem 0 !important;
     }
 }
+.sbt-report-tabs-panel{
+    overflow: auto;
+    padding-bottom: calculateRem(2px);
+}
