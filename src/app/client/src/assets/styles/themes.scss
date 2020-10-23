@@ -382,6 +382,22 @@ html[layout='joy'] {
   .sb-btn-square:hover{
     border-radius: var(--sbt-bradius-8);
   }
+  .sb-btn-round {
+    background: var(--white) !important;
+    border-radius: 50% !important;
+    box-shadow: var(--sbt-box-shadow-6px) !important;
+    min-width: auto !important;
+    padding: calculateRem(16px) !important;
+    height: auto !important;
+    width: auto !important;
+    span {
+      display: none;
+    }
+    .icon-svg--xxs {
+      width: calculateRem(16px);
+      height: calculateRem(16px);
+    }
+  }
   .sb-btn-link-primary {
     border-radius: 0px;
     box-shadow: none;
