@@ -19,6 +19,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   batchDetails: any;
   showEnrollDetails = false;
   readMore = false;
+  showLoader = false;
   disableSubmitBtn = false;
   public unsubscribe = new Subject<void>();
   telemetryCdata: Array<{}>;
@@ -116,11 +117,13 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   fetchEnrolledCourseData() {
+    this.showLoader = true;
     setTimeout(() => {
       this.coursesService.getEnrolledCourses().pipe(
         takeUntil(this.unsubscribe))
         .subscribe(() => {
           this.disableSubmitBtn = false;
+          this.showLoader = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0036);
           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier],
           { queryParams: { consent: true } }).then(() => {

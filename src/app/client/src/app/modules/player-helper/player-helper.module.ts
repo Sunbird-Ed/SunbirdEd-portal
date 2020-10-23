@@ -14,7 +14,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import {SunbirdPdfPlayerModule} from 'sunbird-pdf-player';
+import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player';
 
 @NgModule({
   imports: [

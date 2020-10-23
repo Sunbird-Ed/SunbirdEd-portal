@@ -1,3 +1,4 @@
+import { GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
@@ -18,7 +19,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
-  @Output() updateEvent = new EventEmitter();
   showModal = false;
   showEditModal: boolean;
   creator: string;
@@ -47,6 +47,10 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.showActivateModal.subscribe((data: {name: string, eventName: string}) => {
       this.toggleModal(true, data.name, data.eventName);
     });
+
+    this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
+    });
   }
 
   navigateToPreviousPage() {
@@ -73,8 +77,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, extra?) {
-    const cdata = [{id: _.get(this.groupData, 'id'), type : 'group'}] ;
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], _.get(this.groupData, 'id'));
   }
 
   toggleModal(visibility = false, name?: string, eventName?: string) {
@@ -143,7 +146,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.addTelemetry('confirm-delete-group', {status: 'inactive', prev_status: _.get(this.groupData, 'status')});
+        this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')});
         this.toasterService.success(this.resourceService.messages.smsg.m002);
         this.navigateToPreviousPage();
       }, err => {
@@ -155,10 +158,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deActivateGroup() {
     this.groupService.deActivateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.addTelemetry('confirm-deactivate-group', {status: 'suspended', prev_status: _.get(this.groupData, 'status')});
+      this.addTelemetry('confirm-deactivate-group', {status: 'suspended', prevstatus: _.get(this.groupData, 'status')});
       this.toasterService.success(this.resourceService.frmelmnts.msg.deactivategrpsuccess);
       this.showLoader = false;
-      this.updateEvent.emit();
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, GroupEntityStatus.SUSPENDED);
+      this.groupService.emitUpdateEvent(GroupEntityStatus.SUSPENDED);
     }, err => {
       this.addTelemetry('confirm-deactivate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;
@@ -168,10 +172,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   activateGroup() {
     this.groupService.activateGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.addTelemetry('confirm-activate-group', {status: 'active', prev_status: _.get(this.groupData, 'status')});
+      this.addTelemetry('confirm-activate-group', {status: 'active', prevstatus: _.get(this.groupData, 'status')});
       this.toasterService.success(this.resourceService.frmelmnts.msg.activategrpsuccess);
       this.showLoader = false;
-      this.updateEvent.emit();
+      this.groupData.active = this.groupService.updateGroupStatus(this.groupData, GroupEntityStatus.ACTIVE);
+      this.groupService.emitUpdateEvent(GroupEntityStatus.ACTIVE);
     }, err => {
       this.addTelemetry('confirm-activate-group', {status: _.get(this.groupData, 'status')});
       this.showLoader = false;

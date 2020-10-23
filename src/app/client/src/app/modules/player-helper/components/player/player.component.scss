@@ -76,7 +76,7 @@
     padding:0; 
     overflow:hidden; 
     z-index:9999;
-    height: calc(100% - 50px) !important;
+    height: calc(100% - 104px) !important;
 } 
 
 .contentViewerIframeShadow {
@@ -91,4 +91,11 @@
   right: calculateRem(16px);
   top: calculateRem(48px);
   cursor: pointer;
+}
+
+::ng-deep{
+  iframe {
+    width: 100%;
+    height: 100% !important;
+  }
 }
