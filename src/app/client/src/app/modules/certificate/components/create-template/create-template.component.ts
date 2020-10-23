@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { MockData } from './create-template.component.spec.data';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
