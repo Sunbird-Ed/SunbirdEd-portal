@@ -83,16 +83,16 @@ describe('SearchService', () => {
         expect(data[1].count).toEqual('1 COURSE');
        }));
 
-       it('should assign filters.contentType as Course', inject([SearchService],
+       it('should assign filters.primaryCategory as Course', inject([SearchService],
         (service: SearchService) => {
         const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['Course']);
-        expect(data.filters.contentType[0]).toEqual('Course');
+        expect(data.filters.primaryCategory[0]).toEqual('Course');
        }));
 
-       it('should assign filters.contentType as TextBook', inject([SearchService],
+       it('should assign filters.primaryCategory as TextBook', inject([SearchService],
         (service: SearchService) => {
         const data = service.getSearchRequest({filters: {}, isCustodianOrg: false, channelId: '123', frameworkId: '123456'}, ['TextBook']);
-        expect(data.filters.contentType).toEqual(['TextBook']);
+        expect(data.filters.primaryCategory).toEqual(['TextBook']);
        }));
        it('should call the updateFacetsData with facets value board', () => {
         const searchService = TestBed.get(SearchService);
@@ -131,10 +131,10 @@ describe('SearchService', () => {
        });
        it('should call the updateFacetsData with facets value contentType', () => {
         const searchService = TestBed.get(SearchService);
-        const facets = [{name: 'contentType'}];
+        const facets = [{name: 'primaryCategory'}];
         const lbl = undefined;
-        const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'contentType', index: '6', label: lbl, placeholder: lbl}]);
+        const obj = searchService.updateFacetsData(facets);
+        expect(obj).toEqual([{name: 'primaryCategory', index: '6', label: lbl, placeholder: lbl}]);
        });
        it('should call the getSubjectsStyles', () => {
         const searchService = TestBed.get(SearchService);

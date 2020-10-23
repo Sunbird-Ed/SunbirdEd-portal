@@ -165,7 +165,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
-        filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         if (this.queryParams.key) {

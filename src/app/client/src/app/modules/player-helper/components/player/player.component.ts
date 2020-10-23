@@ -37,7 +37,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
-
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};

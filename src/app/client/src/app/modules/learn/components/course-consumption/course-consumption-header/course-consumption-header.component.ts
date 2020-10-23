@@ -59,6 +59,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   // courseCreator = false;
   isTrackable = false;
   viewDashboard = false;
+  tocId;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -86,6 +87,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
+        this.tocId = params.textbook;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -263,9 +265,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }
   }
 
-  goBack() {
+  async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
     this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (this.tocId) {
+      const navigateUrl = this.userService.loggedIn ? '/resources/play/content' : '/play/collection';
+      this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
+    }
     if (!previousPageUrl) {
       this.router.navigate(['/learn']);
       return;
