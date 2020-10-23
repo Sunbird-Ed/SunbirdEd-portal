@@ -2,15 +2,17 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { LearnRoutingModule } from './learn-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
- import { SharedModule } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
-import { LearnPageComponent, CoursePageComponent } from './components';
+import { CoursePageComponent } from './components';
 import { CoreModule } from '@sunbird/core';
-import {SharedFeatureModule} from '@sunbird/shared-feature';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import {
+  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+  SuiRatingModule, SuiCollapseModule
+} from 'ng2-semantic-ui';
 
 @NgModule({
   imports: [
@@ -27,6 +29,6 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     SuiRatingModule, SuiCollapseModule,
   ],
   providers: [],
-  declarations: [LearnPageComponent, CoursePageComponent]
+  declarations: [CoursePageComponent]
 })
 export class LearnModule { }

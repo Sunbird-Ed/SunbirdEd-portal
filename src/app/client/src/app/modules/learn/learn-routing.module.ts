@@ -1,4 +1,4 @@
-import { LearnPageComponent, CoursePageComponent } from './components';
+import { CoursePageComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';

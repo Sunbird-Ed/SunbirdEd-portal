@@ -1,5 +1,4 @@
 import { CurriculumCoursesComponent } from './components';
-// import { ResourceComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ViewAllComponent } from '@sunbird/content-search';

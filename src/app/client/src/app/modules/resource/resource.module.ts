@@ -1,7 +1,7 @@
 import { ResourceRoutingModule } from './resource-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResourceComponent, CurriculumCoursesComponent } from './components';
+import { CurriculumCoursesComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
@@ -27,7 +27,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     CommonConsumptionModule,
     ContentSearchModule
   ],
-  declarations: [ResourceComponent, CurriculumCoursesComponent]
+  declarations: [CurriculumCoursesComponent]
 })
 export class ResourceModule {
   }
