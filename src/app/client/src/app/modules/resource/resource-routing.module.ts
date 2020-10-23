@@ -6,7 +6,7 @@ import {ViewAllComponent} from '@sunbird/content-search';
 const telemetryEnv = 'library';
 const routes: Routes = [
   {
-    path: '', component: ResourceComponent,
+    path: '', loadChildren: './../public/module/explore/explore.module#ExploreModule',
     data: {
       routeReuse: {
         reuse: true,

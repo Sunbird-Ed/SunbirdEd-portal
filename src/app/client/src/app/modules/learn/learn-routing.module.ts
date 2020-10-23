@@ -8,7 +8,7 @@ const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
   {
-    path: '', component: LearnPageComponent,
+    path: '', loadChildren: '../public/module/course/course.module#CourseModule',
     data: {
       routeReuse: {
         reuse: true,

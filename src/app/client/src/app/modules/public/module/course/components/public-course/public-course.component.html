@@ -1,38 +1,45 @@
-<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" 
-[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
-  <div [ngClass]="FIRST_PANEL_LAYOUT">
-    <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
-                              *ngIf="initFilters" (filterChange)="getFilters($event)">
-    </app-global-search-filter>
+  <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
+    [appTelemetryImpression]="telemetryImpression" *ngIf="subscription$| async">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+        *ngIf="initFilters" (filterChange)="getFilters($event)">
+      </app-global-search-filter>
 
-  </div>
+    </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
-  <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-    <div class="ui grid relative9">
-      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
-                                         *ngIf="initFilters && facets && layoutConfiguration"
-                                         (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        <div class="ui grid relative9">
+          <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+            *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)">
+          </app-global-search-selected-filter>
 
-      <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
-        [ngClass]="{'last mb-0':last}">
-        <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
-          (viewAll)="viewAll($event)"></app-page-section>
-      </div>
-      <div class="twelve wide column" *ngIf="showLoader">
-        <app-loader [data]='loaderMessage'></app-loader>
-      </div>
-      <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
-        <app-no-result [data]="noResultMessage"></app-no-result>
+          <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn()">
+            <app-page-section [hideProgress]="true"
+              (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)"
+              (viewAll)="viewAll($event)"></app-page-section>
+          </div>
+
+          <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
+            [ngClass]="{'last mb-0':last, 'relative9': !isUserLoggedIn()}">
+            <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration"
+              (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
+          </div>
+          <div class="twelve wide column" *ngIf="showLoader">
+            <app-loader [data]='loaderMessage'></app-loader>
+          </div>
+          <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-</div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
+  appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal && !isUserLoggedIn()">
 
   <!--Header-->
   <div class="sb-modal-header">
@@ -55,3 +62,5 @@
   </div>
   <!--/Actions-->
 </sui-modal>
+<app-batch-info *ngIf="showBatchInfo && isUserLoggedIn()" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false">
+</app-batch-info>

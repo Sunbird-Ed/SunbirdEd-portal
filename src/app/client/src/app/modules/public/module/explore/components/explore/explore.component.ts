@@ -259,7 +259,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.getInteractEdata(telemetryData);
         if (this.isUserLoggedIn()) {
-            this.playerService.playContent(event);
+            this.playerService.playContent(event.data);
         } else {
             this.publicPlayerService.playContent(event);
         }

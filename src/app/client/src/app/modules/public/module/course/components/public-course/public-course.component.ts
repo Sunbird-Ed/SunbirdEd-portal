@@ -1,5 +1,8 @@
-import { combineLatest, Subject, of, Observable } from 'rxjs';
-import { PageApiService, OrgDetailsService, FormService, UserService } from '@sunbird/core';
+import { combineLatest, Subject, of, merge, throwError, Observable, forkJoin } from 'rxjs';
+import {
+  PageApiService, OrgDetailsService, FormService, UserService, CoursesService, FrameworkService,
+  PlayerService
+} from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse,
@@ -9,8 +12,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { PublicPlayerService } from './../../../../services';
-import { takeUntil, map, mergeMap, first, filter, catchError } from 'rxjs/operators';
+import { PublicPlayerService } from '../../../../services';
+import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './public-course.component.html'
@@ -22,20 +25,15 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
   public carouselMasterData: Array<ICaraouselData> = [];
-  public filterType: string;
   public queryParams: any;
   public hashTagId: string;
   public unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
-  public sortIntractEdata: IInteractEventEdata;
-  public dataDrivenFilters: any = {};
-  public dataDrivenFilterEvent = new EventEmitter();
   public frameWorkName: string;
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
-  public toUseFrameWorkData = false;
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
@@ -46,13 +44,36 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public facets;
   public facetsList: any;
   public selectedFilters;
-  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
-  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
+  public subscription$;
+  public enrolledCourses: Array<any>;
+  public enrolledSection: any;
+  public selectedCourseBatches: any;
+  public showBatchInfo = false;
+  private myCoursesSearchQuery = JSON.stringify({
+    'request': {
+      'filters': {
+        'contentType': [
+          'Course'
+        ],
+        'objectType': [
+          'Content'
+        ],
+        'status': [
+          'Live'
+        ]
+      },
+      'sort_by': {
+        'lastPublishedOn': 'desc'
+      },
+      'limit': 10,
+      'organisationId': _.get(this.userService.userProfile, 'organisationIds')
+    }
+  });
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
-    && this.pageSections.length < this.carouselMasterData.length) {
-        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      && this.pageSections.length < this.carouselMasterData.length) {
+      this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
@@ -60,43 +81,187 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
+    private frameworkService: FrameworkService, private playerService: PlayerService) {
     this.router.onSameUrlNavigation = 'reload';
-    this.filterType = this.configService.appConfig.exploreCourse.filterType;
     this.setTelemetryData();
   }
 
+  public isUserLoggedIn(): boolean {
+    return this.userService && (this.userService.loggedIn || false);
+  }
+
+  private initialize() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.setNoResultMessage();
+    if (this.isUserLoggedIn()) {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  private getQueryParams() {
+    const { params, queryParams } = this.activatedRoute;
+    return combineLatest(params, queryParams)
+      .pipe(
+        map(([params = {}, queryParams = {}]) => ({ params, queryParams })),
+        filter(({ queryParams }) => !_.isEqual(this.queryParams, queryParams)),
+        tap(({ queryParams }) => {
+          this.queryParams = { ...queryParams };
+        })
+      )
+  }
+
+  private searchOrgDetails({ filters, fields }) {
+    return this.orgDetailsService.searchOrgDetails({ filters, fields })
+      .pipe(
+        pluck('content')
+      );
+  }
+
+  private getOrgDetails() {
+    return this.orgDetailsService.getOrgDetails(this.userService.slug)
+      .pipe(
+        tap(orgDetails => {
+          this.hashTagId = orgDetails && orgDetails['hashTagId'];
+        })
+      )
+  }
+
   ngOnInit() {
-   this.initLayout();
-    combineLatest(
-      this.orgDetailsService.getOrgDetails(this.userService.slug),
-      this.getFrameWork(),
-      this.getFormData()
-    ).pipe(
-      mergeMap((data: any) => {
-        this.hashTagId = data[0].hashTagId;
-        // TODO change the slug to 'Igot'
-        if (this.userService.slug === this.slugForProminentFilter) {
-          this.toUseFrameWorkData = true;
-        }
-        if (data[1]) {
-          this.initFilters = true;
-          this.frameWorkName = data[1];
+    this.initialize();
+    const observables = [this.getOrgDetails(), this.getFrameWork(), this.getFormData(), this.getQueryParams(),
+    ...(this.isUserLoggedIn() ? [this.fetchEnrolledCoursesSection(), this.getLanguageChange()] : [])];
+    this.subscription$ = merge(this.initLayout(), combineLatest(...observables)
+      .pipe(
+        switchMap(_ => {
+          this.showLoader = true;
+          this.carouselMasterData = [];
+          this.pageSections = [];
+          return this.buildOption()
+            .pipe(
+              mergeMap(this.fetchPageData.bind(this))
+            )
+        }),
+        catchError(err => {
+          console.log(err);
+          this.toasterService.error(this.resourceService.messages.fmsg.m0002);
+          this.router.navigate(['']);
           return of({});
-          // return this.dataDrivenFilterEvent;
-        } else {
-          return of({});
-        }
-      }), first()
-    ).subscribe((filters: any) => {
-        this.dataDrivenFilters = filters;
-        this.fetchContentOnParamChange();
-        this.setNoResultMessage();
-      },
-      error => {
-        this.router.navigate(['']);
+        })))
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+  }
+
+  private buildOption() {
+    let hashTagId;
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+      if (_.includes(['appliedFilters', ...(this.isUserLoggedIn() ? ['sort_by', 'sortType'] : ['selectedTab'])], key)) {
+        return false;
       }
-    );
+      return value.length;
+    });
+    if (this.isUserLoggedIn()) {
+      hashTagId = this.userService.hashTagId;
+      const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+      if (this.userService._isCustodianUser && orgDetailsFromSlug) {
+        hashTagId = _.get(orgDetailsFromSlug, 'hashTagId');
+      }
+      filters = _.omit(filters, 'selectedTab');
+    } else {
+      hashTagId = this.hashTagId || '*';
+      filters = _.omit(filters, ['utm_source']);
+    }
+
+    const option = {
+      source: 'web',
+      name: 'Course',
+      organisationId: hashTagId || '*',
+      filters,
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      params: _.get(this.configService, 'appConfig.CoursePageSection.contentApiQueryParams'),
+      ...(!this.isUserLoggedIn() && {
+        params: _.get(this.configService, 'appConfig.ExplorePage.contentApiQueryParams'),
+        fields: _.get(currentPageData, 'search.fields') || _.get(this.configService, 'urlConFig.params.CourseSearchField'),
+      })
+    };
+
+    const userType = localStorage.getItem('userType');
+    if (userType) {
+      const userTypeMapping = _.get(this.configService, 'appConfig.userTypeMapping');
+      if (_.has(userTypeMapping, userType)) {
+        option['filters']['audience'] = userTypeMapping[userType];
+      }
+    }
+    if (!this.isUserLoggedIn()) {
+      return of(option);
+    } else {
+      const usersProfile = this.userService.userProfile;
+      const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+      const getCourseSection = this.coursesService.getCourseSectionDetails();
+      return forkJoin([custodianOrgDetails, getCourseSection])
+        .pipe(
+          map(result => {
+            if (_.get(usersProfile, 'rootOrg.rootOrgId') !== _.get(result[0], 'result.response.value')) {
+              if (_.get(result[1], 'result.response.value')) {
+                const sectionId = _.get(result[1], 'result.response.value');
+                option['sections'] = {};
+                option['sections'][sectionId] = {
+                  'filters': {
+                    'batches.createdFor': [_.get(usersProfile, 'rootOrg.rootOrgId')]
+                  }
+                };
+              }
+            }
+            return option;
+          }));
+    }
+  }
+
+  private fetchPageData(option: object) {
+    return this.pageApiService.getPageData(option)
+      .pipe(
+        mergeMap(data => {
+          let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
+          const rootOrgIds = this.processOrgData(facetsList.channel);
+          return this.searchOrgDetails({
+            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+            fields: ['slug', 'identifier', 'orgName']
+          }).pipe(
+            tap(orgDetails => {
+              this.showLoader = false;
+              this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+              facetsList.channel = orgDetails;
+              facetsList = this.utilService.removeDuplicate(facetsList);
+              this.facets = this.updateFacetsData(facetsList);
+              this.getFilters({ filters: this.selectedFilters });
+              this.initFilters = true;
+              if (!this.carouselMasterData.length) {
+                return;
+              }
+              if (_.get(this.enrolledSection, 'contents.length')) {
+                this.pageSections = [this.carouselMasterData[0]];
+              }
+              else if (!_.get(this.enrolledSection, 'contents.length') && this.carouselMasterData.length >= 2) {
+                this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+              } else if (this.carouselMasterData.length >= 1) {
+                this.pageSections = [this.carouselMasterData[0]];
+              }
+            }))
+        }),
+        tap(null, err => {
+          this.showLoader = false;
+          this.carouselMasterData = [];
+          this.pageSections = [];
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+        })
+      );
   }
 
   getFormData() {
@@ -105,53 +270,54 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       formAction: 'menubar',
       contentType: 'global'
     };
-    return this.formService.getFormConfig(formServiceInputParams).pipe(map((data: any) => {
-      _.forEach(data, (value, key) => {
-        if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
-          this.pageTitle = _.get(this.resourceService, value.title);
-          this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+value.title;
-          this.svgToDisplay = _.get(value, 'theme.imageName');
-        } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
-          if (value.contentType === 'course') {
-            this.pageTitle = _.get(this.resourceService, value.title);
-            this.svgToDisplay = _.get(value, 'theme.imageName');
-          }
-        }
-      });
-      this.formData = data;
-      return data;
-    }), catchError((error) => {
-      return of(false);
-    }));
+    return this.formService.getFormConfig(formServiceInputParams)
+      .pipe(
+        map((data: any) => {
+          _.forEach(data, value => {
+            const { contentType, title, theme: { imageName = undefined } = {} } = value;
+            if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === contentType) {
+              this.pageTitle = _.get(this.resourceService, title);
+              this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT + title;
+              this.svgToDisplay = imageName;
+            } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
+              if (contentType === 'course') {
+                this.pageTitle = _.get(this.resourceService, title);
+                this.svgToDisplay = imageName;
+              }
+            }
+          });
+          this.formData = data;
+          return data;
+        }));
   }
-    initLayout() {
-      this.layoutConfiguration = this.layoutService.initlayoutConfig();
-      this.redoLayout();
-      this.layoutService.switchableLayout().
-          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+  private initLayout() {
+    return this.layoutService.switchableLayout()
+      .pipe(
+        tap((layoutConfig: { layout: object }) => {
           if (layoutConfig != null) {
             this.layoutConfiguration = layoutConfig.layout;
           }
           this.redoLayout();
-        });
+        })
+      )
+  }
+  private redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
-    redoLayout() {
-        if (this.layoutConfiguration != null) {
-          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-        } else {
-          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-        }
-    }
+  }
 
   public getFilters(filters) {
     const filterData = filters && filters.filters || {};
     if (filterData.channel && this.facets) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(filterData.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'identifier': value});
+        const data = _.find(facetsData.values, { 'identifier': value });
         if (data) {
           channelIds.push(data.name);
         }
@@ -162,39 +328,42 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element && element.code === 'board') {
-          collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
-        }
-        return collector;
-      }, {});
-    this.dataDrivenFilterEvent.emit(defaultFilters);
+      if (element && element.code === 'board') {
+        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      }
+      return collector;
+    }, {});
   }
   private getFrameWork() {
-      const formServiceInputParams = {
-        formType: 'framework',
-        formAction: 'search',
-        contentType: 'framework-code',
-      };
-      return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
-        .pipe(map((data: ServerResponse) => {
-            const frameWork = _.find(data, 'framework').framework;
-            return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
-  }
-  private fetchContentOnParamChange() {
-    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(map((result) => ({params: result[0], queryParams: result[1]})),
-        filter(({queryParams}) => !_.isEqual(this.queryParams, queryParams)), // fetch data if queryParams changed
-        takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
-        this.showLoader = true;
-        this.queryParams = { ...queryParams };
-        this.carouselMasterData = [];
-        this.pageSections = [];
-        this.fetchPageData();
-      });
+    if (this.isUserLoggedIn()) {
+      const framework = this.frameworkService.getDefaultCourseFramework();
+      if (framework) {
+        return framework.pipe(
+          tap(framework => {
+            this.frameWorkName = framework as string;
+            this.initFilters = true;
+          })
+        )
+      } else {
+        return throwError({});
+      }
+    }
+    const formServiceInputParams = {
+      formType: 'framework',
+      formAction: 'search',
+      contentType: 'framework-code',
+    };
+    return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
+      .pipe(
+        map((data: ServerResponse) => {
+          const framework = _.find(data, 'framework');
+          if (framework) {
+            this.initFilters = true;
+            this.frameWorkName = _.get(framework, 'framework');
+          }
+          return framework
+        })
+      );
   }
 
   public getPageData(data) {
@@ -203,15 +372,15 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private prepareCarouselData(sections = []) {
     const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePage;
-      const carouselData = _.reduce(sections, (collector, element) => {
-        const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
-        element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-        if (element.contents && element.contents.length) {
-          collector.push(element);
-        }
-        return collector;
-      }, []);
-      return carouselData;
+    const carouselData = _.reduce(sections, (collector, element) => {
+      const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
+      element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+      if (element.contents && element.contents.length) {
+        collector.push(element);
+      }
+      return collector;
+    }, []);
+    return carouselData;
   }
   public prepareVisits(event) {
     _.forEach(event, (inView, index) => {
@@ -229,7 +398,29 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.publicPlayerService.playContent(event);
+    if (!this.isUserLoggedIn()) {
+      this.publicPlayerService.playContent(event);
+    } else {
+      const { section, data } = event;
+      const { metaData } = data;
+      if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
+        return this.playerService.playContent(metaData);
+      }
+
+      const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+        this.coursesService.findEnrolledCourses(metaData.identifier);
+
+      if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+        return this.playerService.playContent(metaData);
+      }
+
+      if (onGoingBatchCount === 1) { // play course if only one open batch is present
+        metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+        return this.playerService.playContent(metaData);
+      }
+      this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+      this.showBatchInfo = true;
+    }
   }
 
   processOrgData(channels) {
@@ -242,94 +433,25 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     return rootOrgIds;
   }
 
-  private fetchPageData() {
-    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-      if (key === 'appliedFilters' || key === 'selectedTab') {
-        return false;
-      }
-      return value.length;
-    });
-    filters = _.omit(filters, ['utm_source']);
-    if (localStorage.getItem('userType')) {
-      const userType = localStorage.getItem('userType');
-      const userTypeMapping = this.configService.appConfig.userTypeMapping;
-      _.map(userTypeMapping, (value, key) => {
-        if (userType === key) {
-          filters['audience'] = value;
-        }
-      });
-    }
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
-    const option = {
-      source: 'web',
-      name: 'Course',
-      organisationId: this.hashTagId || '*',
-      filters: filters,
-      fields: _.get(currentPageData, 'search.fields') || this.configService.urlConFig.params.CourseSearchField,
-      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
-      // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
-      // mode: 'soft',
-      // exists: [],
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams
-    };
-    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
-      const rootOrgIds = this.processOrgData(facetsList.channel);
-      this.orgDetailsService.searchOrgDetails({
-        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
-        fields: ['slug', 'identifier', 'orgName']
-      }).subscribe((orgDetails) => {
-        this.showLoader = false;
-        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        facetsList.channel = _.get(orgDetails, 'content');
-        facetsList = this.utilService.removeDuplicate(facetsList);
-        this.facets = this.updateFacetsData(facetsList);
-        this.getFilters({filters: this.selectedFilters});
-        this.initFilters = true;
-        if (!this.carouselMasterData.length) {
-          return; // no page section
-        }
-        if (this.carouselMasterData.length >= 2) {
-          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-        } else if (this.carouselMasterData.length >= 1) {
-          this.pageSections = [this.carouselMasterData[0]];
-        }
-      }, err => {
-        this.showLoader = false;
-        this.carouselMasterData = [];
-        this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-      });
-    }, err => {
-      this.showLoader = false;
-      this.carouselMasterData = [];
-      this.pageSections = [];
-      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
-  }
-
   public viewAll(event) {
-    const searchQuery = JSON.parse(event.searchQuery);
+    const searchQuery = _.get(event, 'searchQuery') ? JSON.parse(event.searchQuery) : JSON.parse(this.myCoursesSearchQuery);
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {
-        searchQueryParams.dynamic = JSON.stringify({[key]: value});
+        searchQueryParams.dynamic = JSON.stringify({ [key]: value });
       } else {
         searchQueryParams[key] = value;
       }
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
-    // searchQuery.request.filters.channel = this.hashTagId;
-    // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams);
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-    const queryParams = { ...searchQueryParams, ...this.queryParams};
+    const queryParams = { ...searchQueryParams, ...this.queryParams };
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
-    this.router.navigate([sectionUrl, 1], {queryParams: queryParams});
+    this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryData();
     });
@@ -346,15 +468,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
+        uri: this.isUserLoggedIn() ? this.router.url : this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         duration: this.navigationhelperService.getPageLoadTime()
       }
-    };
-    this.sortIntractEdata = {
-      id: 'sort',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
   private setNoResultMessage() {
@@ -363,7 +480,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       'messageText': 'messages.stmsg.m0006'
     };
   }
-
   updateFacetsData(facets) {
     const facetsData = [];
     _.forEach(facets, (facet, key) => {
@@ -448,5 +564,46 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     return facetsData;
+  }
+
+  private fetchEnrolledCoursesSection() {
+    return this.coursesService.enrolledCourseData$
+      .pipe(
+        map(({ enrolledCourses, err }) => {
+          this.enrolledCourses = _.orderBy(enrolledCourses, ['enrolledDate'], ['desc']);
+          const enrolledSection = {
+            name: _.get(this.resourceService, 'frmelmnts.lbl.mytrainings'),
+            length: 0,
+            count: 0,
+            contents: []
+          };
+          if (err) {
+            return enrolledSection;
+          }
+          const { constantData, metaData, dynamicFields, slickSize } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
+          enrolledSection.contents = _.map(this.enrolledCourses, content => {
+            const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+            formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+            formatedContent.metaData.contentType = 'Course';
+            const trackableObj = _.get(content, 'content.trackable');
+            if (trackableObj) {
+              formatedContent.metaData.trackable = trackableObj;
+            }
+            return formatedContent;
+          });
+          enrolledSection.count = enrolledSection.contents.length;
+          return this.enrolledSection = enrolledSection;
+        }));
+  }
+
+  private getLanguageChange() {
+    return this.resourceService.languageSelected$
+      .pipe(
+        tap(selectedLanguage => {
+          if (_.get(this.enrolledSection, 'name')) {
+            this.enrolledSection.name = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
+          }
+        })
+      )
   }
 }
