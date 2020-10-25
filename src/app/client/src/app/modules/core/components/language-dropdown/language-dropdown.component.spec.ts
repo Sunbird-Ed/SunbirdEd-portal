@@ -77,9 +77,10 @@ describe('LanguageDropdownComponent', () => {
         const route = TestBed.get(Router);
         route.navigate(['learn?selectedTab=course'])
         .then(() => {
-        const result = component.getTelemetryInteractEdata('en');
-        expect(result).toEqual({id: 'en-lang', type: 'click', pageid: 'learn'});
-      });
+            spyOn(component, 'getTelemetryInteractEdata');
+            const result = component.getTelemetryInteractEdata('en');
+            expect(result).toEqual({id: 'en-lang', type: 'click', pageid: 'learn'});
+        });
     });
 });
 
