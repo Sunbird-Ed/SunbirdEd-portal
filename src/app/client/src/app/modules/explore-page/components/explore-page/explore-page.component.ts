@@ -139,7 +139,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         return result;
                     }));
         } else {
-            if (this.userService.slug) {
+            if (this.userService.slug) {    
                 return this.orgDetailsService.getOrgDetails(this.userService.slug)
                     .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
             } else {
@@ -191,7 +191,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     };
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
-                    }
+                    }   
                     const option = this.searchService.getSearchRequest(request, primaryCategory);
                     return this.searchService.contentSearch(option).pipe(
                         map((response) => {
@@ -342,9 +342,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             object: {}
         };
         this.getInteractEdata(telemetryData);
-        if (event.data.contents.length === 1) {
+        if (get(event, 'data.contents.length') === 1) {
             if (!this.isUserLoggedIn()) {
-                this.router.navigate(['explore-course/course', get(event.data, 'contents[0].identifier')]);
+                this.router.navigate(['explore-course/course', get(event, 'data.contents[0].identifier')]);
             } else {
                 const metaData = pick(event.data.contents[0], ['identifier', 'mimeType', 'framework', 'contentType']);
                 const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
