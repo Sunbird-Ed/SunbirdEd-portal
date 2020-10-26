@@ -47,7 +47,7 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit event with name: delete " when param is delete', () => {
-    component.modalName = 'delete';
+    component.name = 'delete';
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
@@ -58,7 +58,7 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit event with name: deActivate " when param is delete', () => {
-    component.modalName = 'deActivate';
+    component.name = 'deActivate';
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
@@ -69,7 +69,7 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit event with name: activate " when param is delete', () => {
-    component.modalName = 'activate';
+    component.name = 'activate';
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
@@ -80,7 +80,7 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit empty event "', () => {
-    component.modalName = 'delete';
+    component.name = 'delete';
     component.modal = {
       deny: jasmine.createSpy('deny')
     };
@@ -91,13 +91,14 @@ describe('PopupComponent', () => {
   });
 
   it ('should "emit handleGroupTnc event "', () => {
-    component.groupData = groupData;
+    component.tncModal = {
+      deny: jasmine.createSpy('deny')
+    };
     component.type = acceptTnc.GROUP;
     spyOn(component.handleGroupTnc, 'emit');
-    spyOn(component, 'closeModal');
     component.acceptGroupTnc();
-    expect(component.handleGroupTnc.emit).toHaveBeenCalledWith({type: acceptTnc.GROUP, data: groupData});
-    expect(component.closeModal).toHaveBeenCalled();
+    expect(component.handleGroupTnc.emit).toHaveBeenCalledWith({type: acceptTnc.GROUP});
+    expect(component.tncModal.deny).toHaveBeenCalled();
   });
 
   it ('should "emit handleGroupTnc event  and close Modal"', () => {

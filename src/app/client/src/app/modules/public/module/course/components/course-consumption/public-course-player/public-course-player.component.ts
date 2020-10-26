@@ -68,7 +68,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       .subscribe(courseHierarchy => {
         this.loader = false;
         this.courseHierarchy = courseHierarchy;
-        this.isExpandedAll = this.courseHierarchy.children && this.courseHierarchy.children.length === 1 ? true : false;
+        this.isExpandedAll = this.courseHierarchy.children && this.courseHierarchy.children.length === 1 ? true : undefined;
         this.parseChildContent();
         this.collectionTreeNodes = { data: this.courseHierarchy };
         this.getGeneraliseResourceBundle();

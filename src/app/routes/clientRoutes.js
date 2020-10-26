@@ -101,7 +101,7 @@ module.exports = (app, keycloak) => {
 
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
+  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussions',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*'], 
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -157,6 +157,7 @@ function getLocals(req) {
     locals.sessionId = null
     locals.userSid = null;
   }
+  locals.userName = _.get(req, 'session.userName') || null;
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language

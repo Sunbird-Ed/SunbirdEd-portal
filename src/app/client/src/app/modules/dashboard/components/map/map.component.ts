@@ -1,12 +1,12 @@
 import { ToasterService } from '@sunbird/shared';
 import { ReportService } from '../../services';
 import { IGeoJSON, ICustomMapObj, Properties, IInputMapData } from '../../interfaces';
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Map } from 'leaflet';
-import { of, throwError, iif, zip, BehaviorSubject, Subscription } from 'rxjs';
+import { of, throwError, zip, BehaviorSubject } from 'rxjs';
 import { mergeMap, map, retry, catchError, skipWhile, pluck, tap } from 'rxjs/operators';
 import * as mappingConfig from '../../config/nameToCodeMapping.json';
-import { cloneDeep, toLower, find, random, pick } from 'lodash-es';
+import { cloneDeep, toLower, find, random, groupBy, reduce } from 'lodash-es';
 
 
 declare var L;
@@ -48,8 +48,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   };
 
   private __mapData = {
-    folder: 'geoJSON-sample',
-    strict: false
+    folder: 'geoJSONFiles',
+    strict: true
   };
 
   private __options = Object.assign(this.__defaultConfig);
@@ -91,7 +91,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map = L && L.map(this.mapId).setView(initialCoordinate, initialZoomLevel);
     this.geoJSONRootLayer = this.map && this.getLayer().addTo(this.map);
     const maxBounds = L && L.latLngBounds([latBounds, lonBounds]);
-    if(this.map){
+    if (this.map) {
       this.map.setMaxBounds(maxBounds);
       this.map.fitBounds(maxBounds);
     }
@@ -205,19 +205,25 @@ export class MapComponent implements OnInit, AfterViewInit {
    */
   private addProperties({ reportData = [], layers = [], labelExpr = 'District', type = 'district', features = [], metrics = [] }) {
     const filteredFeatures = [];
+    const datasets = groupBy(reportData || [], data => toLower(data[labelExpr]));
     layers.forEach(layer => {
       const recordFromConfigMapping = this.findRecordInConfigMapping({ type, name: layer });
-      const recordFromExternalJSON = find(reportData || [], data => toLower(data[labelExpr]) === toLower(layer));
+      const dataset = datasets.hasOwnProperty(toLower(layer)) && datasets[toLower(layer)];
       const featureObj = features.find(feature => {
         const { properties = {} } = feature;
-        return recordFromConfigMapping && properties.code === recordFromConfigMapping.code;
+        return recordFromConfigMapping && +properties.code === +recordFromConfigMapping.code;
       });
-      if (!recordFromConfigMapping || !recordFromExternalJSON || !featureObj) { return; }
+      if (!recordFromConfigMapping || !dataset || !featureObj) { return; }
       featureObj['metaData'] = { name: layer };
-      const metricsObject = pick(recordFromExternalJSON, metrics);
+      const result = reduce(dataset, (accumulator, value) => {
+        metrics.forEach(metric => {
+          accumulator[metric] = (accumulator[metric] || 0) + (+value[metric]);
+        });
+        return accumulator;
+      }, {});
       featureObj.properties = {
         ...(featureObj.properties || {}),
-        ...metricsObject
+        ...(result || {})
       };
       filteredFeatures.push(featureObj);
     });
@@ -243,11 +249,11 @@ export class MapComponent implements OnInit, AfterViewInit {
           .pipe(
             map(([geoJSONData, reportData]) => {
               const { type, features = [] } = cloneDeep(geoJSONData) as IGeoJSON;
-              const filteredFeatures = [];
+              let filteredFeatures;
               if (country && states.length) {
-                filteredFeatures.concat(this.addProperties({ reportData, layers: states, labelExpr, type: 'state', features, metrics }));
+                filteredFeatures = this.addProperties({ reportData, layers: states, labelExpr, type: 'state', features, metrics });
               } else {
-                filteredFeatures.concat(this.addProperties({ reportData, layers: districts, labelExpr, type: 'district', features, metrics }));
+                filteredFeatures = this.addProperties({ reportData, layers: districts, labelExpr, type: 'district', features, metrics });
               }
               return { type, features: strict ? filteredFeatures : features };
             })
@@ -287,7 +293,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getGeoJSONFile({ folder = 'geoJSON-sample', fileName }: Record<string, string>) {
+  private getGeoJSONFile({ folder = 'geoJSONFiles', fileName }: Record<string, string>) {
     return this.reportService.fetchDataSource(`/reports/fetch/${folder}/${fileName}`)
       .pipe(
         pluck('result'),

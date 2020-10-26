@@ -168,5 +168,17 @@ describe('PublicCoursePlayerComponent', () => {
     expect(returnVal).toBe(component.isExpandedAll);
   });
 
+  it('should expand first as more than one child present', () => {
+    component.isExpandedAll = undefined;
+    const returnVal = component.isExpanded(0);
+    expect(returnVal).toBe(true);
+  });
+
+  it('should not expand second as more than one child present', () => {
+    component.isExpandedAll = undefined;
+    const returnVal = component.isExpanded(1);
+    expect(returnVal).toBe(false);
+  });
+
 
 });
