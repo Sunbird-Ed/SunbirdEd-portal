@@ -114,4 +114,9 @@ describe('DataDrivenFilterComponent', () => {
     component.removeFilterSelection('subject', 'English');
     expect(component.formInputData.subject).toEqual([]);
   });
+  it('should call ngOnChanges', () => {
+    spyOn(component, 'ngOnChanges');
+    component.ngOnChanges();
+    expect(component.ngOnChanges).toHaveBeenCalled();
+  });
 });
