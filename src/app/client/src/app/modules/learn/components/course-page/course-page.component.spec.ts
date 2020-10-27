@@ -2,7 +2,7 @@ import { CoursePageComponent } from '././course-page.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService, LayoutService } from '@sunbird/shared';
-import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService } from '@sunbird/core';
+import { PageApiService, OrgDetailsService, CoreModule, FormService, UserService, CoursesService, SearchService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -17,7 +17,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 describe('CoursePageComponent', () => {
     let component: CoursePageComponent;
     let fixture: ComponentFixture<CoursePageComponent>;
-    let toasterService, formService, pageApiService, orgDetailsService, cacheService, utilService, coursesService;
+    let toasterService, formService, pageApiService, orgDetailsService, cacheService, utilService, coursesService, searchService;
     const mockPageSection: Array<any> = Response.successData.result.response.sections;
     let sendOrgDetails = true;
     let sendPageApi = true;
@@ -93,6 +93,7 @@ describe('CoursePageComponent', () => {
         utilService = TestBed.get(UtilService);
         cacheService = TestBed.get(CacheService);
         coursesService = TestBed.get(CoursesService);
+        searchService = TestBed.get(SearchService);
         activatedRouteStub = TestBed.get(ActivatedRoute);
         sendOrgDetails = true;
         sendPageApi = true;
@@ -416,6 +417,26 @@ describe('CoursePageComponent', () => {
             .subscribe(res => {
                 expect(pageApiService.getPageData).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
+                expect(component.facets).toBeDefined();
+                expect(component.initFilters).toBeTruthy();
+                expect(component.carouselMasterData).toBeDefined();
+                done();
+            });
+    });
+
+    it('should fetch page Data based on search API', done => {
+        spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+        spyOn<any>(component, 'searchOrgDetails').and.callThrough();
+        spyOn<any>(component, 'processOrgData').and.callFake(function() {return {}})
+        spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
+        spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
+        spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
+        spyOn(component, 'isPageAssemble').and.returnValue(false);
+        component['fetchCourses'](Response.buildOptionRespForFetchCourse)
+            .subscribe(res => {
+                expect(searchService.contentSearch).toHaveBeenCalled();
+                expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
+                expect(utilService.processCourseFacetData).toHaveBeenCalledWith(Response.courseSectionsResponse, ['channel', 'gradeLevel', 'subject', 'medium']);
                 expect(component.facets).toBeDefined();
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();

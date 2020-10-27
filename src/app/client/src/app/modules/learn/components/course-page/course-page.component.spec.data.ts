@@ -1168,26 +1168,116 @@ export const Response = {
     'organisationId': '*',
     'filters': {},
     'facets': [
-        'channel',
-        'gradeLevel',
-        'subject',
-        'medium'
+      'channel',
+      'gradeLevel',
+      'subject',
+      'medium'
     ],
     'params': {
-        'orgdetails': 'orgName,email'
+      'orgdetails': 'orgName,email'
     },
     'fields': [
-        'name',
-        'appIcon',
-        'medium',
-        'subject',
-        'resourceType',
-        'contentType',
-        'organisation',
-        'topic',
-        'mimeType',
-        'trackable',
-        'gradeLevel'
+      'name',
+      'appIcon',
+      'medium',
+      'subject',
+      'resourceType',
+      'contentType',
+      'organisation',
+      'topic',
+      'mimeType',
+      'trackable',
+      'gradeLevel'
     ]
-}
+  },
+  buildOptionRespForFetchCourse: {
+    'source': 'web',
+    'name': 'Course',
+    'organisationId': '*',
+    'filters': {},
+    'facets': [
+      'channel',
+      'gradeLevel',
+      'subject',
+      'medium'
+    ],
+    'params': {
+      'orgdetails': 'orgName,email'
+    },
+    'fields': [
+      'name',
+      'appIcon',
+      'medium',
+      'subject',
+      'resourceType',
+      'contentType',
+      'organisation',
+      'topic',
+      'mimeType',
+      'trackable',
+      'gradeLevel'
+    ],
+    'search': {
+      'filters': {
+        'contentType': 'Course'
+      }
+    }
+  },
+  courseSectionsFacet: {
+    'board': [
+      { 'name': 'class 10', 'count': 84 },
+      { 'name': 'class 1', 'count': 313 }
+    ]
+  },
+  courseSectionsResponse: {
+    'sections': {
+      'facets': [
+        {
+          'name': 'gradeLevel',
+          'values': [
+            { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+          ]
+        },
+        {
+          'name': 'board',
+          'values': [
+            { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+          ]
+        },
+        {
+          'name': 'subject',
+          'values': [
+            { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+          ]
+        }
+      ]
+    }
+  },
+  contentSearchResponse: {
+    'id': 'api',
+    'result': {
+      'sections': {
+        'facets': [
+          {
+            'name': 'gradeLevel',
+            'values': [
+              { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+            ]
+          },
+          {
+            'name': 'board',
+            'values': [
+              { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+            ]
+          },
+          {
+            'name': 'subject',
+            'values': [
+              { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+            ]
+          }
+        ]
+      }
+    }
+  }
 };
