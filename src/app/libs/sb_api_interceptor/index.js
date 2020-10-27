@@ -6,6 +6,7 @@
 
 var keyCloakAuthUtils = require('keycloak-auth-utils');
 const jwt = require('jsonwebtoken');
+const NodeRSA = require('node-rsa');
 const fs = require('fs');
 const kidToPublicKeyMap = {};
 const Token = require('keycloak-auth-utils/lib/token.js');
@@ -34,7 +35,13 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         console.error("invalid jwt token - 401");
         return cb("INVALID_JWT");
     }
-    const publicKey = kidToPublicKeyMap[decoded.header.kid];
+    var publicKey = kidToPublicKeyMap[decoded.header.kid];
+
+    // Converting single line public key to PEM format. 
+    // JWT.verify methos is expecting the publick key in pem format only
+    var key = new NodeRSA(publicKey, 'public');
+    publicKey = key.exportKey('public');
+
     if(!publicKey){
         console.error("invalid kid - 401");
         return cb("INVALID_KID");
