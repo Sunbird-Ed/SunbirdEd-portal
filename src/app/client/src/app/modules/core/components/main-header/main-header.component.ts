@@ -602,6 +602,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   manageLocation() {
+    this.showLocationPopup = false;
     this.tenantService.tenantData$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       /* istanbul ignore else*/
       if (_.get(data, 'tenantData')) {
