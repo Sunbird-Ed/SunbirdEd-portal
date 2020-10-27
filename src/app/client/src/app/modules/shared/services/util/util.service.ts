@@ -344,4 +344,31 @@ export class UtilService {
     return processedData;
   }
 
+  processCourseFacetData(sections, keys) {
+    const facetObj = {};
+    if (sections && sections.facets) {
+      _.forEach(sections.facets, (facet) => {
+        if (_.indexOf(keys, facet.name) > -1) {
+          if (facetObj[facet.name]) {
+            facetObj[facet.name].push(...facet.values);
+          } else {
+            facetObj[facet.name] = [];
+            facetObj[facet.name].push(...facet.values);
+          }
+        }
+      });
+    }
+    return facetObj;
+  }
+
+  generateCourseFilters () {
+    return {
+      objectType: 'Content',
+      contentType: 'Course',
+      status: ['Live'],
+      'batches.enrollmentType': 'open',
+      'batches.status': 1,
+      audience: ['Student', 'Teacher']
+    }
+  }
 }

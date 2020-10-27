@@ -24,8 +24,11 @@
 
           <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
             [ngClass]="{'last mb-0':last, 'relative9': !isUserLoggedIn()}">
-            <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration"
-              (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section>
+            <!-- <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration"
+              (playEvent)="playContent($event)" [section]="section" (viewAll)="viewAll($event)"></app-page-section> -->
+              <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [title]="section.name"
+                [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="4" (cardClick)="playContent($event)">
+              </sb-library-cards-grid>
           </div>
           <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>

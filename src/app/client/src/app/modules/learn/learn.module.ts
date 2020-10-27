@@ -9,6 +9,8 @@ import { CoursePageComponent } from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule
@@ -26,7 +28,7 @@ import {
     SharedFeatureModule,
     ContentSearchModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
+    SuiRatingModule, SuiCollapseModule, CommonConsumptionModule
   ],
   providers: [],
   declarations: [CoursePageComponent]

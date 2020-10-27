@@ -1,7 +1,7 @@
 import { combineLatest, Subject, of, merge, throwError, Observable, forkJoin } from 'rxjs';
 import {
   PageApiService, OrgDetailsService, FormService, UserService, CoursesService, FrameworkService,
-  PlayerService
+  PlayerService, SearchService
 } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
@@ -69,6 +69,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       'organisationId': _.get(this.userService.userProfile, 'organisationIds')
     }
   });
+  _courseSearchResponse: any;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -82,7 +83,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
-    private frameworkService: FrameworkService, private playerService: PlayerService) {
+    private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService) {
     this.router.onSameUrlNavigation = 'reload';
     this.setTelemetryData();
   }
@@ -142,6 +143,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           this.showLoader = true;
           this.carouselMasterData = [];
           this.pageSections = [];
+          this._courseSearchResponse = {};
           return this.buildOption()
             .pipe(
               mergeMap(this.fetchPageData.bind(this))
@@ -224,44 +226,140 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /**
+   * @param  {object} option    - Page data options
+   * @description fetchPageData - Function to get course page sections using assemble API
+   * - This function is dependent on the flag `isPageAssemble` from form read API
+   * - Executed iff `isPageAssemble` flag is set to `true`
+   * - Courses are displayed based on section returned from assemble API
+   */
   private fetchPageData(option: object) {
-    return this.pageApiService.getPageData(option)
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    if (_.get(currentPageData, 'isPageAssemblez')) {
+      return this.pageApiService.getPageData(option)
+        .pipe(
+          mergeMap(data => {
+            let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
+            const rootOrgIds = this.processOrgData(facetsList.channel);
+            return this.searchOrgDetails({
+              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              fields: ['slug', 'identifier', 'orgName']
+            }).pipe(
+              tap(orgDetails => {
+                this.showLoader = false;
+                this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+                facetsList.channel = orgDetails;
+                facetsList = this.utilService.removeDuplicate(facetsList);
+                this.facets = this.updateFacetsData(facetsList);
+                this.getFilters({ filters: this.selectedFilters });
+                this.initFilters = true;
+                if (!this.carouselMasterData.length) {
+                  return;
+                }
+                if (_.get(this.enrolledSection, 'contents.length')) {
+                  this.pageSections = [this.carouselMasterData[0]];
+                }
+                else if (!_.get(this.enrolledSection, 'contents.length') && this.carouselMasterData.length >= 2) {
+                  this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+                } else if (this.carouselMasterData.length >= 1) {
+                  this.pageSections = [this.carouselMasterData[0]];
+                }
+              }))
+          }),
+          tap(null, err => {
+            this.showLoader = false;
+            this.carouselMasterData = [];
+            this.pageSections = [];
+            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          })
+        );
+    } else {
+      return this.fetchCourses(currentPageData);
+    }
+  }
+
+  /**
+   * @param  {Object} currentPageData - Current course page data options
+   * @description fetchCourses        - Function to fetch courses using content search API
+   * - This function is dependent on the flag `isPageAssemble` from form read API
+   * - Executed iff `isPageAssemble` flag is set to `false`
+   * - Courses are displayed based on subject and sorted alphabetically
+   */
+  private fetchCourses(currentPageData) {
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+      if (key === 'appliedFilters' || key === 'selectedTab') {
+        return false;
+      }
+      return value.length;
+    });
+    filters = _.omit(filters, ['utm_source']);
+    filters['contentType'] = currentPageData.search.filters.contentType;
+    const option = {
+      source: 'web',
+      name: 'Course',
+      limit: 100,
+      filters: this.utilService.generateCourseFilters(),
+      exists: ['batches.batchId'],
+      sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
+      organisationId: this.hashTagId || '*',
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      fields: this.configService.urlConFig.params.CourseSearchField
+    };
+    return this.searchService.contentSearch(option)
       .pipe(
+        map((response) => {
+          this._courseSearchResponse = response;
+          const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
+          for (const [key, value] of Object.entries(filteredContents)) {
+            const isMultipleSubjects = key.split(',').length > 1;
+            if (isMultipleSubjects) {
+              const subjects = key.split(',');
+              subjects.forEach((subject) => {
+                if (filteredContents[subject]) {
+                  filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                } else {
+                  filteredContents[subject] = value;
+                }
+              });
+              delete filteredContents[key];
+            }
+          }
+          const sections = [];
+          for (const section in filteredContents) {
+            if (section) {
+              sections.push({
+                name: section,
+                contents: filteredContents[section]
+              });
+            }
+          }
+          return _.map(sections, (section) => {
+            _.forEach(section.contents, contents => {
+              contents.cardImg = contents.appIcon || 'assets/images/book.png';
+            });
+            return section;
+          });
+        }),
         mergeMap(data => {
-          let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
+          let facetsList: any = this.utilService.processCourseFacetData(_.get(this._courseSearchResponse, 'result'), option.facets);
           const rootOrgIds = this.processOrgData(facetsList.channel);
-          return this.searchOrgDetails({
+          return this.orgDetailsService.searchOrgDetails({
             filters: { isRootOrg: true, rootOrgId: rootOrgIds },
             fields: ['slug', 'identifier', 'orgName']
-          }).pipe(
-            tap(orgDetails => {
-              this.showLoader = false;
-              this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-              facetsList.channel = orgDetails;
-              facetsList = this.utilService.removeDuplicate(facetsList);
-              this.facets = this.updateFacetsData(facetsList);
-              this.getFilters({ filters: this.selectedFilters });
-              this.initFilters = true;
-              if (!this.carouselMasterData.length) {
-                return;
-              }
-              if (_.get(this.enrolledSection, 'contents.length')) {
-                this.pageSections = [this.carouselMasterData[0]];
-              }
-              else if (!_.get(this.enrolledSection, 'contents.length') && this.carouselMasterData.length >= 2) {
-                this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-              } else if (this.carouselMasterData.length >= 1) {
-                this.pageSections = [this.carouselMasterData[0]];
-              }
-            }))
-        }),
-        tap(null, err => {
-          this.showLoader = false;
-          this.carouselMasterData = [];
-          this.pageSections = [];
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        })
-      );
+          }).pipe(tap((orgDetails) => {
+            this.showLoader = false;
+            facetsList.channel = _.get(orgDetails, 'content');
+            facetsList = this.utilService.removeDuplicate(facetsList);
+            this.facets = this.updateFacetsData(facetsList);
+            this.getFilters({ filters: this.selectedFilters });
+            this.initFilters = true;
+            this.carouselMasterData = _.sortBy(data, ['name']);
+            if (!this.carouselMasterData.length) {
+              return; // no page section
+            }
+            this.pageSections = this.carouselMasterData.slice(0, 4);
+          }))
+        }));
   }
 
   getFormData() {
