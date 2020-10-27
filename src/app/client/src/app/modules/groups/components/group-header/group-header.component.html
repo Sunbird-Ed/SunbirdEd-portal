@@ -67,8 +67,7 @@
   </div>
 </div>
 
-<app-modal *ngIf="showModal" [showGroupActionsModal]="showModal" [modalTitle]="modalTitle" [modalMsg]="modalMsg" [modalName]="modalName" [groupData]="groupData"
-(handleEvent)="handleEvent($event)"></app-modal>
+<app-modal *ngIf="showModal" [title]="title" [msg]="msg" [name]="name" (handleEvent)="handleEvent($event)"></app-modal>
 
 
 <app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"

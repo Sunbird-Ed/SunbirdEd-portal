@@ -13,6 +13,7 @@ import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
+import * as dayjs from 'dayjs';
 
 /**
  * This component shows the course progress dashboard
@@ -26,8 +27,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   modelChanged: Subject<string> = new Subject<string>();
 
   @ViewChild(OnDemandReportsComponent)
-  private onDemandReports: OnDemandReportsComponent;
-
+  public onDemandReports: OnDemandReportsComponent;
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.
    */
@@ -186,7 +186,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   userConsent;
   reportTypes = [];
   userRoles;
-  selectedTab = 1;
+  selectedTab = 2;
   /**
 	 * Constructor to create injected service(s) object
    * @param {UserService} user Reference of UserService
@@ -284,6 +284,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.currentBatch = batch;
+    // this.currentBatch.lastUpdatedOn = dayjs(this.currentBatch.lastUpdatedOn).format('DD-MMM-YYYY hh:mm a');
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
@@ -358,7 +359,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
         this.currentBatch.participantCount = this.getFieldValue(metrics, 'enrolment');
-        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete')
+        this.currentBatch.completedCount = this.getFieldValue(metrics, 'complete');
+        this.currentBatch.lastUpdatedOn = _.get(result, 'lastUpdatedOn') || '';
       }
     }, error => {
       this.stateWiseReportData = [
@@ -608,12 +610,17 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    * Load on demand reports
    */
   loadOndemandReports(tabNumber) {
-    this.setInteractEventDataForTabs('on-demand-reports');
-    this.selectedTab = tabNumber;
-    if (_.isEmpty(this.reportTypes)) {
-      this.getFormData();
+    this.getSummaryReports();
+    setTimeout(()=> {
+      if(this.onDemandReports) {
+      this.setInteractEventDataForTabs('on-demand-reports');
+      this.selectedTab = tabNumber;
+      if (_.isEmpty(this.reportTypes)) {
+        this.getFormData();
+      }
+      this.onDemandReports.loadReports(this.currentBatch)
     }
-    this.onDemandReports.loadReports(this.currentBatch);
+      }, 500);
   }
 
   ngAfterViewInit() {
