@@ -411,6 +411,7 @@ describe('CoursePageComponent', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
+        spyOn(component, 'isPageAssemble').and.returnValue(true);
         component['fetchPageData'](Response.buildOptionRespForNonLoggedInUser)
             .subscribe(res => {
                 expect(pageApiService.getPageData).toHaveBeenCalled();

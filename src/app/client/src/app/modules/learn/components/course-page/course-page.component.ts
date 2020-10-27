@@ -179,6 +179,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   private buildOption() {
     let hashTagId;
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    this.isPageAssemble = _.get(currentPageData, 'isPageAssemble');
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['appliedFilters', ...(this.isUserLoggedIn() ? ['sort_by', 'sortType'] : ['selectedTab'])], key)) {
         return false;
@@ -243,9 +244,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
    * - Courses are displayed based on section returned from assemble API
    */
   private fetchPageData(option: object) {
-    this.isPageAssemble = true;
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    this.isPageAssemble = _.get(currentPageData, 'isPageAssemble');
     if (this.isPageAssemble) {
       if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
         option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };

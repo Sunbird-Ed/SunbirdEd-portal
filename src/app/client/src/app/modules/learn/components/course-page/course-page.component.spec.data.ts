@@ -1186,7 +1186,8 @@ export const Response = {
         'organisation',
         'topic',
         'mimeType',
-        'trackable'
+        'trackable',
+        'gradeLevel'
     ]
 }
 };
