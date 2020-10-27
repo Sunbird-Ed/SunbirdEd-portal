@@ -86,7 +86,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.channelId = channelId;
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
-                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, this.defaultFilters.board[0]);
+                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
                     this.initFilter = true;
@@ -139,7 +139,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         return result;
                     }));
         } else {
-            if (this.userService.slug) {    
+            if (this.userService.slug) {
                 return this.orgDetailsService.getOrgDetails(this.userService.slug)
                     .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
             } else {
@@ -191,53 +191,54 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     };
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
-                    }   
+                    }
                     const option = this.searchService.getSearchRequest(request, primaryCategory);
-                    return this.searchService.contentSearch(option).pipe(
-                        map((response) => {
-                            const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
-                            for (const [key, value] of Object.entries(filteredContents)) {
-                                const isMultipleSubjects = key.split(',').length > 1;
-                                if (isMultipleSubjects) {
-                                    const subjects = key.split(',');
-                                    subjects.forEach((subject) => {
-                                        if (filteredContents[subject]) {
-                                            filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-                                        } else {
-                                            filteredContents[subject] = value;
-                                        }
-                                    });
-                                    delete filteredContents[key];
+                    return this.searchService.contentSearch(option)
+                        .pipe(
+                            map((response) => {
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
+                                for (const [key, value] of Object.entries(filteredContents)) {
+                                    const isMultipleSubjects = key.split(',').length > 1;
+                                    if (isMultipleSubjects) {
+                                        const subjects = key.split(',');
+                                        subjects.forEach((subject) => {
+                                            if (filteredContents[subject]) {
+                                                filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                            } else {
+                                                filteredContents[subject] = value;
+                                            }
+                                        });
+                                        delete filteredContents[key];
+                                    }
                                 }
-                            }
-                            const sections = [];
-                            for (const section in filteredContents) {
-                                if (section) {
-                                    sections.push({
-                                        name: section,
-                                        contents: filteredContents[section]
-                                    });
+                                const sections = [];
+                                for (const section in filteredContents) {
+                                    if (section) {
+                                        sections.push({
+                                            name: section,
+                                            contents: filteredContents[section]
+                                        });
+                                    }
                                 }
-                            }
-                            return _map(sections, (section) => {
-                                forEach(section.contents, contents => {
-                                    contents.cardImg = contents.appIcon || 'assets/images/book.png';
+                                return _map(sections, (section) => {
+                                    forEach(section.contents, contents => {
+                                        contents.cardImg = contents.appIcon || 'assets/images/book.png';
+                                    });
+                                    return section;
                                 });
-                                return section;
-                            });
-                        }), tap(data => {
-                            this.showLoader = false;
-                            this.apiContentList = sortBy(data, ['name']);
-                            if (!this.apiContentList.length) {
-                                return;
-                            }
-                            this.pageSections = this.apiContentList.slice(0, 4);
-                        }, err => {
-                            this.showLoader = false;
-                            this.apiContentList = [];
-                            this.pageSections = [];
-                            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-                        }))
+                            }), tap(data => {
+                                this.showLoader = false;
+                                this.apiContentList = sortBy(data, ['name']);
+                                if (!this.apiContentList.length) {
+                                    return;
+                                }
+                                this.pageSections = this.apiContentList.slice(0, 4);
+                            }, err => {
+                                this.showLoader = false;
+                                this.apiContentList = [];
+                                this.pageSections = [];
+                                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+                            }))
                 })
             )
     }
@@ -300,9 +301,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private setNoResultMessage() {
         return this.resourceService.languageSelected$.pipe(
             tap(item => {
-                const { key, selectedTab } = this.activatedRoute.snapshot.queryParams;
+                const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
                 let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-                    desktop: { yourSearch, notMatchContent } } = get(this.resourceService, 'frmelmnts.lbl');
+                    desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
                 if (key) {
                     const title_part1 = replace(yourSearch, '{key}', key);
                     const title_part2 = notMatchContent;

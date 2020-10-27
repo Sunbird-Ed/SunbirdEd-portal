@@ -49,6 +49,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public enrolledSection: any;
   public selectedCourseBatches: any;
   public showBatchInfo = false;
+  public dataDrivenFilterEvent = new EventEmitter();
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
       'filters': {
@@ -135,9 +136,13 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.initialize();
+    this.subscription$ = this.mergeObservables();
+  }
+
+  private mergeObservables() {
     const observables = [this.getOrgDetails(), this.getFrameWork(), this.getFormData(), this.getQueryParams(),
     ...(this.isUserLoggedIn() ? [this.fetchEnrolledCoursesSection(), this.getLanguageChange()] : [])];
-    this.subscription$ = merge(this.initLayout(), combineLatest(...observables)
+    return merge(this.initLayout(), combineLatest(...observables)
       .pipe(
         switchMap(_ => {
           this.showLoader = true;
@@ -222,7 +227,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private fetchPageData(option: object) {
 
-    if (this.queryParams.sort_by && this.isUserLoggedIn()) {
+    if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
       option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
     }
 
@@ -243,15 +248,15 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               this.facets = this.updateFacetsData(facetsList);
               this.getFilters({ filters: this.selectedFilters });
               this.initFilters = true;
-              if (!this.carouselMasterData.length) {
+              if (!_.get(this.carouselMasterData, 'length')) {
                 return;
               }
               if (_.get(this.enrolledSection, 'contents.length')) {
                 this.pageSections = [this.carouselMasterData[0]];
               }
-              else if (!_.get(this.enrolledSection, 'contents.length') && this.carouselMasterData.length >= 2) {
+              else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
                 this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-              } else if (this.carouselMasterData.length >= 1) {
+              } else if (_.get(this.carouselMasterData, 'length') >= 1) {
                 this.pageSections = [this.carouselMasterData[0]];
               }
             }))
@@ -334,6 +339,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return collector;
     }, {});
+    this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
     if (this.isUserLoggedIn()) {
@@ -457,10 +463,14 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
-    this.cacheService.set('viewAllQuery', searchQueryParams);
+    if (this.isUserLoggedIn()) {
+      this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
+    } else {
+      this.cacheService.set('viewAllQuery', searchQueryParams);
+    }
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams };
-    const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
+    const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
 
