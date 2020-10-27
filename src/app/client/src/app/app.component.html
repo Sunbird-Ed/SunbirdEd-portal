@@ -4,9 +4,6 @@
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
   </app-tnc-popup>
-  <div class="mb-16" *ngIf="showGlobalConsentPopUpSection">
-    <app-global-consent-pii [type]="globalConsent" [showConsentPopup]="showConsentPopup" (close)="closeConsentPopUp()" [consentConfig]="{ tncLink: '', tncText: resourceService.frmelmnts.lbl.nonCustodianTC }"></app-global-consent-pii>
-  </div>
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
   <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
 [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
