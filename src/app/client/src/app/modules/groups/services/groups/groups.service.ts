@@ -2,8 +2,9 @@ import { combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
 import { EventEmitter, Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
-import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest, CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
-  // CsGroupUpdateGroupGuidelinesRequest
+import { CsGroupAddActivitiesRequest, CsGroupRemoveActivitiesRequest,
+CsGroupSearchCriteria, CsGroupUpdateActivitiesRequest, CsGroupUpdateMembersRequest,
+  CsGroupUpdateGroupGuidelinesRequest
 } from '@project-sunbird/client-services/services/group/interface';
 import { UserService, LearnerService, TncService } from '@sunbird/core';
 import { NavigationHelperService, ResourceService, ConfigService } from '@sunbird/shared';
@@ -332,7 +333,7 @@ getActivity(groupId, activity, mergeGroup) {
       });
   }
 
-  // updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {
-  // return this.groupCservice.updateGroupGuidelines(request);
-  // }
+  updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {
+  return this.groupCservice.updateGroupGuidelines(request);
+  }
 }
