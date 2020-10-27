@@ -14,18 +14,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
-import { GlobalConsentPiiComponent } from './components/global-consent-pii/global-consent-pii.component';
-import { CsModule } from '@project-sunbird/client-services';
-import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
-export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
-  if (!CsModule.instance.isInitialised) {
-    csLibInitializerService.initializeCs();
-  }
-  return CsModule.instance.userService;
-};
 @NgModule({
   imports: [
     CommonModule,
@@ -41,20 +32,17 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     PlayerHelperModule,
     CommonConsumptionModule
   ],
-  providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent,
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
-     CollectionPlayerComponent
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent,
-     ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent]
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent]
 })
 export class SharedFeatureModule { }

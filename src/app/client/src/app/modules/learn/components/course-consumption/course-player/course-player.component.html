@@ -172,7 +172,7 @@
 
         <!-- Consent to share PII  -->
         <div class="mb-16" *ngIf="showDataSettingSection">
-          <app-global-consent-pii [collection]="courseHierarchy" [type]="courseConsent" [consentConfig]="consentConfig"></app-global-consent-pii>
+          <app-consent-pii [collection]="courseHierarchy"></app-consent-pii>
         </div>
 
         <!-- Credits & License information -->
