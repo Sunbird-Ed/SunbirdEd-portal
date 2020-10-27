@@ -236,11 +236,81 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   private fetchPageData(option: object) {
 
-    if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
-      option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    if (_.get(currentPageData, 'isPageAssemble')) {
+      if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
+        option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
+      }
+  
+      return this.pageApiService.getPageData(option)
+        .pipe(
+          mergeMap(data => {
+            let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
+            const rootOrgIds = this.processOrgData(facetsList.channel);
+            return this.searchOrgDetails({
+              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              fields: ['slug', 'identifier', 'orgName']
+            }).pipe(
+              tap(orgDetails => {
+                this.showLoader = false;
+                this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+                facetsList.channel = orgDetails;
+                facetsList = this.utilService.removeDuplicate(facetsList);
+                this.facets = this.updateFacetsData(facetsList);
+                this.getFilters({ filters: this.selectedFilters });
+                this.initFilters = true;
+                if (!_.get(this.carouselMasterData, 'length')) {
+                  return;
+                }
+                if (_.get(this.enrolledSection, 'contents.length')) {
+                  this.pageSections = [this.carouselMasterData[0]];
+                } else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
+                  this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+                } else if (_.get(this.carouselMasterData, 'length') >= 1) {
+                  this.pageSections = [this.carouselMasterData[0]];
+                }
+              }));
+          }),
+          tap(null, err => {
+            this.showLoader = false;
+            this.carouselMasterData = [];
+            this.pageSections = [];
+            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          })
+        );
+    } else {
+      return this.fetchCourses(currentPageData);
     }
+  }
 
-    return this.pageApiService.getPageData(option)
+  /**
+   * @param  {Object} currentPageData - Current course page data options
+   * @description fetchCourses        - Function to fetch courses using content search API
+   * - This function is dependent on the flag `isPageAssemble` from form read API
+   * - Executed iff `isPageAssemble` flag is set to `false`
+   * - Courses are displayed based on subject and sorted alphabetically
+   */
+  private fetchCourses(currentPageData) {
+    let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+      if (key === 'appliedFilters' || key === 'selectedTab') {
+        return false;
+      }
+      return value.length;
+    });
+    filters = _.omit(filters, ['utm_source']);
+    filters['contentType'] = currentPageData.search.filters.contentType;
+    const option = {
+      source: 'web',
+      name: 'Course',
+      limit: 100,
+      filters: this.utilService.generateCourseFilters(),
+      exists: ['batches.batchId'],
+      sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
+      organisationId: this.hashTagId || '*',
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      fields: this.configService.urlConFig.params.CourseSearchField
+    };
+    return this.searchService.contentSearch(option)
       .pipe(
         map((response) => {
           this._courseSearchResponse = response;
@@ -281,34 +351,20 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.orgDetailsService.searchOrgDetails({
             filters: { isRootOrg: true, rootOrgId: rootOrgIds },
             fields: ['slug', 'identifier', 'orgName']
-          }).pipe(
-            tap(orgDetails => {
-              this.showLoader = false;
-              this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-              facetsList.channel = orgDetails;
-              facetsList = this.utilService.removeDuplicate(facetsList);
-              this.facets = this.updateFacetsData(facetsList);
-              this.getFilters({ filters: this.selectedFilters });
-              this.initFilters = true;
-              if (!_.get(this.carouselMasterData, 'length')) {
-                return;
-              }
-              if (_.get(this.enrolledSection, 'contents.length')) {
-                this.pageSections = [this.carouselMasterData[0]];
-              } else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
-                this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-              } else if (_.get(this.carouselMasterData, 'length') >= 1) {
-                this.pageSections = [this.carouselMasterData[0]];
-              }
-            }));
-        }),
-        tap(null, err => {
-          this.showLoader = false;
-          this.carouselMasterData = [];
-          this.pageSections = [];
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        })
-      );
+          }).pipe(tap((orgDetails) => {
+            this.showLoader = false;
+            facetsList.channel = _.get(orgDetails, 'content');
+            facetsList = this.utilService.removeDuplicate(facetsList);
+            this.facets = this.updateFacetsData(facetsList);
+            this.getFilters({ filters: this.selectedFilters });
+            this.initFilters = true;
+            this.carouselMasterData = _.sortBy(data, ['name']);
+            if (!this.carouselMasterData.length) {
+              return; // no page section
+            }
+            this.pageSections = this.carouselMasterData.slice(0, 4);
+          }))
+        }));
   }
 
   getFormData() {
