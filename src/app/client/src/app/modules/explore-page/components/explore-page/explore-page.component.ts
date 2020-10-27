@@ -64,7 +64,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private initConfiguration() {
         const { userProfile: { framework = null } = {} } = this.userService;
         const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
-        this.defaultFilters = { board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [], ...userFramework };
+        this.defaultFilters = {
+            board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
+            ...userFramework
+        };
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.redoLayout();
@@ -86,7 +89,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.channelId = channelId;
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
-                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, this.defaultFilters.board[0]);
+                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
                     this.initFilter = true;
@@ -94,7 +97,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.toasterService.error(get(this.resourceService, 'frmelmnts.lbl.fetchingContentFailed'));
                     this.navigationhelperService.goBack();
                 })
-            )
+            );
     }
 
     ngOnInit() {
@@ -102,7 +105,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.setNoResultMessage(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
-            )
+            );
     }
 
     initLayout() {
@@ -114,7 +117,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                     this.redoLayout();
                 })
-            )
+            );
     }
 
     redoLayout() {
@@ -132,7 +135,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.orgDetailsService.getCustodianOrgDetails()
                 .pipe(
                     map(custodianOrg => {
-                        let result = { channelId: this.userService.hashTagId, custodianOrg: false };
+                        const result = { channelId: this.userService.hashTagId, custodianOrg: false };
                         if (this.userService.hashTagId === get(custodianOrg, 'result.response.value')) {
                             result.custodianOrg = true;
                         }
@@ -193,53 +196,54 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         request.channelId = this.selectedFilters['channel'];
                     }
                     const option = this.searchService.getSearchRequest(request, primaryCategory);
-                    return this.searchService.contentSearch(option).pipe(
-                        map((response) => {
-                            const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
-                            for (const [key, value] of Object.entries(filteredContents)) {
-                                const isMultipleSubjects = key.split(',').length > 1;
-                                if (isMultipleSubjects) {
-                                    const subjects = key.split(',');
-                                    subjects.forEach((subject) => {
-                                        if (filteredContents[subject]) {
-                                            filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-                                        } else {
-                                            filteredContents[subject] = value;
-                                        }
-                                    });
-                                    delete filteredContents[key];
+                    return this.searchService.contentSearch(option)
+                        .pipe(
+                            map((response) => {
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
+                                for (const [key, value] of Object.entries(filteredContents)) {
+                                    const isMultipleSubjects = key.split(',').length > 1;
+                                    if (isMultipleSubjects) {
+                                        const subjects = key.split(',');
+                                        subjects.forEach((subject) => {
+                                            if (filteredContents[subject]) {
+                                                filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                            } else {
+                                                filteredContents[subject] = value;
+                                            }
+                                        });
+                                        delete filteredContents[key];
+                                    }
                                 }
-                            }
-                            const sections = [];
-                            for (const section in filteredContents) {
-                                if (section) {
-                                    sections.push({
-                                        name: section,
-                                        contents: filteredContents[section]
-                                    });
+                                const sections = [];
+                                for (const section in filteredContents) {
+                                    if (section) {
+                                        sections.push({
+                                            name: section,
+                                            contents: filteredContents[section]
+                                        });
+                                    }
                                 }
-                            }
-                            return _map(sections, (section) => {
-                                forEach(section.contents, contents => {
-                                    contents.cardImg = contents.appIcon || 'assets/images/book.png';
+                                return _map(sections, (section) => {
+                                    forEach(section.contents, contents => {
+                                        contents.cardImg = contents.appIcon || 'assets/images/book.png';
+                                    });
+                                    return section;
                                 });
-                                return section;
-                            });
-                        }), tap(data => {
-                            this.showLoader = false;
-                            this.apiContentList = sortBy(data, ['name']);
-                            if (!this.apiContentList.length) {
-                                return;
-                            }
-                            this.pageSections = this.apiContentList.slice(0, 4);
-                        }, err => {
-                            this.showLoader = false;
-                            this.apiContentList = [];
-                            this.pageSections = [];
-                            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-                        }))
+                            }), tap(data => {
+                                this.showLoader = false;
+                                this.apiContentList = sortBy(data, ['name']);
+                                if (!this.apiContentList.length) {
+                                    return;
+                                }
+                                this.pageSections = this.apiContentList.slice(0, 4);
+                            }, err => {
+                                this.showLoader = false;
+                                this.apiContentList = [];
+                                this.pageSections = [];
+                                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+                            }));
                 })
-            )
+            );
     }
 
     public playContent(event, sectionName) {
@@ -300,21 +304,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private setNoResultMessage() {
         return this.resourceService.languageSelected$.pipe(
             tap(item => {
-                const { key, selectedTab } = this.activatedRoute.snapshot.queryParams;
+                const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
                 let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-                    desktop: { yourSearch, notMatchContent } } = get(this.resourceService, 'frmelmnts.lbl');
+                    desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
                 if (key) {
                     const title_part1 = replace(yourSearch, '{key}', key);
                     const title_part2 = notMatchContent;
                     title = title_part1 + ' ' + title_part2;
                 } else if (selectedTab !== 'textbook') {
-                    title = noContentfoundTitle
+                    title = noContentfoundTitle;
                     subTitle = noContentfoundSubTitle;
                     buttonText = noContentfoundButtonText;
                 }
                 this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
             })
-        )
+        );
     }
 
     public navigateToExploreContent() {
@@ -326,7 +330,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 pageTitle: this.pageTitle,
                 softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
             })
-        }
+        };
         this.router.navigate([navigationUrl, 1], { queryParams });
     }
 
@@ -342,9 +346,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             object: {}
         };
         this.getInteractEdata(telemetryData);
-        if (event.data.contents.length === 1) {
+        if (get(event, 'data.contents.length') === 1) {
             if (!this.isUserLoggedIn()) {
-                this.router.navigate(['explore-course/course', get(event.data, 'contents[0].identifier')]);
+                this.router.navigate(['explore-course/course', get(event, 'data.contents[0].identifier')]);
             } else {
                 const metaData = pick(event.data.contents[0], ['identifier', 'mimeType', 'framework', 'contentType']);
                 const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
@@ -364,7 +368,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else {
             this.searchService.subjectThemeAndCourse = event.data;
-            let navigationUrl = this.isUserLoggedIn() ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
+            const navigationUrl = this.isUserLoggedIn() ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
             this.router.navigate([navigationUrl], {
                 queryParams: {
                     title: get(event, 'data.title')

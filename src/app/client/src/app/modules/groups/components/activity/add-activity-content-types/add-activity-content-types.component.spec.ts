@@ -117,7 +117,7 @@ describe('AddActivityContentTypesComponent', () => {
 
   });
 
-  it('Should fetch all the supported activities', () => {
+  xit('Should fetch all the supported activities', () => {
     /** Arrange */
     const groupService = TestBed.get(GroupsService);
     spyOn(groupService, 'getSupportedActivityList').and.returnValue(observableOf(AddActivityContentTypesData.listData));
@@ -160,7 +160,7 @@ describe('AddActivityContentTypesComponent', () => {
       pageIds: ['course', 'add-activity-to-group'],
       groupId: AddActivityContentTypesData.groupData.id,
       params: {
-        searchQuery: cardData.searchQuery,
+        searchQuery: JSON.parse(cardData.searchQuery),
         groupData: AddActivityContentTypesData.groupData,
         contentType: cardData.activityType
       }

@@ -122,7 +122,7 @@ describe('GroupHeaderComponent', () => {
     spyOn(component, 'assignModalStrings');
     component.toggleModal(true, 'deActivate');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('deActivate');
+    expect(component.name).toBe('deActivate');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deactivategrpques,
       resourceBundle.frmelmnts.msg.deactivategrpmsg);
   });
@@ -132,7 +132,7 @@ describe('GroupHeaderComponent', () => {
     component.groupData.name = 'group';
     component.toggleModal(true, 'delete');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('delete');
+    expect(component.name).toBe('delete');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deleteGroup,
       resourceBundle.messages.imsg.m0082, '{group name}');
   });
@@ -141,7 +141,7 @@ describe('GroupHeaderComponent', () => {
     spyOn(component, 'assignModalStrings');
     component.toggleModal(true, 'activate');
     expect(component.showModal).toBeTruthy();
-    expect(component.modalName).toBe('activate');
+    expect(component.name).toBe('activate');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.activategrpques,
       resourceBundle.frmelmnts.msg.activategrppopup);
   });
@@ -156,8 +156,8 @@ describe('GroupHeaderComponent', () => {
   it ('should assign modaltitle and modalmsg strings', () => {
     component.assignModalStrings(resourceBundle.frmelmnts.lbl.activategrpques,
       resourceBundle.frmelmnts.msg.activategrppopup);
-      expect(component.modalTitle).toEqual(resourceBundle.frmelmnts.lbl.activategrpques);
-      expect(component.modalMsg).toEqual(resourceBundle.frmelmnts.msg.activategrppopup);
+      expect(component.title).toEqual(resourceBundle.frmelmnts.lbl.activategrpques);
+      expect(component.msg).toEqual(resourceBundle.frmelmnts.msg.activategrppopup);
   });
 
   it('should call toggle modal and deleteGroupById', fakeAsync(() => {

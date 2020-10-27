@@ -169,6 +169,10 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       }
     };
 
+    if (!_.isEmpty(_.get(this.userService.userProfile, 'managedBy'))) {
+      userProfileUpdateRequest.request['userId'] = this.userService.userid;
+    }
+
     const groupUpdateRequest = {
       userId: this.userService.userid,
       groups: groupIds

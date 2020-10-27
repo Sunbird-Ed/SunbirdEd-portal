@@ -13,6 +13,10 @@ const logger            = require('@project-sunbird/logger');
 
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
+const ROLE = {
+  ORGADMIN : 'ORG_ADMIN',
+  SYSADMIN : 'SYSTEM_ADMINISTRATION'
+}
 
 /**
  * @description - Function to check whether
@@ -137,6 +141,35 @@ const urlChecks = {
       } else {
         return reject('Mismatch in user id verification. Session UserId [ ' + _sessionUserId +
           ' ] does not match with request body UserId [ ' + _reqUserId + ' ]');
+      }
+    } catch (error) {
+      return reject('User id validation failed.');
+    }
+  },
+  /**
+   * @param  {Callback} resolve      - Callback to `OWNER_CHECK` promise object
+   * @param  {Callback} reject       - Callback to `OWNER_CHECK` promise object
+   * @param  {Object} req            - API request object
+   * @param  {Object} ownerCheckObj  - `OWNER_CHECK` object
+   * @access Private
+   * @description - Function to check session userId is an admin if yes resolve or if 
+   *  the session userId is same as that of the request userId then also resolve
+   * @since - release-3.3.0
+   */
+  __adminCheck__userId: (resolve, reject, req, ownerCheckObj) => {
+    try {
+      const _sessionUserId = _.get(req, 'session.userId');
+      const _reqUserId = _.get(req, 'body.request.userId');
+      const _sessionRole = _.get(req, 'session.roles');
+      if(_sessionRole === ROLE.ORGADMIN || _sessionRole === ROLE.SYSADMIN){
+        resolve();
+      } else{
+        if (_sessionUserId === _reqUserId) {
+          resolve();
+        } else {
+          return reject('Mismatch in user id verification. Session UserId [ ' + _sessionUserId +
+            ' ] is not an admin or does not match with request body UserId [ ' + _reqUserId + ' ]');
+        }
       }
     } catch (error) {
       return reject('User id validation failed.');

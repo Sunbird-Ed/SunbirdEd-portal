@@ -35,8 +35,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   layoutConfiguration: any;
-  FIRST_PANEL_LAYOUT;
-  SECOND_PANEL_LAYOUT;
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
   pageTitle;
   pageTitleSrc;
   svgToDisplay;
@@ -49,6 +49,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   public enrolledSection: any;
   public selectedCourseBatches: any;
   public showBatchInfo = false;
+  public dataDrivenFilterEvent = new EventEmitter();
   private myCoursesSearchQuery = JSON.stringify({
     'request': {
       'filters': {
@@ -83,7 +84,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
     private frameworkService: FrameworkService, private playerService: PlayerService) {
-    this.router.onSameUrlNavigation = 'reload';
     this.setTelemetryData();
   }
 
@@ -101,6 +101,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         left: 0,
         behavior: 'smooth'
       });
+    } else {
+      this.router.onSameUrlNavigation = 'reload';
     }
   }
 
@@ -113,7 +115,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         tap(({ queryParams }) => {
           this.queryParams = { ...queryParams };
         })
-      )
+      );
   }
 
   private searchOrgDetails({ filters, fields }) {
@@ -129,14 +131,18 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         tap(orgDetails => {
           this.hashTagId = orgDetails && orgDetails['hashTagId'];
         })
-      )
+      );
   }
 
   ngOnInit() {
     this.initialize();
+    this.subscription$ = this.mergeObservables();
+  }
+
+  private mergeObservables() {
     const observables = [this.getOrgDetails(), this.getFrameWork(), this.getFormData(), this.getQueryParams(),
     ...(this.isUserLoggedIn() ? [this.fetchEnrolledCoursesSection(), this.getLanguageChange()] : [])];
-    this.subscription$ = merge(this.initLayout(), combineLatest(...observables)
+    return merge(this.initLayout(), combineLatest(...observables)
       .pipe(
         switchMap(_ => {
           this.showLoader = true;
@@ -145,17 +151,19 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.buildOption()
             .pipe(
               mergeMap(this.fetchPageData.bind(this))
-            )
+            );
         }),
         catchError(err => {
           console.log(err);
+          this.carouselMasterData = [];
+          this.pageSections = [];
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
           this.router.navigate(['']);
           return of({});
         })))
       .pipe(
         takeUntil(this.unsubscribe$)
-      )
+      );
   }
 
   private buildOption() {
@@ -192,13 +200,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     };
 
-    const userType = localStorage.getItem('userType');
-    if (userType) {
-      const userTypeMapping = _.get(this.configService, 'appConfig.userTypeMapping');
-      if (_.has(userTypeMapping, userType)) {
-        option['filters']['audience'] = userTypeMapping[userType];
-      }
-    }
     if (!this.isUserLoggedIn()) {
       return of(option);
     } else {
@@ -225,6 +226,11 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private fetchPageData(option: object) {
+
+    if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
+      option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
+    }
+
     return this.pageApiService.getPageData(option)
       .pipe(
         mergeMap(data => {
@@ -242,18 +248,17 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               this.facets = this.updateFacetsData(facetsList);
               this.getFilters({ filters: this.selectedFilters });
               this.initFilters = true;
-              if (!this.carouselMasterData.length) {
+              if (!_.get(this.carouselMasterData, 'length')) {
                 return;
               }
               if (_.get(this.enrolledSection, 'contents.length')) {
                 this.pageSections = [this.carouselMasterData[0]];
-              }
-              else if (!_.get(this.enrolledSection, 'contents.length') && this.carouselMasterData.length >= 2) {
+              } else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
                 this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-              } else if (this.carouselMasterData.length >= 1) {
+              } else if (_.get(this.carouselMasterData, 'length') >= 1) {
                 this.pageSections = [this.carouselMasterData[0]];
               }
-            }))
+            }));
         }),
         tap(null, err => {
           this.showLoader = false;
@@ -274,7 +279,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((data: any) => {
           _.forEach(data, value => {
-            const { contentType, title, theme: { imageName = undefined } = {} } = value;
+            const { contentType, title, theme: { imageName = null } = {} } = value;
             if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === contentType) {
               this.pageTitle = _.get(this.resourceService, title);
               this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT + title;
@@ -299,7 +304,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           this.redoLayout();
         })
-      )
+      );
   }
   private redoLayout() {
     if (this.layoutConfiguration != null) {
@@ -333,6 +338,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return collector;
     }, {});
+    this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
     if (this.isUserLoggedIn()) {
@@ -343,27 +349,28 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.frameWorkName = framework as string;
             this.initFilters = true;
           })
-        )
+        );
       } else {
         return throwError({});
       }
+    } else {
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
+        .pipe(
+          map((data: ServerResponse) => {
+            const framework = _.find(data, 'framework');
+            if (framework) {
+              this.initFilters = true;
+              this.frameWorkName = _.get(framework, 'framework');
+            }
+            return framework;
+          })
+        );
     }
-    const formServiceInputParams = {
-      formType: 'framework',
-      formAction: 'search',
-      contentType: 'framework-code',
-    };
-    return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
-      .pipe(
-        map((data: ServerResponse) => {
-          const framework = _.find(data, 'framework');
-          if (framework) {
-            this.initFilters = true;
-            this.frameWorkName = _.get(framework, 'framework');
-          }
-          return framework
-        })
-      );
   }
 
   public getPageData(data) {
@@ -371,10 +378,15 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private prepareCarouselData(sections = []) {
-    const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePage;
+    const { constantData, metaData, dynamicFields, slickSize } = this.isUserLoggedIn() ? _.get(this.configService, 'appConfig.CoursePageSection.course') :
+      _.get(this.configService, 'appConfig.CoursePage');
     const carouselData = _.reduce(sections, (collector, element) => {
       const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
-      element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+      if (this.isUserLoggedIn()) {
+        element.contents = _.map(contents, content => this.utilService.processContent(content, constantData, dynamicFields, metaData));
+      } else {
+        element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+      }
       if (element.contents && element.contents.length) {
         collector.push(element);
       }
@@ -434,7 +446,12 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public viewAll(event) {
-    const searchQuery = _.get(event, 'searchQuery') ? JSON.parse(event.searchQuery) : JSON.parse(this.myCoursesSearchQuery);
+    let searchQuery;
+    if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
+      searchQuery = JSON.parse(this.myCoursesSearchQuery);
+    } else {
+      searchQuery = JSON.parse(event.searchQuery);
+    }
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
       if (_.isPlainObject(value)) {
@@ -445,12 +462,17 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
     searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
-    this.cacheService.set('viewAllQuery', searchQueryParams);
+    if (this.isUserLoggedIn()) {
+      this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
+    } else {
+      this.cacheService.set('viewAllQuery', searchQueryParams);
+    }
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQueryParams, ...this.queryParams };
-    const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
+    const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryData();
@@ -604,6 +626,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.enrolledSection.name = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
           }
         })
-      )
+      );
   }
 }

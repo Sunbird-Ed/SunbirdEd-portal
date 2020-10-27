@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExplorePageComponent } from './components'
+import { ExplorePageComponent } from './components';
 const routes: Routes = [
   {
     path: '', component: ExplorePageComponent, data: {
