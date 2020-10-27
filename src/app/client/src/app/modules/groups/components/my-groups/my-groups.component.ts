@@ -123,14 +123,14 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], groupId, obj);
   }
 
-  handleGroupTnc(event?: {type: string, data: {}}) {
+  handleGroupTnc(event?: {type: string}) {
     if (event) {
       switch (event.type) {
         case acceptTnc.ALL:
           this.acceptAllGroupsTnc();
           break;
         case acceptTnc.GROUP:
-          this.acceptGroupTnc(_.get(event, 'data'));
+          this.acceptGroupTnc();
           break;
       }
     } else {
@@ -138,16 +138,16 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     }
   }
 
-  acceptGroupTnc(event: {}) {
+  acceptGroupTnc() {
     const request = {
       members: [{
         userId: this.userService.userid,
         visited: true,
       }]
     };
-    this.groupService.updateMembers(_.get(event, 'id'), request).subscribe(data => {
+    this.groupService.updateMembers(_.get(this.selectedGroup, 'id'), request).subscribe(data => {
       this.showTncModal = false;
-      this.navigate({data: event});
+      this.navigate({data: this.selectedGroup});
     }, err => {
       this.showTncModal = false;
     });
@@ -179,7 +179,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     };
 
     combineLatest(
-    // this.groupService.updateGroupGuidelines(groupUpdateRequest),
+    this.groupService.updateGroupGuidelines(groupUpdateRequest),
     this.userService.acceptTermsAndConditions(userProfileUpdateRequest)
     ).subscribe(() => {
       this.toasterService.success(this.resourceService.frmelmnts.msg.guidelinesacceptsuccess);

@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from '@sunbird/public';
-import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
 
 @Component({
   templateUrl: './course-page.component.html'
@@ -111,9 +111,16 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     const { params, queryParams } = this.activatedRoute;
     return combineLatest(params, queryParams)
       .pipe(
+        tap(_ => {
+          if (this.isUserLoggedIn()) {
+            this.prepareVisits([])
+          }
+        }),
+        delay(1),
         map(([params = {}, queryParams = {}]) => ({ params, queryParams })),
         filter(({ queryParams }) => !_.isEqual(this.queryParams, queryParams)),
         tap(({ queryParams }) => {
+          this.inViewLogs = [];
           this.queryParams = { ...queryParams };
         })
       );
