@@ -1107,86 +1107,86 @@ export const Response = {
   },
   enrolledCourses: [
     {
-      "dateTime": 1603773220239,
-      "lastReadContentStatus": null,
-      "enrolledDate": "2020-10-27 04:33:40:239+0000",
-      "addedBy": "23119117-f030-65ad-2e30-5366224ccb92",
-      "contentId": "do_21313489782313779214173",
-      "batch": {
-        "identifier": "0131380904510013441",
-        "endDate": null,
-        "createdBy": "fca2925f-1eee-4654-9177-fece3fd6afc9",
-        "name": "Test Certificate Batch",
-        "batchId": "0131380904510013441",
-        "enrollmentType": "open",
-        "startDate": "2020-10-27",
-        "status": 1
+      'dateTime': 1603773220239,
+      'lastReadContentStatus': null,
+      'enrolledDate': '2020-10-27 04:33:40:239+0000',
+      'addedBy': '23119117-f030-65ad-2e30-5366224ccb92',
+      'contentId': 'do_21313489782313779214173',
+      'batch': {
+        'identifier': '0131380904510013441',
+        'endDate': null,
+        'createdBy': 'fca2925f-1eee-4654-9177-fece3fd6afc9',
+        'name': 'Test Certificate Batch',
+        'batchId': '0131380904510013441',
+        'enrollmentType': 'open',
+        'startDate': '2020-10-27',
+        'status': 1
       },
-      "active": true,
-      "description": "Enter description for Course",
-      "courseLogoUrl": "https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21313489782313779214173/artifact/guitar.thumb.jpg",
-      "batchId": "0131380904510013441",
-      "userId": "13b24110-af97-430a-9d2c-0dd7ef6dccaa",
-      "content": {
-        "trackable": {
-          "enabled": "Yes",
-          "autoBatch": "Yes"
+      'active': true,
+      'description': 'Enter description for Course',
+      'courseLogoUrl': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21313489782313779214173/artifact/guitar.thumb.jpg',
+      'batchId': '0131380904510013441',
+      'userId': '13b24110-af97-430a-9d2c-0dd7ef6dccaa',
+      'content': {
+        'trackable': {
+          'enabled': 'Yes',
+          'autoBatch': 'Yes'
         },
-        "identifier": "do_21313489782313779214173",
-        "orgDetails": {
-          "orgName": "Tamil Nadu",
-          "email": null
+        'identifier': 'do_21313489782313779214173',
+        'orgDetails': {
+          'orgName': 'Tamil Nadu',
+          'email': null
         },
-        "channel": "01269878797503692810",
-        "description": "Enter description for Course",
-        "mimeType": "application/vnd.ekstep.content-collection",
-        "pkgVersion": 1,
-        "objectType": "Content",
-        "appIcon": "https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21313489782313779214173/artifact/guitar.thumb.jpg",
-        "leafNodesCount": 2,
-        "name": "SHS existing user course - 1022",
-        "contentType": "Course",
-        "resourceType": "Course"
+        'channel': '01269878797503692810',
+        'description': 'Enter description for Course',
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'pkgVersion': 1,
+        'objectType': 'Content',
+        'appIcon': 'https://preprodall.blob.core.windows.net/ntp-content-preprod/content/do_21313489782313779214173/artifact/guitar.thumb.jpg',
+        'leafNodesCount': 2,
+        'name': 'SHS existing user course - 1022',
+        'contentType': 'Course',
+        'resourceType': 'Course'
       },
-      "contentStatus": {},
-      "issuedCertificates": [],
-      "completionPercentage": null,
-      "courseName": "SHS existing user course - 1022",
-      "certificates": [],
-      "completedOn": null,
-      "leafNodesCount": 2,
-      "progress": 0,
-      "lastReadContentId": null,
-      "courseId": "do_21313489782313779214173",
-      "collectionId": "do_21313489782313779214173",
-      "status": 0
+      'contentStatus': {},
+      'issuedCertificates': [],
+      'completionPercentage': null,
+      'courseName': 'SHS existing user course - 1022',
+      'certificates': [],
+      'completedOn': null,
+      'leafNodesCount': 2,
+      'progress': 0,
+      'lastReadContentId': null,
+      'courseId': 'do_21313489782313779214173',
+      'collectionId': 'do_21313489782313779214173',
+      'status': 0
     }
   ],
   buildOptionRespForNonLoggedInUser: {
-    "source": "web",
-    "name": "Course",
-    "organisationId": "*",
-    "filters": {},
-    "facets": [
-        "channel",
-        "gradeLevel",
-        "subject",
-        "medium"
+    'source': 'web',
+    'name': 'Course',
+    'organisationId': '*',
+    'filters': {},
+    'facets': [
+        'channel',
+        'gradeLevel',
+        'subject',
+        'medium'
     ],
-    "params": {
-        "orgdetails": "orgName,email"
+    'params': {
+        'orgdetails': 'orgName,email'
     },
-    "fields": [
-        "name",
-        "appIcon",
-        "medium",
-        "subject",
-        "resourceType",
-        "contentType",
-        "organisation",
-        "topic",
-        "mimeType",
-        "trackable"
+    'fields': [
+        'name',
+        'appIcon',
+        'medium',
+        'subject',
+        'resourceType',
+        'contentType',
+        'organisation',
+        'topic',
+        'mimeType',
+        'trackable'
     ]
 }
 };

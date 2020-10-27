@@ -91,7 +91,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map = L && L.map(this.mapId).setView(initialCoordinate, initialZoomLevel);
     this.geoJSONRootLayer = this.map && this.getLayer().addTo(this.map);
     const maxBounds = L && L.latLngBounds([latBounds, lonBounds]);
-    if(this.map){
+    if (this.map) {
       this.map.setMaxBounds(maxBounds);
       this.map.fitBounds(maxBounds);
     }

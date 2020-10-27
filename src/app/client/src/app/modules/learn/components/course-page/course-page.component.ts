@@ -115,7 +115,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         tap(({ queryParams }) => {
           this.queryParams = { ...queryParams };
         })
-      )
+      );
   }
 
   private searchOrgDetails({ filters, fields }) {
@@ -131,7 +131,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         tap(orgDetails => {
           this.hashTagId = orgDetails && orgDetails['hashTagId'];
         })
-      )
+      );
   }
 
   ngOnInit() {
@@ -151,7 +151,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.buildOption()
             .pipe(
               mergeMap(this.fetchPageData.bind(this))
-            )
+            );
         }),
         catchError(err => {
           console.log(err);
@@ -163,7 +163,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
         })))
       .pipe(
         takeUntil(this.unsubscribe$)
-      )
+      );
   }
 
   private buildOption() {
@@ -253,13 +253,12 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               }
               if (_.get(this.enrolledSection, 'contents.length')) {
                 this.pageSections = [this.carouselMasterData[0]];
-              }
-              else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
+              } else if (!_.get(this.enrolledSection, 'contents.length') && _.get(this.carouselMasterData, 'length') >= 2) {
                 this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
               } else if (_.get(this.carouselMasterData, 'length') >= 1) {
                 this.pageSections = [this.carouselMasterData[0]];
               }
-            }))
+            }));
         }),
         tap(null, err => {
           this.showLoader = false;
@@ -280,7 +279,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((data: any) => {
           _.forEach(data, value => {
-            const { contentType, title, theme: { imageName = undefined } = {} } = value;
+            const { contentType, title, theme: { imageName = null } = {} } = value;
             if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === contentType) {
               this.pageTitle = _.get(this.resourceService, title);
               this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT + title;
@@ -305,7 +304,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }
           this.redoLayout();
         })
-      )
+      );
   }
   private redoLayout() {
     if (this.layoutConfiguration != null) {
@@ -350,7 +349,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.frameWorkName = framework as string;
             this.initFilters = true;
           })
-        )
+        );
       } else {
         return throwError({});
       }
@@ -368,7 +367,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               this.initFilters = true;
               this.frameWorkName = _.get(framework, 'framework');
             }
-            return framework
+            return framework;
           })
         );
     }
@@ -451,7 +450,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
       searchQuery = JSON.parse(this.myCoursesSearchQuery);
     } else {
-      searchQuery = JSON.parse(event.searchQuery)
+      searchQuery = JSON.parse(event.searchQuery);
     }
     const searchQueryParams: any = {};
     _.forIn(searchQuery.request.filters, (value, key) => {
@@ -627,6 +626,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.enrolledSection.name = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
           }
         })
-      )
+      );
   }
 }

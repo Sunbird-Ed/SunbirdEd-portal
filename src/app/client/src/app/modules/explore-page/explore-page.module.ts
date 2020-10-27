@@ -14,7 +14,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
-import { ExplorePageComponent } from './components'
+import { ExplorePageComponent } from './components';
 @NgModule({
   declarations: [ExplorePageComponent],
   imports: [

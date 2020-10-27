@@ -64,7 +64,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private initConfiguration() {
         const { userProfile: { framework = null } = {} } = this.userService;
         const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
-        this.defaultFilters = { board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [], ...userFramework };
+        this.defaultFilters = {
+            board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
+            ...userFramework
+        };
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.redoLayout();
@@ -94,7 +97,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.toasterService.error(get(this.resourceService, 'frmelmnts.lbl.fetchingContentFailed'));
                     this.navigationhelperService.goBack();
                 })
-            )
+            );
     }
 
     ngOnInit() {
@@ -102,7 +105,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.setNoResultMessage(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
-            )
+            );
     }
 
     initLayout() {
@@ -114,7 +117,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                     this.redoLayout();
                 })
-            )
+            );
     }
 
     redoLayout() {
@@ -132,7 +135,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return this.orgDetailsService.getCustodianOrgDetails()
                 .pipe(
                     map(custodianOrg => {
-                        let result = { channelId: this.userService.hashTagId, custodianOrg: false };
+                        const result = { channelId: this.userService.hashTagId, custodianOrg: false };
                         if (this.userService.hashTagId === get(custodianOrg, 'result.response.value')) {
                             result.custodianOrg = true;
                         }
@@ -238,9 +241,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this.apiContentList = [];
                                 this.pageSections = [];
                                 this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-                            }))
+                            }));
                 })
-            )
+            );
     }
 
     public playContent(event, sectionName) {
@@ -309,13 +312,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     const title_part2 = notMatchContent;
                     title = title_part1 + ' ' + title_part2;
                 } else if (selectedTab !== 'textbook') {
-                    title = noContentfoundTitle
+                    title = noContentfoundTitle;
                     subTitle = noContentfoundSubTitle;
                     buttonText = noContentfoundButtonText;
                 }
                 this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
             })
-        )
+        );
     }
 
     public navigateToExploreContent() {
@@ -327,7 +330,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 pageTitle: this.pageTitle,
                 softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
             })
-        }
+        };
         this.router.navigate([navigationUrl, 1], { queryParams });
     }
 
@@ -365,7 +368,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         } else {
             this.searchService.subjectThemeAndCourse = event.data;
-            let navigationUrl = this.isUserLoggedIn() ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
+            const navigationUrl = this.isUserLoggedIn() ? 'resources/curriculum-courses' : 'explore/list/curriculum-courses';
             this.router.navigate([navigationUrl], {
                 queryParams: {
                     title: get(event, 'data.title')

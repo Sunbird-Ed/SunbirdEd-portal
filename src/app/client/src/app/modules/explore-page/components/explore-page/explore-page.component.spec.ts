@@ -121,7 +121,7 @@ describe('ExplorePageComponent', () => {
     component['fetchChannelData']().subscribe(_ => {
       expect(component.initFilter).toBeTruthy();
       done();
-    })
+    });
   });
 
   it('should get channel id if slug is available', done => {
@@ -136,7 +136,7 @@ describe('ExplorePageComponent', () => {
     component['fetchChannelData']().subscribe(_ => {
       expect(component.initFilter).toBeTruthy();
       done();
-    })
+    });
   });
 
   it('should show error if contentSearchService is not initialized and slug is available', done => {
@@ -148,7 +148,7 @@ describe('ExplorePageComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith('Fetching content failed. Please try again later.');
       expect(component['navigationhelperService'].goBack).toHaveBeenCalled();
       done();
-    })
+    });
   });
 
   it('should fetch the filters and set to default values', () => {
@@ -329,7 +329,7 @@ describe('ExplorePageComponent', () => {
         showExploreContentButton: true
       });
       done();
-    })
+    });
   });
 
   it('should init layout and call redoLayout method', done => {
@@ -340,7 +340,7 @@ describe('ExplorePageComponent', () => {
       expect(component.layoutConfiguration).toBeDefined();
       expect(component.redoLayout).toHaveBeenCalled();
       done();
-    })
+    });
   });
 
   it('should fetch contents', done => {

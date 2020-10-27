@@ -31,7 +31,7 @@ describe('CoursePageComponent', () => {
     const resourceBundle = {
         'messages': {
             'fmsg': {
-                m0002: "Could not fetch other courses, try again later..."
+                m0002: 'Could not fetch other courses, try again later...'
             },
             'emsg': {},
             'stmsg': {}
@@ -121,7 +121,7 @@ describe('CoursePageComponent', () => {
             } else {
                 return of(responseToForm);
             }
-            //return throwError({});
+            // return throwError({});
         });
         spyOn(cacheService, 'get').and.callFake((options) => {
             return undefined;
@@ -160,7 +160,7 @@ describe('CoursePageComponent', () => {
             expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
             expect(component.hashTagId).toBe('123');
             done();
-        })
+        });
 
     });
     it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', done => {
@@ -226,12 +226,12 @@ describe('CoursePageComponent', () => {
         component.layoutConfiguration = null;
         spyOn<any>(component, 'redoLayout').and.callThrough();
         const layoutService = TestBed.get(LayoutService);
-        spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }))
+        spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
         component['initLayout']().subscribe(res => {
-            expect(component.layoutConfiguration).toEqual({})
+            expect(component.layoutConfiguration).toEqual({});
             expect(component['redoLayout']).toHaveBeenCalled();
             done();
-        })
+        });
 
     });
     it('should getFormData', done => {
@@ -240,7 +240,7 @@ describe('CoursePageComponent', () => {
             expect(formService.getFormConfig).toHaveBeenCalledWith({ formType: 'contentcategory', formAction: 'menubar', contentType: 'global' });
             expect(component.formData).toBeDefined();
             done();
-        })
+        });
     });
 
     it('should redirect to viewall page with queryparams', () => {
@@ -287,7 +287,7 @@ describe('CoursePageComponent', () => {
     xit('should add audience type in fetch page data request body', () => {
         spyOn(localStorage, 'getItem').and.returnValue('teacher');
         component.queryParams = { sort_by: 'name', sortType: 'desc' };
-        // component['fetchPageData']();    
+        // component['fetchPageData']();
         const option = {
             source: 'web', name: 'Course', organisationId: '*',
             filters: { sort_by: 'name', sortType: 'desc', audience: ['Teacher'] },
@@ -304,9 +304,9 @@ describe('CoursePageComponent', () => {
         };
         component['getLanguageChange']().subscribe(res => {
             expect(component.enrolledSection.name).toBeDefined();
-            expect()
+            expect();
             done();
-        })
+        });
     });
     it('should get processed facets data', () => {
         const facetsData = component.updateFacetsData(Response.facetsList);
@@ -348,11 +348,11 @@ describe('CoursePageComponent', () => {
             done();
         });
         coursesService['_enrolledCourseData$'].next({ enrolledCourses: Response.enrolledCourses, err: null });
-    })
+    });
 
     it('should prepare Carousel Data for non loggedIn user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
-        const input = [{ "contents": [{}] }];
+        const input = [{ 'contents': [{}] }];
         const processContentSpy = spyOn(utilService, 'processContent');
         const getDataForCardSpy = spyOn(utilService, 'getDataForCard');
         component['prepareCarouselData'](input);
@@ -361,7 +361,7 @@ describe('CoursePageComponent', () => {
     });
 
     it('should prepare Carousel Data for loggedIn user', () => {
-        const input = [{ "contents": [{}] }];
+        const input = [{ 'contents': [{}] }];
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
         const processContentSpy = spyOn(utilService, 'processContent');
         const getDataForCardSpy = spyOn(utilService, 'getDataForCard');
@@ -390,7 +390,7 @@ describe('CoursePageComponent', () => {
             expect(getCourseSectionDetailsSpy).not.toHaveBeenCalled();
             expect(res).toEqual(Response.buildOptionRespForNonLoggedInUser);
             done();
-        })
+        });
     });
 
     it('should prepare option for non loggedIn user', done => {
@@ -404,7 +404,7 @@ describe('CoursePageComponent', () => {
             expect(getCustodianOrgDetailsSpy).toHaveBeenCalled();
             expect(getCourseSectionDetailsSpy).toHaveBeenCalled();
             done();
-        })
+        });
     });
 
     it('should fetch page Data', done => {
@@ -420,5 +420,5 @@ describe('CoursePageComponent', () => {
                 expect(component.carouselMasterData).toBeDefined();
                 done();
             });
-    })
+    });
 });
