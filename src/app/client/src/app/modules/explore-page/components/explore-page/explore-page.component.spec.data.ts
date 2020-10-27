@@ -1662,6 +1662,9 @@ export const RESPONSE = {
       'filters': {
         'contentType': [
           'TextBook'
+        ],
+        'primaryCategory': [
+          'TextBook'
         ]
       }
     },
