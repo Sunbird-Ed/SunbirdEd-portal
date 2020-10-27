@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
 import { TncService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
@@ -6,34 +6,28 @@ import { ResourceService, ServerResponse, ToasterService, UtilService } from '@s
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PopupControlService } from '../../../../service/popup-control.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-global-consent-pii',
-  templateUrl: './global-consent-pii.component.html',
-  styleUrls: ['./global-consent-pii.component.scss']
+  selector: 'app-consent-pii',
+  templateUrl: './consent-pii.component.html',
+  styleUrls: ['./consent-pii.component.scss']
 })
-export class GlobalConsentPiiComponent implements OnInit {
+export class ConsentPiiComponent implements OnInit {
 
   @Input() collection;
-  @Input() type;
-  @Input() showConsentPopup;
-  @Input() consentConfig;
   @ViewChild('profileDetailsModal') profileDetailsModal;
-  @Output() close = new EventEmitter<any>();
   consentPii = 'Yes';
   isDataShareOn = false;
   lastUpdatedOn = '';
   userInformation = [];
   editSetting = false;
   isTncAgreed = false;
-  // showConsentPopup = false;
+  showConsentPopup = false;
   showTncPopup = false;
   termsAndConditionLink: string;
   unsubscribe = new Subject<void>();
   private usersProfile: any;
-  showSettingsPage: boolean;
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private toasterService: ToasterService,
@@ -41,7 +35,6 @@ export class GlobalConsentPiiComponent implements OnInit {
     public resourceService: ResourceService,
     public tncService: TncService,
     public utilService: UtilService,
-    public popupControlService: PopupControlService,
     private activatedRoute: ActivatedRoute,
     private coursesService: CoursesService,
     private router: Router,
@@ -52,11 +45,6 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
-    if (this.showConsentPopup) {
-      this.showSettingsPage = false;
-    } else {
-      this.showSettingsPage = true;
-    }
     this.checkQueryParams();
 
     this.coursesService.revokeConsent
@@ -155,23 +143,14 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
-    this.close.emit();
-    this.popupControlService.changePopupStatus(true);
   }
 
   getUserConsent() {
     const request = {
       userId: this.userService.userid,
-      consumerId: '',
-      objectId: ''
+      consumerId: this.collection.channel,
+      objectId: this.collection.identifier
     };
-    if (this.type === 'course-consent') {
-      request.consumerId = this.collection ? this.collection.channel : '';
-      request.objectId = this.collection ? this.collection.identifier : '';
-    } else if ( this.type === 'global-consent') {
-      request.consumerId = this.userService.channel;
-      request.objectId = this.userService.channel;
-    }
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
@@ -193,26 +172,16 @@ export class GlobalConsentPiiComponent implements OnInit {
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
-      consumerId: '',
-      objectId: '',
-      objectType: ''
+      consumerId: this.collection.channel,
+      objectId: this.collection.identifier,
+      objectType: 'Collection'
     };
-    if (this.type === 'course-consent') {
-      request.consumerId = this.collection ? this.collection.channel : '';
-      request.objectId = this.collection ? this.collection.identifier : '';
-      request.objectType = 'Collection';
-    } else if ( this.type === 'global-consent') {
-      request.consumerId = this.userService.channel;
-      request.objectId = this.userService.channel;
-      request.objectType = 'global';
-    }
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
         this.getUserConsent();
-        this.close.emit();
-        this.popupControlService.changePopupStatus(true);
+        this.isTncAgreed = false;
       }, error => {
         this.isTncAgreed = false;
         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
@@ -235,5 +204,4 @@ export class GlobalConsentPiiComponent implements OnInit {
       this.profileDetailsModal.deny();
     }
   }
-
 }
