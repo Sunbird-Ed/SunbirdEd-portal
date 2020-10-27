@@ -72,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showAppPopUp = false;
   viewinBrowser = false;
   sessionExpired = false;
+  showConsentPopup = true;
   instance: string;
   resourceDataSubscription: any;
   private fingerprintInfo: any;
@@ -103,7 +104,6 @@ export class AppComponent implements OnInit, OnDestroy {
   title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
-  consentConfig: { tncLink: any; tncText: any; };
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -125,11 +125,6 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       document.documentElement.setAttribute('layout', '');
     }
-    // Set consetnt pop up configuration here
-    this.consentConfig = {
-      tncLink: '',
-      tncText: 'I agree to share these details with the Administrators of the State/Institution mentioned above to track my activities on DIKSHA, as per the Privacy Policy'
-    };
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -458,7 +453,10 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
-    this.showGlobalConsentPopUpSection = true;
+    // Check for non custodian user and show global consent pop up
+    if (!this.userService.isCustodianUser) {
+      this.showGlobalConsentPopUpSection = true;
+    }
     this.checkFrameworkSelected();
   }
 

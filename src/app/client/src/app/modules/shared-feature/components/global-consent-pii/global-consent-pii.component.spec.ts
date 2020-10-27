@@ -2,13 +2,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreModule, TncService, UserService } from '@sunbird/core';
+import { CoreModule, TncService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { MockData } from './global-consent-pii.component.spec.data';
-import { GeneraliseLabelService } from '../../../core/services/generalisedLable/generaliseLable.service';
+// import {  } from '../../../core/services/generalisedLable/generaliseLable.service';
 
 import { GlobalConsentPiiComponent } from './global-consent-pii.component';
 
