@@ -1,3 +1,4 @@
+import { CsModule } from '@project-sunbird/client-services';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -166,10 +167,14 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   showErrorMsg(response?) {
-    _.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT' ?
-    this.toasterService.error(this.resourceService.messages.groups.emsg.m002) :
-    this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
-    || _.get(this.verifiedMember, 'title')));
+
+    if (_.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT') {
+      this.toasterService.error(this.resourceService.messages.groups.emsg.m002);
+      this.addTelemetry('exceeded-member-max-limit', this.memberId, {member_count: this.membersList.length});
+    } else {
+      this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
+      || _.get(this.verifiedMember, 'title')));
+    }
   }
 
   getUpdatedGroupData() {
@@ -192,7 +197,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   addTelemetry (id, memberId?, extra?) {
     const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata, _.get(this.groupData, 'id') , extra);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, _.get(this.groupData, 'id'));
   }
 
 

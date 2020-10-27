@@ -1,7 +1,7 @@
 
 import { of as observableOf, Observable } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
@@ -31,7 +31,7 @@ export class PlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService, private utilService: UtilService) {
+    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -199,16 +199,16 @@ export class PlayerService {
     return JSON.stringify(parsedData);
   }
 
-  playContent(content) {
+  playContent(content, queryParams?) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
       if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection ||
         _.get(content, 'metaData.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
           if (!content.trackable && content.contentType !== 'Course') {
-            this.handleNavigation(content, false);
+            this.handleNavigation(content, false, queryParams);
           } else {
             const isTrackable = content.trackable && content.trackable.enabled === 'No' ? false : true;
-            this.handleNavigation(content, isTrackable);
+            this.handleNavigation(content, isTrackable, queryParams);
           }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
         this.router.navigate(['/resources/play/content', content.identifier]);
@@ -218,14 +218,15 @@ export class PlayerService {
     }, 0);
   }
 
-  handleNavigation(content, isTrackable) {
+  handleNavigation(content, isTrackable, queryParams?) {
     if (!isTrackable) {
       this.router.navigate(['/resources/play/collection', content.courseId || content.identifier],
       {queryParams: {contentType: content.contentType}});
     } else if (content.batchId) {
-      this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
+      this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId],
+        { queryParams });
     } else {
-      this.router.navigate(['/learn/course', content.identifier]);
+      this.router.navigate(['/learn/course', content.identifier], { queryParams });
     }
   }
 }

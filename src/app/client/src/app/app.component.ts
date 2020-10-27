@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
   usersProfile: any;
   isLocationConfirmed = true;
   userFeed: any;
+  isFullScreenView;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
   globalConsent = 'global-consent';
@@ -182,6 +183,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
         this.layoutConfiguration = layoutConfig.layout;
@@ -249,7 +251,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.generaliseLabelService.getGeneraliseResourceBundle();
   }
 
-  
+
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -258,6 +260,12 @@ export class AppComponent implements OnInit, OnDestroy {
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 
   storeThemeColour(value) {

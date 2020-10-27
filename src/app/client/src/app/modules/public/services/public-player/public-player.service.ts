@@ -145,16 +145,16 @@ export class PublicPlayerService {
     }, 0);
   }
 
-  public playContent(event) {
-    const metaData =  event.data.metaData || event.data;
+  public playContent(event, queryParams?) {
+    const metaData =  event.data ? (event.data.metaData || event.data) : (event.metaData || event);
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (!metaData.trackable && metaData.contentType !== 'Course') {
-          this.handleNavigation(metaData, false);
+          this.handleNavigation(metaData, false, queryParams);
         } else {
           const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
-          this.handleNavigation(metaData, isTrackable);
+          this.handleNavigation(metaData, isTrackable, queryParams);
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
@@ -162,12 +162,13 @@ export class PublicPlayerService {
       }
     }, 0);
   }
-  handleNavigation(content, isTrackable) {
+  handleNavigation(content, isTrackable, queryParams?) {
     if (isTrackable) {
-      this.router.navigate(['explore-course/course', content.identifier]);
+      this.router.navigate(['explore-course/course', content.identifier], { queryParams });
     } else {
+      queryParams = {...queryParams, contentType: content.contentType}
       this.router.navigate(['play/collection', content.identifier],
-      {queryParams: {contentType: content.contentType}});
+      {queryParams: queryParams});
     }
   }
 

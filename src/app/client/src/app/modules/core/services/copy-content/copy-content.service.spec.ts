@@ -74,4 +74,20 @@ describe('CopyContentService', () => {
     service.openCollectionEditor('NCFCOPY', 'do_11302157861002444811');
     expect(router.navigate).toHaveBeenCalledWith([url]);
   }));
+
+  it('should call the formatData', inject([], () => {
+    const service = TestBed.get(CopyContentService);
+    const router = TestBed.get(Router);
+    spyOn(service, 'formatData');
+    service.formatData();
+    expect(service.formatData).toHaveBeenCalled();
+  }));
+
+  it('should call the redirectToEditor', inject([], () => {
+    const service = TestBed.get(CopyContentService);
+    const router = TestBed.get(Router);
+    spyOn(service, 'redirectToEditor');
+    service.redirectToEditor();
+    expect(service.redirectToEditor).toHaveBeenCalled();
+  }));
 });

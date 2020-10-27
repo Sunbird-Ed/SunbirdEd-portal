@@ -43,17 +43,17 @@
 </sui-accordion>
 
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-modal-profile-details" appBodyScroll *ngIf="showConsentPopup"
+  class="sb-modal" appBodyScroll *ngIf="showConsentPopup"
   (dismissed)="showConsentPopup = false;" #profileDetailsModal>
   <!--Header-->
-  <div class="sb-modal-header">
+  <div class="sb-modal-header lineHeight-normal">
     {{resourceService?.frmelmnts?.lbl?.profileDetails}}
   </div>
   <!--/Header-->
   <!--Content-->
-  <div class="sb-modal-content d-flex flex-dc o-y-visible">
+  <div class="sb-modal-content d-flex flex-dc o-y-visible lineHeight-normal">
     <div class="ui stackable grid m-0">
-      <div class="two wide column px-0">
+      <div class="three wide column px-0">
         <div class="d-flex flex-dc">
           <label
             class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
@@ -64,7 +64,7 @@
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.block}} :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolId}} :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolName}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobileNo}} :</label>
+          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobileNumber}} :</label>
           <label class="mb-24 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.emailId}} :</label>
         </div>
       </div>

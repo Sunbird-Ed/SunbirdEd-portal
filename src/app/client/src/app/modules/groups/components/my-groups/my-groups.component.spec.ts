@@ -1,6 +1,6 @@
 import { impressionObj, fakeActivatedRouteWithGroupId } from './../../services/groups/groups.service.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
-import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP, acceptTnc } from './../../interfaces';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyGroupsComponent } from './my-groups.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -15,12 +15,21 @@ import { of, throwError } from 'rxjs';
 import { mockGroupList } from './my-groups.component.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { APP_BASE_HREF } from '@angular/common';
+import { GroupEntityStatus, GroupMembershipType } from '@project-sunbird/client-services/models';
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
   let fixture: ComponentFixture<MyGroupsComponent>;
 
   configureTestSuite();
 
+  const resourceBundle = {
+    frmelmnts: {
+      msg: {
+        guidelinesacceptsuccess: '',
+        guidelinesacceptfailed: ''
+      }
+    }
+  };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url: '/my-groups';
@@ -31,7 +40,8 @@ describe('MyGroupsComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
       declarations: [ MyGroupsComponent ],
       providers: [ TelemetryService, GroupsService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId }, ResourceService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRouteWithGroupId },
+        { provide: ResourceService, useValue: resourceBundle},
         { provide: APP_BASE_HREF, useValue: '/' } ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -81,6 +91,16 @@ describe('MyGroupsComponent', () => {
     const router = TestBed.get(Router);
     component.navigateToDetailPage({data: {id: '123'}});
     expect(router.navigate).toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, '123']);
+    expect(component.selectedType).toEqual(acceptTnc.GROUP);
+    expect(component.showTncModal).toBe(false);
+  });
+
+  it('should Not navigate to group detail page', () => {
+    const router = TestBed.get(Router);
+    component.navigateToDetailPage({data: {id: '123', visited: false}});
+    expect(router.navigate).not.toHaveBeenCalledWith([`${MY_GROUPS}/${GROUP_DETAILS}`, '123']);
+    expect(component.selectedType).toEqual(acceptTnc.GROUP);
+    expect(component.showTncModal).toBe(true);
   });
 
   it('should close closeModal', () => {
@@ -95,7 +115,78 @@ describe('MyGroupsComponent', () => {
   });
 
   it('should call addTelemetry', () => {
-    component.addTelemetry('ftu-popup', '123');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
+    component.groupsList.push({
+    id: '137cabc7-79b6-495e-b987-b0c87c317e91',
+    name: 'group',
+    description: 'test',
+    membershipType: GroupMembershipType.INVITE_ONLY,
+    status: GroupEntityStatus.ACTIVE,
+    active: true,
+    isActive() { return true ;}
+    });
+    component.addTelemetry('ftu-popup', '137cabc7-79b6-495e-b987-b0c87c317e91');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup',
+    extra: {status: 'active'}}, fakeActivatedRouteWithGroupId.snapshot,
+    [], '137cabc7-79b6-495e-b987-b0c87c317e91', {id: '137cabc7-79b6-495e-b987-b0c87c317e91', type: 'group', ver: '1.0'});
   });
+
+  it('should call acceptAllGroupsTnc', () => {
+    spyOn(component, 'acceptAllGroupsTnc');
+    component.handleGroupTnc({type: acceptTnc.ALL, data: {}});
+    expect(component.acceptAllGroupsTnc).toHaveBeenCalled();
+  });
+
+  it('should call acceptGroupTnc', () => {
+    spyOn(component, 'acceptGroupTnc');
+    component.handleGroupTnc({type: acceptTnc.GROUP, data: {}});
+    expect(component.acceptGroupTnc).toHaveBeenCalledWith({});
+  });
+
+  it('should disable showTncModal', () => {
+    component.handleGroupTnc();
+    expect(component.showTncModal).toBeFalsy();
+  });
+
+  it('should call updateMembers', () => {
+    spyOn(component, 'navigate');
+    spyOn(component['groupService'], 'updateMembers').and.returnValue(of ({}));
+    spyOnProperty(component['userService'], 'userid').and.returnValue('123');
+    const request = {
+      members: [
+        {
+          userId: '123',
+          visited: true
+        }
+      ]
+    };
+    component.acceptGroupTnc({id: '1'});
+    expect(component.showTncModal).toBeFalsy();
+    expect(component['groupService'].updateMembers).toHaveBeenCalledWith('1', request);
+
+    component['groupService'].updateMembers('1', request).subscribe(data => {
+      expect(component.navigate).toHaveBeenCalledWith({data: {id: '1'}});
+    });
+  });
+
+  it('should call acceptTermsAndConditions', () => {
+    component.latestTnc = {field: 'groups', value: {latestVersion: 'V1'}};
+    spyOn(component, 'navigate');
+    spyOn(component['userService'], 'acceptTermsAndConditions').and.returnValue(of ({}));
+    spyOnProperty(component['userService'], 'userid').and.returnValue('123');
+    const requestBody = {
+      request: {
+        tncType: 'groups',
+        version:  'V1',
+        userId:  '123'
+      }
+    };
+    component.acceptAllGroupsTnc();
+
+    component['userService'].acceptTermsAndConditions(requestBody).subscribe(data => {
+      expect(component.showTncModal).toBeFalsy();
+    });
+
+  });
+
+
 });

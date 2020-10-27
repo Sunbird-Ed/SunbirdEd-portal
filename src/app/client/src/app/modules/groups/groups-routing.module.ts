@@ -1,6 +1,6 @@
 import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS,
   ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES, GROUP_DETAILS, ADD_MEMBER,
-  ADD_ACTIVITY_CONTENT_TYPES} from './interfaces';
+  ADD_ACTIVITY_CONTENT_TYPES, EDIT_GROUP} from './interfaces';
 import {
   MyGroupsComponent, AddMemberComponent, GroupDetailsComponent,
   CreateEditGroupComponent, ActivitySearchComponent, ActivityDashboardComponent, AddActivityContentTypesComponent
@@ -33,7 +33,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: CREATE_GROUP, component: CreateEditGroupComponent,
+        path: EDIT_GROUP, component: CreateEditGroupComponent,
         data: {
           telemetry: { env: telemetryEnv, pageid: CREATE_GROUP, type: type, subtype: subtype },
         },

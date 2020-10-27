@@ -153,8 +153,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']);
-    filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),

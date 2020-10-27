@@ -6,7 +6,7 @@ import {
   ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-  ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent
+  ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -18,6 +18,7 @@ import { GlobalConsentPiiComponent } from './components/global-consent-pii/globa
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -37,7 +38,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule,
     FormsModule,
     ReactiveFormsModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    CommonConsumptionModule
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
@@ -46,11 +48,13 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
+     CollectionPlayerComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
-    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent]
+    ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent,
+     ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent]
 })
 export class SharedFeatureModule { }

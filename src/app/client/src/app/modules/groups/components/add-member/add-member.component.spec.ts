@@ -15,6 +15,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { By } from '@angular/platform-browser';
 import { addMemberMockData } from './add-member.component.spec.data';
+import { GroupEntityStatus, GroupMemberRole, GroupMembershipType } from '@project-sunbird/client-services/models';
 
 describe('AddMemberComponent', () => {
   let component: AddMemberComponent;
@@ -68,13 +69,50 @@ describe('AddMemberComponent', () => {
     fixture = TestBed.createComponent(AddMemberComponent);
     component = fixture.componentInstance;
 
-    component.membersList = [{identifier: '1', initial: 'J', title: 'John Doe', isAdmin: true, isMenu: false,
-    indexOfMember: 1, isCreator: true, name: 'John Doe', userId: '1', role: 'admin'}];
+    component.membersList = [
+      {
+      identifier: '1',
+      initial: 'J',
+      title: 'John Doe',
+      isAdmin: true,
+      isMenu: false,
+      indexOfMember: 1,
+      isCreator: true,
+      name: 'John Doe',
+      userId: '1',
+      role: GroupMemberRole.ADMIN,
+      groupId: '',
+      status: GroupEntityStatus.ACTIVE,
+    }];
 
-    component.verifiedMember = {identifier: '2', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
-    indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member'};
+    component.verifiedMember = {
+    identifier: '2',
+    initial: 'T',
+    title: 'Test User',
+    isAdmin: false,
+    isMenu: false,
+    indexOfMember: 2,
+    isCreator: false,
+    name: 'Test User',
+    userId: '2',
+    role: GroupMemberRole.ADMIN,
+    groupId: '',
+    status: GroupEntityStatus.ACTIVE};
 
-    component.groupData = {id: '123', name: 'Test', members: [{userId: '1', role: 'admin', name: 'user'}], createdBy: '1'};
+    component.groupData = {id: '123', name: 'Test', members: [
+    {
+      groupId: '',
+      status: GroupEntityStatus.ACTIVE,
+      userId: '1',
+      role: GroupMemberRole.ADMIN,
+      name: 'user'
+    }],
+    createdBy: '1',
+    description: '',
+    membershipType: GroupMembershipType.INVITE_ONLY,
+    active: true,
+    isActive() { return true ;}
+  };
 
     component.memberId = '2';
 
@@ -138,7 +176,9 @@ describe('AddMemberComponent', () => {
 
   it('should throw error', () => {
     component.verifiedMember = {identifier: '1', initial: 'T', title: 'Test User', isAdmin: false, isMenu: false,
-    indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: 'member', id: '1'};
+    indexOfMember: 2, isCreator: false, name: 'Test User', userId: '2', role: GroupMemberRole.MEMBER, id: '1',
+    groupId: '', status: GroupEntityStatus.ACTIVE
+    };
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'resetValue');
     const value = component.isExistingMember();
@@ -208,8 +248,8 @@ describe('AddMemberComponent', () => {
 
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup',
-    fakeActivatedRouteWithGroupId.snapshot, [], '123', undefined);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined},
+    fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 
   it('should load re-captcha when recaptcha is enable from system setting', () => {

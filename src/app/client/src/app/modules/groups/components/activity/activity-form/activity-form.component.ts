@@ -3,7 +3,6 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { FormService } from '@sunbird/core';
 import { GroupsService } from '../../../services';
 import { ActivatedRoute } from '@angular/router';
-
 @Component({
   selector: 'app-activity-form',
   templateUrl: './activity-form.component.html',
@@ -43,7 +42,7 @@ export class ActivityFormComponent implements OnInit {
   }
 
   next() {
-    this.groupService.addTelemetry('activity-type', this.activateRoute.snapshot, [{id: this.selectedActivity.title, type: 'activityType'}]);
+    this.groupService.addTelemetry({id: 'activity-type'}, this.activateRoute.snapshot, [{id: this.selectedActivity.title, type: 'activityType'}]);
     this.nextClick.emit({ activityType: this.selectedActivity.title });
     // TODO: Handle telemetry here
   }

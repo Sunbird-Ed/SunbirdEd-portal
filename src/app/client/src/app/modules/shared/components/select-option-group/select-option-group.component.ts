@@ -40,8 +40,8 @@ export class SelectOptionGroupComponent implements OnInit {
         }
       });
     } else {
-      if (this.selectedOption.label === 'Publisher') {
-        const publisher = _.find(this.optionData, ['label', 'Publisher']);
+      if (this.selectedOption.label === 'result.consumption.frmelmnts.lbl.publisher') {
+        const publisher = _.find(this.optionData, ['label', 'result.consumption.frmelmnts.lbl.publisher']);
         if (publisher) {
           _.forEach(publisher.option, value => {
             if (value.value === this.selectedOption.selectedOption) {
@@ -50,7 +50,7 @@ export class SelectOptionGroupComponent implements OnInit {
           });
         }
       } else {
-        this.preSelectedValue = this.selectedOption.selectedOption;
+        this.preSelectedValue = this.selectedOption.selectedOption === 'CBSE' ? 'CBSE/NCERT' : this.selectedOption.selectedOption;
       }
     }
   }

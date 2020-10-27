@@ -200,15 +200,17 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
 
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters.contentType = [_.get(this.groupAddableBlocData, 'params.contentType')];
+    const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
+    const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
+    filters = {...filters, ...searchQuery, ...user};
     const option: any = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       facets: this.globalSearchFacets,
-      params: this.configService.appConfig.Course.contentApiQueryParams
+      params: this.configService.appConfig.Course.contentApiQueryParams,
+      mode: 'soft'
     };
 
     if (_.get(this.queryParams, 'sort_by')) {
@@ -224,7 +226,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     if (this.frameWorkName) {
       option.params.framework = this.frameWorkName;
     }
-    this.searchService.contentSearch(option)
+    this.searchService.contentSearch(option, false)
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -298,7 +300,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata || [], this.groupId);
   }
 
   private setNoResultMessage() {

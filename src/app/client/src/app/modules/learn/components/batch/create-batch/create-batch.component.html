@@ -148,7 +148,7 @@
         <label class="d-flex flex-ai-center">
           <input type="checkbox" formControlName="tncCheck" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
           <span class="font-weight-normal fnormal">
-            {{resourceService?.frmelmnts?.lbl?.agreeCourseToc  | interpolate:'{instance}': instance }}<a href="{{url}}/term-of-use.html#batchGuildeLines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a></span>
+            {{resourceService?.frmelmnts?.lbl?.agreeCourseToc  | interpolate:'{instance}': instance }}<a href="{{url}}/term-of-use.html#courseGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a></span>
         </label>
         <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20"
          *ngIf="!createBatchForm.get('tncCheck').valid && this.createBatchForm.get('tncCheck').dirty">{{resourceService?.frmelmnts?.lbl?.courseToc}}</small>

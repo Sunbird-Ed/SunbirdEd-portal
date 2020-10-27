@@ -53,7 +53,7 @@ describe('MapComponent', () => {
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: {} }));
     component['getGeoJSONFile']({ fileName: 'sampleFile.json' })
       .subscribe(res => {
-        expect(reportService.fetchDataSource).toHaveBeenCalledWith(`/reports/fetch/geoJSON-sample/sampleFile.json`);
+        expect(reportService.fetchDataSource).toHaveBeenCalledWith(`/reports/fetch/geoJSONFiles/sampleFile.json`);
         expect(res).toEqual({});
         done();
       });
@@ -70,7 +70,7 @@ describe('MapComponent', () => {
     component['getDataSourceData']()
       .subscribe(res => {
         expect(res).toBeDefined();
-        expect(reportService.fetchDataSource).not.toHaveBeenCalledWith(`/reports/fetch/geoJSON-sample/sampleFile.json`);
+        expect(reportService.fetchDataSource).not.toHaveBeenCalledWith(`/reports/fetch/geoJSONFiles/sampleFile.json`);
         expect(res).toEqual(component['__mapData']['reportData']);
         done();
       });
@@ -102,7 +102,7 @@ describe('MapComponent', () => {
     component.mapData = input;
     component['dataHandler']().subscribe(res => {
       expect(findRecordInConfigMappingSpy).toHaveBeenCalledWith({ type: 'state', name: input.state });
-      expect(getGeoJSONFileSpy).toHaveBeenCalledWith({ fileName: 'damandiu_district.json', folder: 'geoJSON-sample' });
+      expect(getGeoJSONFileSpy).toHaveBeenCalledWith({ fileName: 'damandiu_district.json', folder: 'geoJSONFiles' });
       expect(getDataSourceDataSpy).toHaveBeenCalled();
       expect(addPropertiesSpy).toHaveBeenCalled();
       done();

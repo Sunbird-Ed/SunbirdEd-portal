@@ -1,5 +1,6 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
+import { fullScreenActionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare, NavigationHelperService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
@@ -14,7 +15,9 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
+  @Input() isFullScreen = false;
   actionButtons = actionButtons;
+  fullScreenActionButtons = fullScreenActionButtons;
   contentRatingModal = false;
   contentId;
   collectionId;
@@ -44,10 +47,15 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
+      this.contentData.board = 'CBSE/NCERT';
+    }
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
     this.actionButtons = _.cloneDeep(actionButtons);
+    this.fullScreenActionButtons = _.cloneDeep(fullScreenActionButtons);
     _.find(this.actionButtons, (button) => {
       button.disabled = (button.label === 'Fullscreen') ? (this.deviceDetectorService.isMobile() ||
         this.deviceDetectorService.isTablet()) : button.disabled;
@@ -81,6 +89,10 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
         case 'FULLSCREEN':
           this.navigationHelperService.emitFullScreenEvent(true);
           this.logTelemetry('fullscreen-content', content);
+          break;
+        case 'MINIMIZE':
+          this.navigationHelperService.emitFullScreenEvent(false);
+          this.logTelemetry('minimize-screen-content', content);
           break;
       }
   }
@@ -134,6 +146,15 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     // selectedContent?.model?.itemSetPreviewUrl
    // console.log('------>', this.contentData);
     _.forEach(this.actionButtons, data => {
+      if (data.name === 'print') {
+        if (this.contentData.itemSetPreviewUrl) {
+          data.disabled = false;
+        } else {
+          data.disable = true;
+        }
+      }
+    });
+    _.forEach(this.fullScreenActionButtons, data => {
       if (data.name === 'print') {
         if (this.contentData.itemSetPreviewUrl) {
           data.disabled = false;

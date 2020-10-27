@@ -86,9 +86,11 @@ export const AddActivityContentTypesData = {
         'title': 'Courses',
         'activityType': 'Course',
         'objectType': 'Content',
+        'translations': '',
+        'isEnabled': true,
         'sortBy': [{
         }],
-        'searchQuery': '{\'request\':{\'filters\':{\'contentType\':[\'Course\'],\'status\':[\'Live\'],\'objectType\':[\'Content\']},\'fields\':[\'name\',\'appIcon\',\'contentType\',\'identifier\',\'objectType\',\'createdBy\']}}'
+        'searchQuery': `{"request":{"filters":{"primaryCategory":["Course"],"status":["Live"],"objectType":["Content"]},"fields":["name","appIcon","contentType","identifier","objectType","createdBy"]}}`,
     },
     groupData : {
         'membershipType': 'invite_only',

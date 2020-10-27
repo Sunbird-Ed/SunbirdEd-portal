@@ -1,4 +1,3 @@
-import { IGroupUpdate } from './../../interfaces/group';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -156,8 +155,8 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component['groupService'], 'addTelemetry');
     component.groupId = '123';
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup',
-    fakeActivatedRouteWithGroupId.snapshot, [], '123', undefined);
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined},
+    fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 
   it('should throw on EXCEEDED_GROUP_MAX_LIMIT', () => {

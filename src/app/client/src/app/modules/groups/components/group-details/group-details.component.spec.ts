@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { GroupDetailsData } from './group-details.component.spec.data';
 import * as _ from 'lodash-es';
+import { CsGroup, GroupMembershipType } from '@project-sunbird/client-services/models';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -37,7 +38,6 @@ describe('GroupDetailsComponent', () => {
     url: '/my-groups';
   }
 
-  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupDetailsComponent],
@@ -75,15 +75,18 @@ describe('GroupDetailsComponent', () => {
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
     component['groupId'] = '123';
-    spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
+    spyOn(groupService, 'getGroupById').and.returnValue(of());
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
-    expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
-    expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
-    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g'});
-    expect(component.showActivityList).toBeTruthy();
-    expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
-    isCreator: false, isAdmin: false, initial: 'g'});
+
+    groupService.getGroupById('123',true, true, true).subscribe((data: CsGroup) => {
+      expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
+        {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
+        description: '', membershipType: GroupMembershipType.INVITE_ONLY});
+
+        expect(component.showActivityList).toBeTruthy();
+    });
+
   });
 
 
@@ -98,7 +101,7 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should call handleNextClick', () => {
-    component.groupData = GroupDetailsData.groupData;
+    component.groupData = (GroupDetailsData.groupData) as {} as CsGroup;
     const router = TestBed.get(Router);
     component.navigateToAddActivity();
     expect(router.navigate).toHaveBeenCalledWith(['add-activity-content-types'], {
@@ -133,5 +136,11 @@ describe('GroupDetailsComponent', () => {
     component.showMemberPopup = false;
     component.toggleFtuModal(true);
     expect(component.showMemberPopup).toBeTruthy();
+  });
+
+  it('should emit "EVENT when user clicked on activate group next to msg: activate"', () => {
+    spyOn(component['groupService'], 'emitActivateEvent');
+    component.handleEvent();
+    expect(component['groupService'].emitActivateEvent).toHaveBeenCalledWith('activate', 'activate-group');
   });
 });

@@ -6,7 +6,9 @@
           <div class="reissue-title text-left font-weight-bold">{{resourceService?.frmelmnts?.lbl?.cert}} </div>
           <div class="sb-field certificate-id-content">
             <label class="d-inline-flex flex-ai-center flex-jc-space-between w-100 user-id-label" for="id">
-              <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': channelName}}</span></label>
+              <span>{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': channelName}}
+                {{resourceService?.frmelmnts?.lbl?.or}} {{resourceService?.frmelmnts?.lbl?.enterUUID}}
+              </span></label>
             <div class="d-flex">
               <div class="user-id-input">
                 <input class="sb-form-control font-weight-bold" name="id" placeholder="{{resourceService?.frmelmnts?.lbl?.searchUser}}" type="id" [(ngModel)]="userName" (ngModelChange)="resetValues()">

@@ -57,8 +57,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   enableProgress = false;
   // courseMentor = false;
   // courseCreator = false;
+  forumId;
   isTrackable = false;
   viewDashboard = false;
+  tocId;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -72,6 +74,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
@@ -86,6 +89,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
+        this.tocId = params.textbook;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -262,10 +266,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
   }
-
-  goBack() {
+  openDiscussionForum() {
+    this.router.navigate(['/discussions'], {queryParams: {forumId: this.forumId} });
+  }
+  async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
     this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (this.tocId) {
+      const navigateUrl = this.userService.loggedIn ? '/resources/play/content' : '/play/collection';
+      this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
+    }
     if (!previousPageUrl) {
       this.router.navigate(['/learn']);
       return;

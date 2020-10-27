@@ -176,7 +176,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId);
   }
 
   checkForNestedCourses(activityData) {
@@ -244,8 +244,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   showActivityType() {
-    const type = this.resourceService.frmelmnts.lbl[_.get(this.queryParams, 'title')];
-    return _.lowerCase(type);
+    return _.lowerCase(_.get(this.queryParams, 'title'));
   }
 
   ngOnDestroy() {
