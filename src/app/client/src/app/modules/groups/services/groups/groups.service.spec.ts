@@ -15,6 +15,7 @@ import { groupData, modifiedActivities } from './groups.service.spec.data';
 describe('GroupsService', () => {
   configureTestSuite();
   const resourceBundle = {
+    languageSelected$: of ({}),
     frmelmnts: {
       lbl: {
         you: 'You',
@@ -252,7 +253,7 @@ describe('GroupsService', () => {
     const parsedData =  {
       id: 'groupsTnc',
       field: 'groupsTnc',
-      value: "{\"latestVersion\":\"3.4.0\",\"3.4.0\":{\"url\":\"https:/terms-of-use.html#groupGuidelines\"}}"
+      value: '{\"latestVersion\":\"3.4.0\",\"3.4.0\":{\"url\":\"https:/terms-of-use.html#groupGuidelines\"}}'
     };
     const groupsTnc = {result: {response: [ parsedData ] }};
     parsedData.value = typeof parsedData.value === 'string' ? JSON.parse(parsedData.value) : parsedData.value;

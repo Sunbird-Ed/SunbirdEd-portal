@@ -10,14 +10,11 @@ import * as _ from 'lodash-es';
 })
 export class PopupComponent {
 
-  @Input() modalTitle: string;
-  @Input() modalMsg: string;
-  @Input() modalName: string;
-  @Input() groupData: IGroupCard;
-  @Input() latestTnc;
+  @Input() title: string;
+  @Input() msg: string;
+  @Input() name: string;
+
   @Input() type: acceptTnc;
-  @Input() showTncModal: boolean;
-  @Input() showGroupActionsModal: boolean;
 
   @Output() handleGroupTnc = new EventEmitter();
   @Output() handleEvent = new EventEmitter();
@@ -28,6 +25,7 @@ export class PopupComponent {
   channel: string;
   acceptTncType = acceptTnc;
   checked = false;
+  url = document.location.origin;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -44,14 +42,13 @@ export class PopupComponent {
   }
 
   emitEvent(value) {
-    const event = this.handleEvent.emit({name: this.modalName, action: value});
+    const event = this.handleEvent.emit({name: this.name, action: value});
     this.modal.deny();
   }
 
   acceptGroupTnc() {
-    this.showTncModal = false;
-    this.closeModal();
-    this.handleGroupTnc.emit({type: this.type, data: this.groupData});
+    this.tncModal.deny();
+    this.handleGroupTnc.emit({type: this.type});
   }
 
   closeModal() {

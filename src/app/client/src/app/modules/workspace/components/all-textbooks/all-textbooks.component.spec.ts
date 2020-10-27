@@ -173,4 +173,24 @@ describe('AllTextbooksComponent', () => {
         component.checkLinkedCollections(undefined);
         expect(component.checkLinkedCollections).toHaveBeenCalledWith(undefined);
       }));
+
+      it('should call deleteConfirmModal for deleting content', () => {
+        const data = {'identifier': 'do_112485749070602240134', 'mimeType': 'TextBook'};
+        // Arrange
+        spyOn(component, 'deleteConfirmModal');
+        // Act
+        component.deleteConfirmModal(data.identifier, data.mimeType);
+        // Assert
+        expect(component.deleteConfirmModal).toHaveBeenCalledWith(data.identifier, data.mimeType);
+
+        });
+
+      it('should call deleteConfirmModal if content not found', () => {
+        // Arrange
+        spyOn(component, 'deleteConfirmModal');
+        // Act
+        component.deleteConfirmModal(undefined, undefined);
+        // Assert
+        expect(component.deleteConfirmModal).toHaveBeenCalledWith(undefined, undefined);
+        });
 });

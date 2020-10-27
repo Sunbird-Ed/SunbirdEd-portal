@@ -45,6 +45,7 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         issuer: this.validIssuers ? this.validIssuers : ""
     };
     jwt.verify(token, publicKey, verificationOption, (err, payload) => {
+        console.info("verifying token using public key");
         if(err){
             console.error("invalid signature - 401", err);
             return cb("INVALID_SIGNATURE");
@@ -61,6 +62,7 @@ function loadTokenPublicKeys(basePath){
               console.info("Defaulting to Keycloak validation");
               return resolve(err);
             }
+            filenames = filenames.filter(isHiddenFileOrDir => !(/(^|\/)\.[^\/\.]/g).test(isHiddenFileOrDir))
             let fileCount = filenames.length;
             filenames.forEach(function(filename) {
               fs.readFile(basePath + filename, 'utf-8', function(err, content) {

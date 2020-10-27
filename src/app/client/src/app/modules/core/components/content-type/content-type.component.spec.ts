@@ -53,6 +53,9 @@ describe('ContentTypeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    spyOn(component, 'ngOnInit');
+    component.ngOnInit();
+    expect(component.ngOnInit).toHaveBeenCalled();
   });
 
   it('should fetch title', () => {
