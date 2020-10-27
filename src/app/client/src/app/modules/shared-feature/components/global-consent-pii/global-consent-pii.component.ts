@@ -157,9 +157,16 @@ export class GlobalConsentPiiComponent implements OnInit {
   getUserConsent() {
     const request = {
       userId: this.userService.userid,
-      consumerId: this.collection ? this.collection.channel : '',
-      objectId: this.collection ? this.collection.identifier : ''
+      consumerId: '',
+      objectId: ''
     };
+    if (this.type === 'course-consent') {
+      request.consumerId = this.collection ? this.collection.channel : '';
+      request.objectId = this.collection ? this.collection.identifier : '';
+    } else if ( this.type === 'global-consent') {
+      request.consumerId = this.userService.channel;
+      request.objectId = this.userService.channel;
+    }
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
@@ -181,10 +188,19 @@ export class GlobalConsentPiiComponent implements OnInit {
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
-      consumerId: this.collection ? this.collection.channel : '',
-      objectId: this.collection ? this.collection.identifier : '',
-      objectType: 'Collection'
+      consumerId: '',
+      objectId: '',
+      objectType: ''
     };
+    if (this.type === 'course-consent') {
+      request.consumerId = this.collection ? this.collection.channel : '';
+      request.objectId = this.collection ? this.collection.identifier : '';
+      request.objectType = 'Collection';
+    } else if ( this.type === 'global-consent') {
+      request.consumerId = this.userService.channel;
+      request.objectId = this.userService.channel;
+      request.objectType = 'global';
+    }
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(() => {
