@@ -71,6 +71,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   });
   _courseSearchResponse: any;
+  isPageAssemble: boolean = true;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -242,9 +243,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
    * - Courses are displayed based on section returned from assemble API
    */
   private fetchPageData(option: object) {
-
+    this.isPageAssemble = true;
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    if (_.get(currentPageData, 'isPageAssemble')) {
+    this.isPageAssemble = _.get(currentPageData, 'isPageAssemble');
+    if (this.isPageAssemble) {
       if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
         option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
       }
