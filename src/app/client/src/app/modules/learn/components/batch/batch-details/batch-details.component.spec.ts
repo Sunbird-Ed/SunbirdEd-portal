@@ -348,7 +348,7 @@ describe('BatchDetailsComponent', () => {
     };
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
     component.enrollBatch(batch);
-    expect(component.showMessageModal).toBeTruthy();
+    expect(component.showMessageModal).toBeFalsy();
   });
 
 });

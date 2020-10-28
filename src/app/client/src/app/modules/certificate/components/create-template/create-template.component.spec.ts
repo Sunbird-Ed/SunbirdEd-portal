@@ -38,8 +38,14 @@ const fakeActivatedRoute = {
         ver: '1.0'
       }
     }
-  }
+  },
+  queryParams: of({
+    type: 'edit',
+    courseId: 'do_456789',
+    batchId: '124631256'
+  })
 };
+
 
 class RouterStub {
   public url = '/cert/configure/add';
@@ -167,7 +173,7 @@ class RouterStub {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'success').and.stub();
     spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
-    spyOn(uploadCertService, 'uploadTemplate').and.returnValue(of({}));
+    spyOn(uploadCertService, 'storeAsset').and.returnValue(of({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
     expect(toasterService.success).toHaveBeenCalledWith('Template created successfully');
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
@@ -177,7 +183,7 @@ class RouterStub {
     const uploadCertService = TestBed.get(UploadCertificateService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.stub();
-    spyOn(uploadCertService, 'uploadTemplate').and.callFake(() => throwError({}));
+    spyOn(uploadCertService, 'storeAsset').and.callFake(() => throwError({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
   });

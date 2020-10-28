@@ -107,7 +107,7 @@ describe('CertRegService', () => {
       }
     };
     certRegService.addCertificateTemplate(params);
-    const options = { url: 'v1/add/template', data: params };
+    const options = { url: 'v1/template/add', data: params };
     expect(certRegService.patch).toHaveBeenCalledWith(options);
   });
 
