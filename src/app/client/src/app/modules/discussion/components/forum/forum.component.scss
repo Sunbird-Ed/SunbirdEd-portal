@@ -6,6 +6,8 @@
     padding: 0;
     border-radius: 0;
     overflow: hidden;
+    position: relative;
+    z-index: 2;
   }
   iframe {
     width: 100%;
@@ -25,7 +27,7 @@
       color: var(--white);
     }
   }
-  .o-y-hide {
-    overflow: hidden;
+  .o-y-auto {
+    overflow-y: auto;
   }
 }
