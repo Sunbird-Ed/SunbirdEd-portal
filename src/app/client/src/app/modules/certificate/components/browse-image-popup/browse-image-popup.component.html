@@ -2,15 +2,15 @@
   [size]="'large'" class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="claseModel()" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
-    Select Image
+    {{resourceService.frmelmnts?.lbl?.selectImage}}
   </div>
   <div class="sb-modal-content">
     <div class="image-tabs px-8">
       <input class="image-input" id="tab1" type="radio" name="tabs" checked>
-      <label for="tab1" class="image-label">My Images</label>
+      <label for="tab1" class="image-label">{{resourceService.frmelmnts?.lbl?.myImages}}</label>
 
       <input class="image-input" id="tab2" type="radio" name="tabs">
-      <label for="tab2" class="image-label">All Images</label>
+      <label for="tab2" class="image-label">{{resourceService.frmelmnts?.lbl?.allImages}}</label>
 
       <section id="content1">
         <div class="twelve wide column">
@@ -90,17 +90,17 @@
   <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
     <div class="d-flex flex-ai-center relative">
       <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="claseModel()">
-        Cancel
+        {{resourceService?.frmelmnts?.btn?.cancel}}
       </button>
       <div class="or-toggle">
-        <span>or</span></div>
+        <span>{{resourceService.frmelmnts?.lbl?.or}}</span></div>
       <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!selectedLogo"
         [ngClass]="{'sb-btn-disabled' : !selectedLogo}" (click)="selectAndUseLogo()">
-        Select
+        {{resourceService?.frmelmnts?.lbl?.Select}}
       </button>
     </div>
     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="browseImages()">
-      Upload and use
+      {{resourceService.frmelmnts?.lbl?.uploadAndUse}}
     </button>
   </div>
 </sui-modal>
@@ -110,30 +110,24 @@
   class="sb-modal sb-uploadmodal" appBodyScroll (dismissed)="claseModel()" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
-    Upload and Use
+    {{resourceService.frmelmnts?.lbl?.uploadAndUse}}
   </div>
   <div class="sb-modal-content px-24 sb-bg-color-white">
     <div class="twelve wide column">
       <div class='ui stackable grid mt-0'>
         <div class="six wide column">
-          <label>Choose or drag and drop your image here *</label>
+          <label>{{resourceService?.frmelmnts?.lbl?.chooseImageNote}}</label>
           <div class="choose-img-box"><input (change)="fileChange($event)" class="sb-btn-upload upload-btn fnormal" name="file" type="file"></div>
           <div class="ui info message">
             <ol class="ui list">
-              <li class="fsmall">Allowed types files are: {{imageDimensions[logoType.type]?.type}}</li>
-              <li class="fsmall">maximum allowed files size: 1MB</li>
-              <li class="fsmall">maximum allowed dimensions are: {{imageDimensions[logoType.type]?.dimensions}}</li>
+              <li class="fsmall">{{resourceService?.frmelmnts?.lbl?.chooseImageType}} {{imageDimensions[logoType.type]?.type}}</li>
+              <li class="fsmall">{{resourceService?.frmelmnts?.lbl?.chooseImageSize}} 1MB</li>
+              <li class="fsmall">{{resourceService?.frmelmnts?.lbl?.chooseImagedimensions}} {{imageDimensions[logoType.type]?.dimensions}}</li>
             </ol>
           </div>
           <div>
-            <label>Copyrights and License:<span class="asterik">*</span></label>
-            <p class="fsmall">I understand and confirm that all resources and assets created through the content editor
-              or uploaded on the platform shall be available for free and public use without limitations on
-              the platform (web portal,applications and any other end user interface that the platform would be enable)
-              and will be licensed under terms & conditions and policy guidelines of the platform.In doing so, the
-              copyright
-              and license of the original author is not infringed.
-            </p>
+            <label>{{resourceService?.frmelmnts?.lbl?.copyrights}}<span class="asterik">*</span></label>
+            <p class="fsmall">{{resourceService?.frmelmnts?.lbl?.uploadlicense}}</p>
           </div>
         </div>
         <div class="six wide column pl-0">
@@ -141,13 +135,13 @@
             <div class="ui info message p-16">
               <div class="d-flex">
                 <img src="assets/images/information-icon.svg" width="24px" height="22px" class="mr-8">
-                <div class="fsmall" class="drop-img-text fsmall"> Drop or choose the file before entering the details
+                <div class="fsmall" class="drop-img-text fsmall"> {{resourceService?.frmelmnts?.lbl?.imageDrapAndDrop}}
                 </div>
               </div>
             </div>
 
             <div class="sb-field mb-16">
-              <label>Asset caption <span class="asterik">*</span></label>
+              <label>{{resourceService?.frmelmnts?.lbl?.assetCaption}} <span class="asterik">*</span></label>
               <div class="sb-field">
                 <input formControlName="assetCaption" class="sb-form-control is-valid" placeholder="Enter asset caption">
               </div>
@@ -169,7 +163,7 @@
               </sui-select>
             </div> -->
             <div class="sb-field">
-              <label>Creator</label>
+              <label>{{resourceService?.frmelmnts?.lbl?.creator}}</label>
               <div class="sb-field">
                 <input formControlName="creator" class="sb-form-control is-valid" placeholder="Enter Name">
               </div>
@@ -184,17 +178,17 @@
   <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
     <div class="d-flex flex-ai-center relative">
       <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="back()">
-        Cancel
+        {{resourceService?.frmelmnts?.btn?.cancel}}
       </button>
       <div class="or-toggle">
-        <span>or</span></div>
+        <span>{{resourceService.frmelmnts?.lbl?.or}}</span></div>
       <button class="sb-btn sb-btn-normal sb-btn-primary"
       [ngClass]="{'sb-btn-disabled': (!uploadForm.valid || !fileObj)}" [disabled]="(!uploadForm.valid || !fileObj)" (click)="upload()">
-        Upload and use
+      {{resourceService.frmelmnts?.lbl?.uploadAndUse}}
       </button>
     </div>
     <button class="sb-btn sb-btn-normal sb-btn-gray" (click)="back()">
-      Back
+      {{resourceService?.frmelmnts?.btn?.back }}
     </button>
   </div>
 </sui-modal>

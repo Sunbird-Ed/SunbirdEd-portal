@@ -10,7 +10,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { fromFetch } from 'rxjs/fetch';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
-import {Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
@@ -60,17 +61,23 @@ export class CreateTemplateComponent implements OnInit {
     'DESIGNATIONS': ['signatureTitle1a', 'signatureTitle2a']
   };
   optionSing = 'SIGN2';
+  queryParams: any;
+  mode: any;
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public userService: UserService,
     private sanitizer: DomSanitizer,
-    public router : Router,
+    private activatedRoute: ActivatedRoute,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public navigationHelperService: NavigationHelperService) {
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = params;
+      this.mode = _.get(this.queryParams, 'type');
+    });
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
     this.selectedCertificate = _.clone(this.defaultCertificates[0]);
@@ -132,13 +139,13 @@ export class CreateTemplateComponent implements OnInit {
       this.uploadTemplate(this.finalSVGurl, assetId);
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
-      console.log('error', error);
     });
   }
 
   uploadTemplate(base64Url, identifier) {
-    this.uploadCertificateService.uploadTemplate(base64Url, identifier).subscribe(response => {
+    this.uploadCertificateService.storeAsset(base64Url, identifier).subscribe(response => {
       this.toasterService.success('Template created successfully');
+      this.useTemplate(response);
       this.navigationHelperService.navigateToLastUrl();
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
@@ -271,10 +278,24 @@ export class CreateTemplateComponent implements OnInit {
       }));
   }
 
+urltoFile(url, filename, mimeType){
+  return (fetch(url)
+      .then((res) => {
+        return res.arrayBuffer();
+      })
+      .then((buf) => {
+        return new File([buf], filename, {type: mimeType});
+      })
+  );
+}
 
   certificateCreation(ev) {
-    this.finalSVGurl = this.getBase64Data(ev);
-    this.selectedCertificate['artifactUrl'] = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalSVGurl);
+   const dataURL  = this.getBase64Data(ev);
+    this.selectedCertificate['artifactUrl'] = this.sanitizer.bypassSecurityTrustResourceUrl(dataURL);
+    this.urltoFile(dataURL, `certificate_${dayjs().format('YYYY-MM-DD_HH_mm')}.svg`, 'image/svg+xml')
+    .then((file) => {
+      this.finalSVGurl = file;
+    });
   }
 
   getImagePath() {
@@ -289,8 +310,39 @@ export class CreateTemplateComponent implements OnInit {
     return b64;
   }
 
-  useTemplate() {
-    this.router.navigate(['certs', 'configure', 'certificate']);
-    this.uploadCertificateService.certificate.next(this.finalSVGurl);
+  useTemplate(data) {
+   const signatoryList = [{
+       'image': _.get(this.images, 'SIGN1.url'),
+       'name': _.get(this.createTemplateForm, 'value.authoritySignature_0'),
+     }];
+
+    if (!_.isEmpty(this.images['SIGN'])) {
+      signatoryList.push({
+        'image': _.get(this.images, 'SIGN2.url'),
+        'name': _.get(this.createTemplateForm, 'value.authoritySignature_1'),
+      });
+    }
+
+    const cert_obj = {
+      'artifactUrl' : _.get(data, 'result.artifactUrl'),
+      'name' : _.get(this.createTemplateForm, 'value.certificateTitle'),
+      'identifier' : _.get(this.queryParams, 'courseId'),
+      'data' : {
+        'title': _.get(this.createTemplateForm, 'value.certificateTitle'),
+        'signatoryList': signatoryList,
+        'artifactUrl' : _.get(data, 'result.artifactUrl'),
+      },
+      'issuer' : {
+        'name': _.get(this.createTemplateForm, 'value.stateName'),
+        'url': _.get(this.images, 'LOGO1.url')
+    },
+      'signatoryList' : signatoryList
+    };
+
+    this.uploadCertificateService.certificate.next(cert_obj);
+  }
+
+  back() {
+    this.navigationHelperService.navigateToLastUrl();
   }
 }

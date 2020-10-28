@@ -421,13 +421,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v3/read/:userId': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL],
-      OWNER_CHECK: {
-        checks: [
-          { entity: '__adminCheck__userId', params: [] }
-        ]
-      }
     },
     '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],
@@ -617,6 +612,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
     '/certreg/v1/add/template': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
+    },
+    '/certreg/v1/template/add': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },

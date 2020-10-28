@@ -181,7 +181,6 @@
               </div>
             </form>
             <div>
-            <img [src]="certificate">
             </div>
           </div>
         </div>
@@ -199,13 +198,11 @@
                (click)="navigateToCreateTemplate()">
                 <i class="plus alternate outline icon"></i>Create template</button>
                </div>
-               <img [src]="certificate">
-
               <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
                   <sb-certificate-actions [preview]="config?.preview"
-                    [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal"
-                    [template]="template?.value" (buttonClick)="handleCertificateEvent($event, template)">
+                    [isSelectedTemplate]="selectedTemplate?.identifier === template?.identifier && !showPreviewModal"
+                    [template]="template?.artifactUrl" (buttonClick)="handleCertificateEvent($event, template)">
                   </sb-certificate-actions>
                 </div>
               </div>
@@ -222,7 +219,7 @@
             <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
               (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
-              [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+            [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
             <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
               *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"

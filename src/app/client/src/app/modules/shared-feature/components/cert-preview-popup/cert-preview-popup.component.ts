@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cert-preview-popup',
@@ -12,7 +13,8 @@ export class CertPreviewPopupComponent implements OnInit {
   @Output() close = new EventEmitter();
   @ViewChild('modal') modal;
 
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService,
+    private sanitizer: DomSanitizer) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -27,5 +29,11 @@ export class CertPreviewPopupComponent implements OnInit {
       this.modal.deny();
     }
     this.close.emit({name, template: this.template});
+  }
+
+  certTemplateURL(url) {
+    if (url) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
   }
 }

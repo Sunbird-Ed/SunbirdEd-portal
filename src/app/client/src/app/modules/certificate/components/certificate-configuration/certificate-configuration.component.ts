@@ -38,7 +38,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   queryParams: any;
   courseDetails: any;
   showLoader = true;
-  certTemplateList: Array<{}>;
+  certTemplateList: Array<{}> = [];
   batchDetails: any;
   currentState: any;
   screenStates: any = {'default': 'default', 'certRules': 'certRules' };
@@ -83,9 +83,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeLabels();
     this.currentState = this.screenStates.default;
-    // this.currentState = false;
-console.log(this.currentState);
-console.log(this.screenStates);
+    this.uploadCertificateService.certificate.subscribe(res => {
+      if (res) {
+        this.currentState = 'certRules';
+        this.selectedTemplate = res;
+        this.showPreviewModal = false;
+        this.certTemplateList.push(res);
+      }
+    });
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
     this.activatedRoute.queryParams.subscribe((params) => {
@@ -93,21 +98,14 @@ console.log(this.screenStates);
       this.configurationMode = _.get(this.queryParams, 'type');
     });
     combineLatest(
-    // this.getCourseDetails(_.get(this.queryParams, 'courseId')),
-    // this.getBatchDetails(_.get(this.queryParams, 'batchId')),
+    this.getCourseDetails(_.get(this.queryParams, 'courseId')),
+    this.getBatchDetails(_.get(this.queryParams, 'batchId')),
     this.getTemplateList(),
     ).subscribe((data) => {
       this.showLoader = false;
     }, (error) => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
-    this.uploadCertificateService.certificate.subscribe(res => {
-      if (res) {
-        console.log('res-------------------', res);
-        this.currentState = "certRules";
-        this.certificate =  this.sanitizer.bypassSecurityTrustResourceUrl(res);
-      }
     });
   }
 
@@ -173,9 +171,11 @@ console.log(this.screenStates);
         key: 'certList'
       }
     };
-    return this.certificateService.fetchCertificatePreferences(request).pipe(
+
+    return this.uploadCertificateService.getCertificates().pipe(
       tap((certTemplateData) => {
-        this.certTemplateList = _.get(certTemplateData, 'result.response.data.range');
+        const templatList = _.get(certTemplateData, 'result.content');
+        templatList.forEach(templat => this.certTemplateList.push(templat));
       }),
       catchError(error => {
         return of({});
@@ -191,10 +191,12 @@ console.log(this.screenStates);
     return this.certificateService.getBatchDetails(batchId).pipe(
       tap(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
-        if (!_.get(this.batchDetails, 'cert_templates')) {
+        const cert_templates = _.get(this.batchDetails, 'cert_templates');
+        if (_.isEmpty(cert_templates)) {
+          delete this.batchDetails.cert_templates;
           this.getCertConfigFields();
         } else {
-          this.processCertificateDetails(_.get(this.batchDetails, 'cert_templates'));
+          this.processCertificateDetails(cert_templates);
         }
       })
     );
@@ -249,18 +251,37 @@ console.log(this.screenStates);
 
   attachCertificateToBatch() {
     this.sendInteractData({id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change'});
-    const request = {
-      request: {
-        courseId: _.get(this.queryParams, 'courseId'),
-        batchId: _.get(this.queryParams, 'batchId'),
-        key: _.get(this.selectedTemplate, 'name'),
-        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
-        criteria: this.getCriteria(_.get(this.userPreference, 'value'))
-      }
-    };
-    if (this.isTemplateChanged) {
-      request['request']['oldTemplateId'] = this.templateIdentifier;
+  const request = {
+    'request': {
+        'batch': {
+            'courseId': _.get(this.queryParams, 'courseId'),
+            'batchId': _.get(this.queryParams, 'batchId'),
+            'template': {
+                'identifier':  _.get(this.queryParams, 'courseId'),
+                'criteria': {
+                    'enrollment': {
+                        'status': 2
+                    }
+                },
+                'name': _.get(this.selectedTemplate, 'name'),
+                'issuer': _.get(this.selectedTemplate, 'issuer'),
+                'data' : JSON.stringify(_.get(this.selectedTemplate, 'data')),
+                'signatoryList': _.get(this.selectedTemplate, 'signatoryList'),
+                'notifyTemplate': {
+                    'subject': _.get(this.selectedTemplate, 'name'),
+                    'stateImgUrl': 'https://sunbirddev.blob.core.windows.net/orgemailtemplate/img/File-0128212938260643843.png',
+                    'regardsperson': 'Chairperson',
+                    'regards': 'Minister of Gujarat',
+                    'emailTemplateType': 'defaultCertTemp'
+                }
+            }
+        }
     }
+};
+
+  if (this.isTemplateChanged) {
+    request['request']['oldTemplateId'] = this.templateIdentifier;
+  }
 
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       this.isTemplateChanged = false;
@@ -287,10 +308,10 @@ console.log(this.screenStates);
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'previewUrl']);
-    this.selectedTemplate = {name : _.get(templateData, 'identifier')};
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'identifier', 'data']);
+    // this.selectedTemplate = {name : _.get(templateData, 'identifier')};
     this.templateIdentifier =  _.get(templateData, 'identifier');
-    this.previewUrl = _.get(templateData, 'previewUrl');
+    this.previewUrl = JSON.parse(_.get(templateData, 'data')).artifactUrl;
     this.setCertEditable();
     this.processCriteria( _.get(templateData, 'criteria'));
   }
@@ -453,7 +474,13 @@ console.log(this.screenStates);
   }
 
   navigateToCreateTemplate() {
-    this.router.navigate(['certs', 'configure', 'create-template']);
+    this.router.navigate([`/certs/configure/create-template`], {
+      queryParams: {
+        type: this.configurationMode,
+        courseId: _.get(this.queryParams, 'courseId'),
+        batchId: _.get(this.queryParams, 'batchId')
+      }
+    });
   }
 
   ngOnDestroy() {

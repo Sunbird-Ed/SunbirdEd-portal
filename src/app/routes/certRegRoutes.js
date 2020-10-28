@@ -175,92 +175,25 @@ module.exports = function (app) {
       },
     }))
 
-  //   app.all(['/composite/v3/search'],
-  //   proxyUtils.verifyToken(),
-  //   proxy(contentProxy, {
-  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
-  //     proxyReqPathResolver: function (req) {
-  //       let urlParam = req.originalUrl;
-  //       let query = require('url').parse(req.url).query;
-  //       if (query) {
-  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
-  //       } else {
-  //         return require('url').parse(contentProxy + urlParam).path
-  //       }
-  //     },
-  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
-  //       try {
-  //         const mock = mockData.assetList;
-  //         const data = JSON.parse(proxyResData.toString('utf8'));
-  //         if(!data.result){
-  //           res.send(mock)
-  //         }
-  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-  //       } catch (err) {
-  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-  //       }
-  //     }
-  //   }))
 
-  // app.all(['/action/content/v3/create'],
-  //   proxyUtils.verifyToken(),
-  //   proxy(contentProxy, {
-  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
-  //     proxyReqPathResolver: function (req) {
-  //       let urlParam = req.originalUrl;
-  //       let query = require('url').parse(req.url).query;
-  //       if (query) {
-  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
-  //       } else {
-  //         return require('url').parse(contentProxy + urlParam).path
-  //       }
-  //     },
-  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
-  //       try {
-  //         const data = JSON.parse(proxyResData.toString('utf8'));
-  //         // mock data         
-  //         console.log('create------', data)
-  //         if(data.params.err){
-  //           res.send(createMock)
-  //         }
-  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-  //       } catch (err) {
-  //         if(data.params.err){
-  //           res.send(createMock)
-  //         }
-  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-  //       }
-  //     }
-  //   }))
-
-  // app.all(['/content/v3/upload/:id'],
-  //   proxyUtils.verifyToken(),
-  //   proxy(contentProxy, {
-  //     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxy),
-  //     proxyReqPathResolver: function (req) {
-  //       let urlParam = req.originalUrl;
-  //       let query = require('url').parse(req.url).query;
-  //       if (query) {
-  //         return require('url').parse(contentProxy + urlParam + '?' + query).path
-  //       } else {
-  //         return require('url').parse(contentProxy + urlParam).path
-  //       }
-  //     },
-  //     userResDecorator: (proxyRes, proxyResData, req, res) => {
-  //       try {
-  //         const data = JSON.parse(proxyResData.toString('utf8'));
-  //         // mock data
-  //         console.log('upload------', data)
-  //         if(data.params.err){
-  //           res.send(uploadMock)
-  //         }
-  //         if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-  //         else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-  //       } catch (err) {
-  //         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-  //       }
-  //     }
-  //   }))
+    app.patch('/certreg/v1/template/add',
+    isAPIWhitelisted.isAllowed(),
+    proxy(certRegURL, {
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
+      proxyReqPathResolver: function (req) {
+        logger.debug(req.context, {msg: `${req.url} is called with requestBody: ${JSON.stringify(req.body)}`});
+        return require('url').parse(certRegURL + certRegServiceApi.addTemplate).path;
+      },
+      userResDecorator:  (proxyRes, proxyResData, req, res) => {
+        try {
+          logger.info({msg: `Adding certificate {} to a  courseId ${_.get(req, 'body.request.batch.courseId')}',batchId: ${_.get(req, 'body.request.batch.batchId')}, template id ${_.get(req, 'body.request.batch.template.identifier')}`});
+          const data = JSON.parse(proxyResData.toString('utf8'));
+          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+        } catch (err) {
+          logError(req, err, `Error while addTemplate to courseId ${_.get(req, 'body.request.batch.courseId')} batchId: ${_.get(req, 'body.request.batch.batchId')}, err: ${err} , template id ${_.get(req, 'body.request.batch.template.identifier')}`,);
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
+      },
+    }))
 };

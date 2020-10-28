@@ -14,8 +14,8 @@ const logger            = require('@project-sunbird/logger');
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
 const ROLE = {
-  ORGADMIN = 'ORG_ADMIN',
-  SYSADMIN = 'SYSTEM_ADMINISTRATION'
+  ORGADMIN : 'ORG_ADMIN',
+  SYSADMIN : 'SYSTEM_ADMINISTRATION'
 }
 
 /**

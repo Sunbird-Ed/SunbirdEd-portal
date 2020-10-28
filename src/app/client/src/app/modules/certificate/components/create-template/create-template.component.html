@@ -2,16 +2,16 @@
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
     <div class="py-16 d-flex flex-ai-center flex-jc-space-between">
-      <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
+      <button (click)="back()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
         type="button">
         <i class="icon-svg icon-svg--xxs icon-back mr-4">
           <svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
-        Back
+       {{resourceService?.frmelmnts?.btn?.back}}
       </button>
       <button type="button" (click)="useTemplate()" class="sb-btn sb-btn-normal sb-btn-primary">
-        Create and Use template
+        {{resourceService?.frmelmnts?.lbl?.createAndUseTemplate}}
       </button>
     </div>
   </div>
@@ -25,141 +25,119 @@
       <div class="six wide column">
         <div class="certificate-content certificate-bg p-24">
           <form [formGroup]="createTemplateForm">
+            <!-- <div class="fs-1">Edit template</div> -->
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
-                <div class="sb-field d-flex flex-dc">
-                  <label class="state-labels">Certificate title<span class="asterik">*</span></label>
-                    <input formControlName="certificateTitle" class="sb-form-control is-valid">
-                    <small class="pl-4 fsmall">Help text information</small>
+                  <div class="sb-field">
+                    <label>{{resourceService?.frmelmnts?.lbl?.certificateTitle}}</label>
+                    <input formControlName="certificateTitle" class="sb-form-control is-valid" placeholder="Enter certificate title">
                   </div>
-                </div>
-              </div>
-
-            <div class="fnormal py-16 state-labels">State details</div>
-            <div class='ui stackable grid mt-0'>
-              <div class="four wide column py-8">
-                  <div class="sb-field d-flex flex-dc">
-                    <label class="pl-4 state-labels">State logo 1 <span class="asterik">*</span></label>
-                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button (click)="openSateLogos({type: 'LOGO', index: 0,  key:'LOGO1'})" class="sb-btn sb-btn-normal sb-browse-btn">
-                      Browse
-                    </button>
-                    <small *ngIf="!(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
-                    <small *ngIf="(images?.LOGO1?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO1?.name}}
-                      <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="18px" class="mr-8">
-                    </small> 
-                  </div>
-              </div>
-              <div class="eight wide column py-8">
-                <div class="sb-field d-flex flex-dc">
-                  <label for="state" class="state-labels">State name<span class="asterik">*</span></label>
-                    <input formControlName="stateName" class="sb-form-control is-valid">
-                    <small class="pl-4 fsmall">Help text information</small>
-                  </div>
-                </div>
-              </div>
-
-            <div class='ui stackable grid mt-0'>
-              <div class="four wide column py-8">
-                  <div class="sb-field d-flex flex-dc">
-                    <label class="pl-4 state-labels">State logo 2<span class="asterik">*</span></label>
-                    <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                    <button (click)="openSateLogos({type: 'LOGO', index: 1, key:'LOGO2'})" class="sb-btn sb-btn-normal sb-browse-btn">
-                      Browse
-                    </button>
-                    <small *ngIf="!(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
-                    
-                  </div>
+                  <small class="pl-4 fsmall">
+                   {{resourceService?.frmelmnts?.lbl?.certificateTitleNote}}
+                  </small>
               </div>
             </div>
-            <small *ngIf="(images?.LOGO2?.name)" class="pl-16 py-4 fsmall">{{images?.LOGO2?.name}}
-              <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="18px" class="mr-8">
-            </small>
-            
-            <!-- <div class='ui stackable grid mt-0'>
-              <div class='twelve wide column'>
-                <ul class="pl-0">
-                  <div *ngFor="let logo of certLogos; let i = index"  class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">{{logo.name}}</li>
-                    <div class="d-flex flex-ai-center mx-8">
-                      <img (click)="removeLogo(i)" src="assets/images/close.svg" width="24px" class="mr-8">
-                      <img src="assets/images/add.svg" width="24px">
-                    </div>
-                  </div>
-                </ul>
-              </div>
-            </div> -->
-
-            <div class="fnormal pt-24 pb-16 state-labels">Signature authority details</div>
+            <div class="fnormal pt-16 state-labels">{{resourceService?.frmelmnts?.lbl?.stateDetails}}</div>
             <div class='ui stackable grid mt-0'>
-              <div class="four wide column py-8">
+              <div class="twelve wide column py-8">
                 <div class="sb-field d-flex flex-dc">
-                  <label class="pl-4 state-labels">signature 1<span class="asterik">*</span></label>
-                  <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button  (click)="openSignLogos({type: 'SIGN', index: 0,  key:'SIGN1'})" class="sb-btn sb-btn-normal sb-browse-btn">
+                  <label for="state" class="state-labels">{{resourceService?.frmelmnts?.lbl?.name}}<span class="asterik">*</span></label>
+                  <input formControlName="stateName" class="sb-form-control is-valid" placeholder="Enter the State, organization or program name">
+                </div>
+                <small class="pl-4 fsmall">{{resourceService?.frmelmnts?.lbl?.stateGovNote}}</small>
+              </div>
+            </div>
+            <div class="ui stackable grid">
+              <div class="six wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="pl-4 state-labels">{{resourceService?.frmelmnts?.lbl?.stateLogo1}} <span class="asterik">*</span></label>
+                  <button (click)="openSateLogos({type: 'LOGO', index: 0,  key:'LOGO1'})"  class="sb-btn sb-btn-normal sb-browse-btn">
+                    {{resourceService?.frmelmnts?.lbl?.browseImage}}
+                  </button>
+                </div>
+                <div class="d-flex flex-dc">
+                  <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.lbl?.imageFormat}}</small>
+                  <small *ngIf="(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO1?.name}} <span  class="pl-8">
+                  <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="12px"></span></small>
+                </div>
+              </div>
+              <div class="six wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="pl-4 state-labels">{{resourceService?.frmelmnts?.lbl?.stateLogo2}}<span class="asterik">*</span></label>
+                  <button (click)="openSateLogos({type: 'LOGO', index: 1,  key:'LOGO2'})"  class="sb-btn sb-btn-normal sb-browse-btn">
+                    {{resourceService?.frmelmnts?.lbl?.browseImage}}
+                  </button>
+                </div>
+                <div class="d-flex flex-dc">
+                  <small *ngIf="!(images?.LOGO2?.name)"  class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.lbl?.imageFormat}}</small>
+                  <small *ngIf="(images?.LOGO2?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO2?.name}}<span  class="pl-8">
+                  <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="12px"></span></small>
+                </div>
+              </div>
+            </div>
+          <div class="fnormal pt-24 state-labels">{{resourceService?.frmelmnts?.lbl?.signatory}}</div>
+            <div class='ui stackable grid mt-0'>
+              <div class="six wide column py-8">
+                <div class="sb-field d-flex flex-dc">
+                  <label class="pl-4 state-labels">{{resourceService?.frmelmnts?.lbl?.signature1}}<span class="asterik">*</span></label>
+                  <button (click)="openSateLogos({type: 'SIGN', index: 0,  key:'SIGN1'})"  class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
-                  <small *ngIf="!(images?.SIGN1?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
-                    <small *ngIf="(images?.SIGN1?.name)" class="pl-16 py-4 fsmall">{{images?.SIGN1?.name}} 
-                      <img (click)="removeImage('SIGN1')" src="assets/images/close.svg" width="24px" class="mr-8">
-                    </small> 
-                </div>
-              </div>
-              <div class="eight wide column py-8">
-                <div class="sb-field d-flex flex-dc">
-                  <label class="state-labels">Signature authority designation<span class="asterik">*</span></label>
-                    <input formControlName="authoritySignature_0" class="sb-form-control is-valid">
-                    <small class="pl-4 fsmall">Help text information</small>
+                  <div class="d-flex flex-dc">
+                    <small *ngIf="!(images?.SIGN1?.name)"  class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.lbl?.signImageFormat}}</small>
+                    <small *ngIf="(images?.SIGN1?.name)" class="pl-4 py-4 fsmall">{{images?.SIGN1?.name}}<span  class="pl-8">
+                    <img (click)="removeImage('SIGN1')" src="assets/images/close.svg" width="12px"></span></small>
                   </div>
                 </div>
               </div>
-
+              <div class="six wide column">
+                <div class="sb-field">
+                  <label>{{resourceService?.frmelmnts?.lbl?.signatureDesignation1}}<span class="asterik">*</span></label>
+                  <div class="sb-field">
+                    <input formControlName="authoritySignature_0" class="sb-form-control is-valid" placeholder="Enter certificate title">
+                  </div>
+                  <small class="pl-4 fsmall">
+                    {{resourceService?.frmelmnts?.lbl?.signatureNote}}
+                  </small>
+                </div>
+              </div>
+            </div>
             <div class='ui stackable grid mt-0'>
-              <div class="four wide column py-8">
+              <div class="six wide column py-8">
                 <div class="sb-field d-flex flex-dc">
-                  <label class="pl-4 state-labels">signature 2 <span class="asterik">*</span></label>
-                  <!-- (click)="showSelectImageModal = !showSelectImageModal" -->
-                  <button (click)="openSignLogos({type: 'SIGN', index: 1, key:'SIGN2'})" class="sb-btn sb-btn-normal sb-browse-btn">
+                  <label class="pl-4 state-labels">{{resourceService?.frmelmnts?.lbl?.signature2}}<span class="asterik">*</span></label>
+                  <button (click)="openSateLogos({type: 'SIGN', index: 1,  key:'SIGN2'})" class="sb-btn sb-btn-normal sb-browse-btn">
                     Browse
                   </button>
-                  <small *ngIf="!(images?.SIGN2?.name)" class="pl-16 py-4 fsmall">example:<span class="asterik">*</span>png</small>
-                    <small *ngIf="(images?.SIGN2?.name)" class="pl-16 py-4 fsmall">{{images?.SIGN2?.name}}
-                      <img (click)="removeImage('SIGN2')" src="assets/images/close.svg" width="24px" class="mr-8">
-                    </small> 
+                </div>
+                <div class="d-flex flex-dc">
+                  <small *ngIf="!(images?.SIGN2?.name)" class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.lbl?.signImageFormat}}</small>
+                  <small *ngIf="(images?.SIGN2?.name)" class="pl-4 py-4 fsmall">{{images?.SIGN2?.name}}<span  class="pl-8">
+                  <img (click)="removeImage('SIGN2')" src="assets/images/close.svg" width="12px"></span></small>
                 </div>
               </div>
-              <div class="eight wide column py-8">
-                <div class="sb-field d-flex flex-dc">
-                  <label class="state-labels">Signature authority designation <span class="asterik">*</span></label>
-                    <input formControlName="authoritySignature_1" class="sb-form-control is-valid">
-                    <small class="pl-4 fsmall">Help text information</small>
+              <div class="six wide column">
+                <div class="sb-field">
+                  <label>{{resourceService?.frmelmnts?.lbl?.signatureDesignation2}}<span class="asterik">*</span></label>
+                  <div class="sb-field">
+                    <input formControlName="authoritySignature_1" class="sb-form-control is-valid" placeholder="Enter certificate title">
                   </div>
+                  <small class="pl-4 fsmall">
+                    {{resourceService?.frmelmnts?.lbl?.signatureNote}}
+                  </small>
                 </div>
               </div>
-
-            <!-- <div class='ui stackable grid mt-0'>
-              <div class='twelve wide column'>
-                <ul class="pl-0">
-                  <div *ngFor="let sign of certSigns; let i = index" class="d-flex flex-ai-center flex-jc-space-between mb-8 list-border py-8">
-                    <li class="mb-0 py-8 fnormal">{{sign.name}}</li>
-                    <div class="d-flex flex-ai-center mx-8" >
-                      <img (click)="removeSigns(i)"  src="assets/images/close.svg" width="24px" class="mr-8">
-                      <img src="assets/images/add.svg" width="24px">
-                    </div>
-                  </div>
-                </ul>
-              </div>
-            </div> -->
-
+            </div>
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                 <div class="sb-checkbox sb-checkbox-secondary pt-24">
                   <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
-                  <label for="check2" class="text-left">All the elements and attributes are throughly verified</label>
+                  <label for="check2" class="text-left">{{resourceService?.frmelmnts?.lbl?.uploadTermsAndCondition}}</label>
                 </div>
               </div>
             </div>
-          </form>
+            </form>
+      
         </div>
       </div>
 
@@ -167,9 +145,9 @@
       <div class="six wide column">
         <div class="select-template-content certificate-bg p-24">
           <div class="d-flex flex-jc-space-between">
-            <label class="preview-title mb-0">Certificate template Preview</label>
+            <label class="preview-title mb-0">{{resourceService?.frmelmnts?.lbl?.certTemplatePreview}}</label>
             <button type="button" (click)="previewCertificate()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
-              Refresh
+              {{resourceService?.frmelmnts?.lbl?.refresh}}
             </button>
           </div>
           <div class="ui stackable grid mt-0">
@@ -188,7 +166,7 @@
           </div>
           <div class="ui stackable grid mt-0">
             <div class="twelve wide column">
-              <label>Choose layout</label>
+              <label>{{resourceService?.frmelmnts?.lbl?.chooseLayout}}</label>
               <div class="d-flex">
                 <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content">
@@ -208,7 +186,7 @@
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
           <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button> -->
-          <button (click)="createCertTemplate()" [ngClass]="{'sb-btn-disabled': disableCreateTemplate }" [disabled]="disableCreateTemplate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">Save as template</button>
+          <button (click)="createCertTemplate()" [ngClass]="{'sb-btn-disabled': disableCreateTemplate }" [disabled]="disableCreateTemplate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">{{resourceService?.frmelmnts?.lbl?.saveAsTemplate}}</button>
         </div>
       </div>
     </div>
