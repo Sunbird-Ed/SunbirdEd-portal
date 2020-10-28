@@ -16,6 +16,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
+import { IMinCollection } from '../../interfaces';
 
 @Component({
   selector: 'app-collection-player',
@@ -588,9 +589,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    * @description - This method handles the creation of course from a textbook (entire or selected units)
    */
   createCourse() {
+    let collection = this.collectionData;
+    collection = this.getChildren(collection);
+    collection = this.updateCollection([collection]);
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
-      this.copyContentService.copyAsCourse(this.collectionData).subscribe((response) => {
+      this.copyContentService.copyAsCourse(collection[0]).subscribe((response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
       }, (err) => {
@@ -599,6 +603,35 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
     });
+  }
+
+  getChildren(collection) {
+    if (!_.isEmpty(_.get(collection, 'children'))) {
+      collection.children = this.updateCollection(collection.children);
+      (collection.children).map((content) => {
+        this.getChildren(content);
+      });
+      return collection;
+    }
+    collection = this.updateCollection([collection]);
+    return collection;
+  }
+
+  updateCollection (collection: Array<IMinCollection>) {
+    const data =  _.map(collection, ((content: IMinCollection) => {
+      return {
+        identifier: content.identifier,
+        mimeType: content.mimeType,
+        visibility: content.visibility,
+        name: content.name,
+        contentType: content.contentType,
+        primaryCategory: content.primaryCategory,
+        additionalCategory: content.additionalCategory,
+        children: content.children,
+        selected: content.selected
+      };
+    }));
+    return data;
   }
 
   /**
