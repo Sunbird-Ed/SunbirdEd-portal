@@ -204,7 +204,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
     filters = {...filters, ...searchQuery, ...user};
     const option: any = {
-      filters: filters,
+      filters: _.omit(filters, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
