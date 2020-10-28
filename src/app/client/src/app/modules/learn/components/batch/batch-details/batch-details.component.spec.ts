@@ -343,7 +343,7 @@ describe('BatchDetailsComponent', () => {
       enrollmentEndDate: null,
       enrollmentType: 'open',
       name: 'SHS cert course 1 - 0825',
-      startDate: '2020-10-25',
+      startDate: '2030-12-31',
       status: 1
     };
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
