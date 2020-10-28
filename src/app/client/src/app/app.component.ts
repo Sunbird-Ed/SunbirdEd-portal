@@ -48,6 +48,11 @@ export class AppComponent implements OnInit, OnDestroy {
    * this variable is used to show the terms and conditions popup
    */
   public showTermsAndCondPopUp = false;
+
+  /**
+   * this variable is used to show the global consent pop up
+   */
+  public showGlobalConsentPopUpSection = false;
   /**
    * Used to config telemetry service and device register api. Possible values
    * 1. org hashtag for Anonymous user
@@ -67,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showAppPopUp = false;
   viewinBrowser = false;
   sessionExpired = false;
+  showConsentPopup = true;
   instance: string;
   resourceDataSubscription: any;
   private fingerprintInfo: any;
@@ -83,6 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isFullScreenView;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
+  globalConsent = 'global-consent';
   labels: {};
   showUserTypePopup = false;
   deviceId: string;
@@ -446,7 +453,15 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
+    // Check for non custodian user and show global consent pop up
+    if (!this.userService.isCustodianUser) {
+      this.showGlobalConsentPopUpSection = true;
+    }
     this.checkFrameworkSelected();
+  }
+
+  public closeConsentPopUp() {
+    this.showGlobalConsentPopUpSection = false;
   }
 
   /**
