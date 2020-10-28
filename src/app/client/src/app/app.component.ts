@@ -104,6 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
+  consentConfig: { tncLink: string; tncText: any; };
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -455,6 +456,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.showTermsAndCondPopUp = false;
     // Check for non custodian user and show global consent pop up
     if (!this.userService.isCustodianUser) {
+      this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
       this.showGlobalConsentPopUpSection = true;
     }
     this.checkFrameworkSelected();
