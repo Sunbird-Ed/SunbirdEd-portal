@@ -400,7 +400,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v3/read/:userId': {
-      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
       // OWNER_CHECK: {
       //   checks: [
