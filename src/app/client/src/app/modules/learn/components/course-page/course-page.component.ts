@@ -236,14 +236,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /**
-   * @param  {object} option    - Page data options
-   * @description fetchPageData - Function to get course page sections using assemble API
-   * - This function is dependent on the flag `isPageAssemble` from form read API
-   * - Executed iff `isPageAssemble` flag is set to `true`
-   * - Courses are displayed based on section returned from assemble API
-   */
   private fetchPageData(option: object) {
+    // Courses are displayed based on section returned from assemble API. Executed iff `isPageAssemble` flag is set to `true`.
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
     if (this.isPageAssemble) {
       if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
@@ -291,14 +285,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  /**
-   * @param  {Object} currentPageData - Current course page data options
-   * @description fetchCourses        - Function to fetch courses using content search API
-   * - This function is dependent on the flag `isPageAssemble` from form read API
-   * - Executed iff `isPageAssemble` flag is set to `false`
-   * - Courses are displayed based on subject and sorted alphabetically
-   */
   private fetchCourses(currentPageData) {
+    // Courses are displayed based on subject and sorted alphabetically. Executed iff `isPageAssemble` flag is set to `false`.
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
         return false;
