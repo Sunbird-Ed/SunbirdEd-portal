@@ -133,7 +133,7 @@ export class PlayerService {
     configuration.config.previewCdnUrl = this.previewCdnUrl;
     const { contentData: { artifactUrl = null } = {} } = contentDetails;
     if (artifactUrl && _.get(configuration, 'config.otherData')) {
-      configuration.config.otherData.cdata = [{ type: 'Artifact', id: artifactUrl }];
+      configuration.config.otherData.cdata = [{ type: 'ArtifactUrl', id: artifactUrl }];
     }
     return configuration;
   }
