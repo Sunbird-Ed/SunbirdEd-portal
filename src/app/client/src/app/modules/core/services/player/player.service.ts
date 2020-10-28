@@ -131,6 +131,10 @@ export class PlayerService {
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
     configuration.config.previewCdnUrl = this.previewCdnUrl;
+    const { contentData: { artifactUrl = null } = {} } = contentDetails;
+    if (artifactUrl && _.get(configuration, 'config.otherData')) {
+      configuration.config.otherData.cdata = [{ type: 'Artifact', id: artifactUrl }];
+    }
     return configuration;
   }
 

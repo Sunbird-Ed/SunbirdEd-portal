@@ -29,9 +29,9 @@ export class PublicPlayerService {
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private utilService: UtilService) {
-      this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+    this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
-      this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
+    this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
       ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
   }
 
@@ -61,7 +61,7 @@ export class PublicPlayerService {
       licenseDetails: 'name,description,url'
     };
     let param = { fields: this.configService.urlConFig.params.contentGet };
-    param = { ...param, ...option.params, ...licenseParam};
+    param = { ...param, ...option.params, ...licenseParam };
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: param
@@ -106,6 +106,10 @@ export class PublicPlayerService {
       }];
     }
     configuration.config.previewCdnUrl = this.previewCdnUrl;
+    const { contentData: { artifactUrl = null } = {} } = contentDetails;
+    if (artifactUrl && _.get(configuration, 'config.otherData')) {
+      configuration.config.otherData.cdata = [{ type: 'Artifact', id: artifactUrl }];
+    }
     return configuration;
   }
   public getCollectionHierarchy(identifier: string, option: any = { params: {} }): Observable<CollectionHierarchyAPI.Get> {
@@ -154,11 +158,11 @@ export class PublicPlayerService {
           this.router.navigate(['learn/course', metaData.identifier]);
         } else {
           this.router.navigate(['play/collection', metaData.identifier],
-          {queryParams: {contentType: metaData.contentType}});
+            { queryParams: { contentType: metaData.contentType } });
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
-        {queryParams: {contentType: metaData.contentType}});
+          { queryParams: { contentType: metaData.contentType } });
       }
     }, 0);
   }
@@ -188,12 +192,12 @@ export class PublicPlayerService {
     return content;
   }
 
-    get libraryFilters() {
-        return this._libraryFilters;
-    }
+  get libraryFilters() {
+    return this._libraryFilters;
+  }
 
-    set libraryFilters(filters) {
-        this._libraryFilters = filters;
-    }
+  set libraryFilters(filters) {
+    this._libraryFilters = filters;
+  }
 
 }
