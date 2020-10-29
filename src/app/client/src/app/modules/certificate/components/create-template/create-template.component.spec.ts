@@ -235,6 +235,14 @@ class RouterStub {
       authoritySignature_0: 'CEO'
     });
     component.updateTitles();
+    const stateTitle  = component.svgData.getElementById('stateTitle');
+    const certTitle   = component.svgData.getElementById('certTitle');
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(stateTitle);
+    const wrapper2 = document.createElement('div');
+    wrapper2.innerHTML = `<text class="state-title" id="stateTitle" x="420.942785" y="185" xml:space="preserve">AP</text>`;
+    // console.log(wrapper === wrapper2);
+    // expect(wrapper.firstChild).toEqual(wrapper2.firstChild);
   });
 
   it('should call updateSigns', () => {
