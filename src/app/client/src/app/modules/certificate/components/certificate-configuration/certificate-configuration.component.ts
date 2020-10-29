@@ -202,7 +202,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
           this.getCertConfigFields();
         } else {
           // Certifciate has attached to a batch
-          if(_.isArray(cert_templates)) {
+          if (_.isArray(cert_templates)) {
             this.batchDetails.cert_templates = cert_templates[0];
           }
           this.processCertificateDetails(cert_templates);
@@ -273,10 +273,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
               }
             },
             'name': _.get(this.selectedTemplate, 'name'),
-            'issuer': JSON.parse(_.get(this.selectedTemplate, 'issuer')),
+            'issuer': _.get(this.selectedTemplate, 'issuer'),
             'data': JSON.stringify(_.get(this.selectedTemplate, 'data')),
             'previewUrl': _.get(this.selectedTemplate, 'artifactUrl'),
-            'signatoryList':  JSON.parse(_.get(this.selectedTemplate, 'signatoryList'))
+            'signatoryList':  _.get(this.selectedTemplate, 'signatoryList')
           }
         }
       }
