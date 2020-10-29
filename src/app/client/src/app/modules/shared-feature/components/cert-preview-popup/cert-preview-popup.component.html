@@ -4,7 +4,7 @@
     {{resourceService?.frmelmnts?.cert?.lbl?.certPreview }}
   </div>
   <div class="sb-modal-content">
-    <div class="cert-preview-img"><img [src]="template?.value"></div>
+    <div class="cert-preview-img"><img [src]="certTemplateURL(template?.artifactUrl)"></div>
   </div>
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal('select')">

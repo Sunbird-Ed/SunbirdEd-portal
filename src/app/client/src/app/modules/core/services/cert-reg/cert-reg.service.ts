@@ -91,7 +91,7 @@ export class CertRegService extends DataService {
 
   public addCertificateTemplate(request) {
     const options = {
-      url: `${this.config.urlConFig.URLS.CERTIFICATE.ADD_CERTIFICATE}`,
+      url: `${this.config.urlConFig.URLS.CERTIFICATE.ATTACH_CERTIFICATE}`,
       data: request,
     };
     return this.patch(options);

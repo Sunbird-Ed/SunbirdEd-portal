@@ -71,6 +71,27 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+ 
+    '/content/v1/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/asset/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/asset/v1/upload/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
     '/content/content/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
@@ -577,6 +598,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/group/v1/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v2/exists/:key/:value': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -603,6 +628,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+    '/certreg/v1/template/add': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
+    },
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
@@ -622,7 +651,8 @@ const API_LIST = {
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
-    '/learner/certreg/v2/certs/download/:id'
+    '/learner/certreg/v2/certs/download/:id',
+    '/content/asset/v1/upload/:id'
   ]
 };
 module.exports = API_LIST;

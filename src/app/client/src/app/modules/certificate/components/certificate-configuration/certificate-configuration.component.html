@@ -84,19 +84,19 @@
         </div>
 
         <div class="eight wide column">
-          <div *ngIf="!(batchDetails && batchDetails?.cert_templates)" class="select-template-content p-24">
+          <div *ngIf="!selectedTemplate" class="select-template-content p-24">
             <div class="d-flex flex-dc flex-ai-center text-center mt-32">
               <div><img src="../../assets/images/addcertificate.png"></div>
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                 <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                 {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-              <button type="button" id="addNewCert" (click)="currentState = screenStates.certRules"
+              <button type="button" id="addNewCert" (click)="certificateCreation()"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                 <img src="assets/images/plus-icon.svg" width="8px" class="ml-4 plus-icon"></button>
             </div>
           </div>
-          <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
+          <div *ngIf="selectedTemplate" class="certificate-edit-content p-24">
             <div class="content">
               <div class="fnormal pb-24 font-weight-bold text-left">
                 {{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>
@@ -180,6 +180,8 @@
                 </div>
               </div>
             </form>
+            <div>
+            </div>
           </div>
         </div>
 
@@ -187,21 +189,18 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
           <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
             <div class="select-template-container mb-16">
-              <div class="d-flex flex-jc-space-between">
-                <div class="d-flex flex-dc text-left mr-16">
-                  <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
-                  <label class="font-weight-normal mt-8 fsmall">Choose and select from available templates</label>
-                </div>
-              <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
+               <div class="d-flex flex-dc text-left mr-16">
+               <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
+               <label class="font-weight-normal my-16 fsmall">Choose and select from available templates</label>
+              </div>
+               <button class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
                (click)="navigateToCreateTemplate()">
                 <i class="plus alternate outline icon"></i>Create template</button>
-               </div>
-              <div *ngIf="certTemplateList" class="certificate-scrollbar">
+               <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
-                  <sb-certificate-actions [select]="getConfig(config?.select, template)"
-                    [remove]="getConfig(config?.remove, template)" [preview]="config?.preview"
-                    [isSelectedTemplate]="selectedTemplate?.name === template?.name && !showPreviewModal"
-                    [template]="template?.value" (buttonClick)="handleCertificateEvent($event, template)">
+                  <sb-certificate-actions [preview]="config?.preview"
+                    [isSelectedTemplate]="selectedTemplate?.identifier === template?.identifier && !showPreviewModal"
+                    [template]="template?.artifactUrl" (buttonClick)="handleCertificateEvent($event, template)">
                   </sb-certificate-actions>
                 </div>
               </div>
@@ -218,7 +217,7 @@
             <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
               (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
-              [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+            [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
             <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
               *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"
