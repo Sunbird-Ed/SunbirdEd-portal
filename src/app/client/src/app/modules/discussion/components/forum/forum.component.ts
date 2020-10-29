@@ -38,9 +38,9 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
   getDiscussionUrl() {
     const userName = _.get(this.userService.userProfile, 'userName');
     this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
-      this.discussionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-        `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`
-      );
+      var forumId = _.get(this.activatedRoute.snapshot, 'queryParams.forumId');
+      var iframeUrl = `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=${encodeURIComponent("/category/"+forumId)}`;
+      this.discussionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(iframeUrl);
     });
   }
 
