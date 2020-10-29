@@ -14,6 +14,7 @@ import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { of, throwError, observable } from 'rxjs';
 import { MockData } from './create-template.component.spec.data';
+
 describe('CreateTemplateComponent', () => {
   let component: CreateTemplateComponent;
   let fixture: ComponentFixture<CreateTemplateComponent>;
@@ -192,6 +193,90 @@ class RouterStub {
     component.close();
     expect(component.showSelectImageModal).toEqual(false);
     expect(component.showUploadUserModal).toEqual(false);
+  });
+
+  it('should call removeImage', () => {
+    component.removeImage('LOGO1');
+    expect(_.isEmpty(component.images['LOGO1'])).toBeTruthy();
+  });
+
+  // it('should call openSateLogos', () => {
+  //   const data = {type: 'LOGO', index: 0,  key: 'LOGO1'};
+  //   component.browseImage = new BrowseImagePopupComponent();
+  //   component.openSateLogos(data);
+  //   expect(component.logoType).toEqual(data);
+  //   expect(component.showSelectImageModal ).toBeTruthy();
+  // });
+
+  it('should call chooseCertificate', () => {
+    spyOn(component, 'getSVGTemplate').and.stub();
+    const data = { artifactUrl: 'assets/images/template-1.svg', identifier: 0 };
+    component.chooseCertificate(data);
+    expect(component.selectedCertificate ).toEqual(data);
+  });
+
+  it('should call  previewCertificate', () => {
+    spyOn(component, 'updateTitles').and.stub();
+    spyOn(component, 'updateStateLogos').and.stub();
+    spyOn(component, 'updateSigns').and.stub();
+    component.logoHtml = MockData.svgData.data;
+    const data = { artifactUrl: 'assets/images/template-1.svg', identifier: 0 };
+    component.previewCertificate();
+    expect(component.updateTitles).toHaveBeenCalled();
+    expect(component.updateStateLogos).toHaveBeenCalled();
+    expect(component.updateSigns).toHaveBeenCalled();
+  });
+
+  it('should call updateTitles', () => {
+    component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
+    component.createTemplateForm.patchValue({
+      certificateTitle: 'Completion Of Test',
+      stateName: 'AP',
+      authoritySignature_0: 'CEO'
+    });
+    component.updateTitles();
+  });
+
+  it('should call updateSigns', () => {
+    component.images = MockData.imagesArray;
+    const image = `<image></image>`;
+    spyOn(component, 'editSVG').and.returnValue(new Promise((resolve) => resolve()));
+    const state = new DOMParser().parseFromString(image, 'text/html');
+    component.updateSigns(state);
+    expect(component.editSVG).toHaveBeenCalled();
+  });
+
+  it('should call updateStateLogos', () => {
+    component.images = MockData.imagesArray;
+    const image = `<image></image>`;
+    spyOn(component, 'editSVG').and.returnValue(new Promise((resolve) => resolve()));
+    const state = new DOMParser().parseFromString(image, 'text/html');
+    component.updateStateLogos(state);
+    expect(component.editSVG).toHaveBeenCalled();
+  });
+
+  it('should call certificateCreation', () => {
+    component.images = MockData.imagesArray;
+    const svgData = MockData.svgData.data;
+    spyOn(component, 'getBase64Data').and.returnValue('data:image/jpeg;base64, xyz');
+    spyOn(component, 'urltoFile').and.returnValue(new Promise((resolve) => resolve('File')));
+    const ev = new DOMParser().parseFromString(svgData, 'text/html');
+    component.certificateCreation(ev);
+    expect(component.urltoFile).toHaveBeenCalled();
+    expect(component.getBase64Data).toHaveBeenCalled();
+  });
+
+  it('should call assetData', () => {
+    component.optionSing = 'LOGO1';
+    const data = {
+      index: 0,
+      key: 'LOGO1',
+      name: '001.png',
+      type: 'LOGO',
+      url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
+      };
+    component.assetData(data);
+    expect(component.images['LOGO1']).toEqual(data);
   });
 
   // it('should remove the selected logo', () => {

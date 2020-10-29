@@ -125,6 +125,7 @@
 
     .select-template-container {
       height: 100%;
+      position: relative;
     }
 
     .select-template-content {
@@ -247,3 +248,4 @@
 
 }
 
+.add-new-template-btn{position:absolute;right:0px;top:0px;}

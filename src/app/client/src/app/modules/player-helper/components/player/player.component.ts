@@ -113,6 +113,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.navigationHelperService.contentFullScreenEvent.
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
+      const root: HTMLElement = document.getElementsByTagName( 'html' )[0];
+      if (isFullScreen) {
+        root.classList.add('PlayerMediaQueryClass');
+      } else {
+        root.classList.remove('PlayerMediaQueryClass');
+      }
       this.loadPlayer();
     });
 

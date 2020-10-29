@@ -1,7 +1,7 @@
 
-import {of as observableOf, throwError as observableThrowError,  Observable, BehaviorSubject } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, Observable, BehaviorSubject } from 'rxjs';
 
-import {mergeMap} from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { BrowserCacheTtlService } from './../browser-cache-ttl/browser-cache-ttl.service';
 import { HttpOptions, RequestParam, ServerResponse } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
@@ -67,7 +67,7 @@ export class ResourceService {
     return ResourceService.singletonInstance;
   }
   public initialize() {
-    const range  = {value: 'en', label: 'English', dir: 'ltr'};
+    const range = { value: 'en', label: 'English', dir: 'ltr' };
     this.getResource(this.cacheService.get('portalLanguage') || 'en', range);
     this.translateService.setDefaultLang('en');
   }
@@ -75,20 +75,22 @@ export class ResourceService {
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-      const option = {
-        url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
-      };
-      this.get(option).subscribe(
-        (data: ServerResponse) => {
-          this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
-          this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
-          this.getLanguageChange(range);
-        },
-        (err: ServerResponse) => {
-        }
-      );
-      
-      this.translateService.use(language);
+    const option = {
+      url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
+    };
+    this.get(option).subscribe(
+      (data: ServerResponse) => {
+        const { creation: { messages: creationMessages = {}, frmelmnts: creationFrmelmnts = {} } = {},
+          consumption: { messages: consumptionMessages = {}, frmelmnts: consumptionFrmelmnts = {} } = {} } = _.get(data, 'result') || {};
+        this.messages = _.merge({}, creationMessages, consumptionMessages);
+        this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
+        this.getLanguageChange(range);
+      },
+      (err: ServerResponse) => {
+      }
+    );
+
+    this.translateService.use(language);
   }
   get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {

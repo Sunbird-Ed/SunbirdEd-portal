@@ -37,6 +37,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public contentTitle: string;
   public playerConfig: any;
   public loader = true;
+  public courseConsent = 'course-consent';
   public courseHierarchy: any;
   public istrustedClickXurl = false;
   public telemetryCourseImpression: IImpressionEventInput;
@@ -49,6 +50,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public contentDetails: { title: string, id: string, parentId: string }[] = [];
   public enrolledBatchInfo: any;
   public treeModel: any;
+  public consentConfig: any;
   public showExtContentMsg = false;
   public previewContentRoles = ['COURSE_MENTOR', 'CONTENT_REVIEWER', 'CONTENT_CREATOR', 'CONTENT_CREATION'];
   public collectionTreeOptions: ICollectionTreeOptions;
@@ -114,6 +116,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.courseMentor = false;
     }
+    // Set consetnt pop up configuration here
+    this.consentConfig = {
+      tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink,
+      tncText: this.resourceService.frmelmnts.lbl.agreeToShareDetails
+    };
     this.initLayout();
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
