@@ -8,7 +8,7 @@ const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
-const { getUserCertificates, addTemplateToBatch } = require('./../helpers/certHelper');
+const { getUserCertificates, addTemplateToBatch, removeCert } = require('./../helpers/certHelper');
 const { logError } = require('./../helpers/utilityService');
 const validate = require('uuid-validate');
 // const mockData = require('./mockdata/asset.json');
@@ -176,8 +176,10 @@ module.exports = function (app) {
     }))
 
 
-    app.patch('/certreg/v1/template/add',
+  app.patch('/certreg/v1/template/add',
+    bodyParser.json({ limit: '10mb'}),
     isAPIWhitelisted.isAllowed(),
+    removeCert(),
     proxy(certRegURL, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
