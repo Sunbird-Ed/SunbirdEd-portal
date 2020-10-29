@@ -266,14 +266,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
                 'name': _.get(this.selectedTemplate, 'name'),
                 'issuer': _.get(this.selectedTemplate, 'issuer'),
                 'data' : JSON.stringify(_.get(this.selectedTemplate, 'data')),
-                'signatoryList': _.get(this.selectedTemplate, 'signatoryList'),
-                'notifyTemplate': {
-                    'subject': _.get(this.selectedTemplate, 'name'),
-                    'stateImgUrl': 'https://sunbirddev.blob.core.windows.net/orgemailtemplate/img/File-0128212938260643843.png',
-                    'regardsperson': 'Chairperson',
-                    'regards': 'Minister of Gujarat',
-                    'emailTemplateType': 'defaultCertTemp'
-                }
+                'signatoryList': _.get(this.selectedTemplate, 'signatoryList')
             }
         }
     }
