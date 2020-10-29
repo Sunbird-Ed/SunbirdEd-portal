@@ -132,14 +132,14 @@ describe('MyGroupsComponent', () => {
 
   it('should call acceptAllGroupsTnc', () => {
     spyOn(component, 'acceptAllGroupsTnc');
-    component.handleGroupTnc({type: acceptTnc.ALL, data: {}});
+    component.handleGroupTnc({type: acceptTnc.ALL});
     expect(component.acceptAllGroupsTnc).toHaveBeenCalled();
   });
 
   it('should call acceptGroupTnc', () => {
     spyOn(component, 'acceptGroupTnc');
-    component.handleGroupTnc({type: acceptTnc.GROUP, data: {}});
-    expect(component.acceptGroupTnc).toHaveBeenCalledWith({});
+    component.handleGroupTnc({type: acceptTnc.GROUP});
+    expect(component.acceptGroupTnc).toHaveBeenCalledWith();
   });
 
   it('should disable showTncModal', () => {
@@ -159,7 +159,8 @@ describe('MyGroupsComponent', () => {
         }
       ]
     };
-    component.acceptGroupTnc({id: '1'});
+    component.selectedGroup = {id: '1'};
+    component.acceptGroupTnc();
     expect(component.showTncModal).toBeFalsy();
     expect(component['groupService'].updateMembers).toHaveBeenCalledWith('1', request);
 

@@ -822,3 +822,40 @@ export const contentHierarchyDateSet1 = {
     'identifier': 'do_312774554650435584110464'
   }
 };
+export const courseSectionFacetData = {
+  'facets': [
+    {
+      'name': 'gradeLevel',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    },
+    {
+      'name': 'board',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    },
+    {
+      'name': 'subject',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    }
+  ],
+  'keys': ['board']
+};
+export const parsedCourseFacetData = {
+  'board': [
+    { 'name': 'class 10', 'count': 84 },
+    { 'name': 'class 1', 'count': 313 }
+  ]
+};
+export const courseFilters = {
+  'objectType': 'Content',
+  'contentType': 'Course',
+  'status': ['Live'],
+  'batches.enrollmentType': 'open',
+  'batches.status': 1,
+  'audience': ['Student', 'Teacher']
+};
