@@ -1190,6 +1190,39 @@ export const Response = {
       'gradeLevel'
     ]
   },
+  buildOptionNonLoggedin: {
+    'source': 'web',
+    'name': 'Course',
+    'organisationId': '*',
+    'filters': {},
+    'facets': [
+      'channel',
+      'gradeLevel',
+      'subject',
+      'medium'
+    ],
+    'params': {
+      'orgdetails': 'orgName,email'
+    },
+    'fields': [
+      'name',
+      'appIcon',
+      'medium',
+      'subject',
+      'resourceType',
+      'contentType',
+      'organisation',
+      'topic',
+      'mimeType',
+      'trackable',
+      'gradeLevel'
+    ],
+    'search': {
+      'filters': {
+        'contentType': 'Course'
+      }
+    }
+  },
   buildOptionRespForFetchCourse: {
     'source': 'web',
     'name': 'Course',
@@ -1254,8 +1287,103 @@ export const Response = {
     }
   },
   contentSearchResponse: {
-    'id': 'api',
+    'id': 'api.content.search',
+    'ver': '1.0',
+    'ts': '2020-10-29T06:55:02.096Z',
+    'params': {
+      'resmsgid': 'aad68d00-19b3-11eb-be1b-eb673220d749',
+      'msgid': '605999de-3f60-ddba-2f3c-9e8727c0c73f',
+      'status': 'successful',
+      'err': null,
+      'errmsg': null
+    },
+    'responseCode': 'OK',
     'result': {
+      'id': 'api.content.search',
+      'ver': '1.0',
+      'ts': '2020-10-29T06:55:02.096Z',
+      'params': {
+        'resmsgid': 'aad68d00-19b3-11eb-be1b-eb673220d749',
+        'msgid': '605999de-3f60-ddba-2f3c-9e8727c0c73f',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+      },
+      'content': [
+        {
+          'trackable': {
+            'enabled': 'Yes',
+            'autoBatch': 'Yes'
+          },
+          'identifier': 'do_213133223315382272146',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg',
+          'gradeLevel': [
+            'Class 2'
+          ],
+          'subject': [
+            'Political Science'
+          ],
+          'name': 'vk-3.4CourseG20102020',
+          'organisation': [
+            'Odisha'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Gujarati'
+          ],
+          'contentType': 'Course',
+          'objectType': 'Content',
+          'resourceType': 'Course'
+        },
+        {
+          'trackable': {
+            'enabled': 'Yes',
+            'autoBatch': 'Yes'
+          },
+          'identifier': 'do_2131234105062768641485',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg',
+          'gradeLevel': [
+            'Class 1'
+          ],
+          'subject': [
+            'General Science'
+          ],
+          'name': 'Copy of vk-3.3CourseG05102020',
+          'organisation': [
+            'Odisha'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Hindi'
+          ],
+          'contentType': 'Course',
+          'objectType': 'Content',
+          'resourceType': 'Course'
+        },
+        {
+          'trackable': {
+            'enabled': 'Yes',
+            'autoBatch': 'Yes'
+          },
+          'identifier': 'do_2131226231037706241477',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg',
+          'gradeLevel': [
+            'Class 1'
+          ],
+          'subject': undefined,
+          'name': 'vk-3.3CourseG05102020',
+          'organisation': [
+            'Odisha'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Telugu'
+          ],
+          'contentType': 'Course',
+          'objectType': 'Content',
+          'resourceType': 'Course'
+        }
+      ],
       'sections': {
         'facets': [
           {
@@ -1279,5 +1407,77 @@ export const Response = {
         ]
       }
     }
-  }
+  },
+  courseFilters: {
+    'objectType': 'Content',
+    'contentType': 'Course',
+    'status': ['Live'],
+    'batches.enrollmentType': 'open',
+    'batches.status': 1,
+    'audience': ['Student', 'Teacher']
+  },
+  carouselMasterData: [
+    {
+      "name": "General Science",
+      "contents": [
+        {
+          "trackable": {
+            "enabled": "Yes",
+            "autoBatch": "Yes"
+          },
+          "identifier": "do_2131234105062768641485",
+          "appIcon": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg",
+          "gradeLevel": [
+            "Class 1"
+          ],
+          "subject": [
+            "General Science"
+          ],
+          "name": "Copy of vk-3.3CourseG05102020",
+          "organisation": [
+            "Odisha"
+          ],
+          "mimeType": "application/vnd.ekstep.content-collection",
+          "medium": [
+            "Hindi"
+          ],
+          "contentType": "Course",
+          "objectType": "Content",
+          "resourceType": "Course",
+          "cardImg": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Political Science",
+      "contents": [
+        {
+          "trackable": {
+            "enabled": "Yes",
+            "autoBatch": "Yes"
+          },
+          "identifier": "do_213133223315382272146",
+          "appIcon": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg",
+          "gradeLevel": [
+            "Class 2"
+          ],
+          "subject": [
+            "Political Science"
+          ],
+          "name": "vk-3.4CourseG20102020",
+          "organisation": [
+            "Odisha"
+          ],
+          "mimeType": "application/vnd.ekstep.content-collection",
+          "medium": [
+            "Gujarati"
+          ],
+          "contentType": "Course",
+          "objectType": "Content",
+          "resourceType": "Course",
+          "cardImg": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg"
+        }
+      ]
+    }
+  ]
 };

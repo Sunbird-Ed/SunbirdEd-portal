@@ -413,7 +413,7 @@ describe('CoursePageComponent', () => {
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn(component, 'isPageAssemble').and.returnValue(true);
-        component['fetchPageData'](Response.buildOptionRespForNonLoggedInUser)
+        component['fetchPageData'](Response.buildOptionNonLoggedin)
             .subscribe(res => {
                 expect(pageApiService.getPageData).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
@@ -431,15 +431,18 @@ describe('CoursePageComponent', () => {
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
+        spyOn<any>(utilService, 'generateCourseFilters').and.returnValue(of(Response.courseFilters));
         spyOn(component, 'isPageAssemble').and.returnValue(false);
+        component.queryParams = { 'selectedTab': 'course' };
         component['fetchCourses'](Response.buildOptionRespForFetchCourse)
             .subscribe(res => {
                 expect(searchService.contentSearch).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
-                expect(utilService.processCourseFacetData).toHaveBeenCalledWith(Response.courseSectionsResponse, ['channel', 'gradeLevel', 'subject', 'medium']);
+                expect(utilService.generateCourseFilters).toHaveBeenCalled();
                 expect(component.facets).toBeDefined();
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
+                expect(component.carouselMasterData.length).toEqual(2);
                 done();
             });
     });
