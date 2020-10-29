@@ -52,14 +52,16 @@
     z-index: 2;
 
     .certificate-scrollbar {
+      height:100vh;
       overflow-y: auto;
-      padding-right: 0.5rem;
-      padding-left: 0;
-
-      html[dir="rtl"] & {
-        padding-right: 0;
-        padding-left: 0.5rem;
-      }
+  padding-right: 0.5rem;
+  padding-left: 0;
+  overflow-x: hidden;
+  // max-height: calc(100vh - 225px);
+  html[dir="rtl"] & {
+    padding-right: 0;
+    padding-left: 0.5rem;
+  }
     }
 
     .certificates-label {
@@ -123,6 +125,7 @@
 
     .select-template-container {
       height: 100%;
+      position: relative;
     }
 
     .select-template-content {
@@ -245,3 +248,4 @@
 
 }
 
+.add-new-template-btn{position:absolute;right:0px;top:0px;}

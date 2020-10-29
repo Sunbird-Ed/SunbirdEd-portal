@@ -2886,5 +2886,72 @@ export const MockData = {
 
    imageUrlData: {
       id: 'base64 data'
-   }
+   },
+   svgData : {
+      data: `<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg' xmlns:se='http://svg-edit.googlecode.com' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 841.9 595.3' style='enable-background:new 0 0 841.9 595.3'>
+      <defs>
+      </defs>
+      <image class='frameset' id='frameSet' x='0' y='0' width='100%' height='100%' xlink:href="" />
+      <image class='state-bg' id='stateBg' x='0' y='75' width='100%' height='432' xlink:href=''/>
+       <defs>
+          <filter id='shadow'>
+            <feDropShadow dx='0.5' dy='0.5' stdDeviation='3' flood-color='#ddd'/>
+          </filter>
+          <clipPath id='clip'>
+          <rect x='50%' width='88' height='88' rx='100'/>
+          </clipPath>
+          </defs>
+      <g transform='translate(-42,65)' >
+      <image class='state-logo state-logo-1' id='stateLogo1' x='50%' y='0' width='88' height='88' clip-path='url(#clip)' xlink:href='https://via.placeholder.com/88/ffc107/808080' />
+      </g>
+      <text class="state-title" id='stateTitle' x='420.942785' y='185' xml:space='preserve'>Government of State</text>
+      <text class="cert-title" id='certTitle' x='420.215465' y='230' xml:space='preserve'>Certificate of Completion</text>
+      <g transform='translate(0,-10)'>
+      <text class='para firstline' x='420.942785' y='289.334146' id='svg_96' xml:space='preserve'>This is to certify that</text>
+      <text class='para secondline svgResizableText' x='420.949226' y='322.262614' id='svg_97' xml:space='preserve'>recipientName</text>
+      <text class='para thirdline' x='420.949988' y='353.969933' id='svg_98' xml:space='preserve'>has successfully completed the course</text>
+      <text class='para fourthline svgResizableText' x='420.949988' y='389.33579' id='svg_99' font-size='20' text-anchor='middle' xml:space='preserve'>courseName</text>
+      <text class='para fifthline' x='420.952617' y='425.917659' id='svg_101' xml:space='preserve'>on issuedDate</text>
+      </g>
+      <image class='india-diksha' id='indiaDiksha' x='75' y='465.675623' width='100' height='56' xlink:href=''/>
+      <g transform='translate(0,-15)'>
+      <image class="signature-img-1" id="signatureImg1" x='0' y='460' width='100%' height='46' xlink:href='https://via.placeholder.com/124x46/ff7814/808080?Text=Digital.com'/>
+      <rect x='363.21' y='507.3' class='digital-sign-separater' fill='#9A9A9A' width='115.57' height='0.75'/>
+      <text class="signature-title signature-title-1" id="signatureTitle1" x='50%' y='525' xml:space='preserve'>Name</text>
+      <text class="signature-title signature-title-1a" id="signatureTitle1a" x='50%' y='540' xml:space='preserve'>Designation, Department</text>
+      </g>
+      <image xlink:href='' class='qr-code' height='70' width='56' y='440' x='710' id='Bitmap'/>
+      <text class="qr-text" x='636' y='525'>Scan to Verify Certificate</text>
+      </svg>`
+   },
+   imagesArray : {
+      'LOGO1' : {
+        index: 0,
+        key: 'LOGO1',
+        name: '001.png',
+        type: 'LOGO',
+        url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
+        },
+        'LOGO2': {
+          index: 0,
+          key: 'LOGO1',
+          name: '001.png',
+          type: 'LOGO',
+          url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
+        },
+        'SIGN1': {
+          index: 0,
+          key: 'LOGO1',
+          name: '001.png',
+          type: 'LOGO',
+          url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
+        },
+        'SIGN2' : {
+          index: 0,
+          key: 'LOGO1',
+          name: '001.png',
+          type: 'LOGO',
+          url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
+        }
+    }
 };

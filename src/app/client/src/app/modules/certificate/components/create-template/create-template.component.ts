@@ -20,7 +20,7 @@ import * as dayjs from 'dayjs';
 export class CreateTemplateComponent implements OnInit {
 
   @ViewChild(BrowseImagePopupComponent)
-  private browseImage: BrowseImagePopupComponent;
+  public browseImage: BrowseImagePopupComponent;
 
   public unsubscribe$ = new Subject<void>();
   createTemplateForm: FormGroup;
@@ -46,10 +46,10 @@ export class CreateTemplateComponent implements OnInit {
   disableCreateTemplate = true;
   certConfigModalInstance = new CertConfigModel();
   images = {
-    'LOGO1': { 'name' : '' },
-    'LOGO2': { 'name' : '' },
-    'SIGN1': { 'name' : '' },
-    'SIGN2': { 'name' : '' }
+    'LOGO1': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'LOGO2': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'SIGN1': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'SIGN2': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''}
   };
   finalSVGurl: any;
   classNames = {
@@ -159,7 +159,6 @@ export class CreateTemplateComponent implements OnInit {
       this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
     }
     this.images[data.key] = data;
-    console.log(this.images);
   }
 
   close() {
@@ -205,7 +204,6 @@ export class CreateTemplateComponent implements OnInit {
     this.svgData = this.convertHtml(this.logoHtml);
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
-    console.log(digitalSigns);
     this.updateTitles();
     this.updateStateLogos(stateLogos);
     this.updateSigns(digitalSigns);
@@ -240,7 +238,6 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   editSVG(logosArray, stateLogos) {
-    console.log(logosArray);
     return new Promise(async (resolve, reject) => {
       for (let i = 0; i < logosArray.length; i++) {
         const logo = logosArray[i];
@@ -278,7 +275,7 @@ export class CreateTemplateComponent implements OnInit {
       }));
   }
 
-urltoFile(url, filename, mimeType){
+urltoFile(url, filename, mimeType) {
   return (fetch(url)
       .then((res) => {
         return res.arrayBuffer();
