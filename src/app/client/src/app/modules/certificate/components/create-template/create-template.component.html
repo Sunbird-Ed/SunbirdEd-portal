@@ -25,7 +25,6 @@
       <div class="six wide column">
         <div class="certificate-content certificate-bg p-24">
           <form [formGroup]="createTemplateForm">
-            <!-- <div class="fs-1">Edit template</div> -->
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                   <div class="sb-field">
@@ -155,9 +154,6 @@
               <div class="cert-select-card">
                 <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
                   <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
-                    <!-- <div class="title d-flex flex-ai-center flex-jc-center p-16">
-                      Choose a layout below and refresh to preview
-                    </div> -->
                     <img [src]="getImagePath()" class="w-100">
                   </div>
                 </div>
@@ -185,7 +181,6 @@
     <div class="ui stackable grid m-0">
       <div class="twelve wide column px-0">
         <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-          <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="previewCertificate()">Preview certificate</button> -->
           <button (click)="createCertTemplate()" [ngClass]="{'sb-btn-disabled': disableCreateTemplate }" [disabled]="disableCreateTemplate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24">{{resourceService?.frmelmnts?.lbl?.saveAsTemplate}}</button>
         </div>
       </div>
@@ -193,4 +188,3 @@
 </div>
 
 <browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" ></browse-image-popup>
-<!-- [showUploadUserModal]="showUploadUserModal" -->

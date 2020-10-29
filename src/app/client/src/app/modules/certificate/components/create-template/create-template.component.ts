@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
-import { MockData } from './create-template.component.spec.data';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
-import { fromFetch } from 'rxjs/fetch';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
 import * as dayjs from 'dayjs';
@@ -17,7 +15,7 @@ import * as dayjs from 'dayjs';
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.scss']
 })
-export class CreateTemplateComponent implements OnInit {
+export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   @ViewChild(BrowseImagePopupComponent)
   public browseImage: BrowseImagePopupComponent;
