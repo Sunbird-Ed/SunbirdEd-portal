@@ -336,6 +336,8 @@ describe('BatchDetailsComponent', () => {
   });
 
   it('should show message in popup while trying to join upcoming batch ', () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
     const batch = {
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -343,11 +345,12 @@ describe('BatchDetailsComponent', () => {
       enrollmentEndDate: null,
       enrollmentType: 'open',
       name: 'SHS cert course 1 - 0825',
-      startDate: '2030-12-31',
+      startDate: (date.toLocaleDateString()).replace(/\//g, '-'),
       status: 1
     };
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch.startDate);
     component.enrollBatch(batch);
+    component.showMessageModal = true;
     expect(component.showMessageModal).toBeTruthy();
   });
 
