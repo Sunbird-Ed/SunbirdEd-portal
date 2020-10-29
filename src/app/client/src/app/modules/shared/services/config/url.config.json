@@ -25,7 +25,8 @@
       "organisation",
       "topic",
       "mimeType",
-      "trackable"
+      "trackable",
+      "gradeLevel"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
