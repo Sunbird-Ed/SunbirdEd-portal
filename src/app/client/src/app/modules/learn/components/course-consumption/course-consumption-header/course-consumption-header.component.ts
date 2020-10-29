@@ -273,10 +273,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
     this.courseConsumptionService.coursePagePreviousUrl = '';
     if (this.tocId) {
-      const navigateUrl = this.userService.loggedIn ? '/resources/play/content' : '/play/collection';
+      const navigateUrl = this.userService.loggedIn ? '/resources/play/collection' : '/play/collection';
       this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
-    }
-    if (!previousPageUrl) {
+    } else if (!previousPageUrl) {
       this.router.navigate(['/learn']);
       return;
     }
