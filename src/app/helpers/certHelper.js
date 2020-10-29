@@ -133,7 +133,7 @@ const addTemplateToBatch = () => {
       logError(req, err, `Error occurred while fetching template ${JSON.stringify(req.body)}`);
       next(err);
     }
-}
+  }
 }
 
 const getTemplateData = async (req, requestParams) => {
@@ -145,4 +145,35 @@ const getTemplateData = async (req, requestParams) => {
   return response;
 }
 
-module.exports = { getUserCertificates, addTemplateToBatch };
+const removeCert = () => {
+  return async function (req, res, next) {
+    try {
+        logger.info({msg: `removeCert() is called with requestbody ${JSON.stringify(req.body)}`});
+        var reqObj = _.get(req, 'body.request');
+        let oldTemplateId = _.get(reqObj, 'oldTemplateId')
+        if (!_.isEmpty(oldTemplateId)) {
+          logger.info({msg: `Remove the old attached certificate ${oldTemplateId}`});
+          const appConfig = getHeaders();
+          appConfig.headers['x-authenticated-user-token'] = _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
+          const requestParams = {
+                batch: {
+                  courseId: _.get(reqObj, 'batch.courseId'),
+                  batchId: _.get(reqObj, 'batch.batchId'),
+                  template: {
+                    identifier: oldTemplateId,
+                  }
+                }
+          }
+          const response = await HTTPService.patch(`${certRegURL + 'course/batch/cert/v1/template/remove'}`, {request: requestParams}, appConfig).toPromise().catch(err => {
+            logger.error({msg: `Error occurred while removing the old attached certificate ${oldTemplateId}, ERROR: ${err}`})
+          });
+        }
+        next();
+      }catch(err) {
+        logError(req, err, `Error occurred while fetching template ${JSON.stringify(req.body)}`);
+        next(err);
+      }
+    }
+  }
+
+module.exports = { getUserCertificates, addTemplateToBatch, removeCert };
