@@ -4,7 +4,7 @@ const azure = require('azure-storage')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const multiparty = require('multiparty');
 const containerName = envHelper.desktop_azure_crash_container_name;
 

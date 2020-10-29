@@ -16,7 +16,7 @@ const fs = require('fs');
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
 
@@ -423,6 +423,9 @@ module.exports = (app) => {
     }
   });
 
+  app.all('/get/user/sessionId', (req, res) => {
+      res.send({id: getEncyptedQueryParams({userName: req.query.userName})})
+  })
 
   app.all('/migrate/account/login/callback', async (req, res) => {
     logger.info({msg: '/migrate/account/login/callback called'});

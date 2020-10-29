@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TestBed, inject } from '@angular/core/testing';
 import { ConfigService, ResourceService } from '@sunbird/shared';
@@ -9,14 +10,19 @@ import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole } from '@project-sunbird/client-services/models/group';
+import { groupData, modifiedActivities } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
   configureTestSuite();
   const resourceBundle = {
+    languageSelected$: of ({}),
     frmelmnts: {
       lbl: {
         you: 'You',
-      }
+        ACTIVITY_COURSE_TITLE: 'Courses',
+        ACTIVITY_TEXTBOOK_TITLE: 'Textbooks'
+      },
+
     }
   };
 
@@ -99,8 +105,9 @@ describe('GroupsService', () => {
   it('should call groupCs getById', () => {
     const service = TestBed.get(GroupsService);
     spyOn(service['groupCservice'], 'getById');
-    service.getGroupById('123', true, true);
-    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123', { includeMembers: true, includeActivities: true });
+    service.getGroupById('123', true, true, true);
+    expect(service['groupCservice'].getById).toHaveBeenCalledWith('123',
+    { includeMembers: true, includeActivities: true, groupActivities: true });
   });
 
   it('should call groupCs deleteById', () => {
@@ -179,7 +186,6 @@ describe('GroupsService', () => {
     expect(service['telemetryService'].interact).toHaveBeenCalled();
   });
 
-
   it('should add colors', () => {
     const service = TestBed.get(GroupsService);
     const response = service.addGroupPaletteList([{name: 'G1', id: '1'}, {name: 'G2', id: '2'}]);
@@ -189,5 +195,18 @@ describe('GroupsService', () => {
     expect(Object.keys(response[1])).toContain('cardTitleColor');
   });
 
-});
+  it ('should return activityList and showList value', () => {
+    const service = TestBed.get(GroupsService);
+    const response = service.groupContentsByActivityType(false, groupData);
+    expect(response.showList).toBe(true);
+    expect(response.activities).toEqual(modifiedActivities);
+  });
 
+  it ('should return activityList and showList value = FALSE', () => {
+    const service = TestBed.get(GroupsService);
+    const response = service.groupContentsByActivityType(false, {});
+    expect(response.showList).toBe(false);
+    expect(response.activities).toEqual({});
+  });
+
+});

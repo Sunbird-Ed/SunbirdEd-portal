@@ -228,7 +228,22 @@ app-workspace {
 
 .sb-modal-addsummary {
   .ck.ck-editor__editable_inline {
-    min-height: calc(100vh - 271px);
+    min-height: calc(100vh - 300px);
+    max-height: calc(100vh - 300px);
+    overflow: auto;
+  }
+  .ck.ck-editor__top.ck-reset_all {
+    position: absolute;
+    top: 0;
+  }
+  .ck.ck-editor__main {
+    padding-top: calculateRem(76px);
+  }
+  ul {
+    list-style: disc;
+  }
+  .sb-modal-content {
+    overflow: hidden !important;
   }
 }
 
@@ -581,8 +596,8 @@ app-workspace {
   @media only screen and (max-width: 767px) {
     .lib-chat-head {
       position: absolute !important;
-      right: 4rem !important;
-      top: calculateRem(13px) !important;
+      right: 4.5rem !important;
+      top: calculateRem(-2px) !important;
       bottom: inherit !important;
       z-index: 999 !important;
     }
@@ -598,7 +613,39 @@ app-workspace {
        font-size:calculateRem(14px) !important;
      }
      html[layout="joy"] .lib-chat-head {
-      top: calculateRem(26px) !important;
+      top: calculateRem(6px) !important;
       z-index: inherit !important;
      }
+  }
+  .infoControl {
+    padding: 6px 8px;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+
+  .infoControl h4 {
+    margin: 0 0 5px;
+    color: #777;
+  }
+
+  .notAllowedCursor {
+    cursor: not-allowed
+  }
+  
+  #report-summary .ui.unordered.list .item {
+    ul {
+      list-style: disc;
+    }
+    h2, h3, h4, p {
+      line-height: normal;
+    }
+    figure.table {
+      table {
+        td {
+          border: 1px solid var(--gray-800);
+        }
+      }
+    }
   }

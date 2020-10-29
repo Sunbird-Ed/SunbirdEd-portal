@@ -4,7 +4,7 @@ import { CourseHierarchyGetMockResponse, coursePlayerMockData } from './public-c
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PublicCoursePlayerComponent } from './public-course-player.component';
 import { SharedModule, ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
-import { CoreModule, CoursesService } from '@sunbird/core';
+import { CoreModule, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService, CourseBatchService } from '@sunbird/learn';
@@ -29,7 +29,8 @@ const resourceServiceMockData = {
     lbl: {
       description: 'description'
     }
-  }
+  },
+  languageSelected$: of({})
 };
 class ActivatedRouteStub {
   snapshot = {
@@ -54,7 +55,7 @@ class MockRouter {
 describe('PublicCoursePlayerComponent', () => {
   let component: PublicCoursePlayerComponent;
   let fixture: ComponentFixture<PublicCoursePlayerComponent>;
-  let activatedRouteStub, courseService, toasterService, courseConsumptionService;
+  let activatedRouteStub, courseService, toasterService, courseConsumptionService, generaliseLabelService;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -76,6 +77,8 @@ describe('PublicCoursePlayerComponent', () => {
     toasterService = TestBed.get(ToasterService);
     courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(toasterService, 'error').and.returnValue('');
+    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    spyOn(generaliseLabelService, 'initialize').and.returnValue('');
   });
   it('should fetch course details on page load', () => {
     activatedRouteStub.snapshot.params = { courseId: 'do_212347136096788480178' };
@@ -163,6 +166,18 @@ describe('PublicCoursePlayerComponent', () => {
     component.isExpandedAll = false;
     const returnVal = component.isExpanded(1);
     expect(returnVal).toBe(component.isExpandedAll);
+  });
+
+  it('should expand first as more than one child present', () => {
+    component.isExpandedAll = undefined;
+    const returnVal = component.isExpanded(0);
+    expect(returnVal).toBe(true);
+  });
+
+  it('should not expand second as more than one child present', () => {
+    component.isExpandedAll = undefined;
+    const returnVal = component.isExpanded(1);
+    expect(returnVal).toBe(false);
   });
 
 

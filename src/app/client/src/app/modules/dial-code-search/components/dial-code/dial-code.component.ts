@@ -232,10 +232,10 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
         this.showBatchInfo = true;
       }, error => {
-        this.publicPlayerService.playExploreCourse(metaData.identifier);
+        this.publicPlayerService.playContent(metaData);
       });
     } else {
-      this.publicPlayerService.playExploreCourse(metaData.identifier);
+      this.publicPlayerService.playContent(metaData);
     }
   }
 

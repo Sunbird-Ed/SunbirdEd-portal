@@ -347,7 +347,7 @@ describe('UpdateCourseBatchComponent', () => {
    expect(toasterService.success).toHaveBeenCalledWith('success');
   });
 
-  xit('should despatch an event which will be caught in course-player page to navigate', () => {
+  it('should despatch an event which will be caught in course-player page to navigate', () => {
     component.batchUpdateForm = new FormGroup({
       issueCertificate: new FormControl('yes')
     });

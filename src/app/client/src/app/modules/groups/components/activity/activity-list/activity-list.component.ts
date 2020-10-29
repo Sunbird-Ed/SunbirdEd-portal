@@ -1,13 +1,12 @@
+import { PlayerService } from '@sunbird/core';
 import { Component, Input, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ConfigService } from '../../../../shared/services/config/config.service';
-import { ResourceService } from '../../../../shared/services/resource/resource.service';
+import { takeUntil, delay } from 'rxjs/operators';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ACTIVITY_DETAILS } from './../../../interfaces';
-import { ToasterService } from '@sunbird/shared';
+import { ToasterService, ConfigService, ResourceService } from '@sunbird/shared';
 
 export interface IActivity {
   name: string;
@@ -16,6 +15,7 @@ export interface IActivity {
   organisation: string[];
   subject: string;
   type: string;
+  contentType?: string;
 }
 @Component({
   selector: 'app-activity-list',
@@ -28,11 +28,15 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showLoader = false;
-  activityList = [];
+  @Input() activityList: any;
   showMenu = false;
   selectedActivity: IActivity;
   showModal = false;
   unsubscribe$ = new Subject<void>();
+  disableViewAllMode = false;
+  selectedTypeContents = {};
+  config: any;
+
 
   constructor(
     private configService: ConfigService,
@@ -40,13 +44,14 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     public resourceService: ResourceService,
     private groupService: GroupsService,
-    private toasterService: ToasterService
-  ) { }
+    private toasterService: ToasterService,
+    private playerService: PlayerService
+  ) {
+    this.config = this.configService.appConfig;
+  }
 
   ngOnInit() {
-    this.showLoader = true;
-    this.getActivities();
-
+    this.showLoader = false;
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(item => {
@@ -59,28 +64,37 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.showMenu.subscribe(data => {
       this.showMenu = data === 'activity';
     });
+
+    this.resourceService.languageSelected$.pipe(delay(600), takeUntil(this.unsubscribe$)).subscribe(item => {
+      this.showLoader = false;
+      const response = this.groupService.groupContentsByActivityType(false, this.groupData);
+      this.activityList = response.activities;
+    });
+
   }
 
-  getActivities() {
-    this.showLoader = false;
-    this.activityList =  this.groupData.activities.map(item => item.activityInfo);
-  }
 
-  openActivity(event: any, activity) {
-    this.addTelemetry('activity-card', [{id: _.get(activity, 'identifier'), type: _.get(activity, 'resourceType')}]);
-    const options = { relativeTo: this.activateRoute, queryParams: { contentType: activity.contentType } };
+  openActivity(event: any, activityType) {
+    this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
+    const options = { relativeTo: this.activateRoute, queryParams: { contentType: _.get(event, 'data.contentType'),
+    title: activityType} };
     if (_.get(this.groupData, 'isAdmin')) {
-      this.router.navigate([`${ACTIVITY_DETAILS}`, activity.identifier], options);
+      this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
     } else {
-      this.router.navigate(['/learn/course', activity.identifier]);
+      this.playerService.playContent(_.get(event, 'data'));
     }
   }
 
-  getMenuData(event, member) {
+  getMenuData(event) {
     this.showMenu = !this.showMenu;
     this.groupService.emitMenuVisibility('activity');
-    this.selectedActivity = member;
+    this.selectedActivity = _.get(event, 'data');
     this.addTelemetry('activity-kebab-menu-open');
+  }
+
+  getTitle(title) {
+    const name =  this.resourceService.frmelmnts.lbl[title];
+    return name ? name : title;
   }
 
   toggleModal(show = false) {
@@ -95,7 +109,9 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     this.groupService.removeActivities(this.groupData.id, { activityIds })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.activityList = this.activityList.filter(item => item.identifier !== this.selectedActivity.identifier);
+        Object.keys(this.activityList).forEach(key => {
+          this.activityList[key] = this.activityList[key].filter(activity => _.get(activity, 'identifier') !== _.get(this.selectedActivity, 'identifier'));
+        });
         this.toasterService.success(this.resourceService.messages.smsg.activityRemove);
         this.showLoader = false;
       }, error => {
@@ -107,8 +123,27 @@ export class ActivityListComponent implements OnInit, OnDestroy {
     // TODO: add telemetry here
   }
 
-  addTelemetry (id, cdata = []) {
-    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata);
+  addTelemetry (id, cdata?, extra?) {
+    this.groupService.addTelemetry(id, this.activateRoute.snapshot, cdata, _.get(this.groupData.id), extra);
+  }
+
+  toggleViewAll(visibility: boolean, type?) {
+    this.disableViewAllMode = visibility;
+    this.selectedTypeContents = _.pick(this.activityList, type) || {};
+  }
+
+  isCourse(type) {
+    return (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Course) ||
+    (_.lowerCase(type) === _.lowerCase(this.configService.appConfig.contentType.Courses)));
+  }
+
+  viewSelectedTypeContents(type, list, index) {
+    return (_.isEmpty(this.selectedTypeContents) ? (list.length > 3 ?  index <= 2 : true) :
+    !_.isEmpty(_.get(this.selectedTypeContents, type)));
+  }
+
+  isSelectedType (type) {
+   return _.isEmpty(this.selectedTypeContents) ? true : !_.isEmpty(_.get(this.selectedTypeContents, type));
   }
 
   ngOnDestroy() {

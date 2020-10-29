@@ -11,6 +11,7 @@ import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import {CacheService} from 'ng2-cache-service';
+import { DataService } from './../data/data.service';
 
 
 /**
@@ -111,18 +112,21 @@ export class UserService {
   */
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
-    @Inject(APP_BASE_HREF) baseHref: string) {
+    @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      DataService.userId = this._userid;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      DataService.sessionId = this._sessionId;
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
       this._anonymousSid = UUID.UUID();
+      DataService.sessionId = this._anonymousSid;
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;

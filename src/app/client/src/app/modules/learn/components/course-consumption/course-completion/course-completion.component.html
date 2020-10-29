@@ -6,15 +6,15 @@
       <div class="mr-24"><img src="./assets/images/badge-complete.svg" width="79px" height="69px" alt=""></div>
       <div class="course-complete-data font-weight-bold">
         <div class="title mb-8">{{resourceService?.frmelmnts?.lbl?.congratulations}}!</div>
-        <p>{{resourceService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
+        <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
     <div class="course-complete-para mt-32" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
-      <p>{{resourceService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
+      <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
     </div>
     <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
       <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
-      <p class="fsmall mb-0">{{resourceService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
+      <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
     </div>
   </div>
 </sui-modal>

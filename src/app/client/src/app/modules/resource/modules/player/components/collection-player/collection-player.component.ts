@@ -1,7 +1,7 @@
 
 import { mergeMap, filter, map, catchError, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -143,7 +143,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService,
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService) {
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
@@ -353,6 +353,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
+  getGeneraliseResourceBundle(data) {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+      this.generaliseLabelService.initialize(data, item.value);
+    });
+  }
+
   private getContent(): void {
     this.subscription = this.route.params.pipe(
       filter(params => params.collectionId !== this.collectionId),
@@ -369,6 +375,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.showLoader = false;
+        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        this.getGeneraliseResourceBundle(data.data);
         this.setTelemetryData();
         this.setTelemetryStartEndData();
         this.route.queryParams.subscribe((queryParams) => {

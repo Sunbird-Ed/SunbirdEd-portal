@@ -28,7 +28,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
 
   validateContent() {
     this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords',
-      'resourceTypes', 'attributions'];
+      'resourceTypes', 'attributions', 'primaryCategory', 'additionalCategories'];
     _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {

@@ -16,7 +16,7 @@ import * as mockData from './published.component.spec.data';
 const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule, SuiModalService } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -100,7 +100,12 @@ describe('PublishedComponent', () => {
           eventName: 'delete'
         }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
       };
-      component.contentClick(params);
+      const content = {
+        metaData: {
+          contentType: 'Resource'
+        }
+      };
+      component.contentClick(params, content);
       const DeleteParam = {
         contentIds: ['do_2124341006465925121871']
       };
@@ -166,4 +171,13 @@ describe('PublishedComponent', () => {
     component.getCourseQRCsv();
     expect(window.open).toHaveBeenCalledWith(returnData.result.fileUrl, '_blank');
   });
+  it('should call search content and get channel and get success response', inject([SuiModalService, WorkSpaceService],
+    (modalService, workSpaceService) => {
+      spyOn(workSpaceService, 'searchContent').and.callFake(() => observableOf(testData.searchedCollection));
+      spyOn(workSpaceService, 'getChannel').and.callFake(() => observableOf(testData.channelDetail));
+      spyOn(component, 'checkLinkedCollections').and.callThrough();
+      spyOn(modalService, 'open').and.callThrough();
+      component.checkLinkedCollections(undefined);
+      expect(component.checkLinkedCollections).toHaveBeenCalledWith(undefined);
+    }));
 });

@@ -21,7 +21,7 @@ export class OnDemandReportsComponent implements OnInit {
     {name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date',type: 'date'},
     {name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status'},
     {name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link'},
-    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'date'},
+    {name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date',type: 'dateTime'},
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
   public onDemandReportData: any[];
@@ -164,12 +164,14 @@ export class OnDemandReportsComponent implements OnInit {
     const reportListData = _.last(sortedReportList) || {};
     let batchEndDate;
     if (this.batch.endDate) {
-      batchEndDate = new Date(`${this.batch.endDate} 00:00:00`).getTime();
+      batchEndDate = new Date(`${this.batch.endDate} 23:59:59`).getTime();
     }
     if (!_.isEmpty(reportListData)) { // checking the report is already created or not
       let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
       if (!isInProgress) {
-        requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
+        requestStatus = true;
+        // TODO: The below code has commented because of API lag to generate the reports
+        // requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
       } else {
         requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
       }

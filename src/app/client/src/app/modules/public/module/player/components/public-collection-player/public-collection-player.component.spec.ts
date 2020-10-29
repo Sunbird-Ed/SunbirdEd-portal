@@ -1,10 +1,10 @@
 
-import { of as observableOf, Observable, throwError as observableThrowError } from 'rxjs';
+import { of as observableOf, Observable, throwError as observableThrowError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CollectionHierarchyAPI, ContentService, CoreModule } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, CoreModule, GeneraliseLabelService } from '@sunbird/core';
 import { PublicCollectionPlayerComponent } from './public-collection-player.component';
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,7 @@ describe('PublicCollectionPlayerComponent', () => {
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
-  let telemetryService;
+  let telemetryService, generaliseLabelService;
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
@@ -56,7 +56,8 @@ describe('PublicCollectionPlayerComponent', () => {
         'interactive': 'interactive',
         'docs': 'docs'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   class TelemetryServiceStub {
     error = jasmine.createSpy('error').and.returnValue(true);
@@ -82,6 +83,8 @@ describe('PublicCollectionPlayerComponent', () => {
     fixture = TestBed.createComponent(PublicCollectionPlayerComponent);
     component = fixture.componentInstance;
     telemetryService = TestBed.get(TelemetryService);
+    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    spyOn(generaliseLabelService, 'initialize').and.returnValue('');
   });
   it('should create', () => {
     const windowScrollService = TestBed.get(WindowScrollService);

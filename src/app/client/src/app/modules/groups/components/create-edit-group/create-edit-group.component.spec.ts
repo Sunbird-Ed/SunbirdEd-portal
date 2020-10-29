@@ -27,6 +27,11 @@ describe('CreateEditGroupComponent', () => {
   const formBuilder: FormBuilder = new FormBuilder();
   const resourceBundle = {
     'messages': {
+      groups: {
+        emsg: {
+          m001: 'You have exceeded the maximum number of groups that can be created',
+        },
+      },
       'emsg': {m005: '', m001: '', },
       smsg: {m001: '', m003: ''}
     },
@@ -151,6 +156,33 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component['groupService'], 'addTelemetry');
     component.groupId = '123';
     component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup', fakeActivatedRouteWithGroupId.snapshot, [], '123');
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith('ftu-popup',
+    fakeActivatedRouteWithGroupId.snapshot, [], '123', undefined);
+  });
+
+  it('should throw on EXCEEDED_GROUP_MAX_LIMIT', () => {
+    const error = {
+        response: {
+          body: {
+            'id': 'api.group.create',
+            'params': {
+              'resmsgid': null,
+              'msgid': '50f1d17c-9e5b-4e1e-841e-3fc5ba34c84a',
+              'err': 'EXCEEDED_GROUP_MAX_LIMIT',
+              'status': 'EXCEEDED_GROUP_MAX_LIMIT',
+              'errmsg': 'Exceeded the group max size limit'
+            },
+            'result': {},
+            'responseCode': 400
+          }
+        }
+    };
+    spyOn(component.groupService, 'createGroup').and.returnValue(throwError (error));
+    spyOn(component['toasterService'], 'error');
+    component.onSubmitForm();
+    component.groupService.createGroup(component.groupForm.value).subscribe(group => {
+    }, err => {
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.groups.emsg.m001);
+    });
   });
 });

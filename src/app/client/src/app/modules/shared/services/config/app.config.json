@@ -55,7 +55,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
@@ -98,7 +99,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ]
     },
     "metaData": {
@@ -106,7 +108,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     },
     "dynamicFields": {
@@ -167,7 +170,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
@@ -442,7 +446,8 @@
           "identifier",
           "mimeType",
           "framework",
-          "contentType"
+          "contentType",
+          "trackable"
         ]
       },
       "dynamicFields": {
@@ -468,7 +473,8 @@
       "metaData": {
         "metaData": [
           "batchId",
-          "courseId"
+          "courseId",
+          "trackable"
         ]
       },
       "dynamicFields": {
@@ -578,7 +584,9 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable",
+        "forumId"
       ]
     },
     "dynamicFields": {
@@ -688,7 +696,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     }
   },
@@ -848,6 +857,19 @@
       "eTextBook",
       "TVLesson"
     ],
+    "primaryCategory": [
+      "Course",
+      "Digital Textbook",
+      "Content Playlist",
+      "Explanation Content",
+      "Learning Resource",
+      "Practice Question Set",
+      "eTextbook",
+      "Teacher Resource"
+    ],
+    "adminHandledContentType" :[
+      "TextBook"
+    ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
       "application/vnd.ekstep.content-collection"
@@ -914,7 +936,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Published": {
@@ -952,7 +974,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Uploaded": {
@@ -1228,6 +1250,11 @@
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
   },
+  "alltextbooks": {
+    "filterType": "alltextbooks",
+    "inPageredirectUrl": "workspace/content/alltextbooks/1",
+    "searchPageredirectUrl": "workspace/content/alltextbooks/1"
+  },
   "draft": {
     "filterType": "draft",
     "inPageredirectUrl": "workspace/content/draft/1",
@@ -1369,5 +1396,21 @@
   },
   "DIAL_CODE": {
     "PAGE_LIMIT": 10
+  },
+  "userTypeMapping" : {
+    "student": ["Student"],
+    "teacher": ["Teacher"],
+    "other": ["Student", "Teacher"] 
+  },
+  "contentType" : {
+    "Course" : "Course",
+    "Collection": "Collection",
+    "Textbook": "Textbook",
+    "Resource": "Resource",
+    "Courses" : "Courses",
+    "Textbooks": "Textbooks"
+  },
+  "assetsPath": {
+    "book": "./assets/images/book.png"
   }
 }

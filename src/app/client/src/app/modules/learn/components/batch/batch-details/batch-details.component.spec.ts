@@ -1,3 +1,4 @@
+
 import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,7 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseProgressService } from './../../../services';
-import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch } from './batch-details.component.data';
+import {userSearch, allBatchDetails, enrolledBatch, allBatchDetailsWithFeactureBatch, courseHierarchy } from './batch-details.component.data';
 import { configureTestSuite } from '@sunbird/test-util';
 import { TelemetryService } from '@sunbird/telemetry';
 
@@ -46,6 +47,7 @@ const resourceServiceMockData = {
     }
   }
 };
+
 describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
@@ -73,12 +75,13 @@ describe('BatchDetailsComponent', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     const searchParams: any = {
       filters: {
-        status: component.batchStatus.toString(),
         courseId: component.courseId,
-        enrollmentType: 'open'
+        enrollmentType: 'open',
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -97,6 +100,7 @@ describe('BatchDetailsComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableThrowError(allBatchDetails));
     component.ngOnInit();
     const searchParams: any = {
@@ -116,20 +120,21 @@ describe('BatchDetailsComponent', () => {
     component.enrolledCourse = false;
     component.courseId = 'do_1125083286221291521153';
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.userService.setUserId('123');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
     spyOn(courseBatchService, 'getUserList').and.returnValue(observableOf(userSearch));
     const searchParams: any = {
       filters: {
-        status: component.batchStatus.toString(),
         courseId: component.courseId,
-        createdBy: component.userService.userid
+        createdBy: component.userService.userid,
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
     component.ngOnInit();
-    expect(component.courseMentor).toBeTruthy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
     expect(component.showBatchList).toBeTruthy();
@@ -162,6 +167,7 @@ describe('BatchDetailsComponent', () => {
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
     component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
@@ -180,19 +186,48 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(true);
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}};
     component.showCreateBatch();
+    expect(component.isTrackable).toBe(true);
     expect(component.allowBatchCreation).toBe(true);
+    expect(component.allowCertCreation).toBe(true);
+    expect(component['courseConsumptionService'].canViewDashboard).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'Yes'}});
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has not created the course`, () => {
-    const userService = TestBed.get(UserService);
-    const permissionService = TestBed.get(PermissionService);
-    spyOnProperty(userService, 'userid', 'get').and.returnValue('123456789');
-    spyOn(permissionService, 'checkRolesPermissions').and.returnValue(true);
-    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}};
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
     component.showCreateBatch();
-    expect(component.showCreateBatch()).toBeFalsy();
+    expect(component.allowBatchCreation).toBe(false);
+    expect(component.isTrackable).toBe(false);
+    expect(component.allowCertCreation).toBe(false);
+    expect(component['courseConsumptionService'].canCreateBatch).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'No'}});
+  });
+
+  it(`should disable "allowCertCreation"`, () => {
+    component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'} } ;
+    spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(true);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
+    component.showCreateBatch();
+    expect(component.isTrackable).toBe(true);
+    expect(component.allowCertCreation).toBe(false);
+    expect(component.viewBatch).toBe(true);
+    expect(component['courseConsumptionService'].canViewDashboard).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+    expect(component['courseConsumptionService'].isTrackableCollection).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+
+    expect(component['courseConsumptionService'].canAddCertificates).
+    toHaveBeenCalledWith({createdBy: '9ad90eb4-b8d2-4e99-805f', trackable: {enabled: 'yes'}, credentials: {enabled: 'no'}});
+
   });
 
   it(`should not allow 'Create Batch' button to be shown if the user has  created the course but doesn't have roles permission`, () => {
@@ -200,9 +235,12 @@ describe('BatchDetailsComponent', () => {
     const permissionService = TestBed.get(PermissionService);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('9ad90eb4-b8d2-4e99-805f');
     spyOn(permissionService, 'checkRolesPermissions').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'canAddCertificates').and.returnValue(false);
     component.courseHierarchy = {createdBy: '9ad90eb4-b8d2-4e99-805f'};
     component.showCreateBatch();
     expect(component.showCreateBatch()).toBeFalsy();
+    expect(component.allowCertCreation).toBe(false);
   });
 
   it('should call getJoinCourseBatchDetails and get success', () => {
@@ -243,6 +281,29 @@ describe('BatchDetailsComponent', () => {
     component.logTelemetry('buttonId');
     expect(telemetryService.interact).toHaveBeenCalled();
   });
+
+  it('should close the join training popup on browser back button click', () => {
+    component.showJoinModal = true;
+    component.batchListModal = {
+      deny: jasmine.createSpy('deny')
+    };
+    component.ngOnDestroy();
+    expect(component.batchListModal.deny).toHaveBeenCalled();
+  });
+
+  it ('should call showcreatebatch()', () => {
+    component.courseHierarchy = {trackable: { enabled: 'Yes'} };
+    spyOn(component, 'showCreateBatch');
+    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
+    spyOn(component['courseConsumptionService'], 'isTrackableCollection').and.returnValue(false);
+    component.ngOnInit();
+    expect(component.showCreateBatch).toHaveBeenCalled();
+    expect(component.isTrackable).toBeFalsy();
+    expect(component.allowBatchCreation).toBeFalsy();
+    expect(component.viewBatch).toBeFalsy();
+  });
+
+
   it('should call getJoinCourseBatchDetails', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const batchList = allBatchDetailsWithFeactureBatch.result.response.content[0];
@@ -251,6 +312,29 @@ describe('BatchDetailsComponent', () => {
     component.getJoinCourseBatchDetails();
     expect(component.enrollBatch).toHaveBeenCalledWith(batchList);
   });
+
+  it('should disable "createbatch" for ongoing batchList', () => {
+    component.ongoingAndUpcomingBatchList = allBatchDetails.result.response.content;
+    component.batchStatus = 1;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(2);
+    expect(component.hideCreateBatch).toEqual(true);
+  });
+
+  it('should disable "createbatch" for upcoming batchList', () => {
+    component.ongoingAndUpcomingBatchList = allBatchDetails.result.response.content;
+    component.batchStatus = 0;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(1);
+  });
+
+  it('should enable "createbatch"  batchList.length =0', () => {
+    component.ongoingAndUpcomingBatchList = [];
+    component.batchStatus = 0;
+    component.getSelectedBatches();
+    expect(component.batchList.length).toEqual(0);
+  });
+
   it('should show message in popup while trying to join upcoming batch ', () => {
     const date = new Date();
     date.setDate(date.getDate() + 1);
@@ -269,4 +353,5 @@ describe('BatchDetailsComponent', () => {
     component.showMessageModal = true;
     expect(component.showMessageModal).toBeTruthy();
   });
+
 });

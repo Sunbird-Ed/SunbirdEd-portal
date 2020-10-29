@@ -5,7 +5,7 @@ const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const { logError } = require('../helpers/utilityService');
 
 const keyClockMobileClients = {

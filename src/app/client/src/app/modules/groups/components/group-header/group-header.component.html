@@ -57,8 +57,6 @@
   </div>
 </sui-modal>
 
-<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
-</app-ftu-popup>
 
 <app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"
   (modalClose)="showLeaveGroupModal=false" (actionConfirm)="leaveGroup()"></app-member-actions>

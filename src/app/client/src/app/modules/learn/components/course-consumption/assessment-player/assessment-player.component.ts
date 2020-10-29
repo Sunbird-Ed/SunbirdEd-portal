@@ -3,7 +3,7 @@ import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunb
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
@@ -76,7 +76,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private router: Router,
     private contentUtilsServiceService: ContentUtilsServiceService,
     private telemetryService: TelemetryService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -165,6 +166,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
+              this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -186,6 +188,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.result.content;
+              this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
                 this.initPlayer(_.get(this.activeContent, 'identifier'));

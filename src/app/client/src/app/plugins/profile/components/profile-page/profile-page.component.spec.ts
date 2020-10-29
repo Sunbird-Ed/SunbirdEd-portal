@@ -46,9 +46,9 @@ describe('ProfilePageComponent', () => {
     }
   }
 
-  const MockCSService = {
+  class MockCSService {
     getSignedCourseCertificate() { return of({ printUri: '' }); }
-  };
+  }
 
   const resourceBundle = {
     'frmelmnts': {
@@ -88,7 +88,7 @@ describe('ProfilePageComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: 'DOMTOIMAGE', useValue: Promise.resolve(MockDomToImage) },
         { provide: 'JSPDF', useValue: Promise.resolve(MockJsPDF) },
-        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
+        { provide: 'CS_COURSE_SERVICE', useClass: MockCSService },
         { provide: ResourceService, useValue: resourceBundle },
         ToasterService, CertRegService, TelemetryService, OrgDetailsService,],
       schemas: [NO_ERRORS_SCHEMA]
@@ -165,17 +165,35 @@ describe('ProfilePageComponent', () => {
     expect(component.getOrgDetails).toHaveBeenCalled();
   });
 
-  it('should fetch other certificates', () => {
+  it('should fetch all other certificates', () => {
     const certRegService = TestBed.get(CertRegService);
     const mockData = Response.othersCertificateData;
     spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
-    component.getOtherCertificates('123456', 'quiz');
+    component.getOtherCertificates('123456', 'all');
     expect(component.otherCertificates).toEqual([{
       certificates: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
       issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
       issuedOn: mockData.result.response.content[0]._source.data.issuedOn,
-      certName: mockData.result.response.content[0]._source.data.badge.name
+      courseName: mockData.result.response.content[0]._source.data.badge.name,
+      issuedCertificates: [Object({ identifier: 'id5dd24', name: 'Sunbird installation' })]
     }]);
+  });
+
+  it('should fetch more certificates while clicking on show more', () => {
+    const certRegService = TestBed.get(CertRegService);
+    const mockData = Response.othersCertificateData;
+    spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
+    spyOn(component, 'getOtherCertificates').and.callThrough();
+    component.getOtherCertificates('123456', 'all');
+    component.toggleOtherCertific(true);
+    expect(component.otherCertificateLimit).toEqual(component.otherCertificatesCounts);
+    expect(component.showMoreCertificates).toBeFalsy();
+  });
+
+  it('should show less while clicking on show less', () => {
+    component.toggleOtherCertific(false);
+    expect(component.otherCertificateLimit).toEqual(component.configService.appConfig.PROFILE.defaultViewMoreLimit);
+    expect(component.showMoreCertificates).toBeTruthy();
   });
 
   it(`should show 'show more'`, () => {
@@ -343,6 +361,16 @@ describe('ProfilePageComponent', () => {
     component.getSelfDeclaredDetails();
     expect(component.tenantInfo).toBeDefined();
     expect(component.selfDeclaredInfo).toBeDefined();
+    expect(component.selfDeclaredInfo).toBeDefined();
+  });
+
+  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
+    spyOn(window, 'open');
+    component.downloadPdfCertificate(Response.pdfCertificate[0]);
+    expect(profileService.downloadCertificates).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(Response.v1DownloadCertResponse.result.signedUrl, '_blank');
   });
 
   it('should call downloadCert with SVG format on success', () => {
@@ -355,6 +383,28 @@ describe('ProfilePageComponent', () => {
     component.downloadCert(course);
     expect(component['certDownloadAsPdf'].download).toHaveBeenCalled();
     expect(toasterService.success).toHaveBeenCalledWith('Certificate is getting downloaded');
+  });
+
+  it('should call downloadCert with SVG format on success', () => {
+    const course = { issuedCertificates: Response.svgCertificates, certificates: Response.pdfCertificate };
+    const courseCService = TestBed.get('CS_COURSE_SERVICE');
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'success');
+    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
+    spyOn(component, 'downloadPdfCertificate');
+    component.downloadCert(course);
+    expect(component.downloadPdfCertificate).toHaveBeenCalled();
+  });
+
+  it('should call downloadCert with SVG format on success', () => {
+    const course = { issuedCertificates: Response.svgCertificates };
+    const courseCService = TestBed.get('CS_COURSE_SERVICE');
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(courseCService, 'getSignedCourseCertificate').and.returnValue(of({ printUri: null }));
+    spyOn(component, 'downloadPdfCertificate');
+    component.downloadCert(course);
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
   it('should call downloadCert with SVG format on error', () => {

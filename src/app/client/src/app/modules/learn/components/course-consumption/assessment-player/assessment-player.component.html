@@ -18,14 +18,14 @@
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
             (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{resourceService?.frmelmnts?.lbl?.prevModule}}
+            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
             (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-            {{resourceService?.frmelmnts?.lbl?.nextModule}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+            {{generaliseLabelService?.frmelmnts?.lbl?.nextModule}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
           </button>
           <!-- Next Module button -->
         </div>
@@ -61,14 +61,14 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
-            <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
             <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
             <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
           </div>
 
           <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
             <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
-            <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{resourceService?.frmelmnts?.lbl?.moduleFinish}}</label>
+            <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
               </div>
               <div *ngIf="item?.children?.length">
                 <div *ngFor="let child of item?.children">
-                  <div>
+                  <div class="toc-child-item">
                     <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>

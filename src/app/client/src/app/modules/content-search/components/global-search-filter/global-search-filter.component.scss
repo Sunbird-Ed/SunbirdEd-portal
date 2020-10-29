@@ -2,6 +2,14 @@
 @import "mixins/mixins";
 @import "pages/sbt-filter";
 
+.sb-prominent-filter {
+  .sb-prominent-filter-container.sb-global-search {
+    .sb-prominent-filter-field:nth-child(6) {
+      width: auto;
+    }
+  }
+}
+
 :host ::ng-deep {
   .ui.selection.sbt-dropdown.dropdown .menu>div .item {
     color: var(--sbt-theme-purple-selectbox);

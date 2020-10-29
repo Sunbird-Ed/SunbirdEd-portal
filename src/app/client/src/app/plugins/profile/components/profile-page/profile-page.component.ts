@@ -42,9 +42,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
+  showMoreCertificates = true;
   isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+  otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
   userSubscription: Subscription;
   orgDetails: any = [];
@@ -65,6 +67,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   updateTeacherDetailsInteractEdata: IInteractEventEdata;
   showRecoveryId = false;
   otherCertificates: Array<object>;
+  otherCertificatesCounts: number;
   downloadOthersCertificateEData: IInteractEventEdata;
   udiseObj: { idType: string, provider: string, id: string };
   phoneObj: { idType: string, provider: string, id: string };
@@ -106,7 +109,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
         this.getContribution();
-        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
         this.getTrainingAttended();
         this.setNonCustodianUserLocation();
         /* istanbul ignore else */
@@ -162,9 +165,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
             org.locations = this.userProfile.organisations[0].locations;
           }
         }
+        if (org.orgjoindate) {
+          org.modifiedJoinDate = new Date(org.orgjoindate).getTime();
+        }
         orgList.push(org);
       } else {
         if (org.locations && org.locations.length !== 0) {
+          if (org.orgjoindate) {
+            org.modifiedJoinDate = new Date(org.orgjoindate).getTime();
+          }
           orgList.push(org);
         }
       }
@@ -178,8 +187,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
     this.roles = _.uniq(this.roles).sort();
-    orgList = _.sortBy(orgList, ['orgjoindate']);
-    this.orgDetails = orgList[0];
+    orgList = _.sortBy(orgList, ['modifiedJoinDate']);
+    this.orgDetails = _.last(orgList);
   }
 
   convertToString(value) {
@@ -218,16 +227,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
  *It will fetch certificates of user, other than courses
  */
   getOtherCertificates(userId, certType) {
-    this.certRegService.fetchCertificates(userId, certType).subscribe((data) => {
+    const requestParam = { userId,  certType };
+    if (this.otherCertificatesCounts) {
+      requestParam['limit'] = this.otherCertificatesCounts;
+    }
+    this.certRegService.fetchCertificates(requestParam).subscribe((data) => {
+      this.otherCertificatesCounts = _.get(data, 'result.response.count');
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
-        return {
+        const certObj: any =  {
           certificates: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
           issuedOn: _.get(val, '_source.data.issuedOn'),
-          certName: _.get(val, '_source.data.badge.name')
+          courseName: _.get(val, '_source.data.badge.name'),
         };
+        if (_.get(val, '_id') && _.get(val, '_source.data.badge.name')) {
+          certObj.issuedCertificates = [{identifier: _.get(val, '_id'), name: _.get(val, '_source.data.badge.name') }];
+        }
+        return certObj;
       });
     });
   }
@@ -237,10 +255,17 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(course, 'issuedCertificates.length')) {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));
       const certificateInfo = course.issuedCertificates[0];
+      const courseName = course.courseName || _.get(course, 'issuedCertificates[0].name') || 'certificate';
       if (_.get(certificateInfo, 'identifier')) {
-        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier')).subscribe((resp) => {
-          if (_.get(resp, 'printUri') && _.get(certificateInfo, 'name')) {
-            this.certDownloadAsPdf.download(resp.printUri, null, _.get(certificateInfo, 'name'));
+        this.courseCService.getSignedCourseCertificate(_.get(certificateInfo, 'identifier'))
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((resp) => {
+          if (_.get(resp, 'printUri')) {
+            this.certDownloadAsPdf.download(resp.printUri, null, courseName);
+          } else if (_.get(course, 'certificates.length')) {
+            this.downloadPdfCertificate(course.certificates[0]);
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0076);
           }
         }, error => {
           this.downloadPdfCertificate(certificateInfo);
@@ -454,6 +479,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.telemetryService.interact(interactData);
     this.router.navigate([`learn/course/${courseId}`]);
+  }
+
+  toggleOtherCertific(showMore) {
+    if (showMore) {
+      if (this.otherCertificates.length !== this.otherCertificatesCounts) {
+        this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'all');
+      }
+      this.otherCertificateLimit = this.otherCertificatesCounts;
+      this.showMoreCertificates = false;
+    } else {
+      this.otherCertificateLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
+      this.showMoreCertificates = true;
+    }
   }
 
   /**

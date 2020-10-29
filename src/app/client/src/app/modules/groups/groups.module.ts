@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, NoGroupResultComponent,
   AddActivityComponent, MemberActionsComponent, GroupMembersComponent, FtuPopupComponent,
   BackButtonComponent, ActivityListComponent, ActivityDashboardComponent, ActivitySearchComponent,
-  GroupDetailsComponent, ActivityFormComponent, CreateEditGroupComponent } from './components';
+  GroupDetailsComponent, ActivityFormComponent, CreateEditGroupComponent, AddActivityContentTypesComponent } from './components';
 import { CoreModule } from '@sunbird/core';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { GroupsService } from './services';
@@ -48,7 +48,8 @@ import { RecaptchaModule } from 'ng-recaptcha';
     ActivitySearchComponent,
     ActivityFormComponent,
     CreateEditGroupComponent,
-    GroupDetailsComponent]
+    GroupDetailsComponent,
+    AddActivityContentTypesComponent]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {

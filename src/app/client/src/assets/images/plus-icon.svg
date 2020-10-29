@@ -1,18 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="13px" height="12px" viewBox="0 0 13 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: sketchtool 60.1 (101010) - https://sketch.com -->
-    <title>D59D6058-F11D-4B35-87EB-9B86EE182842</title>
-    <desc>Created with sketchtool.</desc>
-    <g id="Offline-Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="DIKSHA-Desktop---Telemetry-Settings" transform="translate(-902.000000, -468.000000)" fill="#024F9D">
-            <g id="Group-5" transform="translate(237.000000, 449.000000)">
-                <g id="Group-4" transform="translate(649.000000, 9.000000)">
-                    <g id="Group-3" transform="translate(16.000000, 10.000000)">
-                        <rect id="Rectangle" x="5" y="0" width="2.11764706" height="12" rx="1.05882353"></rect>
-                        <path d="M6.05882353,1.8189894e-12 C6.64359562,1.81888198e-12 7.11764706,0.474051441 7.11764706,1.05882353 L7.11764706,10.9411765 C7.11764706,11.5259486 6.64359562,12 6.05882353,12 C5.47405144,12 5,11.5259486 5,10.9411765 L5,1.05882353 C5,0.474051441 5.47405144,1.81909682e-12 6.05882353,1.8189894e-12 Z" id="Rectangle" transform="translate(6.058824, 6.000000) rotate(-270.000000) translate(-6.058824, -6.000000) "></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" fill="#024f9d" fill-rule="evenodd" xmlns:v="https://vecta.io/nano"><rect x="5" width="2.118" height="12" rx="1.059"/><path d="M12.06 6A1.06 1.06 0 0 1 11 7.059H1.118A1.06 1.06 0 0 1 .059 6a1.06 1.06 0 0 1 1.059-1.059H11A1.06 1.06 0 0 1 12.059 6z"/></svg>

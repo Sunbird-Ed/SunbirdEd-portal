@@ -20,3 +20,11 @@
       justify-content: center;
     }
   }
+
+  :host::ng-deep {
+    .listallreports-section {
+      .dataTables_wrapper .dataTables_filter input {
+        outline: 0;
+      }
+    }
+  }

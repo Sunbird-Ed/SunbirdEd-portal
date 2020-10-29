@@ -8,7 +8,7 @@
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="flex-basis-1 mr-32 activity-search">
           <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
-            <div>{{resourceService?.frmelmnts?.lbl?.addCourse}}</div>
+            <div>{{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}': groupAddableBlocData?.params?.contentType}}</div>
           </div>
           <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
             <div class="sb-search-box large">
@@ -30,10 +30,8 @@
     </div>
   </div>
   <div *ngIf="showFilters">
-    <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'activity-search'" *ngIf="initFilters"
-      [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]="true" [isShowFilterLabel]="false"
-      [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)">
-    </app-data-driven-filter>
+    <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
+    </app-global-search-filter>
   </div>
   <div class="ui container">
     <div class="mt-24">
@@ -48,17 +46,31 @@
         </div>
       </div>
 
-      <div class="sb-card-grid" *ngIf="showLoader">
+      <div class="sb-card-grid my-24" *ngIf="showLoader">
         <div class="sb-grid--item" *ngFor="let i of numberOfSections">
           <sb-course-card [isLoading]="true"></sb-course-card>
         </div>
       </div>
 
-      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid">
+      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid my-24">
         <div class="sb-card-grid--item" *ngFor="let content of contentList;">
-          <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
+          <!-- <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
             [cardImg]="content?.image || './assets/images/book.png'">
-          </sb-course-card>
+          </sb-course-card> -->
+
+          <sb-library-card [content]="content"
+              [cardImg]="content?.image || 'assets/images/add-icon.svg'"  [hover-template]="hoverTemplate" [type]="'recently_viewed'">
+            <ng-template #hoverTemplate let-hoverData="hoverData" 
+              let-content="content">
+              <sb-card-hover class="card-hover" 
+                [hoverData]="hoverData"
+                [content]="content"
+                (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
+              </sb-card-hover>
+            </ng-template>
+            <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier" [pageId]="ADD_ACTIVITY_TO_GROUP"></div>
+          </sb-library-card>
+
         </div>
       </div>
 

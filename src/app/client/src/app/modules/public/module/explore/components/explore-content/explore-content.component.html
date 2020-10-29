@@ -70,27 +70,3 @@
     </div>
 </div>
 </div>
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">
-
-  <!--Header-->
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
-  </div>
-  <!--/Header-->
-  <!--Content-->
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment">
-      <p>{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}</p>
-    </div>
-  </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary">
-      {{resourceService.frmelmnts?.btn?.signin}}
-    </a>
-  </div>
-  <!--/Actions-->
-</sui-modal>

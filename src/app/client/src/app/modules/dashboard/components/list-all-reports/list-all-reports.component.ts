@@ -55,7 +55,9 @@ export class ListAllReportsComponent implements OnInit {
         this.noResultFoundError = _.get(err, 'messageText') || 'messages.stmsg.m0006';
         return of({
           table: {},
-          count: 0
+          count: 0,
+          reportsArr: [],
+          datasetsArr: []
         });
       })
     );

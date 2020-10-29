@@ -1,12 +1,14 @@
 import { combineLatest, Subject, throwError } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, ContentUtilsServiceService, ITelemetryShare,
+  LayoutService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
+import { GeneraliseLabelService } from '@sunbird/core';
 
 @Component({
   templateUrl: './public-course-consumption-page.component.html',
@@ -30,7 +32,8 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   constructor(public navigationHelperService: NavigationHelperService, private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService, public toasterService: ToasterService,
     public resourceService: ResourceService, public router: Router, public contentUtilsServiceService: ContentUtilsServiceService,
-    private configService: ConfigService, private telemetryService: TelemetryService) {
+    private configService: ConfigService, private telemetryService: TelemetryService,
+    public generaliseLabelService: GeneraliseLabelService, public layoutService: LayoutService) {
   }
 
   showJoinModal(event) {
@@ -48,10 +51,11 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.getCourseHierarchy(this.courseId, inputParams).pipe(takeUntil(this.unsubscribe))
     .subscribe((courseHierarchy: any) => {
       this.courseHierarchy = courseHierarchy;
+      this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
       this.showLoader = false;
     }, (error) => {
       if (_.isEqual(_.get(error, 'error.responseCode'), 'RESOURCE_NOT_FOUND')) {
-        this.toasterService.error(this.resourceService.messages.emsg.m0002);
+        this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }

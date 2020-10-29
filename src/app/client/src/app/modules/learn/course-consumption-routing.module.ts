@@ -34,7 +34,7 @@ const routes: Routes = [
       {
         path: ':courseId/dashboard', loadChildren: './../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard],
         data: {
-          roles: 'courseBatchRoles',
+          roles: 'createBatchRole',
           telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
         }
       },

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
 import * as _ from 'lodash-es';
@@ -9,6 +9,8 @@ export class ContentUtilsServiceService {
   *baseUrl;
   */
   public baseUrl: string;
+
+  public contentShareEvent: EventEmitter<any> =  new EventEmitter<any>();
   /**
   *input for Sharelink;
   */

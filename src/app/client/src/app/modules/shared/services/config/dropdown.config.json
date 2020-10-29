@@ -395,6 +395,10 @@
                 {
                     "id": "status",
                     "name": "Status"
+                },
+                {
+                    "id": "primaryCategory",
+                    "name": "Content Types"
                 }
             ]
         }

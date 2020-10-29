@@ -21,6 +21,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   showModal = false;
   userBatch: {};
   telemetryImpression: IImpressionEventInput;
+  criteriaMet: boolean;
 
   public unsubscribe$ = new Subject<void>();
   constructor(
@@ -59,6 +60,7 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
       this.modifyCss();
       if (!this.isErrorOccurred(_.get(data, 'result.response'))) {
         this.userData = _.get(data, 'result.response');
+        this.criteriaMet = this.certService.checkCriteria(_.get(this.userData, 'courses.batches'));
       }
     }, (err) => {
       this.modifyCss();

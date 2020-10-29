@@ -1,5 +1,6 @@
 import { Component, OnDestroy, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import { GeneraliseLabelService } from '@sunbird/core';
 import { TelemetryService, IInteractEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +18,8 @@ export class CourseCompletionComponent implements OnDestroy {
   constructor(
     public resourceService: ResourceService,
     private telemetryService: TelemetryService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public generaliseLabelService: GeneraliseLabelService
     ) { }
 
   closeModal() {

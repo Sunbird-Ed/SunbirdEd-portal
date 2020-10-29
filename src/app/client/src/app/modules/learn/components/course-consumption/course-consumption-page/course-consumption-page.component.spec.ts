@@ -5,7 +5,7 @@ import { CourseHierarchyGetMockResponse } from './../course-player/course-player
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
 import {SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
+import { CoreModule, CoursesService, LearnerService, GeneraliseLabelService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
@@ -44,7 +44,8 @@ const resourceServiceMockData = {
     lbl: {
       description: 'description'
     }
-  }
+  },
+  languageSelected$: of({})
 };
 class ActivatedRouteStub {
   snapshot = {
@@ -66,7 +67,7 @@ describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
   let fixture: ComponentFixture<CourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
-  navigationHelperService;
+  navigationHelperService, generaliseLabelService;
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -90,6 +91,8 @@ describe('CourseConsumptionPageComponent', () => {
     courseBatchService = TestBed.get(CourseBatchService);
     learnerService = TestBed.get(LearnerService);
     navigationHelperService = TestBed.get(NavigationHelperService);
+    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    spyOn(generaliseLabelService, 'initialize').and.returnValue('');
     spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};

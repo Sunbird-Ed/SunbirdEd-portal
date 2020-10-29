@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ConfigService } from '../config/config.service';
 
@@ -20,7 +20,7 @@ export class LayoutService {
    */
   private _layout$ = new BehaviorSubject<any>(undefined);
   public _layoutConfigData$: Observable<any> = this._layout$.asObservable();
-
+  updateSelectedContentType = new EventEmitter<any>();
 
   constructor(private configService: ConfigService) { }
 

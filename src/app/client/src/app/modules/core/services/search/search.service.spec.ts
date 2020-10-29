@@ -157,4 +157,17 @@ describe('SearchService', () => {
           return observableThrowError({});
         });
       }));
+
+    it ('should return TRUE (when content is trackable or contentType = COURSE)', inject([SearchService],
+      (service: SearchService) => {
+        const value = service.isContentTrackable({identifier: '123', trackable: {enabled: 'yes'}}, 'course');
+        expect(value).toBe(true);
+    }));
+
+    it ('should return FALSE (when content is not trackable or contentType != COURSE)', inject([SearchService],
+      (service: SearchService) => {
+        const value = service.isContentTrackable({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
+        expect(value).toBe(false);
+    }));
+
   });

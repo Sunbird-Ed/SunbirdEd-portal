@@ -7,7 +7,7 @@ const async = require('async')
 const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
@@ -47,7 +47,7 @@ const authenticated = function (request, next) {
       logger.error({msg: 'error loggin in user', error: err});
       next(err, null);
     } else {
-      logger.error({msg: 'keycloack authenticated successfully'});
+      logger.info({msg: 'keycloack authenticated successfully'});
       next(null, 'loggedin');
     }
   })

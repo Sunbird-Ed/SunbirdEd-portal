@@ -30,7 +30,7 @@
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label | translate}} </label>
-                  <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
+                  <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                     class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="selectedFilters[facet.name]"
@@ -46,6 +46,12 @@
                       </sui-select-option>
                     </ng-template>
                   </sui-multi-select>
+                  <div *ngIf="facet.name === 'mediaType'" class="sbt-class-bar text-left">
+                    <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
+                      [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"
+                      (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'mediaType'}); selectedFilters[facet.name]=[$event.data.text]">
+                    </sb-library-filters>
+                  </div>
                 </div>
               </div>
             </div>
@@ -87,10 +93,10 @@
                 </div>
               </ng-container>
             </div>
-            <div class="sb-prominent-filter-container" *ngIf="refresh">
+            <div class="sb-prominent-filter-container sb-global-search" *ngIf="refresh">
               <div class="sb-prominent-filter-field" *ngFor="let facet of facets | sortBy:'index':'asc'">
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
-                <sui-multi-select [hasLabels]="false" defaultSelectionText={{facet.label}}
+                <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                   class="ui selection dropdown multiple" [(ngModel)]="selectedFilters[facet.name]"
                   (ngModelChange)="onChange(facet)">
@@ -105,6 +111,12 @@
                     </sui-select-option>
                   </ng-template>
                 </sui-multi-select>
+                <div *ngIf="facet.name === 'mediaType'" class="sb-class-bar sb-bg-color-gray-0">
+                  <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
+                    [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"
+                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'mediaType'}); selectedFilters[facet.name]=[$event.data.text]">
+                  </sb-library-filters>
+                </div>
               </div>
               <div class="sb-prominent-filter-field">
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()"

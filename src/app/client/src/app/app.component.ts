@@ -8,7 +8,7 @@ import {
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
-  SessionExpiryInterceptor, FormService, ProgramsService
+  SessionExpiryInterceptor, FormService, ProgramsService, GeneraliseLabelService
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
@@ -106,7 +106,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService) {
+    public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
@@ -233,6 +234,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
+    this.generaliseLabelService.getGeneraliseResourceBundle();
   }
 
   

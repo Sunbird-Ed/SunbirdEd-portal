@@ -1,7 +1,6 @@
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
@@ -53,7 +52,7 @@ module.exports = function (app) {
   // Log telemetry for action api's
   app.all('/action/*', telemetryHelper.generateTelemetryForProxy)
 
-  app.use('/action/content/v3/unlisted/publish/:contentId', permissionsHelper.checkPermission(),
+  app.use('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(), proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
@@ -119,7 +118,6 @@ module.exports = function (app) {
   app.post('/action/user/v1/search',
     addCorsHeaders,
     proxyUtils.verifyToken(),
-    permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
@@ -130,7 +128,7 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
   }))
 
-  app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+  app.use('/action/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),

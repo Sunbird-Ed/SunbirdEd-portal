@@ -117,7 +117,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
 
   getUpdatedGroupData() {
     const groupId = _.get(this.groupData, 'id') || _.get(this.activatedRoute.snapshot, 'params.groupId');
-    this.groupsService.getGroupById(groupId, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupsService.getGroupById(groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
       if (!user || _.get(groupData, 'status') === 'inactive') {
         this.groupsService.goBack();

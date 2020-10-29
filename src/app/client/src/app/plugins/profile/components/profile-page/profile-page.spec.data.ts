@@ -475,7 +475,7 @@ export const Response = {
                         '_score': 8.958797
                     }
                 ],
-                'count': 1
+                'count': 10
             }
         }
     },

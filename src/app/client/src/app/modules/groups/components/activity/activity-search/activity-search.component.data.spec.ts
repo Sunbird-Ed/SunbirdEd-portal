@@ -16,5 +16,106 @@ export const activitySearchMockData = {
     'defaultCourseFramework': 'TPD',
     'status': 'Live',
     'defaultFramework': 'NCFCOPY'
+  },
+
+  eventDataForResource: {
+      'name': '.TestContent!23.',
+      'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'rating': '0',
+      'orgDetails': {},
+      'gradeLevel': '',
+      'contentType': 'Resource',
+      'topic': '',
+      'subTopic': '',
+      'metaData': {
+        'identifier': 'LP_FT_9158412',
+        'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'contentType': 'Resource'
+      },
+      'completionPercentage': 0,
+      'mimeTypesCount': 0,
+      'cardImg': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'board': '',
+      'identifier': 'LP_FT_9158412',
+      'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'action': {
+        'onImage': {
+          'eventName': 'onImage'
+        }
+      },
+      'ribbon': {
+        'left': {},
+        'right': {
+          'name': 'Resource'
+        }
+      }
+  },
+
+  eventDataForCourse: {
+      'name': '.TestContent!23.',
+      'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'rating': '0',
+      'orgDetails': {},
+      'trackable': {
+        'enabled': 'yes'
+      },
+      'gradeLevel': '',
+      'contentType': 'Course',
+      'topic': '',
+      'subTopic': '',
+      'metaData': {
+        'identifier': 'LP_FT_9158412',
+        'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'contentType': 'Resource'
+      },
+      'completionPercentage': 0,
+      'mimeTypesCount': 0,
+      'cardImg': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'board': '',
+      'identifier': 'LP_FT_9158412',
+      'mimeType': 'application/vnd.ekstep.content-collection',
+      'action': {
+        'onImage': {
+          'eventName': 'onImage'
+        }
+      },
+      'ribbon': {
+        'left': {},
+        'right': {
+          'name': 'Resource'
+        }
+      }
+  },
+  eventDataForTextbook: {
+      'name': '.TestContent!23.',
+      'image': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'rating': '0',
+      'orgDetails': {},
+      'gradeLevel': '',
+      'contentType': 'TextBook',
+      'topic': '',
+      'subTopic': '',
+      'metaData': {
+        'identifier': 'LP_FT_9158412',
+        'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'contentType': 'Resource'
+      },
+      'completionPercentage': 0,
+      'mimeTypesCount': 0,
+      'cardImg': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/lp_ft_9158412/artifact/jpegimage_1538045901746.thumb.jpeg',
+      'board': '',
+      'identifier': 'LP_FT_9158412',
+      'mimeType': 'application/vnd.ekstep.content-collection',
+      'action': {
+        'onImage': {
+          'eventName': 'onImage'
+        }
+      },
+      'ribbon': {
+        'left': {},
+        'right': {
+          'name': 'Resource'
+        }
+      }
   }
 };

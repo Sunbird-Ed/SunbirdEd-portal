@@ -18,5 +18,5 @@
 </div>
 
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-  (close)="sharelinkModal = false">
+  (close)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
 </app-share-link> 

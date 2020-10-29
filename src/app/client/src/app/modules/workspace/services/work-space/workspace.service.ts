@@ -5,7 +5,7 @@ import {
   ConfigService, ServerResponse, ICard, NavigationHelperService, ResourceService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ContentService, PublicDataService, UserService } from '@sunbird/core';
-import { IDeleteParam } from '../../interfaces/delteparam';
+import { IDeleteParam, ContentIDParam } from '../../interfaces/delteparam';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
@@ -41,6 +41,7 @@ export class WorkSpaceService {
     this.content = content;
     this.config = config;
     this.route = route;
+    this.publicDataService = publicDataService;
   }
   /**
   * deleteContent
@@ -259,4 +260,34 @@ export class WorkSpaceService {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });
   }
+
+/**
+  * Search Content which are used in some other content/collection
+  * @param {ContentID} requestParam
+  */
+  searchContent(requestparam: ContentIDParam): Observable<ServerResponse> {
+  const option = {
+    url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
+    'data': {
+      'request': {
+        'filters': {
+            'childNodes': [requestparam]
+          }
+        }
+        }
+    };
+    return this.content.post(option);
+  }
+
+/**
+ * To get channel details
+ * @param {channelId} id required for read API
+ */
+getChannel(channelId): Observable<ServerResponse> {
+  const option = {
+    url: `${this.config.urlConFig.URLS.CHANNEL.READ}` + '/' + channelId
+  };
+  return this.publicDataService.get(option);
+}
+
 }

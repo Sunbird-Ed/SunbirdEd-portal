@@ -52,6 +52,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public allTabData;
   public selectedFilters;
   public searchAll;
+  public allMimeType;
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -145,9 +146,21 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchContents() {
+    const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+      _.get(this.queryParams, 'mediaType');
+    const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+      return o.name === (selectedMediaType || 'all');
+    });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']);
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    filters.mimeType = _.get(mimeType, 'values');
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),

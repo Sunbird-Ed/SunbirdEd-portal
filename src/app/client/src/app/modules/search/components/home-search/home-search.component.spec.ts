@@ -2,7 +2,7 @@ import { HomeSearchComponent } from './home-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoursesService, CoreModule, LearnerService} from '@sunbird/core';
+import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -212,4 +212,55 @@ describe('HomeSearchComponent', () => {
     expect(component.contentList.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   }));
+
+  it('should call ngAfterViewInit', fakeAsync(() => {
+    component.ngAfterViewInit();
+    tick(100);
+    expect(component.telemetryImpression).toBeDefined();
+  }));
+
+  it('should playContent without batch id', () => {
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue({ onGoingBatchCount: 0, expiredBatchCount: 0 });
+    spyOn(playerService, 'playContent').and.callThrough();
+    const data = {
+      metaData: {
+        identifier: '123',
+      }
+    };
+    component.playContent({data});
+    expect(playerService.playContent).toHaveBeenCalledWith(data.metaData);
+  });
+
+  it('should playContent for on going batch with batch id', () => {
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const returnValue = {
+      onGoingBatchCount: 1,
+      expiredBatchCount: 0,
+      openBatch: {
+        ongoing: [{ batchId: 1213421 }]
+      },
+      inviteOnlyBatch: false
+    };
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue(returnValue);
+    const data = {
+      metaData: {
+        identifier: '123',
+      }
+    };
+    component.playContent({data});
+  });
+
+  it('should call navigateToPage method', () => {
+    component.paginationDetails.totalPages = 20;
+    const router = TestBed.get(Router);
+    router.url = '/search/Courses/1?key=SB-194&selectedTab=all';
+    spyOn(window, 'scroll');
+    component.navigateToPage(2);
+    expect(router.navigate).toHaveBeenCalled();
+    expect(window.scroll).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'smooth' });
+  });
+
 });

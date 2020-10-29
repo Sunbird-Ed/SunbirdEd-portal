@@ -50,6 +50,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     SECOND_PANEL_LAYOUT;
     public totalCount;
     public searchAll;
+    public allMimeType;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
@@ -143,8 +144,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.fetchContents();
             });
     }
+
     private fetchContents() {
-      let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
+        const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+            _.get(this.queryParams, 'mediaType');
+        const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+            return o.name === (selectedMediaType || 'all');
+        });
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
@@ -155,6 +162,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
         filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+        filters.mimeType = _.get(mimeType, 'values');
+
+        // Replacing cbse/ncert value with cbse
+        if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+            filters.board = ['cbse'];
+        }
+
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {
             filters: filters,

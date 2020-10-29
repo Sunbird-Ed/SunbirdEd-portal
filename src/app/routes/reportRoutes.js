@@ -5,9 +5,9 @@ const proxy = require('express-http-proxy');
 const {REPORT_SERVICE_URL, sunbird_api_request_timeout, DATASERVICE_URL,CONTENT_URL, sunbird_data_product_service} = require('../helpers/environmentVariablesHelper.js');
 const reqDataLimitOfContentUpload = '50mb';
 const _ = require('lodash');
-const { getUserDetailsV2 } = require('../helpers/userHelper');
-module.exports = function (app) {
+const {getUserDetailsV2} = require('../helpers/userHelper');
 
+module.exports = function (app) {
     app.all([`${BASE_REPORT_URL}/update/:reportId`, `${BASE_REPORT_URL}/publish/:reportId`, `${BASE_REPORT_URL}/publish/:reportId/:hash`, `${BASE_REPORT_URL}/retire/:reportId`, `${BASE_REPORT_URL}/retire/:reportId/:hash`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_ADMIN']),
@@ -28,7 +28,6 @@ module.exports = function (app) {
             }
         })
     )
-
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
@@ -56,9 +55,8 @@ module.exports = function (app) {
             }
         })
     )
-
-
-  app.all(['/report/request/read/:tag', '/report/request/list/:tag', '/report/request/submit'],
+    
+    app.all(['/report/request/read/:tag', '/report/request/list/:tag', '/report/request/submit'],
     proxyUtils.verifyToken(),
     proxy(sunbird_data_product_service, {
       limit: reqDataLimitOfContentUpload,
@@ -109,6 +107,7 @@ module.exports = function (app) {
       }
     })
   )
+  
     app.all([`${BASE_REPORT_URL}/get/:reportId/:hash`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),

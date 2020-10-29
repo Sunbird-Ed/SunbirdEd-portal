@@ -25,7 +25,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
   public showLoader = false;
 
   public get pickerMaxDate() {
-    return dayjs().toDate();
+    return dayjs().subtract(1, 'day').toDate();
   }
 
   public get pickerMinDate() {
@@ -40,7 +40,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
   data: any;
   options: any = { maxLines: 1000, printMargin: false };
 
-  private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(6, 'day').toDate(), to: dayjs().toDate() });
+  private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(7, 'day').toDate(), to: dayjs().subtract(1, 'day').toDate() });
 
   @ViewChild('datasets') set initTable(element: ElementRef | null) {
     if (!element) { return; }
@@ -57,8 +57,8 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   private prepareForm() {
     this.timeRangePicker = this.formBuilder.group({
-      from: [dayjs().subtract(6, 'day').toDate()],
-      to: [dayjs().toDate()]
+      from: [dayjs().subtract(7, 'day').toDate()],
+      to: [dayjs().subtract(1, 'day').toDate()]
     });
     this.subscribeToTimePicker();
   }
@@ -113,7 +113,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
     this.customTimePicker.next(this.timeRangePicker.value);
   }
 
-  private getDataset({ from = dayjs().subtract(6, 'day'), to = dayjs() }) {
+  private getDataset({ from = dayjs().subtract(7, 'day'), to = dayjs().subtract(1, 'day') }) {
     const dateRange = this.getDateRange(from, to);
     const { hash } = this.activatedRoute.snapshot.params;
     return this.datasetService.getDataSet({

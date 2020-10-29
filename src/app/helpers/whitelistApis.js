@@ -18,6 +18,7 @@ const ROLE = {
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
+  ORG_ADMIN: 'ORG_ADMIN',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -116,7 +117,7 @@ const API_LIST = {
 
     '/content/content/v1/copy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
     },
     '/content/content/v1/publish/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
@@ -324,15 +325,15 @@ const API_LIST = {
     //Batch related APIs
     '/learner/course/v1/batch/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/user/add': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/learner/course/v1/batch/read/:batchId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -347,7 +348,7 @@ const API_LIST = {
     },
     '/learner/course/v1/batch/user/remove': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
 
     //User related APIs
@@ -409,6 +410,14 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ALL]
     },
     '/learner/user/v1/declarations': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL]
+    },
+    '/learner/user/v1/consent/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL]
+    },
+    '/learner/user/v1/consent/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
     },
@@ -551,6 +560,10 @@ const API_LIST = {
     '/learner/anonymous/otp/v1/generate': {
       checksNeeded: []
     },
+    '/learner/data/v1/form/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     // Groups related APIs
     '/learner/group/v1/create': {
@@ -585,7 +598,7 @@ const API_LIST = {
     },
     '/certreg/v1/cert/reissue': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
     '/certreg/v1/add/template': {
       checksNeeded: ['ROLE_CHECK'],

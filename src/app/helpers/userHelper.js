@@ -7,7 +7,7 @@ const _ = require('lodash')
 const uuidv1 = require('uuid/v1');
 const requestPromise = require('request-promise'); //  'request' npm package with Promise support
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 module.exports = {
   updateLoginTime: function (req, callback) {

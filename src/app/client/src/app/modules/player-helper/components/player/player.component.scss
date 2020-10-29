@@ -89,5 +89,6 @@
   position: absolute;
   z-index: 100;
   right: calculateRem(16px);
-  top: calculateRem(16px);
+  top: calculateRem(48px);
+  cursor: pointer;
 }

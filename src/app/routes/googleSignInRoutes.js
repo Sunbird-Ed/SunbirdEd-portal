@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
@@ -25,9 +25,9 @@ module.exports = (app) => {
     const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
-    logger.info({msg: 'query params state', googleSignInData});
+    logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
-    logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
+    logger.info({ reqId: req.get('X-Request-ID'), msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
