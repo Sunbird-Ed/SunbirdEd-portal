@@ -144,13 +144,19 @@ const getTemplateData = async (req, requestParams) => {
   logger.info({msg: `returning response from getTemplateData() with data ${_.get(response, 'data')}`});
   return response;
 }
-
+/**
+ * @description Removing the old attached certificate
+ * While saving the new cert to an batch, we should remove the already attached cert
+ * There should be only 1 certificate can be attached to an batch
+ */
 const removeCert = () => {
   return async function (req, res, next) {
     try {
         logger.info({msg: `removeCert() is called with requestbody ${JSON.stringify(req.body)}`});
         var reqObj = _.get(req, 'body.request');
         let oldTemplateId = _.get(reqObj, 'oldTemplateId')
+
+        // In the request OldTemplateId is present then remove the attached old cert template
         if (!_.isEmpty(oldTemplateId)) {
           logger.info({msg: `Remove the old attached certificate ${oldTemplateId}`});
           const appConfig = getHeaders();
@@ -164,6 +170,8 @@ const removeCert = () => {
                   }
                 }
           }
+
+          // Calling API to remove the attached certificate
           const response = await HTTPService.patch(`${certRegURL + 'course/batch/cert/v1/template/remove'}`, {request: requestParams}, appConfig).toPromise().catch(err => {
             logger.error({msg: `Error occurred while removing the old attached certificate ${oldTemplateId}, ERROR: ${err}`})
           });
