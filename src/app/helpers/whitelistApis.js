@@ -422,7 +422,12 @@ const API_LIST = {
     },
     '/learner/user/v3/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL],
+      ROLE_CHECK: [ROLE.ALL]
+      // OWNER_CHECK: {
+      //   checks: [
+      //     { entity: '__adminCheck__userId', params: [] }
+      //   ]
+      // }
     },
     '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],
@@ -593,11 +598,19 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/group/v1/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v2/exists/:key/:value': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/group/activity/agg': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/group/membership/v1/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },

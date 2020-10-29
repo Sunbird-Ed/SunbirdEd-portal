@@ -53,40 +53,96 @@ describe('BrowseImagePopupComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.uploadForm).toBeTruthy();
   });
 
-  // it('should get the images by search api call', () => {
-  //   const uploadCertService = TestBed.get(UploadCertificateService);
-  //   spyOn(uploadCertService, 'getAssetData').and.returnValue(of(MockData.searchData));
-  //   component.ngOnInit();
-  //   expect(component.imagesList).toEqual(MockData.searchData.result.content);
-  // });
+  it('should getAssetData', () => {
+    spyOn(component.uploadCertificateService, 'getAssetData').and.returnValue(of (MockData.searchSingleImage));
+    component.getAssetList();
 
-  // it('should not get the images by search api call', () => {
-  //   const uploadCertService = TestBed.get(UploadCertificateService);
-  //   const toasterService = TestBed.get(ToasterService);
-  //   spyOn(toasterService, 'error').and.stub();
-  //   spyOn(uploadCertService, 'getAssetData').and.callFake(() => throwError({}));
-  //   component.ngOnInit();
-  //   expect(toasterService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
-  // });
+    expect(component.imageName).toEqual('');
+    component.uploadCertificateService.getAssetData().subscribe(data => {
+      expect(data).toEqual(MockData.searchSingleImage);
+      expect(component.imagesList).toEqual(data.result.content);
+    });
+  });
+
+  it('should throw on getAssetData', () => {
+    spyOn(component.uploadCertificateService, 'getAssetData').and.returnValue(throwError ({}));
+    spyOn(component.toasterService, 'error');
+    component.getAssetList();
+    expect(component.imageName).toEqual('');
+    component.uploadCertificateService.getAssetData().subscribe(data => {},
+      err => {
+        expect(component.toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+      });
+  });
 
   it('should search one specific image', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    spyOn(uploadCertService, 'getAssetData').and.returnValue(of(MockData.searchSingleImage));
+    spyOn(component.uploadCertificateService, 'getAssetData').and.returnValue(of (MockData.searchSingleImage));
     component.searchImage();
-    expect(component.imagesList).toEqual(MockData.searchSingleImage.result.content);
+    component.uploadCertificateService.getAssetData().subscribe(data => {
+      expect(data).toEqual(MockData.searchSingleImage);
+      expect(component.imagesList).toEqual(data.result.content);
+    });
   });
 
   it('should not search one specific image if api fails', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.stub();
-    spyOn(uploadCertService, 'getAssetData').and.callFake(() => throwError({}));
+    spyOn(component.toasterService, 'error').and.stub();
+    spyOn(component.uploadCertificateService, 'getAssetData').and.callFake(() => throwError({}));
     component.searchImage();
-    expect(toasterService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
+    component.uploadCertificateService.getAssetData().subscribe(data => {},
+      err => {
+        expect(component.toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+      });
   });
 
+
+  it ('should update upload form data ', async () => {
+    const ev = { target: { files: [{
+        height: 88,
+        size: 0.01,
+        type: 'image/png',
+        width: 88,
+        name: 'file1'
+        }]
+      }
+    };
+    const result = Promise.resolve(ev.target.files[0]);
+    spyOn(component, 'getImageProperties').and.returnValue(result);
+    spyOn(component, 'dimentionCheck').and.returnValue(true);
+    spyOn(component.uploadForm, 'reset');
+    spyOn(component.uploadForm, 'patchValue');
+    component.fileChange(ev);
+    expect(component.getImageProperties).toHaveBeenCalledWith(ev);
+    expect(component.uploadForm.reset).toHaveBeenCalled();
+    expect(await component.dimentionCheck).toHaveBeenCalledWith(ev.target.files[0]);
+    expect( component.uploadForm.reset).toHaveBeenCalled();
+    expect( component.uploadForm.patchValue).toHaveBeenCalledWith({
+      assetCaption: 'file1',
+      creator: 'undefined undefined',
+      creatorId: undefined
+    });
+  });
+
+  it ('should return "flag=true"', () => {
+    component.logoType =  {type: 'LOGO'};
+    const value = component.dimentionCheck({
+      height: 88,
+      size: 0.01,
+      type: 'image/png',
+      width: 88,
+      name: 'file1'
+    });
+    expect(value).toBeTruthy();
+  });
+
+  it ('should return "flag=false"', () => {
+    component.logoType =  {type: 'LOGO'};
+    const value = component.dimentionCheck('');
+    expect(value).toBeFalsy();
+  });
+ 
   it('should select the logo', () => {
     const logo = {
       artifactUrl: 'SOME_URL',
@@ -113,30 +169,20 @@ describe('BrowseImagePopupComponent', () => {
   });
 
   it('should upload the asset for logos', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
     component.logoType = { type: 'LOGO' };
-    spyOn(uploadCertService, 'createAsset').and.returnValue(of(MockData.create));
+    spyOn(component.uploadCertificateService, 'createAsset').and.returnValue(of(MockData.create));
     spyOn(component, 'uploadBlob').and.stub();
     component.upload();
     expect(component.uploadBlob).toHaveBeenCalledWith(MockData.create);
   });
 
   it('should not upload the asset for logos', () => {
-    const uploadCertService = TestBed.get(UploadCertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.stub();
+    spyOn(component.toasterService, 'error').and.stub();
     component.logoType = { type: 'LOGO' };
-    spyOn(uploadCertService, 'createAsset').and.callFake(() => throwError({}));
+    spyOn(component.uploadCertificateService, 'createAsset').and.callFake(() => throwError({}));
     component.upload();
-    expect(toasterService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
+    expect(component.toasterService.error).toHaveBeenCalledWith('Could not fetch data, try again later');
   });
-
-  // it('should fetch the image urls for sign', () => {
-  //   component.logoType = { type: 'SIGN' };
-  //   spyOn(component, 'getImageURLs').and.stub();
-  //   component.upload();
-  //   expect(component.getImageURLs).toHaveBeenCalled();
-  // });
 
   it('should browse the images', () => {
     component.browseImages();
@@ -153,9 +199,8 @@ describe('BrowseImagePopupComponent', () => {
     component.uploadForm = new FormGroup({
       assetCaption: new FormControl(null)
     });
-    const uploadCertService = TestBed.get(UploadCertificateService);
     spyOn(component.assetData, 'emit').and.stub();
-    spyOn(uploadCertService, 'storeAsset').and.returnValue(of(MockData.upload));
+    spyOn(component.uploadCertificateService, 'storeAsset').and.returnValue(of(MockData.upload));
     component.uploadBlob(MockData.create);
     expect(component.showSelectImageModal).toEqual(false);
     expect(component.showUploadUserModal).toEqual(false);
@@ -184,21 +229,13 @@ describe('BrowseImagePopupComponent', () => {
     component.uploadForm = new FormGroup({
       assetCaption: new FormControl(null)
     });
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.stub();
-    const uploadCertService = TestBed.get(UploadCertificateService);
+
+    spyOn(component.toasterService, 'error').and.stub();
     spyOn(component.assetData, 'emit').and.stub();
-    spyOn(uploadCertService, 'storeAsset').and.callFake(() => throwError(errorData));
+    spyOn(component.uploadCertificateService, 'storeAsset').and.callFake(() => throwError(errorData));
     component.uploadBlob(MockData.create);
     expect(component.showSelectImageModal).toEqual(false);
     expect(component.showUploadUserModal).toEqual(false);
-    // expect(component.assetData.emit).toHaveBeenCalledWith({
-    //   'name': component.uploadForm.controls.assetCaption.value,
-    //   'url': errorData.error.result.artifactUrl,
-    //   'type': component.logoType.type,
-    //   'key': component.logoType.key,
-    //   'index': component.logoType.index
-    // });
   });
 
   it('should select and use the logo', () => {

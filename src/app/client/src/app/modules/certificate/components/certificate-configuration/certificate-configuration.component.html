@@ -84,7 +84,7 @@
         </div>
 
         <div class="eight wide column">
-          <div *ngIf="!(batchDetails && batchDetails?.cert_templates)" class="select-template-content p-24">
+          <div *ngIf="!selectedTemplate" class="select-template-content p-24">
             <div class="d-flex flex-dc flex-ai-center text-center mt-32">
               <div><img src="../../assets/images/addcertificate.png"></div>
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
@@ -96,7 +96,7 @@
                 <img src="assets/images/plus-icon.svg" width="8px" class="ml-4 plus-icon"></button>
             </div>
           </div>
-          <div *ngIf="(batchDetails && batchDetails?.cert_templates)" class="certificate-edit-content p-24">
+          <div *ngIf="selectedTemplate" class="certificate-edit-content p-24">
             <div class="content">
               <div class="fnormal pb-24 font-weight-bold text-left">
                 {{resourceService?.frmelmnts?.cert?.lbl?.certificate}}</div>

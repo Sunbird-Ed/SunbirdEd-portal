@@ -659,3 +659,7 @@ app-workspace {
         bottom: 0;
     }
 }
+
+html.PlayerMediaQueryClass {
+  font-size: calc(12px + (32 - 12) * ((100vw - 320px) / (1920 - 320)));
+}
