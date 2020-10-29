@@ -52,9 +52,11 @@
     z-index: 2;
 
     .certificate-scrollbar {
+      height: 90%;
       overflow-y: auto;
       padding-right: 0.5rem;
       padding-left: 0;
+     
 
       html[dir="rtl"] & {
         padding-right: 0;
