@@ -25,7 +25,8 @@
       "organisation",
       "topic",
       "mimeType",
-      "trackable"
+      "trackable",
+      "gradeLevel"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
@@ -113,10 +114,14 @@
       "FETCH_CERTIFICATES": "v1/certs/search",
       "FETCH_USER": "v1/user/search",
       "REISSUE_CERTIFICATE": "v1/cert/reissue",
-      "ADD_CERTIFICATE" : "v1/add/template"
+      "ADD_CERTIFICATE" : "v1/add/template",
+      "ATTACH_CERTIFICATE": "v1/template/add",
+      "CREATE_CERT_TEMPLATE": "asset/v1/create",
+      "UPLOAD_CERT_TEMPLATE": "asset/v1/upload"
     },
     "COMPOSITE": {
-      "SEARCH": "composite/v1/search"
+      "SEARCH": "composite/v1/search",
+      "SEARCH_IMAGES": "composite/v3/search"
     },
     "SYSTEM_SETTING": {
       "CUSTODIAN_ORG": "data/v1/system/settings/get/custodianOrgId",
@@ -151,6 +156,7 @@
       "RETIRE": "content/v1/retire",
       "REJECT": "content/v1/reject",
       "FLAG": "content/v1/flag",
+      "UPLOAD": "content/v1/upload",
       "ACCEPT_FLAG": "content/v1/flag/accept",
       "DISCARD_FLAG": "content/v1/flag/reject",
       "COPY": "content/v1/copy",

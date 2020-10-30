@@ -1,58 +1,123 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-
-
+import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UserService } from '@sunbird/core';
+import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { DomSanitizer } from '@angular/platform-browser';
+import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
+import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
+import {ActivatedRoute} from '@angular/router';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.scss']
 })
-export class CreateTemplateComponent implements OnInit {
+export class CreateTemplateComponent implements OnInit, OnDestroy {
+
+  @ViewChild(BrowseImagePopupComponent)
+  public browseImage: BrowseImagePopupComponent;
 
   public unsubscribe$ = new Subject<void>();
-  // userPreference: FormGroup;
-  // selectStateOption: any = [];
-  // selectLanguageOption: any = [];
-  // selectState:any;
-  // selectLanguage:any;
-  // showSelectImageModal;
-  // showUploadUserModal;
-  constructor() { }
+  createTemplateForm: FormGroup;
+  selectStateOption: any = [];
+  selectLanguageOption: any = [];
+  selectState: any;
+  selectLanguage: any;
+  showSelectImageModal;
+  showUploadUserModal;
+  certLogos: any = [];
+  certSigns: any = [];
+  logoType;
+  // api call
+  defaultCertificates = [
+    { artifactUrl: 'assets/images/template-1.svg', identifier: 0 },
+    { artifactUrl: 'assets/images/template-2.svg', identifier: 1 },
+    { artifactUrl: 'assets/images/template-3.svg', identifier: 2 },
+    { artifactUrl: 'assets/images/template-4.svg', identifier: 3 }];
+  selectedCertificate: any;
+  logoHtml;
+  svgData;
+  center = 275;
+  disableCreateTemplate = true;
+  certConfigModalInstance = new CertConfigModel();
+  images = {
+    'LOGO1': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'LOGO2': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'SIGN1': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''},
+    'SIGN2': { 'index': null, 'name' : '' , 'key': '', 'type': '', 'url': ''}
+  };
+  finalSVGurl: any;
+  classNames = {
+    'STATE_LOGOS': 'state-logo',
+    'STATE_TITLE': 'state-title',
+    'SIGN_LOGO': ['signatureImg1', 'signatureImg2'],
+    'CERT_TITLE': 'cert-title',
+    'DESIGNATIONS_NAMES': ['signatureTitle1', 'signatureTitle2'],
+    'DESIGNATIONS': ['signatureTitle1a', 'signatureTitle2a']
+  };
+  optionSing = 'SIGN2';
+  queryParams: any;
+  mode: any;
+
+  constructor(public uploadCertificateService: UploadCertificateService,
+    public userService: UserService,
+    private sanitizer: DomSanitizer,
+    private activatedRoute: ActivatedRoute,
+    public toasterService: ToasterService,
+    public resourceService: ResourceService,
+    public navigationHelperService: NavigationHelperService) {
+  }
 
   ngOnInit() {
-    // this.selectStateOption = [
-    //   {
-    //     name: 'Karnataka',
-    //     value: '0'
-    //   },
-    //   {
-    //     name: 'Maharashtra',
-    //     value: '1'
-    //    },
-    //    {
-    //     name: 'Tamil Nadu',
-    //     value: '2'
-    //   },
-    //   {
-    //     name: 'Andhra Pradesh',
-    //     value: '3'
-    //    },
-    // ];
-    // this.selectLanguageOption = [
-    //   {
-    //     name: 'All',
-    //     value: '0'
-    //   },
-    //   {
-    //     name: 'hindi',
-    //     value: '1'
-    //    },
-    //    {
-    //     name: 'English',
-    //     value: '2'
-    //   }
-    // ];
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = params;
+      this.mode = _.get(this.queryParams, 'type');
+    });
+    this.navigationHelperService.setNavigationUrl();
+    this.initializeFormFields();
+    this.selectedCertificate = _.clone(this.defaultCertificates[0]);
+    this.getSVGTemplate();
+    this.uploadCertificateService.getCertificates().subscribe(res => {
+      console.log(res);
+      // this.defaultCertificates = _.get(res, 'result.content');
+      // this.selectedCertificate = _.clone(this.defaultCertificates[0]);
+      // this.getSVGTemplate();
+    });
+  }
+
+  initializeFormFields() {
+    this.createTemplateForm = new FormGroup({
+      certificateTitle: new FormControl('', [Validators.required]),
+      stateName: new FormControl('', [Validators.required]),
+      authoritySignature_0: new FormControl('', [Validators.required]),
+      authoritySignature_1: new FormControl(''),
+      allowPermission: new FormControl('', [Validators.required])
+    });
+    // TODO: Move to a separate component this browse logic;
+    this.createTemplateForm.valueChanges.subscribe(val => {
+      this.validateForm();
+    });
+  }
+
+  validateForm() {
+    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')) {
+      this.disableCreateTemplate = false;
+    } else {
+      this.disableCreateTemplate = true;
+    }
+  }
+
+
+  getSVGTemplate() {
+    this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
+      const svgFile = res;
+      this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(svgFile);
+      console.log(this.convertHtml(this.logoHtml));
+      this.previewCertificate();
+    });
   }
 
   ngOnDestroy() {
@@ -61,10 +126,218 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   createCertTemplate() {
-
+    // TODO: Need to remove this method call;
+    this.previewCertificate();
+    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'));
+    this.disableCreateTemplate = true;
+    this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+      console.log('create response', response);
+      const assetId = _.get(response, 'result.identifier');
+      console.log('this.finalSVGurl', this.finalSVGurl);
+      this.uploadTemplate(this.finalSVGurl, assetId);
+    }, error => {
+      this.toasterService.error('Something went wrong, please try again later');
+    });
   }
 
-  onTemplateChange() {
+  uploadTemplate(base64Url, identifier) {
+    this.uploadCertificateService.storeAsset(base64Url, identifier).subscribe(response => {
+      this.toasterService.success('Template created successfully');
+      this.useTemplate(response);
+      this.navigationHelperService.navigateToLastUrl();
+    }, error => {
+      this.toasterService.error('Something went wrong, please try again later');
+      console.log('error', error);
+    });
+  }
 
+  assetData(data) {
+    if (data.key === this.optionSing) {
+      this.createTemplateForm.get('authoritySignature_1').setValidators([Validators.required]);
+      this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
+    }
+    this.images[data.key] = data;
+  }
+
+  close() {
+    this.showSelectImageModal = false;
+    this.showUploadUserModal = false;
+  }
+
+  removeImage(key) {
+    if (key === 'SIGN2') {
+      this.createTemplateForm.get('authoritySignature_1').clearValidators();
+      this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
+    }
+    this.images[key] = {};
+  }
+
+  openSateLogos(type) {
+    this.logoType = type;
+    this.showSelectImageModal = true;
+    this.browseImage.getAssetList();
+  }
+
+  openSignLogos(type) {
+    this.logoType = type;
+    this.showSelectImageModal = true;
+    this.browseImage.getAssetList();
+  }
+
+  chooseCertificate(certificate) {
+    this.logoHtml = null;
+    this.selectedCertificate = _.clone(certificate);
+    this.getSVGTemplate();
+  }
+
+  convertHtml(tag) {
+    if (tag) {
+      const html = tag.toString();
+      return new DOMParser().parseFromString(html, 'text/html');
+    }
+  }
+
+  previewCertificate() {
+    console.log(this.images);
+    this.svgData = this.convertHtml(this.logoHtml);
+    const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
+    const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
+    this.updateTitles();
+    this.updateStateLogos(stateLogos);
+    this.updateSigns(digitalSigns);
+  }
+
+  updateTitles() {
+    const certTitle = this.svgData.getElementsByClassName(this.classNames.CERT_TITLE);
+    certTitle[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
+    const stateTitle = this.svgData.getElementsByClassName(this.classNames.STATE_TITLE);
+    stateTitle[0].innerHTML = this.createTemplateForm.controls.stateName.value;
+    this.classNames.DESIGNATIONS.forEach((id, index) => {
+      const designation_html = this.svgData.getElementById(id);
+      if (designation_html) {
+        const title = this.createTemplateForm.get(`authoritySignature_${index}`).value;
+        designation_html.innerHTML = title;
+      }
+    });
+  }
+
+  updateStateLogos(stateLogos) {
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'LOGO');
+    this.editSVG(logosArray, stateLogos).then(res => {
+      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+    });
+  }
+
+  updateSigns(stateLogos) {
+    const logosArray = Object.values(this.images).filter(x => !_.isEmpty(x) && x['type'] === 'SIGN');
+    this.editSVG(logosArray, stateLogos).then(res => {
+      this.certificateCreation(this.svgData.getElementsByTagName('svg')[0]);
+    });
+  }
+
+  editSVG(logosArray, stateLogos) {
+    return new Promise(async (resolve, reject) => {
+      for (let i = 0; i < logosArray.length; i++) {
+        const logo = logosArray[i];
+        if (logo) {
+          console.log(stateLogos[i]);
+          const res = await this.toDataURL(logo);
+
+          if (res && !_.isEmpty(stateLogos) && stateLogos[i]) {
+            stateLogos[i].setAttribute('xlink:href', res['url']);
+          }
+          if (i === (logosArray.length - 1)) {
+            console.log('resolve');
+            resolve();
+          }
+        }
+      }
+    });
+  }
+
+  toDataURL(image) {
+    return fetch(image.url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.blob())
+      .then(blob => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve({ url: reader.result, type: image.type });
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      }));
+  }
+
+urltoFile(url, filename, mimeType) {
+  return (fetch(url)
+      .then((res) => {
+        return res.arrayBuffer();
+      })
+      .then((buf) => {
+        return new File([buf], filename, {type: mimeType});
+      })
+  );
+}
+
+  certificateCreation(ev) {
+   const dataURL  = this.getBase64Data(ev);
+    this.selectedCertificate['artifactUrl'] = this.sanitizer.bypassSecurityTrustResourceUrl(dataURL);
+    this.urltoFile(dataURL, `certificate_${dayjs().format('YYYY-MM-DD_HH_mm')}.svg`, 'image/svg+xml')
+    .then((file) => {
+      this.finalSVGurl = file;
+    });
+  }
+
+  getImagePath() {
+    if (this.selectedCertificate) {
+      return this.selectedCertificate.artifactUrl;
+    }
+  }
+  getBase64Data(ev) {
+    const div = document.createElement('div');
+    div.appendChild(ev.cloneNode(true));
+    const b64 = 'data:image/svg+xml;base64,' + window.btoa(div.innerHTML);
+    return b64;
+  }
+
+  useTemplate(data) {
+   const signatoryList = [{
+       'image': _.get(this.images, 'SIGN1.url'),
+       'name': _.get(this.createTemplateForm, 'value.authoritySignature_0'),
+     }];
+
+    if (!_.isEmpty(this.images['SIGN'])) {
+      signatoryList.push({
+        'image': _.get(this.images, 'SIGN2.url'),
+        'name': _.get(this.createTemplateForm, 'value.authoritySignature_1'),
+      });
+    }
+
+    const cert_obj = {
+      'artifactUrl' : _.get(data, 'result.artifactUrl'),
+      'name' : _.get(this.createTemplateForm, 'value.certificateTitle'),
+      'identifier' : _.get(this.queryParams, 'courseId'),
+      'data' : {
+        'title': _.get(this.createTemplateForm, 'value.certificateTitle'),
+        'signatoryList': signatoryList,
+        'artifactUrl' : _.get(data, 'result.artifactUrl'),
+      },
+      'issuer' : {
+        'name': _.get(this.createTemplateForm, 'value.stateName'),
+        'url': _.get(this.images, 'LOGO1.url')
+    },
+      'signatoryList' : signatoryList
+    };
+
+    this.uploadCertificateService.certificate.next(cert_obj);
+  }
+
+  back() {
+    this.navigationHelperService.navigateToLastUrl();
   }
 }

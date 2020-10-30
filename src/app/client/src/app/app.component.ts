@@ -407,9 +407,13 @@ export class AppComponent implements OnInit, OnDestroy {
       if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
         _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
         this.showTermsAndCondPopUp = true;
-      } else {
-        this.checkFrameworkSelected();
-      }
+      } else if (_.has(this.userService.userProfile, 'promptTnC') &&  _.has(this.userService.userProfile, 'tncLatestVersion')
+      && _.get(this.userService, 'userProfile.promptTnC') && !this.userService.isCustodianUser) {
+       this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+       this.showGlobalConsentPopUpSection = true;
+     } else {
+       this.checkFrameworkSelected();
+     }
   }
   public getOrgDetails() {
     const slug = this.userService.slug;
@@ -458,12 +462,14 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!this.userService.isCustodianUser) {
       this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
       this.showGlobalConsentPopUpSection = true;
+    } else {
+      this.checkFrameworkSelected();
     }
-    this.checkFrameworkSelected();
   }
 
   public closeConsentPopUp() {
     this.showGlobalConsentPopUpSection = false;
+    this.checkFrameworkSelected();
   }
 
   /**
