@@ -301,7 +301,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       source: 'web',
       name: 'Course',
-      limit: 100,
       filters: _filters,
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
