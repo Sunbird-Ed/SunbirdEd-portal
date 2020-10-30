@@ -286,6 +286,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private fetchCourses(currentPageData) {
+    const _pageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    let _filters = _.get(_pageData, 'search.filters');
+    _filters['audience'] = localStorage.getItem('userType') === 'other' ? ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))];
     // Courses are displayed based on subject and sorted alphabetically. Executed iff `isPageAssemble` flag is set to `false`.
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
@@ -299,7 +302,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       source: 'web',
       name: 'Course',
       limit: 100,
-      filters: this.utilService.generateCourseFilters(),
+      filters: _filters,
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',

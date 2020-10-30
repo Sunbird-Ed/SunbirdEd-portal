@@ -431,14 +431,13 @@ describe('CoursePageComponent', () => {
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
-        spyOn<any>(utilService, 'generateCourseFilters').and.returnValue(of(Response.courseFilters));
         spyOn(component, 'isPageAssemble').and.returnValue(false);
+        spyOn(component, 'getPageData').and.returnValue(Response.buildOptionRespForFetchCourse);
         component.queryParams = { 'selectedTab': 'course' };
         component['fetchCourses'](Response.buildOptionRespForFetchCourse)
             .subscribe(res => {
                 expect(searchService.contentSearch).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
-                expect(utilService.generateCourseFilters).toHaveBeenCalled();
                 expect(component.facets).toBeDefined();
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();

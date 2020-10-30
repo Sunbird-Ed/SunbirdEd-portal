@@ -293,9 +293,4 @@ describe('UtilService', () => {
     expect(data).toEqual(parsedCourseFacetData);
   }));
 
-  it('should return filters for course search API', inject([UtilService], (service: UtilService) => {
-    const data = service.generateCourseFilters();
-    expect(data).toEqual(courseFilters);
-  }));
-
 });
