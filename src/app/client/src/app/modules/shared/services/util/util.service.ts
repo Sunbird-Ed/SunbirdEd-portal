@@ -360,15 +360,4 @@ export class UtilService {
     }
     return facetObj;
   }
-
-  generateCourseFilters () {
-    return {
-      objectType: 'Content',
-      contentType: 'Course',
-      status: ['Live'],
-      'batches.enrollmentType': 'open',
-      'batches.status': 1,
-      audience: ['Student', 'Teacher']
-    }
-  }
 }
