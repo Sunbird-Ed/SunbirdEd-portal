@@ -744,3 +744,29 @@ export const telemetryErrorData = {
         'stacktrace': '{"message":"contentType field not available","type":"edit","pageid":"get","subtype":"paginate"}'	
     }	
 };
+
+export const requiredProperties = {
+    'mimeType': 'application/vnd.ekstep.content-collection',
+    'children': [
+      {
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'children': [
+          {
+            'mimeType': 'text/x-url',
+            'contentType': 'Resource',
+            'identifier': 'do_1125110622654464001294',
+            'visibility': 'Default',
+            'name': 'A5 ext link'
+          }
+        ],
+        'contentType': 'CourseUnit',
+        'identifier': 'do_1125110676518584321298',
+        'visibility': 'Parent',
+        'name': 'Untitled Course Unit'
+      }
+    ],
+    'contentType': 'Course',
+    'identifier': 'do_1125110672521134081296',
+    'visibility': 'Default',
+    'name': 'A5 ext course'
+  }

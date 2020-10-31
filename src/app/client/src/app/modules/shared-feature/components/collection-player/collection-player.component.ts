@@ -1,7 +1,8 @@
 
 import { mergeMap, filter, map, catchError, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, PermissionService,
+  CopyContentService, UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -16,7 +17,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
-import { IMinCollection } from '../../interfaces';
 
 @Component({
   selector: 'app-collection-player',
@@ -589,12 +589,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    * @description - This method handles the creation of course from a textbook (entire or selected units)
    */
   createCourse() {
-    let collection = this.collectionData;
-    collection = this.getChildren(collection);
-    collection = this.updateCollection([collection]);
+    let collection = _.assign({}, this.collectionData);
+    collection = this.getOnlyRequiredProperties(collection);
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
-      this.copyContentService.copyAsCourse(collection[0]).subscribe((response) => {
+      this.copyContentService.copyAsCourse(collection).subscribe((response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
       }, (err) => {
@@ -605,34 +604,22 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  getChildren(collection) {
-    if (!_.isEmpty(_.get(collection, 'children'))) {
-      collection.children = this.updateCollection(collection.children);
-      (collection.children).map((content) => {
-        this.getChildren(content);
-      });
-      return collection;
-    }
-    collection = this.updateCollection([collection]);
-    return collection;
+  getOnlyRequiredProperties(collection) {
+    const model = new TreeModel();
+    const treeModel: any = model.parse(collection);
+    const requiredKeys = ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+    'primaryCategory', 'additionalCategory', 'parent'];
+
+    treeModel.walk(node => {
+      for (const key of Object.keys(node.model)) {
+          if (!_.includes(requiredKeys, key)) {
+            delete node.model[key];
+          }
+      }
+    });
+    return treeModel.model;
   }
 
-  updateCollection (collection: Array<IMinCollection>) {
-    const data =  _.map(collection, ((content: IMinCollection) => {
-      return {
-        identifier: content.identifier,
-        mimeType: content.mimeType,
-        visibility: content.visibility,
-        name: content.name,
-        contentType: content.contentType,
-        primaryCategory: content.primaryCategory,
-        additionalCategory: content.additionalCategory,
-        children: content.children,
-        selected: content.selected
-      };
-    }));
-    return data;
-  }
 
   /**
    * @since #SH-362

@@ -7,7 +7,7 @@ import { WindowScrollService, SharedModule, ResourceService, NavigationHelperSer
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionHierarchyGetMockResponse, collectionTree } from './collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree, requiredProperties } from './collection-player.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { PublicPlayerService } from '@sunbird/public';
@@ -236,5 +236,10 @@ describe('CollectionPlayerComponent', () => {
     spyOn(navigationHelperService, 'navigateToPreviousUrl');
     component.closeCollectionPlayer();
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/explore');
+  });
+
+  it ('should return only required properties', () => {
+    const content = component.getOnlyRequiredProperties(collectionTree);
+    expect(content).toEqual(requiredProperties);
   });
 });
