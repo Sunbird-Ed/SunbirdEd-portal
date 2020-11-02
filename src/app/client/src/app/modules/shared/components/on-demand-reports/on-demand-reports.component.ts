@@ -169,7 +169,9 @@ export class OnDemandReportsComponent implements OnInit {
     if (!_.isEmpty(reportListData)) { // checking the report is already created or not
       let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
       if (!isInProgress) {
-        requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
+        requestStatus = true;
+        // TODO: The below code has commented because of API lag to generate the reports
+        // requestStatus = this.onDemandReportService.canRequestReport(_.get(reportListData, 'jobStats.dtJobSubmitted'), batchEndDate); // performing the date checks if the report is not in SUBMITTED/PROCESSING state  
       } else {
         requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
       }
