@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService, LayoutService
+  ExternalUrlPreviewService, LayoutService, UtilService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
@@ -98,7 +98,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
     public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
-    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService) {
+    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
+    private utilService: UtilService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -588,9 +589,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    * @description - This method handles the creation of course from a textbook (entire or selected units)
    */
   createCourse() {
+    let collection = _.assign({}, this.collectionData);
+    collection = this.utilService.reduceTreeProps(collection,
+      ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+    'primaryCategory', 'additionalCategory', 'parent']
+      );
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
-      this.copyContentService.copyAsCourse(this.collectionData).subscribe((response) => {
+      this.copyContentService.copyAsCourse(collection).subscribe((response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
       }, (err) => {
