@@ -559,10 +559,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.3.30":
-  version "3.3.30"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.30.tgz#5c38f2bc3fc3bd3e6638cf60e5ebb5cdf9d9e04f"
-  integrity sha512-qo49cZca69ZFRIr0BnweYw799+tETZcgtxANPWeYZEua9gqEsPm9/VVtwM7gvsXtIo7R/17AhogT1AJ1zAKGqQ==
+"@project-sunbird/client-services@3.3.29":
+  version "3.3.29"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.29.tgz#eebb199159873c0b425dda19116c7236b27cda89"
+  integrity sha512-5N1Y/pbPBOYD16qIamTctUjpsyWUR+M5ShMpGK3ZHElUGhAh8CtIm7NsIKxY4CtFiszGiCMcj3x1sxsqGjzeKQ==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
