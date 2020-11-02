@@ -549,12 +549,11 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.3.26":
-  version "3.3.26"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.26.tgz#295576cf7d3f00411892a7ffa0773ea23b6616e4"
-  integrity sha512-axp8m5vVdBUu0ajOcrEMWpgKNM7H6JW0aoOZQ9Rys6huc8p84mM5UiYibBlKZPWjXzLGRLDRZEzXs9ZHI0sAyw==
+"@project-sunbird/client-services@3.3.30":
+  version "3.3.30"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.3.30.tgz#5c38f2bc3fc3bd3e6638cf60e5ebb5cdf9d9e04f"
+  integrity sha512-qo49cZca69ZFRIr0BnweYw799+tETZcgtxANPWeYZEua9gqEsPm9/VVtwM7gvsXtIo7R/17AhogT1AJ1zAKGqQ==
   dependencies:
-    "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
     qs "^6.9.4"
     reflect-metadata "^0.1.13"
@@ -10108,12 +10107,11 @@ sunbird-chatbot-client@0.0.6:
   dependencies:
     tslib "^1.9.0"
 
-sunbird-pdf-player@0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.14.tgz#a378133af172f0e8b2cde983dd6817dedc8d0b8f"
-  integrity sha512-EfWEL204LibnY1wbHU6Y5r+rBYGlEx+Gag+JWDIcOpmtlJGrDHhLlF4fAbdgivZUdDLpmFmOXchR/zMuBJ+zoA==
+sunbird-pdf-player@0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.15.tgz#51d2562e0b64b87cf88ebdcc4e8a2af8d5c6f785"
+  integrity sha512-qWHNnqEhF440xBFlC+E8GmAg6NyLQjfLrq3Dqj3uvc8KrP6ddphfPsS9kyXg5kknqplbafk2PYsfJGlLtDV+Iw==
   dependencies:
-    "@project-sunbird/client-services" "3.3.26"
     ngx-extended-pdf-viewer "^4.1.2"
     tslib "^1.9.0"
 
