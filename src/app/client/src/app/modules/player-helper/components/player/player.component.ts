@@ -28,6 +28,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
+  @Input() previousContent = {};
   playerLoaded = false;
   buildNumber: string;
   @Input() playerOption: any;
@@ -302,7 +303,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     let contentProgress;
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     if (playerSummary) {
-      const contentMimeType = this.playerConfig.metadata.mimeType;
+      const contentMimeType =  _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') :
+        this.playerConfig.metadata.mimeType;
       contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {

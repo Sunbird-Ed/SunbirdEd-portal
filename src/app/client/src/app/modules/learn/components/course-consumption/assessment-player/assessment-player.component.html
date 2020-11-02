@@ -86,7 +86,7 @@
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
-                  (ratingPopupClose)="onRatingPopupClose()"></app-player>
+                  (ratingPopupClose)="onRatingPopupClose()" [previousContent]="previousContent"></app-player>
               </div>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
