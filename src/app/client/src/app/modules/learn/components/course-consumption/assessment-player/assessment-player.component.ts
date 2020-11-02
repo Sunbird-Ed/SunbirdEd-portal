@@ -86,6 +86,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
+    this.previousContent = {};
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
       };
