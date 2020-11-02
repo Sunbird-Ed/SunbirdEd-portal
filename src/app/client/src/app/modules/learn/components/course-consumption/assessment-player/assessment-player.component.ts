@@ -60,6 +60,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   consumedContents = 0;
   layoutConfiguration;
   isCourseCompletionPopupShown = false;
+  previousContent = {};
 
   constructor(
     public resourceService: ResourceService,
@@ -134,6 +135,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
+    this.previousContent = {};
     const paramas = {};
     if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
@@ -245,6 +247,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
   }
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
+    this.previousContent = _.cloneDeep(this.activeContent);
     if (_.get(this.courseHierarchy, 'children')) {
       const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
 
@@ -301,6 +304,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onTocCardClick(event: any, id) {
+    this.previousContent = _.cloneDeep(this.activeContent);
     /* istanbul ignore else */
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
@@ -392,7 +396,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
    */
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    const contentMimeType = this.activeContent.mimeType;
+    const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     return this.courseProgress;
   }
