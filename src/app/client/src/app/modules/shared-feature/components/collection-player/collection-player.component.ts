@@ -1,8 +1,7 @@
 
 import { mergeMap, filter, map, catchError, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { PlayerService, CollectionHierarchyAPI, PermissionService,
-  CopyContentService, UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
+import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService, UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
