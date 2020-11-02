@@ -294,11 +294,6 @@ describe('UtilService', () => {
     expect(data).toEqual(parsedCourseFacetData);
   }));
 
-  it('should return filters for course search API', inject([UtilService], (service: UtilService) => {
-    const data = service.generateCourseFilters();
-    expect(data).toEqual(courseFilters);
-  }));
-
   it ('should return only required properties', inject([UtilService], (service: UtilService) => {
     const content = service.reduceTreeProps(requiredProperties, ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
     'primaryCategory', 'additionalCategory', 'parent']);
