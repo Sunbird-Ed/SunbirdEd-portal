@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService, LayoutService
+  ExternalUrlPreviewService, LayoutService, UtilService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
@@ -99,7 +99,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
     public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
-    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService) {
+    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
+    private utilService: UtilService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -590,7 +591,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    */
   createCourse() {
     let collection = _.assign({}, this.collectionData);
-    collection = this.getOnlyRequiredProperties(collection);
+    collection = this.utilService.reduceTreeProps(collection,
+      ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+    'primaryCategory', 'additionalCategory', 'parent']
+      );
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
       this.copyContentService.copyAsCourse(collection).subscribe((response) => {
@@ -603,23 +607,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       });
     });
   }
-
-  getOnlyRequiredProperties(collection) {
-    const model = new TreeModel();
-    const treeModel: any = model.parse(collection);
-    const requiredKeys = ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
-    'primaryCategory', 'additionalCategory', 'parent'];
-
-    treeModel.walk(node => {
-      for (const key of Object.keys(node.model)) {
-          if (!_.includes(requiredKeys, key)) {
-            delete node.model[key];
-          }
-      }
-    });
-    return treeModel.model;
-  }
-
 
   /**
    * @since #SH-362

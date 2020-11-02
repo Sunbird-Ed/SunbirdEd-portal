@@ -239,7 +239,29 @@ describe('CollectionPlayerComponent', () => {
   });
 
   it ('should return only required properties', () => {
-    const content = component.getOnlyRequiredProperties(collectionTree);
-    expect(content).toEqual(requiredProperties);
+    component.collectionData = collectionTree;
+
+    spyOn(component.userService, 'userOrgDetails$').and.returnValue(of( {}));
+    spyOn(component['utilService'], 'reduceTreeProps').and.returnValue(of(requiredProperties));
+    spyOn(component['toasterService'], 'success');
+    spyOn(component.copyContentService, 'copyAsCourse').and.returnValue(of(
+        {
+          'result': {
+            'identifier': 'do_2131423481877217281310',
+            'versionKey': '1604290550260',
+            'course_id': 'do_2131423481877217281310'
+          }
+        }
+    ));
+    component.createCourse();
+
+    component.userService.userOrgDetails$.subscribe(data => {
+      expect(component.showCopyLoader).toBeTruthy();
+      const collection: any = requiredProperties;
+      component.copyContentService.copyAsCourse(collection).subscribe((response) => {
+        expect(component.showCopyLoader).toBeFalsy();
+        expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0042);
+      });
+    });
   });
 });
