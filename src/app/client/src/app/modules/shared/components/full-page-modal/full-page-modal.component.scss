@@ -6,7 +6,7 @@
   margin: calculateRem(24px) auto !important;
   padding: 0;
   padding: calculateRem(10px);
-  width: calc(100% - 4%) !important;
+  width: var(--sbt-container-w) !important;
   min-height: calc(100vh - 48px);
 }
 

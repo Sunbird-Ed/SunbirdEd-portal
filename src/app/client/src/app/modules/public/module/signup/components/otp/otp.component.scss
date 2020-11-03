@@ -5,7 +5,7 @@
     margin-left: auto !important;
     margin-right: auto !important;
     padding: 0;
-    width: calc(100% - 4%) !important;
+    width: var(--sbt-container-w) !important;
 }
 
 @media only screen and (min-width: 1024px) {
