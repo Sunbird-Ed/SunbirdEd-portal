@@ -1,4 +1,4 @@
-import { PermissionDirective, BodyScrollDirective } from './directives';
+import { PermissionDirective, BodyScrollDirective, OnlineOnlyDirective } from './directives';
 import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,9 +37,9 @@ import { LocationModule } from '../location/location.module';
     LocationModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
-    BodyScrollDirective,
+    BodyScrollDirective, OnlineOnlyDirective,
     ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent],
-  exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
+  exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, OnlineOnlyDirective,
     TelemetryModule, LanguageDropdownComponent],
   providers: [CacheService, AuthGuard, {
     provide: APP_BASE_HREF,
