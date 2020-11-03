@@ -82,9 +82,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.getSVGTemplate();
     this.uploadCertificateService.getCertificates().subscribe(res => {
       console.log(res);
-      // this.defaultCertificates = _.get(res, 'result.content');
-      // this.selectedCertificate = _.clone(this.defaultCertificates[0]);
-      // this.getSVGTemplate();
+    //   this.defaultCertificates = _.get(res, 'result.content');
+    // this.selectedCertificate = _.clone(this.defaultCertificates[0]);
+    // this.getSVGTemplate();
     });
   }
 
@@ -142,7 +142,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   uploadTemplate(base64Url, identifier) {
     this.uploadCertificateService.storeAsset(base64Url, identifier).subscribe(response => {
-      this.toasterService.success('Template created successfully');
+      this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddSuccess'));
       this.useTemplate(response);
       this.navigationHelperService.navigateToLastUrl();
     }, error => {

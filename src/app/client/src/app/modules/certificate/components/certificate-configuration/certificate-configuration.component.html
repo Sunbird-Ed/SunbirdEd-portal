@@ -180,7 +180,8 @@
                 </div>
               </div>
             </form>
-            <div>
+            <div *ngIf="selectedTemplate">
+              <img [src]="selectedTemplate?.artifactUrl" width="600px">
             </div>
           </div>
         </div>
