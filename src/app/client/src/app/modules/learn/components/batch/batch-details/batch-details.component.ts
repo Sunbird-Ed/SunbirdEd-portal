@@ -163,10 +163,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = _.filter(this.ongoingAndUpcomingBatchList, batch => {
       return (_.isEqual(batch.status, this.batchStatus));
     });
-    const currentDate = new Date();
-    const batchEndDate = new Date(_.get(_.first(this.ongoingAndUpcomingBatchList), 'endDate'));
-    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length > 0 ?
-    (!batchEndDate /*if open batch*/  ? false : currentDate.getTime() > batchEndDate.getTime()) : true ;
+    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length <= 0;
   }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
