@@ -1,0 +1,46 @@
+[
+    {
+        "avatar": "assets/icons/avatar_anonymous.png",
+        "profileImage": "assets/icons/avatar_anonymous.png",
+        "gender": "male",
+        "handle": "Anonymous",
+        "age": 6,
+        "standard": -1,
+        "uid": "9g8h4ndAnonymouscg56ngd"
+    },
+        {
+        "avatar": "assets/icons/avatar_normal_1.png",
+        "profileImage": "assets/icons/avatar_normal_1.png",
+        "gender": "male",
+        "handle": "Vinod",
+        "age": 6,
+        "standard": -1,
+        "uid": "69wVinod8r81f"
+    }, {
+        "avatar": "assets/icons/avatar_normal_2.png",
+        "profileImage": "assets/icons/avatar_normal_2.png",
+        "gender": "male",
+        "handle": "Shringeri",
+        "age": 6,
+        "standard": -1,
+        "uid": "6f5fShringeriv16s"
+    }, {
+        "avatar": "assets/icons/avatar_normal_3.png",
+        "profileImage": "assets/icons/avatar_normal_3.png",
+        "gender": "Female",
+        "handle": "Mala",
+        "age": 6,
+        "standard": -1,
+        "uid": "6ws55Mala1fvw6s5"
+    },
+    {
+        "avatar": "assets/icons/img_badge01.png",
+        "profileImage": "assets/icons/img_badge01.png",
+        "gender": "Female",
+        "handle": "Group-1",
+        "age": 6,
+        "standard": -1,
+        "uid": "6ws551fGroup-1vwpeoijfw6s5",
+        "isGroupUser": true
+    }
+]

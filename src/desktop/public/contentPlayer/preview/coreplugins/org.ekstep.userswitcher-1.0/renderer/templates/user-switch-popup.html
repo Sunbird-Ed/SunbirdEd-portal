@@ -1,0 +1,45 @@
+<!-- The Modal -->
+<ng-template id="userSwitch.html">
+    <div ng-init="init()" ng-show="showUserSwitchModal" id="userSwitchingModal" class="user-modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="user-header">
+                <span ng-click="closeUserSwitchingModal()" class="close">&times;</span>
+                <p>{{AppLables.userSwitcherTitle}}</p>
+            </div>
+            <div id="sliderContainer" class="slider-container">
+                <p class="slider-tag">
+                    {{AppLables.child}}
+                </p>
+                <div id="userSlider">
+                    <div ng-repeat="user in $root.users | filter: {'isGroupUser': '!true'}" ng-class="user.selected ? 'profile selected' : 'profile'" ng-click='selectUser(user)'>
+                        <img ng-src="{{user.profileImage}}" alt='user_img' />
+                        <p>{{user.handle}}</p>
+                    </div>
+                </div>
+                <p class="slider-tag">
+                    {{AppLables.group}}
+                </p>
+                <div id="groupSlider">
+                    <div ng-if="groupLength > 0" ng-repeat="user in $root.users | filter: {'isGroupUser': 'true'}" ng-class="user.selected ? 'profile selected' : 'profile'" ng-click='selectUser(user)'>
+                        <img ng-src="{{user.profileImage}}" alt='group_img' />
+                        <p>{{user.handle}}</p>
+                    </div>
+                    <p class="fallback-text" ng-if="groupLength == 0">
+                        {{AppLables.groupFallback}}
+                    </p>
+                </div>
+            </div>
+            <div class="model-butttons">
+                <button class="replay" ng-click="replayContent()">
+                <img ng-src="{{imageBasePath}}replay_icon.png" alt=""><span>{{AppLables.replay}}</span>
+            </button>
+                <button class="continue" ng-disabled="disableButtons" ng-click="continueContent()">
+                <span>{{AppLables.continue}}</span>
+            </button>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
