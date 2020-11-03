@@ -1,0 +1,62 @@
+<div class="no-content-container d-flex flex-dc flex-jc-center" *ngIf="!isBrowsePage() && isContentPresent">
+  <div class="my-48 p-16 w-100">
+  <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+    <div>
+      <img src="../../../../../assets/images/no-text.svg" width="101px" height="124px">
+    </div>
+    <div class="mt-8 font-weight-bold">{{resourceService?.messages?.stmsg?.m0030}}</div>
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal('upload-content')">
+      {{resourceService?.frmelmnts?.btn?.loadContent}}
+    </button>
+    <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
+  </div>
+</div>
+</div>
+
+<app-load-content *ngIf="showModal" (close)="handleModal()"></app-load-content>
+
+<div class="no-content-container d-flex flex-dc flex-jc-center" *ngIf="!isConnected && isBrowsePage()">
+  <div class="my-48 p-16 w-100">
+  <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+    <div>
+      <img src="../../../../../assets/images/offline-icon.svg" width="90px" height="90px">
+    </div>
+    <div class="fs-1-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+    <p class="fs-1 mt-8">{{resourceService?.messages?.imsg?.m0048}}</p>
+    <p class="fs-1 mt-16 mb-8">{{resourceService?.messages?.imsg?.m0049}}</p>
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mb-8"
+      (click)="handleImportContentDialog('upload-content')">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+    <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
+  </div>
+</div>
+</div>
+
+<div class="no-content-container d-flex flex-dc flex-jc-center sb-bg-color-white mt-24" *ngIf="!isBrowsePage() && !isContentPresent">
+  <div class="my-48 p-16 w-100">
+  <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+    <div class="mt-8">{{resourceService?.messages?.stmsg?.m0030}} <span *ngIf="filters?.gradeLevel"> for </span> {{filters?.gradeLevel}}</div>
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal('no-textbook-import')">
+      {{resourceService?.frmelmnts?.btn?.loadContent}}
+    </button>
+    <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
+  </div>
+  </div>
+</div>
+
+<div class="no-content-container d-flex flex-jc-center" *ngIf="isConnected && isBrowsePage()">
+  <div class="my-48 p-16 w-100">
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center">
+      <div>
+        <img src="../../assets/images/group.svg" width="90px" height="90px">
+      </div>
+      <div class="fmedium board-title my-24">{{resourceService?.messages?.stmsg?.m0030}} <span *ngIf="filters?.gradeLevel"> for </span> {{filters?.gradeLevel}}</div>
+      <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
+      <button type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="exploreContent('explore-more-content')">
+        {{resourceService?.frmelmnts?.lbl?.desktop?.explore}}
+      </button>
+      <div class="fs-0-785">{{resourceService?.frmelmnts?.lbl?.desktop?.find_more | interpolate:'{instance}':instance}}</div>
+    </div>
+  </div>
+</div>
+
+<app-load-content *ngIf="showLoadContentModal"  (close)="closeLoadContentModal()"></app-load-content>
