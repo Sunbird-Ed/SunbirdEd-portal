@@ -22,6 +22,12 @@ describe('CreateTemplateComponent', () => {
 
   const resourceBundle = {
     frmelmnts: {
+      cert : {
+        lbl :
+        {
+          certAddSuccess : 'Template created successfully'
+        }
+      }
   },
   messages: {
 
