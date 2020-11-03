@@ -127,7 +127,7 @@
           </div>
           <sb-toc-card [content]="courseHierarchy"
             *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-            (tocCardClick)="onTocCardClick($event)" [type]="cardType">
+            (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
           </sb-toc-card>
         </div>
       </div>
