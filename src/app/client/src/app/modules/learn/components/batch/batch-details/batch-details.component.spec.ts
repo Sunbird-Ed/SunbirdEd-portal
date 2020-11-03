@@ -318,7 +318,7 @@ describe('BatchDetailsComponent', () => {
     component.batchStatus = 1;
     component.getSelectedBatches();
     expect(component.batchList.length).toEqual(2);
-    expect(component.showCreateBatchBtn).toEqual(true);
+    expect(component.showCreateBatchBtn).toEqual(false);
   });
 
   it('should disable "createbatch" for upcoming batchList', () => {
