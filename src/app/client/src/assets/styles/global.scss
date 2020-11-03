@@ -557,7 +557,7 @@ app-workspace {
 
 /* my groups */
 .sbt-center-container {
-  width: calc(100% - 4%);
+  width: var(--sbt-container-w);
   margin: 0 auto;
 }
 .sbt-mygroups {

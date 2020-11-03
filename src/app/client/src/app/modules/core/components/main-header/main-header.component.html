@@ -128,10 +128,10 @@
   </div>
 </div>
 
-<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
+<div *ngIf="layoutConfiguration">
   <div class="sbt-header sbt-fluid-header-bg">
     <div class="sbt-container">
-      <!--Header section-->
+      <!--Header section sbt-sticky sbt-sticky-topbar-->
       <div class="sbt-header-bar sb-g">
         <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 sbt-header-logo">
           <div class="d-flex flex-ai-center flex-jc-space-between w-100">
@@ -185,10 +185,11 @@
       </div>
 
       <div class="sbt-header-menu-bar sb-g">
-        <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div>
-        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9  sb-g-col-xxxl-12 sbt-header-menu-extension"></div>
-        <div class="sbt-header-menu">
-          <app-main-menu [layoutConfiguration]="layoutConfiguration"></app-main-menu>
+        <!-- <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4"></div> -->
+        <div class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 sbt-header-menu-extension">
+          <div class="sbt-header-menu">
+            <app-main-menu [layoutConfiguration]="layoutConfiguration"></app-main-menu>
+          </div>
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@
 .ui.raised.shadow.container.segment {
   margin: calculateRem(20px) auto !important;
   padding: calculateRem(10px);
-  width: calc(100% - 4%) !important;
+  width: var(--sbt-container-w) !important;
   min-height: 90vh;
 }
 
