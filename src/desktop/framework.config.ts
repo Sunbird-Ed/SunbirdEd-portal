@@ -30,5 +30,5 @@ export const frameworkConfig = {
       ver: "1.0"
     }
   ],
-  pluginBasePath: path.join(__dirname, "node_modules") + "/"
+  pluginBasePath: path.join(__dirname, "plugin-dist") + "/"
 };
