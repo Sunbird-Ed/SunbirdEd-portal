@@ -52,7 +52,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
-  hideCreateBatch = false;
+  showCreateBatchBtn = false;
   allowCertCreation = false;
   ongoingAndUpcomingBatchList = [];
   batchMessage = '';
@@ -165,7 +165,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     });
     const currentDate = new Date();
     const batchEndDate = new Date(_.get(_.first(this.ongoingAndUpcomingBatchList), 'endDate'));
-    this.hideCreateBatch = this.ongoingAndUpcomingBatchList.length > 0 ? (_.isEmpty(batchEndDate) || (currentDate <= batchEndDate)) : false;
+    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length > 0 ?
+    (!batchEndDate /*if open batch*/  ? false : currentDate.getTime() > batchEndDate.getTime()) : true ;
   }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
