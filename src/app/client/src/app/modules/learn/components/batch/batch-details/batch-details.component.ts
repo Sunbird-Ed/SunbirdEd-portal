@@ -52,7 +52,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
-  hideCreateBatch = false;
+  hideCreateBatch = true;
   allowCertCreation = false;
   ongoingAndUpcomingBatchList = [];
   batchMessage = '';
