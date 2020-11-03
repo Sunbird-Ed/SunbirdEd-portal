@@ -21,7 +21,7 @@ mochawesome-report
 logs
 keys
 #DESKTOP APP
-/src/desktop/node_modules
+src/desktop/node_modules
 src/desktop/build
 src/desktop/log
 src/desktop/logs
