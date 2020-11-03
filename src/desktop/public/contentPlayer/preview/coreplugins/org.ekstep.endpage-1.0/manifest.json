@@ -1,0 +1,15 @@
+{
+    "id": "org.ekstep.endpage",
+    "ver": "1.0",
+    "shortId": "org.eskstep.endpage",
+    "author": "Manjunath Davanam",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    },
+    "dependencies": [
+        {"plugin": "org.ekstep.genie", "ver": "1.0", "scope": "renderer" }
+    ]   
+
+}
