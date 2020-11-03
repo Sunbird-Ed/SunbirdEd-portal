@@ -1,3 +1,4 @@
+import * as TreeModel from 'tree-model';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
@@ -361,14 +362,17 @@ export class UtilService {
     return facetObj;
   }
 
-  generateCourseFilters () {
-    return {
-      objectType: 'Content',
-      contentType: 'Course',
-      status: ['Live'],
-      'batches.enrollmentType': 'open',
-      'batches.status': 1,
-      audience: ['Student', 'Teacher']
-    }
+  reduceTreeProps(collection, requiredProps) {
+    const model = new TreeModel();
+    const treeModel: any = model.parse(collection);
+
+    treeModel.walk(node => {
+      for (const key of Object.keys(node.model)) {
+          if (!_.includes(requiredProps, key)) {
+            delete node.model[key];
+          }
+      }
+    });
+    return treeModel.model;
   }
 }
