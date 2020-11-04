@@ -539,7 +539,7 @@ describe('CoursePlayerComponent', () => {
   it('should call parseChildContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component['parseChildContent']();
-    expect(component.contentIds.length).toBeTruthy();
+    expect(component.contentIds.length).toEqual(2);
   });
 
   it('should subscribe to updateContentConsumedStatus', () => {
